@@ -57,6 +57,7 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
   <div class="sub">Deterministic BaZi 八字 readings that show every classical rule they
     cite — no AI guesswork, no black box. 计算透明，条条有据。</div>
   <nav class="top">
+    <a href="/">☰ Menu</a>
     <a href="/start">People 命盘</a>
     <a href="#" id="nav-fs">Home fengshui 宅运</a>
     <a href="/baby">Baby 宝宝</a>
@@ -127,7 +128,8 @@ function personCard(p, i) {
     <div class="kv">career fit: ${p.top_careers.join(" · ")}</div>
     <div class="doms">${doms}</div>
     <div class="acts">
-      <a href="/w/${token}/person/${i}/report" target="_blank">Full report 完整命书 →</a>
+      <a href="/w/${token}/person/${i}/reading" target="_blank">Reading 命书 →</a>
+      <a href="/w/${token}/person/${i}/report" target="_blank">Strategy 战略 →</a>
       <button class="del" data-i="${i}">remove</button>
     </div></div>`;
 }

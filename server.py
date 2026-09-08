@@ -40,7 +40,7 @@ from engine.hehun import pair_compatibility
 from engine.liunian import (annual_afflictions, dayun_detail, multi_year_outlook,
                             person_forecast)
 from engine.optimizer import optimize, score_assignment
-from engine.report import chart_json
+from engine.report import chart_json, chart_payload
 from engine.sectors import assign_grid, assign_pie, feature_analysis, load_rooms
 from engine.optimizer import PAIR_CHONG, PAIR_HE
 from engine.primer import PRIMERS
@@ -139,29 +139,7 @@ def api_family(policy: str = TRUE_SOLAR, year: int = 2026, period: int = 8):
 @app.get("/api/chart/{name}")
 def api_chart(name: str, policy: str = TRUE_SOLAR, year: int = 2026):
     c = _chart(name, policy)
-    return {"name": name, **chart_json(c), "yongshen": _ys(name, policy),
-            "gua": ming_gua(c.lichun_year, c.sex),
-            "group": gua_group(ming_gua(c.lichun_year, c.sex)),
-            "youxing": youxing_stars(ming_gua(c.lichun_year, c.sex)),
-            "shensha": shensha(c), "interactions": natal_interactions(c),
-            "tengods_pct": ten_god_pct(c),
-            "tengods_legend": {g: {"en": TEN_GOD_EN[g], "meaning": TEN_GOD_MEANING[g]}
-                               for g in ten_god_pct(c)},
-            "domains": life_domains(c, _ys(name, policy)),
-            "dayun_detail": dayun_detail(c, year),
-            "transit": (lambda st, br: {
-                "year_gz": st + br,
-                "year_stem_god": ten_god(c.day_master, st),
-                "year_branch_god": ten_god(c.day_master, HIDDEN_STEMS[br][0]),
-                "luck": next((d for d in dayun_detail(c, year) if d["current"]), None),
-            })(*year_ganzhi(year)),
-            "pillar_extras": pillar_extras(c), "personality": personality_axes(c),
-            "health": health_map(c), "industries": industry_map(_ys(name, policy)),
-            "careers": career_paths(c, _ys(name, policy)),
-            "life_palaces": life_palaces(c),
-            "windows": timing_windows(c, _ys(name, policy),
-                                      dayun_detail(c, year), year),
-            "interpretation": interpret_person(c, _ys(name, policy), year)}
+    return chart_payload(name, c, _ys(name, policy), year)
 
 
 @app.get("/api/house")
@@ -686,6 +664,11 @@ def report(year: int = 2026, period: int = 8, month: int | None = None,
 
 @app.get("/")
 def index():
+    return FileResponse(ROOT / "web/landing.html")
+
+
+@app.get("/app")
+def classic_app():
     return FileResponse(ROOT / "web/index.html")
 
 

@@ -573,7 +573,9 @@ function chartCard(c) {
 }
 
 async function renderPerson(name) {
-  const c = await api(`/api/chart/${encodeURIComponent(name)}?policy=${state.policy}&year=${state.year}`);
+  const url = window.__CHART_URL__ ||
+    `/api/chart/${encodeURIComponent(name)}?policy=${state.policy}&year=${state.year}`;
+  const c = await api(url);
   const wmax = Math.max(...Object.values(c.element_weights));
   const EL_ZH = { Wood: "木", Fire: "火", Earth: "土", Metal: "金", Water: "水" };
   $("#tab-person").innerHTML = jt(explain(
@@ -585,7 +587,7 @@ async function renderPerson(name) {
     "are the 10-year luck cycles; and the 八宅 row grades each compass direction for this " +
     "person (green = favourable, red = avoid). Every number cites the rule that produced it.",
     "person") + `
-    <h2>${dn(name)} — Four Pillars (${state.policy === "true_solar" ? "TRUE SOLAR" : "CLOCK"})</h2>
+    <h2>${dn(name || c.name)} — Four Pillars (${state.policy === "true_solar" ? "TRUE SOLAR" : "CLOCK"})</h2>
     <div class="sub">effective time ${c.effective_time}</div>
     ${chartCard(c)}
     ${narrBlock(c.interpretation)}
@@ -654,7 +656,8 @@ async function renderPerson(name) {
             won't come automatically and rewards conscious effort.` : ""}</div>`;
       })()}
       ${(() => {
-        const sex = (state.family.people.find((p) => p.name === name) || {}).sex;
+        const sex = ((state.family ? state.family.people : [])
+          .find((p) => p.name === name) || {}).sex || c.sex;
         const grp = (gods) => Math.round(gods.reduce((a, g) => a + (c.tengods_pct[g] || 0), 0) * 10) / 10;
         const band = (p) => p >= 20 ? "prominent" : p >= 8 ? "present" : p > 0 ? "faint" : "absent";
         const rows = [
@@ -1159,5 +1162,15 @@ function renderUnitTab() {
   });
 }
 
-controls();
-refresh().catch((e) => ($("#warnings").textContent = "load failed: " + e.message));
+if (window.__PUBLIC_READING__) {
+  // standalone Reading 命书 page (bazifor.me workspace person) — no family app boot
+  (async () => {
+    try { state.primer = await api("/api/primer"); } catch (e) { /* optional */ }
+    window.__CHART_URL__ = window.__PUBLIC_READING__.chartUrl;
+    try { await renderPerson(window.__PUBLIC_READING__.name); }
+    catch (e) { $("#tab-person").innerHTML = `<p class="hint">load failed: ${e.message}</p>`; }
+  })();
+} else {
+  controls();
+  refresh().catch((e) => ($("#warnings").textContent = "load failed: " + e.message));
+}

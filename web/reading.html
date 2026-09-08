@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading 命书 — bazifor.me</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+header.pub{padding:14px 22px;border-bottom:1px solid var(--line);background:var(--card)}
+header.pub h1{margin:0;font-size:19px;color:var(--accent)}
+header.pub a{color:var(--accent);font-size:13px;text-decoration:none}
+main{padding:18px 22px 60px;max-width:1180px;margin:0 auto}
+</style></head><body>
+<header class="pub">
+  <h1>命书 The Reading</h1>
+  <a id="back" href="/start">← workspace</a>
+  <span class="hint" style="font-size:12px;color:var(--muted)"> · the full 13-section
+  classical reading — every number cites its rule</span>
+</header>
+<main>
+  <section id="tab-person" class="tabpane active"><p class="hint">computing…</p></section>
+</main>
+<script>
+  const m = location.pathname.match(/^\/w\/([A-Za-z0-9_-]+)\/person\/(\d+)\/reading/);
+  window.__PUBLIC_READING__ = m ? {
+    chartUrl: `/api/pub/w/${m[1]}/person/${m[2]}/chart`,
+    name: "",
+  } : null;
+  if (m) document.getElementById("back").href = `/w/${m[1]}`;
+</script>
+<script src="/static/app.js"></script>
+</body></html>

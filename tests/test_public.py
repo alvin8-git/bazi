@@ -105,5 +105,22 @@ def test_baby_page():
 
 
 def test_pages_served():
-    for path in ("/start", "/fengshui", "/baby"):
+    for path in ("/start", "/fengshui", "/baby", "/app"):
         assert client.get(path).status_code == 200
+    landing = client.get("/")
+    assert landing.status_code == 200
+    for word in ("Personal", "House", "Name"):
+        assert word in landing.text
+
+
+def test_person_reading_13_sections():
+    tok = _new_ws(P1)
+    d = client.get(f"/api/pub/w/{tok}/person/0/chart").json()
+    # the same 13-section payload the family Reading tab consumes
+    assert {"pillars", "strength", "tengods_pct", "domains", "dayun_detail",
+            "youxing", "shensha", "personality", "health", "industries",
+            "careers", "windows", "life_palaces", "interpretation",
+            "citations"} <= set(d)
+    assert d["name"] == "测试一" and len(d["windows"]["years"]) == 10
+    assert client.get(f"/w/{tok}/person/0/reading").status_code == 200
+    assert client.get(f"/w/{tok}/person/5/reading").status_code == 404

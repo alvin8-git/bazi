@@ -41,8 +41,11 @@ from engine.xuankong import annual_chart, natal_chart_from_degrees
 from engine.yongshen import yong_shen
 from scripts.bazi_report import build_person, family_section
 
+import os
+
 ROOT = Path(__file__).resolve().parent
-STORE = ROOT / "data/public_store"
+# Overridable so deploys that replace the code tree never wipe workspaces.
+STORE = Path(os.environ.get("BAZIFORME_STORE", ROOT / "data/public_store"))
 UPLOADS = STORE / "uploads"
 YEAR = 2026
 MAX_PEOPLE = 8
@@ -178,6 +181,26 @@ def remove_person(token: str, idx: int):
     ws["people"].pop(idx)
     _save(token, ws)
     return _ws_payload(token, ws)
+
+
+@router.get("/api/pub/w/{token}/person/{idx}/chart")
+def person_chart(token: str, idx: int, year: int = YEAR):
+    """Full Reading 命书 payload (13 sections) for a workspace person —
+    identical shape to the family /api/chart route."""
+    from engine.report import chart_payload
+    ws = _load(token)
+    if not 0 <= idx < len(ws["people"]):
+        raise HTTPException(404, "no such person")
+    m, c = _chart_of(ws["people"][idx])
+    return chart_payload(_tosimp(m.name), c, yong_shen(c), year)
+
+
+@router.get("/w/{token}/person/{idx}/reading")
+def person_reading_page(token: str, idx: int):
+    ws = _load(token)
+    if not 0 <= idx < len(ws["people"]):
+        raise HTTPException(404, "no such person")
+    return FileResponse(ROOT / "web/reading.html")
 
 
 @router.get("/w/{token}/person/{idx}/report")

@@ -23,6 +23,49 @@ from .yongshen import yong_shen
 ROOT = Path(__file__).resolve().parent.parent
 
 
+def chart_payload(name: str, c, ys: dict, year: int) -> dict:
+    """The full Reading 命书 payload (13 sections) for ANY chart — shared by
+    the family /api/chart route and the public workspace reading route."""
+    from .bazhai import gua_group, ming_gua, youxing_stars
+    from .bazi import ten_god
+    from .careers import career_paths
+    from .domains import (health_map, industry_map, life_domains,
+                          personality_axes)
+    from .interpret import interpret_person
+    from .liunian import dayun_detail, year_ganzhi
+    from .shensha import (TEN_GOD_MEANING, life_palaces, natal_interactions,
+                          pillar_extras, shensha, ten_god_pct)
+    from .windows import timing_windows
+    from .bazi import TEN_GOD_EN
+    from .wuxing import HIDDEN_STEMS
+    st, br = year_ganzhi(year)
+    return {"name": name, "sex": c.sex, **chart_json(c), "yongshen": ys,
+            "gua": ming_gua(c.lichun_year, c.sex),
+            "group": gua_group(ming_gua(c.lichun_year, c.sex)),
+            "youxing": youxing_stars(ming_gua(c.lichun_year, c.sex)),
+            "shensha": shensha(c), "interactions": natal_interactions(c),
+            "tengods_pct": ten_god_pct(c),
+            "tengods_legend": {g: {"en": TEN_GOD_EN[g],
+                                   "meaning": TEN_GOD_MEANING[g]}
+                               for g in ten_god_pct(c)},
+            "domains": life_domains(c, ys),
+            "dayun_detail": dayun_detail(c, year),
+            "transit": {
+                "year_gz": st + br,
+                "year_stem_god": ten_god(c.day_master, st),
+                "year_branch_god": ten_god(c.day_master, HIDDEN_STEMS[br][0]),
+                "luck": next((d for d in dayun_detail(c, year)
+                              if d["current"]), None),
+            },
+            "pillar_extras": pillar_extras(c),
+            "personality": personality_axes(c),
+            "health": health_map(c), "industries": industry_map(ys),
+            "careers": career_paths(c, ys),
+            "life_palaces": life_palaces(c),
+            "windows": timing_windows(c, ys, dayun_detail(c, year), year),
+            "interpretation": interpret_person(c, ys, year)}
+
+
 def chart_json(c) -> dict:
     return {
         "policy": c.policy,

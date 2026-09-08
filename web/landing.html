@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bazifor.me — BaZi & FengShui, with the working shown</title>
+<style>
+:root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#8a8177;--accent:#b03a2e;
+  --gold:#b8860b;--line:#e5ded2}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.55 system-ui,"Noto Sans SC","PingFang SC",sans-serif;
+  min-height:100vh;display:flex;flex-direction:column}
+header{padding:44px 22px 10px;text-align:center}
+h1{margin:0;font-size:34px;color:var(--accent);letter-spacing:1px}
+.sub{color:var(--muted);font-size:15px;margin-top:6px}
+main{flex:1;max-width:900px;margin:0 auto;padding:24px 22px 60px;width:100%}
+.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+a.tile{display:block;background:var(--card);border:1px solid var(--line);
+  border-radius:16px;padding:26px 22px;text-decoration:none;color:var(--ink);
+  transition:box-shadow .15s,transform .15s}
+a.tile:hover{box-shadow:0 6px 22px rgba(0,0,0,.10);transform:translateY(-2px)}
+.tile .icon{font-size:40px}
+.tile h2{margin:10px 0 6px;font-size:20px;color:var(--accent)}
+.tile p{margin:0;font-size:13.5px;color:var(--muted)}
+.tile .zh{color:var(--gold);font-size:14px;margin-left:6px}
+footer{padding:16px 22px 28px;text-align:center;color:var(--muted);font-size:12.5px}
+footer a{color:var(--accent)}
+.trust{max-width:760px;margin:26px auto 0;background:var(--card);
+  border:1px solid var(--line);border-left:4px solid var(--gold);
+  border-radius:10px;padding:12px 16px;font-size:13.5px;color:#5a5348}
+</style></head><body>
+<header>
+  <h1>bazifor.me</h1>
+  <div class="sub">Classical BaZi 八字 and FengShui 风水 — deterministic, rule-cited,
+    no AI guesswork. 计算透明 · 条条有据</div>
+</header>
+<main>
+  <div class="menu">
+    <a class="tile" href="/start">
+      <div class="icon">🧬</div>
+      <h2>Personal<span class="zh">个人命理</span></h2>
+      <p>Enter a birth date and time — get the full reading: four pillars, element
+        balance, 用神, careers, health, timing windows. Add up to 8 people for
+        harmony and cross-comparison.</p>
+    </a>
+    <a class="tile" href="/fengshui">
+      <div class="icon">🏠</div>
+      <h2>House<span class="zh">宅运风水</span></h2>
+      <p>Upload your floorplan, give the compass facing, draw the rooms — flying-star
+        chart and person-by-person room scores, every star cited.</p>
+    </a>
+    <a class="tile" href="/baby">
+      <div class="icon">👶</div>
+      <h2>Name<span class="zh">宝宝起名</span></h2>
+      <p>A newborn's chart and the naming direction that follows from it — which
+        elements and radical families the name should carry.</p>
+    </a>
+  </div>
+  <div class="trust">
+    <b>Why trust this?</b> The engine reproduced a paid professional audit to the digit
+    (27/27 flying stars, 32/32 directional assignments) and matches commercial chart
+    products character-for-character — then shows you every classical rule it cites,
+    which they don't. Your birth data stays behind an unguessable private link; no
+    account, nothing shared.
+  </div>
+</main>
+<footer>
+  <a href="/app">demo: full family compass app (sample data) →</a>
+</footer>
+</body></html>
