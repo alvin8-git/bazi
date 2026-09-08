@@ -1,0 +1,5 @@
+[project]
+name = "bazifor-me"
+version = "0.1.0"
+dependencies = [ "fastapi>=0.110", "python-multipart>=0.0.9", "sxtwl>=2.0", "openpyxl>=3.1" ]
+requires-python = "~=3.12.0"

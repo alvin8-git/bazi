@@ -45,7 +45,11 @@ import os
 
 ROOT = Path(__file__).resolve().parent
 # Overridable so deploys that replace the code tree never wipe workspaces.
-STORE = Path(os.environ.get("BAZIFORME_STORE", ROOT / "data/public_store"))
+# On Vercel (read-only bundle) default to /tmp — ephemeral: workspaces live
+# only while a lambda stays warm; durable serverless storage = Supabase later.
+_DEFAULT_STORE = ("/tmp/bazifor_store" if os.environ.get("VERCEL")
+                  else ROOT / "data/public_store")
+STORE = Path(os.environ.get("BAZIFORME_STORE", _DEFAULT_STORE))
 UPLOADS = STORE / "uploads"
 YEAR = 2026
 MAX_PEOPLE = 8
