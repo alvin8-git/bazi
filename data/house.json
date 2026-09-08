@@ -1,0 +1,10 @@
+{
+  "name": "Sample Condo #01-01, 1 Sample Road S(000001)",
+  "facing_deg": 135,
+  "periods": [
+    8,
+    9
+  ],
+  "period_note": "sample home — replace with your own configs",
+  "provisional": true
+}

@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<title>Floorplan tracer — FengShui Family Compass</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+header { position: static; }
+main { max-width: 1280px; }
+.trace-flex { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+#wrap { position: relative; display: inline-block; cursor: crosshair;
+  border: 1px solid var(--line); }
+#wrap img { display: block; max-width: 700px; height: auto; }
+#wrap svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+#panel { min-width: 380px; flex: 1; }
+#panel label { display: block; margin: 5px 0; font-size: 14px; }
+#panel input[type=text], #panel input[type=number] { padding: 3px 6px; }
+#panel input[type=text] { width: 240px; }
+fieldset { border: 1px solid var(--line); border-radius: 8px; margin: 10px 0;
+  background: var(--card); }
+legend { color: var(--gold); font-weight: 600; font-size: 14px; }
+button { font-size: 13.5px; padding: 4px 12px; margin: 2px 4px 2px 0; cursor: pointer; }
+#result { margin-top: 10px; }
+.trace-poly { fill: rgba(46,125,50,.12); stroke: #2e7d32; stroke-width: 1.5; }
+.trace-poly.sleeping { fill: rgba(176,58,46,.14); stroke: var(--accent); }
+.cur-line { fill: none; stroke: #2471a3; stroke-width: 2; stroke-dasharray: 5 3; }
+.cur-pt { fill: #2471a3; }
+.poly-lab { font-size: 12px; font-weight: 700; fill: var(--ink); }
+td button { padding: 1px 8px; font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>✏️ Floorplan tracer</h1>
+  <div class="sub" style="padding-bottom:8px">
+    Click room corners on the image → <b>Close room</b> after ≥3 points. Trace every
+    enclosed room (sleeping and non-sleeping) — the house centroid and sectors are
+    computed from the traced area. Deterministic: the engine only ever sees the JSON
+    this page writes. <a href="/">← back to the app</a>
+  </div>
+</header>
+<main>
+<div class="trace-flex">
+  <div>
+    <div id="wrap"><img id="plan" src="/floorplan.jpeg"><svg id="ov"></svg></div>
+    <div style="margin-top:6px">
+      <label>Replace floorplan image: <input id="file" type="file" accept="image/*"></label>
+    </div>
+  </div>
+  <div id="panel">
+    <fieldset><legend>Current room</legend>
+      <label>id <input id="rid" type="text" style="width:90px" value="master">
+        label <input id="rlabel" type="text" style="width:150px" value="Master Bedroom"></label>
+      <label><input id="rsleep" type="checkbox" checked> sleeping room ·
+        capacity <input id="rcap" type="number" style="width:52px" value="2" min="0"></label>
+      <span class="sub" id="ptcount">0 points</span><br>
+      <button id="undo">↩ Undo point</button>
+      <button id="close-room">✔ Close room</button>
+      <button id="clear-pts">✕ Discard points</button>
+    </fieldset>
+    <fieldset><legend>Features (for 八宅 door &amp; stove rules)</legend>
+      <button id="set-door">🚪 Set main door</button>
+      <button id="set-stove">🔥 Set stove</button>
+      <span class="sub" id="feat-hint">click a button, then click the spot on the plan</span>
+    </fieldset>
+    <fieldset><legend>Traced rooms</legend>
+      <table id="roomlist"><tr><th>id</th><th>label</th><th>sleep</th><th>cap</th><th>pts</th><th></th></tr></table>
+      <button id="clear-all">🗑 Clear all rooms</button>
+    </fieldset>
+    <fieldset><legend>House</legend>
+      <label>Name <input id="hname" type="text" style="width:320px"></label>
+      <label>Facing degrees (0=N, 90=E, cw) <input id="facing" type="number" style="width:70px" min="0" max="359"></label>
+      <label>Image-top bearing — compass direction the TOP of the image points to
+        <input id="upb" type="number" style="width:70px" min="0" max="359"></label>
+      <label>Periods <input id="p8" type="checkbox" checked> 八运 (P8)
+        <input id="p9" type="checkbox" checked> 九运 (P9)</label>
+    </fieldset>
+    <button id="check">🔎 Check sectors (dry run)</button>
+    <button id="save"><b>💾 Save</b> (backs up old files)</button>
+    <div id="result"></div>
+  </div>
+</div>
+</main>
+<script>
+const $ = (s) => document.querySelector(s);
+let IW = 0, IH = 0, pts = [], rooms = [], cfg = null, house = null, newImage = null;
+let features = {}, featMode = null;
+const img = $("#plan"), svg = $("#ov");
+
+async function init() {
+  const cur = await (await fetch("/api/trace/current")).json();
+  cfg = cur.rooms; house = cur.house;
+  rooms = cfg.rooms.map((r) => ({ id: r.id, label: r.label, sleeping: r.sleeping,
+                                  capacity: r.capacity, poly: r.poly }));
+  features = cfg.features || {};
+  $("#hname").value = house.name;
+  $("#facing").value = house.facing_deg;
+  $("#upb").value = cfg.image_up_bearing;
+  $("#p8").checked = house.periods.includes(8);
+  $("#p9").checked = house.periods.includes(9);
+  img.src = "/floorplan.jpeg?t=" + Date.now();
+  img.onload = () => { IW = img.naturalWidth; IH = img.naturalHeight; draw(); list(); };
+}
+
+$("#file").addEventListener("change", (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    newImage = rd.result;
+    img.src = newImage;
+    img.onload = () => { IW = img.naturalWidth; IH = img.naturalHeight;
+                         rooms = []; pts = []; draw(); list(); };
+  };
+  rd.readAsDataURL(f);
+});
+
+svg.addEventListener("click", (e) => {
+  const r = svg.getBoundingClientRect();
+  const pt = [Math.round((e.clientX - r.left) * IW / r.width),
+              Math.round((e.clientY - r.top) * IH / r.height)];
+  if (featMode) {
+    features[featMode] = pt;
+    $("#feat-hint").textContent = `${featMode} set`;
+    featMode = null;
+  } else {
+    pts.push(pt);
+  }
+  draw();
+});
+$("#set-door").addEventListener("click", () => {
+  featMode = "main_door"; $("#feat-hint").textContent = "click the main door position…"; });
+$("#set-stove").addEventListener("click", () => {
+  featMode = "stove"; $("#feat-hint").textContent = "click the stove position…"; });
+
+$("#undo").addEventListener("click", () => { pts.pop(); draw(); });
+$("#clear-pts").addEventListener("click", () => { pts = []; draw(); });
+$("#close-room").addEventListener("click", () => {
+  if (pts.length < 3) return alert("need ≥3 points");
+  const id = $("#rid").value.trim();
+  if (!id) return alert("room id required");
+  if (rooms.some((r) => r.id === id)) return alert(`id '${id}' already used`);
+  rooms.push({ id, label: $("#rlabel").value.trim() || id,
+               sleeping: $("#rsleep").checked, capacity: +$("#rcap").value || 0,
+               poly: pts });
+  pts = [];
+  const next = ["master", "br2", "br3", "br4", "living", "dining", "kitchen", "bath"]
+    .find((n) => !rooms.some((r) => r.id === n)) || "room" + (rooms.length + 1);
+  $("#rid").value = next; $("#rlabel").value = next;
+  $("#rsleep").checked = next.startsWith("br") || next === "master";
+  draw(); list();
+});
+$("#clear-all").addEventListener("click", () => {
+  if (confirm("remove all traced rooms?")) { rooms = []; pts = []; draw(); list(); }
+});
+
+function draw() {
+  svg.setAttribute("viewBox", `0 0 ${IW} ${IH}`);
+  let h = rooms.map((r) => {
+    const p = r.poly.map(([x, y]) => `${x},${y}`).join(" ");
+    const [cx, cy] = r.poly.reduce(([a, b], [x, y]) =>
+      [a + x / r.poly.length, b + y / r.poly.length], [0, 0]);
+    return `<polygon class="trace-poly ${r.sleeping ? "sleeping" : ""}" points="${p}"/>
+      <text class="poly-lab" x="${cx}" y="${cy}" text-anchor="middle">${r.label}</text>`;
+  }).join("");
+  h += Object.entries(features).map(([nm, [x, y]]) =>
+    `<text x="${x}" y="${y}" text-anchor="middle" font-size="22">${nm === "stove" ? "🔥" : "🚪"}</text>`).join("");
+  if (pts.length) {
+    h += `<polyline class="cur-line" points="${pts.map((p) => p.join(",")).join(" ")}"/>`
+      + pts.map(([x, y]) => `<circle class="cur-pt" cx="${x}" cy="${y}" r="4"/>`).join("");
+  }
+  svg.innerHTML = h;
+  $("#ptcount").textContent = `${pts.length} points`;
+}
+
+function list() {
+  $("#roomlist").innerHTML =
+    `<tr><th>id</th><th>label</th><th>sleep</th><th>cap</th><th>pts</th><th></th></tr>`
+    + rooms.map((r, i) => `<tr><td>${r.id}</td><td>${r.label}</td>
+        <td>${r.sleeping ? "🛏" : ""}</td><td>${r.capacity || ""}</td><td>${r.poly.length}</td>
+        <td><button data-i="${i}">delete</button></td></tr>`).join("");
+  $("#roomlist").querySelectorAll("button").forEach((b) =>
+    b.addEventListener("click", () => { rooms.splice(+b.dataset.i, 1); draw(); list(); }));
+}
+
+async function save(dryRun) {
+  const periods = [ ...($("#p8").checked ? [8] : []), ...($("#p9").checked ? [9] : []) ];
+  const keepNotes = !newImage && cfg;   // editing the existing plan keeps its notes
+  const body = {
+    name: $("#hname").value.trim(), facing_deg: +$("#facing").value,
+    periods, image_up_bearing: +$("#upb").value, image_size: [IW, IH],
+    orientation_note: keepNotes ? cfg.orientation_note : "",
+    trace_note: keepNotes ? cfg.trace_note : "",
+    facing_note: keepNotes ? house.facing_note : "",
+    period_note: keepNotes ? house.period_note : "",
+    rooms, default_assignment: (keepNotes && cfg.default_assignment) || {},
+    features,
+    image: newImage, dry_run: dryRun,
+  };
+  const r = await fetch("/api/trace/save", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body) });
+  const out = await r.json();
+  if (!r.ok) {
+    $("#result").innerHTML = `<div class="violation">⚠ ${out.detail || r.status}</div>`;
+    return;
+  }
+  $("#result").innerHTML = `
+    <div class="section">
+      <h3>${out.saved ? "✅ Saved" : "Dry run — nothing written"} · facing ${out.facing_mountain}向</h3>
+      <div>${Object.entries(out.structures).map(([p, s]) => `<span class="tag">P${p}: ${s}</span>`).join(" ")}</div>
+      <table><tr><th>room</th><th>米字 pie</th><th>九宫 grid</th></tr>
+        ${Object.entries(out.palaces).map(([rid, p]) => `<tr><td>${rid}</td>
+          <td>${p.pie}</td><td class="${p.pie !== p.grid ? "bad" : ""}">${p.grid}</td></tr>`).join("")}
+      </table>
+      ${out.saved ? `<div class="cite">backups: ${out.backups.join(", ")}</div>
+        <div><a href="/">→ open the app with the new plan</a></div>` : ""}
+    </div>`;
+}
+$("#check").addEventListener("click", () => save(true));
+$("#save").addEventListener("click", () => save(false));
+
+init();
+</script>
+</body>
+</html>

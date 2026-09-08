@@ -1,0 +1,194 @@
+{
+  "image": "floorplan.jpeg",
+  "image_size": [
+    800,
+    600
+  ],
+  "image_up_bearing": 135,
+  "orientation_note": "SAMPLE floorplan — replace data/*.json and floorplan.jpeg with your own home",
+  "rooms": [
+    {
+      "id": "master",
+      "label": "Master Bedroom",
+      "sleeping": true,
+      "capacity": 2,
+      "poly": [
+        [
+          80,
+          80
+        ],
+        [
+          280,
+          80
+        ],
+        [
+          280,
+          260
+        ],
+        [
+          80,
+          260
+        ]
+      ]
+    },
+    {
+      "id": "br2",
+      "label": "Bedroom 2",
+      "sleeping": true,
+      "capacity": 2,
+      "poly": [
+        [
+          520,
+          80
+        ],
+        [
+          720,
+          80
+        ],
+        [
+          720,
+          240
+        ],
+        [
+          520,
+          240
+        ]
+      ]
+    },
+    {
+      "id": "br3",
+      "label": "Bedroom 3",
+      "sleeping": true,
+      "capacity": 1,
+      "poly": [
+        [
+          520,
+          260
+        ],
+        [
+          720,
+          260
+        ],
+        [
+          720,
+          420
+        ],
+        [
+          520,
+          420
+        ]
+      ]
+    },
+    {
+      "id": "br4",
+      "label": "Bedroom 4",
+      "sleeping": true,
+      "capacity": 1,
+      "poly": [
+        [
+          520,
+          440
+        ],
+        [
+          720,
+          440
+        ],
+        [
+          720,
+          560
+        ],
+        [
+          520,
+          560
+        ]
+      ]
+    },
+    {
+      "id": "living",
+      "label": "Living",
+      "sleeping": false,
+      "capacity": 0,
+      "poly": [
+        [
+          300,
+          80
+        ],
+        [
+          500,
+          80
+        ],
+        [
+          500,
+          360
+        ],
+        [
+          300,
+          360
+        ]
+      ]
+    },
+    {
+      "id": "kitchen",
+      "label": "Kitchen",
+      "sleeping": false,
+      "capacity": 0,
+      "poly": [
+        [
+          80,
+          300
+        ],
+        [
+          280,
+          300
+        ],
+        [
+          280,
+          460
+        ],
+        [
+          80,
+          460
+        ]
+      ]
+    },
+    {
+      "id": "foyer",
+      "label": "Foyer",
+      "sleeping": false,
+      "capacity": 0,
+      "poly": [
+        [
+          300,
+          380
+        ],
+        [
+          500,
+          380
+        ],
+        [
+          500,
+          520
+        ],
+        [
+          300,
+          520
+        ]
+      ]
+    }
+  ],
+  "default_assignment": {
+    "master": [
+      "王大明",
+      "李小华"
+    ],
+    "br2": [
+      "王一心"
+    ],
+    "br3": [
+      "王二强"
+    ],
+    "br4": [
+      "王三美"
+    ]
+  }
+}

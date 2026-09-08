@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf7f2">
+<meta name="format-detection" content="telephone=no">
+<title>FengShui Family Compass</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>罗盘 FengShui Family Compass</h1>
+  <div id="house-line"></div>
+  <div class="controls">
+    <label>Year <input id="year" type="number" value="2026" min="1990" max="2060"></label>
+    <label>Period
+      <select id="period"><option value="8" selected>八运 (P8)</option><option value="9">九运 (P9)</option></select>
+    </label>
+    <label>Sectors
+      <select id="method"><option value="pie" selected>米字 pie</option><option value="grid">九宫 grid</option></select>
+    </label>
+    <label>Time
+      <select id="policy"><option value="true_solar" selected>true solar</option><option value="clock">clock</option></select>
+    </label>
+    <a id="report-link" href="/report" target="_blank">📄 Email report</a>
+    <a id="snapshot-link" href="/snapshot" target="_blank">🧭 Interactive snapshot</a>
+    <a id="trace-link" href="/trace" target="_blank">✏️ Trace floorplan</a>
+  </div>
+  <nav>
+    <button class="tab active" data-tab="forme">For Me 为我</button>
+    <button class="tab" data-tab="ourhome">Home 我们的家</button>
+    <button class="tab" data-tab="assign">Rooms 配房</button>
+    <button class="tab" data-tab="planner">Planner 择时</button>
+    <button class="tab" id="working-toggle">The Working 审计 ▾</button>
+  </nav>
+  <nav id="working-nav" hidden>
+    <button class="tab" data-tab="family">Family 全家</button>
+    <button class="tab" data-tab="person">Reading 命书</button>
+    <button class="tab" data-tab="house">House 宅盘</button>
+    <button class="tab" data-tab="compare">Compare 对比</button>
+    <button class="tab" data-tab="forecast">Forecast 流年</button>
+    <button class="tab" data-tab="dates">Dates 择日</button>
+    <button class="tab" data-tab="pair">Pair 合婚</button>
+    <button class="tab" data-tab="names">Names 姓名</button>
+    <button class="tab" data-tab="unit">Unit 评宅</button>
+  </nav>
+  <div id="warnings"></div>
+</header>
+<main>
+  <section id="tab-forme" class="tabpane active"></section>
+  <section id="tab-ourhome" class="tabpane"></section>
+  <section id="tab-compare" class="tabpane"></section>
+  <section id="tab-planner" class="tabpane"></section>
+  <section id="tab-family" class="tabpane"></section>
+  <section id="tab-person" class="tabpane"><p class="hint">Pick a family member on the Family tab.</p></section>
+  <section id="tab-house" class="tabpane"></section>
+  <section id="tab-assign" class="tabpane"></section>
+  <section id="tab-forecast" class="tabpane"></section>
+  <section id="tab-dates" class="tabpane"></section>
+  <section id="tab-pair" class="tabpane"></section>
+  <section id="tab-names" class="tabpane"></section>
+  <section id="tab-unit" class="tabpane"></section>
+</main>
+<script src="/static/app.js"></script>
+</body>
+</html>
