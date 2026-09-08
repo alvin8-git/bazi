@@ -49,5 +49,16 @@ def test_dataset_shape(data):
     for ch in ("伟", "陳", "海"):
         e = data[ch]
         assert set(e) >= {"ks", "ms", "rad", "trad", "py", "el", "el_src"}
-    # contested radicals (玉/王, 貝, 心) must NOT be auto-assigned — curated only
-    assert data["琪"]["el"] is None and data["财"]["el"] is None
+    # contested radicals (玉/王, 貝, 心) must NOT be auto-assigned by rules —
+    # chars outside the curated layer stay None until reviewed
+    assert data["悦"]["el"] is None and data["贺"]["el"] is None
+
+
+def test_curated_layer(data):
+    for ch, want in {"伟": "土", "文": "水", "俊": "火", "睿": "金",
+                     "琳": "木", "财": "金", "德": "火", "安": "土"}.items():
+        assert data[ch]["el"] == want, f"{ch}: {data[ch]['el']} != {want}"
+        assert data[ch]["el_src"].startswith("curated:")
+    # dictionary-disputed chars carry the contested flag for human sign-off
+    for ch in ("玉", "心", "杰", "龙"):
+        assert data[ch].get("el_contested") is True

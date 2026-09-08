@@ -1,0 +1,57 @@
+{
+ "_meta": {
+  "source": "radical-rule value vs independent 康熙取名 reference (2026-09-08 crawl, validation-only, not redistributed); both kept — UI must show the dispute until human sign-off"
+ },
+ "明": {
+  "ours": "火",
+  "ref": "水"
+ },
+ "华": {
+  "ours": "木",
+  "ref": "水"
+ },
+ "晨": {
+  "ours": "火",
+  "ref": "金"
+ },
+ "然": {
+  "ours": "火",
+  "ref": "金"
+ },
+ "熙": {
+  "ours": "火",
+  "ref": "水"
+ },
+ "星": {
+  "ours": "火",
+  "ref": "金"
+ },
+ "坚": {
+  "ours": "土",
+  "ref": "木"
+ },
+ "邦": {
+  "ours": "土",
+  "ref": "水"
+ },
+ "春": {
+  "ours": "火",
+  "ref": "金"
+ },
+ "秋": {
+  "ours": "木",
+  "ref": "金"
+ },
+ "冬": {
+  "ours": "水",
+  "ref": "火"
+ },
+ "永": {
+  "ours": "水",
+  "ref": "土"
+ },
+ "峰": {
+  "ours": "土",
+  "ref": "水"
+ }
+}
