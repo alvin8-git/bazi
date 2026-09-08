@@ -104,6 +104,35 @@ def test_baby_page():
                        data={"sex": "M", "dob": "bad"}).status_code == 400
 
 
+def test_certificate():
+    r = client.get("/api/pub/certificate", params={
+        "surname": "王", "given": "涛冰", "sex": "M",
+        "dob": "2026-03-01", "birth_time": "10:00"})
+    assert r.status_code == 200
+    t = r.text
+    assert "命名證書" in t and "王涛冰" in t
+    assert "三 才 五 格" in t and "八 字 四 柱" in t
+    assert "康熙" in t and "喜用神" in t
+    # bad inputs
+    assert client.get("/api/pub/certificate", params={
+        "surname": "王", "given": "涛冰", "sex": "X",
+        "dob": "2026-03-01"}).status_code == 400
+    assert client.get("/api/pub/certificate", params={
+        "surname": "𰻝", "given": "涛", "sex": "M",
+        "dob": "2026-03-01"}).status_code == 400
+    assert client.get("/api/pub/certificate", params={
+        "surname": "王", "given": "涛冰乐", "sex": "M",
+        "dob": "2026-03-01"}).status_code == 400
+
+
+def test_baby_certificate_links():
+    r = client.post("/api/pub/baby", data={"sex": "M", "dob": "2026-01-15",
+                                           "birth_time": "09:30",
+                                           "surname": "王"})
+    assert r.status_code == 200
+    assert "/api/pub/certificate?" in r.text and "命名證書" in r.text
+
+
 def test_pages_served():
     for path in ("/start", "/fengshui", "/baby", "/app"):
         assert client.get(path).status_code == 200

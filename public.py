@@ -359,12 +359,24 @@ def baby(name: str = Form("宝宝"), sex: str = Form(...), dob: str = Form(...),
         from engine.naming import suggest_names
         try:
             sug = suggest_names(ys, surname.strip(), top=12)
+            from urllib.parse import urlencode
+
+            def cert_url(given):
+                return "/api/pub/certificate?" + urlencode(
+                    {"surname": surname.strip(), "given": given, "sex": sex,
+                     "dob": dob, "birth_time": birth_time})
             rows = "".join(f"""<div class="cand{' ct' if r['contested'] else ''}">
               <b class="nm">{_tosimp(r['name'])}</b>
               <span class="py">{' '.join(c.get('py') or '' for c in r['chars'])}</span>
-              <span class="sc">score {r['score']}</span>
+              <span class="sc">score {r['score']} ·
+                <a href="{cert_url(r['given'])}" target="_blank">命名證書 →</a></span>
               {''.join(f'<div class="cite">· {_tosimp(x)}</div>' for x in r['reasons'])}
             </div>""" for r in sug["candidates"])
+            if name and name != "宝宝":
+                rows = (f'<div class="cite" style="margin-bottom:6px">Your own '
+                        f'choice: <a href="{cert_url(name)}" target="_blank">'
+                        f'certificate for {_tosimp(surname + name)} →</a></div>'
+                        + rows)
             naming_html = f"""<div class="sec"><h2>Ranked name candidates 候选名
               <small style="color:#8a8177;font-weight:400">姓 {_tosimp(surname)}
               ({'+'.join(map(str, sug['surname_ks']))}画 康熙) · pool
@@ -425,6 +437,134 @@ labels and exam-year overlays are in the full report (add this child on the
 traces to a classical rule. Tendencies and timing, not fate. Birth data is not
 stored by this page.</div>
 </body></html>"""
+    return HTMLResponse(html)
+
+
+# ---------------------------------------------------------------- certificate
+@router.get("/api/pub/certificate", response_class=HTMLResponse)
+def certificate(surname: str, given: str, sex: str, dob: str,
+                birth_time: str = "12:00"):
+    """命名證書 — certificate-grade printable for one chosen name.
+
+    Stateless: recomputes the full working from birth data + the name.
+    Two audiences by design: formal presentation for the family elders,
+    cited working for the skeptical parent."""
+    from engine.naming import char_info, five_grids, sancai
+    from engine.shensha import life_palaces as _lp
+    if sex not in ("M", "F"):
+        raise HTTPException(400, "sex must be M or F")
+    if not (1 <= len(surname) <= 2 and 1 <= len(given) <= 2):
+        raise HTTPException(400, "surname 1-2 chars, given name 1-2 chars")
+    infos = []
+    for ch in surname + given:
+        e = char_info(ch)
+        if not e:
+            raise HTTPException(400, f"character {ch} not in the dataset")
+        infos.append((ch, e))
+    m, c = _chart_of({"name": given, "sex": sex, "dob": dob,
+                      "birth_time": birth_time})
+    ys = yong_shen(c)
+    lp = _lp(c)
+    s_ks = [e["ks"] for ch, e in infos[:len(surname)]]
+    g_infos = infos[len(surname):]
+    grids = five_grids(s_ks, [e["ks"] for _, e in g_infos])
+    sc = sancai(grids)
+    fav = ys["favourable"]
+    full = surname + given
+    trad = "".join(e.get("trad") or ch for ch, e in infos)
+    pillars = "".join(
+        f'<div class="pil"><b>{c.pillars[k]}</b><span>{lab}</span></div>'
+        for k, lab in (("year", "年柱"), ("month", "月柱"),
+                       ("day", "日柱"), ("hour", "時柱")))
+    charrows = "".join(f"""<tr><td class="bigch">{ch}</td>
+        <td>{e.get('py') or ''}</td><td>{e['ks']} 畫 (康熙)</td>
+        <td>五行屬 <b>{e['el'] or '—'}</b></td>
+        <td class="sm">{'契合用神 ✓' if e['el'] in fav else '姓氏' if ch in surname else ''}</td></tr>"""
+        for ch, e in infos)
+    gridcells = "".join(
+        f'<div class="gr"><span>{k}</span><b>{v["num"]}</b>'
+        f'<em class="{"ji" if v["luck"] == "吉" else "pg"}">{v["luck"]}</em></div>'
+        for k, v in grids.items())
+    contested = [(ch, e) for ch, e in g_infos if e.get("el_contested")]
+    footnote = ("" if not contested else
+                "註：" + "；".join(f"「{ch}」五行本典判屬{e['el']}，他派或作"
+                                 f"{e.get('el_alt', '別解')}"
+                                 for ch, e in contested) + "。")
+    from datetime import date
+    today = date.today().strftime("%Y年%m月%d日")
+    html = f"""<!doctype html><html><head><meta charset="utf-8">
+<title>命名證書 · {full}</title><style>
+@page{{size:A4;margin:14mm}}
+body{{font-family:"Songti SC","Noto Serif SC","SimSun",serif;background:#f4efe6;
+  color:#2b2620;margin:0;display:flex;justify-content:center;padding:24px 8px}}
+.cert{{background:#fffdf7;width:min(760px,100%);border:3px double #9e2b25;
+  outline:1px solid #c8a959;outline-offset:-10px;padding:46px 52px;position:relative}}
+h1{{text-align:center;font-size:34px;letter-spacing:14px;color:#9e2b25;
+  margin:0 0 2px;font-weight:600}}
+.sub{{text-align:center;color:#8a7a5a;font-size:12px;letter-spacing:3px;
+  margin-bottom:26px}}
+.name{{text-align:center;font-size:64px;letter-spacing:12px;color:#1c1712;
+  margin:10px 0 0;font-weight:700}}
+.trad{{text-align:center;color:#8a7a5a;font-size:15px;letter-spacing:6px}}
+.line{{border:0;border-top:1px solid #c8a959;margin:24px 10%}}
+h2{{font-size:15px;color:#9e2b25;letter-spacing:4px;margin:20px 0 8px;
+  text-align:center}}
+.pils{{display:flex;justify-content:center;gap:14px}}
+.pil{{border:1px solid #c8a959;padding:8px 14px;text-align:center;background:#fff}}
+.pil b{{font-size:22px;display:block}}
+.pil span{{font-size:10px;color:#8a7a5a;letter-spacing:2px}}
+.meta{{text-align:center;font-size:13px;color:#4d463c;margin:10px 0;line-height:1.9}}
+table{{margin:0 auto;border-collapse:collapse;font-size:13px}}
+td{{border:1px solid #e0d3b8;padding:5px 12px;text-align:center}}
+.bigch{{font-size:26px;font-weight:700}}
+.sm{{font-size:11px;color:#9e2b25}}
+.grs{{display:flex;justify-content:center;gap:10px;margin:8px 0}}
+.gr{{border:1px solid #e0d3b8;background:#fff;padding:6px 12px;text-align:center}}
+.gr span{{display:block;font-size:10px;color:#8a7a5a}}
+.gr b{{font-size:20px}}
+.gr em{{display:block;font-style:normal;font-size:11px}}
+.ji{{color:#1e7d32}}.pg{{color:#8a7a5a}}
+.sancai{{text-align:center;font-size:13.5px;color:#4d463c}}
+.foot{{margin-top:26px;text-align:center;font-size:11px;color:#8a7a5a;
+  line-height:1.8}}
+.stamp{{position:absolute;right:44px;bottom:60px;width:74px;height:74px;
+  border:3px solid #b03a2e;color:#b03a2e;display:flex;align-items:center;
+  justify-content:center;font-size:20px;letter-spacing:2px;
+  transform:rotate(-8deg);opacity:.85;font-weight:700}}
+.noprint{{text-align:center;margin:14px}}
+.noprint button{{background:#9e2b25;color:#fff;border:0;border-radius:8px;
+  padding:9px 22px;font-size:14px;cursor:pointer}}
+@media print{{body{{background:#fff;padding:0}}.noprint{{display:none}}
+  .cert{{border-width:3px;width:100%}}}}
+</style></head><body><div>
+<div class="cert">
+  <h1>命名證書</h1>
+  <div class="sub">CERTIFICATE OF NAMING · 依古法推演 · 條條有據</div>
+  <div class="name">{_tosimp(full)}</div>
+  {f'<div class="trad">繁體 {trad}</div>' if trad != full else ''}
+  <div class="meta">{'男' if sex == 'M' else '女'}嬰 · 生於 {dob} {birth_time}
+    （新加坡時間，經真太陽時校正）<br>
+    生肖屬{lp['animal']} · 日主 <b>{c.day_master}</b> · {c.strength['verdict'].split(' ')[0]}
+    · 喜用神 <b>{'、'.join(fav)}</b></div>
+  <hr class="line">
+  <h2>八 字 四 柱</h2>
+  <div class="pils">{pillars}</div>
+  <h2>名 字 五 行</h2>
+  <table>{charrows}</table>
+  <h2>三 才 五 格</h2>
+  <div class="grs">{gridcells}</div>
+  <div class="sancai">三才 {'·'.join(sc['elements'])} —
+    {sc['explanation']} · 評 <b class="{'ji' if sc['verdict'] == '吉' else 'pg'}">{sc['verdict']}</b></div>
+  <hr class="line">
+  <div class="foot">
+    依據：喜用神扶抑法 · 康熙字典筆畫 · 八十一數理 · 五行生剋<br>
+    {footnote}{'<br>' if footnote else ''}
+    立於 {today} · bazifor.me · 名由家定，理由典出
+  </div>
+  <div class="stamp">名正<br>言順</div>
+</div>
+<div class="noprint"><button onclick="window.print()">🖨 列印 / 存為 PDF</button></div>
+</div></body></html>"""
     return HTMLResponse(html)
 
 
