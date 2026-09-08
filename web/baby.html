@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bazifor.me — baby BaZi 宝宝八字</title>
+<style>
+body{margin:0;background:#faf7f2;color:#2b2620;
+  font:15.5px/1.55 system-ui,"Noto Sans SC",sans-serif}
+header{background:#fff;border-bottom:1px solid #e5ded2;padding:16px 22px}
+h1{margin:0;font-size:20px;color:#b03a2e}
+header .sub{color:#8a8177;font-size:13px}
+header a{color:#b03a2e;font-size:13px}
+main{max-width:720px;margin:0 auto;padding:18px 22px 80px}
+.sec{background:#fff;border:1px solid #e5ded2;border-radius:12px;padding:16px 18px;margin:14px 0}
+label{display:block;font-size:13px;color:#8a8177;margin:8px 0 2px}
+input,select{padding:7px 9px;border:1px solid #e5ded2;border-radius:8px;font-size:15px;width:100%}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{background:#b03a2e;color:#fff;border:0;border-radius:8px;padding:10px 20px;
+  font-size:15px;cursor:pointer;margin-top:12px}
+.hint{color:#8a8177;font-size:12.5px}
+</style></head><body>
+<header>
+  <h1>👶 Baby BaZi 宝宝八字</h1>
+  <div class="sub">Newborn or expected — the chart, element balance, 用神 and the
+    naming direction that follows from it, every rule cited.
+    <a href="/start">← people workspace</a></div>
+</header>
+<main>
+  <div class="sec">
+    <form method="post" action="/api/pub/baby">
+      <div class="row">
+        <div><label>Family surname 姓 (optional)</label>
+          <input name="surname" maxlength="4" placeholder="eg 王"></div>
+        <div><label>Given name if chosen 名 (optional)</label>
+          <input name="name" maxlength="20" placeholder="宝宝"></div>
+        <div><label>Sex 性别</label>
+          <select name="sex"><option value="M">M 男</option><option value="F">F 女</option></select></div>
+        <div><label>Birth (or due) date</label>
+          <input name="dob" type="date" required></div>
+        <div><label>Birth time (12:00 if unknown/unborn)</label>
+          <input name="birth_time" type="time" value="12:00"></div>
+      </div>
+      <button type="submit">Calculate 排盘</button>
+      <div class="hint" style="margin-top:8px">For a due date the chart is provisional —
+        recalculate after birth with the exact time. Singapore time assumed; true-solar
+        correction applied. Birth data is not stored by this page.</div>
+    </form>
+  </div>
+  <div class="sec hint">
+    What you get: four pillars, day-master strength with its working, five-element
+    balance, 用神 favourable elements, 命宮/胎元/命星, first 大運 cycles — and the
+    起名 naming direction: which radical families supplement this chart. The full
+    ranked character candidates with 三才五格 stroke numerology and a printable
+    命名證書 are the next milestone.
+  </div>
+</main>
+</body></html>

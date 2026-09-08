@@ -6,6 +6,7 @@
   ],
   "image_up_bearing": 135,
   "orientation_note": "SAMPLE floorplan — replace data/*.json and floorplan.jpeg with your own home",
+  "trace_note": "sample rectangles — trace your own rooms on /trace",
   "rooms": [
     {
       "id": "master",
@@ -190,6 +191,5 @@
     "br4": [
       "王三美"
     ]
-  },
-  "trace_note": "sample rectangles — trace your own rooms on /trace"
+  }
 }

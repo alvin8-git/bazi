@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bazifor.me — home fengshui analyzer 宅运分析</title>
+<style>
+:root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#8a8177;--accent:#b03a2e;
+  --gold:#b8860b;--line:#e5ded2}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.5 system-ui,"Noto Sans SC",sans-serif}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:16px 22px}
+h1{margin:0;font-size:20px;color:var(--accent)}
+header .sub{color:var(--muted);font-size:13px}
+header a{color:var(--accent);font-size:13px}
+main{max-width:1080px;margin:0 auto;padding:16px 22px 80px}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:14px 18px;margin:12px 0}
+h2{font-size:15.5px;color:var(--gold);margin:0 0 8px}
+label{font-size:12.5px;color:var(--muted);display:block;margin:6px 0 2px}
+input,select{padding:6px 8px;border:1px solid var(--line);border-radius:7px;font-size:14px}
+button{background:var(--accent);color:#fff;border:0;border-radius:8px;
+  padding:8px 16px;font-size:14px;cursor:pointer}
+button.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+.hint{color:var(--muted);font-size:12.5px}
+.err{color:var(--accent);font-size:13px;min-height:1em}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+#wrap{position:relative;display:inline-block;max-width:100%;margin-top:10px;
+  cursor:crosshair;user-select:none}
+#plan{max-width:100%;display:block}
+.rect{position:absolute;border:2px solid var(--accent);background:rgba(176,58,46,.10);
+  font-size:11px;color:var(--accent);overflow:hidden}
+.rect.ns{border-color:#2e7d32;background:rgba(46,125,50,.10);color:#2e7d32}
+.roomrow{display:grid;grid-template-columns:1.4fr auto auto 1.6fr auto;gap:8px;
+  align-items:center;margin:4px 0;font-size:13.5px}
+.roomrow select{width:100%}
+table{border-collapse:collapse;width:100%;font-size:12.5px;background:#fff;margin:8px 0}
+th,td{border:1px solid var(--line);padding:4px 8px;text-align:left;vertical-align:top}
+th{background:#f6f1e8}
+.pal{display:grid;grid-template-columns:repeat(3,minmax(84px,1fr));gap:4px;max-width:340px}
+.pal div{border:1px solid var(--line);border-radius:8px;text-align:center;padding:5px 3px;
+  background:#fff;font-size:11px;color:var(--muted)}
+.pal .st{font-size:15px;font-weight:700}
+.pal .m{color:var(--accent)}.pal .w{color:#2471a3}.pal .ann{color:var(--gold)}
+.score b{font-size:15px}
+.cite{color:#666;font-size:12px;margin:1px 0 1px 8px}
+.warn{background:#fff6df;border:1px solid #eedc9a;border-radius:8px;padding:6px 10px;
+  font-size:12.5px;margin:6px 0}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:800px){.cols{grid-template-columns:1fr}}
+[hidden]{display:none!important}
+</style></head><body>
+<header>
+  <h1>Home fengshui analyzer 宅运分析</h1>
+  <div class="sub">Upload the floorplan → give the facing → draw the rooms → assign
+    people → every star and score computed with its classical citation.
+    <a href="/start" id="back">← people workspace</a></div>
+</header>
+<main>
+  <div class="sec" id="need-ws" hidden>
+    <b>No workspace yet.</b> <span class="hint">Add at least one person on the
+    <a href="/start">start page</a> first — room scores are person-specific
+    (八宅命卦 + 用神 + flying stars).</span>
+  </div>
+
+  <div class="sec">
+    <h2>1 · Floorplan & facing 图纸与朝向</h2>
+    <div class="grid">
+      <div><label>Floorplan image (jpg/png, ≤8MB)</label>
+        <input type="file" id="f-file" accept="image/*"></div>
+      <div><label>Facing 朝向 (degrees, 0=N 90=E 180=S 270=W)</label>
+        <input type="number" id="f-facing" min="0" max="359.9" step="0.5" value="0"></div>
+      <div><label>Image-top bearing (default = facing)</label>
+        <input type="number" id="f-upb" min="0" max="359.9" step="0.5" placeholder="same as facing"></div>
+      <div><label>Period 元运</label>
+        <select id="f-period"><option value="9" selected>9 (built/renovated ≥ Feb 2024)</option>
+        <option value="8">8 (2004 – Feb 2024)</option><option value="7">7 (1984 – 2004)</option></select></div>
+    </div>
+    <div class="hint" style="margin-top:6px">Measure the facing with a phone compass at
+      the main window/balcony, 2–3 spots away from metal. If the image top isn't the
+      facing side, enter the compass bearing that "up" in the image points to.</div>
+    <div class="err" id="up-err"></div>
+    <div id="wrap" hidden><img id="plan"><div id="rects"></div></div>
+  </div>
+
+  <div class="sec" id="rooms-sec" hidden>
+    <h2>2 · Rooms 房间 <span class="hint">drag on the floorplan to draw each room
+      rectangle, then label it</span></h2>
+    <div id="roomlist"></div>
+    <div class="hint">Tip: draw bedrooms, living, kitchen, entry at minimum. Palace
+      assignment uses the area-weighted centre of all drawn rooms.</div>
+  </div>
+
+  <div class="sec" id="go-sec" hidden>
+    <h2>3 · Calculate 计算</h2>
+    <button id="btn-go">Analyze 分析</button>
+    <span class="hint" id="go-hint"></span>
+    <div class="err" id="go-err"></div>
+  </div>
+
+  <div id="results"></div>
+</main>
+<script>
+const $ = s => document.querySelector(s);
+let token = null, ws = null, rooms = [], drag = null, imgNatural = [0, 0];
+const mm = location.pathname.match(/^\/w\/([A-Za-z0-9_-]{16,64})/);
+if (mm) token = mm[1];
+
+async function api(path, opts) {
+  const r = await fetch(path, opts);
+  if (!r.ok) { let d = r.status; try { d = (await r.json()).detail || d; } catch(e){}
+    throw new Error(d); }
+  return r.json();
+}
+
+(async () => {
+  if (!token) { $("#need-ws").hidden = false; return; }
+  $("#back").href = `/w/${token}`;
+  try { ws = await api(`/api/pub/w/${token}`); }
+  catch (e) { $("#need-ws").hidden = false; token = null; return; }
+  if (ws.has_floorplan) { $("#plan").src = `/api/pub/w/${token}/floorplan`; showPlan(); }
+  if (ws.home) restoreHome();
+})();
+
+function showPlan() {
+  $("#wrap").hidden = false;
+  $("#rooms-sec").hidden = false;
+  $("#go-sec").hidden = false;
+  $("#plan").onload = () => { imgNatural = [$("#plan").naturalWidth, $("#plan").naturalHeight]; };
+}
+
+$("#f-file").addEventListener("change", async () => {
+  if (!token) { $("#up-err").textContent = "add a person on the start page first"; return; }
+  const f = $("#f-file").files[0];
+  if (!f) return;
+  const fd = new FormData(); fd.append("file", f);
+  try {
+    const r = await api(`/api/pub/w/${token}/floorplan`, {method: "POST", body: fd});
+    $("#plan").src = r.url + "?t=" + Date.now();
+    rooms = []; renderRooms(); showPlan();
+  } catch (e) { $("#up-err").textContent = e.message; }
+});
+
+// ---- rectangle drawing (screen coords → natural-image coords on submit) ----
+const wrap = $("#wrap");
+wrap.addEventListener("mousedown", e => {
+  if (e.target.closest(".rect")) return;
+  const b = wrap.getBoundingClientRect();
+  drag = {x0: e.clientX - b.left, y0: e.clientY - b.top, el: document.createElement("div")};
+  drag.el.className = "rect";
+  $("#rects").appendChild(drag.el);
+  e.preventDefault();
+});
+window.addEventListener("mousemove", e => {
+  if (!drag) return;
+  const b = wrap.getBoundingClientRect();
+  const x = Math.max(0, Math.min(e.clientX - b.left, b.width));
+  const y = Math.max(0, Math.min(e.clientY - b.top, b.height));
+  const l = Math.min(x, drag.x0), t = Math.min(y, drag.y0);
+  Object.assign(drag.el.style, {left: l+"px", top: t+"px",
+    width: Math.abs(x-drag.x0)+"px", height: Math.abs(y-drag.y0)+"px"});
+});
+window.addEventListener("mouseup", e => {
+  if (!drag) return;
+  const s = drag.el.style;
+  const w = parseFloat(s.width || 0), h = parseFloat(s.height || 0);
+  if (w < 12 || h < 12) { drag.el.remove(); drag = null; return; }
+  const id = "r" + (rooms.length + 1) + "_" + Math.floor(Math.random()*1000);
+  rooms.push({id, label: "Room " + (rooms.length + 1), sleeping: false,
+    px: [parseFloat(s.left), parseFloat(s.top), w, h], el: drag.el, occupants: []});
+  drag.el.textContent = rooms[rooms.length-1].label;
+  drag = null; renderRooms();
+});
+
+function renderRooms() {
+  const people = ws ? ws.people.map(p => p.name) : [];
+  $("#roomlist").innerHTML = rooms.map((r, i) => `
+    <div class="roomrow">
+      <input value="${r.label}" data-i="${i}" class="rl">
+      <label style="margin:0;display:flex;gap:4px;align-items:center">
+        <input type="checkbox" data-i="${i}" class="rs" ${r.sleeping?"checked":""}>bed</label>
+      <span class="hint">${r.id}</span>
+      <select multiple size="1" data-i="${i}" class="ro" ${r.sleeping?"":"disabled"}>
+        ${people.map(n => `<option ${r.occupants.includes(n)?"selected":""}>${n}</option>`).join("")}
+      </select>
+      <button class="ghost rx" data-i="${i}">✕</button>
+    </div>`).join("");
+  $("#go-hint").textContent = rooms.length ? `${rooms.length} room(s) drawn` :
+    "draw at least one room";
+  document.querySelectorAll(".rl").forEach(el => el.addEventListener("input", () => {
+    rooms[el.dataset.i].label = el.value; rooms[el.dataset.i].el.textContent = el.value; }));
+  document.querySelectorAll(".rs").forEach(el => el.addEventListener("change", () => {
+    rooms[el.dataset.i].sleeping = el.checked;
+    rooms[el.dataset.i].el.classList.toggle("ns", !el.checked); renderRooms(); }));
+  document.querySelectorAll(".ro").forEach(el => el.addEventListener("change", () => {
+    rooms[el.dataset.i].occupants =
+      Array.from(el.selectedOptions).map(o => o.value); }));
+  document.querySelectorAll(".rx").forEach(el => el.addEventListener("click", () => {
+    rooms[el.dataset.i].el.remove(); rooms.splice(el.dataset.i, 1); renderRooms(); }));
+}
+
+function restoreHome() {
+  const h = ws.home;
+  $("#f-facing").value = h.facing_deg;
+  $("#f-upb").value = h.image_up_bearing;
+  $("#f-period").value = h.period;
+}
+
+function chartBlock(tag, cb, scores) {
+  const DIRS = {"坎":"N","艮":"NE","震":"E","巽":"SE","離":"S","坤":"SW","兌":"W","乾":"NW"};
+  const order = ["巽","離","坤","震","中","兌","艮","坎","乾"];
+  const pal = order.map(p => {
+    const v = cb.palaces[p] || {};
+    return `<div><div>${p}${DIRS[p] ? " " + DIRS[p] : ""}</div>
+      <div class="st"><span class="m">${v.mountain ?? ""}</span>·<span class="w">${v.water ?? ""}</span></div>
+      <div class="ann">年${v.annual ?? ""}</div></div>`;
+  }).join("");
+  const roomrows = Object.entries(cb.rooms).map(([rid, p]) => {
+    const r = rooms.find(x => x.id === rid);
+    const v = cb.palaces[p] || {};
+    return `<tr><td>${r ? r.label : rid}</td><td>${p}宮 ${DIRS[p]||""}</td>
+      <td>山${v.mountain} 向${v.water} · 年${v.annual}</td></tr>`;
+  }).join("");
+  let sc = "";
+  if (scores) {
+    sc = `<h2 style="margin-top:10px">Person-room scores 配房评分</h2>` +
+      scores.scores.map(s => `<div class="score"><b>${s.person}</b> in ${s.room_label}:
+        <b>${s.total.toFixed(2)}</b>${s.breakdown.map(b =>
+          `<div class="cite">· [${b.layer}] ${b.contribution>=0?"+":""}${b.contribution.toFixed(2)} — ${b.explanation}</div>`).join("")}</div>`).join("") +
+      `<div class="hint">household total: <b>${scores.household_total.toFixed(2)}</b>
+       ${scores.violations.length ? "· ⚠ " + scores.violations.join("; ") : ""}</div>`;
+  }
+  return `<div class="sec"><h2>${tag}: ${cb.structure}
+      ${cb.chart_type ? `<span class="hint">(${cb.chart_type})</span>` : ""}</h2>
+    <div class="hint">facing ${cb.facing} · sitting ${cb.sitting} · 山=mountain star
+      (people/health) · 向=water star (wealth) · 年=annual star</div>
+    <div class="cols"><div class="pal">${pal}</div>
+    <table><tr><th>Room</th><th>Palace</th><th>Stars</th></tr>${roomrows}</table></div>
+    ${sc}</div>`;
+}
+
+$("#btn-go").addEventListener("click", async () => {
+  $("#go-err").textContent = "";
+  if (!rooms.length) { $("#go-err").textContent = "draw at least one room"; return; }
+  const b = wrap.getBoundingClientRect();
+  const sx = imgNatural[0] / b.width, sy = imgNatural[1] / b.height;
+  const req = {
+    facing_deg: parseFloat($("#f-facing").value || 0),
+    image_up_bearing: $("#f-upb").value === "" ? null : parseFloat($("#f-upb").value),
+    period: parseInt($("#f-period").value),
+    rooms: rooms.map(r => ({id: r.id, label: r.label, sleeping: r.sleeping,
+      capacity: 2,
+      poly: [[r.px[0]*sx, r.px[1]*sy], [(r.px[0]+r.px[2])*sx, r.px[1]*sy],
+             [(r.px[0]+r.px[2])*sx, (r.px[1]+r.px[3])*sy], [r.px[0]*sx, (r.px[1]+r.px[3])*sy]]})),
+    assignment: Object.fromEntries(rooms.filter(r => r.sleeping && r.occupants.length)
+      .map(r => [r.id, r.occupants])),
+  };
+  try {
+    const res = await api(`/api/pub/w/${token}/analyze`, {method: "POST",
+      headers: {"Content-Type": "application/json"}, body: JSON.stringify(req)});
+    let html = "";
+    if (res.boundary && res.boundary.zone !== "正向") {
+      html += `<div class="warn">⚠ ${res.boundary.zone}: the facing sits ${res.boundary.offset_deg}°
+        from the ${res.boundary.mountain} mountain centre near the ${res.boundary.neighbor}
+        boundary — both charts shown; re-measure on site to settle which rules.</div>`;
+    }
+    html += chartBlock("Main chart 主盘", res.main, res.scores);
+    if (res.alternate) html += chartBlock("Alternate chart 兼盘", res.alternate, res.alternate_scores);
+    html += `<div class="sec hint">Scores blend 八宅命卦 + 玄空飞星 + 用神 element fit —
+      each line above cites its rule. Annual stars are for ${res.year}. This analysis is
+      saved to your workspace link.</div>`;
+    $("#results").innerHTML = html;
+    $("#results").scrollIntoView({behavior: "smooth"});
+  } catch (e) { $("#go-err").textContent = e.message; }
+});
+</script>
+</body></html>

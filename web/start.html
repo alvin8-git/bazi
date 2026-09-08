@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bazifor.me — your BaZi, with the working shown</title>
+<style>
+:root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#8a8177;--accent:#b03a2e;
+  --gold:#b8860b;--line:#e5ded2}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15.5px/1.55 system-ui,"Noto Sans SC","PingFang SC",sans-serif}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:18px 22px}
+h1{margin:0;font-size:22px;color:var(--accent)}
+header .sub{color:var(--muted);font-size:13px;margin-top:2px}
+main{max-width:980px;margin:0 auto;padding:18px 22px 80px}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:16px 18px;margin:14px 0}
+h2{font-size:16px;color:var(--gold);margin:0 0 10px}
+label{display:block;font-size:13px;color:var(--muted);margin:8px 0 2px}
+input,select{padding:7px 9px;border:1px solid var(--line);border-radius:8px;
+  font-size:15px;background:#fff;width:100%}
+.row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px}
+.row2{display:flex;gap:14px;align-items:center;margin-top:10px;flex-wrap:wrap}
+button{background:var(--accent);color:#fff;border:0;border-radius:8px;
+  padding:9px 18px;font-size:15px;cursor:pointer}
+button.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+button:disabled{opacity:.5;cursor:default}
+.hint{color:var(--muted);font-size:12.5px}
+.err{color:var(--accent);font-size:13px;margin-top:6px;min-height:1em}
+.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.pcard{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fff}
+.pcard h3{margin:0 0 4px;font-size:16px}
+.pz{display:inline-block;border:1px solid #ecd9cf;border-radius:7px;padding:2px 7px;
+  margin:1px;font-size:16px;font-weight:700;color:var(--accent)}
+.kv{font-size:12.5px;color:var(--muted);margin:3px 0}
+.kv b{color:var(--ink)}
+.fav{color:#1e7d32;font-weight:600}.unfav{color:var(--accent)}
+.doms{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+.doms span{background:#f3efe7;border:1px solid var(--line);border-radius:6px;
+  padding:1px 6px;font-size:11.5px}
+.pcard .acts{margin-top:8px;display:flex;gap:8px}
+.pcard a{color:var(--accent);font-size:13px}
+.pcard .del{color:#999;font-size:12px;cursor:pointer;background:none;border:none;padding:0}
+table{border-collapse:collapse;width:100%;font-size:13px;background:#fff}
+th,td{border:1px solid var(--line);padding:5px 9px;text-align:left}
+th{background:#f6f1e8}
+.share{background:#fbf6ea;border:1px solid #eadfc4;border-radius:8px;padding:8px 12px;
+  font-size:13px;margin-top:10px;word-break:break-all}
+nav.top{display:flex;gap:14px;margin-top:8px;font-size:13.5px}
+nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
+  border-radius:7px;padding:3px 10px;background:#fff}
+.badge{font-size:11px;background:#fff6df;border:1px solid #eedc9a;color:#8a6d00;
+  border-radius:6px;padding:1px 6px;margin-left:6px}
+[hidden]{display:none!important}
+</style></head><body>
+<header>
+  <h1>bazifor.me</h1>
+  <div class="sub">Deterministic BaZi 八字 readings that show every classical rule they
+    cite — no AI guesswork, no black box. 计算透明，条条有据。</div>
+  <nav class="top">
+    <a href="/start">People 命盘</a>
+    <a href="#" id="nav-fs">Home fengshui 宅运</a>
+    <a href="/baby">Baby 宝宝</a>
+  </nav>
+</header>
+<main>
+  <div class="sec" id="add-sec">
+    <h2 id="add-title">Start — enter a birth chart 输入生辰</h2>
+    <div class="hint">Date + time of birth is all the engine needs. Singapore/Malaysia
+      time assumed (pre-1982 UTC+7:30 handled); true-solar correction applied
+      automatically. Nothing here requires an account.</div>
+    <div class="row">
+      <div><label>Name 姓名</label><input id="f-name" maxlength="40" placeholder="名字 / name"></div>
+      <div><label>Sex 性别</label><select id="f-sex"><option value="M">M 男</option><option value="F">F 女</option></select></div>
+      <div><label>Date of birth</label><input id="f-dob" type="date"></div>
+      <div><label>Time of birth</label><input id="f-time" type="time" value="12:00"></div>
+    </div>
+    <div class="row2">
+      <label style="margin:0;display:flex;gap:6px;align-items:center;font-size:13px">
+        <input type="checkbox" id="f-unknown" style="width:auto"> birth time unknown
+        (uses 12:00 — hour pillar approximate)</label>
+      <button id="btn-add">Calculate 排盘</button>
+      <span class="hint" id="cap-hint"></span>
+    </div>
+    <div class="err" id="add-err"></div>
+  </div>
+
+  <div class="sec" id="people-sec" hidden>
+    <h2>People 命盘 <span class="hint" id="pcount"></span></h2>
+    <div class="people" id="people"></div>
+    <div class="share" id="share" hidden></div>
+  </div>
+
+  <div class="sec" id="harmony-sec" hidden>
+    <h2>Harmony matrix 合婚互动 <span class="badge">2+ people</span></h2>
+    <div class="hint">Day-pillar compatibility, scored 0–100 with the contributing
+      rules. Full pair remedies and family-strategy timing are part of each
+      person's report.</div>
+    <div id="harmony"></div>
+  </div>
+</main>
+<script>
+const $ = s => document.querySelector(s);
+let token = null, ws = null;
+const m = location.pathname.match(/^\/w\/([A-Za-z0-9_-]{16,64})/);
+if (m) token = m[1];
+
+async function api(path, opts) {
+  const r = await fetch(path, opts);
+  if (!r.ok) {
+    let msg = r.status;
+    try { msg = (await r.json()).detail || msg; } catch (e) {}
+    throw new Error(msg);
+  }
+  return r.json();
+}
+
+function personCard(p, i) {
+  const doms = Object.entries(p.domains).map(([k, v]) => `<span>${k} ${v}</span>`).join("");
+  const tk = p.time_known === false
+    ? ' <span class="badge">hour approximate</span>' : "";
+  return `<div class="pcard"><h3>${p.name}${tk}</h3>
+    <div>${["year","month","day","hour"].map(k => `<span class="pz">${p.pillars[k]}</span>`).join("")}</div>
+    <div class="kv">日主 <b>${p.day_master}</b> · ${p.strength} · 生肖 ${p.animal}
+      · 命卦 ${p.gua} (${p.group}) · 命星 ${p.life_star}</div>
+    <div class="kv">用神 <span class="fav">${p.favourable.join("·")}</span> ·
+      avoid <span class="unfav">${p.unfavourable.join("·")}</span></div>
+    <div class="kv">career fit: ${p.top_careers.join(" · ")}</div>
+    <div class="doms">${doms}</div>
+    <div class="acts">
+      <a href="/w/${token}/person/${i}/report" target="_blank">Full report 完整命书 →</a>
+      <button class="del" data-i="${i}">remove</button>
+    </div></div>`;
+}
+
+function harmonyTable(h) {
+  if (!h) return "";
+  const names = h.names, cell = {};
+  h.pairs.forEach(p => { cell[p.a + "|" + p.b] = p; cell[p.b + "|" + p.a] = p; });
+  const head = `<tr><th></th>${names.slice(1).map(n => `<th>${n}</th>`).join("")}</tr>`;
+  const rows = names.slice(0, -1).map((a, i) =>
+    `<tr><th>${a}</th>${names.slice(1).map((b, j) => {
+      if (j < i) return "<td></td>";
+      const p = cell[a + "|" + b];
+      const col = p.score >= 60 ? "#1e7d32" : p.score >= 45 ? "#8a8177" : "#b03a2e";
+      return `<td><b style="color:${col}">${p.score}</b> <span class="hint">${p.band}</span></td>`;
+    }).join("")}</tr>`).join("");
+  const rough = h.pairs.filter(p => p.score < 50)
+    .map(p => `<div class="kv">⚠ <b>${p.a} × ${p.b} (${p.score})</b>: ${p.chips.slice(0,3).join("; ")}</div>`).join("");
+  return `<table>${head}${rows}</table>${rough}`;
+}
+
+function render() {
+  if (!ws) return;
+  $("#people-sec").hidden = false;
+  $("#people").innerHTML = ws.people.map(personCard).join("");
+  $("#pcount").textContent = `${ws.people.length}/${ws.max_people}`;
+  $("#cap-hint").textContent = ws.people.length >= ws.max_people
+    ? "workspace full (8 people max)" : "";
+  $("#btn-add").disabled = ws.people.length >= ws.max_people;
+  $("#add-title").textContent = "Add another person 再加一人";
+  const url = `${location.origin}/w/${token}`;
+  $("#share").hidden = false;
+  $("#share").innerHTML = `🔗 Private workspace link (bookmark it — it IS your login):
+    <b>${url}</b> · kept 6 months · <a href="/w/${token}/fengshui">analyze a home with
+    these people →</a>`;
+  $("#nav-fs").href = `/w/${token}/fengshui`;
+  $("#harmony-sec").hidden = !ws.harmony;
+  if (ws.harmony) $("#harmony").innerHTML = harmonyTable(ws.harmony);
+  document.querySelectorAll(".del").forEach(b => b.addEventListener("click", async () => {
+    ws = await api(`/api/pub/w/${token}/person/${b.dataset.i}`, {method: "DELETE"});
+    render();
+  }));
+}
+
+$("#btn-add").addEventListener("click", async () => {
+  $("#add-err").textContent = "";
+  const body = {
+    name: $("#f-name").value.trim() || "Person",
+    sex: $("#f-sex").value,
+    dob: $("#f-dob").value,
+    birth_time: $("#f-unknown").checked ? "12:00" : ($("#f-time").value || "12:00"),
+    time_known: !$("#f-unknown").checked,
+  };
+  if (!body.dob) { $("#add-err").textContent = "date of birth is required"; return; }
+  try {
+    const opts = {method: "POST", headers: {"Content-Type": "application/json"},
+                  body: JSON.stringify(body)};
+    if (!token) {
+      ws = await api("/api/pub/workspace", opts);
+      token = ws.token;
+      history.replaceState(null, "", `/w/${token}`);
+    } else {
+      ws = await api(`/api/pub/w/${token}/person`, opts);
+    }
+    $("#f-name").value = "";
+    render();
+  } catch (e) { $("#add-err").textContent = e.message; }
+});
+
+(async () => {
+  if (token) {
+    try { ws = await api(`/api/pub/w/${token}`); render(); }
+    catch (e) { $("#add-err").textContent = "workspace not found or expired — start a new one"; token = null; }
+  } else {
+    $("#nav-fs").href = "/fengshui";
+  }
+})();
+</script>
+</body></html>

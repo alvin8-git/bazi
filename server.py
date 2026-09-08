@@ -694,4 +694,7 @@ def floorplan():
     return FileResponse(ROOT / "floorplan.jpeg")
 
 
+from public import router as public_router  # noqa: E402  (bazifor.me surfaces)
+app.include_router(public_router)
+
 app.mount("/static", StaticFiles(directory=ROOT / "web"), name="static")

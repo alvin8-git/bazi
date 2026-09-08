@@ -6,3 +6,4 @@ data/*.bak-*
 data/out/
 ~$*
 pytest-of-alvin/
+data/public_store/

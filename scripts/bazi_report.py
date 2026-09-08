@@ -422,6 +422,8 @@ def birth_time_confidence(chart):
 
 
 def build_person(m, chart, ys, fam_section, others):
+    """m needs .name/.sex/.birth_dt; works for any person, not just the family
+    (ROLE/KIDS fall back to age-based defaults for workspace users)."""
     name = _tosimp(m.name)
     pct = ten_god_pct(chart)
     pc = people_compat(chart, pct, ys,
@@ -434,7 +436,8 @@ def build_person(m, chart, ys, fam_section, others):
     d = dial(pct)
     rr = relationship_risk(chart, pct, w)
     wp = wealth_pattern(chart, pct, w)
-    is_kid = m.name in KIDS
+    is_kid = m.name in KIDS or (YEAR - chart.lichun_year) < 18
+    role = ROLE.get(m.name, "child" if is_kid else "adult")
     hm = health_map(chart)
     weak = chart.strength["verdict"].startswith("身弱")
     narrative = interpret_person(chart, ys, YEAR)["paragraphs"]
@@ -619,7 +622,7 @@ def build_person(m, chart, ys, fam_section, others):
     html = f"""<!doctype html><html><head><meta charset="utf-8">
 <title>{name} — BaZi strategy report 命理战略</title><style>{css}</style></head><body>
 <h1>🧬 {name} — personal BaZi strategy report</h1>
-<div class="sub">{ROLE[m.name]} · birth-data only, valid in any home · calculation +
+<div class="sub">{role} · birth-data only, valid in any home · calculation +
 interpretation: every figure is followed by what it means and what to do · all advice
 rule-selected, no runtime AI · regenerate with <code>python scripts/bazi_report.py</code></div>
 {snapshot}{who}{q1}{q2}{q3}{q4}{q5}{extras}{exams}{fam_section}
@@ -631,7 +634,7 @@ Known contested point: this chart school reads {'a borderline chart — the alte
     return _tosimp(html)
 
 
-def family_section(members, charts, ys_map):
+def family_section(members, charts, ys_map, axis_note=""):
     wmap = {m.name: timing_windows(charts[m.name], ys_map[m.name],
                                    dayun_detail(charts[m.name], YEAR), YEAR)
             for m in members}
@@ -674,9 +677,7 @@ def family_section(members, charts, ys_map):
       {"; ".join(veto) or "none in the decade"}</div>
       <div class="cite" style="margin-top:8px"><b>Delegation map 财务搭档</b> — whose
       favourable elements carry whose wealth element:</div>{"".join(deleg)}
-      <div class="cite" style="margin-top:6px"><b>Known friction axis:</b> the 寅申 clash
-      runs through 二强 and both parents — remedies in the harmony handbook; his solo
-      room and the sisters as buffers are structural, not optional.</div></div>"""
+      {f'<div class="cite" style="margin-top:6px"><b>Known friction axis:</b> {axis_note}</div>' if axis_note else ''}</div>"""
 
 
 def main():
@@ -685,7 +686,11 @@ def main():
               for m in members}
     ys_map = {n: yong_shen(c) for n, c in charts.items()}
     (ROOT / "data/out").mkdir(parents=True, exist_ok=True)
-    fam = family_section(members, charts, ys_map)
+    fam = family_section(members, charts, ys_map,
+                         axis_note="the 寅申 clash runs through 二强 and both "
+                                   "parents — remedies in the harmony handbook; his "
+                                   "solo room and the sisters as buffers are "
+                                   "structural, not optional.")
     others = [(_tosimp(m.name),
                max(charts[m.name].element_weights,
                    key=charts[m.name].element_weights.get))
