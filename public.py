@@ -354,6 +354,27 @@ def baby(name: str = Form("宝宝"), sex: str = Form(...), dob: str = Form(...),
     fav = ys["favourable"]
     rad = "".join(f'<div class="cite"><b>{el}</b> — {RADICAL_ELEMENTS[el]}</div>'
                   for el in fav)
+    naming_html = ""
+    if surname.strip():
+        from engine.naming import suggest_names
+        try:
+            sug = suggest_names(ys, surname.strip(), top=12)
+            rows = "".join(f"""<div class="cand{' ct' if r['contested'] else ''}">
+              <b class="nm">{_tosimp(r['name'])}</b>
+              <span class="py">{' '.join(c.get('py') or '' for c in r['chars'])}</span>
+              <span class="sc">score {r['score']}</span>
+              {''.join(f'<div class="cite">· {_tosimp(x)}</div>' for x in r['reasons'])}
+            </div>""" for r in sug["candidates"])
+            naming_html = f"""<div class="sec"><h2>Ranked name candidates 候选名
+              <small style="color:#8a8177;font-weight:400">姓 {_tosimp(surname)}
+              ({'+'.join(map(str, sug['surname_ks']))}画 康熙) · pool
+              {sug['pool_size']} chars · v1</small></h2>{rows}
+              <div class="cite" style="margin-top:6px">{sug['source_ref']}.
+              ⚑ marks characters whose element is disputed between dictionary
+              schools — both readings shown. These are candidates for YOUR
+              choice, not a verdict.</div></div>"""
+        except ValueError as e:
+            naming_html = f'<div class="sec cite">naming: {e}</div>'
     dy = "".join(f'<div class="dy"><div>{d["ages"]}</div><b>{d["gz"]}</b></div>'
                  for d in dayun_detail(c, YEAR)[:6])
     html = f"""<!doctype html><html><head><meta charset="utf-8">
@@ -372,6 +393,11 @@ h1{{font-size:20px;color:#b03a2e}}h2{{font-size:15px;color:#8a6d1f;margin:18px 0
 .dy{{display:inline-block;border:1px solid #ddd;border-radius:8px;padding:3px 8px;margin:2px;
   font-size:11px;color:#777;text-align:center}}.dy b{{display:block;font-size:15px;color:#222}}
 .note{{border-left:4px solid #b03a2e;background:#fff;padding:8px 12px;font-size:12.5px;margin:12px 0}}
+.cand{{border:1px solid #e5ded2;border-radius:8px;padding:7px 11px;margin:6px 0}}
+.cand.ct{{border-color:#eedc9a;background:#fffdf5}}
+.cand .nm{{font-size:19px;color:#b03a2e}}
+.cand .py{{color:#8a8177;font-size:12px;margin-left:6px}}
+.cand .sc{{float:right;color:#b8860b;font-size:12px}}
 a{{color:#b03a2e}}</style></head><body>
 <h1>👶 {_tosimp(surname + (name or "宝宝"))} — Baby BaZi 宝宝八字</h1>
 <div class="cite">born {dob} {birth_time} (Singapore time assumed; true-solar applied)</div>
@@ -389,10 +415,8 @@ naming direction below follows directly from this.</div></div>
 <div class="cite">Characters whose radicals carry the baby's favourable elements
 supplement the chart (部首五行 convention). Good radical families:</div>
 {rad}
-<div class="cite" style="margin-top:6px">Stroke numerology (三才五格) uses 繁體
-stroke counts with the surname{f" {_tosimp(surname)}" if surname else ""} — full
-ranked character candidates with cited working and a printable 命名證書 are the
-next milestone of bazifor.me.</div></div>
+{'' if surname.strip() else '<div class="cite" style="margin-top:6px">Enter the family surname 姓 to get ranked name candidates with full 三才五格 working.</div>'}</div>
+{naming_html}
 <div class="sec"><h2>First luck cycles 大運</h2>{dy}
 <div class="cite">The decade pillars begin from the month pillar; detailed phase
 labels and exam-year overlays are in the full report (add this child on the

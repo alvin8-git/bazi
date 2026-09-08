@@ -7,4 +7,5 @@ data/out/
 ~$*
 pytest-of-alvin/
 data/public_store/
-.vercel
+node-compile-cache/
+uv-*.lock
