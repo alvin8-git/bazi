@@ -438,6 +438,8 @@ async function bakeRotation() {
 }
 $("#btn-continue").addEventListener("click", async () => {
   try { await bakeRotation(); } catch (e) { $("#up-err").textContent = e.message; return; }
+  // saved rooms/analysis survive a re-upload of the plan (rotation aside)
+  try { pendingRestore = await api(`/api/pub/w/${token}/homes/${cur}`); } catch (e) {}
   showStep("anno");
 });
 
@@ -513,7 +515,14 @@ let pinch = null, panDrag = null;
 /* ---------------- drawing (pointer events = mouse + touch) ---------------- */
 $("#plan").addEventListener("load", () => {
   imgNatural = [$("#plan").naturalWidth, $("#plan").naturalHeight];
+  $("#go-err").textContent = "";
   if (pendingRestore) { rebuildFromSaved(pendingRestore); pendingRestore = null; }
+});
+$("#plan").addEventListener("error", () => {
+  if (!cur) return;
+  $("#go-err").textContent = "This home's floorplan image has expired — click " +
+    "← Back and re-upload the same plan. Your rooms, entrance and analysis are " +
+    "saved and will reappear over it.";
 });
 wrap.addEventListener("pointerdown", e => {
   pointers.set(e.pointerId, [e.clientX, e.clientY]);

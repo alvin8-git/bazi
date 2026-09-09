@@ -161,6 +161,31 @@ def test_homes_and_battlecard():
     assert client.get(f"/api/pub/w/{tok}/battlecard").status_code == 400
 
 
+def test_blob_floorplan(monkeypatch):
+    """With BLOB_READ_WRITE_TOKEN set, plans go to Vercel Blob; GET redirects."""
+    import public
+    deleted = []
+    monkeypatch.setattr(public, "_BLOB_TOKEN", "fake")
+    monkeypatch.setattr(public, "_blob_put",
+                        lambda p, d, c: f"https://blob.test/{p}-rnd")
+    monkeypatch.setattr(public, "_blob_delete", deleted.append)
+    tok = _new_ws(P1)
+    hid = client.post(f"/api/pub/w/{tok}/homes", json={"name": "B"}).json()["id"]
+    files = {"file": ("p.png", b"\x89PNG-fake", "image/png")}
+    assert client.post(f"/api/pub/w/{tok}/homes/{hid}/floorplan",
+                       files=files).status_code == 200
+    r = client.get(f"/api/pub/w/{tok}/homes/{hid}/floorplan",
+                   follow_redirects=False)
+    assert r.status_code == 302
+    assert r.headers["location"].startswith("https://blob.test/plans/")
+    # re-upload replaces (old blob deleted), delete-home cleans up too
+    assert client.post(f"/api/pub/w/{tok}/homes/{hid}/floorplan",
+                       files=files).status_code == 200
+    assert len(deleted) == 1
+    assert client.delete(f"/api/pub/w/{tok}/homes/{hid}").status_code == 200
+    assert len(deleted) == 2
+
+
 def test_legacy_analyze_creates_default_home():
     tok = _new_ws(P1)
     req = {"facing_deg": 135, "period": 8, "rooms": ROOMS, "assignment": {}}

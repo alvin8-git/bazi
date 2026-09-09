@@ -25,7 +25,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from pydantic import BaseModel, Field
 
 from engine.bazhai import STAR_SCORE, gua_group, ming_gua, youxing_stars
@@ -78,6 +78,38 @@ def _redis_cmd(*cmd: str):
                  "Content-Type": "application/json"})
     with urllib.request.urlopen(req, timeout=6) as r:
         return json.loads(r.read())["result"]
+
+
+# Floorplan images: Vercel Blob when the store token is present (lambda disk
+# is per-instance and ephemeral), local disk otherwise. Blob URLs are public
+# but carry a random suffix — same anyone-with-the-link model as the token.
+_BLOB_TOKEN = os.environ.get("BLOB_READ_WRITE_TOKEN")
+_BLOB_API = "https://blob.vercel-storage.com"
+
+
+def _blob_put(path: str, data: bytes, ctype: str) -> str:
+    import urllib.request
+    req = urllib.request.Request(
+        f"{_BLOB_API}/{path}", data=data, method="PUT",
+        headers={"Authorization": f"Bearer {_BLOB_TOKEN}",
+                 "x-api-version": "7", "x-content-type": ctype,
+                 "x-add-random-suffix": "1"})
+    with urllib.request.urlopen(req, timeout=20) as r:
+        return json.loads(r.read())["url"]
+
+
+def _blob_delete(url: str) -> None:
+    import urllib.request
+    try:
+        req = urllib.request.Request(
+            f"{_BLOB_API}/delete", method="POST",
+            data=json.dumps({"urls": [url]}).encode(),
+            headers={"Authorization": f"Bearer {_BLOB_TOKEN}",
+                     "x-api-version": "7",
+                     "Content-Type": "application/json"})
+        urllib.request.urlopen(req, timeout=10)
+    except OSError:
+        pass                               # best-effort cleanup only
 
 
 def _db() -> sqlite3.Connection:
@@ -343,8 +375,10 @@ def create_home(token: str, home: HomeIn):
 def delete_home(token: str, hid: str):
     ws = _load(token)
     homes = _homes(ws)
-    _home_of(ws, hid)
+    home = _home_of(ws, hid)
     homes.pop(hid)
+    if home.get("plan_url") and _BLOB_TOKEN:
+        _blob_delete(home["plan_url"])
     (UPLOADS / f"{token}_{hid}.img").unlink(missing_ok=True)
     _save(token, ws)
     return {"homes": [_home_summary(k, v) for k, v in homes.items()]}
@@ -372,8 +406,14 @@ async def _store_plan(token: str, ws: dict, hid: str, file: UploadFile) -> dict:
         raise HTTPException(400, "floorplan too large (max 8 MB)")
     if not (file.content_type or "").startswith("image/"):
         raise HTTPException(400, "please upload an image (jpg/png)")
-    UPLOADS.mkdir(parents=True, exist_ok=True)
-    (UPLOADS / f"{token}_{hid}.img").write_bytes(data)
+    if _BLOB_TOKEN:
+        if home.get("plan_url"):
+            _blob_delete(home["plan_url"])   # random suffix → new URL each time
+        home["plan_url"] = _blob_put(f"plans/{token}_{hid}.img", data,
+                                     file.content_type or "image/png")
+    else:
+        UPLOADS.mkdir(parents=True, exist_ok=True)
+        (UPLOADS / f"{token}_{hid}.img").write_bytes(data)
     home["floorplan"] = True
     ws["floorplan"] = True                  # legacy flag for old clients
     _save(token, ws)
@@ -389,7 +429,9 @@ async def upload_home_floorplan(token: str, hid: str, file: UploadFile = File(..
 @router.get("/api/pub/w/{token}/homes/{hid}/floorplan")
 def get_home_floorplan(token: str, hid: str):
     ws = _load(token)
-    _home_of(ws, hid)
+    home = _home_of(ws, hid)
+    if home.get("plan_url"):
+        return RedirectResponse(home["plan_url"], status_code=302)
     f = _plan_path(token, hid)
     if not f.exists():
         raise HTTPException(404, "no floorplan uploaded")
