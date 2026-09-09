@@ -4,56 +4,139 @@
 <title>bazifor.me — home fengshui analyzer 宅运分析</title>
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#8a8177;--accent:#b03a2e;
-  --gold:#b8860b;--line:#e5ded2}
+  --gold:#b8860b;--line:#e5ded2;--good:#2e7d32}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);
   font:15px/1.5 system-ui,"Noto Sans SC",sans-serif}
-header{background:var(--card);border-bottom:1px solid var(--line);padding:16px 22px}
-h1{margin:0;font-size:20px;color:var(--accent)}
-header .sub{color:var(--muted);font-size:13px}
-header a{color:var(--accent);font-size:13px}
-main{max-width:1080px;margin:0 auto;padding:16px 22px 80px}
-.sec{background:var(--card);border:1px solid var(--line);border-radius:12px;
-  padding:14px 18px;margin:12px 0}
-h2{font-size:15.5px;color:var(--gold);margin:0 0 8px}
-label{font-size:12.5px;color:var(--muted);display:block;margin:6px 0 2px}
-input,select{padding:6px 8px;border:1px solid var(--line);border-radius:7px;font-size:14px}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:14px 22px;
+  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+h1{margin:0;font-size:19px;color:var(--accent)}
+header a{color:var(--accent);font-size:13px;text-decoration:none}
+main{max-width:1280px;margin:0 auto;padding:16px 22px 80px}
 button{background:var(--accent);color:#fff;border:0;border-radius:8px;
   padding:8px 16px;font-size:14px;cursor:pointer}
-button.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+button.ghost.on{color:var(--accent);border-color:var(--accent);background:#fdf3ee;
+  font-weight:600}
+button.dark{background:#1c1712;border-radius:10px;padding:10px 22px;font-size:15px}
+button:disabled{opacity:.45;cursor:default}
 .hint{color:var(--muted);font-size:12.5px}
 .err{color:var(--accent);font-size:13px;min-height:1em}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
-#wrap{position:relative;display:inline-block;max-width:100%;margin-top:10px;
-  cursor:crosshair;user-select:none}
-#plan{max-width:100%;display:block}
-.rect{position:absolute;border:2px solid var(--accent);background:rgba(176,58,46,.10);
-  font-size:11px;color:var(--accent);overflow:hidden}
-.rect.ns{border-color:#2e7d32;background:rgba(46,125,50,.10);color:#2e7d32}
-.roomrow{display:grid;grid-template-columns:1.4fr auto auto 1.6fr auto;gap:8px;
-  align-items:center;margin:4px 0;font-size:13.5px}
-.roomrow select{width:100%}
-table{border-collapse:collapse;width:100%;font-size:12.5px;background:#fff;margin:8px 0}
+[hidden]{display:none!important}
+
+/* ---- step 1: upload ---- */
+#step-up{text-align:center;padding-top:26px}
+#step-up h2{font-family:Georgia,"Songti SC",serif;font-size:34px;margin:0 0 6px}
+#step-up .sub{color:var(--muted);font-size:16px;margin-bottom:24px}
+#drop{border:2px dashed #d8cfc0;border-radius:14px;background:var(--card);
+  min-height:min(58vh,520px);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;margin:0 auto;max-width:1100px;position:relative;padding:18px}
+#drop.dragover{border-color:var(--accent);background:#fdf3ee}
+#drop img{max-width:100%;max-height:min(54vh,480px);display:block}
+#drop .ph{color:var(--muted);font-size:15px}
+#drop .ph b{display:block;font-size:44px;margin-bottom:6px;color:#d8cfc0}
+#up-actions{max-width:1100px;margin:16px auto 0;display:flex;justify-content:flex-end;
+  border-top:1px solid var(--line);padding-top:14px}
+
+/* ---- step 2: annotate ---- */
+#anno-head{display:flex;align-items:center;gap:12px;margin:2px 0 10px}
+#anno-head h2{margin:0;font-size:20px}
+#toolbar{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:10px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  position:sticky;top:0;z-index:6;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+#toolbar .sep{width:1px;align-self:stretch;background:var(--line)}
+#toolbar .fac{display:flex;align-items:center;gap:8px;flex:1;min-width:230px}
+#toolbar input[type=range]{flex:1;min-width:110px;accent-color:var(--accent)}
+#fac-val{font-weight:700;min-width:86px;font-size:14px}
+#toolbar select{padding:6px 8px;border:1px solid var(--line);border-radius:7px;font-size:13px}
+#btn-analyze{margin-left:auto}
+#board{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  margin-top:12px;padding:18px;display:flex;gap:16px;align-items:flex-start;
+  position:relative}
+#canvas-col{flex:1;display:flex;justify-content:center;position:relative;min-width:0}
+#sidebtns{position:absolute;left:14px;top:16px;display:flex;flex-direction:column;
+  gap:8px;z-index:4}
+#sidebtns button{background:var(--card);color:var(--ink);border:1px solid var(--line);
+  border-radius:12px;width:44px;height:44px;font-size:19px;padding:0;
+  box-shadow:0 2px 6px rgba(0,0,0,.07)}
+#compass{position:absolute;right:14px;top:16px;background:var(--card);
+  border:1px solid var(--line);border-radius:14px;padding:10px 12px;text-align:center;
+  box-shadow:0 2px 6px rgba(0,0,0,.07);z-index:4}
+#dial{width:58px;height:58px;border:2px solid var(--line);border-radius:50%;
+  margin:0 auto 4px;position:relative}
+#dial::after{content:"N";position:absolute;top:1px;left:50%;transform:translateX(-50%);
+  font-size:9px;color:var(--muted)}
+#needle{position:absolute;left:50%;top:50%;width:2.5px;height:24px;background:var(--accent);
+  transform-origin:50% 100%;translate:-50% -100%;border-radius:2px}
+#needle::before{content:"";position:absolute;top:-5px;left:50%;transform:translateX(-50%);
+  border:5px solid transparent;border-bottom:7px solid var(--accent)}
+#compass b{font-size:12.5px}
+#wrap{position:relative;max-width:100%;user-select:none;touch-action:none}
+#wrap.draw{cursor:crosshair}
+#wrap.door{cursor:pointer}
+#plan{max-width:100%;max-height:74vh;display:block}
+.rect{position:absolute;border:2px solid #6b5b95;background:rgba(107,91,149,.28);
+  color:#fff;overflow:hidden;font-size:12px;display:flex;align-items:center;
+  justify-content:center;cursor:pointer}
+.rect span{background:#6b5b95;border-radius:5px;padding:1px 8px;font-weight:600;
+  white-space:nowrap;max-width:96%;overflow:hidden;text-overflow:ellipsis}
+.rect.ns{border-color:var(--good);background:rgba(46,125,50,.18)}
+.rect.ns span{background:var(--good)}
+.rect.sel{outline:2px solid var(--gold)}
+#door-pin{position:absolute;translate:-50% -100%;font-size:26px;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.4));cursor:pointer;line-height:1}
+#door-pin em{display:block;font-style:normal;font-size:9.5px;text-align:center;
+  background:#1c1712;color:#fff;border-radius:4px;padding:0 4px}
+
+/* edit-room panel */
+#panel{width:280px;flex:0 0 280px;background:var(--card);border:1px solid var(--line);
+  border-radius:12px;padding:16px;box-shadow:0 3px 14px rgba(0,0,0,.06)}
+#panel h3{margin:0 0 10px;font-size:17px}
+#panel label{display:block;font-size:12.5px;color:var(--muted);margin:10px 0 3px}
+#panel select,#panel input{width:100%;padding:8px 9px;border:1px solid var(--line);
+  border-radius:8px;font-size:14px;background:#fff}
+#occ{display:flex;flex-wrap:wrap;gap:5px}
+#occ span{border:1px solid var(--line);border-radius:14px;padding:2px 10px;
+  font-size:12.5px;cursor:pointer;background:#fff}
+#occ span.on{background:#e9f7ee;border-color:var(--good);color:var(--good);font-weight:600}
+#panel .acts{margin-top:14px;display:grid;gap:8px}
+#btn-confirm{background:#6b5b95}
+#btn-delroom{background:#fdecea;color:var(--accent);border:1px solid #f5c6c0}
+
+/* results (unchanged layout) */
+.sec{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:14px 18px;margin:12px 0}
+.sec h2{font-size:15.5px;color:var(--gold);margin:0 0 8px}
+table{border-collapse:collapse;width:100%;font-size:13px;background:#fff;margin:8px 0}
 th,td{border:1px solid var(--line);padding:4px 8px;text-align:left;vertical-align:top}
 th{background:#f6f1e8}
 .pal{display:grid;grid-template-columns:repeat(3,minmax(84px,1fr));gap:4px;max-width:340px}
 .pal div{border:1px solid var(--line);border-radius:8px;text-align:center;padding:5px 3px;
-  background:#fff;font-size:11px;color:var(--muted)}
+  background:#fff;font-size:12px;color:var(--muted)}
 .pal .st{font-size:15px;font-weight:700}
 .pal .m{color:var(--accent)}.pal .w{color:#2471a3}.pal .ann{color:var(--gold)}
 .score b{font-size:15px}
-.cite{color:#666;font-size:12px;margin:1px 0 1px 8px}
+.cite{color:#666;font-size:12.5px;margin:1px 0 1px 8px}
 .warn{background:#fff6df;border:1px solid #eedc9a;border-radius:8px;padding:6px 10px;
   font-size:12.5px;margin:6px 0}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:800px){.cols{grid-template-columns:1fr}}
-[hidden]{display:none!important}
+@media(max-width:900px){
+  .cols{grid-template-columns:1fr}
+  #board{flex-direction:column;padding:12px}
+  #panel{width:100%;flex:auto}
+  #compass{right:8px;top:8px;padding:6px 8px}
+  #dial{width:44px;height:44px}#needle{height:18px}
+  #sidebtns{left:8px;top:8px}
+  #step-up h2{font-size:26px}
+  #btn-analyze{margin-left:0;width:100%}
+  #toolbar{position:static}
+  input,select,button{font-size:16px}
+}
 </style></head><body>
 <header>
-  <h1>Home fengshui analyzer 宅运分析</h1>
-  <div class="sub">Upload the floorplan → give the facing → draw the rooms → assign
-    people → every star and score computed with its classical citation.
-    <a href="/start" id="back">← people workspace</a></div>
+  <h1>Home fengshui 宅运分析</h1>
+  <a href="/start" id="back">← workspace</a>
+  <span class="hint">every star and score cites its classical rule</span>
 </header>
 <main>
   <div class="sec" id="need-ws" hidden>
@@ -62,39 +145,84 @@ th{background:#f6f1e8}
     (八宅命卦 + 用神 + flying stars).</span>
   </div>
 
-  <div class="sec">
-    <h2>1 · Floorplan & facing 图纸与朝向</h2>
-    <div class="grid">
-      <div><label>Floorplan image (jpg/png, ≤8MB)</label>
-        <input type="file" id="f-file" accept="image/*"></div>
-      <div><label>Facing 朝向 (degrees, 0=N 90=E 180=S 270=W)</label>
-        <input type="number" id="f-facing" min="0" max="359.9" step="0.5" value="0"></div>
-      <div><label>Image-top bearing (default = facing)</label>
-        <input type="number" id="f-upb" min="0" max="359.9" step="0.5" placeholder="same as facing"></div>
-      <div><label>Period 元运</label>
-        <select id="f-period"><option value="9" selected>9 (built/renovated ≥ Feb 2024)</option>
-        <option value="8">8 (2004 – Feb 2024)</option><option value="7">7 (1984 – 2004)</option></select></div>
+  <!-- ============ STEP 1 — upload ============ -->
+  <div id="step-up">
+    <h2>Upload Your Floor Plan</h2>
+    <div class="sub">A clear top-down view — the analysis maps every room to its
+      compass palace. 上传清晰的户型图。</div>
+    <div id="drop">
+      <div class="ph" id="drop-ph"><b>⌂</b>Click or drag a floorplan image here<br>
+        <span class="hint">jpg / png · up to 8 MB</span></div>
+      <img id="preview" hidden>
     </div>
-    <div class="hint" style="margin-top:6px">Measure the facing with a phone compass at
-      the main window/balcony, 2–3 spots away from metal. If the image top isn't the
-      facing side, enter the compass bearing that "up" in the image points to.</div>
+    <input type="file" id="f-file" accept="image/*" hidden>
     <div class="err" id="up-err"></div>
-    <div id="wrap" hidden><img id="plan"><div id="rects"></div></div>
+    <div id="up-actions">
+      <button class="dark" id="btn-continue" disabled>Continue →</button>
+    </div>
   </div>
 
-  <div class="sec" id="rooms-sec" hidden>
-    <h2>2 · Rooms 房间 <span class="hint">drag on the floorplan to draw each room
-      rectangle, then label it</span></h2>
-    <div id="roomlist"></div>
-    <div class="hint">Tip: draw bedrooms, living, kitchen, entry at minimum. Palace
-      assignment uses the area-weighted centre of all drawn rooms.</div>
-  </div>
-
-  <div class="sec" id="go-sec" hidden>
-    <h2>3 · Calculate 计算</h2>
-    <button id="btn-go">Analyze 分析</button>
-    <span class="hint" id="go-hint"></span>
-    <div class="err" id="go-err"></div>
+  <!-- ============ STEP 2 — annotate ============ -->
+  <div id="step-anno" hidden>
+    <div id="anno-head">
+      <a href="#" id="btn-back2">← Back</a><h2>Annotate Plan 标注</h2>
+    </div>
+    <div id="toolbar">
+      <button class="ghost" id="btn-draw">⛶ Draw Room</button>
+      <button class="ghost" id="btn-door">🚪 Set Entrance</button>
+      <div class="sep"></div>
+      <div class="fac">
+        <span class="hint" style="white-space:nowrap">Facing 朝向</span>
+        <input type="range" id="f-facing" min="0" max="359.5" step="0.5" value="0">
+        <button class="ghost" id="btn-m15" style="padding:6px 9px">−15°</button>
+        <button class="ghost" id="btn-p15" style="padding:6px 9px">+15°</button>
+        <span id="fac-val">0° N 坎</span>
+      </div>
+      <div class="sep"></div>
+      <select id="f-period" title="Period 元运">
+        <option value="9" selected>Period 9 (≥2024)</option>
+        <option value="8">Period 8 (2004–24)</option>
+        <option value="7">Period 7 (1984–04)</option>
+      </select>
+      <button class="dark" id="btn-analyze">Analyze Plan →</button>
+    </div>
+    <div class="hint" style="margin:8px 2px">Measure the facing with a phone compass at
+      the main window/balcony, away from metal. Drag on the plan to draw each room;
+      tap 🚪 then click the main door position.
+      <details style="display:inline"><summary style="display:inline;cursor:pointer;color:var(--accent)">advanced</summary>
+        image-top bearing (if the image top is not the facing side):
+        <input type="number" id="f-upb" min="0" max="359.9" step="0.5"
+          placeholder="= facing" style="width:90px;padding:2px 6px;border:1px solid var(--line);border-radius:6px">
+      </details></div>
+    <div id="board">
+      <div id="sidebtns">
+        <button id="btn-undo" title="undo last room">↺</button>
+      </div>
+      <div id="compass"><div id="dial"><div id="needle"></div></div><b id="cp-val">0°</b></div>
+      <div id="canvas-col">
+        <div id="wrap"><img id="plan"><div id="rects"></div>
+          <div id="door-pin" hidden>🚪<em>Entrance</em></div></div>
+      </div>
+      <div id="panel" hidden>
+        <h3>Edit Room</h3>
+        <label>Type</label>
+        <select id="p-type">
+          <option>Living 客厅</option><option>Dining 餐厅</option>
+          <option>Master Bedroom 主卧</option><option>Bedroom 卧室</option>
+          <option>Balcony 阳台</option><option>Kitchen 厨房</option>
+          <option>Bathroom 卫浴</option><option>Study 书房</option>
+          <option>Store 储藏</option><option>Other 其他</option>
+        </select>
+        <label>Custom Name</label>
+        <input id="p-name" maxlength="40" placeholder="optional — e.g. Kai Lin's room">
+        <div id="occ-wrap"><label>Who sleeps here 住户</label><div id="occ"></div></div>
+        <div class="acts">
+          <button id="btn-confirm">✓ Confirm Room</button>
+          <button id="btn-delroom">🗑 Delete Room</button>
+        </div>
+      </div>
+    </div>
+    <div class="err" id="go-err" style="margin-top:8px"></div>
   </div>
 
   <div id="results"></div>
@@ -102,7 +230,9 @@ th{background:#f6f1e8}
 <script>
 const $ = s => document.querySelector(s);
 let token = null, ws = null, rooms = [], drag = null, imgNatural = [0, 0];
-const mm = location.pathname.match(/^\/w\/([A-Za-z0-9_-]{16,64})/);
+let mode = "draw", selected = -1, entrance = null;   // entrance = [px,py] on-screen
+const SLEEP_TYPES = ["Master Bedroom 主卧", "Bedroom 卧室"];
+const mm = location.pathname.match(/^\/w\/([A-Za-z0-9_-]{8,64})/);
 if (mm) token = mm[1];
 
 async function api(path, opts) {
@@ -112,145 +242,217 @@ async function api(path, opts) {
   return r.json();
 }
 
+/* ---------------- step switching ---------------- */
+function showStep(s) {
+  $("#step-up").hidden = s !== "up";
+  $("#step-anno").hidden = s !== "anno";
+  if (s === "anno") $("#plan").src = `/api/pub/w/${token}/floorplan?t=${Date.now()}`;
+}
+$("#btn-back2").addEventListener("click", e => { e.preventDefault(); showStep("up"); });
+
+/* ---------------- boot ---------------- */
 (async () => {
   if (!token) { $("#need-ws").hidden = false; return; }
   $("#back").href = `/w/${token}`;
   try { ws = await api(`/api/pub/w/${token}`); }
   catch (e) { $("#need-ws").hidden = false; token = null; return; }
-  if (ws.has_floorplan) { $("#plan").src = `/api/pub/w/${token}/floorplan`; showPlan(); }
+  if (ws.has_floorplan) {
+    $("#preview").src = `/api/pub/w/${token}/floorplan`;
+    $("#preview").hidden = false; $("#drop-ph").hidden = true;
+    $("#btn-continue").disabled = false;
+    showStep("anno");
+  }
   if (ws.home) restoreHome();
 })();
 
-function showPlan() {
-  $("#wrap").hidden = false;
-  $("#rooms-sec").hidden = false;
-  $("#go-sec").hidden = false;
-  $("#plan").onload = () => { imgNatural = [$("#plan").naturalWidth, $("#plan").naturalHeight]; };
-}
-
-$("#f-file").addEventListener("change", async () => {
+/* ---------------- upload ---------------- */
+const drop = $("#drop");
+drop.addEventListener("click", () => $("#f-file").click());
+drop.addEventListener("dragover", e => { e.preventDefault(); drop.classList.add("dragover"); });
+drop.addEventListener("dragleave", () => drop.classList.remove("dragover"));
+drop.addEventListener("drop", e => {
+  e.preventDefault(); drop.classList.remove("dragover");
+  if (e.dataTransfer.files[0]) upload(e.dataTransfer.files[0]);
+});
+$("#f-file").addEventListener("change", () => {
+  if ($("#f-file").files[0]) upload($("#f-file").files[0]);
+});
+async function upload(f) {
+  $("#up-err").textContent = "";
   if (!token) { $("#up-err").textContent = "add a person on the start page first"; return; }
-  const f = $("#f-file").files[0];
-  if (!f) return;
   const fd = new FormData(); fd.append("file", f);
   try {
-    const r = await api(`/api/pub/w/${token}/floorplan`, {method: "POST", body: fd});
-    $("#plan").src = r.url + "?t=" + Date.now();
-    rooms = []; renderRooms(); showPlan();
+    await api(`/api/pub/w/${token}/floorplan`, {method: "POST", body: fd});
+    $("#preview").src = URL.createObjectURL(f);
+    $("#preview").hidden = false; $("#drop-ph").hidden = true;
+    $("#btn-continue").disabled = false;
+    rooms = []; entrance = null; $("#rects").innerHTML = ""; $("#door-pin").hidden = true;
   } catch (e) { $("#up-err").textContent = e.message; }
-});
+}
+$("#btn-continue").addEventListener("click", () => showStep("anno"));
 
-// ---- rectangle drawing (screen coords → natural-image coords on submit) ----
+/* ---------------- facing slider + compass ---------------- */
+const MOUNTAINS = [["N 坎",0],["NE 艮",45],["E 震",90],["SE 巽",135],["S 離",180],
+  ["SW 坤",225],["W 兌",270],["NW 乾",315]];
+function facLabel(d) {
+  const m = MOUNTAINS.reduce((a, b) =>
+    Math.min(Math.abs(d-b[1]), 360-Math.abs(d-b[1])) <
+    Math.min(Math.abs(d-a[1]), 360-Math.abs(d-a[1])) ? b : a);
+  return `${d}° ${m[0]}`;
+}
+function setFacing(d) {
+  d = ((d % 360) + 360) % 360;
+  $("#f-facing").value = d;
+  $("#fac-val").textContent = facLabel(d);
+  $("#cp-val").textContent = d + "°";
+  $("#needle").style.rotate = d + "deg";
+}
+$("#f-facing").addEventListener("input", () => setFacing(parseFloat($("#f-facing").value)));
+$("#btn-m15").addEventListener("click", () => setFacing(parseFloat($("#f-facing").value) - 15));
+$("#btn-p15").addEventListener("click", () => setFacing(parseFloat($("#f-facing").value) + 15));
+
+/* ---------------- modes ---------------- */
 const wrap = $("#wrap");
-wrap.addEventListener("mousedown", e => {
-  if (e.target.closest(".rect")) return;
+function setMode(m) {
+  mode = m;
+  $("#btn-draw").classList.toggle("on", m === "draw");
+  $("#btn-door").classList.toggle("on", m === "door");
+  wrap.className = m;
+}
+$("#btn-draw").addEventListener("click", () => setMode("draw"));
+$("#btn-door").addEventListener("click", () => setMode("door"));
+setMode("draw");
+
+/* ---------------- drawing (pointer events = mouse + touch) ---------------- */
+$("#plan").addEventListener("load", () => {
+  imgNatural = [$("#plan").naturalWidth, $("#plan").naturalHeight];
+});
+wrap.addEventListener("pointerdown", e => {
   const b = wrap.getBoundingClientRect();
-  drag = {x0: e.clientX - b.left, y0: e.clientY - b.top, el: document.createElement("div")};
+  const x = e.clientX - b.left, y = e.clientY - b.top;
+  if (mode === "door") {
+    entrance = [x / b.width, y / b.height];      // relative — survives resize
+    placeDoor(); setMode("draw"); return;
+  }
+  if (e.target.closest(".rect")) return;         // click selects (rect handler)
+  drag = {x0: x, y0: y, el: document.createElement("div")};
   drag.el.className = "rect";
   $("#rects").appendChild(drag.el);
+  wrap.setPointerCapture(e.pointerId);
   e.preventDefault();
 });
-window.addEventListener("mousemove", e => {
+wrap.addEventListener("pointermove", e => {
   if (!drag) return;
   const b = wrap.getBoundingClientRect();
   const x = Math.max(0, Math.min(e.clientX - b.left, b.width));
   const y = Math.max(0, Math.min(e.clientY - b.top, b.height));
-  const l = Math.min(x, drag.x0), t = Math.min(y, drag.y0);
-  Object.assign(drag.el.style, {left: l+"px", top: t+"px",
+  Object.assign(drag.el.style, {left: Math.min(x, drag.x0)+"px", top: Math.min(y, drag.y0)+"px",
     width: Math.abs(x-drag.x0)+"px", height: Math.abs(y-drag.y0)+"px"});
 });
-window.addEventListener("mouseup", e => {
+wrap.addEventListener("pointerup", () => {
   if (!drag) return;
   const s = drag.el.style;
   const w = parseFloat(s.width || 0), h = parseFloat(s.height || 0);
   if (w < 12 || h < 12) { drag.el.remove(); drag = null; return; }
-  const id = "r" + (rooms.length + 1) + "_" + Math.floor(Math.random()*1000);
-  rooms.push({id, label: "Room " + (rooms.length + 1), sleeping: false,
+  const id = "r" + Date.now() % 100000;
+  rooms.push({id, type: "Bedroom 卧室", name: "", sleeping: true,
     px: [parseFloat(s.left), parseFloat(s.top), w, h], el: drag.el, occupants: []});
-  drag.el.textContent = rooms[rooms.length-1].label;
-  drag = null; renderRooms();
+  drag = null;
+  decorate(rooms.length - 1); select(rooms.length - 1);
 });
-
-function renderRooms() {
-  const people = ws ? ws.people.map(p => p.name) : [];
-  $("#roomlist").innerHTML = rooms.map((r, i) => `
-    <div class="roomrow">
-      <input value="${r.label}" data-i="${i}" class="rl">
-      <label style="margin:0;display:flex;gap:4px;align-items:center">
-        <input type="checkbox" data-i="${i}" class="rs" ${r.sleeping?"checked":""}>bed</label>
-      <span class="hint">${r.id}</span>
-      <select multiple size="1" data-i="${i}" class="ro" ${r.sleeping?"":"disabled"}>
-        ${people.map(n => `<option ${r.occupants.includes(n)?"selected":""}>${n}</option>`).join("")}
-      </select>
-      <button class="ghost rx" data-i="${i}">✕</button>
-    </div>`).join("");
-  $("#go-hint").textContent = rooms.length ? `${rooms.length} room(s) drawn` :
-    "draw at least one room";
-  document.querySelectorAll(".rl").forEach(el => el.addEventListener("input", () => {
-    rooms[el.dataset.i].label = el.value; rooms[el.dataset.i].el.textContent = el.value; }));
-  document.querySelectorAll(".rs").forEach(el => el.addEventListener("change", () => {
-    rooms[el.dataset.i].sleeping = el.checked;
-    rooms[el.dataset.i].el.classList.toggle("ns", !el.checked); renderRooms(); }));
-  document.querySelectorAll(".ro").forEach(el => el.addEventListener("change", () => {
-    rooms[el.dataset.i].occupants =
-      Array.from(el.selectedOptions).map(o => o.value); }));
-  document.querySelectorAll(".rx").forEach(el => el.addEventListener("click", () => {
-    rooms[el.dataset.i].el.remove(); rooms.splice(el.dataset.i, 1); renderRooms(); }));
+function decorate(i) {
+  const r = rooms[i];
+  r.el.classList.toggle("ns", !r.sleeping);
+  r.el.innerHTML = `<span>${r.name || r.type.split(" ")[0]}</span>`;
+  r.el.onclick = () => select(i);
 }
+function placeDoor() {
+  const b = wrap.getBoundingClientRect(), p = $("#door-pin");
+  p.hidden = false;
+  p.style.left = entrance[0] * b.width + "px";
+  p.style.top = entrance[1] * b.height + "px";
+}
+
+/* ---------------- edit panel ---------------- */
+function select(i) {
+  selected = i;
+  rooms.forEach((r, j) => r.el.classList.toggle("sel", j === i));
+  const r = rooms[i];
+  if (!r) { $("#panel").hidden = true; return; }
+  $("#panel").hidden = false;
+  $("#p-type").value = r.type;
+  $("#p-name").value = r.name;
+  renderOcc();
+}
+function renderOcc() {
+  const r = rooms[selected];
+  $("#occ-wrap").hidden = !r.sleeping;
+  $("#occ").innerHTML = ws.people.map(p =>
+    `<span class="${r.occupants.includes(p.name) ? "on" : ""}" data-n="${p.name}">${p.name}</span>`).join("");
+  document.querySelectorAll("#occ span").forEach(el => el.onclick = () => {
+    const n = el.dataset.n, o = rooms[selected].occupants;
+    o.includes(n) ? o.splice(o.indexOf(n), 1) : o.push(n);
+    renderOcc();
+  });
+}
+$("#p-type").addEventListener("change", () => {
+  const r = rooms[selected];
+  r.type = $("#p-type").value;
+  r.sleeping = SLEEP_TYPES.includes(r.type);
+  if (!r.sleeping) r.occupants = [];
+  decorate(selected); r.el.classList.add("sel"); renderOcc();
+});
+$("#p-name").addEventListener("input", () => {
+  rooms[selected].name = $("#p-name").value; decorate(selected);
+  rooms[selected].el.classList.add("sel");
+});
+$("#btn-confirm").addEventListener("click", () => {
+  rooms[selected].el.classList.remove("sel");
+  selected = -1; $("#panel").hidden = true;
+});
+$("#btn-delroom").addEventListener("click", () => {
+  rooms[selected].el.remove(); rooms.splice(selected, 1);
+  rooms.forEach((r, j) => decorate(j));
+  selected = -1; $("#panel").hidden = true;
+});
+$("#btn-undo").addEventListener("click", () => {
+  if (!rooms.length) return;
+  rooms.pop().el.remove();
+  rooms.forEach((r, j) => decorate(j));
+  selected = -1; $("#panel").hidden = true;
+});
 
 function restoreHome() {
   const h = ws.home;
-  $("#f-facing").value = h.facing_deg;
-  $("#f-upb").value = h.image_up_bearing;
+  setFacing(h.facing_deg);
+  if (h.image_up_bearing !== h.facing_deg) $("#f-upb").value = h.image_up_bearing;
   $("#f-period").value = h.period;
 }
 
-function chartBlock(tag, cb, scores) {
-  const DIRS = {"坎":"N","艮":"NE","震":"E","巽":"SE","離":"S","坤":"SW","兌":"W","乾":"NW"};
-  const order = ["巽","離","坤","震","中","兌","艮","坎","乾"];
-  const pal = order.map(p => {
-    const v = cb.palaces[p] || {};
-    return `<div><div>${p}${DIRS[p] ? " " + DIRS[p] : ""}</div>
-      <div class="st"><span class="m">${v.mountain ?? ""}</span>·<span class="w">${v.water ?? ""}</span></div>
-      <div class="ann">年${v.annual ?? ""}</div></div>`;
-  }).join("");
-  const roomrows = Object.entries(cb.rooms).map(([rid, p]) => {
-    const r = rooms.find(x => x.id === rid);
-    const v = cb.palaces[p] || {};
-    return `<tr><td>${r ? r.label : rid}</td><td>${p}宮 ${DIRS[p]||""}</td>
-      <td>山${v.mountain} 向${v.water} · 年${v.annual}</td></tr>`;
-  }).join("");
-  let sc = "";
-  if (scores) {
-    sc = `<h2 style="margin-top:10px">Person-room scores 配房评分</h2>` +
-      scores.scores.map(s => `<div class="score"><b>${s.person}</b> in ${s.room_label}:
-        <b>${s.total.toFixed(2)}</b>${s.breakdown.map(b =>
-          `<div class="cite">· [${b.layer}] ${b.contribution>=0?"+":""}${b.contribution.toFixed(2)} — ${b.explanation}</div>`).join("")}</div>`).join("") +
-      `<div class="hint">household total: <b>${scores.household_total.toFixed(2)}</b>
-       ${scores.violations.length ? "· ⚠ " + scores.violations.join("; ") : ""}</div>`;
-  }
-  return `<div class="sec"><h2>${tag}: ${cb.structure}
-      ${cb.chart_type ? `<span class="hint">(${cb.chart_type})</span>` : ""}</h2>
-    <div class="hint">facing ${cb.facing} · sitting ${cb.sitting} · 山=mountain star
-      (people/health) · 向=water star (wealth) · 年=annual star</div>
-    <div class="cols"><div class="pal">${pal}</div>
-    <table><tr><th>Room</th><th>Palace</th><th>Stars</th></tr>${roomrows}</table></div>
-    ${sc}</div>`;
-}
-
-$("#btn-go").addEventListener("click", async () => {
+/* ---------------- analyze ---------------- */
+function label(r) { return r.name || r.type.replace(/ /g, " "); }
+$("#btn-analyze").addEventListener("click", async () => {
   $("#go-err").textContent = "";
-  if (!rooms.length) { $("#go-err").textContent = "draw at least one room"; return; }
+  if (!rooms.length) { $("#go-err").textContent = "draw at least one room first"; return; }
   const b = wrap.getBoundingClientRect();
   const sx = imgNatural[0] / b.width, sy = imgNatural[1] / b.height;
+  const rlist = rooms.map(r => ({id: r.id, label: label(r), sleeping: r.sleeping,
+    capacity: 2,
+    poly: [[r.px[0]*sx, r.px[1]*sy], [(r.px[0]+r.px[2])*sx, r.px[1]*sy],
+           [(r.px[0]+r.px[2])*sx, (r.px[1]+r.px[3])*sy], [r.px[0]*sx, (r.px[1]+r.px[3])*sy]]}));
+  if (entrance) {
+    // ponytail: entrance = a tiny room polygon, so the door's palace + stars
+    // come out of the same pie/chart machinery with zero API change
+    const ex = entrance[0] * b.width * sx, ey = entrance[1] * b.height * sy;
+    const d = Math.max(imgNatural[0], imgNatural[1]) * 0.012 || 8;
+    rlist.push({id: "entrance", label: "Entrance 大門", sleeping: false, capacity: 0,
+      poly: [[ex-d, ey-d], [ex+d, ey-d], [ex+d, ey+d], [ex-d, ey+d]]});
+  }
   const req = {
     facing_deg: parseFloat($("#f-facing").value || 0),
     image_up_bearing: $("#f-upb").value === "" ? null : parseFloat($("#f-upb").value),
     period: parseInt($("#f-period").value),
-    rooms: rooms.map(r => ({id: r.id, label: r.label, sleeping: r.sleeping,
-      capacity: 2,
-      poly: [[r.px[0]*sx, r.px[1]*sy], [(r.px[0]+r.px[2])*sx, r.px[1]*sy],
-             [(r.px[0]+r.px[2])*sx, (r.px[1]+r.px[3])*sy], [r.px[0]*sx, (r.px[1]+r.px[3])*sy]]})),
+    rooms: rlist,
     assignment: Object.fromEntries(rooms.filter(r => r.sleeping && r.occupants.length)
       .map(r => [r.id, r.occupants])),
   };
@@ -272,5 +474,39 @@ $("#btn-go").addEventListener("click", async () => {
     $("#results").scrollIntoView({behavior: "smooth"});
   } catch (e) { $("#go-err").textContent = e.message; }
 });
+
+function chartBlock(tag, cb, scores) {
+  const DIRS = {"坎":"N","艮":"NE","震":"E","巽":"SE","離":"S","坤":"SW","兌":"W","乾":"NW"};
+  const order = ["巽","離","坤","震","中","兌","艮","坎","乾"];
+  const pal = order.map(p => {
+    const v = cb.palaces[p] || {};
+    return `<div><div>${p}${DIRS[p] ? " " + DIRS[p] : ""}</div>
+      <div class="st"><span class="m">${v.mountain ?? ""}</span>·<span class="w">${v.water ?? ""}</span></div>
+      <div class="ann">年${v.annual ?? ""}</div></div>`;
+  }).join("");
+  const roomrows = Object.entries(cb.rooms).map(([rid, p]) => {
+    const r = rooms.find(x => x.id === rid);
+    const v = cb.palaces[p] || {};
+    const nm = rid === "entrance" ? "🚪 Entrance 大門" : (r ? label(r) : rid);
+    return `<tr><td>${nm}</td><td>${p}宮 ${DIRS[p]||""}</td>
+      <td>山${v.mountain} 向${v.water} · 年${v.annual}</td></tr>`;
+  }).join("");
+  let sc = "";
+  if (scores) {
+    sc = `<h2 style="margin-top:10px">Person-room scores 配房评分</h2>` +
+      scores.scores.map(s => `<div class="score"><b>${s.person}</b> in ${s.room_label}:
+        <b>${s.total.toFixed(2)}</b>${s.breakdown.map(b =>
+          `<div class="cite">· [${b.layer}] ${b.contribution>=0?"+":""}${b.contribution.toFixed(2)} — ${b.explanation}</div>`).join("")}</div>`).join("") +
+      `<div class="hint">household total: <b>${scores.household_total.toFixed(2)}</b>
+       ${scores.violations.length ? "· ⚠ " + scores.violations.join("; ") : ""}</div>`;
+  }
+  return `<div class="sec"><h2>${tag}: ${cb.structure}
+      ${cb.chart_type ? `<span class="hint">(${cb.chart_type})</span>` : ""}</h2>
+    <div class="hint">facing ${cb.facing} · sitting ${cb.sitting} · 山=mountain star
+      (people/health) · 向=water star (wealth) · 年=annual star</div>
+    <div class="cols"><div class="pal">${pal}</div>
+    <table><tr><th>Room</th><th>Palace</th><th>Stars</th></tr>${roomrows}</table></div>
+    ${sc}</div>`;
+}
 </script>
 </body></html>
