@@ -691,14 +691,62 @@ function elementWheel(er) {
 
 /* 十神对照 wheel: 日元 centre, five god-groups in the 生剋 pentagon (each
    coloured by ITS element for this chart), yin/yang god pairs as satellites */
+const WX_S = {木:"火",火:"土",土:"金",金:"水",水:"木"};
+const WX_K = {木:"土",土:"水",水:"火",火:"金",金:"木"};
+const WX_IS = {火:"木",土:"火",金:"土",水:"金",木:"水"};
+const WX_IK = {土:"木",水:"土",火:"水",金:"火",木:"金"};
+/* the element (→ colour) each ten god carries for THIS Day Master */
+function godEl(dm, god) {
+  const e = STEM_EL[dm];
+  if (god === "比肩" || god === "劫財" || god === "劫财") return e;
+  if (god === "食神" || god === "傷官" || god === "伤官") return WX_S[e];
+  if (god === "正財" || god === "偏財" || god === "正财" || god === "偏财") return WX_K[e];
+  if (god === "正官" || god === "七殺" || god === "七杀") return WX_IK[e];
+  return WX_IS[e];                                   // 正印 / 偏印
+}
+
+/* two sides of each god (汇林文化 十神双面性, condensed + translated) */
+const TG_SIDES = {
+  "正印": ["broad learning, kindness, quiet support 学识渊博·仁慈包容·精神支持",
+           "over-reliance, idealism, indecision 过度依赖·理想主义·缺决断"],
+  "偏印": ["deep insight in niche fields, original self-taught skill 小众洞察·深度创新",
+           "solitary, suspicious, keeps people at arm's length 孤僻多疑·疏离人际"],
+  "正官": ["responsibility, order, stable social standing 责任感强·守序重诺·地位稳",
+           "conservatism, rule-bound pressure and anxiety 循规保守·压力焦虑"],
+  "七殺": ["leadership in adversity, execution, pioneering 逆境显领袖·执行力强",
+           "impulsiveness; health and legal risks 冲动暴力·易招风险"],
+  "比肩": ["confident, loyal, natural team player 自信独立·重义善团队",
+           "stubborn over spoils, self-centred splits 固执争利·自我中心"],
+  "劫財": ["strong social drive, dares to take risks 社交力强·敢于冒险",
+           "impulsive losses, easily talked into traps 冲动失财·轻信陷骗局"],
+  "食神": ["overflowing talent, easy-going, deep bond with children 才华横溢·豁达乐天",
+           "comfort-seeking, weak follow-through, indulgence 贪图安逸·行动力弱"],
+  "傷官": ["innovation, eloquence, artistic force 创新突破·口才卓越",
+           "rebellious, attracts resentment, marriage friction 叛逆招怨·个性冲突"],
+  "正財": ["diligence, steady income, loyalty 勤俭持家·收入稳定·婚姻忠诚",
+           "stingy, conservative, material over spirit 吝啬保守·重物轻神"],
+  "偏財": ["keen money sense, generosity, seizes windfalls 财运敏锐·慷慨善机遇",
+           "extravagance, tangled romantic affairs 挥霍无度·情感纠纷"],
+};
+const TG_CANON = {"七杀": "七殺", "劫财": "劫財", "伤官": "傷官",
+                  "正财": "正財", "偏财": "偏財"};
+const tgCanon = g => TG_CANON[g] || g;
+const STEM_YANG = {甲: 1, 乙: 0, 丙: 1, 丁: 0, 戊: 1, 己: 0, 庚: 1, 辛: 0, 壬: 1, 癸: 0};
+function godOfStem(dm, st) {
+  const e1 = STEM_EL[dm], e2 = STEM_EL[st];
+  const same = STEM_YANG[dm] === STEM_YANG[st];
+  if (e2 === e1) return same ? "比肩" : "劫財";
+  if (e2 === WX_S[e1]) return same ? "食神" : "傷官";
+  if (e2 === WX_K[e1]) return same ? "偏財" : "正財";
+  if (e2 === WX_IK[e1]) return same ? "七殺" : "正官";
+  return same ? "偏印" : "正印";
+}
+
 function tenGodsWheel(c) {
   const pct = c.tengods_pct || {};
   const p = keys => { for (const k of keys) if (pct[k] != null) return pct[k]; return 0; };
   const dmEl = STEM_EL[c.day_master];
-  const S = {木:"火",火:"土",土:"金",金:"水",水:"木"};
-  const K = {木:"土",土:"水",水:"火",火:"金",金:"木"};
-  const invS = {火:"木",土:"火",金:"土",水:"金",木:"水"};
-  const invK = {土:"木",水:"土",火:"水",金:"火",木:"金"};
+  const S = WX_S, K = WX_K, invS = WX_IS, invK = WX_IK;
   const GROUPS = [
     {zh:"官殺", el:invK[dmEl], gods:[["正官"],["七殺","七杀"]], lab:["正官","七殺"]},
     {zh:"印星", el:invS[dmEl], gods:[["正印"],["偏印"]], lab:["正印","偏印"]},
@@ -930,11 +978,50 @@ async function renderPerson(name) {
       <div class="ewrap"><div class="tgwrap">${tenGodsWheel(c)}
         <div class="cite" style="text-align:center;margin-top:2px">十神对照 — each group
           coloured by ITS element for this Day Master (same palette as §1)</div></div>
-      <div class="bars" style="flex:1;min-width:280px;max-width:680px">${Object.entries(c.tengods_pct).map(([g, p]) => `
-        <div class="bar-row tg-row"><span><b>${g}</b> <span class="sub">${c.tengods_legend[g].en}</span></span>
-          <div class="bar"><i style="width:${p}%;background:var(--gold)"></i></div>
-          <b>${p}%</b><span class="sub tg-meaning">${c.tengods_legend[g].meaning}</span></div>`).join("")}
-      </div></div>
+      <div class="bars" style="flex:1;min-width:300px">${(() => {
+        const rows = Object.entries(c.tengods_pct).sort((a, b) => b[1] - a[1]);
+        const pmax = Math.max(...rows.map(([, v]) => v)) || 1;
+        return rows.map(([g, p]) => `
+          <div class="bar-row tg-row2"><span><b>${g}</b> <span class="sub">${c.tengods_legend[g].en}</span></span>
+            <div class="bar"><i style="width:${(p / pmax * 100).toFixed(0)}%;background:${EL_COL[godEl(c.day_master, g)]}"></i></div>
+            <b>${p}%</b></div>`).join("");
+      })()}</div></div>
+      <div class="tgdefs">${Object.entries(c.tengods_pct).map(([g]) => `
+        <div><b style="color:${EL_COL[godEl(c.day_master, g)]}">●</b>
+          <b>${g}</b> ${c.tengods_legend[g].en} — ${c.tengods_legend[g].meaning}</div>`).join("")}
+      </div>
+      <div class="cite" style="margin-top:6px"><b>The cycle as a tree 生剋循环:</b>
+        比劫 roots absorb nutrients → 食傷 branches and leaves grow → 財 flowers set
+        fruit → 官殺 pickers arrive for the harvest → 印 the soil rests and recovers →
+        feeding new 比劫 roots. Creation → accumulation → constraint → nourishment,
+        around forever.</div>
+      <h4>Your ten-god ↔ stem map 十神对应 <span class="tag">日主 ${c.day_master}</span></h4>
+      <div class="tgmap">${(() => {
+        const bystem = {};
+        Object.keys(STEM_YANG).forEach(st => {
+          const g = godOfStem(c.day_master, st);
+          (bystem[g] = bystem[g] || []).push(st);
+        });
+        return ["比肩", "劫財", "食神", "傷官", "正財", "偏財", "正官", "七殺", "正印", "偏印"]
+          .map(g => `<span class="tgm"><b>${g}</b>${(bystem[g] || []).map(st =>
+            `<i class="stemchip" style="color:${EL_COL[STEM_EL[st]]};border-color:${EL_COL[STEM_EL[st]]}">${st}</i>`).join("")}</span>`).join("");
+      })()}</div>
+      <div class="cite">Whenever one of these stems arrives in a luck pillar or year
+        (§6, §13), it brings that god's themes with it.</div>
+      <h4>Two sides of each god 双面性
+        <span class="tag warn">rows ordered by presence in YOUR chart</span></h4>
+      <div style="overflow-x:auto"><table>
+        <tr><th>God · share</th><th>Bright side 优</th><th>Shadow side 忌</th></tr>
+        ${Object.entries(c.tengods_pct).sort((a, b) => b[1] - a[1]).map(([g, p]) => {
+          const sd = TG_SIDES[tgCanon(g)] || ["", ""];
+          const cls = p >= 15 ? "tgs-hot" : p < 5 ? "tgs-faint" : "";
+          return `<tr class="${cls}"><td><b style="color:${EL_COL[godEl(c.day_master, g)]}">●</b>
+            <b>${g}</b> ${p}%</td><td>${sd[0]}</td><td class="sub">${sd[1]}</td></tr>`;
+        }).join("")}
+      </table></div>
+      <div class="cite">A god's shadow side activates when it is excessive or
+        unsupported — read the bold (prominent) rows as both your engine AND your
+        watch-list; faded rows barely operate in this chart.</div>
       ${(() => {
         const e = Object.entries(c.tengods_pct);
         const [g1, p1] = e[0], [g2, p2] = e[1];

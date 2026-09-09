@@ -113,7 +113,20 @@ td.good { color: var(--good); } td.bad { color: var(--bad); }
 .ewrap { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; margin: 8px 0; }
 .ewheel { width: 272px; max-width: 100%; flex: 0 0 auto; }
 .tgwrap { flex: 0 0 auto; max-width: 100%; }
-.tgwheel { width: 330px; max-width: 100%; }
+.tgwheel { width: 430px; max-width: 100%; }
+.tg-row2 { grid-template-columns: 168px 1fr 52px; font-size: 13px; }
+.tgdefs { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2px 20px; font-size: 12.5px; color: #5a5348; margin: 10px 0 2px; }
+.tgmap { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 6px 0; }
+.tgm { font-size: 13px; }
+.tgm > b { color: #8a6d00; font-size: 12px; margin-right: 3px; }
+.stemchip { display: inline-block; width: 22px; height: 22px; border-radius: 6px;
+  border: 1.5px solid; line-height: 19px; text-align: center; font-style: normal;
+  font-weight: 700; font-size: 13px; margin: 0 1px; vertical-align: middle;
+  background: #fff; }
+tr.tgs-hot td { background: #fbf6ea; font-weight: 600; }
+tr.tgs-hot td.sub { font-weight: 400; color: #7a4a00; }
+tr.tgs-faint td { opacity: .5; }
 .eflows { flex: 1; min-width: 250px; }
 .eflow { display: flex; align-items: center; gap: 7px; margin: 5px 0;
   font-size: 13.5px; flex-wrap: wrap; }
