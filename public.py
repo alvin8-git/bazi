@@ -770,9 +770,9 @@ h1{{font-size:20px;color:#b03a2e}}h2{{font-size:15px;color:#8a6d1f;margin:18px 0
 .cite{{color:#666;font-size:13px;margin:3px 0}}
 .eb{{display:flex;align-items:center;gap:8px;font-size:12.5px;margin:2px 0}}
 .eb span{{width:34px;color:#666}}.et{{flex:1;background:#f0ece4;border-radius:6px;height:11px}}
-.elb{{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;
-  border-radius:50%;font-weight:700;font-size:14px;border:2px solid;margin:0 2px;
-  vertical-align:-6px;line-height:1;box-sizing:border-box;padding:0}}
+.elb{{display:inline-block;width:24px;height:24px;border-radius:50%;font-weight:700;
+  font-size:14px;border:2px solid;margin:0 2px;line-height:20px;text-align:center;
+  vertical-align:middle;box-sizing:border-box;padding:0}}
 .verbadge{{position:fixed;top:8px;right:12px;font-size:11px;color:#b9b0a4;
   background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}}
 .elb.el-木{{color:#1e8e3e;border-color:#1e8e3e;background:#e9f7ee}}

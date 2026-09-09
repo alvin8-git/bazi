@@ -85,10 +85,9 @@ td.good { color: var(--good); } td.bad { color: var(--bad); }
 .cite b { color: var(--ink); }
 
 /* element badges — colored circle icons for 木火土金水, used site-wide */
-.elb{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;
-  border-radius:50%;font-weight:700;font-size:14px;border:2px solid;margin:0 2px;
-  vertical-align:-6px;line-height:1;font-style:normal;flex:0 0 auto;
-  box-sizing:border-box;padding:0}
+.elb{display:inline-block;width:24px;height:24px;border-radius:50%;font-weight:700;
+  font-size:14px;border:2px solid;margin:0 2px;line-height:20px;text-align:center;
+  vertical-align:middle;font-style:normal;flex:0 0 auto;box-sizing:border-box;padding:0}
 .elb.el-木{color:#1e8e3e;border-color:#1e8e3e;background:#e9f7ee}
 .elb.el-火{color:#c5221f;border-color:#c5221f;background:#fdecea}
 .elb.el-土{color:#8a6d1f;border-color:#8a6d1f;background:#f6efdc}
@@ -115,11 +114,12 @@ td.good { color: var(--good); } td.bad { color: var(--bad); }
   border-radius: 0 7px 7px 0; padding: 7px 11px; margin: 10px 0 4px;
   font-size: 13.5px; line-height: 1.55; color: #4d463c; }
 .ninline b { color: #8a6d00; }
-.legend { display: flex; flex-wrap: wrap; gap: 3px 16px; margin: 10px 0 0;
-  padding: 8px 11px; background: var(--bg); border: 1px dashed var(--line);
-  border-radius: 8px; font-size: 12.5px; line-height: 1.5; color: #5a5348; }
-.legend > b { color: var(--gold); flex-basis: 100%; font-size: 12px;
-  letter-spacing: .5px; }
+.legend { margin: 10px 0 0; padding: 8px 12px; background: var(--bg);
+  border: 1px dashed var(--line); border-radius: 8px; font-size: 12.5px;
+  line-height: 1.55; color: #5a5348; }
+.legend > b { display: block; color: var(--gold); font-size: 12px;
+  letter-spacing: .5px; margin-bottom: 3px; }
+.legend span { display: block; margin: 2px 0; }   /* one term per line */
 .legend span b { color: var(--ink); }
 
 #overlay-wrap { position: relative; display: inline-block; }
@@ -182,6 +182,7 @@ td.good { color: var(--good); } td.bad { color: var(--bad); }
   .section { padding: 11px 12px; }
   /* §13/命卡 decade strips: keep boxes readable, drop the English phase word */
   .wp-en { display: none; }
+  .ccfacts { grid-template-columns: 1fr; }
   .ccdy { min-width: 58px; }
   .cctgl { width: 130px; }
   .legend { gap: 2px 12px; }
@@ -253,8 +254,10 @@ button.small { font-size: 12px; padding: 3px 10px; }
 .cchead{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:10px}
 .ccbig{text-align:center;font-size:12.5px;color:var(--muted)}
 .ccgua{font-size:44px;line-height:1.1;color:var(--accent);font-weight:700}
-.ccfacts{flex:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:3px 14px;font-size:13.5px}
+/* 2×3 matrix: row 1 = 生肖·日主·命宮, row 2 = 用神·神煞·胎元 */
+.ccfacts{flex:1;display:grid;grid-template-columns:repeat(3,1fr);
+  gap:6px 16px;font-size:13.5px}
+.ccfacts>div{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
 .ccfacts span{display:inline-block;min-width:44px;color:#8a6d00;font-weight:700;
   font-size:11.5px;letter-spacing:.3px}
 .ccfacts em{color:var(--accent);font-style:normal;font-size:12px;font-weight:400}

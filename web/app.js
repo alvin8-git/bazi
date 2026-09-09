@@ -625,9 +625,9 @@ function chartCard(c) {
         <div><span>生肖</span>${lp.animal}</div>
         <div><span>日主</span>${c.day_master} ${STEM_EL[c.day_master]} · ${c.strength.verdict}</div>
         <div><span>命宮</span>${lp.ming_gong}</div>
-        <div><span>胎元</span>${lp.tai_yuan}</div>
-        <div><span>用神</span>${elbs(c.yongshen.favourable)} <em>avoid ${elbs(c.yongshen.unfavourable)}</em></div>
+        <div><span>用神</span>${elbs(c.yongshen.favourable)} <em>avoid</em> ${elbs(c.yongshen.unfavourable)}</div>
         <div><span>神煞</span>${stars}</div>
+        <div><span>胎元</span>${lp.tai_yuan}</div>
       </div>
     </div>
     <div class="ccpillars">${pcols}</div>
@@ -644,8 +644,15 @@ const LEGENDS = {
     ["日主 Day Master", "the day stem — the character that IS you; every other character is read by its relationship to it"],
     ["十神 Ten Gods", "that relationship, named — translated god-by-god in §4"],
     ["藏干", "hidden stems: extra elements stored inside each branch, listed under the pillar"],
+    ["生肖", "the zodiac animal of the birth-year branch"],
     ["命卦", "your personal trigram — decides your lucky compass directions (§7)"],
+    ["命星", "the life star (九星) of the birth year — the number 風水 overlays use for you"],
+    ["命宮 Life Palace", "an auxiliary destiny point derived from the birth month + hour — classical readers weigh it for temperament and life theme"],
+    ["胎元 Conception Palace", "the pillar of the estimated conception month — a supplementary root the chart can draw on"],
     ["用神", "the elements that act as this chart's medicine (§5)"],
+    ["神煞", "symbolic stars carried by the pillars — detailed with meanings in §9"],
+    ["納音", "the pillar's melodic element — its poetic name in the 60-cycle (e.g. 海中金)"],
+    ["長生 stage", "the Day Master's life-stage in that branch (birth→peak→decline cycle) — vitality flavour, not a verdict"],
     ["大運", "the 10-year luck cycles that colour each decade (§6)"],
   ],
   1: [["木/火/土/金/水", "wood / fire / earth / metal / water"],

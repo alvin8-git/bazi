@@ -273,6 +273,11 @@ def test_person_reading_13_sections():
             "careers", "windows", "life_palaces", "interpretation",
             "citations"} <= set(d)
     assert d["name"] == "测试一" and len(d["windows"]["years"]) == 10
+    # every calculated section carries its own narrative paragraph
+    import re
+    secs = {int(m.group(1)) for p in d["interpretation"]["paragraphs"]
+            for m in [re.match(r"\[§(\d+)", p)] if m}
+    assert {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13} <= secs
     # strategy advice distributed per section (s2..s13)
     assert {"s2", "s5", "s8", "s10", "s11", "s12", "s13"} <= set(d["strategy"])
     assert d["strategy"]["s12"]["advice"] and d["strategy"]["s13"]["wealth_pattern"]

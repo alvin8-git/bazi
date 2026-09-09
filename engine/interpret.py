@@ -158,6 +158,137 @@ def interpret_person(chart, ys: dict, year: int) -> dict:
                  "working/studying, one of these where the room allows. The belief: the "
                  "hours spent aligned to supportive directions (a third of life is spent "
                  "asleep) let the home reinforce the chart instead of fighting it.")
+
+    # ---- every remaining section gets its own reading (§4,5,9,10,11,12,13) --
+    from .careers import career_paths
+    from .domains import health_map, personality_axes
+    from .liunian import dayun_detail
+    from .shensha import TEN_GOD_MEANING, shensha, ten_god_pct
+    from .windows import timing_windows
+
+    pct = ten_god_pct(chart)
+    ordered = sorted(pct.items(), key=lambda kv: -kv[1])
+    (g1, p1), (g2, p2) = ordered[0], ordered[1]
+    faint = [g for g, p in ordered if p < 5]
+    paras.append(
+        f"[§4] Read the distribution as where life's attention goes by default: "
+        f"this chart runs on {g1} ({p1}% — {TEN_GOD_MEANING[g1]}) backed by {g2} "
+        f"({p2}%). That is the engine; point it at things worth doing."
+        + (f" The faint gods ({', '.join(faint)}) mark domains that never happen "
+           "by themselves here — they need a system, a schedule or a partner "
+           "who carries them." if faint else
+           " No god is faint — an unusually even spread; versatile, but watch "
+           "for energy scattering across too many fronts."))
+
+    strong = chart.strength["verdict"].startswith("身強")
+    paras.append(
+        f"[§5] Why {'·'.join(ys['favourable'])} are the medicine: 扶抑法 feeds a "
+        "weak chart and drains a strong one"
+        + (" — this chart is strong, so its medicine is productive outlets "
+           "(output, wealth, discipline), not more support."
+           if strong else
+           " — this chart is weak, so its medicine feeds and protects it "
+           "(resource and peer elements), not more drain.")
+        + f" Apply it where exposure is long: bedroom direction, industry, "
+          f"daily colours. Treat 忌神 {'·'.join(ys['unfavourable'])} as load, "
+          "not poison — fine in doses, taxing as a lifestyle.")
+
+    ss = [s["star"] for s in shensha(chart)]
+    bits = []
+    if any("貴人" in s for s in ss):
+        bits.append("貴人 nobleman stars — help tends to arrive through "
+                    "people; ask early, it is structurally available")
+    if "桃花" in ss:
+        bits.append("桃花 — natural charm/visibility; an asset in front-of-"
+                    "people roles, worth boundaries in commitments")
+    if any(s in ("文昌貴人", "學堂") for s in ss):
+        bits.append("文昌/學堂 — study and writing are supported; exams and "
+                    "credentials pay off above average")
+    if "驛馬" in ss:
+        bits.append("驛馬 — movement luck; relocation, travel and role "
+                    "changes tend to open doors rather than close them")
+    if "華蓋" in ss:
+        bits.append("華蓋 — a solitary, contemplative streak; depth over "
+                    "breadth, needs alone-time to recharge")
+    if ss:
+        paras.append(f"[§9] {len(ss)} symbolic stars colour this chart. "
+                     + ("Standouts: " + "; ".join(bits) + "."
+                        if bits else
+                        "None of the major auspicious clusters — read the "
+                        "individual notes below.")
+                     + " 神煞 are flavour on top of structure — never let one "
+                       "star overrule the balance reading above.")
+
+    axes = [a for a in personality_axes(chart)
+            if a["verdict"] != "no strong tendency"]
+    paras.append(
+        "[§10] Temperament, read straight off the ten-god mix: "
+        + ("; ".join(a["verdict"] for a in axes) + ". These are operating "
+           "instructions, not judgments — arrange work and relationships so "
+           "the tendencies are features."
+           if axes else
+           "no axis shows a strong tendency — a flexible, situation-driven "
+           "temperament. The cost of flexibility is drift; external structure "
+           "(deadlines, partners, routines) substitutes for the missing "
+           "internal compulsion."))
+
+    hm = health_map(chart)
+    exc = [h for h in hm if "excess" in h["status"]]
+    def_ = [h for h in hm if h["status"] != "balanced" and h not in exc]
+    if exc or def_:
+        parts = []
+        if exc:
+            parts.append("excess " + "; ".join(
+                f"{h['element']} — {h['organs']} carry the first strain when "
+                f"life overloads" for h in exc))
+        if def_:
+            parts.append("deficiency " + "; ".join(
+                f"{h['element']} — {h['organs']} deserve baseline care before "
+                f"symptoms ask for it" for h in def_))
+        paras.append("[§11] Where this chart's body keeps score: "
+                     + "; ".join(parts)
+                     + ". Balanced elements are not risk markers. Reference "
+                       "against the trigger years in §13, not medical advice.")
+    else:
+        paras.append("[§11] All five elements sit in the balanced band — no "
+                     "organ system is structurally flagged. Maintenance beats "
+                     "intervention: seasonal food, regular sleep, and use the "
+                     "§13 recovery years for elective procedures.")
+
+    cp = career_paths(chart, ys)
+    t1, t2 = cp["top"][0], cp["top"][1]
+    av = cp["avoid"][0] if cp["avoid"] else None
+    paras.append(
+        f"[§12] Careers are ranked by how cheaply this chart converts effort "
+        f"into result: {t1['en']} {t1['zh']} and {t2['en']} {t2['zh']} lead "
+        "because their field elements feed the 用神 and their working style "
+        "matches the dominant gods."
+        + (f" {av['en']} is priced against the chart — possible, but it "
+           "spends more than it returns; choose it only for reasons the "
+           "chart doesn't measure." if av else ""))
+
+    w = timing_windows(chart, ys, dayun_detail(chart, year), year)
+    cur_d = next((d for d in w["decades"] if d["current"]), None)
+    peaks = [str(y["y"]) for y in w["years"] if y["overall"] == "peak"]
+    cares = [str(y["y"]) for y in w["years"] if y["overall"] == "careful"]
+    PHASE_GLOSS = {"growth": "momentum is structurally supported — expand",
+                   "corrective": "friction does the teaching — repair, "
+                                 "consolidate, don't force expansion",
+                   "transition": "the ground is shifting — stay liquid and "
+                                 "commit late",
+                   "consolidation": "gains want banking, not betting — "
+                                    "build quietly"}
+    if cur_d:
+        paras.append(
+            f"[§13] The current decade ({cur_d['gz']}, ages {cur_d['ages']}) "
+            f"reads {cur_d['phase_zh']} {cur_d['phase']}: "
+            f"{PHASE_GLOSS.get(cur_d['phase'], 'a mixed phase')}. "
+            + (f"Standout years ahead: {', '.join(peaks)} — schedule launches "
+               "and commitments into them. " if peaks else
+               "No peak year in the next ten — a building stretch; judge "
+               "yourself on inputs, not outcomes. ")
+            + (f"Care flagged in {', '.join(cares)}: consolidation years, "
+               "not retreat years." if cares else ""))
     return {"paragraphs": paras}
 
 
