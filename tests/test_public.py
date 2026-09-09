@@ -157,6 +157,8 @@ def test_homes_and_battlecard():
     p = bc["people"][0]
     assert p["edge"] in (h1, h2) and set(p["homes"]) == {h1, h2}
     assert len(p["homes"][h1]["aspects"]) == 6
+    assert p["homes"][h1]["aspects"]["health"]["band"] in (
+        "strong", "good", "fair", "weak", "poor")
     assert client.delete(f"/api/pub/w/{tok}/homes/{h2}").status_code == 200
     assert client.get(f"/api/pub/w/{tok}/battlecard").status_code == 400
 

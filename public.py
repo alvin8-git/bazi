@@ -617,6 +617,7 @@ def battlecard(token: str):
                 "best_room": p["rooms"][0]["label"] if p["rooms"] else None,
                 "fit": p["rooms"][0]["total"] if p["rooms"] else None,
                 "aspects": {c["aspect"]: {"score": c["score"], "zh": c["zh"],
+                                          "band": c["band"],
                                           "band_zh": c["band_zh"]}
                             for c in asp}}
     out = []

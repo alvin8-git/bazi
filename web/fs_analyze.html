@@ -139,6 +139,12 @@ th{background:#f6f1e8}
 .hchip i:hover{color:var(--accent)}
 .bc-edge{color:var(--good);font-weight:700}
 .bc-table td,.bc-table th{font-size:12.5px}
+/* band shading — 旺 strong / 优 good / 平 fair / 弱 weak / 忌 poor */
+td.b-strong{background:#cfe9d6;color:#155d24;font-weight:600}
+td.b-good{background:#e9f7ee;color:#1e7d32}
+td.b-fair{background:#f7f4ec;color:#6b6357}
+td.b-weak{background:#ffe9d2;color:#a35a00}
+td.b-poor{background:#fdecea;color:#b03a2e}
 .dirchip{display:inline-block;border-radius:6px;padding:1px 8px;font-size:12.5px;margin:1px}
 .dirchip.good{background:#e9f7ee;color:#1e7d32;border:1px solid #b7e1c3}
 .dirchip.bad{background:#fdecea;color:#b03a2e;border:1px solid #f5c6c0}
@@ -760,9 +766,38 @@ function renderResults(res) {
   $("#results").innerHTML = html;
 }
 
-function aspectChips(cards) {
-  return cards.map(a => `<span class="dirchip ${a.score >= 65 ? "good" :
-    a.score < 45 ? "bad" : ""}" title="${a.driver || ""}">${a.zh} ${a.score} ${a.band_zh}</span>`).join(" ");
+const ASP_KEYS = ["health", "career", "study", "wealth", "relationship", "luck"];
+const ASP_HEAD = {health: "健康 Health", career: "事业 Career", study: "学业 Study",
+  wealth: "财富 Wealth", relationship: "感情 Relationship", luck: "运势 Luck"};
+const BAND_BY_ZH = {"旺": "strong", "优": "good", "平": "fair", "弱": "weak", "忌": "poor"};
+const aspectCell = a => !a ? "<td>—</td>" :
+  `<td class="b-${a.band || BAND_BY_ZH[a.band_zh] || "fair"}" title="${a.driver || ""}">
+    <b>${a.score}</b> ${a.band_zh}</td>`;
+
+function scorecardBlock(res) {
+  if (!res.aspects) return "";
+  return `<div class="sec"><h2>Per-person scorecard 六项评分</h2>
+    <div style="overflow-x:auto"><table class="bc-table">
+      <tr><th>Person</th><th>宅命 match</th><th>Best room · fit</th>
+        ${ASP_KEYS.map(k => `<th>${ASP_HEAD[k]}</th>`).join("")}</tr>
+      ${res.people.map(p => {
+        const by = Object.fromEntries((res.aspects[p.name] || []).map(a => [a.aspect, a]));
+        const best = p.rooms[0];
+        return `<tr><td><b>${p.name}</b></td>
+          <td class="${p.match ? "b-good" : "b-weak"}">${p.match ? "✓ 相配" : "✗ 相斥"}</td>
+          <td class="${best ? (best.total >= 0 ? "b-good" : "b-weak") : ""}">
+            ${best ? `${best.label} · <b>${best.total.toFixed(2)}</b>` : "—"}</td>
+          ${ASP_KEYS.map(k => aspectCell(by[k])).join("")}</tr>`;
+      }).join("")}
+    </table></div>
+    <div class="hint">Colour = band: <span class="dirchip" style="background:#cfe9d6;color:#155d24">旺 strong</span>
+      <span class="dirchip" style="background:#e9f7ee;color:#1e7d32">优 good</span>
+      <span class="dirchip" style="background:#f7f4ec">平 fair</span>
+      <span class="dirchip" style="background:#ffe9d2;color:#a35a00">弱 weak</span>
+      <span class="dirchip" style="background:#fdecea;color:#b03a2e">忌 poor</span>
+      — 0–100 per aspect, hover a cell for its driver. The same scale and colours
+      run through the multi-home battlecard, so columns line up as homes are added.</div>
+  </div>`;
 }
 
 function battlecardBlock(bc) {
@@ -780,15 +815,13 @@ function battlecardBlock(bc) {
       <tr><th></th>${Object.keys(p.homes).map(hid =>
         `<th>${hn[hid]}${hid === p.edge ? " 👑" : ""}</th>`).join("")}</tr>
       <tr><th>宅命 match</th>${Object.values(p.homes).map(r =>
-        `<td class="${r.match ? "good" : "bad"}">${r.match ? "✓ matches" : "✗ opposite"}</td>`).join("")}</tr>
+        `<td class="${r.match ? "b-good" : "b-weak"}">${r.match ? "✓ matches" : "✗ opposite"}</td>`).join("")}</tr>
       <tr><th>Best room · fit</th>${Object.values(p.homes).map(r =>
-        `<td>${r.best_room || "—"} · <b>${r.fit != null ? r.fit.toFixed(2) : "—"}</b></td>`).join("")}</tr>
-      ${["health","career","study","wealth","relationship","luck"].map(k =>
-        `<tr><th>${{health:"健康 Health",career:"事业 Career",study:"学业 Study",
-          wealth:"财富 Wealth",relationship:"感情 Relationship",luck:"运势 Luck"}[k]}</th>
-        ${Object.values(p.homes).map(r => { const a = r.aspects[k];
-          return `<td class="${a && a.score >= 65 ? "good" : a && a.score < 45 ? "bad" : ""}">
-            ${a ? `<b>${a.score}</b> ${a.band_zh}` : "—"}</td>`; }).join("")}</tr>`).join("")}
+        `<td class="${r.fit != null ? (r.fit >= 0 ? "b-good" : "b-weak") : ""}">
+          ${r.best_room || "—"} · <b>${r.fit != null ? r.fit.toFixed(2) : "—"}</b></td>`).join("")}</tr>
+      ${ASP_KEYS.map(k =>
+        `<tr><th>${ASP_HEAD[k]}</th>
+        ${Object.values(p.homes).map(r => aspectCell(r.aspects[k])).join("")}</tr>`).join("")}
     </table></div></div>`).join("");
   html += `<div class="sec hint">${bc.source_ref}. Aspect scores come from the same
     rule engine as each single-home analysis — compare columns, then re-measure the
@@ -809,15 +842,13 @@ function peopleBlock(res) {
       <span style="color:${p.match ? "var(--good)" : "var(--accent)"};font-weight:600">
       ${p.match ? "✓ matches this house" : "✗ opposite group"}</span></div>`).join("")}
   </div>`;
+  html += scorecardBlock(res);
   html += res.people.map(p => `<div class="sec">
     <h2>${p.name} — directions &amp; rooms 方位与配房</h2>
     <div class="kv"><b>Bed / desk facing 床头·书桌:</b>
       ${p.dirs_good.map(d => `<span class="dirchip good">${d.dir} ${d.star}</span>`).join(" ")}
       &nbsp;avoid ${p.dirs_bad.slice(0, 2).map(d =>
         `<span class="dirchip bad">${d.dir} ${d.star}</span>`).join(" ")}</div>
-    ${res.aspects && res.aspects[p.name] ? `<div class="kv">
-      <b>Six aspects 六项评分:</b> ${aspectChips(res.aspects[p.name])}
-      <span class="hint">(hover a chip for its driver — 0–100, ≥65 good, &lt;45 support)</span></div>` : ""}
     ${p.rooms.length ? `<table><tr><th>Room (best → worst)</th><th>Score</th><th>Why — top rules</th></tr>
       ${p.rooms.map((r, i) => `<tr><td>${i === 0 ? "★ " : ""}${r.label}</td>
         <td><b>${r.total.toFixed(2)}</b></td>
