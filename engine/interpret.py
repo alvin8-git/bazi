@@ -278,17 +278,22 @@ def interpret_person(chart, ys: dict, year: int) -> dict:
                                  "commit late",
                    "consolidation": "gains want banking, not betting — "
                                     "build quietly"}
-    if cur_d:
-        paras.append(
-            f"[§13] The current decade ({cur_d['gz']}, ages {cur_d['ages']}) "
-            f"reads {cur_d['phase_zh']} {cur_d['phase']}: "
-            f"{PHASE_GLOSS.get(cur_d['phase'], 'a mixed phase')}. "
-            + (f"Standout years ahead: {', '.join(peaks)} — schedule launches "
-               "and commitments into them. " if peaks else
-               "No peak year in the next ten — a building stretch; judge "
-               "yourself on inputs, not outcomes. ")
-            + (f"Care flagged in {', '.join(cares)}: consolidation years, "
-               "not retreat years." if cares else ""))
+    decade_line = (
+        f"The current decade ({cur_d['gz']}, ages {cur_d['ages']}) reads "
+        f"{cur_d['phase_zh']} {cur_d['phase']}: "
+        f"{PHASE_GLOSS.get(cur_d['phase'], 'a mixed phase')}. "
+        if cur_d else
+        "Outside the tabulated 大運 decades (before the first or past the "
+        "last) the birth chart itself dominates — the year-by-year table "
+        "below still applies. ")
+    paras.append(
+        "[§13] " + decade_line
+        + (f"Standout years ahead: {', '.join(peaks)} — schedule launches "
+           "and commitments into them. " if peaks else
+           "No peak year in the next ten — a building stretch; judge "
+           "yourself on inputs, not outcomes. ")
+        + (f"Care flagged in {', '.join(cares)}: consolidation years, "
+           "not retreat years." if cares else ""))
     return {"paragraphs": paras}
 
 
