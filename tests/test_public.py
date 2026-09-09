@@ -273,6 +273,13 @@ def test_person_reading_13_sections():
             "careers", "windows", "life_palaces", "interpretation",
             "citations"} <= set(d)
     assert d["name"] == "测试一" and len(d["windows"]["years"]) == 10
+    # structure check: 用神 alignment, rooting, classical pair patterns
+    ti = d["tengod_insights"]
+    assert 1 <= len(ti["favor"]) <= 3
+    assert all(f["status"] in ("favourable", "unfavourable", "neutral")
+               for f in ti["favor"])
+    assert all(r["state"] in ("rooted", "floating") for r in ti["rooted"])
+    assert isinstance(ti["patterns"], list)
     # 生剋 interaction layer: DM flows + findings for the §1 wheel
     er = d["element_relations"]
     assert er["dm"] in "木火土金水" and len(er["flows"]) == 5

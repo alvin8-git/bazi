@@ -854,7 +854,9 @@ const LEGENDS = {
     ["wheel: 日元 centre", "your Day Master; the five groups around it are the five roles from §1's element wheel, refined into gods"],
     ["node colour & size", "colour = that group's actual element for YOUR Day Master (§1 palette); size = its share of the chart"],
     ["green / red arrows", "生 feeding and 剋 controlling cycles between the god groups — same cycles as §1, one level up"],
-    ["satellites", "each group's 正/偏 pair with its own share — faded = barely present"]],
+    ["satellites", "each group's 正/偏 pair with its own share — faded = barely present"],
+    ["rooted 有根 / floating 虛浮", "a visible god whose element also sits in the branches is rooted (durable); visible-only is floating (shows up socially, needs backing)"],
+    ["pair patterns", "classical combinations (食神制殺, 傷官見官, …) — the gods' joint behaviour, not just their sizes"]],
   5: [["用神 / 喜", "favourable — the chart's medicine; carry these elements in colours, directions, fields"],
     ["忌 avoid", "elements that aggravate the imbalance"],
     ["扶抑法", "support-the-weak / restrain-the-strong: the method that picked them"],
@@ -1022,6 +1024,26 @@ async function renderPerson(name) {
       <div class="cite">A god's shadow side activates when it is excessive or
         unsupported — read the bold (prominent) rows as both your engine AND your
         watch-list; faded rows barely operate in this chart.</div>
+      ${c.tengod_insights ? (() => { const ti = c.tengod_insights;
+        return `<h4>Structure check 結構
+          <span class="tag warn">percentages are the start — structure decides</span></h4>
+        <div class="cite" style="margin:0 0 6px">Three checks a percentage chart cannot
+          make: is the heavy god <b>aligned with your 用神</b>, is it <b>rooted</b> in
+          the branches, and what do the gods form <b>together</b>?</div>
+        ${ti.favor.map((f) => `<div class="cite"><b>${f.god} ${f.pct}%</b> ${elb(f.el)}
+          <span class="dirchip ${f.status === "favourable" ? "good" :
+            f.status === "unfavourable" ? "bad" : ""}">${f.status}</span> — ${f.note}</div>`).join("")}
+        <div class="cite" style="margin-top:6px"><b>Visible stems:</b>
+          ${ti.rooted.map((r) => `<span class="dirchip ${r.state === "rooted" ? "good" : "bad"}">
+            ${r.god} ${r.state === "rooted" ? "rooted 有根" : "floating 虛浮"}</span>`).join(" ")}
+          — a rooted god delivers durably; a floating one shows socially but needs backing.</div>
+        ${ti.patterns.length ? ti.patterns.map((p) => `<div class="ninline">
+            <b>${p.name} — ${p.zh}:</b> ${p.note}</div>`).join("")
+          : `<div class="cite">No classical pair pattern triggers — the gods operate
+             independently in this chart.</div>`}
+        <div class="cite">Personality is not static: the current decade (§6) overlays its
+          own gods — a 傷官 profile can behave like a 正官 one for ten years.</div>`;
+      })() : ""}
       ${(() => {
         const e = Object.entries(c.tengods_pct);
         const [g1, p1] = e[0], [g2, p2] = e[1];
@@ -1041,20 +1063,37 @@ async function renderPerson(name) {
           ["配偶星 Spouse star", sex === "M"
             ? "正財+偏財 — in a man's chart the partner is represented by the wealth gods"
             : "正官+七殺 — in a woman's chart the partner is represented by the authority gods",
+            sex === "M" ? "wife 妻" : "husband 夫",
             sex === "M" ? ["正財", "偏財"] : ["正官", "七殺"]],
-          ["財星 Wealth stars", "正財+偏財 — income, assets, practical results", ["正財", "偏財"]],
-          ["官殺 Authority stars", "正官+七殺 — career, status, discipline, pressure", ["正官", "七殺"]],
-          ["印 Resource stars", "正印+偏印 — learning, support, protection, credentials", ["正印", "偏印"]],
-          ["食傷 Output stars", "食神+傷官 — expression, creativity, charm", ["食神", "傷官"]],
-          ["比劫 Peer stars", "比肩+劫財 — self-drive, siblings, competition", ["比肩", "劫財"]],
+          ["財星 Wealth stars", "正財+偏財 — income, assets, practical results; also " +
+            "personal values and how you 'monetise' effort",
+            "father 父" + (sex === "M" ? " · wife 妻" : ""), ["正財", "偏財"]],
+          ["官殺 Authority stars", "正官+七殺 — career, status, discipline, laws, pressure",
+            "bosses, authority figures" + (sex === "F" ? " · husband 夫" : ""), ["正官", "七殺"]],
+          ["印 Resource stars", "正印+偏印 — learning, support, protection, credentials, patience",
+            "mother 母 · mentors, elders", ["正印", "偏印"]],
+          ["食傷 Output stars", "食神+傷官 — expression, creativity, ambitions — your life's output",
+            (sex === "F" ? "children (食神=daughters, 傷官=sons) · " : "") + "students, works",
+            ["食神", "傷官"]],
+          ["比劫 Peer stars", "比肩+劫財 — self-identity, willpower, competition",
+            "siblings 兄弟姐妹 · friends & rivals", ["比肩", "劫財"]],
         ];
         return `<h4 style="margin-top:12px">Star-type reference 星名對照
             <span class="tag">the vocabulary used by the §8 evidence chips</span></h4>
-          <table><tr><th>Term</th><th>Which ten gods &amp; what they mean</th><th>This chart</th></tr>
-            ${rows.map(([t, d, gods]) => { const p = grp(gods);
+          <table><tr><th>Term</th><th>Which ten gods &amp; what they mean</th>
+            <th>People 六親</th><th>This chart</th></tr>
+            ${rows.map(([t, d, who, gods]) => { const p = grp(gods);
               return `<tr><td><b>${t}</b></td><td class="sub">${d}</td>
+                <td class="sub">${who}</td>
                 <td class="${p >= 8 ? "good" : p === 0 ? "bad" : ""}">${p}% — ${band(p)}</td></tr>`; }).join("")}
           </table>
+          <div class="cite"><b>Reading the pairs:</b> each domain has a milder and a
+            fiercer star. The classical "four benign" 四吉神 — 正官・正印・正財・食神 —
+            are the conventional, steady, low-friction flavours; the "four fierce"
+            四凶神 — 七殺・傷官・偏印・劫財 — are intense and unconventional, powerful
+            when channelled and costly when not (偏財 and 比肩 sit in between). The
+            正/偏 in the names marks yin-yang polarity against your Day Master, which
+            decides which star of each pair your chart carries.</div>
           <div class="cite">Bands: ≥20% prominent · ≥8% present · &lt;8% faint · 0% absent —
             the same thresholds behind chips like "spouse star faint". 配偶宮 Spouse palace =
             the DAY branch (here ${c.pillars.day[1]}); clashes or combinations to it are read

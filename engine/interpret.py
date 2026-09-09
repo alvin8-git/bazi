@@ -181,6 +181,105 @@ def element_relations(chart) -> dict:
                           "element balance"}
 
 
+_TG_GROUP = {g: grp for grp, gods in {
+    "peer": ["比肩", "劫財", "劫财"],
+    "output": ["食神", "傷官", "伤官"],
+    "wealth": ["正財", "偏財", "正财", "偏财"],
+    "authority": ["正官", "七殺", "七杀"],
+    "resource": ["正印", "偏印"]}.items() for g in gods}
+
+
+def _group_el(dm_el: str, grp: str) -> str:
+    inv_s = {v: k for k, v in SHENG_C.items()}
+    inv_k = {v: k for k, v in KE_C.items()}
+    return {"peer": dm_el, "output": SHENG_C[dm_el], "wealth": KE_C[dm_el],
+            "authority": inv_k[dm_el], "resource": inv_s[dm_el]}[grp]
+
+
+def ten_god_insights(chart, ys: dict) -> dict:
+    """Structure over percentages (the Sean-Chan critique, applied): 用神
+    alignment of the heavy gods, rooted-vs-floating for visible stems, and
+    classical pair patterns (食神制殺, 傷官見官, 殺印相生, …)."""
+    from .shensha import ten_god_pct
+    pct = ten_god_pct(chart)
+    dm_el = STEM_ELEMENT[chart.day_master]
+    fav, unfav = set(ys["favourable"]), set(ys["unfavourable"])
+
+    def g(*names):
+        return round(sum(pct.get(n, 0) for n in names), 1)
+
+    favor = []
+    for god, p in sorted(pct.items(), key=lambda kv: -kv[1])[:3]:
+        el = _group_el(dm_el, _TG_GROUP[god])
+        st = ("favourable" if el in fav else
+              "unfavourable" if el in unfav else "neutral")
+        note = (f"carries {el} — one of your 用神: a clean engine, using it "
+                "strengthens the chart" if st == "favourable" else
+                f"carries {el} — an UNFAVOURABLE element here: its gifts run "
+                "on borrowed energy; use it deliberately and budget recovery"
+                if st == "unfavourable" else
+                f"carries {el} — neutral for this chart")
+        favor.append({"god": god, "pct": p, "el": el, "status": st,
+                      "note": note})
+
+    branch_els = {STEM_ELEMENT[s] for hs in chart.hidden_gods.values()
+                  for s, _ in hs}
+    rooted, seen = [], set()
+    for pos, god in chart.ten_gods.items():
+        if god in seen or god not in _TG_GROUP:
+            continue
+        seen.add(god)
+        el = _group_el(dm_el, _TG_GROUP[god])
+        rooted.append({"god": god,
+                       "state": "rooted" if el in branch_els else "floating"})
+
+    patterns = []
+
+    def add(name, zh, note):
+        patterns.append({"name": name, "zh": zh, "note": note})
+
+    shi, shang = g("食神"), g("傷官", "伤官")
+    sha, guan = g("七殺", "七杀"), g("正官")
+    yin, pyin = g("正印"), g("偏印")
+    bj = g("比肩", "劫財", "劫财")
+    cai = g("正財", "正财", "偏財", "偏财")
+    weak = chart.strength["verdict"].startswith("身弱")
+    if shi >= 8 and sha >= 8:
+        add("食神制殺", "refined skill tames force",
+            "the advisor pattern — influence through mastery, not dominance; "
+            "demanding roles suit you when you bring craft to them")
+    if shang >= 8 and guan >= 5:
+        add("傷官見官", "talent chafes against authority",
+            "the classic friction pattern — candour collides with hierarchy; "
+            "choose environments that price honesty as an asset, and document "
+            "wins before challenging rules")
+    if sha >= 8 and (yin + pyin) >= 8:
+        add("殺印相生", "pressure converts to growth",
+            "stress becomes study: credentials, mentors and frameworks turn "
+            "七殺 pressure into rank — the high-stakes professional pattern")
+    if shang >= 8 and yin >= 8:
+        add("傷官配印", "talent under discipline",
+            "raw output with built-in quality control — creative work that "
+            "survives editing; protect the learning time that powers it")
+    if guan >= 8 and yin >= 8:
+        add("官印相生", "authority feeds learning",
+            "the steady-ascent pattern — institutions reward you; rank comes "
+            "through credentials rather than risk")
+    if bj >= 20 and cai <= 8:
+        add("比劫奪財", "peers crowd the wealth",
+            "partnerships and 'friends' bleed money faster than rivals do — "
+            "keep finances separate, put agreements in writing")
+    if cai >= 25 and weak:
+        add("財多身弱", "wealth outweighs the carrier",
+            "opportunities exceed carrying capacity — strengthen the self "
+            "(rest, support, focus) before chasing more, or money passes "
+            "through without staying")
+    return {"favor": favor, "rooted": rooted, "patterns": patterns,
+            "source_ref": "structure over percentages: 用神 alignment of the "
+                          "heavy gods, rooting of visible stems, classical "
+                          "pair patterns — thresholds on weighted god shares"}
+
+
 def _fav_word(el: str, ys: dict) -> str:
     if el in ys["favourable"]:
         return "favourable 喜"
