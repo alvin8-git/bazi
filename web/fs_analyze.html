@@ -71,12 +71,9 @@ button:disabled{opacity:.45;cursor:default}
 #needle::before{content:"";position:absolute;top:-5px;left:50%;transform:translateX(-50%);
   border:5px solid transparent;border-bottom:7px solid var(--accent)}
 #compass b{font-size:12.5px}
-#canvas-col{overflow:hidden}
-#wrap{position:relative;max-width:100%;user-select:none;touch-action:none;
-  transform-origin:0 0}
+#wrap{position:relative;max-width:100%;user-select:none;touch-action:none}
 #wrap.draw{cursor:crosshair}
 #wrap.door{cursor:pointer}
-#wrap.pan{cursor:grab}
 #plan{max-width:100%;max-height:74vh;display:block}
 .rect{position:absolute;border:2px solid #6b5b95;background:rgba(107,91,149,.28);
   color:#fff;overflow:hidden;font-size:12px;display:flex;align-items:center;
@@ -245,8 +242,6 @@ td.b-poor{background:#fdecea;color:#b03a2e}
     <div id="board">
       <div id="sidebtns">
         <button id="btn-undo" title="undo last room">↺</button>
-        <button id="btn-pan" title="pan tool (or drag with two fingers)">🖐</button>
-        <button id="btn-zreset" title="reset zoom" style="font-size:11px">1:1</button>
       </div>
       <div id="canvas-col">
         <div id="compass"><div id="dial"><div id="needle"></div></div><b id="cp-val">0°</b></div>
@@ -282,7 +277,6 @@ const $ = s => document.querySelector(s);
 let token = null, ws = null, rooms = [], drag = null, imgNatural = [0, 0];
 let mode = "draw", selected = -1, entrance = null;   // entrance = [rx,ry] 0..1
 let homes = [], cur = null, pendingRestore = null;
-const view = {s: 1, tx: 0, ty: 0};                   // pan/zoom transform
 const SLEEP_TYPES = ["Master Bedroom 主卧", "Bedroom 卧室"];
 const mm = location.pathname.match(/^\/w\/([A-Za-z0-9_-]{8,64})/);
 if (mm) token = mm[1];
@@ -346,7 +340,6 @@ function resetCanvas() {
   rooms.forEach(r => r.el.remove()); rooms = [];
   entrance = null; $("#door-pin").hidden = true;
   selected = -1; $("#panel").hidden = true;
-  view.s = 1; view.tx = 0; view.ty = 0; applyView();
   $("#results").innerHTML = ""; $("#go-err").textContent = "";
 }
 async function ensureHome() {
@@ -481,42 +474,16 @@ function setMode(m) {
   mode = m;
   $("#btn-draw").classList.toggle("on", m === "draw");
   $("#btn-door").classList.toggle("on", m === "door");
-  $("#btn-pan").style.borderColor = m === "pan" ? "var(--accent)" : "";
   wrap.className = m;
 }
 $("#btn-draw").addEventListener("click", () => setMode("draw"));
 $("#btn-door").addEventListener("click", () => setMode("door"));
-$("#btn-pan").addEventListener("click", () => setMode(mode === "pan" ? "draw" : "pan"));
 setMode("draw");
 
-/* ---------------- pan / zoom (wheel, pinch, hand tool) ---------------- */
-function applyView() {
-  wrap.style.transform = `translate(${view.tx}px,${view.ty}px) scale(${view.s})`;
-}
-$("#btn-zreset").addEventListener("click", () => {
-  view.s = 1; view.tx = 0; view.ty = 0; applyView();
-});
-function rel(e) {                          // pointer → plan-layout coords
+function rel(e) {                          // pointer → plan coords
   const b = wrap.getBoundingClientRect();
-  return [(e.clientX - b.left) / view.s, (e.clientY - b.top) / view.s];
+  return [e.clientX - b.left, e.clientY - b.top];
 }
-function zoomAt(clientX, clientY, factor) {
-  const b = wrap.getBoundingClientRect();
-  const p = [(clientX - b.left) / view.s, (clientY - b.top) / view.s];
-  const s2 = Math.max(0.5, Math.min(6, view.s * factor));
-  const base = [b.left - view.tx, b.top - view.ty];
-  view.tx = clientX - base[0] - p[0] * s2;
-  view.ty = clientY - base[1] - p[1] * s2;
-  view.s = s2;
-  applyView();
-}
-$("#canvas-col").addEventListener("wheel", e => {
-  e.preventDefault();
-  zoomAt(e.clientX, e.clientY, Math.pow(1.1, -e.deltaY / 53));
-}, {passive: false});
-
-const pointers = new Map();                // pinch = two active pointers
-let pinch = null, panDrag = null;
 
 /* ---------------- drawing (pointer events = mouse + touch) ---------------- */
 $("#plan").addEventListener("load", () => {
@@ -531,24 +498,7 @@ $("#plan").addEventListener("error", () => {
     "saved and will reappear over it.";
 });
 wrap.addEventListener("pointerdown", e => {
-  pointers.set(e.pointerId, [e.clientX, e.clientY]);
-  if (pointers.size === 2) {               // second finger → pinch, cancel draw
-    if (drag) { drag.el.remove(); drag = null; }
-    panDrag = null;
-    const [a, b2] = [...pointers.values()];
-    pinch = {d0: Math.hypot(a[0]-b2[0], a[1]-b2[1]) || 1,
-             mid0: [(a[0]+b2[0])/2, (a[1]+b2[1])/2],
-             s0: view.s, tx0: view.tx, ty0: view.ty,
-             base: [wrap.getBoundingClientRect().left - view.tx,
-                    wrap.getBoundingClientRect().top - view.ty]};
-    return;
-  }
   const [x, y] = rel(e);
-  if (mode === "pan") {
-    panDrag = {x: e.clientX, y: e.clientY, tx: view.tx, ty: view.ty};
-    wrap.setPointerCapture(e.pointerId);
-    return;
-  }
   if (mode === "door") {
     entrance = [x / $("#plan").offsetWidth, y / $("#plan").offsetHeight];
     placeDoor(); setMode("draw"); return;
@@ -561,26 +511,6 @@ wrap.addEventListener("pointerdown", e => {
   e.preventDefault();
 });
 wrap.addEventListener("pointermove", e => {
-  if (pointers.has(e.pointerId)) pointers.set(e.pointerId, [e.clientX, e.clientY]);
-  if (pinch && pointers.size === 2) {
-    const [a, b2] = [...pointers.values()];
-    const d = Math.hypot(a[0]-b2[0], a[1]-b2[1]) || 1;
-    const mid = [(a[0]+b2[0])/2, (a[1]+b2[1])/2];
-    const s2 = Math.max(0.5, Math.min(6, pinch.s0 * d / pinch.d0));
-    const p = [(pinch.mid0[0] - pinch.base[0] - pinch.tx0) / pinch.s0,
-               (pinch.mid0[1] - pinch.base[1] - pinch.ty0) / pinch.s0];
-    view.s = s2;
-    view.tx = mid[0] - pinch.base[0] - p[0] * s2;
-    view.ty = mid[1] - pinch.base[1] - p[1] * s2;
-    applyView();
-    return;
-  }
-  if (panDrag) {
-    view.tx = panDrag.tx + e.clientX - panDrag.x;
-    view.ty = panDrag.ty + e.clientY - panDrag.y;
-    applyView();
-    return;
-  }
   if (!drag) return;
   const w0 = $("#plan").offsetWidth, h0 = $("#plan").offsetHeight;
   const [rx, ry] = rel(e);
@@ -588,14 +518,7 @@ wrap.addEventListener("pointermove", e => {
   Object.assign(drag.el.style, {left: Math.min(x, drag.x0)+"px", top: Math.min(y, drag.y0)+"px",
     width: Math.abs(x-drag.x0)+"px", height: Math.abs(y-drag.y0)+"px"});
 });
-function endPointer(e) {
-  pointers.delete(e.pointerId);
-  if (pointers.size < 2) pinch = null;
-  panDrag = null;
-}
-wrap.addEventListener("pointercancel", endPointer);
-wrap.addEventListener("pointerup", e => {
-  endPointer(e);
+wrap.addEventListener("pointerup", () => {
   if (!drag) return;
   const s = drag.el.style;
   const w = parseFloat(s.width || 0), h = parseFloat(s.height || 0);
