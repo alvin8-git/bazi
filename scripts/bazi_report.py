@@ -421,6 +421,71 @@ def birth_time_confidence(chart):
             "could flip the Hour Pillar; consider chart rectification ⚠")
 
 
+def strategy_payload(chart, ys, year=YEAR, others=()) -> dict:
+    """The strategy report's advice blocks, keyed by the Reading section each
+    belongs to (s2 strength, s5 用神 rhythm, s8 relationships, s10 handling,
+    s11 health, s12 career, s13 windows/wealth) — the Reading tab renders
+    them in place, replacing the separate strategy report link."""
+    pct = ten_god_pct(chart)
+    w = timing_windows(chart, ys, dayun_detail(chart, year), year)
+    d = dial(pct)
+    rr = relationship_risk(chart, pct, w)
+    wp = wealth_pattern(chart, pct, w)
+    pc = people_compat(chart, pct, ys, list(others))
+    hm = health_map(chart)
+    weak = chart.strength["verdict"].startswith("身弱")
+    is_kid = (year - chart.lichun_year) < 18
+    imbal = [ELEMENT_READING[h["element"]][0 if "excess" in h["status"] else 1]
+             for h in hm if h["status"] != "balanced"]
+    trig = [f'{y["y"]} ({y["health"]["note"]})' for y in w["years"]
+            if y["health"]["flag"] == "caution"]
+    rec = [str(y["y"]) for y in w["years"] if y["health"]["flag"] == "window"]
+    nxt = next((dd for i, dd in enumerate(w["decades"])
+                if i and w["decades"][i - 1]["current"]), None)
+    handoff = None
+    if nxt:
+        start = chart.lichun_year + int(nxt["ages"].split("–")[0].split("-")[0])
+        handoff = (f'{nxt["gz"]} begins ~{start} as a {nxt["phase_zh"]} '
+                   f'{nxt["phase"]} phase'
+                   + (f' — {"; ".join(nxt["notes"])}' if nxt["notes"] else ""))
+    top2 = [g for g, _ in sorted(pct.items(), key=lambda kv: -kv[1])[:2]
+            if g in GOD_HANDLE]
+    return {
+        "s2": {"advice": STRENGTH_ADVICE[weak]},
+        "s5": {"rhythm": [{"mon": mo, "br": b, "el": e, "cls": c}
+                          for mo, b, e, c in monthly_rhythm(ys)]},
+        "s8": {"risk": rr["note"], "evidence": rr["evidence"],
+               "advice": REL_ADVICE[rr["key"]], "kid": is_kid,
+               "allies": pc["allies"], "clash": pc["clash"],
+               "el_line": pc["el_line"], "taohua": w["taohua"]["branch"]},
+        "s10": {"handle": [GOD_HANDLE[g] for g in top2], "kid": is_kid},
+        "s11": {"advice": (imbal or ["keep the balanced baseline: seasonal "
+                                     "food, regular sleep, and use recovery "
+                                     "years for elective procedures and "
+                                     "habit resets."])
+                + [ORGAN_CARE[h["element"]] for h in hm
+                   if h["status"] != "balanced"]
+                + ["Double the care in trigger years; schedule check-ups "
+                   "into them in advance."],
+                "trigger_years": trig, "recovery_years": rec},
+        "s12": {"pct_corp": d["pct_corp"], "verdict": d["verdict"],
+                "corp_ev": d["corp_ev"], "vent_ev": d["vent_ev"],
+                "advice": CAREER_ADVICE[d["mode"]] + [
+                    f"Fields carry elements: prefer "
+                    f"{'·'.join(ys['favourable'])}-flavoured industries even "
+                    "inside the same job title — the same work in the right "
+                    "field costs less energy.",
+                    pc["boss"],
+                    f"Ideal collaborator: this chart's thinnest resource is "
+                    f"{pc['weak_group']} — team up with {pc['partner']}."]},
+        "s13": {"wealth_pattern": wp["pattern"], "wealth_carry": wp["carry"],
+                "act_windows": wp["windows"], "cautions": wp["cautions"],
+                "wealth_advice": WEALTH_ADVICE[wp["mode"]],
+                "advice": WINDOWS_ADVICE, "handoff": handoff,
+                "exams": exam_overlay(chart, w) if is_kid else []},
+    }
+
+
 def build_person(m, chart, ys, fam_section, others):
     """m needs .name/.sex/.birth_dt; works for any person, not just the family
     (ROLE/KIDS fall back to age-based defaults for workspace users)."""

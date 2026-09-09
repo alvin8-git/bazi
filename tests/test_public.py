@@ -46,6 +46,16 @@ def test_workspace_harmony_and_cap():
                        json={**P1, "name": "p9"}).status_code == 200
 
 
+def test_rename_person():
+    tok = _new_ws(P1)
+    r = client.patch(f"/api/pub/w/{tok}/person/0", json={"name": "改名"})
+    assert r.status_code == 200 and r.json()["people"][0]["name"] == "改名"
+    assert client.patch(f"/api/pub/w/{tok}/person/9",
+                        json={"name": "x"}).status_code == 404
+    assert client.patch(f"/api/pub/w/{tok}/person/0",
+                        json={"name": ""}).status_code == 422
+
+
 def test_person_report_html():
     tok = _new_ws(P1, P2)
     r = client.get(f"/w/{tok}/person/0/report")
@@ -252,5 +262,8 @@ def test_person_reading_13_sections():
             "careers", "windows", "life_palaces", "interpretation",
             "citations"} <= set(d)
     assert d["name"] == "测试一" and len(d["windows"]["years"]) == 10
+    # strategy advice distributed per section (s2..s13)
+    assert {"s2", "s5", "s8", "s10", "s11", "s12", "s13"} <= set(d["strategy"])
+    assert d["strategy"]["s12"]["advice"] and d["strategy"]["s13"]["wealth_pattern"]
     assert client.get(f"/w/{tok}/person/0/reading").status_code == 200
     assert client.get(f"/w/{tok}/person/5/reading").status_code == 404

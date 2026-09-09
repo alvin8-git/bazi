@@ -38,8 +38,12 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
     from .windows import timing_windows
     from .bazi import TEN_GOD_EN
     from .wuxing import HIDDEN_STEMS
+    # advice layer lives with the report templates; imported here so the
+    # Reading tab carries the strategy content in-place (one source of truth)
+    from scripts.bazi_report import strategy_payload
     st, br = year_ganzhi(year)
     return {"name": name, "sex": c.sex, **chart_json(c), "yongshen": ys,
+            "strategy": strategy_payload(c, ys, year),
             "gua": ming_gua(c.lichun_year, c.sex),
             "group": gua_group(ming_gua(c.lichun_year, c.sex)),
             "youxing": youxing_stars(ming_gua(c.lichun_year, c.sex)),

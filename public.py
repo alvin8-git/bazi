@@ -240,6 +240,20 @@ def add_person(token: str, person: PersonIn):
     return _ws_payload(token, ws)
 
 
+class RenameIn(BaseModel):
+    name: str = Field(min_length=1, max_length=40)
+
+
+@router.patch("/api/pub/w/{token}/person/{idx}")
+def rename_person(token: str, idx: int, body: RenameIn):
+    ws = _load(token)
+    if not 0 <= idx < len(ws["people"]):
+        raise HTTPException(404, "no such person")
+    ws["people"][idx]["name"] = body.name.strip()
+    _save(token, ws)
+    return _ws_payload(token, ws)
+
+
 @router.delete("/api/pub/w/{token}/person/{idx}")
 def remove_person(token: str, idx: int):
     ws = _load(token)
@@ -660,13 +674,15 @@ def baby(name: str = Form("宝宝"), sex: str = Form(...), dob: str = Form(...),
     ys = yong_shen(c)
     lp = life_palaces(c)
     total = sum(c.element_weights.values()) or 1
+    def _elb(el):
+        return f'<span class="elb el-{el}">{el}</span>'
     bars = "".join(
-        f'<div class="eb"><span>{el}</span>'
+        f'<div class="eb"><span>{_elb(el)}</span>'
         f'<div class="et"><div style="width:{w / total * 100:.0f}%"></div></div>'
         f'<span>{w / total * 100:.0f}%</span></div>'
         for el, w in c.element_weights.items())
     fav = ys["favourable"]
-    rad = "".join(f'<div class="cite"><b>{el}</b> — {RADICAL_ELEMENTS[el]}</div>'
+    rad = "".join(f'<div class="cite">{_elb(el)} — {RADICAL_ELEMENTS[el]}</div>'
                   for el in fav)
     naming_html = ""
     if surname.strip():
@@ -715,6 +731,14 @@ h1{{font-size:20px;color:#b03a2e}}h2{{font-size:15px;color:#8a6d1f;margin:18px 0
 .cite{{color:#666;font-size:13px;margin:3px 0}}
 .eb{{display:flex;align-items:center;gap:8px;font-size:12.5px;margin:2px 0}}
 .eb span{{width:34px;color:#666}}.et{{flex:1;background:#f0ece4;border-radius:6px;height:11px}}
+.elb{{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;
+  border-radius:50%;font-weight:700;font-size:12px;border:1.5px solid;margin:0 1px;
+  vertical-align:-4px;line-height:1}}
+.elb.el-木{{color:#1e8e3e;border-color:#1e8e3e;background:#e9f7ee}}
+.elb.el-火{{color:#c5221f;border-color:#c5221f;background:#fdecea}}
+.elb.el-土{{color:#8a6d1f;border-color:#8a6d1f;background:#f6efdc}}
+.elb.el-金{{color:#a67c00;border-color:#c9a227;background:#faf3dd}}
+.elb.el-水{{color:#1a56b0;border-color:#1a56b0;background:#e8f0fe}}
 .et div{{height:100%;border-radius:6px;background:#b8860b}}
 .dy{{display:inline-block;border:1px solid #ddd;border-radius:8px;padding:3px 8px;margin:2px;
   font-size:11px;color:#777;text-align:center}}.dy b{{display:block;font-size:15px;color:#222}}
@@ -734,8 +758,8 @@ a{{color:#b03a2e}}</style></head><body>
 生肖 {lp["animal"]} · 命卦 {ming_gua(c.lichun_year, c.sex)} · 命星 {lp["life_star_zh"]}
 · 命宮 {lp["ming_gong"]} · 胎元 {lp["tai_yuan"]}</div></div>
 <div class="sec"><h2>Element balance 五行</h2>{bars}
-<div class="cite"><b>用神 favourable elements: {"·".join(fav)}</b> — avoid
-{"·".join(ys["unfavourable"])}. Derived by 扶抑法 with 調候 cross-check; the
+<div class="cite"><b>用神 favourable elements:</b> {"".join(_elb(e) for e in fav)} — avoid
+{"".join(_elb(e) for e in ys["unfavourable"])}. Derived by 扶抑法 with 調候 cross-check; the
 naming direction below follows directly from this.</div></div>
 <div class="sec"><h2>Naming direction 起名方向</h2>
 <div class="cite">Characters whose radicals carry the baby's favourable elements

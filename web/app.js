@@ -68,6 +68,56 @@ function splitNarr(i) {
 }
 const legendBlock = (pairs) => !pairs ? "" : `<div class="legend">
   <b>Legend 释义</b>${pairs.map(([t, d]) => `<span><b>${t}</b> — ${d}</span>`).join("")}</div>`;
+const elb = (e) => `<span class="elb el-${e}">${e}</span>`;
+const elbs = (a) => (a || []).map(elb).join("");
+const sadv = (items, title = "Strategy 策略") => !items || !items.length ? "" :
+  `<div class="sadv"><b>${title}</b>${items.map((x) => `<div>· ${dnAll(x)}</div>`).join("")}</div>`;
+
+/* strategy report content distributed into its Reading sections */
+function stratBlock(n, st) {
+  const s = st && st["s" + n];
+  if (!s) return "";
+  switch (n) {
+    case 2: return sadv([s.advice], "What this asks of you 策略");
+    case 5: return `<div class="cite" style="margin-top:8px"><b>Monthly rhythm 节律</b>
+        (recurring every year): green months feed this chart, red months drain it —
+        schedule pushes into green months, recovery into red ones.</div>
+      <div class="mos">${s.rhythm.map((m) => `<span class="mo ${m.cls}">${m.mon} ${m.br}${m.el}</span>`).join("")}</div>`;
+    case 8: return `<div class="cite" style="margin-top:8px"><b>${s.kid
+        ? "Partnership & friendship patterns 关系" : "Relationship patterns 感情"}:</b>
+        primary risk point — ${dnAll(s.risk)}</div>
+      ${s.evidence.map((e) => `<div class="cite">· ${dnAll(e)}</div>`).join("")}
+      <div class="cite"><b>桃花:</b> ${s.taohua} · <b>生肖 allies:</b> ${s.allies.join(", ")}
+        · <b>friction 生肖:</b> ${s.clash}</div>
+      <div class="cite"><b>Element fit:</b> ${dnAll(s.el_line)}</div>
+      ${sadv(s.advice)}`;
+    case 10: return !s.handle.length ? "" : `<div class="cite" style="margin-top:8px">
+        <b>${s.kid ? "How to parent them" : "How to work with them"}:</b>
+        ${s.handle.map(dnAll).join(". ")}.</div>`;
+    case 11: return `<div class="cite" style="margin-top:8px"><b>Trigger years:</b>
+        ${s.trigger_years.join(", ") || "none flagged in the next decade"} ·
+        <b>recovery years:</b> ${s.recovery_years.join(", ") || "—"}</div>
+      ${sadv(s.advice)}`;
+    case 12: return `<div class="sdial"><div class="sdialbar"><div style="width:${s.pct_corp}%"></div></div>
+        <div class="sdialcap"><span>venture 创业型</span><b>${s.pct_corp}% structured</b>
+          <span>corporate 体制型</span></div></div>
+      <div class="cite"><b>${dnAll(s.verdict)}</b></div>
+      <div class="cite">structure evidence: ${s.corp_ev.join(", ") || "—"} ·
+        volatility evidence: ${s.vent_ev.join(", ") || "—"}</div>
+      ${sadv(s.advice)}`;
+    case 13: return `<div class="cite" style="margin-top:8px"><b>Wealth pattern 财富:</b>
+        ${dnAll(s.wealth_pattern)} ${dnAll(s.wealth_carry)}</div>
+      ${s.act_windows.length ? `<div class="cite"><b>Act-year windows:</b>
+          ${s.act_windows.map((x) => "◉ " + dnAll(x)).join("<br>")}</div>`
+        : `<div class="cite">no wealth-activation years in the next decade — build, don't chase</div>`}
+      ${s.cautions.length ? `<div class="cite">⚠ hold-back years: ${s.cautions.join(", ")}</div>` : ""}
+      ${s.handoff ? `<div class="cite"><b>Next-decade handoff:</b> ${dnAll(s.handoff)}</div>` : ""}
+      ${s.exams.length ? `<div class="cite"><b>Exam-year overlay 考试年:</b><br>
+          ${s.exams.map((r) => `<b>${r.exam} — ${r.year}:</b> ${dnAll(r.note)}`).join("<br>")}</div>` : ""}
+      ${sadv(s.wealth_advice.concat(s.advice))}`;
+  }
+  return "";
+}
 
 function controls() {
   for (const id of ["year", "period", "method", "policy"]) {
@@ -576,7 +626,7 @@ function chartCard(c) {
         <div><span>日主</span>${c.day_master} ${STEM_EL[c.day_master]} · ${c.strength.verdict}</div>
         <div><span>命宮</span>${lp.ming_gong}</div>
         <div><span>胎元</span>${lp.tai_yuan}</div>
-        <div><span>用神</span>${c.yongshen.favourable.join("·")} <em>avoid ${c.yongshen.unfavourable.join("·")}</em></div>
+        <div><span>用神</span>${elbs(c.yongshen.favourable)} <em>avoid ${elbs(c.yongshen.unfavourable)}</em></div>
         <div><span>神煞</span>${stars}</div>
       </div>
     </div>
@@ -647,6 +697,7 @@ async function renderPerson(name) {
   const narr = (n) => (nb.by[n] || []).map((t) =>
     `<div class="ninline"><b>解读 Narrative:</b> ${dnAll(t)}</div>`).join("");
   const lg = (k) => legendBlock(LEGENDS[k]);
+  const stb = (n) => stratBlock(n, c.strategy);
   const wmax = Math.max(...Object.values(c.element_weights));
   const EL_ZH = { Wood: "木", Fire: "火", Earth: "土", Metal: "金", Water: "水" };
   $("#tab-person").innerHTML = jt(explain(
@@ -683,7 +734,7 @@ async function renderPerson(name) {
     ${lg("chart")}
     <div class="section"><h3>1. Five Elements Balance 五行</h3>
       <div class="bars">${Object.entries(c.element_weights).map(([en, v]) => `
-        <div class="bar-row el-${EL_ZH[en]}"><span>${EL_ZH[en]} ${en}</span>
+        <div class="bar-row el-${EL_ZH[en]}"><span>${elb(EL_ZH[en])} ${en}</span>
           <div class="bar"><i style="width:${(100 * v / wmax).toFixed(0)}%"></i></div>
           <b>${v.toFixed(1)}</b></div>`).join("")}
       </div>${narr(1)}${lg(1)}</div>
@@ -696,7 +747,7 @@ async function renderPerson(name) {
         share of the chart feeding the Day Master; root mass = share of hidden stems
         carrying its element.</div>
       ${c.strength.steps.map((s) => `<div class="cite"><b>${s.step}. ${s.name}:</b> ${s.value} — ${s.detail}</div>`).join("")}
-      ${narr(2)}${lg(2)}
+      ${stb(2)}${narr(2)}${lg(2)}
     </div>
     <div class="section"><h3>3. Ten Gods 十神 (hidden stems)</h3>
       <div class="cite" style="margin:0 0 6px">The raw data behind sections 4–10: the
@@ -760,10 +811,10 @@ async function renderPerson(name) {
       ${narr(4)}${lg(4)}
     </div>
     <div class="section"><h3>5. 用神 Favourable Elements</h3>
-      <p>Favourable: <b>${c.yongshen.favourable.join(" ")}</b> · avoid ${c.yongshen.unfavourable.join(" ")}
+      <p>Favourable: ${elbs(c.yongshen.favourable)} · avoid ${elbs(c.yongshen.unfavourable)}
          · colours <b>${c.yongshen.colours.join("、")}</b></p>
       ${c.yongshen.citations.map((x) => `<div class="cite"><b>${x.source_ref}:</b> ${x.explanation}</div>`).join("")}
-      ${narr(5)}${lg(5)}
+      ${stb(5)}${narr(5)}${lg(5)}
     </div>
     <div class="section"><h3>6. Luck Cycles 大運</h3>
       <div class="cite" style="margin:0 0 6px">Each 10-year decade is labelled by the ten
@@ -813,7 +864,7 @@ async function renderPerson(name) {
           <div style="margin-top:5px">${d.evidence.map((e) =>
             `<span class="tag ${e.delta < 0 ? "warn" : ""}">${e.label} ${e.delta > 0 ? "+" : ""}${e.delta}</span>`).join(" ")}</div>
         </div>`).join("")}
-      </div>${narr(8)}${lg(8)}</div>
+      </div>${stb(8)}${narr(8)}${lg(8)}</div>
     ${c.shensha.length ? `<div class="section"><h3>9. 神煞 Symbolic stars</h3>
       <div class="cite" style="margin:0 0 8px">Special stem-branch patterns from classical
         lookup tables — flavour on top of the structural reading. The small tag shows
@@ -833,7 +884,7 @@ async function renderPerson(name) {
         ${c.personality.map((a) => `<tr><td>${a.axis}</td>
           <td class="${a.verdict === "no strong tendency" ? "" : "good"}">${a.verdict}</td>
           <td class="sub">${a.basis}</td></tr>`).join("")}
-      </table>${narr(10)}${lg(10)}</div>
+      </table>${stb(10)}${narr(10)}${lg(10)}</div>
     <div class="section"><h3>11. Health &amp; Career element map 健康·行業
         <span class="tag warn">TCM correspondence · reference, not medical advice</span></h3>
       <div class="cite" style="margin:0 0 6px">Traditional five-element medicine maps
@@ -849,7 +900,7 @@ async function renderPerson(name) {
         industries</b> — ${it.industries}</div>`).join("")}
       <div class="cite">Understated: ${c.industries.avoid.map((it) => `${it.element} (${it.industries.split(",")[0]}…)`).join("; ")}
         — not forbidden, just not where this chart recharges.</div>
-      ${narr(11)}${lg(11)}
+      ${stb(11)}${narr(11)}${lg(11)}
     </div>
     ${c.careers ? `<div class="section"><h3>12. Career paths 事業方向
         <span class="tag warn">rule-based ranking · fit, not fate</span></h3>
@@ -865,7 +916,7 @@ async function renderPerson(name) {
         <div class="sub" style="margin-top:2px">${a.reasons.join(" · ")}</div></div>`).join("")}
       <div class="cite" style="margin-top:7px"><b>Priced against this chart:</b>
         ${c.careers.avoid.map((a) => `${a.en} ${a.zh} — ${a.reasons.join("; ")}`).join(" · ")}</div>
-      ${narr(12)}${lg(12)}
+      ${stb(12)}${narr(12)}${lg(12)}
     </div>` : ""}
     ${c.windows ? `<div class="section"><h3>13. Windows 時機
         <span class="tag warn">timing cross-layer · climate × weather · not prediction</span></h3>
@@ -897,7 +948,7 @@ async function renderPerson(name) {
               <b>${yr.overall_zh}</b></td>
             ${cell(yr.career)}${cell(yr.wealth)}${cell(yr.relationship)}${cell(yr.health)}</tr>`;
         }).join("")}
-      </table>${narr(13)}${lg(13)}</div>` : ""}
+      </table>${stb(13)}${narr(13)}${lg(13)}</div>` : ""}
     <div class="section"><h3>Rule citations</h3>
       ${c.citations.map((x) => `<div class="cite"><b>[${layerZh(x.layer)}] ${x.source_ref}:</b> ${x.explanation}</div>`).join("")}
     </div>`);

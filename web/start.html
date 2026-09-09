@@ -31,9 +31,20 @@ button:disabled{opacity:.5;cursor:default}
 .pcard h3{margin:0 0 4px;font-size:16px}
 .pz{display:inline-block;border:1px solid #ecd9cf;border-radius:7px;padding:2px 7px;
   margin:1px;font-size:16px;font-weight:700;color:var(--accent)}
-.kv{font-size:12.5px;color:var(--muted);margin:3px 0}
-.kv b{color:var(--ink)}
-.fav{color:#1e7d32;font-weight:600}.unfav{color:var(--accent)}
+.kv{font-size:12.5px;color:var(--ink);margin:4px 0}
+.kv b.cat{color:#8a6d00;font-size:11px;letter-spacing:.3px;margin-right:1px}
+.cardops{float:right;display:flex;gap:2px}
+.ic{background:none;border:none;padding:0 3px;font-size:15px;cursor:pointer;
+  color:#b9b0a4;line-height:1}
+.ic:hover{color:var(--accent)}
+.elb{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;
+  border-radius:50%;font-weight:700;font-size:12px;border:1.5px solid;margin:0 1px;
+  vertical-align:-4px;line-height:1}
+.elb.el-木{color:#1e8e3e;border-color:#1e8e3e;background:#e9f7ee}
+.elb.el-火{color:#c5221f;border-color:#c5221f;background:#fdecea}
+.elb.el-土{color:#8a6d1f;border-color:#8a6d1f;background:#f6efdc}
+.elb.el-金{color:#a67c00;border-color:#c9a227;background:#faf3dd}
+.elb.el-水{color:#1a56b0;border-color:#1a56b0;background:#e8f0fe}
 .doms{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
 .doms span{background:#f3efe7;border:1px solid var(--line);border-radius:6px;
   padding:1px 6px;font-size:11.5px}
@@ -133,23 +144,30 @@ async function api(path, opts) {
   return r.json();
 }
 
+const elb = e => `<span class="elb el-${e}">${e}</span>`;
+const elbs = a => (a || []).map(elb).join("");
+
 function personCard(p, i) {
   const doms = Object.entries(p.domains).map(([k, v]) => `<span>${k} ${v}</span>`).join("");
   const tk = p.time_known === false
     ? ' <span class="badge">hour approximate</span>' : "";
-  return `<div class="pcard" data-i="${i}" title="open the full Reading 命书"><h3>${p.name}${tk}</h3>
+  return `<div class="pcard" data-i="${i}" title="open the full Reading 命书">
+    <h3>${p.name}${tk}
+      <span class="cardops">
+        <button class="ic edit" data-i="${i}" title="rename">✏️</button>
+        <button class="ic del" data-i="${i}" title="remove">🗑</button>
+      </span></h3>
     <div>${["year","month","day","hour"].map(k => `<span class="pz">${p.pillars[k]}</span>`).join("")}</div>
-    <div class="kv">日主 <b>${p.day_master}</b> · ${p.strength} · 生肖 ${p.animal}
-      · 命卦 ${p.gua} (${p.group}) · 命星 ${p.life_star}</div>
-    <div class="kv">用神 <span class="fav">${p.favourable.join("·")}</span> ·
-      avoid <span class="unfav">${p.unfavourable.join("·")}</span></div>
-    <div class="kv">career fit: ${p.top_careers.join(" · ")}</div>
+    <div class="kv"><b class="cat">日主</b> <b>${p.day_master}</b> ·
+      <b class="cat">强弱</b> ${p.strength} · <b class="cat">生肖</b> ${p.animal}</div>
+    <div class="kv"><b class="cat">命卦</b> ${p.gua} (${p.group}) ·
+      <b class="cat">命星</b> ${p.life_star}</div>
+    <div class="kv"><b class="cat">用神</b> ${elbs(p.favourable)} &nbsp;
+      <b class="cat">avoid</b> ${elbs(p.unfavourable)}</div>
+    <div class="kv"><b class="cat">career fit</b> ${p.top_careers.join(" · ")}</div>
     <div class="doms">${doms}</div>
-    <div class="acts">
-      <a href="/w/${token}/person/${i}/reading" target="_blank">Reading 命书 →</a>
-      <a href="/w/${token}/person/${i}/report" target="_blank">Strategy 战略 →</a>
-      <button class="del" data-i="${i}">remove</button>
-    </div></div>`;
+    <div class="kv hint" style="margin-top:7px">tap the card for the full Reading 命书 →</div>
+    </div>`;
 }
 
 function harmonyTable(h) {
@@ -203,7 +221,16 @@ function render() {
   $("#harmony-sec").hidden = !ws.harmony;
   if (ws.harmony) $("#harmony").innerHTML = harmonyTable(ws.harmony);
   document.querySelectorAll(".del").forEach(b => b.addEventListener("click", async () => {
+    if (!confirm(`Remove ${ws.people[b.dataset.i].name}?`)) return;
     ws = await api(`/api/pub/w/${token}/person/${b.dataset.i}`, {method: "DELETE"});
+    render();
+  }));
+  document.querySelectorAll(".edit").forEach(b => b.addEventListener("click", async () => {
+    const cur = ws.people[b.dataset.i].name;
+    const name = (prompt("Rename 改名:", cur) || "").trim();
+    if (!name || name === cur) return;
+    ws = await api(`/api/pub/w/${token}/person/${b.dataset.i}`, {method: "PATCH",
+      headers: {"Content-Type": "application/json"}, body: JSON.stringify({name})});
     render();
   }));
   document.querySelectorAll(".pcard").forEach(cd => cd.addEventListener("click", e => {

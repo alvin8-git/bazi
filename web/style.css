@@ -84,6 +84,31 @@ td.good { color: var(--good); } td.bad { color: var(--bad); }
 .cite { color: var(--muted); font-size: 13.5px; margin: 2px 0 2px 10px; }
 .cite b { color: var(--ink); }
 
+/* element badges — colored circle icons for 木火土金水, used site-wide */
+.elb{display:inline-flex;align-items:center;justify-content:center;width:21px;height:21px;
+  border-radius:50%;font-weight:700;font-size:12.5px;border:1.5px solid;margin:0 1px;
+  vertical-align:-4px;line-height:1;font-style:normal}
+.elb.el-木{color:#1e8e3e;border-color:#1e8e3e;background:#e9f7ee}
+.elb.el-火{color:#c5221f;border-color:#c5221f;background:#fdecea}
+.elb.el-土{color:#8a6d1f;border-color:#8a6d1f;background:#f6efdc}
+.elb.el-金{color:#a67c00;border-color:#c9a227;background:#faf3dd}
+.elb.el-水{color:#1a56b0;border-color:#1a56b0;background:#e8f0fe}
+
+/* strategy advice blocks distributed into Reading sections */
+.sadv{background:#fbf6ea;border:1px solid #eadfc4;border-left:4px solid var(--gold);
+  border-radius:8px;padding:8px 12px;margin:10px 0 2px;font-size:13.5px}
+.sadv>b{color:#8a6d00;display:block;margin-bottom:2px}
+.sadv div{margin:3px 0;color:#4d463c}
+.mos{display:flex;flex-wrap:wrap;gap:3px;margin:6px 0}
+.mo{border-radius:7px;padding:1px 8px;font-size:12px;border:1px solid var(--line)}
+.mo.good{background:#e9f7ee;border-color:#b7e1c3}
+.mo.bad{background:#fdecea;border-color:#f5c6c0}
+.mo.mid{color:var(--muted)}
+.sdial{margin:8px 0 2px;max-width:560px}
+.sdialbar{background:#fdecea;border-radius:8px;height:13px;overflow:hidden}
+.sdialbar div{height:100%;background:#dbe9fd;border-right:3px solid #1a56b0}
+.sdialcap{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+
 /* per-section narrative + term legend (Reading tab) */
 .ninline { background: #fbf6ea; border-left: 3px solid var(--gold);
   border-radius: 0 7px 7px 0; padding: 7px 11px; margin: 10px 0 4px;
