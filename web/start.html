@@ -43,8 +43,15 @@ button:disabled{opacity:.5;cursor:default}
 table{border-collapse:collapse;width:100%;font-size:13px;background:#fff}
 th,td{border:1px solid var(--line);padding:5px 9px;text-align:left}
 th{background:#f6f1e8}
-.share{background:#fbf6ea;border:1px solid #eadfc4;border-radius:8px;padding:8px 12px;
-  font-size:13px;margin-top:10px;word-break:break-all}
+.share{background:#fff8e8;border:2px solid var(--gold);border-radius:12px;
+  padding:14px 16px;margin-top:14px}
+.share .st{font-weight:700;font-size:15px;color:#8a6d00}
+.share .kv2{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:8px 0 4px}
+.share .url{flex:1;min-width:200px;background:#fff;border:1px solid #eadfc4;
+  border-radius:8px;padding:8px 12px;font-size:14px;font-weight:600;
+  word-break:break-all;user-select:all}
+.share button{white-space:nowrap}
+.share .sub2{color:var(--muted);font-size:12.5px}
 nav.top{display:flex;gap:14px;margin-top:8px;font-size:13.5px}
 nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
   border-radius:7px;padding:3px 10px;background:#fff}
@@ -173,9 +180,25 @@ function render() {
   $("#add-title").textContent = "Add another person 再加一人";
   const url = `${location.origin}/w/${token}`;
   $("#share").hidden = false;
-  $("#share").innerHTML = `🔗 Private workspace link (bookmark it — it IS your login):
-    <b>${url}</b> · kept 6 months · <a href="/w/${token}/fengshui">analyze a home with
-    these people →</a>`;
+  $("#share").innerHTML = `<div class="st">🔗 Your private workspace link — save it,
+      it IS your login</div>
+    <div class="kv2"><span class="url" id="share-url">${url}</span>
+      <button id="btn-copy">📋 Copy link</button></div>
+    <div class="sub2">No account, no password: anyone with this link sees this
+      workspace. Bookmark it or send it to yourself · kept 6 months from your
+      last change · <a href="/w/${token}/fengshui">analyze a home with these
+      people →</a></div>`;
+  $("#btn-copy").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(url); }
+    catch (e) {
+      const r = document.createRange();
+      r.selectNodeContents($("#share-url"));
+      getSelection().removeAllRanges(); getSelection().addRange(r);
+      document.execCommand("copy");
+    }
+    $("#btn-copy").textContent = "✓ Copied";
+    setTimeout(() => { $("#btn-copy").textContent = "📋 Copy link"; }, 2000);
+  });
   $("#nav-fs").href = `/w/${token}/fengshui`;
   $("#harmony-sec").hidden = !ws.harmony;
   if (ws.harmony) $("#harmony").innerHTML = harmonyTable(ws.harmony);
