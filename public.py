@@ -7,9 +7,11 @@ Three surfaces, none touching the single-family global config:
               get the flying-star chart + per-person room scores (cited)
   /baby     — newborn/expected-baby chart with 用神-based naming direction
 
-Storage: one SQLite row per workspace token (nanoid-style, unguessable),
-6-month TTL, uploads under data/public_store/. No accounts, no payments —
-the validation-first architecture from docs/designs/bazifor-me-wedge.md.
+Storage: one row per workspace token, 6-month TTL. Backend is Upstash Redis
+(REST, stdlib urllib) when KV_REST_API_URL/UPSTASH_REDIS_REST_URL is set —
+required on Vercel, where lambda /tmp is per-instance and ephemeral — else
+SQLite under data/public_store/. No accounts, no payments — the
+validation-first architecture from docs/designs/bazifor-me-wedge.md.
 """
 from __future__ import annotations
 
@@ -60,6 +62,24 @@ router = APIRouter()
 
 
 # ---------------------------------------------------------------- store
+# Durable serverless store: Upstash Redis over REST (Vercel marketplace sets
+# these envs). Without it, Vercel workspaces die with each lambda instance.
+_REDIS_URL = (os.environ.get("KV_REST_API_URL")
+              or os.environ.get("UPSTASH_REDIS_REST_URL"))
+_REDIS_TOK = (os.environ.get("KV_REST_API_TOKEN")
+              or os.environ.get("UPSTASH_REDIS_REST_TOKEN"))
+
+
+def _redis_cmd(*cmd: str):
+    import urllib.request
+    req = urllib.request.Request(
+        _REDIS_URL, data=json.dumps(cmd).encode(),
+        headers={"Authorization": f"Bearer {_REDIS_TOK}",
+                 "Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=6) as r:
+        return json.loads(r.read())["result"]
+
+
 def _db() -> sqlite3.Connection:
     STORE.mkdir(parents=True, exist_ok=True)
     con = sqlite3.connect(STORE / "workspaces.db")
@@ -69,8 +89,13 @@ def _db() -> sqlite3.Connection:
 
 
 def _load(token: str) -> dict:
-    if not re.fullmatch(r"[A-Za-z0-9_-]{16,64}", token or ""):
+    if not re.fullmatch(r"[A-Za-z0-9_-]{8,64}", token or ""):
         raise HTTPException(404, "unknown workspace")
+    if _REDIS_URL:
+        raw = _redis_cmd("GET", f"ws:{token}")
+        if not raw:
+            raise HTTPException(404, "unknown or expired workspace")
+        return json.loads(raw)
     with _db() as con:
         row = con.execute("SELECT created, payload FROM ws WHERE token=?",
                           (token,)).fetchone()
@@ -80,6 +105,10 @@ def _load(token: str) -> dict:
 
 
 def _save(token: str, ws: dict) -> None:
+    if _REDIS_URL:
+        _redis_cmd("SET", f"ws:{token}", json.dumps(ws, ensure_ascii=False),
+                   "EX", str(TTL_SECONDS))   # every save renews the 6 months
+        return
     with _db() as con:
         con.execute("INSERT INTO ws(token, created, payload) VALUES(?,?,?) "
                     "ON CONFLICT(token) DO UPDATE SET payload=excluded.payload",
@@ -155,7 +184,9 @@ def _ws_payload(token: str, ws: dict) -> dict:
 @router.post("/api/pub/workspace")
 def create_workspace(person: PersonIn):
     _member(person.model_dump())        # validate before storing
-    token = secrets.token_urlsafe(18)
+    # 8 chars ≈ 2.8e14 combos — short enough to read out, far beyond
+    # enumeration; 5 chars would be brute-forceable and this IS the login.
+    token = secrets.token_urlsafe(6)
     ws = {"people": [person.model_dump()]}
     _save(token, ws)
     return _ws_payload(token, ws)

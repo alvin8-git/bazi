@@ -54,6 +54,21 @@ const narrBlock = (i) => !i ? "" : `<div class="section interp">
     <h3>Narrative 解读 <span class="tag">rule-based · auto-generated · no AI</span></h3>
     ${i.paragraphs.map((t) => `<p>${dnAll(t)}</p>`).join("")}</div>`;
 
+/* Reading-tab helpers: narrative paragraphs carry [§N] tags — distribute each
+   under its own section instead of one block at the top; every section also
+   gets a term-translation legend (the interpretation IS the product). */
+function splitNarr(i) {
+  const by = {}, rest = [];
+  for (const t of (i && i.paragraphs) || []) {
+    const m = t.match(/^\[§(\d+)[^\]]*\]\s*/);
+    if (m) (by[+m[1]] = by[+m[1]] || []).push(t.slice(m[0].length));
+    else rest.push(t);
+  }
+  return { by, rest };
+}
+const legendBlock = (pairs) => !pairs ? "" : `<div class="legend">
+  <b>Legend 释义</b>${pairs.map(([t, d]) => `<span><b>${t}</b> — ${d}</span>`).join("")}</div>`;
+
 function controls() {
   for (const id of ["year", "period", "method", "policy"]) {
     $("#" + id).addEventListener("change", (e) => {
@@ -572,10 +587,66 @@ function chartCard(c) {
   </div>`;
 }
 
+const LEGENDS = {
+  chart: [
+    ["四柱 八字", "the Four Pillars: birth year·month·day·hour, each written as two characters — eight in all"],
+    ["天干 / 地支", "the top character of a pillar is its heavenly stem, the bottom its earthly branch (with the zodiac animal)"],
+    ["日主 Day Master", "the day stem — the character that IS you; every other character is read by its relationship to it"],
+    ["十神 Ten Gods", "that relationship, named — translated god-by-god in §4"],
+    ["藏干", "hidden stems: extra elements stored inside each branch, listed under the pillar"],
+    ["命卦", "your personal trigram — decides your lucky compass directions (§7)"],
+    ["用神", "the elements that act as this chart's medicine (§5)"],
+    ["大運", "the 10-year luck cycles that colour each decade (§6)"],
+  ],
+  1: [["木/火/土/金/水", "wood / fire / earth / metal / water"],
+    ["weight", "weighted count of visible + hidden characters carrying that element"],
+    ["reading it", "balance beats abundance — the tallest bar is the heaviest, not the best"]],
+  2: [["身強 strong", "the chart can afford to spend — output, wealth and pressure suit it"],
+    ["身弱 weak", "the chart needs feeding — support, rest and resource suit it"],
+    ["support ratio", "share of the chart on the Day Master's side"],
+    ["root mass", "the Day Master's own element hidden inside the branches — its anchoring"]],
+  3: [["Stem row", "the ten god of each pillar's visible character"],
+    ["藏干 row", "the gods of the hidden stems inside each branch"],
+    ["正 / 偏 / 七殺 …", "each god's name and meaning is translated in §4's list"]],
+  4: [["正◯ vs 偏◯", "正 = the proper/conventional form of a domain, 偏 = its unconventional twin"],
+    ["%", "share of the chart's characters classified as that god — where life's attention defaults"]],
+  5: [["用神 / 喜", "favourable — the chart's medicine; carry these elements in colours, directions, fields"],
+    ["忌 avoid", "elements that aggravate the imbalance"],
+    ["扶抑法", "support-the-weak / restrain-the-strong: the method that picked them"],
+    ["調候", "seasonal climate cross-check (a winter chart may need fire regardless)"]],
+  6: [["大運", "one pillar per decade of life, starting from the month pillar"],
+    ["ages", "your age span under that pillar"],
+    ["god labels", "the decade's dominant themes, in §4's vocabulary"],
+    ["highlighted", "the decade you are in now"]],
+  7: [["八宅", "eight-house school: your trigram splits the compass into 4 green (use) and 4 red (avoid) directions"],
+    ["how to use", "green = bed headboard, desk facing, main door; red = fine for storage/bathroom"],
+    ["personal", "this map differs per person — a couple can have opposite maps"]],
+  8: [["score", "starts at a neutral 50; every chip is a rule that moved it"],
+    ["≥70", "a natural strength"], ["<45", "an area to consciously support"],
+    ["chips", "the audit trail — hover none, they are the working"]],
+  9: [["神煞", "symbolic stars: classical stem-branch patterns, flavour on top of structure"],
+    ["年/月/日/時 tag", "which pillar carries it — ancestry · career/parents · self/spouse · children/later life"]],
+  10: [["axes", "read straight off §4's distribution — the basis column shows the exact threshold"],
+    ["no strong tendency", "a legitimate result, not a failure"]],
+  11: [["element ↔ organs", "traditional five-element medicine correspondence — reference, not medical advice"],
+    ["status", "flags an element too weak or too heavy to lean on"]],
+  12: [["fit", "how efficiently effort converts to reward in that field"],
+    ["priced against", "low-ranked fields cost more energy here — never forbidden"]],
+  13: [["◉ window", "a supportive year for that life dimension"],
+    ["⚠ caution", "navigate deliberately — a note, never a verdict"],
+    ["· quiet", "nothing notable triggered"],
+    ["climate / weather", "the decade sets the climate, the year the weather"],
+    ["桃花", "peach-blossom: the romance/charm activation branch"]],
+};
+
 async function renderPerson(name) {
   const url = window.__CHART_URL__ ||
     `/api/chart/${encodeURIComponent(name)}?policy=${state.policy}&year=${state.year}`;
   const c = await api(url);
+  const nb = splitNarr(c.interpretation);
+  const narr = (n) => (nb.by[n] || []).map((t) =>
+    `<div class="ninline"><b>解读 Narrative:</b> ${dnAll(t)}</div>`).join("");
+  const lg = (k) => legendBlock(LEGENDS[k]);
   const wmax = Math.max(...Object.values(c.element_weights));
   const EL_ZH = { Wood: "木", Fire: "火", Earth: "土", Metal: "金", Water: "水" };
   $("#tab-person").innerHTML = jt(explain(
@@ -590,7 +661,7 @@ async function renderPerson(name) {
     <h2>${dn(name || c.name)} — Four Pillars (${state.policy === "true_solar" ? "TRUE SOLAR" : "CLOCK"})</h2>
     <div class="sub">effective time ${c.effective_time}</div>
     ${chartCard(c)}
-    ${narrBlock(c.interpretation)}
+    ${nb.rest.length ? narrBlock({ paragraphs: nb.rest }) : ""}
     <div class="pillar-cards">${POS.map((k) => `
       <div class="pillar-card"><div class="gz">${c.pillars[k]}</div>
         <div class="pos">${POS_LAB[k]}</div>
@@ -609,12 +680,13 @@ async function renderPerson(name) {
       (fixed for life); the two dashed cards are the energies currently overlaid on it —
       the active 10-year luck pillar and this year's pillar — labelled with their ten
       gods relative to this Day Master.</div>
+    ${lg("chart")}
     <div class="section"><h3>1. Five Elements Balance 五行</h3>
       <div class="bars">${Object.entries(c.element_weights).map(([en, v]) => `
         <div class="bar-row el-${EL_ZH[en]}"><span>${EL_ZH[en]} ${en}</span>
           <div class="bar"><i style="width:${(100 * v / wmax).toFixed(0)}%"></i></div>
           <b>${v.toFixed(1)}</b></div>`).join("")}
-      </div></div>
+      </div>${narr(1)}${lg(1)}</div>
     <div class="section"><h3>2. Core Identity &amp; Day Master</h3>
       <p>Day Master <b>${c.day_master}</b> — <b>${c.strength.verdict}</b> (score ${c.strength.score})
         <span class="tag">support ratio ${c.strength.support_ratio}%</span>
@@ -624,6 +696,7 @@ async function renderPerson(name) {
         share of the chart feeding the Day Master; root mass = share of hidden stems
         carrying its element.</div>
       ${c.strength.steps.map((s) => `<div class="cite"><b>${s.step}. ${s.name}:</b> ${s.value} — ${s.detail}</div>`).join("")}
+      ${narr(2)}${lg(2)}
     </div>
     <div class="section"><h3>3. Ten Gods 十神 (hidden stems)</h3>
       <div class="cite" style="margin:0 0 6px">The raw data behind sections 4–10: the
@@ -633,7 +706,7 @@ async function renderPerson(name) {
       <table><tr><th></th>${POS.map((k) => `<th>${POS_LAB[k]}</th>`).join("")}</tr>
         <tr><th>Stem</th>${POS.map((k) => `<td>${c.ten_gods[k]}</td>`).join("")}</tr>
         <tr><th>藏干</th>${POS.map((k) => `<td>${(c.hidden_gods[k] || []).join("<br>")}</td>`).join("")}</tr>
-      </table></div>
+      </table>${narr(3)}${lg(3)}</div>
     <div class="section"><h3>4. Ten-god distribution 十神分布</h3>
       <div class="cite" style="margin:0 0 8px">Section 3 summarised as percentages —
         how the chart's energy is divided among the ten archetypes (weighted count of
@@ -684,11 +757,13 @@ async function renderPerson(name) {
             in §8 Relationship stability. 財庫 wealth vault = the storage branch of the
             wealth element (one of 辰戌丑未).</div>`;
       })()}
+      ${narr(4)}${lg(4)}
     </div>
     <div class="section"><h3>5. 用神 Favourable Elements</h3>
       <p>Favourable: <b>${c.yongshen.favourable.join(" ")}</b> · avoid ${c.yongshen.unfavourable.join(" ")}
          · colours <b>${c.yongshen.colours.join("、")}</b></p>
       ${c.yongshen.citations.map((x) => `<div class="cite"><b>${x.source_ref}:</b> ${x.explanation}</div>`).join("")}
+      ${narr(5)}${lg(5)}
     </div>
     <div class="section"><h3>6. Luck Cycles 大運</h3>
       <div class="cite" style="margin:0 0 6px">Each 10-year decade is labelled by the ten
@@ -699,7 +774,7 @@ async function renderPerson(name) {
         <tr>${c.dayun_detail.map((d) => `<td class="${d.current ? "cur-dayun" : ""}">${d.ages}</td>`).join("")}</tr>
         <tr>${c.dayun_detail.map((d) => `<td class="${d.current ? "cur-dayun" : ""}">
           <b>${d.stem_god}/${d.branch_god}</b><div class="sub" style="max-width:120px">${d.keywords}</div></td>`).join("")}</tr>
-      </table></div></div>
+      </table></div>${narr(6)}${lg(6)}</div>
     <div class="section"><h3>7. 八宅 Directions (${c.gua}命 · ${c.group})</h3>
       <div class="cite" style="margin:0 0 6px">Your personal trigram splits the compass
         into four lucky (green) and four unlucky (red) directions — a different map for
@@ -725,6 +800,7 @@ async function renderPerson(name) {
           sleeping or long sitting oriented to these. The Rooms tab applies exactly
           this map when scoring bedroom sectors.</div>`;
       })()}
+      ${narr(7)}${lg(7)}
     </div>
     <div class="section"><h3>8. Life-domain signals 人生領域
         <span class="tag warn">structural tendencies · not guarantees</span></h3>
@@ -737,7 +813,7 @@ async function renderPerson(name) {
           <div style="margin-top:5px">${d.evidence.map((e) =>
             `<span class="tag ${e.delta < 0 ? "warn" : ""}">${e.label} ${e.delta > 0 ? "+" : ""}${e.delta}</span>`).join(" ")}</div>
         </div>`).join("")}
-      </div></div>
+      </div>${narr(8)}${lg(8)}</div>
     ${c.shensha.length ? `<div class="section"><h3>9. 神煞 Symbolic stars</h3>
       <div class="cite" style="margin:0 0 8px">Special stem-branch patterns from classical
         lookup tables — flavour on top of the structural reading. The small tag shows
@@ -747,6 +823,7 @@ async function renderPerson(name) {
         <span class="tag">${s.pillars.join("·")}</span> ${s.meaning}</div>`).join("")}
       ${c.interactions.length ? `<div class="cite" style="margin-top:7px"><b>Natal branch interactions:</b>
         ${c.interactions.map((i) => `${i.pair} ${i.kind} (${i.pillars.join("+")}) — ${i.note}`).join("; ")}</div>` : ""}
+      ${narr(9)}${lg(9)}
     </div>` : ""}
     <div class="section"><h3>10. Personality axes 性格軸 <span class="tag warn">modern synthesis · tendencies only</span></h3>
       <div class="cite" style="margin:0 0 6px">Five axes read straight off the ten-god
@@ -756,7 +833,7 @@ async function renderPerson(name) {
         ${c.personality.map((a) => `<tr><td>${a.axis}</td>
           <td class="${a.verdict === "no strong tendency" ? "" : "good"}">${a.verdict}</td>
           <td class="sub">${a.basis}</td></tr>`).join("")}
-      </table></div>
+      </table>${narr(10)}${lg(10)}</div>
     <div class="section"><h3>11. Health &amp; Career element map 健康·行業
         <span class="tag warn">TCM correspondence · reference, not medical advice</span></h3>
       <div class="cite" style="margin:0 0 6px">Traditional five-element medicine maps
@@ -772,6 +849,7 @@ async function renderPerson(name) {
         industries</b> — ${it.industries}</div>`).join("")}
       <div class="cite">Understated: ${c.industries.avoid.map((it) => `${it.element} (${it.industries.split(",")[0]}…)`).join("; ")}
         — not forbidden, just not where this chart recharges.</div>
+      ${narr(11)}${lg(11)}
     </div>
     ${c.careers ? `<div class="section"><h3>12. Career paths 事業方向
         <span class="tag warn">rule-based ranking · fit, not fate</span></h3>
@@ -787,6 +865,7 @@ async function renderPerson(name) {
         <div class="sub" style="margin-top:2px">${a.reasons.join(" · ")}</div></div>`).join("")}
       <div class="cite" style="margin-top:7px"><b>Priced against this chart:</b>
         ${c.careers.avoid.map((a) => `${a.en} ${a.zh} — ${a.reasons.join("; ")}`).join(" · ")}</div>
+      ${narr(12)}${lg(12)}
     </div>` : ""}
     ${c.windows ? `<div class="section"><h3>13. Windows 時機
         <span class="tag warn">timing cross-layer · climate × weather · not prediction</span></h3>
@@ -801,7 +880,7 @@ async function renderPerson(name) {
       <div class="ccdayun">${c.windows.decades.map((d) => `
         <div class="ccdy${d.current ? " now" : ""}" title="${d.notes.join("; ")}">
           <div class="ccdyage">${d.ages}</div><div class="ccdygz">${d.gz}</div>
-          <div class="wphase w-${d.phase}">${d.phase_zh} ${d.phase}</div>
+          <div class="wphase w-${d.phase}">${d.phase_zh}<span class="wp-en"> ${d.phase}</span></div>
           ${d.current ? `<div class="ccdyhere">▲ now</div>` : ""}</div>`).join("")}
       </div>
       <div class="cite" style="margin:4px 0 8px"><b>桃花:</b> ${c.windows.taohua.branch}
@@ -818,7 +897,7 @@ async function renderPerson(name) {
               <b>${yr.overall_zh}</b></td>
             ${cell(yr.career)}${cell(yr.wealth)}${cell(yr.relationship)}${cell(yr.health)}</tr>`;
         }).join("")}
-      </table></div>` : ""}
+      </table>${narr(13)}${lg(13)}</div>` : ""}
     <div class="section"><h3>Rule citations</h3>
       ${c.citations.map((x) => `<div class="cite"><b>[${layerZh(x.layer)}] ${x.source_ref}:</b> ${x.explanation}</div>`).join("")}
     </div>`);

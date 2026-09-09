@@ -50,6 +50,17 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
   border-radius:7px;padding:3px 10px;background:#fff}
 .badge{font-size:11px;background:#fff6df;border:1px solid #eedc9a;color:#8a6d00;
   border-radius:6px;padding:1px 6px;margin-left:6px}
+.pcard{cursor:pointer;transition:box-shadow .15s,border-color .15s}
+.pcard:hover{box-shadow:0 3px 14px rgba(0,0,0,.10);border-color:var(--accent)}
+.hwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.hwrap table{min-width:max-content}
+@media(max-width:720px){
+  .row{grid-template-columns:1fr 1fr}
+  .row>div:first-child{grid-column:1/-1}
+  /* iOS Safari zooms into focused controls below 16px */
+  input,select,button{font-size:16px}
+  main{padding:14px 12px 60px}
+}
 [hidden]{display:none!important}
 </style></head><body>
 <header>
@@ -102,7 +113,7 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
 <script>
 const $ = s => document.querySelector(s);
 let token = null, ws = null;
-const m = location.pathname.match(/^\/w\/([A-Za-z0-9_-]{16,64})/);
+const m = location.pathname.match(/^\/w\/([A-Za-z0-9_-]{8,64})/);
 if (m) token = m[1];
 
 async function api(path, opts) {
@@ -119,7 +130,7 @@ function personCard(p, i) {
   const doms = Object.entries(p.domains).map(([k, v]) => `<span>${k} ${v}</span>`).join("");
   const tk = p.time_known === false
     ? ' <span class="badge">hour approximate</span>' : "";
-  return `<div class="pcard"><h3>${p.name}${tk}</h3>
+  return `<div class="pcard" data-i="${i}" title="open the full Reading 命书"><h3>${p.name}${tk}</h3>
     <div>${["year","month","day","hour"].map(k => `<span class="pz">${p.pillars[k]}</span>`).join("")}</div>
     <div class="kv">日主 <b>${p.day_master}</b> · ${p.strength} · 生肖 ${p.animal}
       · 命卦 ${p.gua} (${p.group}) · 命星 ${p.life_star}</div>
@@ -148,7 +159,7 @@ function harmonyTable(h) {
     }).join("")}</tr>`).join("");
   const rough = h.pairs.filter(p => p.score < 50)
     .map(p => `<div class="kv">⚠ <b>${p.a} × ${p.b} (${p.score})</b>: ${p.chips.slice(0,3).join("; ")}</div>`).join("");
-  return `<table>${head}${rows}</table>${rough}`;
+  return `<div class="hwrap"><table>${head}${rows}</table></div>${rough}`;
 }
 
 function render() {
@@ -171,6 +182,10 @@ function render() {
   document.querySelectorAll(".del").forEach(b => b.addEventListener("click", async () => {
     ws = await api(`/api/pub/w/${token}/person/${b.dataset.i}`, {method: "DELETE"});
     render();
+  }));
+  document.querySelectorAll(".pcard").forEach(cd => cd.addEventListener("click", e => {
+    if (e.target.closest("a,button")) return;   // links & remove keep their own action
+    window.open(`/w/${token}/person/${cd.dataset.i}/reading`, "_blank");
   }));
 }
 

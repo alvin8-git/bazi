@@ -20,6 +20,7 @@ def _new_ws(*people):
 
 def test_workspace_create_and_summary():
     tok = _new_ws(P1)
+    assert len(tok) == 8          # short enough to share, 64^8 against guessing
     d = client.get(f"/api/pub/w/{tok}").json()
     assert len(d["people"]) == 1 and d["harmony"] is None
     p = d["people"][0]
@@ -61,7 +62,30 @@ def test_bad_inputs():
     assert client.post("/api/pub/workspace",
                        json={**P1, "sex": "X"}).status_code == 422
     assert client.get("/api/pub/w/nosuchtoken12345678").status_code == 404
+    assert client.get("/api/pub/w/short").status_code == 404   # <8 chars rejected
     assert client.get("/api/pub/w/../../etc/passwd").status_code == 404
+
+
+def test_redis_store_roundtrip(monkeypatch):
+    """When the Upstash env is present, workspaces go through Redis with TTL."""
+    import public
+    fake: dict[str, str] = {}
+
+    def fake_cmd(*cmd):
+        if cmd[0] == "SET":
+            assert cmd[3:] == ("EX", str(public.TTL_SECONDS))
+            fake[cmd[1]] = cmd[2]
+            return "OK"
+        return fake.get(cmd[1])                     # GET
+
+    monkeypatch.setattr(public, "_REDIS_URL", "https://fake.upstash.io")
+    monkeypatch.setattr(public, "_redis_cmd", fake_cmd)
+    tok = client.post("/api/pub/workspace", json=P1).json()["token"]
+    assert f"ws:{tok}" in fake
+    assert client.post(f"/api/pub/w/{tok}/person", json=P2).status_code == 200
+    d = client.get(f"/api/pub/w/{tok}").json()
+    assert len(d["people"]) == 2 and d["harmony"]
+    assert client.get("/api/pub/w/aaaabbbb").status_code == 404
 
 
 ROOMS = [
