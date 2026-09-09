@@ -266,6 +266,7 @@ class RoomIn(BaseModel):
     sleeping: bool = False
     capacity: int = Field(default=2, ge=0, le=8)
     poly: list[list[float]] = Field(min_length=3, max_length=12)
+    rtype: str | None = Field(default=None, max_length=40)   # UI room type, round-tripped
 
 
 class AnalyzeIn(BaseModel):
@@ -274,30 +275,140 @@ class AnalyzeIn(BaseModel):
     period: int = Field(default=9, ge=1, le=9)
     rooms: list[RoomIn] = Field(min_length=1, max_length=24)
     assignment: dict[str, list[str]] = {}
+    entrance: list[float] | None = Field(default=None, min_length=2, max_length=2)
+    # entrance = the door pin (0..1 relative coords), stored for UI restore;
+    # its palace analysis travels as the "entrance" mini-room in `rooms`
 
 
-@router.post("/api/pub/w/{token}/floorplan")
-async def upload_floorplan(token: str, file: UploadFile = File(...)):
+class HomeIn(BaseModel):
+    name: str = Field(min_length=1, max_length=40)
+
+
+MAX_HOMES = 6
+
+
+def _homes(ws: dict) -> dict:
+    """Multi-home store, migrating the legacy single ws['home'] in place."""
+    if "homes" not in ws:
+        ws["homes"] = {}
+        if ws.get("home"):
+            ws["homes"]["h0"] = {"name": "My home",
+                                 "floorplan": bool(ws.get("floorplan")),
+                                 **ws.pop("home")}
+    return ws["homes"]
+
+
+def _home_of(ws: dict, hid: str) -> dict:
+    h = _homes(ws).get(hid)
+    if not h:
+        raise HTTPException(404, "no such home")
+    return h
+
+
+def _plan_path(token: str, hid: str) -> Path:
+    p = UPLOADS / f"{token}_{hid}.img"
+    if not p.exists() and hid == "h0":
+        legacy = UPLOADS / f"{token}.img"       # pre-multi-home upload
+        if legacy.exists():
+            return legacy
+    return p
+
+
+def _home_summary(hid: str, h: dict) -> dict:
+    return {"id": hid, "name": h["name"], "floorplan": bool(h.get("floorplan")),
+            "analyzed": bool(h.get("analysis"))}
+
+
+@router.get("/api/pub/w/{token}/homes")
+def list_homes(token: str):
     ws = _load(token)
+    return {"homes": [_home_summary(k, v) for k, v in _homes(ws).items()],
+            "max_homes": MAX_HOMES}
+
+
+@router.post("/api/pub/w/{token}/homes")
+def create_home(token: str, home: HomeIn):
+    ws = _load(token)
+    homes = _homes(ws)
+    if len(homes) >= MAX_HOMES:
+        raise HTTPException(400, f"at most {MAX_HOMES} homes per workspace")
+    hid = "h" + secrets.token_urlsafe(3)
+    homes[hid] = {"name": home.name.strip()}
+    _save(token, ws)
+    return {"id": hid,
+            "homes": [_home_summary(k, v) for k, v in homes.items()]}
+
+
+@router.delete("/api/pub/w/{token}/homes/{hid}")
+def delete_home(token: str, hid: str):
+    ws = _load(token)
+    homes = _homes(ws)
+    _home_of(ws, hid)
+    homes.pop(hid)
+    (UPLOADS / f"{token}_{hid}.img").unlink(missing_ok=True)
+    _save(token, ws)
+    return {"homes": [_home_summary(k, v) for k, v in homes.items()]}
+
+
+@router.get("/api/pub/w/{token}/homes/{hid}")
+def get_home(token: str, hid: str):
+    """Full saved config + last analysis — what the annotate UI restores."""
+    ws = _load(token)
+    return {"id": hid, **_home_of(ws, hid)}
+
+
+def _default_hid(ws: dict) -> str:
+    """Legacy single-home routes act on the first home, creating one."""
+    homes = _homes(ws)
+    if not homes:
+        homes["h0"] = {"name": "My home"}
+    return next(iter(homes))
+
+
+async def _store_plan(token: str, ws: dict, hid: str, file: UploadFile) -> dict:
+    home = _home_of(ws, hid)
     data = await file.read()
     if len(data) > MAX_UPLOAD:
         raise HTTPException(400, "floorplan too large (max 8 MB)")
     if not (file.content_type or "").startswith("image/"):
         raise HTTPException(400, "please upload an image (jpg/png)")
     UPLOADS.mkdir(parents=True, exist_ok=True)
-    (UPLOADS / f"{token}.img").write_bytes(data)
-    ws["floorplan"] = True
+    (UPLOADS / f"{token}_{hid}.img").write_bytes(data)
+    home["floorplan"] = True
+    ws["floorplan"] = True                  # legacy flag for old clients
     _save(token, ws)
-    return {"url": f"/api/pub/w/{token}/floorplan"}
+    return {"url": f"/api/pub/w/{token}/homes/{hid}/floorplan"}
+
+
+@router.post("/api/pub/w/{token}/homes/{hid}/floorplan")
+async def upload_home_floorplan(token: str, hid: str, file: UploadFile = File(...)):
+    ws = _load(token)
+    return await _store_plan(token, ws, hid, file)
+
+
+@router.get("/api/pub/w/{token}/homes/{hid}/floorplan")
+def get_home_floorplan(token: str, hid: str):
+    ws = _load(token)
+    _home_of(ws, hid)
+    f = _plan_path(token, hid)
+    if not f.exists():
+        raise HTTPException(404, "no floorplan uploaded")
+    return FileResponse(f)
+
+
+@router.post("/api/pub/w/{token}/floorplan")
+async def upload_floorplan(token: str, file: UploadFile = File(...)):
+    ws = _load(token)
+    return await _store_plan(token, ws, _default_hid(ws), file)
 
 
 @router.get("/api/pub/w/{token}/floorplan")
 def get_floorplan(token: str):
-    _load(token)
-    f = UPLOADS / f"{token}.img"
-    if not f.exists():
+    ws = _load(token)
+    homes = _homes(ws)
+    if not homes:
         raise HTTPException(404, "no floorplan uploaded")
-    return FileResponse(f)
+    return get_home_floorplan(token, next(iter(homes)))
 
 
 _PALACE_DIR = {"坎": "N", "艮": "NE", "震": "E", "巽": "SE",
@@ -370,9 +481,20 @@ def _chart_block(ch: dict, rooms: list[dict], annual: dict) -> dict:
             "rooms": {r["id"]: r["palace_pie"] for r in rooms}}
 
 
+@router.post("/api/pub/w/{token}/homes/{hid}/analyze")
+def analyze_home(token: str, hid: str, req: AnalyzeIn):
+    ws = _load(token)
+    _home_of(ws, hid)
+    return _do_analyze(token, ws, hid, req)
+
+
 @router.post("/api/pub/w/{token}/analyze")
 def analyze(token: str, req: AnalyzeIn):
     ws = _load(token)
+    return _do_analyze(token, ws, _default_hid(ws), req)
+
+
+def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
     upb = req.image_up_bearing if req.image_up_bearing is not None else req.facing_deg
     rooms = [r.model_dump() for r in req.rooms]
     if len({r["id"] for r in rooms}) != len(rooms):
@@ -411,11 +533,67 @@ def analyze(token: str, req: AnalyzeIn):
         if assignment:
             result["alternate_scores"] = score_assignment(
                 assignment, charts, ys_map, rooms_by_id, alt, annual)
-    ws["home"] = {"facing_deg": req.facing_deg, "image_up_bearing": upb,
-                  "period": req.period, "rooms": rooms,
-                  "assignment": assignment}
+    # six aspect scores per person (health/career/study/wealth/relationship/
+    # luck) — the same engine behind the family battlecards
+    from engine.aspects import compose_family
+    from engine.interpret import STRUCTURE_TEXT
+    asp = compose_family(charts, ys_map, rooms, assignment, natal, annual,
+                         YEAR, "pie",
+                         STRUCTURE_TEXT.get(natal["structure"],
+                                            "a mixed structure"))
+    result["aspects"] = {
+        name: [{"aspect": c["aspect"], "zh": c["aspect_zh"],
+                "score": c["score"], "band": c["band"],
+                "band_zh": c["band_zh"], "driver": c.get("driver"),
+                "meaning": c.get("meaning")} for c in cards]
+        for name, cards in asp["people"].items()}
+    home = _home_of(ws, hid)
+    home.update({"facing_deg": req.facing_deg, "image_up_bearing": upb,
+                 "period": req.period,
+                 "rooms": [r.model_dump() for r in req.rooms],
+                 "assignment": assignment,
+                 "entrance": req.entrance,
+                 "analysis": result})
     _save(token, ws)
     return result
+
+
+@router.get("/api/pub/w/{token}/battlecard")
+def battlecard(token: str):
+    """Compare every analyzed home per person — 三宅對決 style."""
+    ws = _load(token)
+    done = {hid: h for hid, h in _homes(ws).items() if h.get("analysis")}
+    if len(done) < 2:
+        raise HTTPException(400, "analyze at least 2 homes first")
+    people: dict[str, dict] = {}
+    for hid, h in done.items():
+        a = h["analysis"]
+        for p in a.get("people", []):
+            asp = a.get("aspects", {}).get(p["name"], [])
+            people.setdefault(p["name"], {})[hid] = {
+                "gua": p["gua"], "match": p["match"],
+                "best_room": p["rooms"][0]["label"] if p["rooms"] else None,
+                "fit": p["rooms"][0]["total"] if p["rooms"] else None,
+                "aspects": {c["aspect"]: {"score": c["score"], "zh": c["zh"],
+                                          "band_zh": c["band_zh"]}
+                            for c in asp}}
+    out = []
+    for name, row in people.items():
+        def strength(hid: str):
+            r = row[hid]
+            return (sum(c["score"] for c in r["aspects"].values()),
+                    r["fit"] or 0)
+        edge = max(row, key=strength)
+        out.append({"name": name, "edge": edge, "homes": row})
+    return {"homes": [{"id": hid, "name": h["name"],
+                       "house": h["analysis"].get("house"),
+                       "household_total": (h["analysis"].get("suggestion")
+                                           or {}).get("household_total")}
+                      for hid, h in done.items()],
+            "people": out,
+            "source_ref": "per-person: 6-aspect scores (八宅+玄空+用神 blend) "
+                          "+ best-room fit; edge = highest aspect sum, "
+                          "fit as tiebreak"}
 
 
 # ---------------------------------------------------------------- baby

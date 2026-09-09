@@ -71,9 +71,12 @@ button:disabled{opacity:.45;cursor:default}
 #needle::before{content:"";position:absolute;top:-5px;left:50%;transform:translateX(-50%);
   border:5px solid transparent;border-bottom:7px solid var(--accent)}
 #compass b{font-size:12.5px}
-#wrap{position:relative;max-width:100%;user-select:none;touch-action:none}
+#canvas-col{overflow:hidden}
+#wrap{position:relative;max-width:100%;user-select:none;touch-action:none;
+  transform-origin:0 0}
 #wrap.draw{cursor:crosshair}
 #wrap.door{cursor:pointer}
+#wrap.pan{cursor:grab}
 #plan{max-width:100%;max-height:74vh;display:block}
 .rect{position:absolute;border:2px solid #6b5b95;background:rgba(107,91,149,.28);
   color:#fff;overflow:hidden;font-size:12px;display:flex;align-items:center;
@@ -128,6 +131,14 @@ th{background:#f6f1e8}
   font-size:12.5px;margin:6px 0}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .kv{font-size:13.5px;margin:4px 0}
+#homes-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.hchip{border:1px solid var(--line);border-radius:16px;padding:4px 14px;cursor:pointer;
+  background:#fff;font-size:13.5px;display:inline-flex;gap:7px;align-items:center}
+.hchip.on{border-color:var(--accent);color:var(--accent);font-weight:600;background:#fdf3ee}
+.hchip i{font-style:normal;color:#bbb;font-size:12px}
+.hchip i:hover{color:var(--accent)}
+.bc-edge{color:var(--good);font-weight:700}
+.bc-table td,.bc-table th{font-size:12.5px}
 .dirchip{display:inline-block;border-radius:6px;padding:1px 8px;font-size:12.5px;margin:1px}
 .dirchip.good{background:#e9f7ee;color:#1e7d32;border:1px solid #b7e1c3}
 .dirchip.bad{background:#fdecea;color:#b03a2e;border:1px solid #f5c6c0}
@@ -154,6 +165,15 @@ th{background:#f6f1e8}
     <b>No workspace yet.</b> <span class="hint">Add at least one person on the
     <a href="/start">start page</a> first — room scores are person-specific
     (八宅命卦 + 用神 + flying stars).</span>
+  </div>
+
+  <div class="sec" id="homes-sec" hidden>
+    <div id="homes-bar">
+      <span class="hint">Homes 房产:</span>
+      <span id="home-chips"></span>
+      <button class="ghost" id="btn-addhome">＋ Add home</button>
+      <button class="ghost" id="btn-battle" hidden>⚔ Compare homes</button>
+    </div>
   </div>
 
   <!-- ============ STEP 1 — upload ============ -->
@@ -192,8 +212,12 @@ th{background:#f6f1e8}
       <div class="fac">
         <span class="hint" style="white-space:nowrap">Facing 朝向</span>
         <input type="range" id="f-facing" min="0" max="359.5" step="0.5" value="0">
-        <button class="ghost" id="btn-m15" style="padding:6px 9px">−15°</button>
-        <button class="ghost" id="btn-p15" style="padding:6px 9px">+15°</button>
+        <button class="ghost" id="btn-m15" style="padding:6px 9px">−15</button>
+        <button class="ghost" id="btn-m1" style="padding:6px 9px">−1</button>
+        <input type="number" id="f-facing-n" min="0" max="359.9" step="0.5" value="0"
+          style="width:74px;padding:6px 7px;border:1px solid var(--line);border-radius:7px;font-size:14px">
+        <button class="ghost" id="btn-p1" style="padding:6px 9px">+1</button>
+        <button class="ghost" id="btn-p15" style="padding:6px 9px">+15</button>
         <span id="fac-val">0° N 坎</span>
       </div>
       <div class="sep"></div>
@@ -215,6 +239,8 @@ th{background:#f6f1e8}
     <div id="board">
       <div id="sidebtns">
         <button id="btn-undo" title="undo last room">↺</button>
+        <button id="btn-pan" title="pan tool (or drag with two fingers)">🖐</button>
+        <button id="btn-zreset" title="reset zoom" style="font-size:11px">1:1</button>
       </div>
       <div id="canvas-col">
         <div id="compass"><div id="dial"><div id="needle"></div></div><b id="cp-val">0°</b></div>
@@ -248,7 +274,9 @@ th{background:#f6f1e8}
 <script>
 const $ = s => document.querySelector(s);
 let token = null, ws = null, rooms = [], drag = null, imgNatural = [0, 0];
-let mode = "draw", selected = -1, entrance = null;   // entrance = [px,py] on-screen
+let mode = "draw", selected = -1, entrance = null;   // entrance = [rx,ry] 0..1
+let homes = [], cur = null, pendingRestore = null;
+const view = {s: 1, tx: 0, ty: 0};                   // pan/zoom transform
 const SLEEP_TYPES = ["Master Bedroom 主卧", "Bedroom 卧室"];
 const mm = location.pathname.match(/^\/w\/([A-Za-z0-9_-]{8,64})/);
 if (mm) token = mm[1];
@@ -264,9 +292,81 @@ async function api(path, opts) {
 function showStep(s) {
   $("#step-up").hidden = s !== "up";
   $("#step-anno").hidden = s !== "anno";
-  if (s === "anno") $("#plan").src = `/api/pub/w/${token}/floorplan?t=${Date.now()}`;
+  if (s === "anno" && cur)
+    $("#plan").src = `/api/pub/w/${token}/homes/${cur}/floorplan?t=${Date.now()}`;
 }
 $("#btn-back2").addEventListener("click", e => { e.preventDefault(); showStep("up"); });
+
+/* ---------------- homes ---------------- */
+function renderHomes() {
+  $("#homes-sec").hidden = !homes.length;
+  $("#home-chips").innerHTML = homes.map(h =>
+    `<span class="hchip${h.id === cur ? " on" : ""}" data-h="${h.id}">
+      ${h.name}${h.analyzed ? " ✓" : ""}<i data-del="${h.id}" title="delete">✕</i></span>`).join("");
+  $("#btn-battle").hidden = homes.filter(h => h.analyzed).length < 2;
+  document.querySelectorAll(".hchip").forEach(el => el.addEventListener("click", async e => {
+    if (e.target.dataset.del) {
+      if (!confirm(`Delete home "${homes.find(h => h.id === e.target.dataset.del).name}"?`)) return;
+      const r = await api(`/api/pub/w/${token}/homes/${e.target.dataset.del}`, {method: "DELETE"});
+      homes = r.homes;
+      if (cur === e.target.dataset.del) { cur = null; resetCanvas(); showStep("up"); resetUpload(); }
+      renderHomes(); return;
+    }
+    selectHome(el.dataset.h);
+  }));
+}
+$("#btn-addhome").addEventListener("click", async () => {
+  const name = (prompt("Name this home (e.g. TowerB #02-19):",
+                       `Home ${homes.length + 1}`) || "").trim();
+  if (!name) return;
+  const r = await api(`/api/pub/w/${token}/homes`, {method: "POST",
+    headers: {"Content-Type": "application/json"}, body: JSON.stringify({name})});
+  homes = r.homes; cur = r.id;
+  resetCanvas(); resetUpload(); renderHomes(); showStep("up");
+});
+$("#btn-battle").addEventListener("click", async () => {
+  try {
+    const bc = await api(`/api/pub/w/${token}/battlecard`);
+    $("#results").innerHTML = battlecardBlock(bc);
+    $("#results").scrollIntoView({behavior: "smooth"});
+  } catch (e) { $("#go-err").textContent = e.message; }
+});
+function resetUpload() {
+  $("#preview").hidden = true; $("#preview").src = "";
+  $("#drop-ph").hidden = false; $("#rot-bar").hidden = true;
+  $("#btn-continue").disabled = true; $("#results").innerHTML = "";
+}
+function resetCanvas() {
+  rooms.forEach(r => r.el.remove()); rooms = [];
+  entrance = null; $("#door-pin").hidden = true;
+  selected = -1; $("#panel").hidden = true;
+  view.s = 1; view.tx = 0; view.ty = 0; applyView();
+  $("#results").innerHTML = ""; $("#go-err").textContent = "";
+}
+async function ensureHome() {
+  if (cur) return cur;
+  const r = await api(`/api/pub/w/${token}/homes`, {method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({name: "Home 1"})});
+  homes = r.homes; cur = r.id; renderHomes();
+  return cur;
+}
+async function selectHome(hid) {
+  cur = hid; renderHomes();
+  const cfg = await api(`/api/pub/w/${token}/homes/${hid}`);
+  resetCanvas();
+  setFacing(cfg.facing_deg ?? 0);
+  $("#f-upb").value = (cfg.image_up_bearing != null &&
+    cfg.image_up_bearing !== cfg.facing_deg) ? cfg.image_up_bearing : "";
+  if (cfg.period) $("#f-period").value = cfg.period;
+  if (cfg.floorplan) {
+    pendingRestore = cfg;                    // rooms rebuilt once the plan loads
+    showStep("anno");
+    if (cfg.analysis) renderResults(cfg.analysis);
+  } else {
+    resetUpload(); showStep("up");
+  }
+}
 
 /* ---------------- boot ---------------- */
 (async () => {
@@ -274,14 +374,10 @@ $("#btn-back2").addEventListener("click", e => { e.preventDefault(); showStep("u
   $("#back").href = `/w/${token}`;
   try { ws = await api(`/api/pub/w/${token}`); }
   catch (e) { $("#need-ws").hidden = false; token = null; return; }
-  if (ws.has_floorplan) {
-    $("#preview").src = `/api/pub/w/${token}/floorplan`;
-    $("#preview").hidden = false; $("#drop-ph").hidden = true;
-    $("#rot-bar").hidden = false;
-    $("#btn-continue").disabled = false;
-    showStep("anno");
-  }
-  if (ws.home) restoreHome();
+  homes = (await api(`/api/pub/w/${token}/homes`)).homes;
+  renderHomes();
+  const first = homes.find(h => h.floorplan) || homes[0];
+  if (first) selectHome(first.id);
 })();
 
 /* ---------------- upload ---------------- */
@@ -301,12 +397,14 @@ async function upload(f) {
   if (!token) { $("#up-err").textContent = "add a person on the start page first"; return; }
   const fd = new FormData(); fd.append("file", f);
   try {
-    await api(`/api/pub/w/${token}/floorplan`, {method: "POST", body: fd});
+    await ensureHome();
+    await api(`/api/pub/w/${token}/homes/${cur}/floorplan`, {method: "POST", body: fd});
+    homes.find(h => h.id === cur).floorplan = true;
     $("#preview").src = URL.createObjectURL(f);
     $("#preview").hidden = false; $("#drop-ph").hidden = true;
     $("#rot-bar").hidden = false;
     $("#btn-continue").disabled = false;
-    rooms = []; entrance = null; $("#rects").innerHTML = ""; $("#door-pin").hidden = true;
+    resetCanvas();
   } catch (e) { $("#up-err").textContent = e.message; }
 }
 
@@ -354,14 +452,20 @@ function facLabel(d) {
 }
 function setFacing(d) {
   d = ((d % 360) + 360) % 360;
+  d = Math.round(d * 2) / 2;
   $("#f-facing").value = d;
+  $("#f-facing-n").value = d;
   $("#fac-val").textContent = facLabel(d);
   $("#cp-val").textContent = d + "°";
   $("#needle").style.rotate = d + "deg";
 }
+const nudge = n => setFacing(parseFloat($("#f-facing").value) + n);
 $("#f-facing").addEventListener("input", () => setFacing(parseFloat($("#f-facing").value)));
-$("#btn-m15").addEventListener("click", () => setFacing(parseFloat($("#f-facing").value) - 15));
-$("#btn-p15").addEventListener("click", () => setFacing(parseFloat($("#f-facing").value) + 15));
+$("#f-facing-n").addEventListener("change", () => setFacing(parseFloat($("#f-facing-n").value) || 0));
+$("#btn-m15").addEventListener("click", () => nudge(-15));
+$("#btn-p15").addEventListener("click", () => nudge(15));
+$("#btn-m1").addEventListener("click", () => nudge(-1));
+$("#btn-p1").addEventListener("click", () => nudge(1));
 
 /* ---------------- modes ---------------- */
 const wrap = $("#wrap");
@@ -369,24 +473,72 @@ function setMode(m) {
   mode = m;
   $("#btn-draw").classList.toggle("on", m === "draw");
   $("#btn-door").classList.toggle("on", m === "door");
+  $("#btn-pan").style.borderColor = m === "pan" ? "var(--accent)" : "";
   wrap.className = m;
 }
 $("#btn-draw").addEventListener("click", () => setMode("draw"));
 $("#btn-door").addEventListener("click", () => setMode("door"));
+$("#btn-pan").addEventListener("click", () => setMode(mode === "pan" ? "draw" : "pan"));
 setMode("draw");
+
+/* ---------------- pan / zoom (wheel, pinch, hand tool) ---------------- */
+function applyView() {
+  wrap.style.transform = `translate(${view.tx}px,${view.ty}px) scale(${view.s})`;
+}
+$("#btn-zreset").addEventListener("click", () => {
+  view.s = 1; view.tx = 0; view.ty = 0; applyView();
+});
+function rel(e) {                          // pointer → plan-layout coords
+  const b = wrap.getBoundingClientRect();
+  return [(e.clientX - b.left) / view.s, (e.clientY - b.top) / view.s];
+}
+function zoomAt(clientX, clientY, factor) {
+  const b = wrap.getBoundingClientRect();
+  const p = [(clientX - b.left) / view.s, (clientY - b.top) / view.s];
+  const s2 = Math.max(0.5, Math.min(6, view.s * factor));
+  const base = [b.left - view.tx, b.top - view.ty];
+  view.tx = clientX - base[0] - p[0] * s2;
+  view.ty = clientY - base[1] - p[1] * s2;
+  view.s = s2;
+  applyView();
+}
+$("#canvas-col").addEventListener("wheel", e => {
+  e.preventDefault();
+  zoomAt(e.clientX, e.clientY, Math.pow(1.1, -e.deltaY / 53));
+}, {passive: false});
+
+const pointers = new Map();                // pinch = two active pointers
+let pinch = null, panDrag = null;
 
 /* ---------------- drawing (pointer events = mouse + touch) ---------------- */
 $("#plan").addEventListener("load", () => {
   imgNatural = [$("#plan").naturalWidth, $("#plan").naturalHeight];
+  if (pendingRestore) { rebuildFromSaved(pendingRestore); pendingRestore = null; }
 });
 wrap.addEventListener("pointerdown", e => {
-  const b = wrap.getBoundingClientRect();
-  const x = e.clientX - b.left, y = e.clientY - b.top;
+  pointers.set(e.pointerId, [e.clientX, e.clientY]);
+  if (pointers.size === 2) {               // second finger → pinch, cancel draw
+    if (drag) { drag.el.remove(); drag = null; }
+    panDrag = null;
+    const [a, b2] = [...pointers.values()];
+    pinch = {d0: Math.hypot(a[0]-b2[0], a[1]-b2[1]) || 1,
+             mid0: [(a[0]+b2[0])/2, (a[1]+b2[1])/2],
+             s0: view.s, tx0: view.tx, ty0: view.ty,
+             base: [wrap.getBoundingClientRect().left - view.tx,
+                    wrap.getBoundingClientRect().top - view.ty]};
+    return;
+  }
+  const [x, y] = rel(e);
+  if (mode === "pan") {
+    panDrag = {x: e.clientX, y: e.clientY, tx: view.tx, ty: view.ty};
+    wrap.setPointerCapture(e.pointerId);
+    return;
+  }
   if (mode === "door") {
-    entrance = [x / b.width, y / b.height];      // relative — survives resize
+    entrance = [x / $("#plan").offsetWidth, y / $("#plan").offsetHeight];
     placeDoor(); setMode("draw"); return;
   }
-  if (e.target.closest(".rect")) return;         // click selects (rect handler)
+  if (e.target.closest(".rect")) return;   // click selects (rect handler)
   drag = {x0: x, y0: y, el: document.createElement("div")};
   drag.el.className = "rect";
   $("#rects").appendChild(drag.el);
@@ -394,14 +546,41 @@ wrap.addEventListener("pointerdown", e => {
   e.preventDefault();
 });
 wrap.addEventListener("pointermove", e => {
+  if (pointers.has(e.pointerId)) pointers.set(e.pointerId, [e.clientX, e.clientY]);
+  if (pinch && pointers.size === 2) {
+    const [a, b2] = [...pointers.values()];
+    const d = Math.hypot(a[0]-b2[0], a[1]-b2[1]) || 1;
+    const mid = [(a[0]+b2[0])/2, (a[1]+b2[1])/2];
+    const s2 = Math.max(0.5, Math.min(6, pinch.s0 * d / pinch.d0));
+    const p = [(pinch.mid0[0] - pinch.base[0] - pinch.tx0) / pinch.s0,
+               (pinch.mid0[1] - pinch.base[1] - pinch.ty0) / pinch.s0];
+    view.s = s2;
+    view.tx = mid[0] - pinch.base[0] - p[0] * s2;
+    view.ty = mid[1] - pinch.base[1] - p[1] * s2;
+    applyView();
+    return;
+  }
+  if (panDrag) {
+    view.tx = panDrag.tx + e.clientX - panDrag.x;
+    view.ty = panDrag.ty + e.clientY - panDrag.y;
+    applyView();
+    return;
+  }
   if (!drag) return;
-  const b = wrap.getBoundingClientRect();
-  const x = Math.max(0, Math.min(e.clientX - b.left, b.width));
-  const y = Math.max(0, Math.min(e.clientY - b.top, b.height));
+  const w0 = $("#plan").offsetWidth, h0 = $("#plan").offsetHeight;
+  const [rx, ry] = rel(e);
+  const x = Math.max(0, Math.min(rx, w0)), y = Math.max(0, Math.min(ry, h0));
   Object.assign(drag.el.style, {left: Math.min(x, drag.x0)+"px", top: Math.min(y, drag.y0)+"px",
     width: Math.abs(x-drag.x0)+"px", height: Math.abs(y-drag.y0)+"px"});
 });
-wrap.addEventListener("pointerup", () => {
+function endPointer(e) {
+  pointers.delete(e.pointerId);
+  if (pointers.size < 2) pinch = null;
+  panDrag = null;
+}
+wrap.addEventListener("pointercancel", endPointer);
+wrap.addEventListener("pointerup", e => {
+  endPointer(e);
   if (!drag) return;
   const s = drag.el.style;
   const w = parseFloat(s.width || 0), h = parseFloat(s.height || 0);
@@ -412,6 +591,29 @@ wrap.addEventListener("pointerup", () => {
   drag = null;
   decorate(rooms.length - 1); select(rooms.length - 1);
 });
+
+function rebuildFromSaved(cfg) {
+  const sw = $("#plan").offsetWidth / imgNatural[0];
+  const sh = $("#plan").offsetHeight / imgNatural[1];
+  for (const r of cfg.rooms || []) {
+    if (r.id === "entrance") continue;      // the door travels as `entrance`
+    const xs = r.poly.map(p => p[0]), ys2 = r.poly.map(p => p[1]);
+    const l = Math.min(...xs) * sw, t = Math.min(...ys2) * sh;
+    const w = (Math.max(...xs) - Math.min(...xs)) * sw;
+    const h = (Math.max(...ys2) - Math.min(...ys2)) * sh;
+    const el = document.createElement("div");
+    el.className = "rect";
+    Object.assign(el.style, {left: l+"px", top: t+"px", width: w+"px", height: h+"px"});
+    $("#rects").appendChild(el);
+    const type = r.rtype || (r.sleeping ? "Bedroom 卧室" : "Other 其他");
+    rooms.push({id: r.id, type, name: r.label === type ? "" : r.label,
+      sleeping: r.sleeping, px: [l, t, w, h], el,
+      occupants: (cfg.assignment || {})[r.id] || []});
+    decorate(rooms.length - 1);
+  }
+  if (cfg.entrance) { entrance = cfg.entrance; placeDoor(); }
+  if (cfg.analysis) renderResults(cfg.analysis);   // now room labels resolve
+}
 function decorate(i) {
   const r = rooms[i];
   r.el.classList.toggle("ns", !r.sleeping);
@@ -419,10 +621,10 @@ function decorate(i) {
   r.el.onclick = () => select(i);
 }
 function placeDoor() {
-  const b = wrap.getBoundingClientRect(), p = $("#door-pin");
+  const p = $("#door-pin");
   p.hidden = false;
-  p.style.left = entrance[0] * b.width + "px";
-  p.style.top = entrance[1] * b.height + "px";
+  p.style.left = entrance[0] * $("#plan").offsetWidth + "px";
+  p.style.top = entrance[1] * $("#plan").offsetHeight + "px";
 }
 /* pin is draggable; ✕ deletes it */
 const pin = $("#door-pin");
@@ -493,28 +695,21 @@ $("#btn-undo").addEventListener("click", () => {
   selected = -1; $("#panel").hidden = true;
 });
 
-function restoreHome() {
-  const h = ws.home;
-  setFacing(h.facing_deg);
-  if (h.image_up_bearing !== h.facing_deg) $("#f-upb").value = h.image_up_bearing;
-  $("#f-period").value = h.period;
-}
-
 /* ---------------- analyze ---------------- */
 function label(r) { return r.name || r.type.replace(/ /g, " "); }
 $("#btn-analyze").addEventListener("click", async () => {
   $("#go-err").textContent = "";
   if (!rooms.length) { $("#go-err").textContent = "draw at least one room first"; return; }
-  const b = wrap.getBoundingClientRect();
-  const sx = imgNatural[0] / b.width, sy = imgNatural[1] / b.height;
+  const w0 = $("#plan").offsetWidth, h0 = $("#plan").offsetHeight;
+  const sx = imgNatural[0] / w0, sy = imgNatural[1] / h0;
   const rlist = rooms.map(r => ({id: r.id, label: label(r), sleeping: r.sleeping,
-    capacity: 2,
+    capacity: 2, rtype: r.type,
     poly: [[r.px[0]*sx, r.px[1]*sy], [(r.px[0]+r.px[2])*sx, r.px[1]*sy],
            [(r.px[0]+r.px[2])*sx, (r.px[1]+r.px[3])*sy], [r.px[0]*sx, (r.px[1]+r.px[3])*sy]]}));
   if (entrance) {
     // ponytail: entrance = a tiny room polygon, so the door's palace + stars
     // come out of the same pie/chart machinery with zero API change
-    const ex = entrance[0] * b.width * sx, ey = entrance[1] * b.height * sy;
+    const ex = entrance[0] * imgNatural[0], ey = entrance[1] * imgNatural[1];
     const d = Math.max(imgNatural[0], imgNatural[1]) * 0.012 || 8;
     rlist.push({id: "entrance", label: "Entrance 大門", sleeping: false, capacity: 0,
       poly: [[ex-d, ey-d], [ex+d, ey-d], [ex+d, ey+d], [ex-d, ey+d]]});
@@ -524,28 +719,73 @@ $("#btn-analyze").addEventListener("click", async () => {
     image_up_bearing: $("#f-upb").value === "" ? null : parseFloat($("#f-upb").value),
     period: parseInt($("#f-period").value),
     rooms: rlist,
+    entrance,
     assignment: Object.fromEntries(rooms.filter(r => r.sleeping && r.occupants.length)
       .map(r => [r.id, r.occupants])),
   };
   try {
-    const res = await api(`/api/pub/w/${token}/analyze`, {method: "POST",
+    await ensureHome();
+    const res = await api(`/api/pub/w/${token}/homes/${cur}/analyze`, {method: "POST",
       headers: {"Content-Type": "application/json"}, body: JSON.stringify(req)});
-    let html = "";
-    if (res.boundary && res.boundary.zone !== "正向") {
-      html += `<div class="warn">⚠ ${res.boundary.zone}: the facing sits ${res.boundary.offset_deg}°
-        from the ${res.boundary.mountain} mountain centre near the ${res.boundary.neighbor}
-        boundary — both charts shown; re-measure on site to settle which rules.</div>`;
-    }
-    html += chartBlock("Main chart 主盘", res.main, res.scores);
-    html += peopleBlock(res);
-    if (res.alternate) html += chartBlock("Alternate chart 兼盘", res.alternate, res.alternate_scores);
-    html += `<div class="sec hint">Scores blend 八宅命卦 + 玄空飞星 + 用神 element fit —
-      each line above cites its rule. Annual stars are for ${res.year}. This analysis is
-      saved to your workspace link.</div>`;
-    $("#results").innerHTML = html;
+    const h = homes.find(x => x.id === cur);
+    if (h) h.analyzed = true;
+    renderHomes();
+    renderResults(res);
     $("#results").scrollIntoView({behavior: "smooth"});
   } catch (e) { $("#go-err").textContent = e.message; }
 });
+
+function renderResults(res) {
+  let html = "";
+  if (res.boundary && res.boundary.zone !== "正向") {
+    html += `<div class="warn">⚠ ${res.boundary.zone}: the facing sits ${res.boundary.offset_deg}°
+      from the ${res.boundary.mountain} mountain centre near the ${res.boundary.neighbor}
+      boundary — both charts shown; re-measure on site to settle which rules.</div>`;
+  }
+  html += chartBlock("Main chart 主盘", res.main, res.scores);
+  html += peopleBlock(res);
+  if (res.alternate) html += chartBlock("Alternate chart 兼盘", res.alternate, res.alternate_scores);
+  html += `<div class="sec hint">Scores blend 八宅命卦 + 玄空飞星 + 用神 element fit —
+    each line above cites its rule. Annual stars are for ${res.year}. This analysis is
+    saved to this home in your workspace link.</div>`;
+  $("#results").innerHTML = html;
+}
+
+function aspectChips(cards) {
+  return cards.map(a => `<span class="dirchip ${a.score >= 65 ? "good" :
+    a.score < 45 ? "bad" : ""}" title="${a.driver || ""}">${a.zh} ${a.score} ${a.band_zh}</span>`).join(" ");
+}
+
+function battlecardBlock(bc) {
+  const hn = Object.fromEntries(bc.homes.map(h => [h.id, h.name]));
+  let html = `<div class="sec"><h2>⚔ Home battlecard 對決 <span class="hint">
+    ${bc.homes.length} analyzed homes compared per person</span></h2>
+    <table class="bc-table"><tr><th>Home</th><th>House group</th><th>Best household total</th></tr>
+    ${bc.homes.map(h => `<tr><td><b>${h.name}</b></td>
+      <td>${h.house ? `坐${h.house.sitting_gua} ${h.house.group.includes("East") ? "東四宅" : "西四宅"}` : "—"}</td>
+      <td>${h.household_total != null ? h.household_total.toFixed(2) : "—"}</td></tr>`).join("")}
+    </table></div>`;
+  html += bc.people.map(p => `<div class="sec">
+    <h2>${p.name} <span class="bc-edge">edge: ${hn[p.edge]}</span></h2>
+    <div style="overflow-x:auto"><table class="bc-table">
+      <tr><th></th>${Object.keys(p.homes).map(hid =>
+        `<th>${hn[hid]}${hid === p.edge ? " 👑" : ""}</th>`).join("")}</tr>
+      <tr><th>宅命 match</th>${Object.values(p.homes).map(r =>
+        `<td class="${r.match ? "good" : "bad"}">${r.match ? "✓ matches" : "✗ opposite"}</td>`).join("")}</tr>
+      <tr><th>Best room · fit</th>${Object.values(p.homes).map(r =>
+        `<td>${r.best_room || "—"} · <b>${r.fit != null ? r.fit.toFixed(2) : "—"}</b></td>`).join("")}</tr>
+      ${["health","career","study","wealth","relationship","luck"].map(k =>
+        `<tr><th>${{health:"健康 Health",career:"事业 Career",study:"学业 Study",
+          wealth:"财富 Wealth",relationship:"感情 Relationship",luck:"运势 Luck"}[k]}</th>
+        ${Object.values(p.homes).map(r => { const a = r.aspects[k];
+          return `<td class="${a && a.score >= 65 ? "good" : a && a.score < 45 ? "bad" : ""}">
+            ${a ? `<b>${a.score}</b> ${a.band_zh}` : "—"}</td>`; }).join("")}</tr>`).join("")}
+    </table></div></div>`).join("");
+  html += `<div class="sec hint">${bc.source_ref}. Aspect scores come from the same
+    rule engine as each single-home analysis — compare columns, then re-measure the
+    facing on site before acting on a close call.</div>`;
+  return html;
+}
 
 function peopleBlock(res) {
   if (!res.people || !res.people.length) return "";
@@ -566,6 +806,9 @@ function peopleBlock(res) {
       ${p.dirs_good.map(d => `<span class="dirchip good">${d.dir} ${d.star}</span>`).join(" ")}
       &nbsp;avoid ${p.dirs_bad.slice(0, 2).map(d =>
         `<span class="dirchip bad">${d.dir} ${d.star}</span>`).join(" ")}</div>
+    ${res.aspects && res.aspects[p.name] ? `<div class="kv">
+      <b>Six aspects 六项评分:</b> ${aspectChips(res.aspects[p.name])}
+      <span class="hint">(hover a chip for its driver — 0–100, ≥65 good, &lt;45 support)</span></div>` : ""}
     ${p.rooms.length ? `<table><tr><th>Room (best → worst)</th><th>Score</th><th>Why — top rules</th></tr>
       ${p.rooms.map((r, i) => `<tr><td>${i === 0 ? "★ " : ""}${r.label}</td>
         <td><b>${r.total.toFixed(2)}</b></td>

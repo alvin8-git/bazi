@@ -117,6 +117,10 @@ def test_analyze_fengshui():
         assert p["rooms"][0]["why"]
     assert d["suggestion"]["assignment"]["Master"]
     assert isinstance(d["suggestion"]["household_total"], float)
+    # aspect scores ride along on every analysis
+    assert len(d["aspects"]["测试一"]) == 6
+    assert {a["aspect"] for a in d["aspects"]["测试一"]} == {
+        "health", "career", "study", "wealth", "relationship", "luck"}
     # 騎線 facing → alternate chart with its own scores
     r2 = client.post(f"/api/pub/w/{tok}/analyze", json={**req, "facing_deg": 307})
     d2 = r2.json()
@@ -127,6 +131,42 @@ def test_analyze_fengshui():
                        json={**req, "assignment": {"nope": ["测试一"]}}).status_code == 400
     assert client.post(f"/api/pub/w/{tok}/analyze",
                        json={**req, "assignment": {"master": ["ghost"]}}).status_code == 400
+
+
+def test_homes_and_battlecard():
+    tok = _new_ws(P1, P2)
+    h1 = client.post(f"/api/pub/w/{tok}/homes", json={"name": "TowerB"}).json()["id"]
+    h2 = client.post(f"/api/pub/w/{tok}/homes", json={"name": "TowerC"}).json()["id"]
+    req = {"facing_deg": 135, "period": 8, "rooms": ROOMS,
+           "assignment": {"master": ["测试一", "测试二"]}, "entrance": [0.5, 0.9]}
+    assert client.post(f"/api/pub/w/{tok}/homes/{h1}/analyze",
+                       json=req).status_code == 200
+    d2 = client.post(f"/api/pub/w/{tok}/homes/{h2}/analyze",
+                     json={**req, "facing_deg": 270}).json()
+    assert len(d2["aspects"]["测试一"]) == 6
+    # config + analysis saved per home, restorable
+    saved = client.get(f"/api/pub/w/{tok}/homes/{h1}").json()
+    assert saved["entrance"] == [0.5, 0.9]
+    assert saved["rooms"][0]["label"] == "Master"
+    assert saved["analysis"]["house"] and saved["analysis"]["people"]
+    lst = client.get(f"/api/pub/w/{tok}/homes").json()["homes"]
+    assert [h["analyzed"] for h in lst] == [True, True]
+    # battlecard across the two homes
+    bc = client.get(f"/api/pub/w/{tok}/battlecard").json()
+    assert len(bc["homes"]) == 2 and len(bc["people"]) == 2
+    p = bc["people"][0]
+    assert p["edge"] in (h1, h2) and set(p["homes"]) == {h1, h2}
+    assert len(p["homes"][h1]["aspects"]) == 6
+    assert client.delete(f"/api/pub/w/{tok}/homes/{h2}").status_code == 200
+    assert client.get(f"/api/pub/w/{tok}/battlecard").status_code == 400
+
+
+def test_legacy_analyze_creates_default_home():
+    tok = _new_ws(P1)
+    req = {"facing_deg": 135, "period": 8, "rooms": ROOMS, "assignment": {}}
+    assert client.post(f"/api/pub/w/{tok}/analyze", json=req).status_code == 200
+    lst = client.get(f"/api/pub/w/{tok}/homes").json()["homes"]
+    assert len(lst) == 1 and lst[0]["name"] == "My home" and lst[0]["analyzed"]
 
 
 def test_baby_page():
