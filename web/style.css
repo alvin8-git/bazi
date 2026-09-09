@@ -109,6 +109,20 @@ td.good { color: var(--good); } td.bad { color: var(--bad); }
 .sdialbar div{height:100%;background:#dbe9fd;border-right:3px solid #1a56b0}
 .sdialcap{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
 
+/* Four Palaces 宮位 life-arc strip */
+.palarc { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 8px 0; }
+.palcol { border: 1px solid var(--line); border-radius: 10px; background: var(--bg);
+  padding: 9px 7px; text-align: center; }
+.palcol.dm { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent);
+  background: var(--card); }
+.palages { font-size: 11px; color: var(--muted); }
+.palzh { font-weight: 700; color: #8a6d00; font-size: 12.5px; }
+.palgz { font-size: 23px; font-weight: 700; margin: 2px 0; }
+.palgods { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; margin: 4px 0; }
+.palgods .dirchip { background: #fff; font-size: 11.5px; }
+.palgov { font-size: 11px; color: var(--muted); line-height: 1.45; }
+@media (max-width: 720px) { .palarc { grid-template-columns: 1fr 1fr; } }
+
 /* 生剋 interaction wheel + Day-Master flows */
 .ewrap { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; margin: 8px 0; }
 .ewheel { width: 272px; max-width: 100%; flex: 0 0 auto; }

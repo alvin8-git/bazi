@@ -273,6 +273,13 @@ def test_person_reading_13_sections():
             "careers", "windows", "life_palaces", "interpretation",
             "citations"} <= set(d)
     assert d["name"] == "测试一" and len(d["windows"]["years"]) == 10
+    # four palaces 宮位: pillars arc + spouse/children/vault deep lines
+    P = d["palaces"]
+    assert [p["key"] for p in P["pillars"]] == ["year", "month", "day", "hour"]
+    assert all(p["gz"] and p["line"] for p in P["pillars"])
+    assert P["spouse"]["branch"] and P["spouse"]["state"]
+    assert "output_share" in P["children"]
+    assert P["vault"]["state"] and isinstance(P["vault"]["present"], bool)
     # structure check: 用神 alignment, rooting, classical pair patterns
     ti = d["tengod_insights"]
     assert 1 <= len(ti["favor"]) <= 3

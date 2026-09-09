@@ -280,6 +280,103 @@ def ten_god_insights(chart, ys: dict) -> dict:
                           "pair patterns — thresholds on weighted god shares"}
 
 
+PALACE_INFO = [
+    ("year", "年柱 Year", "ages 0–15",
+     "ancestry, childhood environment, first impressions on strangers"),
+    ("month", "月柱 Month", "ages 16–32",
+     "parents, early adulthood, the career headquarters"),
+    ("day", "日柱 Day", "ages 33–48",
+     "the self (stem) · spouse and domestic life (branch)"),
+    ("hour", "時柱 Hour", "ages 49+",
+     "children, late-life luck, side pursuits, the subconscious"),
+]
+_PALACE_TMPL = {
+    "year": "Roots & first impressions read as {god}: {meaning}",
+    "month": "The career HQ is {god}-flavoured: {meaning} — the environment "
+             "your working life grows in",
+    "day": "You sit on {god}: {meaning} — see the spouse-palace reading in §8",
+    "hour": "The fruit palace carries {god}: {meaning} — the flavour of "
+            "children, students and late-life work",
+}
+_VAULT = {"木": "未", "火": "戌", "土": "戌", "金": "丑", "水": "辰"}
+_VAULT_CLASH = {"辰": "戌", "戌": "辰", "丑": "未", "未": "丑"}
+
+
+def four_palaces(chart, ys: dict) -> dict:
+    """The 宮位 layer: each pillar as a life-stage palace with its resident
+    gods and a reading; spouse-palace, children-palace and 財庫 deep lines."""
+    from .shensha import TEN_GOD_MEANING, natal_interactions, ten_god_pct
+    dm_el = STEM_ELEMENT[chart.day_master]
+    pillars = []
+    for key, zh, ages, governs in PALACE_INFO:
+        stem_god = chart.ten_gods[key]
+        hidden = [g for _, g in chart.hidden_gods[key]]
+        gods = ([stem_god] if stem_god in _TG_GROUP else []) + hidden
+        main = gods[0] if gods else None
+        line = (_PALACE_TMPL[key].format(
+            god=main, meaning=TEN_GOD_MEANING.get(main, "")) if main else governs)
+        pillars.append({"key": key, "zh": zh, "ages": ages, "governs": governs,
+                        "gz": str(chart.pillars[key]), "stem_god": stem_god,
+                        "hidden": hidden, "line": line})
+
+    inter = [i for i in natal_interactions(chart) if "day" in i["pillars"]]
+    clash = next((i for i in inter if "沖" in i["kind"] or "冲" in i["kind"]), None)
+    he = next((i for i in inter if "合" in i["kind"]), None)
+    xing = next((i for i in inter if "刑" in i["kind"] or "害" in i["kind"]), None)
+    sp_state = (
+        f"clashed 被沖 ({clash['pair']}) — attraction comes easily, but the "
+        "relationship moves through more change before it settles" if clash else
+        f"in combination 逢合 ({he['pair']}) — the palace is pulled by another "
+        "pillar; family and context shape the marriage" if he else
+        f"under {xing['kind']} ({xing['pair']}) — quiet friction in the "
+        "domestic seat; name it early rather than let it accumulate" if xing else
+        "undisturbed — a stable seat for the marriage")
+    sp_gods = [g for _, g in chart.hidden_gods["day"]]
+    spouse = {"branch": str(chart.pillars["day"])[1], "gods": sp_gods,
+              "state": sp_state,
+              "line": (f"hosts {'/'.join(sp_gods)} — the partner's energy "
+                       f"reads as {TEN_GOD_MEANING.get(sp_gods[0], '')}"
+                       if sp_gods else "")}
+
+    pct = ten_god_pct(chart)
+    out_share = round(pct.get("食神", 0) + pct.get("傷官", 0)
+                      + pct.get("伤官", 0), 1)
+    hr_gods = ([chart.ten_gods["hour"]]
+               if chart.ten_gods["hour"] in _TG_GROUP else []) \
+        + [g for _, g in chart.hidden_gods["hour"]]
+    children = {"gods": hr_gods, "output_share": out_share,
+                "line": (f"carries {'/'.join(dict.fromkeys(hr_gods))}"
+                         + (f"; output stars at {out_share}% — the bond with "
+                            "children/students runs through shared creation "
+                            "and teaching" if out_share >= 15 else
+                            f"; output stars at {out_share}% — the bond builds "
+                            "through deliberate time, not shared projects"))}
+
+    w_el = KE_C[dm_el]
+    vb = _VAULT[w_el]
+    branches = [str(chart.pillars[k])[1] for k in ("year", "month", "day", "hour")]
+    if vb in branches:
+        opener = _VAULT_CLASH[vb]
+        vault = {"present": True, "branch": vb, "element": w_el,
+                 "open": opener in branches,
+                 "state": ("natally OPEN 已開 — the storehouse works from "
+                           "birth; accumulation compounds" if opener in branches
+                           else f"present but sealed — it opens in {opener} "
+                           "years (the 財庫 vault years flagged in §13); "
+                           "those are the accumulation windows")}
+    else:
+        vault = {"present": False, "element": w_el,
+                 "state": f"no {w_el}-vault branch ({vb}) in the chart — "
+                          "wealth flows rather than stores; retention needs "
+                          "systems (automatic saving), not windfalls"}
+    return {"pillars": pillars, "spouse": spouse, "children": children,
+            "vault": vault,
+            "source_ref": "宮位 four-palace doctrine: year=ancestry/0–15, "
+                          "month=career HQ/16–32, day=self+spouse/33–48, "
+                          "hour=children/49+; 財庫 = wealth-element vault "
+                          "branch, opened by its 六沖 clash"}
+
+
 def _fav_word(el: str, ys: dict) -> str:
     if el in ys["favourable"]:
         return "favourable 喜"

@@ -31,7 +31,7 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
     from .careers import career_paths
     from .domains import (health_map, industry_map, life_domains,
                           personality_axes)
-    from .interpret import (element_relations, interpret_person,
+    from .interpret import (element_relations, four_palaces, interpret_person,
                             ten_god_insights)
     from .liunian import dayun_detail, year_ganzhi
     from .shensha import (TEN_GOD_MEANING, life_palaces, natal_interactions,
@@ -47,6 +47,7 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
             "strategy": strategy_payload(c, ys, year),
             "element_relations": element_relations(c),
             "tengod_insights": ten_god_insights(c, ys),
+            "palaces": four_palaces(c, ys),
             "gua": ming_gua(c.lichun_year, c.sex),
             "group": gua_group(ming_gua(c.lichun_year, c.sex)),
             "youxing": youxing_stars(ming_gua(c.lichun_year, c.sex)),

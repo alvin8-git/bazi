@@ -817,6 +817,38 @@ function tenGodsWheel(c) {
   return s + "</svg>";
 }
 
+/* Four Palaces 宮位 — each pillar as a life-stage palace with resident gods */
+function palacesBlock(c) {
+  const P = c.palaces;
+  if (!P) return "";
+  const chip = (g) => {
+    const col = EL_COL[godEl(c.day_master, g)] || "#8a8177";
+    return `<span class="dirchip" style="border-color:${col};color:${col}">${g}</span>`;
+  };
+  return `<div class="section"><h3>Four Palaces 宮位 — the when &amp; where
+      <span class="tag">year→hour = the arc of a life</span></h3>
+    <div class="cite" style="margin:0 0 8px">The ten gods say WHAT an energy is; the
+      palace it sits in says WHEN it peaks and WHERE it plays out.</div>
+    <div class="palarc">${P.pillars.map((p) => `
+      <div class="palcol${p.key === "day" ? " dm" : ""}">
+        <div class="palages">${p.ages}</div>
+        <div class="palzh">${p.zh}</div>
+        <div class="palgz">${p.gz}</div>
+        <div class="palgods">${[p.stem_god, ...p.hidden]
+          .filter((g) => g && g !== "日主")
+          .map(chip).join("")}</div>
+        <div class="palgov">${p.governs}</div>
+      </div>`).join("")}</div>
+    ${P.pillars.map((p) => `<div class="cite"><b>${p.zh.split(" ")[0]}:</b>
+      ${dnAll(p.line)}</div>`).join("")}
+    ${legendBlock([
+      ["宮位", "each pillar is a palace: a life-stage (its age span) AND a life-area"],
+      ["age spans", "year 0–15 · month 16–32 · day 33–48 · hour 49+ — when that palace's themes dominate"],
+      ["god chips", "the gods resident in that palace (stem + hidden), coloured by their element for your Day Master"],
+      ["day pillar", "outlined — its stem IS you; its branch is the spouse palace, read in depth in §8"]])}
+  </div>`;
+}
+
 const LEGENDS = {
   chart: [
     ["四柱 八字", "the Four Pillars: birth year·month·day·hour, each written as two characters — eight in all"],
@@ -870,7 +902,9 @@ const LEGENDS = {
     ["personal", "this map differs per person — a couple can have opposite maps"]],
   8: [["score", "starts at a neutral 50; every chip is a rule that moved it"],
     ["≥70", "a natural strength"], ["<45", "an area to consciously support"],
-    ["chips", "the audit trail — hover none, they are the working"]],
+    ["chips", "the audit trail — hover none, they are the working"],
+    ["得位 seated", "the domain's signal god actually resides in its primary palace — a seated signal lands harder than share alone suggests"],
+    ["財庫 vault", "the wealth-element storage branch (辰戌丑未): open = accumulation compounds; sealed = opens in its clash years (§13); absent = wealth flows, systems must do the storing"]],
   9: [["神煞", "symbolic stars: classical stem-branch patterns, flavour on top of structure"],
     ["年/月/日/時 tag", "which pillar carries it — ancestry · career/parents · self/spouse · children/later life"]],
   10: [["axes", "read straight off §4's distribution — the basis column shows the exact threshold"],
@@ -929,6 +963,7 @@ async function renderPerson(name) {
       the active 10-year luck pillar and this year's pillar — labelled with their ten
       gods relative to this Day Master.</div>
     ${lg("chart")}
+    ${palacesBlock(c)}
     <div class="section"><h3>1. Five Elements Balance 五行</h3>
       <div class="bars">${Object.entries(c.element_weights).map(([en, v]) => `
         <div class="bar-row el-${EL_ZH[en]}"><span>${elb(EL_ZH[en])} ${en}</span>
@@ -1105,6 +1140,12 @@ async function renderPerson(name) {
     <div class="section"><h3>5. 用神 Favourable Elements</h3>
       <p>Favourable: ${elbs(c.yongshen.favourable)} · avoid ${elbs(c.yongshen.unfavourable)}
          · colours <b>${c.yongshen.colours.join("、")}</b></p>
+      ${c.element_relations ? `<div class="cite"><b>In god vocabulary:</b> your 用神
+        ${c.yongshen.favourable.map((el) => {
+          const f = Object.values(c.element_relations.flows).find((x) => x.el === el);
+          return `${elb(el)} arrives as <b>${f ? f.role : "—"}</b>`;
+        }).join(" · ")} — those life-areas ARE the medicine: seeking them heals the
+        chart, forcing their opposites taxes it.</div>` : ""}
       ${c.yongshen.citations.map((x) => `<div class="cite"><b>${x.source_ref}:</b> ${x.explanation}</div>`).join("")}
       ${stb(5)}${narr(5)}${lg(5)}
     </div>
@@ -1150,6 +1191,49 @@ async function renderPerson(name) {
       <div class="cite" style="margin:0 0 8px">Each score starts at a neutral 50; every
         chip below shows a rule that moved it up or down. Above 70 = a natural strength,
         below 45 = an area to consciously support.</div>
+      ${(() => {
+        const P = c.palaces;
+        if (!P) return "";
+        const g = (...n) => Math.round(n.reduce((a, k) => a + (c.tengods_pct[k] || 0), 0) * 10) / 10;
+        const inPal = (keys, groups) => keys.some((k) => {
+          const p = P.pillars.find((x) => x.key === k);
+          return p && [p.stem_god, ...p.hidden].some((gd) => groups.includes(tgCanon(gd)));
+        });
+        const rows = [
+          ["Career & authority 事業", "正官·七殺", g("正官", "七殺", "七杀"),
+            ["month"], ["正官", "七殺"], "Month 月柱"],
+          ["Wealth & assets 財富", "正財·偏財", g("正財", "正财", "偏財", "偏财"),
+            ["month", "day"], ["正財", "偏財"], "Month · Day"],
+          ["Education & reputation 學業", "正印·偏印", g("正印", "偏印"),
+            ["year", "month"], ["正印", "偏印"], "Year · Month"],
+          ["Talent & enterprise 才華", "食神·傷官", g("食神", "傷官", "伤官"),
+            ["hour"], ["食神", "傷官"], "Hour 時柱"],
+          ["Network & competition 人脈", "比肩·劫財", g("比肩", "劫財", "劫财"),
+            ["year", "month"], ["比肩", "劫財"], "Year · Month"],
+          ["Marriage & romance 婚戀",
+            c.sex === "M" ? "正財·偏財 (spouse star)" : "正官·七殺 (spouse star)",
+            c.sex === "M" ? g("正財", "正财", "偏財", "偏财") : g("正官", "七殺", "七杀"),
+            ["day"], c.sex === "M" ? ["正財", "偏財"] : ["正官", "七殺"], "Day branch 日支"],
+        ];
+        return `<h4>Signals × palaces 信號與宮位</h4>
+        <div style="overflow-x:auto"><table class="bc-table">
+          <tr><th>Life domain</th><th>Signal gods</th><th>Your share</th>
+            <th>Primary palace</th><th>Seated?</th></tr>
+          ${rows.map(([d, sg, share, keys, groups, palName]) => `<tr>
+            <td><b>${d}</b></td><td class="sub">${sg}</td>
+            <td class="${share >= 15 ? "b-good" : share < 5 ? "b-weak" : ""}"><b>${share}%</b></td>
+            <td class="sub">${palName}</td>
+            <td class="${inPal(keys, groups) ? "b-good" : ""}">${inPal(keys, groups)
+              ? "✓ 得位 seated" : "— elsewhere"}</td></tr>`).join("")}
+        </table></div>
+        <div class="cite"><b>婚戀 spouse palace (day branch ${P.spouse.branch}):</b>
+          ${dnAll(P.spouse.line)}; the palace is ${dnAll(P.spouse.state)}.</div>
+        <div class="cite"><b>👶 Children palace:</b> ${dnAll(P.children.line)}.</div>
+        <div class="cite"><b>財庫 wealth vault:</b>
+          <span class="dirchip ${P.vault.present ? (P.vault.open ? "good" : "") : "bad"}">
+            ${P.vault.present ? (P.vault.open ? "OPEN 已開" : "sealed 未開") : "absent 無庫"}</span>
+          ${dnAll(P.vault.state)}</div>`;
+      })()}
       <div class="domain-grid">${c.domains.map((d) => `
         <div class="dcard"><div class="dscore ${d.score >= 70 ? "good" : d.score < 45 ? "bad" : ""}">${d.score}</div>
           <b>${d.en}</b> <div class="sub">${d.zh} · ${d.band}</div>
