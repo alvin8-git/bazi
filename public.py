@@ -35,6 +35,7 @@ from engine.bazi import TRUE_SOLAR, build_chart
 from engine.careers import career_paths
 from engine.domains import life_domains
 from engine.extras import harmony_matrix
+from engine.interpret import STRUCTURE_TEXT
 from engine.htmlreport import _tosimp
 from engine.liunian import dayun_detail
 from engine.optimizer import optimize, score_assignment
@@ -387,6 +388,14 @@ def create_home(token: str, home: HomeIn):
             "homes": [_home_summary(k, v) for k, v in homes.items()]}
 
 
+@router.patch("/api/pub/w/{token}/homes/{hid}")
+def rename_home(token: str, hid: str, home: HomeIn):
+    ws = _load(token)
+    _home_of(ws, hid)["name"] = home.name.strip()
+    _save(token, ws)
+    return {"homes": [_home_summary(k, v) for k, v in _homes(ws).items()]}
+
+
 @router.delete("/api/pub/w/{token}/homes/{hid}")
 def delete_home(token: str, hid: str):
     ws = _load(token)
@@ -503,9 +512,9 @@ def _people_analysis(req, charts: dict, ys_map: dict, rooms: list[dict],
             top = sorted(s0["breakdown"], key=lambda b: -abs(b["contribution"]))
             ranking.append({"id": r["id"], "label": r["label"],
                             "total": s0["total"],
-                            "why": [f'{b["explanation"]} '
-                                    f'({b["contribution"]:+.2f})'
-                                    for b in top[:2]]})
+                            "why": [{"t": b["explanation"],
+                                     "v": b["contribution"]}
+                                    for b in top[:3]]})
         ranking.sort(key=lambda x: -x["total"])
         people.append({"name": name, "gua": g, "group": grp,
                        "match": grp == house_group,
@@ -529,13 +538,41 @@ def _people_analysis(req, charts: dict, ys_map: dict, rooms: list[dict],
             "people": people, "suggestion": suggestion}
 
 
-def _chart_block(ch: dict, rooms: list[dict], annual: dict) -> dict:
+def _chart_block(ch: dict, rooms: list[dict], annual: dict,
+                 period: int | None = None) -> dict:
     pal_stars = {p: {"mountain": v["mountain"], "water": v["water"],
                      "annual": annual[p]}
                  for p, v in ch["palaces"].items()}
+    # geomancer's read: what the structure/door/wealth-spots SIGNIFY
+    notes = []
+    st_note = STRUCTURE_TEXT.get(ch["structure"])
+    if st_note:
+        notes.append(f'{ch["structure"]} — {st_note}.')
+    if period:
+        nxt = period % 9 + 1
+        spots = [f'{p}宮 {_PALACE_DIR.get(p, "")} (向星{v["water"]})'
+                 for p, v in pal_stars.items() if v["water"] in (period, nxt)]
+        if spots:
+            notes.append(
+                f"財位 wealth spots — palaces holding the timely water star "
+                f"(向星{period}/{nxt}): {'; '.join(spots)}. Keep these areas "
+                "active, bright and open; ideal for the living room, office "
+                "or a water feature.")
+        door = next((r for r in rooms if r["id"] == "entrance"), None)
+        if door:
+            dp = door["palace_pie"]
+            w = pal_stars.get(dp, {}).get("water")
+            quality = ("the timely wealth star — qi enters through the best "
+                       "possible door" if w == period else
+                       "the incoming star — this door improves as the period "
+                       "matures" if w == nxt else
+                       "a retreating star — dated qi; keep the entry bright, "
+                       "clean and busy to compensate")
+            notes.append(f"🚪 Main door in {dp}宮 {_PALACE_DIR.get(dp, '')} "
+                         f"carries 向星{w}: {quality}.")
     return {"structure": ch["structure"], "chart_type": ch.get("chart_type"),
             "facing": ch["facing"], "sitting": ch["sitting"],
-            "palaces": pal_stars,
+            "palaces": pal_stars, "notes": notes,
             "rooms": {r["id"]: r["palace_pie"] for r in rooms}}
 
 
@@ -578,7 +615,7 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
     annual = annual_chart(YEAR)
     result = {"year": YEAR, "period": req.period,
               "boundary": natal.get("boundary"),
-              "main": _chart_block(natal, rooms, annual)}
+              "main": _chart_block(natal, rooms, annual, req.period)}
     result.update(_people_analysis(req, charts, ys_map, rooms, rooms_by_id,
                                    natal, annual))
     if assignment:
@@ -587,7 +624,7 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
         result["scores"] = sc
     if natal.get("alternate"):
         alt = natal["alternate"]
-        result["alternate"] = _chart_block(alt, rooms, annual)
+        result["alternate"] = _chart_block(alt, rooms, annual, req.period)
         if assignment:
             result["alternate_scores"] = score_assignment(
                 assignment, charts, ys_map, rooms_by_id, alt, annual)

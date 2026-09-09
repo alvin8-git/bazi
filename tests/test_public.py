@@ -114,6 +114,9 @@ def test_analyze_fengshui():
     assert r.status_code == 200, r.text
     d = r.json()
     assert d["main"]["structure"]
+    # geomancer's read: structure meaning + wealth spots (+ door if marked)
+    assert d["main"]["notes"] and d["main"]["structure"] in d["main"]["notes"][0]
+    assert any("財位" in n for n in d["main"]["notes"])
     assert d["main"]["rooms"]["master"] in ("坎", "艮", "震", "巽", "離", "坤", "兌", "乾", "中")
     assert len(d["scores"]["scores"]) == 2
     assert all(s["breakdown"] for s in d["scores"]["scores"])
@@ -124,7 +127,7 @@ def test_analyze_fengshui():
         assert isinstance(p["match"], bool)
         assert len(p["dirs_good"]) == 4 and len(p["dirs_bad"]) == 4
         assert p["rooms"] and p["rooms"][0]["label"] == "Master"
-        assert p["rooms"][0]["why"]
+        assert {"t", "v"} <= set(p["rooms"][0]["why"][0])
     assert d["suggestion"]["assignment"]["Master"]
     assert isinstance(d["suggestion"]["household_total"], float)
     # aspect scores ride along on every analysis
@@ -147,6 +150,10 @@ def test_homes_and_battlecard():
     tok = _new_ws(P1, P2)
     h1 = client.post(f"/api/pub/w/{tok}/homes", json={"name": "TowerB"}).json()["id"]
     h2 = client.post(f"/api/pub/w/{tok}/homes", json={"name": "TowerC"}).json()["id"]
+    # homes are renameable
+    r = client.patch(f"/api/pub/w/{tok}/homes/{h1}", json={"name": "TowerB #02-19"})
+    assert r.status_code == 200
+    assert any(h["name"] == "TowerB #02-19" for h in r.json()["homes"])
     req = {"facing_deg": 135, "period": 8, "rooms": ROOMS,
            "assignment": {"master": ["测试一", "测试二"]}, "entrance": [0.5, 0.9]}
     assert client.post(f"/api/pub/w/{tok}/homes/{h1}/analyze",

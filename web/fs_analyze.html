@@ -9,9 +9,11 @@
 body{margin:0;background:var(--bg);color:var(--ink);
   font:15px/1.5 system-ui,"Noto Sans SC",sans-serif}
 header{background:var(--card);border-bottom:1px solid var(--line);padding:14px 22px;
-  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 h1{margin:0;font-size:19px;color:var(--accent)}
 header a{color:var(--accent);font-size:13px;text-decoration:none}
+header a#back{background:var(--accent);color:#fff;border-radius:8px;
+  padding:7px 16px;font-size:13.5px;font-weight:600}
 main{max-width:1280px;margin:0 auto;padding:16px 22px 80px}
 button{background:var(--accent);color:#fff;border:0;border-radius:8px;
   padding:8px 16px;font-size:14px;cursor:pointer}
@@ -135,6 +137,15 @@ th{background:#f6f1e8}
 .hchip i{font-style:normal;color:#bbb;font-size:12px}
 .hchip i:hover{color:var(--accent)}
 .bc-edge{color:var(--good);font-weight:700}
+.georead{background:#fbf6ea;border:1px solid #eadfc4;border-left:4px solid var(--gold);
+  border-radius:8px;padding:9px 13px;margin:10px 0;font-size:13.5px;line-height:1.6}
+.georead>b{color:#8a6d00}
+.georead div{margin:4px 0;color:#4d463c}
+.whychip{display:inline-block;border:1px solid var(--line);border-radius:7px;
+  padding:1px 8px;margin:1px 2px 1px 0;font-size:12px;background:#fff}
+.whychip.pos{border-color:#b7e1c3;background:#f2faf4;color:#155d24}
+.whychip.neg{border-color:#f5c6c0;background:#fdf3f2;color:#a12a20}
+.whychip b{font-weight:700}
 .bc-table td,.bc-table th{font-size:12.5px}
 /* band shading — 旺 strong / 优 good / 平 fair / 弱 weak / 忌 poor */
 td.b-strong{background:#cfe9d6;color:#155d24;font-weight:600}
@@ -160,7 +171,7 @@ td.b-poor{background:#fdecea;color:#b03a2e}
 </style></head><body>
 <header>
   <h1>Home fengshui 宅运分析</h1>
-  <a href="/start" id="back">← workspace</a>
+  <a href="/start" id="back">← Back to workspace 返回</a>
   <span class="hint">every star and score cites its classical rule</span>
 </header>
 <main>
@@ -302,9 +313,17 @@ function renderHomes() {
   $("#homes-sec").hidden = !homes.length;
   $("#home-chips").innerHTML = homes.map(h =>
     `<span class="hchip${h.id === cur ? " on" : ""}" data-h="${h.id}">
-      ${h.name}${h.analyzed ? " ✓" : ""}<i data-del="${h.id}" title="delete">✕</i></span>`).join("");
+      ${h.name}${h.analyzed ? " ✓" : ""}<i data-ren="${h.id}" title="rename">✏️</i><i data-del="${h.id}" title="delete">✕</i></span>`).join("");
   $("#btn-battle").hidden = homes.filter(h => h.analyzed).length < 2;
   document.querySelectorAll(".hchip").forEach(el => el.addEventListener("click", async e => {
+    if (e.target.dataset.ren) {
+      const h = homes.find(x => x.id === e.target.dataset.ren);
+      const name = (prompt("Rename this home 改名:", h.name) || "").trim();
+      if (!name || name === h.name) return;
+      const r = await api(`/api/pub/w/${token}/homes/${h.id}`, {method: "PATCH",
+        headers: {"Content-Type": "application/json"}, body: JSON.stringify({name})});
+      homes = r.homes; renderHomes(); return;
+    }
     if (e.target.dataset.del) {
       if (!confirm(`Delete home "${homes.find(h => h.id === e.target.dataset.del).name}"?`)) return;
       const r = await api(`/api/pub/w/${token}/homes/${e.target.dataset.del}`, {method: "DELETE"});
@@ -344,9 +363,11 @@ function resetCanvas() {
 }
 async function ensureHome() {
   if (cur) return cur;
+  const name = (prompt("Name this home 房产名 (e.g. TowerB #02-19):",
+                       "My home") || "My home").trim();
   const r = await api(`/api/pub/w/${token}/homes`, {method: "POST",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({name: "Home 1"})});
+    body: JSON.stringify({name})});
   homes = r.homes; cur = r.id; renderHomes();
   return cur;
 }
@@ -682,7 +703,13 @@ function renderResults(res) {
   }
   html += chartBlock("Main chart 主盘", res.main, res.scores);
   html += peopleBlock(res);
-  if (res.alternate) html += chartBlock("Alternate chart 兼盘", res.alternate, res.alternate_scores);
+  if (res.alternate) {
+    html += `<div class="warn">Why an alternate chart? The measured facing sits in the
+      boundary zone between two mountains (兼向/騎線) — a fraction of a degree decides
+      which flying-star chart rules the house, so BOTH are computed. Re-measure the
+      facing on site (2–3 readings away from metal) to settle which one applies.</div>`;
+    html += chartBlock("Alternate chart 兼盘", res.alternate, res.alternate_scores);
+  }
   html += `<div class="sec hint">Scores blend 八宅命卦 + 玄空飞星 + 用神 element fit —
     each line above cites its rule. Annual stars are for ${res.year}. This analysis is
     saved to this home in your workspace link.</div>`;
@@ -773,9 +800,11 @@ function peopleBlock(res) {
       &nbsp;avoid ${p.dirs_bad.slice(0, 2).map(d =>
         `<span class="dirchip bad">${d.dir} ${d.star}</span>`).join(" ")}</div>
     ${p.rooms.length ? `<table><tr><th>Room (best → worst)</th><th>Score</th><th>Why — top rules</th></tr>
-      ${p.rooms.map((r, i) => `<tr><td>${i === 0 ? "★ " : ""}${r.label}</td>
-        <td><b>${r.total.toFixed(2)}</b></td>
-        <td class="hint">${r.why.join("; ")}</td></tr>`).join("")}</table>` :
+      ${p.rooms.map((r, i) => `<tr><td>${i === 0 ? "★ " : ""}<b>${r.label}</b></td>
+        <td class="${r.total >= 0 ? "b-good" : "b-weak"}"><b>${r.total.toFixed(2)}</b></td>
+        <td>${r.why.map(w => typeof w === "string" ? `<span class="whychip">${w}</span>` :
+          `<span class="whychip ${w.v >= 0 ? "pos" : "neg"}">${w.t}
+             <b>${w.v >= 0 ? "+" : ""}${w.v.toFixed(2)}</b></span>`).join(" ")}</td></tr>`).join("")}</table>` :
       `<div class="hint">mark bedrooms (Master Bedroom / Bedroom type) to rank rooms
         for this person.</div>`}
   </div>`).join("");
@@ -814,13 +843,16 @@ function chartBlock(tag, cb, scores) {
       `<div class="hint">household total: <b>${scores.household_total.toFixed(2)}</b>
        ${scores.violations.length ? "· ⚠ " + scores.violations.join("; ") : ""}</div>`;
   }
+  const geo = (cb.notes || []).length
+    ? `<div class="georead"><b>释盘 Geomancer's read:</b>
+       ${cb.notes.map(n => `<div>${n}</div>`).join("")}</div>` : "";
   return `<div class="sec"><h2>${tag}: ${cb.structure}
       ${cb.chart_type ? `<span class="hint">(${cb.chart_type})</span>` : ""}</h2>
     <div class="hint">facing ${cb.facing} · sitting ${cb.sitting} · 山=mountain star
       (people/health) · 向=water star (wealth) · 年=annual star</div>
     <div class="cols"><div class="pal">${pal}</div>
     <table><tr><th>Room</th><th>Palace</th><th>Stars</th></tr>${roomrows}</table></div>
-    ${sc}</div>`;
+    ${geo}${sc}</div>`;
 }
 </script>
 </body></html>

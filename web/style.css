@@ -254,8 +254,12 @@ button.small { font-size: 12px; padding: 3px 10px; }
 .ccgua{font-size:44px;line-height:1.1;color:var(--accent);font-weight:700}
 .ccfacts{flex:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
   gap:3px 14px;font-size:13.5px}
-.ccfacts span{display:inline-block;min-width:44px;color:var(--muted);font-size:12px}
-.ccfacts em{color:var(--accent);font-style:normal;font-size:12px}
+.ccfacts span{display:inline-block;min-width:44px;color:#8a6d00;font-weight:700;
+  font-size:11.5px;letter-spacing:.3px}
+.ccfacts em{color:var(--accent);font-style:normal;font-size:12px;font-weight:400}
+/* badges inside the facts grid must not inherit the 44px label min-width */
+.ccfacts .elb{min-width:21px;width:21px;height:21px;font-size:12.5px;
+  letter-spacing:0}
 .ccpillars{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}
 .ccol{border:1px solid var(--line);border-radius:8px;padding:6px 8px;text-align:center;
   background:var(--bg)}
