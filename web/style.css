@@ -85,9 +85,10 @@ td.good { color: var(--good); } td.bad { color: var(--bad); }
 .cite b { color: var(--ink); }
 
 /* element badges — colored circle icons for 木火土金水, used site-wide */
-.elb{display:inline-flex;align-items:center;justify-content:center;width:21px;height:21px;
-  border-radius:50%;font-weight:700;font-size:12.5px;border:1.5px solid;margin:0 1px;
-  vertical-align:-4px;line-height:1;font-style:normal}
+.elb{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;
+  border-radius:50%;font-weight:700;font-size:14px;border:2px solid;margin:0 2px;
+  vertical-align:-6px;line-height:1;font-style:normal;flex:0 0 auto;
+  box-sizing:border-box;padding:0}
 .elb.el-木{color:#1e8e3e;border-color:#1e8e3e;background:#e9f7ee}
 .elb.el-火{color:#c5221f;border-color:#c5221f;background:#fdecea}
 .elb.el-土{color:#8a6d1f;border-color:#8a6d1f;background:#f6efdc}
@@ -258,8 +259,10 @@ button.small { font-size: 12px; padding: 3px 10px; }
   font-size:11.5px;letter-spacing:.3px}
 .ccfacts em{color:var(--accent);font-style:normal;font-size:12px;font-weight:400}
 /* badges inside the facts grid must not inherit the 44px label min-width */
-.ccfacts .elb{min-width:21px;width:21px;height:21px;font-size:12.5px;
+.ccfacts .elb{min-width:24px;width:24px;height:24px;font-size:14px;
   letter-spacing:0}
+.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#b9b0a4;
+  z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
 .ccpillars{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}
 .ccol{border:1px solid var(--line);border-radius:8px;padding:6px 8px;text-align:center;
   background:var(--bg)}

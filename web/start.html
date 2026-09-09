@@ -37,9 +37,11 @@ button:disabled{opacity:.5;cursor:default}
 .ic{background:none;border:none;padding:0 3px;font-size:15px;cursor:pointer;
   color:#b9b0a4;line-height:1}
 .ic:hover{color:var(--accent)}
-.elb{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;
-  border-radius:50%;font-weight:700;font-size:12px;border:1.5px solid;margin:0 1px;
-  vertical-align:-4px;line-height:1}
+.elb{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;
+  border-radius:50%;font-weight:700;font-size:14px;border:2px solid;margin:0 2px;
+  vertical-align:-6px;line-height:1;flex:0 0 auto;box-sizing:border-box;padding:0}
+.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#b9b0a4;
+  z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
 .elb.el-木{color:#1e8e3e;border-color:#1e8e3e;background:#e9f7ee}
 .elb.el-火{color:#c5221f;border-color:#c5221f;background:#fdecea}
 .elb.el-土{color:#8a6d1f;border-color:#8a6d1f;background:#f6efdc}
@@ -81,6 +83,7 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
 }
 [hidden]{display:none!important}
 </style></head><body>
+<span class="verbadge" id="ver"></span>
 <header>
   <h1>bazifor.me</h1>
   <div class="sub">Deterministic BaZi 八字 readings that show every classical rule they
@@ -130,6 +133,8 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
 </main>
 <script>
 const $ = s => document.querySelector(s);
+fetch("/api/pub/version").then(r => r.json())
+  .then(v => { $("#ver").textContent = "v " + v.version; }).catch(() => {});
 let token = null, ws = null;
 const m = location.pathname.match(/^\/w\/([A-Za-z0-9_-]{8,64})/);
 if (m) token = m[1];

@@ -146,6 +146,8 @@ th{background:#f6f1e8}
 .whychip.pos{border-color:#b7e1c3;background:#f2faf4;color:#155d24}
 .whychip.neg{border-color:#f5c6c0;background:#fdf3f2;color:#a12a20}
 .whychip b{font-weight:700}
+.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#b9b0a4;
+  z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
 .bc-table td,.bc-table th{font-size:12.5px}
 /* band shading — 旺 strong / 优 good / 平 fair / 弱 weak / 忌 poor */
 td.b-strong{background:#cfe9d6;color:#155d24;font-weight:600}
@@ -170,9 +172,14 @@ td.b-poor{background:#fdecea;color:#b03a2e}
 }
 </style></head><body>
 <header>
-  <h1>Home fengshui 宅运分析</h1>
-  <a href="/start" id="back">← Back to workspace 返回</a>
-  <span class="hint">every star and score cites its classical rule</span>
+  <div>
+    <h1>Home fengshui 宅运分析
+      <span class="hint" style="font-weight:400;font-size:13px">every star and score
+      cites its classical rule</span></h1>
+    <a href="/start" id="back" style="display:inline-block;margin-top:9px">← Back to
+      workspace 返回</a>
+  </div>
+  <span class="verbadge" id="ver"></span>
 </header>
 <main>
   <div class="sec" id="need-ws" hidden>
@@ -285,6 +292,8 @@ td.b-poor{background:#fdecea;color:#b03a2e}
 </main>
 <script>
 const $ = s => document.querySelector(s);
+fetch("/api/pub/version").then(r => r.json())
+  .then(v => { $("#ver").textContent = "v " + v.version; }).catch(() => {});
 let token = null, ws = null, rooms = [], drag = null, imgNatural = [0, 0];
 let mode = "draw", selected = -1, entrance = null;   // entrance = [rx,ry] 0..1
 let homes = [], cur = null, pendingRestore = null;

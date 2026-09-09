@@ -27,10 +27,15 @@ a.tile:hover{box-shadow:0 6px 22px rgba(0,0,0,.10);transform:translateY(-2px)}
 .tile .zh{color:var(--gold);font-size:14px;margin-left:6px}
 footer{padding:16px 22px 28px;text-align:center;color:var(--muted);font-size:12.5px}
 footer a{color:var(--accent)}
+.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#b9b0a4;
+  z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
 .trust{max-width:760px;margin:26px auto 0;background:var(--card);
   border:1px solid var(--line);border-left:4px solid var(--gold);
   border-radius:10px;padding:12px 16px;font-size:13.5px;color:#5a5348}
 </style></head><body>
+<span class="verbadge" id="ver"></span>
+<script>fetch("/api/pub/version").then(r=>r.json())
+  .then(v=>{document.getElementById("ver").textContent="v "+v.version}).catch(()=>{});</script>
 <header>
   <h1>bazifor.me</h1>
   <div class="sub">Classical BaZi 八字 and FengShui 风水 — deterministic, rule-cited,

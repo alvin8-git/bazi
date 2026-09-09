@@ -770,9 +770,11 @@ h1{{font-size:20px;color:#b03a2e}}h2{{font-size:15px;color:#8a6d1f;margin:18px 0
 .cite{{color:#666;font-size:13px;margin:3px 0}}
 .eb{{display:flex;align-items:center;gap:8px;font-size:12.5px;margin:2px 0}}
 .eb span{{width:34px;color:#666}}.et{{flex:1;background:#f0ece4;border-radius:6px;height:11px}}
-.elb{{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;
-  border-radius:50%;font-weight:700;font-size:12px;border:1.5px solid;margin:0 1px;
-  vertical-align:-4px;line-height:1}}
+.elb{{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;
+  border-radius:50%;font-weight:700;font-size:14px;border:2px solid;margin:0 2px;
+  vertical-align:-6px;line-height:1;box-sizing:border-box;padding:0}}
+.verbadge{{position:fixed;top:8px;right:12px;font-size:11px;color:#b9b0a4;
+  background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}}
 .elb.el-木{{color:#1e8e3e;border-color:#1e8e3e;background:#e9f7ee}}
 .elb.el-火{{color:#c5221f;border-color:#c5221f;background:#fdecea}}
 .elb.el-土{{color:#8a6d1f;border-color:#8a6d1f;background:#f6efdc}}
@@ -788,6 +790,7 @@ h1{{font-size:20px;color:#b03a2e}}h2{{font-size:15px;color:#8a6d1f;margin:18px 0
 .cand .py{{color:#8a8177;font-size:12px;margin-left:6px}}
 .cand .sc{{float:right;color:#b8860b;font-size:12px}}
 a{{color:#b03a2e}}</style></head><body>
+<span class="verbadge">v {_VER}</span>
 <h1>👶 {_tosimp(surname + (name or "宝宝"))} — Baby BaZi 宝宝八字</h1>
 <div class="cite">born {dob} {birth_time} (Singapore time assumed; true-solar applied)</div>
 <div class="sec"><h2>Four Pillars 四柱</h2>
@@ -914,6 +917,8 @@ td{{border:1px solid #e0d3b8;padding:5px 12px;text-align:center}}
 @media print{{body{{background:#fff;padding:0}}.noprint{{display:none}}
   .cert{{border-width:3px;width:100%}}}}
 </style></head><body><div>
+<span class="noprint" style="position:fixed;top:8px;right:12px;font-size:11px;
+  color:#b9b0a4">v {_VER}</span>
 <div class="cert">
   <h1>命名證書</h1>
   <div class="sub">CERTIFICATE OF NAMING · 依古法推演 · 條條有據</div>
@@ -946,6 +951,16 @@ td{{border:1px solid #e0d3b8;padding:5px 12px;text-align:center}}
 
 
 # ---------------------------------------------------------------- pages
+# Deploy version for the top-right audit badge (Vercel injects the git SHA)
+_VER = os.environ.get("VERCEL_GIT_COMMIT_SHA", "")[:7] or "dev"
+
+
+@router.get("/api/pub/version")
+def version():
+    return {"version": _VER,
+            "env": "prod" if os.environ.get("VERCEL") else "local"}
+
+
 @router.get("/robots.txt", response_class=PlainTextResponse)
 def robots():
     return ("User-agent: *\nAllow: /$\nAllow: /start\nAllow: /fengshui\n"

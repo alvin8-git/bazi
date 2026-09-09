@@ -885,21 +885,16 @@ async function renderPerson(name) {
           <td class="${a.verdict === "no strong tendency" ? "" : "good"}">${a.verdict}</td>
           <td class="sub">${a.basis}</td></tr>`).join("")}
       </table>${stb(10)}${narr(10)}${lg(10)}</div>
-    <div class="section"><h3>11. Health &amp; Career element map 健康·行業
+    <div class="section"><h3>11. Health element map 健康
         <span class="tag warn">TCM correspondence · reference, not medical advice</span></h3>
       <div class="cite" style="margin:0 0 6px">Traditional five-element medicine maps
         each element to organ systems; a very weak or excessive element in the chart
-        marks the systems worth caring for. The industry list turns the 用神 into
-        career-direction hints — fields whose nature carries your favourable elements.</div>
+        marks the systems worth caring for.</div>
       <table><tr><th>Element</th><th>Share</th><th>Organ systems</th><th>Watch aspects</th><th>Status</th></tr>
-        ${c.health.map((hh) => `<tr><td>${hh.element} ${hh.en}</td><td>${hh.share}%</td>
+        ${c.health.map((hh) => `<tr><td>${elb(hh.element)} ${hh.en}</td><td>${hh.share}%</td>
           <td class="sub">${hh.organs}</td><td class="sub">${hh.aspects}</td>
           <td class="${hh.status.startsWith("balanced") ? "" : "bad"}">${hh.status}</td></tr>`).join("")}
       </table>
-      ${c.industries.favourable.map((it) => `<div class="cite"><b>Favourable ${it.element} ${it.en}
-        industries</b> — ${it.industries}</div>`).join("")}
-      <div class="cite">Understated: ${c.industries.avoid.map((it) => `${it.element} (${it.industries.split(",")[0]}…)`).join("; ")}
-        — not forbidden, just not where this chart recharges.</div>
       ${stb(11)}${narr(11)}${lg(11)}
     </div>
     ${c.careers ? `<div class="section"><h3>12. Career paths 事業方向
@@ -910,6 +905,13 @@ async function renderPerson(name) {
         means effort converts to reward efficiently there — low-ranked fields are priced
         against the chart, never forbidden. For the children read these as directions to
         expose and nurture, revisited as 大運 decades turn.</div>
+      <h4>Favourable industries by element 行業五行</h4>
+      ${c.industries.favourable.map((it) => `<div class="cite"><b>Favourable ${elb(it.element)} ${it.en}
+        industries</b> — ${it.industries}</div>`).join("")}
+      <div class="cite" style="margin-bottom:8px">Understated: ${c.industries.avoid.map((it) =>
+        `${elb(it.element)} (${it.industries.split(",")[0]}…)`).join("; ")}
+        — not forbidden, just not where this chart recharges.</div>
+      <h4>Career archetypes ranked 事業方向</h4>
       ${c.careers.top.map((a, i) => `<div class="cite"><b>#${i + 1} ${a.en} ${a.zh}</b>
         <span class="tag ${a.score >= 12 ? "" : "warn"}">${a.score >= 12 ? "strong fit" :
           a.score >= 4 ? "good fit" : "workable"}</span>

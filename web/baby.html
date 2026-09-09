@@ -17,7 +17,12 @@ input,select{padding:7px 9px;border:1px solid #e5ded2;border-radius:8px;font-siz
 button{background:#b03a2e;color:#fff;border:0;border-radius:8px;padding:10px 20px;
   font-size:15px;cursor:pointer;margin-top:12px}
 .hint{color:#8a8177;font-size:12.5px}
+.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#b9b0a4;
+  z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
 </style></head><body>
+<span class="verbadge" id="ver"></span>
+<script>fetch("/api/pub/version").then(r=>r.json())
+  .then(v=>{document.getElementById("ver").textContent="v "+v.version}).catch(()=>{});</script>
 <header>
   <h1>👶 Baby BaZi 宝宝八字</h1>
   <div class="sub">Newborn or expected — the chart, element balance, 用神 and the

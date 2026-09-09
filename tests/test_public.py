@@ -256,6 +256,8 @@ def test_pages_served():
         assert client.get(path).status_code == 200
     assert "Sitemap:" in client.get("/robots.txt").text
     assert "<urlset" in client.get("/sitemap.xml").text
+    v = client.get("/api/pub/version").json()
+    assert v["version"] and v["env"] in ("prod", "local")
     landing = client.get("/")
     assert landing.status_code == 200
     for word in ("Personal", "House", "Name"):

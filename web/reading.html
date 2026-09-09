@@ -11,6 +11,7 @@ header.pub a#back{display:inline-block;background:var(--accent);color:#fff;
   border-radius:8px;padding:7px 16px;font-size:13.5px;font-weight:600;margin:8px 0 2px}
 main{padding:18px 22px 60px;max-width:1180px;margin:0 auto}
 </style></head><body>
+<span class="verbadge" id="ver"></span>
 <header class="pub">
   <h1>命书 The Reading</h1>
   <span class="hint" style="font-size:12px;color:var(--muted)">the full 13-section
@@ -21,6 +22,9 @@ main{padding:18px 22px 60px;max-width:1180px;margin:0 auto}
   <section id="tab-person" class="tabpane active"><p class="hint">computing…</p></section>
 </main>
 <script>
+  fetch("/api/pub/version").then(r => r.json())
+    .then(v => { document.getElementById("ver").textContent = "v " + v.version; })
+    .catch(() => {});
   const m = location.pathname.match(/^\/w\/([A-Za-z0-9_-]+)\/person\/(\d+)\/reading/);
   window.__PUBLIC_READING__ = m ? {
     chartUrl: `/api/pub/w/${m[1]}/person/${m[2]}/chart`,
