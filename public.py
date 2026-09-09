@@ -25,7 +25,9 @@ from pathlib import Path
 from types import SimpleNamespace
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
-from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
+from fastapi import Response
+from fastapi.responses import (FileResponse, HTMLResponse, PlainTextResponse,
+                               RedirectResponse)
 from pydantic import BaseModel, Field
 
 from engine.bazhai import STAR_SCORE, gua_group, ming_gua, youxing_stars
@@ -907,6 +909,23 @@ td{{border:1px solid #e0d3b8;padding:5px 12px;text-align:center}}
 
 
 # ---------------------------------------------------------------- pages
+@router.get("/robots.txt", response_class=PlainTextResponse)
+def robots():
+    return ("User-agent: *\nAllow: /$\nAllow: /start\nAllow: /fengshui\n"
+            "Allow: /baby\nDisallow: /w/\nDisallow: /api/\n"
+            "Sitemap: https://bazifor.me/sitemap.xml\n")
+
+
+@router.get("/sitemap.xml")
+def sitemap():
+    urls = "".join(f"<url><loc>https://bazifor.me{p}</loc></url>"
+                   for p in ("/", "/start", "/fengshui", "/baby"))
+    return Response(
+        f'<?xml version="1.0" encoding="UTF-8"?><urlset '
+        f'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>',
+        media_type="application/xml")
+
+
 @router.get("/start")
 def start_page():
     return FileResponse(ROOT / "web/start.html")

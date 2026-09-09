@@ -247,6 +247,8 @@ def test_baby_certificate_links():
 def test_pages_served():
     for path in ("/start", "/fengshui", "/baby", "/app"):
         assert client.get(path).status_code == 200
+    assert "Sitemap:" in client.get("/robots.txt").text
+    assert "<urlset" in client.get("/sitemap.xml").text
     landing = client.get("/")
     assert landing.status_code == 200
     for word in ("Personal", "House", "Name"):
