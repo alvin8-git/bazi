@@ -240,7 +240,7 @@ function render() {
   }));
   document.querySelectorAll(".pcard").forEach(cd => cd.addEventListener("click", e => {
     if (e.target.closest("a,button")) return;   // links & remove keep their own action
-    window.open(`/w/${token}/person/${cd.dataset.i}/reading`, "_blank");
+    location.href = `/w/${token}/person/${cd.dataset.i}/reading`;
   }));
 }
 

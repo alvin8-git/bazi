@@ -112,6 +112,8 @@ td.good { color: var(--good); } td.bad { color: var(--bad); }
 /* 生剋 interaction wheel + Day-Master flows */
 .ewrap { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; margin: 8px 0; }
 .ewheel { width: 272px; max-width: 100%; flex: 0 0 auto; }
+.tgwrap { flex: 0 0 auto; max-width: 100%; }
+.tgwheel { width: 330px; max-width: 100%; }
 .eflows { flex: 1; min-width: 250px; }
 .eflow { display: flex; align-items: center; gap: 7px; margin: 5px 0;
   font-size: 13.5px; flex-wrap: wrap; }

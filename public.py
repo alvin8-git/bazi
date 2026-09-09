@@ -738,12 +738,12 @@ def baby(name: str = Form("宝宝"), sex: str = Form(...), dob: str = Form(...),
               <b class="nm">{_tosimp(r['name'])}</b>
               <span class="py">{' '.join(c.get('py') or '' for c in r['chars'])}</span>
               <span class="sc">score {r['score']} ·
-                <a href="{cert_url(r['given'])}" target="_blank">命名證書 →</a></span>
+                <a href="{cert_url(r['given'])}">命名證書 →</a></span>
               {''.join(f'<div class="cite">· {_tosimp(x)}</div>' for x in r['reasons'])}
             </div>""" for r in sug["candidates"])
             if name and name != "宝宝":
                 rows = (f'<div class="cite" style="margin-bottom:6px">Your own '
-                        f'choice: <a href="{cert_url(name)}" target="_blank">'
+                        f'choice: <a href="{cert_url(name)}">'
                         f'certificate for {_tosimp(surname + name)} →</a></div>'
                         + rows)
             naming_html = f"""<div class="sec"><h2>Ranked name candidates 候选名

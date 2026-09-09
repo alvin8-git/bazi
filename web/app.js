@@ -689,6 +689,86 @@ function elementWheel(er) {
   return s + "</svg>";
 }
 
+/* 十神对照 wheel: 日元 centre, five god-groups in the 生剋 pentagon (each
+   coloured by ITS element for this chart), yin/yang god pairs as satellites */
+function tenGodsWheel(c) {
+  const pct = c.tengods_pct || {};
+  const p = keys => { for (const k of keys) if (pct[k] != null) return pct[k]; return 0; };
+  const dmEl = STEM_EL[c.day_master];
+  const S = {木:"火",火:"土",土:"金",金:"水",水:"木"};
+  const K = {木:"土",土:"水",水:"火",火:"金",金:"木"};
+  const invS = {火:"木",土:"火",金:"土",水:"金",木:"水"};
+  const invK = {土:"木",水:"土",火:"水",金:"火",木:"金"};
+  const GROUPS = [
+    {zh:"官殺", el:invK[dmEl], gods:[["正官"],["七殺","七杀"]], lab:["正官","七殺"]},
+    {zh:"印星", el:invS[dmEl], gods:[["正印"],["偏印"]], lab:["正印","偏印"]},
+    {zh:"比劫", el:dmEl, gods:[["比肩"],["劫財","劫财"]], lab:["比肩","劫財"]},
+    {zh:"食傷", el:S[dmEl], gods:[["食神"],["傷官","伤官"]], lab:["食神","傷官"]},
+    {zh:"財星", el:K[dmEl], gods:[["正財","正财"],["偏財","偏财"]], lab:["正財","偏財"]},
+  ];
+  const cx = 170, cy = 170, R1 = 86, R2 = 141;
+  GROUPS.forEach((g, i) => {
+    g.a = (-90 + i * 72) * Math.PI / 180;
+    g.x = cx + R1 * Math.cos(g.a); g.y = cy + R1 * Math.sin(g.a);
+    g.sum = Math.round((p(g.gods[0]) + p(g.gods[1])) * 10) / 10;
+    g.r = 15 + Math.min(g.sum, 45) * 0.3;
+    g.sat = g.gods.map((keys, j) => {
+      const a2 = g.a + (j ? 1 : -1) * 0.42;
+      const v = p(keys);
+      return {x: cx + R2 * Math.cos(a2), y: cy + R2 * Math.sin(a2),
+              v, r: 9.5 + Math.min(v, 35) * 0.27, lab: g.lab[j]};
+    });
+  });
+  const seg = (x1, y1, r1, x2, y2, r2) => {
+    const d = Math.hypot(x2 - x1, y2 - y1) || 1, ux = (x2 - x1) / d, uy = (y2 - y1) / d;
+    return [x1 + ux * (r1 + 3), y1 + uy * (r1 + 3), x2 - ux * (r2 + 7), y2 - uy * (r2 + 7)];
+  };
+  const G = i => GROUPS[i];
+  const SHENGI = [[2, 3], [3, 4], [4, 0], [0, 1], [1, 2]];   // 比劫→食傷→財→官殺→印→比劫
+  const KEI = [[2, 4], [3, 0], [4, 1], [0, 2], [1, 3]];      // 剋 star
+  let s = `<svg viewBox="0 0 340 345" class="ewheel tgwheel"><defs>
+    <marker id="tS" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5"
+      orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7aa87f"/></marker>
+    <marker id="tK" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5"
+      orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c98a86"/></marker></defs>`;
+  GROUPS.forEach(g => g.sat.forEach(t => {                    // connectors first
+    s += `<line x1="${g.x}" y1="${g.y}" x2="${t.x}" y2="${t.y}"
+      stroke="#cbc2b4" stroke-width="1" stroke-dasharray="2 3"/>`;
+  }));
+  KEI.forEach(([a, b]) => {
+    const [x1, y1, x2, y2] = seg(G(a).x, G(a).y, G(a).r, G(b).x, G(b).y, G(b).r);
+    s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#d5b3b0"
+      stroke-width="1.3" stroke-dasharray="4 3" marker-end="url(#tK)"/>`;
+  });
+  SHENGI.forEach(([a, b]) => {
+    const [x1, y1, x2, y2] = seg(G(a).x, G(a).y, G(a).r, G(b).x, G(b).y, G(b).r);
+    s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#7aa87f"
+      stroke-width="${Math.max(1.2, Math.min(4, G(a).sum / 10))}"
+      opacity="${G(a).sum < 5 ? 0.35 : 0.85}" marker-end="url(#tS)"/>`;
+  });
+  s += `<circle cx="${cx}" cy="${cy}" r="20" fill="${EL_COL[dmEl]}"/>
+    <circle cx="${cx}" cy="${cy}" r="23.5" fill="none" stroke="var(--gold)" stroke-width="2.5"/>
+    <text x="${cx}" y="${cy + 1}" text-anchor="middle" font-size="13" font-weight="700"
+      fill="#fff">${c.day_master}</text>
+    <text x="${cx}" y="${cy + 13}" text-anchor="middle" font-size="8.5" fill="#fff">日元</text>`;
+  GROUPS.forEach(g => {
+    s += `<circle cx="${g.x}" cy="${g.y}" r="${g.r}" fill="${EL_COL[g.el]}" opacity=".92"/>
+      <text x="${g.x}" y="${g.y + 4.5}" text-anchor="middle" font-size="12.5"
+        font-weight="700" fill="#fff">${g.zh}</text>
+      <text x="${g.x}" y="${g.y + g.r + 11}" text-anchor="middle" font-size="9"
+        fill="#6b6357">${g.sum}%</text>`;
+    g.sat.forEach(t => {
+      s += `<circle cx="${t.x}" cy="${t.y}" r="${t.r}" fill="${EL_COL[g.el]}"
+        opacity="${t.v < 5 ? 0.35 : 0.68}"/>
+      <text x="${t.x}" y="${t.y + 3.5}" text-anchor="middle" font-size="9.5"
+        font-weight="700" fill="#fff">${t.lab}</text>
+      <text x="${t.x}" y="${t.y + t.r + 10}" text-anchor="middle" font-size="8.5"
+        fill="#6b6357">${t.v}%</text>`;
+    });
+  });
+  return s + "</svg>";
+}
+
 const LEGENDS = {
   chart: [
     ["四柱 八字", "the Four Pillars: birth year·month·day·hour, each written as two characters — eight in all"],
@@ -721,8 +801,12 @@ const LEGENDS = {
   3: [["Stem row", "the ten god of each pillar's visible character"],
     ["藏干 row", "the gods of the hidden stems inside each branch"],
     ["正 / 偏 / 七殺 …", "each god's name and meaning is translated in §4's list"]],
-  4: [["正◯ vs 偏◯", "正 = the proper/conventional form of a domain, 偏 = its unconventional twin"],
-    ["%", "share of the chart's characters classified as that god — where life's attention defaults"]],
+  4: [["正◯ vs 偏◯", "正 = the proper/conventional form of a domain, 偏 = its unconventional twin (the image's 异性/同性 pairing)"],
+    ["%", "share of the chart's characters classified as that god — where life's attention defaults"],
+    ["wheel: 日元 centre", "your Day Master; the five groups around it are the five roles from §1's element wheel, refined into gods"],
+    ["node colour & size", "colour = that group's actual element for YOUR Day Master (§1 palette); size = its share of the chart"],
+    ["green / red arrows", "生 feeding and 剋 controlling cycles between the god groups — same cycles as §1, one level up"],
+    ["satellites", "each group's 正/偏 pair with its own share — faded = barely present"]],
   5: [["用神 / 喜", "favourable — the chart's medicine; carry these elements in colours, directions, fields"],
     ["忌 avoid", "elements that aggravate the imbalance"],
     ["扶抑法", "support-the-weak / restrain-the-strong: the method that picked them"],
@@ -843,11 +927,14 @@ async function renderPerson(name) {
         visible + hidden stems). Where the chart is heavy shows where life's attention
         naturally goes; a faint or missing god marks a domain that needs deliberate
         effort.</div>
-      <div class="bars" style="max-width:680px">${Object.entries(c.tengods_pct).map(([g, p]) => `
+      <div class="ewrap"><div class="tgwrap">${tenGodsWheel(c)}
+        <div class="cite" style="text-align:center;margin-top:2px">十神对照 — each group
+          coloured by ITS element for this Day Master (same palette as §1)</div></div>
+      <div class="bars" style="flex:1;min-width:280px;max-width:680px">${Object.entries(c.tengods_pct).map(([g, p]) => `
         <div class="bar-row tg-row"><span><b>${g}</b> <span class="sub">${c.tengods_legend[g].en}</span></span>
           <div class="bar"><i style="width:${p}%;background:var(--gold)"></i></div>
           <b>${p}%</b><span class="sub tg-meaning">${c.tengods_legend[g].meaning}</span></div>`).join("")}
-      </div>
+      </div></div>
       ${(() => {
         const e = Object.entries(c.tengods_pct);
         const [g1, p1] = e[0], [g2, p2] = e[1];
