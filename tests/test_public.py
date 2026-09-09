@@ -107,6 +107,16 @@ def test_analyze_fengshui():
     assert d["main"]["rooms"]["master"] in ("坎", "艮", "震", "巽", "離", "坤", "兌", "乾", "中")
     assert len(d["scores"]["scores"]) == 2
     assert all(s["breakdown"] for s in d["scores"]["scores"])
+    # per-person deliverable: house match, directions, room ranking, suggestion
+    assert d["house"]["sitting_gua"] and "四" in d["house"]["group"]
+    assert len(d["people"]) == 2
+    for p in d["people"]:
+        assert isinstance(p["match"], bool)
+        assert len(p["dirs_good"]) == 4 and len(p["dirs_bad"]) == 4
+        assert p["rooms"] and p["rooms"][0]["label"] == "Master"
+        assert p["rooms"][0]["why"]
+    assert d["suggestion"]["assignment"]["Master"]
+    assert isinstance(d["suggestion"]["household_total"], float)
     # 騎線 facing → alternate chart with its own scores
     r2 = client.post(f"/api/pub/w/{tok}/analyze", json={**req, "facing_deg": 307})
     d2 = r2.json()

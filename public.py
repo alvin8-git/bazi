@@ -28,14 +28,14 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse
 from pydantic import BaseModel, Field
 
-from engine.bazhai import gua_group, ming_gua
+from engine.bazhai import STAR_SCORE, gua_group, ming_gua, youxing_stars
 from engine.bazi import TRUE_SOLAR, build_chart
 from engine.careers import career_paths
 from engine.domains import life_domains
 from engine.extras import harmony_matrix
 from engine.htmlreport import _tosimp
 from engine.liunian import dayun_detail
-from engine.optimizer import score_assignment
+from engine.optimizer import optimize, score_assignment
 from engine.sectors import assign_pie
 from engine.shensha import life_palaces
 from engine.windows import timing_windows
@@ -300,6 +300,66 @@ def get_floorplan(token: str):
     return FileResponse(f)
 
 
+_PALACE_DIR = {"坎": "N", "艮": "NE", "震": "E", "巽": "SE",
+               "離": "S", "坤": "SW", "兌": "W", "乾": "NW"}
+_GOOD_STARS = ("生氣", "天醫", "延年", "伏位")
+
+
+def _sector_trigram(deg: float) -> str:
+    names = ["坎", "艮", "震", "巽", "離", "坤", "兌", "乾"]
+    return names[int(((deg + 22.5) % 360) // 45)]
+
+
+def _people_analysis(req, charts: dict, ys_map: dict, rooms: list[dict],
+                     rooms_by_id: dict, natal: dict, annual: dict) -> dict:
+    """The per-person deliverable: house compatibility, bed/desk directions,
+    best/worst rooms, and the optimal whole-household assignment."""
+    house_gua = _sector_trigram((req.facing_deg + 180) % 360)
+    house_group = gua_group(house_gua)
+    sleeping = [r for r in rooms if r["sleeping"]]
+    people = []
+    for name, c in charts.items():
+        g = ming_gua(c.lichun_year, c.sex)
+        grp = gua_group(g)
+        yx = youxing_stars(g)
+        dirs = [{"palace": p, "dir": _PALACE_DIR[p], "star": s}
+                for p, s in yx.items() if p in _PALACE_DIR]
+        dirs.sort(key=lambda d: -STAR_SCORE.get(d["star"], 0))
+        ranking = []
+        for r in sleeping:
+            sc = score_assignment({r["id"]: [name]}, {name: c},
+                                  {name: ys_map[name]}, rooms_by_id,
+                                  natal, annual)
+            s0 = sc["scores"][0]
+            top = sorted(s0["breakdown"], key=lambda b: -abs(b["contribution"]))
+            ranking.append({"id": r["id"], "label": r["label"],
+                            "total": s0["total"],
+                            "why": [f'{b["explanation"]} '
+                                    f'({b["contribution"]:+.2f})'
+                                    for b in top[:2]]})
+        ranking.sort(key=lambda x: -x["total"])
+        people.append({"name": name, "gua": g, "group": grp,
+                       "match": grp == house_group,
+                       "dirs_good": [d for d in dirs if d["star"] in _GOOD_STARS],
+                       "dirs_bad": [d for d in dirs
+                                    if d["star"] not in _GOOD_STARS][::-1],
+                       "rooms": ranking})
+    suggestion = None
+    # optimize() enumerates rooms^people — only run when the space is small
+    if sleeping and charts and len(sleeping) ** len(charts) <= 100_000:
+        try:
+            best = optimize(charts, ys_map, rooms, natal, annual, top=1)["best"][0]
+            suggestion = {
+                "assignment": {rooms_by_id[rid]["label"]: ns
+                               for rid, ns in best["assignment"].items()},
+                "household_total": best["household_total"]}
+        except (ValueError, KeyError):
+            pass                    # capacity infeasible → no suggestion
+    return {"house": {"sitting_gua": house_gua, "dir": _PALACE_DIR[house_gua],
+                      "group": house_group},
+            "people": people, "suggestion": suggestion}
+
+
 def _chart_block(ch: dict, rooms: list[dict], annual: dict) -> dict:
     pal_stars = {p: {"mountain": v["mountain"], "water": v["water"],
                      "annual": annual[p]}
@@ -339,6 +399,8 @@ def analyze(token: str, req: AnalyzeIn):
     result = {"year": YEAR, "period": req.period,
               "boundary": natal.get("boundary"),
               "main": _chart_block(natal, rooms, annual)}
+    result.update(_people_analysis(req, charts, ys_map, rooms, rooms_by_id,
+                                   natal, annual))
     if assignment:
         sc = score_assignment(assignment, charts, ys_map, rooms_by_id,
                               natal, annual)

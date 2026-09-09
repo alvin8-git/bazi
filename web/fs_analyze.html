@@ -59,7 +59,7 @@ button:disabled{opacity:.45;cursor:default}
 #sidebtns button{background:var(--card);color:var(--ink);border:1px solid var(--line);
   border-radius:12px;width:44px;height:44px;font-size:19px;padding:0;
   box-shadow:0 2px 6px rgba(0,0,0,.07)}
-#compass{position:absolute;right:14px;top:16px;background:var(--card);
+#compass{position:absolute;right:10px;top:10px;background:var(--card);
   border:1px solid var(--line);border-radius:14px;padding:10px 12px;text-align:center;
   box-shadow:0 2px 6px rgba(0,0,0,.07);z-index:4}
 #dial{width:58px;height:58px;border:2px solid var(--line);border-radius:50%;
@@ -84,9 +84,16 @@ button:disabled{opacity:.45;cursor:default}
 .rect.ns span{background:var(--good)}
 .rect.sel{outline:2px solid var(--gold)}
 #door-pin{position:absolute;translate:-50% -100%;font-size:26px;
-  filter:drop-shadow(0 1px 2px rgba(0,0,0,.4));cursor:pointer;line-height:1}
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.4));cursor:grab;line-height:1;
+  touch-action:none}
 #door-pin em{display:block;font-style:normal;font-size:9.5px;text-align:center;
   background:#1c1712;color:#fff;border-radius:4px;padding:0 4px}
+#door-del{position:absolute;top:-9px;right:-13px;font-size:11px;font-style:normal;
+  background:var(--accent);color:#fff;border-radius:50%;width:17px;height:17px;
+  line-height:17px;text-align:center;cursor:pointer}
+#rot-bar{display:flex;gap:10px;align-items:center;justify-content:center;
+  margin:12px auto 0;max-width:1100px;flex-wrap:wrap}
+#rot-bar input[type=range]{width:200px;accent-color:var(--accent)}
 
 /* edit-room panel */
 #panel{width:280px;flex:0 0 280px;background:var(--card);border:1px solid var(--line);
@@ -120,6 +127,10 @@ th{background:#f6f1e8}
 .warn{background:#fff6df;border:1px solid #eedc9a;border-radius:8px;padding:6px 10px;
   font-size:12.5px;margin:6px 0}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.kv{font-size:13.5px;margin:4px 0}
+.dirchip{display:inline-block;border-radius:6px;padding:1px 8px;font-size:12.5px;margin:1px}
+.dirchip.good{background:#e9f7ee;color:#1e7d32;border:1px solid #b7e1c3}
+.dirchip.bad{background:#fdecea;color:#b03a2e;border:1px solid #f5c6c0}
 @media(max-width:900px){
   .cols{grid-template-columns:1fr}
   #board{flex-direction:column;padding:12px}
@@ -156,6 +167,13 @@ th{background:#f6f1e8}
       <img id="preview" hidden>
     </div>
     <input type="file" id="f-file" accept="image/*" hidden>
+    <div id="rot-bar" hidden>
+      <span class="hint">Orient the plan:</span>
+      <button class="ghost" id="rot-l">⟲ 90°</button>
+      <button class="ghost" id="rot-r">⟳ 90°</button>
+      <input type="range" id="rot-f" min="-45" max="45" step="0.5" value="0" title="fine rotation">
+      <span class="hint" id="rot-val">0°</span>
+    </div>
     <div class="err" id="up-err"></div>
     <div id="up-actions">
       <button class="dark" id="btn-continue" disabled>Continue →</button>
@@ -198,10 +216,10 @@ th{background:#f6f1e8}
       <div id="sidebtns">
         <button id="btn-undo" title="undo last room">↺</button>
       </div>
-      <div id="compass"><div id="dial"><div id="needle"></div></div><b id="cp-val">0°</b></div>
       <div id="canvas-col">
+        <div id="compass"><div id="dial"><div id="needle"></div></div><b id="cp-val">0°</b></div>
         <div id="wrap"><img id="plan"><div id="rects"></div>
-          <div id="door-pin" hidden>🚪<em>Entrance</em></div></div>
+          <div id="door-pin" hidden>🚪<em>Entrance</em><i id="door-del">✕</i></div></div>
       </div>
       <div id="panel" hidden>
         <h3>Edit Room</h3>
@@ -259,6 +277,7 @@ $("#btn-back2").addEventListener("click", e => { e.preventDefault(); showStep("u
   if (ws.has_floorplan) {
     $("#preview").src = `/api/pub/w/${token}/floorplan`;
     $("#preview").hidden = false; $("#drop-ph").hidden = true;
+    $("#rot-bar").hidden = false;
     $("#btn-continue").disabled = false;
     showStep("anno");
   }
@@ -285,11 +304,44 @@ async function upload(f) {
     await api(`/api/pub/w/${token}/floorplan`, {method: "POST", body: fd});
     $("#preview").src = URL.createObjectURL(f);
     $("#preview").hidden = false; $("#drop-ph").hidden = true;
+    $("#rot-bar").hidden = false;
     $("#btn-continue").disabled = false;
     rooms = []; entrance = null; $("#rects").innerHTML = ""; $("#door-pin").hidden = true;
   } catch (e) { $("#up-err").textContent = e.message; }
 }
-$("#btn-continue").addEventListener("click", () => showStep("anno"));
+
+/* ---- orientation: rotate preview, bake into the stored image on Continue ---- */
+let rotQ = 0, rotF = 0;
+function applyRot() {
+  const r = rotQ + rotF;
+  $("#preview").style.rotate = r + "deg";
+  $("#rot-val").textContent = (rotQ + rotF) + "°";
+}
+$("#rot-l").addEventListener("click", () => { rotQ = (rotQ + 270) % 360; applyRot(); });
+$("#rot-r").addEventListener("click", () => { rotQ = (rotQ + 90) % 360; applyRot(); });
+$("#rot-f").addEventListener("input", () => { rotF = parseFloat($("#rot-f").value); applyRot(); });
+async function bakeRotation() {
+  const rot = rotQ + rotF;
+  if (!rot) return;
+  const img = new Image();
+  img.src = $("#preview").src;
+  await img.decode();
+  const rad = rot * Math.PI / 180, w = img.naturalWidth, h = img.naturalHeight;
+  const c = document.createElement("canvas");
+  c.width = Math.round(Math.abs(w * Math.cos(rad)) + Math.abs(h * Math.sin(rad)));
+  c.height = Math.round(Math.abs(w * Math.sin(rad)) + Math.abs(h * Math.cos(rad)));
+  const g = c.getContext("2d");
+  g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height);
+  g.translate(c.width / 2, c.height / 2); g.rotate(rad);
+  g.drawImage(img, -w / 2, -h / 2);
+  const blob = await new Promise(r => c.toBlob(r, "image/png"));
+  rotQ = 0; rotF = 0; $("#rot-f").value = 0; applyRot();
+  await upload(new File([blob], "plan.png", {type: "image/png"}));
+}
+$("#btn-continue").addEventListener("click", async () => {
+  try { await bakeRotation(); } catch (e) { $("#up-err").textContent = e.message; return; }
+  showStep("anno");
+});
 
 /* ---------------- facing slider + compass ---------------- */
 const MOUNTAINS = [["N 坎",0],["NE 艮",45],["E 震",90],["SE 巽",135],["S 離",180],
@@ -372,6 +424,25 @@ function placeDoor() {
   p.style.left = entrance[0] * b.width + "px";
   p.style.top = entrance[1] * b.height + "px";
 }
+/* pin is draggable; ✕ deletes it */
+const pin = $("#door-pin");
+let dragPin = false;
+pin.addEventListener("pointerdown", e => {
+  if (e.target.id === "door-del") return;
+  dragPin = true; pin.setPointerCapture(e.pointerId);
+  e.stopPropagation(); e.preventDefault();
+});
+pin.addEventListener("pointermove", e => {
+  if (!dragPin) return;
+  const b = wrap.getBoundingClientRect();
+  entrance = [Math.max(0, Math.min((e.clientX - b.left) / b.width, 1)),
+              Math.max(0, Math.min((e.clientY - b.top) / b.height, 1))];
+  placeDoor();
+});
+pin.addEventListener("pointerup", () => dragPin = false);
+$("#door-del").addEventListener("click", e => {
+  e.stopPropagation(); entrance = null; pin.hidden = true;
+});
 
 /* ---------------- edit panel ---------------- */
 function select(i) {
@@ -466,6 +537,7 @@ $("#btn-analyze").addEventListener("click", async () => {
         boundary — both charts shown; re-measure on site to settle which rules.</div>`;
     }
     html += chartBlock("Main chart 主盘", res.main, res.scores);
+    html += peopleBlock(res);
     if (res.alternate) html += chartBlock("Alternate chart 兼盘", res.alternate, res.alternate_scores);
     html += `<div class="sec hint">Scores blend 八宅命卦 + 玄空飞星 + 用神 element fit —
       each line above cites its rule. Annual stars are for ${res.year}. This analysis is
@@ -474,6 +546,42 @@ $("#btn-analyze").addEventListener("click", async () => {
     $("#results").scrollIntoView({behavior: "smooth"});
   } catch (e) { $("#go-err").textContent = e.message; }
 });
+
+function peopleBlock(res) {
+  if (!res.people || !res.people.length) return "";
+  const h = res.house;
+  const hz = h.group.includes("East") ? "東四宅 (East house)" : "西四宅 (West house)";
+  let html = `<div class="sec"><h2>House vs people 宅命相配</h2>
+    <div class="hint">This home sits 坐${h.sitting_gua} (${h.dir} sitting) → <b>${hz}</b>.
+      八宅 doctrine matches the house group to each person's 命卦 group; a mismatch is
+      not a verdict — the room ranking and bed directions below are how it is worked
+      around.</div>
+    ${res.people.map(p => `<div class="kv"><b>${p.name}</b> — ${p.gua}命 ${p.group}
+      <span style="color:${p.match ? "var(--good)" : "var(--accent)"};font-weight:600">
+      ${p.match ? "✓ matches this house" : "✗ opposite group"}</span></div>`).join("")}
+  </div>`;
+  html += res.people.map(p => `<div class="sec">
+    <h2>${p.name} — directions &amp; rooms 方位与配房</h2>
+    <div class="kv"><b>Bed / desk facing 床头·书桌:</b>
+      ${p.dirs_good.map(d => `<span class="dirchip good">${d.dir} ${d.star}</span>`).join(" ")}
+      &nbsp;avoid ${p.dirs_bad.slice(0, 2).map(d =>
+        `<span class="dirchip bad">${d.dir} ${d.star}</span>`).join(" ")}</div>
+    ${p.rooms.length ? `<table><tr><th>Room (best → worst)</th><th>Score</th><th>Why — top rules</th></tr>
+      ${p.rooms.map((r, i) => `<tr><td>${i === 0 ? "★ " : ""}${r.label}</td>
+        <td><b>${r.total.toFixed(2)}</b></td>
+        <td class="hint">${r.why.join("; ")}</td></tr>`).join("")}</table>` :
+      `<div class="hint">mark bedrooms (Master Bedroom / Bedroom type) to rank rooms
+        for this person.</div>`}
+  </div>`).join("");
+  if (res.suggestion) {
+    html += `<div class="sec"><h2>Suggested assignment 最佳配房</h2>
+      ${Object.entries(res.suggestion.assignment).map(([room, ns]) =>
+        `<div class="kv">🛏 <b>${room}</b> ← ${ns.join(", ")}</div>`).join("")}
+      <div class="hint">household total <b>${res.suggestion.household_total.toFixed(2)}</b>
+        — the best of every feasible arrangement of the drawn bedrooms.</div></div>`;
+  }
+  return html;
+}
 
 function chartBlock(tag, cb, scores) {
   const DIRS = {"坎":"N","艮":"NE","震":"E","巽":"SE","離":"S","坤":"SW","兌":"W","乾":"NW"};
