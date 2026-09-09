@@ -71,6 +71,116 @@ GROUP_MEANING = {
 }
 
 
+# ---- 五行生剋 interaction layer (the divineway-style reading) --------------
+SHENG_C = {"木": "火", "火": "土", "土": "金", "金": "水", "水": "木"}
+KE_C = {"木": "土", "土": "水", "水": "火", "火": "金", "金": "木"}
+SHENG_META = {
+    ("木", "火"): "ideas and growth fuel expression",
+    ("火", "土"): "action settles into stability and routine",
+    ("土", "金"): "routine sharpens discipline and follow-through",
+    ("金", "水"): "structure deepens insight and adaptability",
+    ("水", "木"): "reflection feeds growth and initiative",
+}
+KE_META = {
+    ("木", "土"): "growth overruns stability — plans trample routines",
+    ("土", "水"): "caution dams flow — communication and adaptability get blocked",
+    ("水", "火"): "overthinking damps enthusiasm and visibility",
+    ("火", "金"): "urgency melts discipline — structure gives way under passion",
+    ("金", "木"): "structure prunes growth — rules and rigidity cut initiative",
+}
+ELEMENT_TRAIT = {
+    "木": "pioneering, growth-driven, initiating",
+    "火": "expressive, social, leadership-leaning",
+    "土": "steady, reliable, grounding",
+    "金": "structured, precise, disciplined",
+    "水": "reflective, adaptive, communicative",
+}
+ABSENT_COST = {
+    "木": "initiative and fresh starts need deliberate effort",
+    "火": "visibility and self-promotion need deliberate effort",
+    "土": "grounding and routine need deliberate effort",
+    "金": "structure and follow-through need deliberate effort",
+    "水": "adaptability and communication need deliberate effort",
+}
+
+
+def element_relations(chart) -> dict:
+    """The chart's 生剋 dynamics, personalised: Day-Master flows, dominance /
+    absence, and productive-vs-destructive findings — the interaction reading
+    a practitioner does on top of the balance bars."""
+    w = chart.element_weights
+    total = sum(w.values()) or 1
+    share = {el: round(100 * v / total, 1) for el, v in w.items()}
+
+    def band(s):
+        return ("absent" if s < 4 else "faint" if s < 10 else
+                "present" if s < 25 else "heavy")
+
+    dm_el = STEM_ELEMENT[chart.day_master]
+    inv_sheng = {v: k for k, v in SHENG_C.items()}
+    inv_ke = {v: k for k, v in KE_C.items()}
+
+    def node(el, role, en, meaning):
+        return {"el": el, "share": share[el], "band": band(share[el]),
+                "role": role, "en": en, "meaning": meaning}
+
+    flows = {
+        "resource": node(inv_sheng[dm_el], "生我 印", "feeds you",
+                         "support, learning, protection — your recharge line"),
+        "output": node(SHENG_C[dm_el], "我生 食傷", "you feed",
+                       "expression and output — spends your energy"),
+        "wealth": node(KE_C[dm_el], "我剋 財", "you control",
+                       "wealth — results the chart can seize and hold"),
+        "pressure": node(inv_ke[dm_el], "剋我 官殺", "controls you",
+                         "discipline, career pressure, external structure"),
+        "peer": node(dm_el, "同我 比劫", "peers",
+                     "self-strength, siblings, competition"),
+    }
+    findings, afflictions = [], []
+    hi = max(share, key=share.get)
+    if share[hi] >= 30:
+        findings.append(
+            f"{hi} dominates at {share[hi]}% — {ELEMENT_TRAIT[hi]} colours "
+            "the whole chart, and its excesses are the first faults to watch.")
+    for el, s in share.items():
+        if s < 4:
+            findings.append(
+                f"{el} is effectively absent ({s}%) — {ABSENT_COST[el]}; the "
+                f"generating chain into {SHENG_C[el]} also loses its feeder.")
+    for a, b in KE_C.items():
+        if share[a] >= 25 and share[b] <= 10:
+            afflictions.append([a, b])
+            if share[b] >= 4:
+                findings.append(
+                    f"{a} ({share[a]}%) bears down on weak {b} "
+                    f"({share[b]}%) — {KE_META[(a, b)]}.")
+    heavies = {el for el, s in share.items() if s >= 20}
+    for a in heavies:
+        b = KE_C[a]
+        if b in heavies:
+            if [a, b] not in afflictions:
+                afflictions.append([a, b])
+            findings.append(
+                f"Two strong camps: {a} ({share[a]}%) vs {b} ({share[b]}%) — "
+                f"{KE_META[(a, b)]}; a recurring life theme, manageable once "
+                "named.")
+    r = flows["resource"]
+    if r["band"] in ("present", "heavy"):
+        findings.append(
+            f"The support line is intact: {r['el']} ({r['share']}%) 生 "
+            f"{dm_el} — {SHENG_META[(r['el'], dm_el)]}; help and recovery "
+            "are structurally available.")
+    else:
+        findings.append(
+            f"The support line is thin: {r['el']} ({r['share']}%) barely "
+            f"feeds {dm_el} — recharge does not happen by itself here; build "
+            "it in deliberately (rest, mentors, study).")
+    return {"dm": dm_el, "share": share, "flows": flows,
+            "afflictions": afflictions, "findings": findings,
+            "source_ref": "五行生剋 cycles applied to this chart's weighted "
+                          "element balance"}
+
+
 def _fav_word(el: str, ys: dict) -> str:
     if el in ys["favourable"]:
         return "favourable 喜"
@@ -105,6 +215,10 @@ def interpret_person(chart, ys: dict, year: int) -> dict:
         f"({w[lo]}). The elements that would correct the tilt are the 用神 — here "
         f"{'·'.join(ys['favourable'])} — and they become practical levers: "
         f"{wardrobe_phrase(ys)}.")
+
+    er = element_relations(chart)
+    if er["findings"]:
+        paras.append("[§1] Interactions 生剋: " + " ".join(er["findings"][:3]))
 
     counts: dict[str, float] = {}
     for g in chart.ten_gods.values():

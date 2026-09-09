@@ -637,6 +637,58 @@ function chartCard(c) {
   </div>`;
 }
 
+/* personalised 生剋 wheel: node size = element share, gold ring = Day Master,
+   green arrows = generating cycle, red = controlling (solid when afflicted) */
+function elementWheel(er) {
+  const ORDER = ["火", "土", "金", "水", "木"];
+  const cx = 130, cy = 130, R = 88;
+  const pos = {};
+  ORDER.forEach((el, i) => {
+    const a = (-90 + i * 72) * Math.PI / 180;
+    pos[el] = [cx + R * Math.cos(a), cy + R * Math.sin(a)];
+  });
+  const rOf = el => 13 + Math.min(er.share[el] || 0, 40) * 0.32;
+  const seg = (a, b) => {
+    const [x1, y1] = pos[a], [x2, y2] = pos[b];
+    const d = Math.hypot(x2 - x1, y2 - y1), ux = (x2 - x1) / d, uy = (y2 - y1) / d;
+    return [x1 + ux * (rOf(a) + 3), y1 + uy * (rOf(a) + 3),
+            x2 - ux * (rOf(b) + 8), y2 - uy * (rOf(b) + 8)];
+  };
+  const SHENG_P = [["木", "火"], ["火", "土"], ["土", "金"], ["金", "水"], ["水", "木"]];
+  const KE_P = [["木", "土"], ["土", "水"], ["水", "火"], ["火", "金"], ["金", "木"]];
+  const aff = new Set((er.afflictions || []).map(p => p.join()));
+  let s = `<svg viewBox="0 0 260 270" class="ewheel"><defs>
+    <marker id="mS" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5"
+      orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7aa87f"/></marker>
+    <marker id="mK" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5"
+      orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d5b3b0"/></marker>
+    <marker id="mKa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
+      orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#b03a2e"/></marker></defs>`;
+  KE_P.forEach(([a, b]) => {
+    const [x1, y1, x2, y2] = seg(a, b), bad = aff.has(a + "," + b);
+    s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"
+      stroke="${bad ? "#b03a2e" : "#d5b3b0"}" stroke-width="${bad ? 3 : 1.3}"
+      ${bad ? "" : 'stroke-dasharray="4 3"'} marker-end="url(#${bad ? "mKa" : "mK"})"/>`;
+  });
+  SHENG_P.forEach(([a, b]) => {
+    const [x1, y1, x2, y2] = seg(a, b);
+    s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#7aa87f"
+      stroke-width="${Math.max(1.2, Math.min(4, (er.share[a] || 0) / 9))}"
+      opacity="${(er.share[a] || 0) < 6 ? 0.35 : 0.9}" marker-end="url(#mS)"/>`;
+  });
+  ORDER.forEach(el => {
+    const [x, y] = pos[el], r = rOf(el);
+    s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${EL_COL[el]}" opacity=".92"/>`;
+    if (el === er.dm) s += `<circle cx="${x}" cy="${y}" r="${r + 3.5}" fill="none"
+      stroke="var(--gold)" stroke-width="2.5"/>`;
+    s += `<text x="${x}" y="${y + 5.5}" text-anchor="middle" font-size="15"
+      font-weight="700" fill="#fff">${el}</text>
+      <text x="${x}" y="${y + r + 13}" text-anchor="middle" font-size="9.5"
+      fill="#6b6357">${er.share[el]}%${el === er.dm ? " 日主" : ""}</text>`;
+  });
+  return s + "</svg>";
+}
+
 const LEGENDS = {
   chart: [
     ["四柱 八字", "the Four Pillars: birth year·month·day·hour, each written as two characters — eight in all"],
@@ -657,7 +709,11 @@ const LEGENDS = {
   ],
   1: [["木/火/土/金/水", "wood / fire / earth / metal / water"],
     ["weight", "weighted count of visible + hidden characters carrying that element"],
-    ["reading it", "balance beats abundance — the tallest bar is the heaviest, not the best"]],
+    ["reading it", "balance beats abundance — the tallest bar is the heaviest, not the best"],
+    ["wheel: node size", "that element's share of THIS chart; gold ring = your Day Master"],
+    ["green arrows 生", "the generating cycle (wood→fire→earth→metal→water) — thicker = stronger feeder"],
+    ["red lines 剋", "the controlling cycle — solid red = an actual affliction in this chart (a heavy element crushing a weak one)"],
+    ["生我/我生/我剋/剋我/同我", "the five roles every element plays relative to the Day Master — resource, output, wealth, pressure, peers; the ten gods refine these"]],
   2: [["身強 strong", "the chart can afford to spend — output, wealth and pressure suit it"],
     ["身弱 weak", "the chart needs feeding — support, rest and resource suit it"],
     ["support ratio", "share of the chart on the Day Master's side"],
@@ -744,7 +800,23 @@ async function renderPerson(name) {
         <div class="bar-row el-${EL_ZH[en]}"><span>${elb(EL_ZH[en])} ${en}</span>
           <div class="bar"><i style="width:${(100 * v / wmax).toFixed(0)}%"></i></div>
           <b>${v.toFixed(1)}</b></div>`).join("")}
-      </div>${narr(1)}${lg(1)}</div>
+      </div>
+      ${c.element_relations ? `<h4>Interaction between the five elements 生剋</h4>
+      <div class="ewrap">${elementWheel(c.element_relations)}
+        <div class="eflows">
+          <div class="cite" style="margin:0 0 6px">How every other element relates to
+            YOUR Day Master ${elb(c.element_relations.dm)} — the same five roles the
+            ten gods (§3–4) are built from:</div>
+          ${["resource", "output", "wealth", "pressure", "peer"].map((k) => {
+            const f = c.element_relations.flows[k];
+            return `<div class="eflow"><span class="efr">${f.role}</span>
+              ${elb(f.el)} <b>${f.share}%</b>
+              <span class="efb ef-${f.band}">${f.band}</span>
+              <span class="sub">${f.meaning}</span></div>`;
+          }).join("")}
+        </div>
+      </div>` : ""}
+      ${narr(1)}${lg(1)}</div>
     <div class="section"><h3>2. Core Identity &amp; Day Master</h3>
       <p>Day Master <b>${c.day_master}</b> — <b>${c.strength.verdict}</b> (score ${c.strength.score})
         <span class="tag">support ratio ${c.strength.support_ratio}%</span>

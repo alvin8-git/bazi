@@ -273,6 +273,11 @@ def test_person_reading_13_sections():
             "careers", "windows", "life_palaces", "interpretation",
             "citations"} <= set(d)
     assert d["name"] == "测试一" and len(d["windows"]["years"]) == 10
+    # 生剋 interaction layer: DM flows + findings for the §1 wheel
+    er = d["element_relations"]
+    assert er["dm"] in "木火土金水" and len(er["flows"]) == 5
+    assert set(er["flows"]) == {"resource", "output", "wealth", "pressure", "peer"}
+    assert er["findings"] and abs(sum(er["share"].values()) - 100) < 1
     # every calculated section carries its own narrative paragraph
     import re
     secs = {int(m.group(1)) for p in d["interpretation"]["paragraphs"]
