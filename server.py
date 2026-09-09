@@ -57,6 +57,17 @@ ROOT = Path(__file__).resolve().parent
 app = FastAPI(title="FengShui Family Compass")
 
 
+@app.middleware("http")
+async def _no_stale_ui(request, call_next):
+    """HTML pages and /static JS/CSS must revalidate — a cached old app.js
+    silently renders stale layouts after a deploy (ETag still gives 304s)."""
+    resp = await call_next(request)
+    ct = resp.headers.get("content-type", "")
+    if "text/html" in ct or request.url.path.startswith("/static"):
+        resp.headers["Cache-Control"] = "no-cache"
+    return resp
+
+
 @lru_cache(maxsize=None)
 def _family():
     fam = ROOT / "data/family.json"
