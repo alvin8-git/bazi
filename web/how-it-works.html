@@ -1,0 +1,91 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How It Works — Deterministic BaZi &amp; Fengshui | bazifor.me</title>
+<meta name="description" content="How bazifor.me computes a reading: exact four-pillar calendar math, Eight House and Flying Star layers, and an interpretive layer where every line cites its classical rule. No AI guesswork.">
+<link rel="canonical" href="https://bazifor.me/how-it-works">
+<meta property="og:title" content="How It Works — Deterministic BaZi &amp; Fengshui">
+<meta property="og:description" content="Exact calendar math, three classical layers, every line rule-cited. No AI guesswork.">
+<style>
+:root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#8a8177;--accent:#b03a2e;
+--gold:#b8860b;--line:#e5ded2}
+body{margin:0;background:var(--bg);color:var(--ink);
+font-family:system-ui,'Noto Sans SC',sans-serif;line-height:1.65}
+nav{background:var(--card);border-bottom:1px solid var(--line);padding:12px 18px;font-size:14px}
+nav a{color:var(--accent);text-decoration:none;font-weight:600;margin-right:14px}
+main{max-width:760px;margin:0 auto;padding:24px 18px 60px}
+h1{font-size:26px;color:var(--accent)}
+h2{font-size:20px;margin-top:34px;border-bottom:1px solid var(--line);padding-bottom:4px}
+.zh{color:var(--gold);font-size:15px;margin-left:6px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:16px 18px;margin:14px 0}
+.step b.n{color:var(--accent);font-size:18px;margin-right:8px}
+.note{border-left:3px solid var(--gold);background:var(--card);padding:10px 14px;
+margin:16px 0;font-size:14px}
+.cta{margin-top:40px;background:var(--card);border:1px solid var(--line);
+border-radius:12px;padding:20px;text-align:center}
+.cta a.btn{display:inline-block;background:var(--accent);color:#fff;padding:10px 22px;
+border-radius:8px;text-decoration:none;font-weight:700;margin-top:8px}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;
+text-align:center;padding:18px}footer a{color:var(--accent)}
+</style></head><body>
+<nav><a href="/">bazifor.me</a> <a href="/start">Your Reading</a>
+<a href="/fengshui">Home Fengshui</a> <a href="/learn">Learn</a>
+<a href="/about">About</a> <a href="/faq">FAQ</a></nav>
+<main>
+<h1>How it works<span class="zh">运作原理</span></h1>
+<p>Most "AI fortune telling" sites feed your birthday to a chatbot and hope the prose
+sounds wise. bazifor.me does the opposite: <b>everything is computed by a rules
+engine</b> — the same classical procedures a careful practitioner runs by hand, encoded
+and tested. No large language model touches your reading. Here is the pipeline, step by
+step.</p>
+
+<div class="step"><b class="n">1</b><b>You enter birth details.</b>
+Date, time, and sex — for yourself, or a family of up to 8. No account, no email: your
+workspace lives behind an unguessable private link that only you hold. Unsure of the
+birth time? Mark it, and time-dependent sections are flagged rather than faked.</div>
+
+<div class="step"><b class="n">2</b><b>The engine casts the chart — exactly.</b>
+Four pillars with the 立春 year boundary, solar-term months, the unbroken 60-day 甲子
+cycle, and <b>true solar time</b> correction (including historical clock regimes — a
+pre-1982 Singapore birth is adjusted for the old UTC+7:30 standard). Then the derived
+layers: Day Master strength, 用神 favourable elements, Ten Gods, luck cycles 大运,
+Eight House 命卦 and direction maps, 文昌 study positions.</div>
+
+<div class="step"><b class="n">3</b><b>The reading assembles itself from cited rules.</b>
+Each section shows three things: the computed data, a plain-language 解读 narrative, and
+a strategy — and <b>every line names the classical rule that produced it</b>. You can
+disagree with a rule; you can never be left wondering where a claim came from.</div>
+
+<h2>The home fengshui pipeline<span class="zh">宅运分析</span></h2>
+<div class="step"><b class="n">1</b><b>Upload a floor plan and set the facing.</b>
+Any photo or PDF page of your plan; enter the compass facing you measured at the main
+window. If your facing sits near a chart boundary (兼向/骑线), the engine computes
+<b>both</b> candidate charts and says so, instead of silently picking one.</div>
+<div class="step"><b class="n">2</b><b>Trace rooms — and optionally doors and windows.</b>
+Draw each room over the plan; zoom in to mark where doors and windows sit. Doors unlock
+the form-school audit: entry-line checks (门冲床), commanding position, door-facing-door
+pairs.</div>
+<div class="step"><b class="n">3</b><b>Analyze.</b> One click computes the Flying Star
+chart for your building's period and facing, scores every person against every bedroom
+(three layers: 八宅 + 玄空 + 用神, each contribution cited), proposes bed and desk
+placement wall by wall, generates room colour guidance, a renovation-timing table
+against this year's and next year's afflictions, and an 入宅 move-in date finder for
+your household. Add up to six homes and compare them side by side.</div>
+
+<h2>Why you can trust the numbers<span class="zh">为什么可信</span></h2>
+<div class="note">The engine reproduced a professionally produced, paid fengshui audit
+<b>to the digit</b> — 27/27 flying-star palaces and 32/32 directional assignments — and
+matches commercial BaZi chart products character-for-character on the calendar layer.
+Determinism makes that test possible: run it twice, get the same answer, compare against
+a benchmark. A chatbot can pass no such test.</div>
+<p>Curious about the methods themselves? The <a href="/learn">Learn library</a> explains
+each layer — four pillars, 用神, Eight House, flying stars, date selection — in plain
+language, in <a href="/learn">English</a> and <a href="/zh/learn">中文</a>.</p>
+
+<div class="cta"><b>See it on your own chart.</b><br>
+Free, no account, under a minute.<br>
+<a class="btn" href="/start?utm_source=how-it-works">Get your reading →</a></div>
+</main>
+<footer>© bazifor.me · <a href="/about">About</a> · <a href="/faq">FAQ</a> ·
+<a href="/learn">Learn</a></footer>
+</body></html>

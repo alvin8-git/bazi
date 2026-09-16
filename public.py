@@ -1142,6 +1142,7 @@ def gsc_verification():
 def robots():
     return ("User-agent: *\nAllow: /$\nAllow: /start\nAllow: /fengshui\n"
             "Allow: /baby\nAllow: /learn\nAllow: /zh/learn\n"
+            "Allow: /how-it-works\nAllow: /about\nAllow: /faq\n"
             "Disallow: /w/\nDisallow: /api/\n"
             "Sitemap: https://bazifor.me/sitemap.xml\n")
 
@@ -1154,7 +1155,8 @@ def _learn_slugs(sub: str = "web/learn") -> list[str]:
 
 @router.get("/sitemap.xml")
 def sitemap():
-    pages = ["/", "/start", "/fengshui", "/baby", "/learn"]
+    pages = ["/", "/start", "/fengshui", "/baby",
+             "/how-it-works", "/about", "/faq", "/learn"]
     pages += [f"/learn/{s}" for s in _learn_slugs()]
     pages += ["/zh/learn"]
     pages += [f"/zh/learn/{s}" for s in _learn_slugs("web/learn-zh")]
@@ -1163,6 +1165,21 @@ def sitemap():
         f'<?xml version="1.0" encoding="UTF-8"?><urlset '
         f'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>',
         media_type="application/xml")
+
+
+@router.get("/how-it-works")
+def how_it_works_page():
+    return FileResponse(ROOT / "web/how-it-works.html")
+
+
+@router.get("/about")
+def about_page():
+    return FileResponse(ROOT / "web/about.html")
+
+
+@router.get("/faq")
+def faq_page():
+    return FileResponse(ROOT / "web/faq.html")
 
 
 @router.get("/learn")
