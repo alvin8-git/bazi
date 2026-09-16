@@ -79,6 +79,9 @@ button:disabled{opacity:.45;cursor:default}
 #wrap{position:relative;max-width:100%;user-select:none;touch-action:none}
 #wrap.draw{cursor:crosshair}
 #wrap.door{cursor:pointer}
+#wrap.pan{cursor:grab}
+#wrap.pan:active{cursor:grabbing}
+#btn-pan.on{background:var(--accent);color:#fff}
 #plan{max-width:100%;max-height:74vh;display:block}
 .doormark{position:absolute;background:#8a5a2b;z-index:4;cursor:pointer}
 .doormark .hingedot{position:absolute;width:7px;height:7px;border-radius:50%;
@@ -274,6 +277,7 @@ td.b-poor{background:#fdecea;color:#b03a2e}
         <button id="btn-undo" title="undo last room">↺</button>
         <button id="btn-zin" title="zoom in for detailed marking">＋</button>
         <button id="btn-zout" title="zoom out">－</button>
+        <button id="btn-pan" title="pan mode — drag to move around the plan">✋</button>
         <button id="btn-zfit" title="fit to screen" hidden>1:1</button>
       </div>
       <div id="canvas-col">
@@ -583,7 +587,24 @@ $("#plan").addEventListener("error", () => {
     "← Back and re-upload the same plan. Your rooms, entrance and analysis are " +
     "saved and will reappear over it.";
 });
+/* pan mode: drag scrolls the canvas column — a button, never a surprise */
+let panMode = false, pan = null, justPanned = false;
+$("#btn-pan").addEventListener("click", () => {
+  panMode = !panMode;
+  $("#btn-pan").classList.toggle("on", panMode);
+  wrap.classList.toggle("pan", panMode);
+});
+wrap.addEventListener("click", e => {
+  if (justPanned) { e.stopPropagation(); justPanned = false; }
+}, true);
 wrap.addEventListener("pointerdown", e => {
+  if (panMode) {
+    const col = $("#canvas-col");
+    pan = {x: e.clientX, y: e.clientY, sl: col.scrollLeft, st: col.scrollTop};
+    wrap.setPointerCapture(e.pointerId);
+    e.preventDefault();
+    return;
+  }
   const [x, y] = rel(e);
   if (mode === "door") {
     entrance = [x / $("#plan").offsetWidth, y / $("#plan").offsetHeight];
@@ -597,6 +618,13 @@ wrap.addEventListener("pointerdown", e => {
   e.preventDefault();
 });
 wrap.addEventListener("pointermove", e => {
+  if (pan) {
+    const col = $("#canvas-col");
+    col.scrollLeft = pan.sl - (e.clientX - pan.x);
+    col.scrollTop = pan.st - (e.clientY - pan.y);
+    if (Math.abs(e.clientX - pan.x) + Math.abs(e.clientY - pan.y) > 4) justPanned = true;
+    return;
+  }
   if (!drag) return;
   const w0 = $("#plan").offsetWidth, h0 = $("#plan").offsetHeight;
   const [rx, ry] = rel(e);
@@ -605,6 +633,7 @@ wrap.addEventListener("pointermove", e => {
     width: Math.abs(x-drag.x0)+"px", height: Math.abs(y-drag.y0)+"px"});
 });
 wrap.addEventListener("pointerup", () => {
+  if (pan) { pan = null; return; }
   if (!drag) return;
   const s = drag.el.style;
   const w = parseFloat(s.width || 0), h = parseFloat(s.height || 0);
