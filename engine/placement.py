@@ -96,8 +96,16 @@ def propose_bed(rect, doors, windows, up_bearing, stars) -> list[dict]:
         spans = [_span(d, rect, edge) for d in wall_doors]
         # keep the swing arc clear: margin = the door's own width
         margin = max((hi - lo for lo, hi in spans), default=0.0)
-        free = [iv for iv in _sub_intervals(wall_len, spans, margin)
+        # prefer a window-free span for the headboard; fall back to door-only
+        win_spans = [_span(wn, rect, edge) for wn in windows
+                     if wn["edge"] == edge]
+        free = [iv for iv in _sub_intervals(wall_len, spans + win_spans, margin)
                 if iv[1] - iv[0] >= bed_w]
+        head_on_glass = False
+        if not free:
+            head_on_glass = bool(win_spans)
+            free = [iv for iv in _sub_intervals(wall_len, spans, margin)
+                    if iv[1] - iv[0] >= bed_w]
         if not free:
             continue                        # headboard wall fully claimed by door
         # centre the bed in the largest free interval
@@ -107,33 +115,48 @@ def propose_bed(rect, doors, windows, up_bearing, stars) -> list[dict]:
         flags, score = [], float(base)
         for d in doors:
             dlo, dhi = _span(d, rect, d["edge"])
+            dw = dhi - dlo
             strip = _strip_rect(rect, d["edge"], dlo, dhi)
             ov = _overlap(strip, bed)
-            if ov > 0:
-                pillow = _bed_rect(rect, edge, along, bed_w, bed_len / 3)
-                if _overlap(strip, pillow) > 0:
-                    flags.append({"code": "menchong", "zh": "門沖床",
-                                  "text": "the door's entry line runs onto the "
-                                          "pillow", "remedy": "shift the bed out "
-                                  "of the strip, or screen with a wardrobe/"
-                                  "high shelf between door and bed"})
-                    score -= 3
-                else:
+            # ignore sliver grazes: require ≥ 25% of the strip's width engaged
+            depth_ = bed_len if d["edge"] in (edge, (edge + 2) % 4) else bed_w
+            if ov >= 0.25 * dw * min(depth_, dw * 4):
+                if d["edge"] == (edge + 2) % 4:
+                    # head-on strip from the facing wall — the real 門沖床
+                    pillow = _bed_rect(rect, edge, along, bed_w, bed_len / 3)
+                    if _overlap(strip, pillow) >= 0.25 * dw * (bed_len / 3):
+                        flags.append({"code": "menchong", "zh": "門沖床",
+                                      "text": "the door's entry line runs onto "
+                                      "the pillow", "remedy": "shift the bed out "
+                                      "of the strip, or screen with a wardrobe/"
+                                      "high shelf between door and bed"})
+                        score -= 3
+                    else:
+                        flags.append({"code": "strip", "zh": "入門線",
+                                      "text": "the entry line crosses the bed "
+                                      "body", "remedy": "a foot bench or low "
+                                      "cabinet at the foot settles it"})
+                        score -= 1.5
+                elif d["edge"] != edge:
+                    # adjacent wall: the strip sweeps ALONG the bed's flank —
+                    # the interceptor case, not 門沖床
                     flags.append({"code": "strip", "zh": "入門線",
-                                  "text": "the entry line crosses the bed body",
-                                  "remedy": "a foot bench or low cabinet at the "
-                                  "foot settles it"})
-                    score -= 1.5
+                                  "text": "the entry line runs along the bed's "
+                                  "flank", "remedy": "station a wardrobe, desk "
+                                  "or high shelf between door and bed to "
+                                  "intercept the strip"})
+                    score -= 1
             if d["edge"] != edge:
                 # 床在門後: hinge corner shared with the headboard wall and the
-                # bed hugging that corner
-                dlen = (dhi - dlo)
+                # bed hugging that corner (sliver grazes ignored)
+                dlen = dw
                 hinge_at = dlo if d.get("hinge", "lo") == "lo" else dhi
                 near_corner = hinge_at < dlen or hinge_at > _edge_len(rect, d["edge"]) - dlen
                 if near_corner and _overlap(_strip_rect(rect, d["edge"],
                                             max(0, hinge_at - dlen),
                                             min(_edge_len(rect, d["edge"]),
-                                                hinge_at + dlen)), bed) > 0:
+                                                hinge_at + dlen)),
+                                            bed) >= 0.2 * dlen * dlen:
                     flags.append({"code": "behind", "zh": "床在門後",
                                   "text": "the opened leaf stands beside the bed",
                                   "remedy": "soft-close hinge or doorstop plus a "
@@ -152,22 +175,27 @@ def propose_bed(rect, doors, windows, up_bearing, stars) -> list[dict]:
                 continue
             wlo, whi = _span(win, rect, edge)
             if wlo < along + bed_w and whi > along:
+                # the pillow never goes on glass — a bay is for the bed's
+                # FLANK (platform), not the head; both cost the same
                 if win.get("bay"):
                     flags.append({"code": "bay-head", "zh": "頭靠飄窗",
-                                  "text": "headboard meets a bay window",
-                                  "remedy": "platform bed with a solid raised "
-                                  "rail (manufactured 靠) makes this workable"})
-                    score -= 0.5
+                                  "text": "headboard on the bay window glass",
+                                  "remedy": "use the bay for the bed's FLANK "
+                                  "(platform + solid raised rail) and keep the "
+                                  "pillow on a solid wall"})
                 else:
                     flags.append({"code": "window-head", "zh": "床頭靠窗",
                                   "text": "headboard under a window — no solid "
                                   "backing", "remedy": "prefer a solid wall, or "
                                   "a tall solid headboard + heavy curtains"})
-                    score -= 1.5
+                score -= 2.5
         out.append({"edge": edge, "dir": DIRS[round(bearing / 45) % 8],
                     "palace": palace, "star": star, "score": round(score, 2),
                     "bed": [round(v, 1) for v in bed], "flags": flags})
-    out.sort(key=lambda c: -c["score"])
+    # solid backing breaks ties: a wall without glass behind the head wins
+    out.sort(key=lambda c: (-c["score"],
+                            any(f["code"] in ("bay-head", "window-head")
+                                for f in c["flags"])))
     return out
 
 
