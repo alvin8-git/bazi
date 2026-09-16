@@ -55,7 +55,10 @@ button:disabled{opacity:.45;cursor:default}
 #board{background:var(--card);border:1px solid var(--line);border-radius:12px;
   margin-top:12px;padding:18px;display:flex;gap:16px;align-items:flex-start;
   position:relative}
-#canvas-col{flex:1;display:flex;justify-content:center;position:relative;min-width:0}
+#canvas-col{flex:1;display:flex;justify-content:center;position:relative;min-width:0;
+  overflow:auto;max-height:80vh}
+#canvas-col.zoomed{justify-content:flex-start}
+#canvas-col.zoomed #wrap{max-width:none}
 #sidebtns{position:absolute;left:14px;top:16px;display:flex;flex-direction:column;
   gap:8px;z-index:4}
 #sidebtns button{background:var(--card);color:var(--ink);border:1px solid var(--line);
@@ -269,6 +272,9 @@ td.b-poor{background:#fdecea;color:#b03a2e}
     <div id="board">
       <div id="sidebtns">
         <button id="btn-undo" title="undo last room">↺</button>
+        <button id="btn-zin" title="zoom in for detailed marking">＋</button>
+        <button id="btn-zout" title="zoom out">－</button>
+        <button id="btn-zfit" title="fit to screen" hidden>1:1</button>
       </div>
       <div id="canvas-col">
         <div id="compass"><div id="dial"><div id="needle"></div></div><b id="cp-val">0°</b></div>
@@ -313,7 +319,7 @@ fetch("/api/pub/version").then(r => r.json())
   .then(v => { $("#ver").textContent = "v " + v.version; }).catch(() => {});
 let token = null, ws = null, rooms = [], drag = null, imgNatural = [0, 0];
 let mode = "draw", selected = -1, entrance = null;   // entrance = [rx,ry] 0..1
-let homes = [], cur = null, pendingRestore = null;
+let homes = [], cur = null, pendingRestore = null, lastRes = null;
 const SLEEP_TYPES = ["Master Bedroom 主卧", "Bedroom 卧室"];
 const mm = location.pathname.match(/^\/w\/([A-Za-z0-9_-]{8,64})/);
 if (mm) token = mm[1];
@@ -531,6 +537,39 @@ function rel(e) {                          // pointer → plan coords
   const b = wrap.getBoundingClientRect();
   return [e.clientX - b.left, e.clientY - b.top];
 }
+
+/* ------- zoom: buttons ONLY (no wheel/pinch auto-zoom — deliberate) ------- */
+let zoom = 1;
+function applyZoom(nz) {
+  nz = Math.max(1, Math.min(4, Math.round(nz * 4) / 4));
+  if (nz === zoom) return;
+  const plan = $("#plan");
+  const oldW = plan.offsetWidth;
+  if (!oldW) return;
+  if (nz === 1) {
+    plan.style.width = plan.style.maxWidth = plan.style.maxHeight = "";
+  } else {
+    const base = oldW / zoom;              // width at fit scale
+    plan.style.maxWidth = "none";
+    plan.style.maxHeight = "none";
+    plan.style.width = (base * nz) + "px";
+  }
+  const f = plan.offsetWidth / oldW;       // real rescale factor
+  zoom = nz;
+  $("#canvas-col").classList.toggle("zoomed", zoom > 1);
+  $("#btn-zfit").hidden = zoom === 1;
+  rooms.forEach(r => {
+    r.px = r.px.map(v => v * f);
+    Object.assign(r.el.style, {left: r.px[0] + "px", top: r.px[1] + "px",
+      width: r.px[2] + "px", height: r.px[3] + "px"});
+    drawMarks(r);
+  });
+  if (entrance) placeDoor();
+  if (lastRes) drawBedOverlays(lastRes);
+}
+$("#btn-zin").addEventListener("click", () => applyZoom(zoom + 0.5));
+$("#btn-zout").addEventListener("click", () => applyZoom(zoom - 0.5));
+$("#btn-zfit").addEventListener("click", () => applyZoom(1));
 
 /* ---------------- drawing (pointer events = mouse + touch) ---------------- */
 $("#plan").addEventListener("load", () => {
@@ -937,6 +976,7 @@ async function loadMovein() {
 }
 
 function renderResults(res) {
+  lastRes = res;
   let html = "";
   if (res.boundary && res.boundary.zone !== "正向") {
     html += `<div class="warn">⚠ ${res.boundary.zone}: the facing sits ${res.boundary.offset_deg}°
