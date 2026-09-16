@@ -274,7 +274,7 @@ td.b-poor{background:#fdecea;color:#b03a2e}
       </details></div>
     <div id="board">
       <div id="sidebtns">
-        <button id="btn-undo" title="undo last room">↺</button>
+        <button id="btn-undo" title="undo last room / door / window">↺</button>
         <button id="btn-zin" title="zoom in for detailed marking">＋</button>
         <button id="btn-zout" title="zoom out">－</button>
         <button id="btn-pan" title="pan mode — drag to move around the plan">✋</button>
@@ -595,9 +595,17 @@ $("#btn-pan").addEventListener("click", () => {
   wrap.classList.toggle("pan", panMode);
 });
 wrap.addEventListener("click", e => {
-  if (justPanned) { e.stopPropagation(); justPanned = false; }
+  if (justPanned || justPlaced) {
+    e.stopPropagation(); justPanned = justPlaced = false;
+  }
 }, true);
 wrap.addEventListener("pointerdown", e => {
+  if (armed) {
+    const [x, y] = rel(e);
+    placeMarkNear(x, y);
+    e.preventDefault();
+    return;
+  }
   if (panMode) {
     const col = $("#canvas-col");
     pan = {x: e.clientX, y: e.clientY, sl: col.scrollLeft, st: col.scrollTop};
@@ -642,6 +650,7 @@ wrap.addEventListener("pointerup", () => {
   rooms.push({id, type: "Bedroom 卧室", name: "", sleeping: true,
     px: [parseFloat(s.left), parseFloat(s.top), w, h], el: drag.el, occupants: [],
     doors: [], windows: []});
+  undoStack.push({kind: "room"});
   drag = null;
   decorate(rooms.length - 1); select(rooms.length - 1);
 });
@@ -674,10 +683,7 @@ function decorate(i) {
   r.el.classList.toggle("ns", !r.sleeping);
   r.el.innerHTML = `<span>${r.name || r.type.split(" ")[0]}</span>`;
   drawMarks(r);
-  r.el.onclick = e => {
-    if (armed) { placeMark(e, i); return; }
-    select(i);
-  };
+  r.el.onclick = () => select(i);
 }
 
 /* ---- door / window markers (fractions of an edge — scale-free) ---- */
@@ -727,21 +733,36 @@ function drawMarks(r) {
     r.el.appendChild(el);
   });
 }
-function placeMark(e, i) {
-  const r = rooms[i];
-  const b = r.el.getBoundingClientRect();
-  const px = e.clientX - b.left, py = e.clientY - b.top;
-  const [w, h] = [r.px[2], r.px[3]];
-  // nearest edge: 0 top, 1 right, 2 bottom, 3 left
-  const dists = [py, w - px, h - py, px];
-  const edge = dists.indexOf(Math.min(...dists));
-  const L = edge % 2 ? h : w;
-  const along = (edge % 2 ? py : px) / L;
-  const frac = Math.min((armed === "door" ? 55 : 80) / L, 0.5);
-  const offset = Math.max(0, Math.min(along - frac / 2, 1 - frac));
-  if (armed === "door") r.doors.push({edge, offset, width: frac, hinge: "lo"});
-  else r.windows.push({edge, offset, width: frac, bay: false});
+const undoStack = [];        // {kind:"room"} | {kind:"door"|"window", room}
+let justPlaced = false;
+function placeMarkNear(x, y) {
+  // nearest edge across ALL rooms — overlap- and z-order-proof, and a click
+  // slightly OUTSIDE a room still lands on its wall
+  let best = null;
+  for (const r of rooms) {
+    const [l, t, w, h] = r.px;
+    const edges = [[l, t, l + w, t, 0, w], [l + w, t, l + w, t + h, 1, h],
+                   [l, t + h, l + w, t + h, 2, w], [l, t, l, t + h, 3, h]];
+    for (const [x1, y1, x2, y2, edge, L] of edges) {
+      if (L < 4) continue;
+      const tt = Math.max(0, Math.min(1,
+        ((x - x1) * (x2 - x1) + (y - y1) * (y2 - y1)) / (L * L)));
+      const d = Math.hypot(x - (x1 + tt * (x2 - x1)), y - (y1 + tt * (y2 - y1)));
+      if (!best || d < best.d) best = {d, r, edge, t: tt, L};
+    }
+  }
+  if (!best || best.d > 25) {
+    $("#mark-hint").textContent = "nothing within range — click closer to a room edge";
+    return;
+  }
+  const r = best.r;
+  const frac = Math.min((armed === "door" ? 55 : 80) * zoom / best.L, 0.5);
+  const offset = Math.max(0, Math.min(best.t - frac / 2, 1 - frac));
+  if (armed === "door") r.doors.push({edge: best.edge, offset, width: frac, hinge: "lo"});
+  else r.windows.push({edge: best.edge, offset, width: frac, bay: false});
+  undoStack.push({kind: armed, room: r});
   armed = null;
+  justPlaced = true;
   updateArmedUI();
   drawMarks(r);
 }
@@ -749,7 +770,8 @@ function updateArmedUI() {
   $("#p-door").style.fontWeight = armed === "door" ? "700" : "";
   $("#p-win").style.fontWeight = armed === "window" ? "700" : "";
   $("#mark-hint").textContent = armed ?
-    `Now click a room edge to place the ${armed}.` :
+    `Now click near any room edge to place the ${armed} — works even where ` +
+    `rooms overlap; ↺ undoes a misplaced one.` :
     "Optional: click a room edge to place it. Click a door to flip its hinge, " +
     "again to remove. Click a window to mark it a bay window 飘窗, again to " +
     "remove. Doors unlock the bed-placement audit (門沖床 / commanding position / 門對門).";
@@ -825,6 +847,12 @@ $("#btn-delroom").addEventListener("click", () => {
   selected = -1; $("#panel").hidden = true;
 });
 $("#btn-undo").addEventListener("click", () => {
+  const a = undoStack.pop();
+  if (a && a.kind !== "room") {
+    const list = a.kind === "door" ? a.room.doors : a.room.windows;
+    if (list.length) { list.pop(); drawMarks(a.room); }
+    return;
+  }
   if (!rooms.length) return;
   rooms.pop().el.remove();
   rooms.forEach((r, j) => decorate(j));
