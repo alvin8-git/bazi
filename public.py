@@ -1134,18 +1134,40 @@ def version():
 @router.get("/robots.txt", response_class=PlainTextResponse)
 def robots():
     return ("User-agent: *\nAllow: /$\nAllow: /start\nAllow: /fengshui\n"
-            "Allow: /baby\nDisallow: /w/\nDisallow: /api/\n"
+            "Allow: /baby\nAllow: /learn\nDisallow: /w/\nDisallow: /api/\n"
             "Sitemap: https://bazifor.me/sitemap.xml\n")
+
+
+def _learn_slugs() -> list[str]:
+    d = ROOT / "web/learn"
+    return sorted(f.stem for f in d.glob("*.html")
+                  if f.stem != "index") if d.is_dir() else []
 
 
 @router.get("/sitemap.xml")
 def sitemap():
-    urls = "".join(f"<url><loc>https://bazifor.me{p}</loc></url>"
-                   for p in ("/", "/start", "/fengshui", "/baby"))
+    pages = ["/", "/start", "/fengshui", "/baby", "/learn"]
+    pages += [f"/learn/{s}" for s in _learn_slugs()]
+    urls = "".join(f"<url><loc>https://bazifor.me{p}</loc></url>" for p in pages)
     return Response(
         f'<?xml version="1.0" encoding="UTF-8"?><urlset '
         f'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>',
         media_type="application/xml")
+
+
+@router.get("/learn")
+def learn_hub():
+    return FileResponse(ROOT / "web/learn/index.html")
+
+
+@router.get("/learn/{slug}")
+def learn_article(slug: str):
+    if not re.fullmatch(r"[a-z0-9-]{1,80}", slug):
+        raise HTTPException(404)
+    f = ROOT / "web/learn" / f"{slug}.html"
+    if not f.is_file():
+        raise HTTPException(404)
+    return FileResponse(f)
 
 
 @router.get("/start")
