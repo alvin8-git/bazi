@@ -1131,6 +1131,13 @@ def version():
             "env": "prod" if os.environ.get("VERCEL") else "local"}
 
 
+@router.get("/google3ab49b3ef7e728f9.html", response_class=PlainTextResponse)
+def gsc_verification():
+    # Google Search Console ownership proof — exact token, never a wildcard
+    # (a generic /google*.html responder would let anyone claim the domain).
+    return "google-site-verification: google3ab49b3ef7e728f9.html"
+
+
 @router.get("/robots.txt", response_class=PlainTextResponse)
 def robots():
     return ("User-agent: *\nAllow: /$\nAllow: /start\nAllow: /fengshui\n"
