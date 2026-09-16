@@ -310,6 +310,20 @@ def person_report(token: str, idx: int):
 
 
 # ---------------------------------------------------------------- fengshui
+class DoorIn(BaseModel):
+    edge: int = Field(ge=0, le=3)            # 0 top · 1 right · 2 bottom · 3 left
+    offset: float = Field(ge=0, le=1)        # fraction along the edge
+    width: float = Field(gt=0, le=1)
+    hinge: str = Field(default="lo", pattern="^(lo|hi)$")
+
+
+class WindowIn(BaseModel):
+    edge: int = Field(ge=0, le=3)
+    offset: float = Field(ge=0, le=1)
+    width: float = Field(gt=0, le=1)
+    bay: bool = False
+
+
 class RoomIn(BaseModel):
     id: str = Field(min_length=1, max_length=24, pattern=r"^[A-Za-z0-9_-]+$")
     label: str = Field(min_length=1, max_length=40)
@@ -317,6 +331,8 @@ class RoomIn(BaseModel):
     capacity: int = Field(default=2, ge=0, le=8)
     poly: list[list[float]] = Field(min_length=3, max_length=12)
     rtype: str | None = Field(default=None, max_length=40)   # UI room type, round-tripped
+    doors: list[DoorIn] = Field(default=[], max_length=4)
+    windows: list[WindowIn] = Field(default=[], max_length=6)
 
 
 class AnalyzeIn(BaseModel):
@@ -589,6 +605,44 @@ def _chart_block(ch: dict, rooms: list[dict], annual: dict,
             "rooms": {r["id"]: r["palace_pie"] for r in rooms}}
 
 
+def _bbox(poly: list[list[float]]) -> list[float]:
+    xs, ys = [p[0] for p in poly], [p[1] for p in poly]
+    return [min(xs), min(ys), max(xs) - min(xs), max(ys) - min(ys)]
+
+
+def _placement(assignment: dict, rooms: list[dict], rooms_by_id: dict,
+               charts: dict, upb: float) -> dict:
+    """P3: per assigned bedroom occupant — ranked headboard walls, desk spot,
+    and doctrine flags; plus 門對門 pairs across the whole trace. All from the
+    traced geometry + each person's 八宅 stars."""
+    from engine.placement import door_pairs, propose_bed, propose_desk
+    rows = []
+    for rid, names in assignment.items():
+        room = rooms_by_id[rid]
+        rect = _bbox(room["poly"])
+        doors = room.get("doors", [])
+        windows = room.get("windows", [])
+        for n in names:
+            c = charts.get(_tosimp(n))
+            if c is None:
+                continue
+            stars = youxing_stars(ming_gua(c.lichun_year, c.sex))
+            rows.append({"room": room["label"], "room_id": rid, "person": n,
+                         "has_doors": bool(doors),
+                         "beds": propose_bed(rect, doors, windows, upb,
+                                             stars)[:3],
+                         "desk": propose_desk(rect, doors, upb, stars,
+                                              _GOOD_STARS)})
+    dims = [min(_bbox(r["poly"])[2], _bbox(r["poly"])[3]) for r in rooms
+            if r["id"] != "entrance"]
+    dims.sort()
+    gap = 0.6 * dims[len(dims) // 2] if dims else 0
+    pairs = door_pairs([{"id": r["id"], "label": r["label"],
+                         "rect": _bbox(r["poly"]), "doors": r.get("doors", [])}
+                        for r in rooms if r.get("doors")], gap)
+    return {"rows": rows, "door_pairs": pairs}
+
+
 def _works_timing(rooms: list[dict], year: int) -> dict:
     """Which traced rooms sit in annual affliction sectors (太歲/歲破/三煞 +
     annual 五黃) this year and next — pure function of room palaces + year."""
@@ -756,6 +810,8 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
     if assignment:
         result["colors"] = _room_colors(assignment, rooms_by_id, ys_map,
                                         natal, req.period)
+        result["placement"] = _placement(assignment, rooms, rooms_by_id,
+                                         charts, upb)
     home = _home_of(ws, hid)
     home.update({"facing_deg": req.facing_deg, "image_up_bearing": upb,
                  "period": req.period,

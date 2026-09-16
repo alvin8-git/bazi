@@ -77,6 +77,15 @@ button:disabled{opacity:.45;cursor:default}
 #wrap.draw{cursor:crosshair}
 #wrap.door{cursor:pointer}
 #plan{max-width:100%;max-height:74vh;display:block}
+.doormark{position:absolute;background:#8a5a2b;z-index:4;cursor:pointer}
+.doormark .hingedot{position:absolute;width:7px;height:7px;border-radius:50%;
+  background:#3b2510;pointer-events:none}
+.winmark{position:absolute;background:#3f7fd4;z-index:4;cursor:pointer}
+.winmark.bay{background:repeating-linear-gradient(45deg,#3f7fd4,#3f7fd4 4px,#9cc4f2 4px,#9cc4f2 8px)}
+.bedov{position:absolute;border:2px solid #1e5aa8;background:rgba(56,110,190,.25);
+  z-index:3;pointer-events:none;font-size:10px;color:#123c74;font-weight:700;
+  display:flex;align-items:center;justify-content:center;border-radius:3px}
+.bedov .headside{position:absolute;background:#1e5aa8}
 .rect{position:absolute;border:2px solid #6b5b95;background:rgba(107,91,149,.28);
   color:#fff;overflow:hidden;font-size:12px;display:flex;align-items:center;
   justify-content:center;cursor:pointer}
@@ -283,6 +292,14 @@ td.b-poor{background:#fdecea;color:#b03a2e}
           <button id="btn-confirm">✓ Confirm Room</button>
           <button id="btn-delroom">🗑 Delete Room</button>
         </div>
+        <div class="acts" style="margin-top:6px">
+          <button id="p-door">🚪 Add door</button>
+          <button id="p-win">🪟 Add window</button>
+        </div>
+        <div class="hint" id="mark-hint">Optional: click a room edge to place it.
+          Click a door to flip its hinge, again to remove. Click a window to mark
+          it a bay window 飘窗, again to remove. Doors unlock the bed-placement
+          audit (門沖床 / commanding position / 門對門).</div>
       </div>
     </div>
     <div class="err" id="go-err" style="margin-top:8px"></div>
@@ -555,7 +572,8 @@ wrap.addEventListener("pointerup", () => {
   if (w < 12 || h < 12) { drag.el.remove(); drag = null; return; }
   const id = "r" + Date.now() % 100000;
   rooms.push({id, type: "Bedroom 卧室", name: "", sleeping: true,
-    px: [parseFloat(s.left), parseFloat(s.top), w, h], el: drag.el, occupants: []});
+    px: [parseFloat(s.left), parseFloat(s.top), w, h], el: drag.el, occupants: [],
+    doors: [], windows: []});
   drag = null;
   decorate(rooms.length - 1); select(rooms.length - 1);
 });
@@ -576,7 +594,8 @@ function rebuildFromSaved(cfg) {
     const type = r.rtype || (r.sleeping ? "Bedroom 卧室" : "Other 其他");
     rooms.push({id: r.id, type, name: r.label === type ? "" : r.label,
       sleeping: r.sleeping, px: [l, t, w, h], el,
-      occupants: (cfg.assignment || {})[r.id] || []});
+      occupants: (cfg.assignment || {})[r.id] || [],
+      doors: r.doors || [], windows: r.windows || []});
     decorate(rooms.length - 1);
   }
   if (cfg.entrance) { entrance = cfg.entrance; placeDoor(); }
@@ -586,8 +605,89 @@ function decorate(i) {
   const r = rooms[i];
   r.el.classList.toggle("ns", !r.sleeping);
   r.el.innerHTML = `<span>${r.name || r.type.split(" ")[0]}</span>`;
-  r.el.onclick = () => select(i);
+  drawMarks(r);
+  r.el.onclick = e => {
+    if (armed) { placeMark(e, i); return; }
+    select(i);
+  };
 }
+
+/* ---- door / window markers (fractions of an edge — scale-free) ---- */
+let armed = null;   // "door" | "window" | null
+function drawMarks(r) {
+  r.el.querySelectorAll(".doormark,.winmark").forEach(m => m.remove());
+  const [w, h] = [r.px[2], r.px[3]], TH = 6;
+  const place = (m, el) => {
+    const L = m.edge % 2 ? h : w;           // edge length in px
+    const a = m.offset * L, b = m.width * L;
+    if (m.edge === 0) Object.assign(el.style, {left: a+"px", top: (-TH/2)+"px", width: b+"px", height: TH+"px"});
+    if (m.edge === 2) Object.assign(el.style, {left: a+"px", top: (h-TH/2)+"px", width: b+"px", height: TH+"px"});
+    if (m.edge === 3) Object.assign(el.style, {left: (-TH/2)+"px", top: a+"px", width: TH+"px", height: b+"px"});
+    if (m.edge === 1) Object.assign(el.style, {left: (w-TH/2)+"px", top: a+"px", width: TH+"px", height: b+"px"});
+  };
+  r.doors.forEach((d, di) => {
+    const el = document.createElement("div");
+    el.className = "doormark";
+    el.title = "door — click: flip hinge, click again: remove";
+    place(d, el);
+    const dot = document.createElement("div");
+    dot.className = "hingedot";
+    const atLo = d.hinge !== "hi";
+    if (d.edge % 2) Object.assign(dot.style, {left: "-1px", top: atLo ? "-2px" : "calc(100% - 5px)"});
+    else Object.assign(dot.style, {top: "-1px", left: atLo ? "-2px" : "calc(100% - 5px)"});
+    el.appendChild(dot);
+    el.onclick = e => {
+      e.stopPropagation();
+      if (d._cycled) r.doors.splice(di, 1);
+      else { d.hinge = d.hinge === "hi" ? "lo" : "hi"; d._cycled = true; }
+      drawMarks(r);
+    };
+    r.el.appendChild(el);
+  });
+  r.windows.forEach((wn, wi) => {
+    const el = document.createElement("div");
+    el.className = "winmark" + (wn.bay ? " bay" : "");
+    el.title = wn.bay ? "bay window 飘窗 — click to remove"
+                      : "window — click: mark as bay 飘窗, again: remove";
+    place(wn, el);
+    el.onclick = e => {
+      e.stopPropagation();
+      if (wn.bay) r.windows.splice(wi, 1);
+      else wn.bay = true;
+      drawMarks(r);
+    };
+    r.el.appendChild(el);
+  });
+}
+function placeMark(e, i) {
+  const r = rooms[i];
+  const b = r.el.getBoundingClientRect();
+  const px = e.clientX - b.left, py = e.clientY - b.top;
+  const [w, h] = [r.px[2], r.px[3]];
+  // nearest edge: 0 top, 1 right, 2 bottom, 3 left
+  const dists = [py, w - px, h - py, px];
+  const edge = dists.indexOf(Math.min(...dists));
+  const L = edge % 2 ? h : w;
+  const along = (edge % 2 ? py : px) / L;
+  const frac = Math.min((armed === "door" ? 55 : 80) / L, 0.5);
+  const offset = Math.max(0, Math.min(along - frac / 2, 1 - frac));
+  if (armed === "door") r.doors.push({edge, offset, width: frac, hinge: "lo"});
+  else r.windows.push({edge, offset, width: frac, bay: false});
+  armed = null;
+  updateArmedUI();
+  drawMarks(r);
+}
+function updateArmedUI() {
+  $("#p-door").style.fontWeight = armed === "door" ? "700" : "";
+  $("#p-win").style.fontWeight = armed === "window" ? "700" : "";
+  $("#mark-hint").textContent = armed ?
+    `Now click a room edge to place the ${armed}.` :
+    "Optional: click a room edge to place it. Click a door to flip its hinge, " +
+    "again to remove. Click a window to mark it a bay window 飘窗, again to " +
+    "remove. Doors unlock the bed-placement audit (門沖床 / commanding position / 門對門).";
+}
+$("#p-door").addEventListener("click", () => { armed = armed === "door" ? null : "door"; updateArmedUI(); });
+$("#p-win").addEventListener("click", () => { armed = armed === "window" ? null : "window"; updateArmedUI(); });
 function placeDoor() {
   const p = $("#door-pin");
   p.hidden = false;
@@ -672,6 +772,8 @@ $("#btn-analyze").addEventListener("click", async () => {
   const sx = imgNatural[0] / w0, sy = imgNatural[1] / h0;
   const rlist = rooms.map(r => ({id: r.id, label: label(r), sleeping: r.sleeping,
     capacity: 2, rtype: r.type,
+    doors: (r.doors || []).map(({edge, offset, width, hinge}) => ({edge, offset, width, hinge})),
+    windows: (r.windows || []).map(({edge, offset, width, bay}) => ({edge, offset, width, bay})),
     poly: [[r.px[0]*sx, r.px[1]*sy], [(r.px[0]+r.px[2])*sx, r.px[1]*sy],
            [(r.px[0]+r.px[2])*sx, (r.px[1]+r.px[3])*sy], [r.px[0]*sx, (r.px[1]+r.px[3])*sy]]}));
   if (entrance) {
@@ -736,6 +838,71 @@ function colorsBlock(res) {
       palette moves to bedding, curtains and accessories.</div></div>`;
 }
 
+const FLAGCHIP = f => `<span class="whychip neg" title="${f.remedy}">${f.zh} ${f.text}</span>`;
+function placementBlock(res) {
+  const pl = res.placement;
+  if (!pl || !pl.rows.length) return "";
+  let html = `<div class="sec"><h2>🛏 Bed &amp; desk placement 床位书桌
+      <span class="hint">auto-proposed per occupant — hover a flag for its remedy</span></h2>`;
+  html += pl.rows.map(r => {
+    const best = r.beds[0];
+    if (!best) return `<div class="kv"><b>${r.room} — ${r.person}</b>:
+      room too small or every wall claimed by a door.</div>`;
+    const alts = r.beds.slice(1).map(b =>
+      `${b.dir} ${b.star} (${b.score})`).join(" · ");
+    return `<div class="kv" style="margin-bottom:8px">
+      <b>${r.room} — ${r.person}</b>: headboard on the <b>${best.dir}</b> wall
+      <span class="dirchip good">${best.star}</span> score ${best.score}
+      ${best.flags.map(FLAGCHIP).join(" ")}
+      ${alts ? `<div class="hint">alternatives: ${alts}</div>` : ""}
+      ${r.desk ? `<div>📚 desk against the <b>${r.desk.dir}</b> wall, facing
+        <span class="dirchip good">${r.desk.dir} ${r.desk.star}</span>${
+        r.desk.note ? ` — <span class="hint">${r.desk.note}</span>` : ""}</div>` : ""}
+      ${!r.has_doors ? `<div class="hint">⚠ no door marked on this room — mark the
+        door in the trace editor to unlock the entry-line / commanding-position
+        audit.</div>` : ""}</div>`;
+  }).join("");
+  if (pl.door_pairs.length) {
+    html += `<div class="kv"><b>門對門 door pairs:</b> ${pl.door_pairs.map(p =>
+      `<span class="whychip neg" title="${p.remedy}">${p.a} ↔ ${p.b}</span>`).join(" ")}
+      <span class="hint">hover for the remedy</span></div>`;
+  }
+  html += `<div class="hint"><label><input type="checkbox" id="ov-toggle" checked>
+    show bed proposals on the floor plan</label> — the blue rectangles up in the
+    trace; the thick edge marks the headboard wall. 形勢為先: a form flag outranks
+    a marginally better star — that is why a flagged wall can rank below a
+    slightly weaker direction.</div></div>`;
+  return html;
+}
+
+function drawBedOverlays(res) {
+  document.querySelectorAll(".bedov").forEach(el => el.remove());
+  const pl = res.placement;
+  if (!pl || !$("#ov-toggle") || !$("#ov-toggle").checked) return;
+  const w0 = $("#plan").offsetWidth, h0 = $("#plan").offsetHeight;
+  if (!w0 || !imgNatural[0]) return;
+  const sx = w0 / imgNatural[0], sy = h0 / imgNatural[1];
+  for (const r of pl.rows) {
+    const best = r.beds[0];
+    if (!best) continue;
+    const [x, y, w, h] = best.bed;
+    const el = document.createElement("div");
+    el.className = "bedov";
+    Object.assign(el.style, {left: x*sx+"px", top: y*sy+"px",
+      width: w*sx+"px", height: h*sy+"px"});
+    el.textContent = `${r.person.slice(0, 2)} ${best.dir}`;
+    const hs = document.createElement("div");
+    hs.className = "headside";
+    const TH = "4px";
+    if (best.edge === 0) Object.assign(hs.style, {left: 0, top: 0, right: 0, height: TH});
+    if (best.edge === 2) Object.assign(hs.style, {left: 0, bottom: 0, right: 0, height: TH});
+    if (best.edge === 3) Object.assign(hs.style, {left: 0, top: 0, bottom: 0, width: TH});
+    if (best.edge === 1) Object.assign(hs.style, {right: 0, top: 0, bottom: 0, width: TH});
+    el.appendChild(hs);
+    $("#rects").appendChild(el);
+  }
+}
+
 function moveinBlock() {
   return `<div class="sec"><h2>📅 Move-in dates 入宅择日</h2>
     <div class="kv">From <input type="date" id="mi-start"> to
@@ -785,6 +952,7 @@ function renderResults(res) {
       facing on site (2–3 readings away from metal) to settle which one applies.</div>`;
     html += chartBlock("Alternate chart 兼盘", res.alternate, res.alternate_scores);
   }
+  html += placementBlock(res);
   html += worksBlock(res);
   html += colorsBlock(res);
   html += moveinBlock();
@@ -796,6 +964,9 @@ function renderResults(res) {
   $("#results").innerHTML = html;
   const mi = $("#mi-go");
   if (mi) mi.onclick = loadMovein;
+  drawBedOverlays(res);
+  const ov = $("#ov-toggle");
+  if (ov) ov.onchange = () => drawBedOverlays(res);
 }
 
 const ASP_KEYS = ["health", "career", "study", "wealth", "relationship", "luck"];
