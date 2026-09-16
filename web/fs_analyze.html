@@ -703,6 +703,72 @@ $("#btn-analyze").addEventListener("click", async () => {
   } catch (e) { $("#go-err").textContent = e.message; }
 });
 
+function worksBlock(res) {
+  const wt = res.works_timing;
+  if (!wt || !wt.rooms.length) return "";
+  return `<div class="sec"><h2>🔨 Renovation timing 动工时序
+      <span class="hint">annual afflictions ${wt.year}–${wt.next}</span></h2>
+    <div style="overflow-x:auto"><table>
+      <tr><th>Room</th><th>宫</th><th>${wt.year}</th><th>${wt.next}</th><th>Advice</th></tr>
+      ${wt.rooms.map(r => `<tr><td><b>${r.label}</b></td><td>${r.palace}</td>
+        <td>${r.now.join(" ") || "—"}</td><td>${r.next.join(" ") || "—"}</td>
+        <td>${r.advice}</td></tr>`).join("")}</table></div>
+    <div class="hint">太岁/岁破/三煞/五黄 sectors must not be hacked, drilled or dug
+      (动土) while afflicted — schedule structural works for a clean year, or after
+      立春 (≈4 Feb) when the sector clears. Screw-together furniture assembly is not
+      动土. Rooms not listed are clean in both years.</div></div>`;
+}
+
+function colorsBlock(res) {
+  if (!res.colors || !res.colors.length) return "";
+  return `<div class="sec"><h2>🎨 Room colours 房间用色
+      <span class="hint">personal 用神 palette × room flying stars</span></h2>
+    <div style="overflow-x:auto"><table>
+      <tr><th>Room</th><th>Person</th><th>Choose</th><th>Avoid</th></tr>
+      ${res.colors.map(c => `<tr><td><b>${c.room}</b></td><td>${c.person}</td>
+        <td>${c.choose.map(x => `<span class="dirchip good">${x}</span>`).join(" ")}</td>
+        <td>${c.avoid.map(x => `<span class="dirchip bad">${x}</span>`).join(" ")}</td></tr>
+      ${c.override ? `<tr><td></td><td colspan="3" class="hint">⚑ ${c.override}</td></tr>` : ""}`).join("")}
+    </table></div>
+    <div class="hint">Choose = colours feeding the person's favourable elements (用神);
+      avoid = colours feeding the unfavourable ones. When a room's flying star carries an
+      affliction, the star remedy wins on walls and large surfaces and the personal
+      palette moves to bedding, curtains and accessories.</div></div>`;
+}
+
+function moveinBlock() {
+  return `<div class="sec"><h2>📅 Move-in dates 入宅择日</h2>
+    <div class="kv">From <input type="date" id="mi-start"> to
+      <input type="date" id="mi-end"> <button id="mi-go">Find dates</button></div>
+    <div id="mi-out" class="hint">建除 auspicious officers (成/定/开) minus any day
+      clashing an occupant's year branch (六冲), the house sitting palace (冲坐山),
+      or the year's 太岁 — computed from the people in this workspace and this home's
+      facing only. Default window: next 6 months.</div></div>`;
+}
+
+async function loadMovein() {
+  const s = $("#mi-start").value, e = $("#mi-end").value;
+  const q = new URLSearchParams();
+  if (s) q.set("start", s);
+  if (e) q.set("end", e);
+  $("#mi-out").textContent = "computing…";
+  try {
+    const r = await api(`/api/pub/w/${token}/homes/${cur}/movein_dates?${q}`);
+    $("#mi-out").innerHTML = r.days.length ?
+      `<div style="overflow-x:auto"><table>
+        <tr><th>Date</th><th>Day</th><th>干支</th><th>建除</th></tr>
+        ${r.days.map(d => `<tr${["Sat", "Sun"].includes(d.weekday) ?
+            ' style="background:#f2f8f2"' : ""}>
+          <td><b>${d.date}</b></td><td>${d.weekday}</td>
+          <td>${d.ganzhi}</td><td>${d.officer}日</td></tr>`).join("")}</table></div>
+      <div class="hint">${r.start} → ${r.end} · sitting palace branch
+        ${r.sitting.join("/")} protected · weekend rows shaded. Move in during the
+        morning (巳时 09:00–11:00 is customary) and boil water or cook something simple
+        the same day — the stove declares occupancy.</div>` :
+      "no clean 成/定/开 day in this window — widen the range.";
+  } catch (err) { $("#mi-out").textContent = err.message; }
+}
+
 function renderResults(res) {
   let html = "";
   if (res.boundary && res.boundary.zone !== "正向") {
@@ -719,10 +785,17 @@ function renderResults(res) {
       facing on site (2–3 readings away from metal) to settle which one applies.</div>`;
     html += chartBlock("Alternate chart 兼盘", res.alternate, res.alternate_scores);
   }
+  html += worksBlock(res);
+  html += colorsBlock(res);
+  html += moveinBlock();
   html += `<div class="sec hint">Scores blend 八宅命卦 + 玄空飞星 + 用神 element fit —
-    each line above cites its rule. Annual stars are for ${res.year}. This analysis is
-    saved to this home in your workspace link.</div>`;
+    each line above cites its rule. Annual stars are for ${res.year}. Everything on this
+    page is computed only from each person's birth chart and this home's traced rooms +
+    facing — deterministic rules, no AI guesswork. This analysis is saved to this home
+    in your workspace link.</div>`;
   $("#results").innerHTML = html;
+  const mi = $("#mi-go");
+  if (mi) mi.onclick = loadMovein;
 }
 
 const ASP_KEYS = ["health", "career", "study", "wealth", "relationship", "luck"];
@@ -808,6 +881,15 @@ function peopleBlock(res) {
       ${p.dirs_good.map(d => `<span class="dirchip good">${d.dir} ${d.star}</span>`).join(" ")}
       &nbsp;avoid ${p.dirs_bad.slice(0, 2).map(d =>
         `<span class="dirchip bad">${d.dir} ${d.star}</span>`).join(" ")}</div>
+    ${p.wenchang ? `<div class="kv"><b>文昌 study spot:</b>
+      <span class="dirchip good">${p.wenchang.palace}宫 ${p.wenchang.dir}</span>
+      ${p.wenchang.rooms.length ?
+        `desk in <b>${p.wenchang.rooms.join(" / ")}</b>` :
+        `no traced room in that palace — fallback <b>坐吉向吉</b>: desk at any solid
+         wall`}${p.wenchang.face ? `, chair facing
+      <b>${p.wenchang.face.dir} ${p.wenchang.face.star}</b>` : ""}
+      <span class="hint">(from this person's day master; never sit with your back
+      square to the door — high-back chair if the layout forces it)</span></div>` : ""}
     ${p.rooms.length ? `<table><tr><th>Room (best → worst)</th><th>Score</th><th>Why — top rules</th></tr>
       ${p.rooms.map((r, i) => `<tr><td>${i === 0 ? "★ " : ""}<b>${r.label}</b></td>
         <td class="${r.total >= 0 ? "b-good" : "b-weak"}"><b>${r.total.toFixed(2)}</b></td>

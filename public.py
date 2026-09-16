@@ -20,7 +20,7 @@ import re
 import secrets
 import sqlite3
 import time
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -37,10 +37,11 @@ from engine.domains import life_domains
 from engine.extras import harmony_matrix
 from engine.interpret import STRUCTURE_TEXT
 from engine.htmlreport import _tosimp
-from engine.liunian import dayun_detail
+from engine.jianchu import movein_dates, sitting_branches
+from engine.liunian import BRANCH_PALACE, annual_afflictions, dayun_detail
 from engine.optimizer import optimize, score_assignment
 from engine.sectors import assign_pie
-from engine.shensha import life_palaces
+from engine.shensha import WENCHANG, life_palaces
 from engine.windows import timing_windows
 from engine.xuankong import annual_chart, natal_chart_from_degrees
 from engine.yongshen import yong_shen
@@ -516,11 +517,23 @@ def _people_analysis(req, charts: dict, ys_map: dict, rooms: list[dict],
                                      "v": b["contribution"]}
                                     for b in top[:3]]})
         ranking.sort(key=lambda x: -x["total"])
+        good_dirs = [d for d in dirs if d["star"] in _GOOD_STARS]
+        # 文昌 study palace: day-master → WENCHANG branch → palace. Desk goes
+        # in that palace's room(s); chair faces the person's best 八宅
+        # direction. No room there → classical fallback 坐吉向吉 (any solid
+        # spot, auspicious facing).
+        wc_pal = BRANCH_PALACE[WENCHANG[c.day_master]]
+        wc_rooms = [r["label"] for r in rooms if r["palace_pie"] == wc_pal]
         people.append({"name": name, "gua": g, "group": grp,
                        "match": grp == house_group,
-                       "dirs_good": [d for d in dirs if d["star"] in _GOOD_STARS],
+                       "dirs_good": good_dirs,
                        "dirs_bad": [d for d in dirs
                                     if d["star"] not in _GOOD_STARS][::-1],
+                       "wenchang": {"palace": wc_pal,
+                                    "dir": _PALACE_DIR[wc_pal],
+                                    "rooms": wc_rooms,
+                                    "face": good_dirs[0] if good_dirs else None,
+                                    "fallback": not wc_rooms},
                        "rooms": ranking})
     suggestion = None
     # optimize() enumerates rooms^people — only run when the space is small
@@ -576,6 +589,77 @@ def _chart_block(ch: dict, rooms: list[dict], annual: dict,
             "rooms": {r["id"]: r["palace_pie"] for r in rooms}}
 
 
+def _works_timing(rooms: list[dict], year: int) -> dict:
+    """Which traced rooms sit in annual affliction sectors (太歲/歲破/三煞 +
+    annual 五黃) this year and next — pure function of room palaces + year."""
+    flags = {}
+    for y in (year, year + 1):
+        af = annual_afflictions(y)
+        bad: dict[str, list[str]] = {}
+        bad.setdefault(af["taisui"]["palace"], []).append("太岁")
+        bad.setdefault(af["suipo"]["palace"], []).append("岁破")
+        for p in af["sansha"]["palaces"]:
+            bad.setdefault(p, []).append("三煞")
+        for p, s in annual_chart(y).items():
+            if s == 5 and p != "中":
+                bad.setdefault(p, []).append("五黄")
+        flags[y] = bad
+    out = []
+    for r in rooms:
+        now = flags[year].get(r["palace_pie"], [])
+        nxt = flags[year + 1].get(r["palace_pie"], [])
+        if not now and not nxt:
+            continue
+        if now and nxt:
+            advice = f"afflicted both years — professional date selection before any works"
+        elif now:
+            advice = f"do works AFTER 立春 {year + 1} (clean next year)"
+        else:
+            advice = f"do works BEFORE 立春 {year + 1} (clean this year)"
+        out.append({"id": r["id"], "label": r["label"],
+                    "palace": r["palace_pie"], "now": now, "next": nxt,
+                    "advice": advice})
+    return {"year": year, "next": year + 1, "rooms": out}
+
+
+_ELEM_COLORS = {"木": "绿/青/木色", "火": "红/橙/紫", "土": "黄/米/棕",
+                "金": "白/灰/金属色", "水": "蓝/黑"}
+
+
+def _room_colors(assignment: dict, rooms_by_id: dict, ys_map: dict,
+                 natal: dict, period: int) -> list[dict]:
+    """Per occupied room: personal 用神 palette vs the room's flying-star
+    overlay. Star remedy wins on room surfaces; palette moves to textiles."""
+    out = []
+    for rid, names in assignment.items():
+        room = rooms_by_id[rid]
+        pal = room["palace_pie"]
+        stars = natal["palaces"][pal]
+        m, w = stars["mountain"], stars["water"]
+        override = None
+        if m in (2, 5) or w in (2, 5):
+            override = (f"星{m if m in (2, 5) else w} earth affliction in this "
+                        "palace — room surfaces stay white/grey/metallic (metal "
+                        "drains earth); avoid red & yellow blocks; the personal "
+                        "palette moves to bedding/textiles/accessories")
+        elif w == 3:
+            override = ("向星3 quarrel star — avoid green walls & large plants "
+                        "(wood feeds it); warm fire tones quietly drain it")
+        elif w in (period, period % 9 + 1):
+            override = (f"向星{w} timely wealth star — keep this room bright, "
+                        "light and open; light palettes amplify it")
+        for n in names:
+            ys = ys_map.get(_tosimp(n))
+            if not ys:
+                continue
+            out.append({"room": room["label"], "person": n,
+                        "choose": ys["colours"],
+                        "avoid": [_ELEM_COLORS[e] for e in ys["unfavourable"]
+                                  if e in _ELEM_COLORS],
+                        "override": override})
+    return out
+
+
 @router.post("/api/pub/w/{token}/homes/{hid}/analyze")
 def analyze_home(token: str, hid: str, req: AnalyzeIn):
     ws = _load(token)
@@ -587,6 +671,32 @@ def analyze_home(token: str, hid: str, req: AnalyzeIn):
 def analyze(token: str, req: AnalyzeIn):
     ws = _load(token)
     return _do_analyze(token, ws, _default_hid(ws), req)
+
+
+@router.get("/api/pub/w/{token}/homes/{hid}/movein_dates")
+def movein(token: str, hid: str, start: str = "", end: str = ""):
+    """入宅 date candidates from the occupants' year branches + the home's
+    sitting palace. 建除 成/定/開 days minus 六沖/沖坐山/值太歲."""
+    ws = _load(token)
+    home = _home_of(ws, hid)
+    facing = home.get("facing_deg")
+    if facing is None:
+        raise HTTPException(400, "set the home's facing first (analyze plan)")
+    try:
+        d0 = date.fromisoformat(start) if start else date.today()
+        d1 = date.fromisoformat(end) if end else d0 + timedelta(days=180)
+    except ValueError:
+        raise HTTPException(400, "dates must be YYYY-MM-DD")
+    if not d0 <= d1 <= d0 + timedelta(days=400):
+        raise HTTPException(400, "window must be 1-400 days")
+    branches = []
+    for p in ws["people"]:
+        _, c = _chart_of(p)
+        branches.append(c.pillars["year"].branch)
+    return {"start": d0.isoformat(), "end": d1.isoformat(),
+            "sitting": sitting_branches(facing),
+            "occupant_branches": branches,
+            "days": movein_dates(d0, d1, branches, facing)}
 
 
 def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
@@ -642,6 +752,10 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
                 "band_zh": c["band_zh"], "driver": c.get("driver"),
                 "meaning": c.get("meaning")} for c in cards]
         for name, cards in asp["people"].items()}
+    result["works_timing"] = _works_timing(rooms, YEAR)
+    if assignment:
+        result["colors"] = _room_colors(assignment, rooms_by_id, ys_map,
+                                        natal, req.period)
     home = _home_of(ws, hid)
     home.update({"facing_deg": req.facing_deg, "image_up_bearing": upb,
                  "period": req.period,
