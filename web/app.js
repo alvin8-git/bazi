@@ -255,6 +255,14 @@ async function refresh() {
     api(`/api/family?${q}`),
     api(`/api/house?year=${state.year}&method=${state.method}`),
   ]);
+  // single-period houses (e.g. periods:[9]) — snap the default P8 to what exists
+  const pers = Object.keys(state.house.natal || {});
+  if (pers.length && !pers.includes(String(state.period))) {
+    state.period = +pers[0];
+    if ($("#period")) $("#period").value = String(state.period);
+  }
+  if ($("#period")) [...$("#period").options].forEach(
+    (o) => { o.disabled = pers.length > 0 && !pers.includes(o.value); });
   if (!state.assignment) {
     state.assignment = {};
     const h = state.house;
