@@ -92,3 +92,12 @@ def test_qixian_attaches_alternate_chart():
     # both boundary charts agree on the headline structure — but sector
     # details differ (e.g. N water star 3 vs 4), so both are surfaced
     assert n["palaces"]["坎"]["water"] != alt["palaces"]["坎"]["water"]
+
+
+def test_tigua_off_axis_structures():
+    """Validation E2/W1: off-axis wang stars are NOT 上山下水 — the strict
+    inversion (山星下水 AND 向星上山) is required for that label."""
+    from engine.xuankong import natal_chart_from_degrees
+    assert natal_chart_from_degrees(8, 19.0)["structure"] == "旺星出宮"
+    assert natal_chart_from_degrees(9, 49.3)["structure"] == "山星下水·向星出宮"
+    assert natal_chart_from_degrees(8, 49.3)["structure"] == "上山下水"

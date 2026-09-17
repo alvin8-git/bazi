@@ -38,6 +38,15 @@ STRUCTURE_TEXT = {
     "旺向": "the prosperous water star is correctly placed at the facing (good for "
           "wealth) but the mountain star is not at the sitting — health/people luck "
           "needs support (solid, quiet backing at the sitting-side sector)",
+    "山星下水·向星出宮": "a weak replacement-chart structure: the mountain star has "
+          "fallen into the facing (health/people undermined) while the water star is "
+          "exiled off-axis entirely — neither wealth nor people receive support",
+    "向星上山·山星出宮": "a weak replacement-chart structure: the water star has "
+          "climbed onto the sitting (wealth undermined) while the mountain star is "
+          "exiled off-axis entirely — neither wealth nor people receive support",
+    "旺星出宮": "a weak replacement-chart structure: BOTH prosperity stars are exiled "
+          "off-axis (neither at the facing nor the sitting) — the house frame supports "
+          "neither wealth nor people; in-room compensations matter more than usual",
 }
 
 

@@ -87,16 +87,32 @@ def natal_chart(period: int, facing_mountain: str, use_tigua: bool = False) -> d
 
     palaces = {p: {"base": base[p], "mountain": mstars[p], "water": wstars[p]}
                for p in FLIGHT_ORDER}
-    wang_shan = palaces[sit_palace]["mountain"] == period
-    wang_xiang = palaces[face_palace]["water"] == period
-    # 雙星 refinements: both period-stars gathered at one palace
-    shuang_xiang = (palaces[face_palace]["mountain"] == period and wang_xiang)
-    shuang_zuo = (wang_shan and palaces[sit_palace]["water"] == period)
-    structure = ("旺山旺向" if wang_shan and wang_xiang else
-                 "雙星到向" if shuang_xiang else
-                 "雙星到坐" if shuang_zuo else
-                 "上山下水" if not wang_shan and not wang_xiang else
-                 "旺山" if wang_shan else "旺向")
+    # full classical taxonomy: each wang star is at the sitting, at the facing,
+    # or exiled off-axis (出宮 — only possible under 替卦 replacement charts).
+    # 上山下水 strictly requires the INVERSION (山星下水 AND 向星上山); the old
+    # fallthrough mislabelled off-axis charts as 上山下水 (validation E2/W1).
+    wang_shan = palaces[sit_palace]["mountain"] == period      # 山星到坐 旺山
+    wang_xiang = palaces[face_palace]["water"] == period       # 向星到向 旺向
+    shan_xiashui = palaces[face_palace]["mountain"] == period  # 山星下水
+    xiang_shangshan = palaces[sit_palace]["water"] == period   # 向星上山
+    if wang_shan and wang_xiang:
+        structure = "旺山旺向"
+    elif shan_xiashui and wang_xiang:
+        structure = "雙星到向"
+    elif wang_shan and xiang_shangshan:
+        structure = "雙星到坐"
+    elif shan_xiashui and xiang_shangshan:
+        structure = "上山下水"
+    elif wang_shan:
+        structure = "旺山"                       # 向星出宮
+    elif wang_xiang:
+        structure = "旺向"                       # 山星出宮
+    elif shan_xiashui:
+        structure = "山星下水·向星出宮"
+    elif xiang_shangshan:
+        structure = "向星上山·山星出宮"
+    else:
+        structure = "旺星出宮"
     kind = "替卦" if use_tigua else "下卦"
     return {"period": period, "facing": facing_mountain, "sitting": sitting,
             "facing_palace": face_palace, "sitting_palace": sit_palace,
