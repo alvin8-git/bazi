@@ -27,6 +27,8 @@ from .join import score_direction
 ROOT = Path(__file__).resolve().parent.parent
 DIR = lambda p: PALACES[p]["dir"] if p in PALACES else "C"
 
+# Candidate set 2026-09-17: TowerA (old home) and TowerB (sold to another
+# buyer) removed; the three live candidates compare against each other.
 HOMES = [
     ("TowerA", "Tower A #01-01 · sample home", "data/house.json", "data/rooms.json"),
 ]
