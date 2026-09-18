@@ -74,3 +74,38 @@ if __name__ == "__main__":  # self-check against independently verified almanac 
     assert sitting_branches(0.0) == ["午"]             # N facing → 離 sitting
     assert sitting_branches(315.0) == ["辰", "巳"]     # corner palace → two
     print(f"jianchu self-check ok — {len(got)} candidate days")
+
+
+# ---- entry-hour selection (blindspot audit 2026-09-18: C13) ----
+
+SANHE = ({"申", "子", "辰"}, {"亥", "卯", "未"}, {"寅", "午", "戌"}, {"巳", "酉", "丑"})
+LIUHE = {"子": "丑", "丑": "子", "寅": "亥", "亥": "寅", "卯": "戌", "戌": "卯",
+         "辰": "酉", "酉": "辰", "巳": "申", "申": "巳", "午": "未", "未": "午"}
+HOUR_RANGE = {z: f"{(23 + 2 * i) % 24:02d}:00–{(1 + 2 * i) % 24:02d}:00"
+              for i, z in enumerate(ZHI)}
+
+
+def entry_hours(day_branch: str, occupant_branches: list[str],
+                facing_deg: float) -> list[dict]:
+    """Auspicious 入宅 hour branches for a chosen day, best-first. Applies the
+    SAME filters as the day layer (the old blanket 巳時 advice violated them):
+    drop hours that 沖 any occupant year branch, 沖 the day branch (日時相沖),
+    or sit 值/沖 on the sitting palace's branches. Rank: 三合 with the day
+    branch, then 六合, then neutral. Daytime hours preferred for a move."""
+    sit = sitting_branches(facing_deg)
+    avoid = {CHONG[b] for b in occupant_branches} | {CHONG[day_branch]}
+    avoid |= set(sit) | {CHONG[s] for s in sit}
+    out = []
+    for z in ZHI:
+        if z in avoid:
+            continue
+        if z != day_branch and any({day_branch, z} <= s for s in SANHE):
+            rank, why = 0, f"三合 with day {day_branch}"
+        elif LIUHE[day_branch] == z:
+            rank, why = 1, f"六合 with day {day_branch}"
+        else:
+            rank, why = 2, "clear"
+        daytime = z in "辰巳午未申"          # 07:00–17:00 band
+        out.append({"branch": z, "range": HOUR_RANGE[z], "why": why,
+                    "rank": rank, "daytime": daytime})
+    return sorted(out, key=lambda h: (h["rank"], not h["daytime"]))

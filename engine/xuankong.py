@@ -207,3 +207,83 @@ def star_element(star: int) -> str:
 
 def palace_direction(palace: str) -> str:
     return "C" if palace == "中" else PALACES[palace]["dir"]
+
+
+# ---- classical cross-checks (blindspot audit 2026-09-18: C1, C5, F10) ----
+
+_SANBAN = ({1, 4, 7}, {2, 5, 8}, {3, 6, 9})
+_YUAN_NAME = {0: "地元", 1: "天元", 2: "人元"}
+_PALACE_RING = ["坎", "艮", "震", "巽", "離", "坤", "兌", "乾"]  # clockwise
+_SHENGCHENG = ({1, 6}, {2, 7}, {3, 8}, {4, 9})
+
+
+def jian_class(facing_deg: float) -> dict:
+    """Two-axis 兼向 classification (audit C1): degree offset AND whether the
+    兼 stays inside the facing mountain's own trigram (同卦相兼) or crosses out
+    (出卦兼). Lineages that reserve 替卦 for 出卦兼 chart a 同卦 兼向 as 下卦;
+    the engine's uniform ±3° rule is one lineage's election — this function
+    exposes the other axis so verdicts can disclose both readings."""
+    info = boundary_info(facing_deg)
+    m, nb = info["mountain"], info["neighbor"]
+    same_gua = mountain_palace(m) == mountain_palace(nb)
+    pair = f'{_YUAN_NAME[mountain_yuan(m)]}兼{_YUAN_NAME[mountain_yuan(nb)]}'
+    return {**info, "same_gua": same_gua,
+            "jian_kind": ("同卦相兼" if same_gua else "出卦兼"),
+            "yuan_pair": pair,
+            "note": (f"{m}兼{nb} = {pair} "
+                     + ("within one trigram — 沈氏/無常派 practice charts this "
+                        "下卦; the ±3° 替卦 rule is the stricter election"
+                        if same_gua else
+                        "ACROSS the trigram boundary — a true 出卦, the worst "
+                        "class of 兼; many lineages disqualify rather than 用替"))}
+
+
+def classical_checks(chart: dict) -> dict:
+    """合十 / 父母三般卦 / 全盤伏吟·反吟 screens (audit C5). 伏吟/反吟 are
+    tested against the 元旦盤 (Luoshu resident numbers): full-盤 伏吟 when a
+    star chart reproduces the Luoshu, 反吟 when it mirrors it (sum 10)."""
+    pal = chart["palaces"]
+    luoshu = {p: PALACES[p]["num"] for p in FLIGHT_ORDER if p != "中"}
+    luoshu["中"] = 5
+    def _all(f):
+        return all(f(p) for p in FLIGHT_ORDER)
+    heshi_shan = _all(lambda p: pal[p]["base"] + pal[p]["mountain"] == 10)
+    heshi_xiang = _all(lambda p: pal[p]["base"] + pal[p]["water"] == 10)
+    sanban = _all(lambda p: any(
+        {pal[p]["base"], pal[p]["mountain"], pal[p]["water"]} <= s
+        for s in _SANBAN))
+    out = {"合十": ("山盤合十" if heshi_shan else "向盤合十" if heshi_xiang
+                    else None),
+           "父母三般卦": sanban}
+    for key, star in (("山", "mountain"), ("向", "water")):
+        fuyin = _all(lambda p: pal[p][star] == luoshu[p])
+        fanyin = _all(lambda p: pal[p][star] + luoshu[p] == 10)
+        out[f"{key}盤伏吟"] = fuyin
+        out[f"{key}盤反吟"] = fanyin
+    out["clean"] = not any((out["山盤伏吟"], out["山盤反吟"],
+                            out["向盤伏吟"], out["向盤反吟"]))
+    return out
+
+
+def chengmen(period: int, facing_mountain: str) -> list[dict]:
+    """城門訣 (沈氏 method, audit C5/F10): the two palaces flanking the facing
+    palace are gate candidates. A gate WORKS when the 運盤 star resident there,
+    flown from the centre with the yin/yang of its own trigram's 天元 mountain,
+    returns the current period star to that palace. 五黃 cannot open a gate.
+    正城門 = the flank in 生成 pair with the facing palace's Luoshu number."""
+    face_pal = mountain_palace(facing_mountain)
+    i = _PALACE_RING.index(face_pal)
+    base = base_chart(period)
+    out = []
+    for flank in (_PALACE_RING[(i - 1) % 8], _PALACE_RING[(i + 1) % 8]):
+        b = base[flank]
+        if b == 5:
+            out.append({"palace": flank, "valid": False, "why": "運盤五黃無門"})
+            continue
+        yang = MOUNTAINS[NUM_TO_PALACE[b]][1][1]        # 天元龍 polarity
+        arrived = _fly(b, forward=yang)[flank]
+        pair = {PALACES[face_pal]["num"], PALACES[flank]["num"]}
+        rank = "正城門" if any(pair == s for s in _SHENGCHENG) else "副城門"
+        out.append({"palace": flank, "valid": arrived == period, "rank": rank,
+                    "why": f"運盤{b} {'順' if yang else '逆'}飛 → {arrived}"})
+    return out

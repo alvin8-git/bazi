@@ -574,6 +574,20 @@ def _chart_block(ch: dict, rooms: list[dict], annual: dict,
                  for p, v in ch["palaces"].items()}
     # geomancer's read: what the structure/door/wealth-spots SIGNIFY
     notes = []
+    # trace sanity: a bedroom resolving to the centre palace almost always
+    # means the drawn geometry is distorted (balconies traced as rooms pulling
+    # the centroid, or untraced service rooms) — warn before any reading
+    mid_beds = [r["label"] for r in rooms
+                if r.get("sleeping") and r["palace_pie"] == "中"]
+    if mid_beds:
+        notes.append(
+            f"⚠ Trace check — {', '.join(mid_beds)} resolves to the CENTRE "
+            "中宮 (no direction, no 八宅 star). A bedroom swallowed by the "
+            "centre almost always means the trace is distorted: balconies or "
+            "planters drawn as rooms pull the house centroid, or enclosed "
+            "service rooms (yard, WC, lobby) were left untraced. Remove "
+            "balcony rooms, trace every enclosed room, and re-run — palace "
+            "assignments may shift.")
     st_note = STRUCTURE_TEXT.get(ch["structure"])
     if st_note:
         notes.append(f'{ch["structure"]} — {st_note}.')
