@@ -19,7 +19,8 @@ const T2S_PAIRS =
   "幫帮論论據据見见訣诀經经續续變变讓让選选適适頭头帶带極极過过還还沒没內内發发間间問问" +
   "題题響响環环風风師师傳传統统現现綜综標标準准側侧測测記记計计認认證证誤误說说詳详註注" +
   "釋释義义儀仪" +
-  "斷断壞坏謹谨聽听觀观際际團团隊队條条確确實实稱称雜杂濕湿燥燥窮穷寶宝鑑鉴";
+  "斷断壞坏謹谨聽听觀观際际團团隊队條条確确實实稱称雜杂濕湿燥燥窮穷寶宝鑑鉴長长" +
+  "戀恋貴贵將将華华業业馬马驛驿號号蓋盖脈脉穩稳";
 const T2S = {};
 for (let i = 0; i < T2S_PAIRS.length; i += 2) T2S[T2S_PAIRS[i]] = T2S_PAIRS[i + 1];
 const toSimp = (s) => [...String(s)].map((c) => T2S[c] || c).join("");
@@ -969,17 +970,20 @@ function charCard(c, name) {
     <div class="cstats">
       ${tile("用神 medicine", fav.map((e) => elb(e)).join(" ") + ` <small>${cols}</small>`,
         "", "p5|用神")}
-      ${tile("dominant god", `${domG} <small>${domP}% ${(c.tengods_legend[domG] || {}).en || ""}</small>`,
+      ${tile("主导 dominant god", `${dn(domG)} <small>${domP}% ${(c.tengods_legend[domG] || {}).en || TG_EN_FALLBACK[domG] || ""}</small>`,
         `<i style="width:${Math.min(100, domP * 3)}%;background:${EL_COL[godEl(c.day_master, domG)]}"></i>`, "p3|十神")}
-      ${tile("missing gods", missing.length
-        ? `<span style="font-size:12.5px">${missing.join("·")}</span>` : "none — all ten present",
+      ${tile("缺失 missing gods", missing.length
+        ? `<span style="font-size:11.5px">${missing.map((g) =>
+            `${dn(g)}<small> ${TG_EN_FALLBACK[g]}</small>`).join(" · ")}</span>`
+        : "无 none — all ten present",
         "", "p3|十神")}
-      ${best ? tile(`best · ${best.zh}`, `${best.score}<small>/100 ${best.en}</small>`,
+      ${best ? tile(`${best.zh} · best`, `${best.score}<small>/100 ${best.en}</small>`,
         `<i style="width:${best.score}%;background:#1e8e3e"></i>`, "p4|人生领域") : ""}
-      ${worst && worst !== best ? tile(`support · ${worst.zh}`, `${worst.score}<small>/100 ${worst.en}</small>`,
+      ${worst && worst !== best ? tile(`${worst.zh} · support`, `${worst.score}<small>/100 ${worst.en}</small>`,
         `<i style="width:${worst.score}%;background:#b8860b"></i>`, "p4|人生领域") : ""}
-      ${tile("decade now", `<span style="font-size:13px">${luck.gz || dec.gz || "—"}
-        <small>${luck.ages || dec.ages || ""}${decPhase ? " · " + decPhase : ""}</small></span>`,
+      ${tile("大运 decade now", `<span style="font-size:13px">${luck.gz || dec.gz || "—"}
+        <small>${luck.ages || dec.ages || ""}${decPhase
+          ? " · " + dn(decPhase) + (dec.phase ? " " + dec.phase : "") : ""}</small></span>`,
         `<i style="width:40%;background:${phaseCol}"></i>`, "p4|时运")}
     </div></div>`;
 }
@@ -1383,17 +1387,17 @@ async function renderPerson(name) {
           return p && [p.stem_god, ...p.hidden].some((gd) => groups.includes(tgCanon(gd)));
         });
         const rows = [
-          ["Career & authority 事業", "正官·七殺", g("正官", "七殺", "七杀"),
+          ["事业 Career & authority", "正官·七殺", g("正官", "七殺", "七杀"),
             ["month"], ["正官", "七殺"], "Month 月柱"],
-          ["Wealth & assets 財富", "正財·偏財", g("正財", "正财", "偏財", "偏财"),
+          ["财富 Wealth & assets", "正財·偏財", g("正財", "正财", "偏財", "偏财"),
             ["month", "day"], ["正財", "偏財"], "Month · Day"],
-          ["Education & reputation 學業", "正印·偏印", g("正印", "偏印"),
+          ["学业 Education & reputation", "正印·偏印", g("正印", "偏印"),
             ["year", "month"], ["正印", "偏印"], "Year · Month"],
-          ["Talent & enterprise 才華", "食神·傷官", g("食神", "傷官", "伤官"),
+          ["才华 Talent & enterprise", "食神·傷官", g("食神", "傷官", "伤官"),
             ["hour"], ["食神", "傷官"], "Hour 時柱"],
-          ["Network & competition 人脈", "比肩·劫財", g("比肩", "劫財", "劫财"),
+          ["人脉 Network & competition", "比肩·劫財", g("比肩", "劫財", "劫财"),
             ["year", "month"], ["比肩", "劫財"], "Year · Month"],
-          ["Marriage & romance 婚戀",
+          ["婚恋 Marriage & romance",
             c.sex === "M" ? "正財·偏財 (spouse star)" : "正官·七殺 (spouse star)",
             c.sex === "M" ? g("正財", "正财", "偏財", "偏财") : g("正官", "七殺", "七杀"),
             ["day"], c.sex === "M" ? ["正財", "偏財"] : ["正官", "七殺"], "Day branch 日支"],
@@ -1425,13 +1429,23 @@ async function renderPerson(name) {
         ${c.spouse_reading.years.length ? `<div class="cite"><b>Activation years:</b><br>
           ${c.spouse_reading.years.map((y) => dnAll(y)).join("<br>")}</div>` : ""}
         <div class="cite" style="color:var(--muted)">${c.spouse_reading.source_ref}</div>` : ""}
-      <div class="domain-grid">${c.domains.map((d) => `
-        <div class="dcard"><div class="dscore ${d.score >= 70 ? "good" : d.score < 45 ? "bad" : ""}">${d.score}</div>
-          <b>${d.en}</b> <div class="sub">${d.zh} · ${d.band}</div>
-          <div style="margin-top:5px">${d.evidence.map((e) =>
-            `<span class="tag ${e.delta < 0 ? "warn" : ""}">${e.label} ${e.delta > 0 ? "+" : ""}${e.delta}</span>`).join(" ")}</div>
-        </div>`).join("")}
-      </div>${stb(8)}${narr(8)}${lg(8)}</div>
+      ${(() => {
+        const doms = c.domains.slice().sort((a, b) => b.score - a.score);
+        const chip = (e) => `<span class="tag ${e.delta < 0 ? "warn" : ""}">${e.label} ${e.delta > 0 ? "+" : ""}${e.delta}</span>`;
+        const top2 = (d) => d.evidence.slice()
+          .sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta)).slice(0, 2);
+        return `<div class="domrows">${doms.map((d) => `
+          <div class="domrow">
+            <div class="dlab"><b>${d.zh}</b><span class="sub">${d.en}</span></div>
+            <div class="dbar"><i class="${d.score >= 70 ? "good" : d.score < 45 ? "bad" : ""}"
+              style="width:${d.score}%"></i></div>
+            <b class="dnum ${d.score >= 70 ? "b-good" : d.score < 45 ? "b-weak" : ""}">${d.score}</b>
+            <div class="dchips">${top2(d).map(chip).join(" ")}</div>
+          </div>`).join("")}</div>` +
+          deepWrap("全部证据 all evidence — every rule that moved each score", doms.map((d) =>
+            `<div class="cite"><b>${d.zh} ${d.en}</b> · ${d.band} —
+              ${d.evidence.map(chip).join(" ")}</div>`).join(""));
+      })()}${stb(8)}${narr(8)}${lg(8)}</div>
     <div class="section"><h3>方位与用神 Directions &amp; medicine <span class="tag">${c.gua}命 · ${c.group}</span></h3>
       <div class="cite" style="margin:0 0 6px">Your personal trigram splits the compass
         into four lucky (green) and four unlucky (red) directions — a different map for
