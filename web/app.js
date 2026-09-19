@@ -20,7 +20,7 @@ const T2S_PAIRS =
   "題题響响環环風风師师傳传統统現现綜综標标準准側侧測测記记計计認认證证誤误說说詳详註注" +
   "釋释義义儀仪" +
   "斷断壞坏謹谨聽听觀观際际團团隊队條条確确實实稱称雜杂濕湿燥燥窮穷寶宝鑑鉴長长" +
-  "戀恋貴贵將将華华業业馬马驛驿號号蓋盖脈脉穩稳";
+  "戀恋貴贵將将華华業业馬马驛驿號号蓋盖脈脉穩稳雞鸡豬猪";
 const T2S = {};
 for (let i = 0; i < T2S_PAIRS.length; i += 2) T2S[T2S_PAIRS[i]] = T2S_PAIRS[i + 1];
 const toSimp = (s) => [...String(s)].map((c) => T2S[c] || c).join("");
@@ -945,9 +945,14 @@ const learnLink = (k) => { const t = LEARN_OF[k];
 const deepWrap = (label, inner) => inner
   ? `<details class="deep"><summary>${label}</summary><div class="deepbody">${inner}</div></details>` : "";
 
+const ZODIAC = { 鼠: ["🐭", "Rat"], 牛: ["🐮", "Ox"], 虎: ["🐯", "Tiger"], 兔: ["🐰", "Rabbit"],
+  龙: ["🐲", "Dragon"], 蛇: ["🐍", "Snake"], 马: ["🐴", "Horse"], 羊: ["🐑", "Goat"],
+  猴: ["🐵", "Monkey"], 鸡: ["🐔", "Rooster"], 狗: ["🐶", "Dog"], 猪: ["🐷", "Pig"],
+  龍: ["🐲", "Dragon"], 馬: ["🐴", "Horse"], 雞: ["🐔", "Rooster"], 豬: ["🐷", "Pig"] };
+const EL_EN = { 木: "Wood", 火: "Fire", 土: "Earth", 金: "Metal", 水: "Water" };
+
 function charCard(c, name) {
-  const doms = (c.domains || []).slice().sort((a, b) => b.score - a.score);
-  const best = doms[0], worst = doms[doms.length - 1];
+  const doms6 = c.domains || [];        // payload order — comparable across people
   const missing = ALLGODS.filter((g) => !(g in c.tengods_pct));
   const [domG, domP] = Object.entries(c.tengods_pct).sort((a, b) => b[1] - a[1])[0] || ["—", 0];
   const dec = ((c.windows || {}).decades || []).find((d) => d.current) || {};
@@ -962,29 +967,36 @@ function charCard(c, name) {
   const fav = c.yongshen.favourable;
   return `<div class="charcard elth-${fav[0] || ""}${fav[1] ? " elth2-" + fav[1] : ""}"
       data-elem="${fav.join("")}">
-    <div class="who"><div class="gua"><b>${c.gua}</b><span>${(c.group || "").split(" ")[0]}</span></div>
-      <div><h2>${dn(name || c.name)}</h2><div class="csub">
-        <span class="dmchip" style="color:${EL_COL[STEM_EL[c.day_master]]}">${c.day_master} ${ELEMENT_ZH_OF_STEM(c.day_master)}</span>
-        ${c.strength.verdict} <b>${c.strength.score}</b>
-        ${c.life_palaces ? ` · 生肖 ${c.life_palaces.animal} · 命宮 ${c.life_palaces.ming_gong}` : ""}</div></div></div>
+    <div class="who"><div class="gua"><b>${c.gua}</b><span>${(c.group || "").replace(/[()]/g, "")}</span></div>
+      <div><h2>${dn(name || c.name)}${c.life_palaces && ZODIAC[c.life_palaces.animal]
+          ? ` <span class="zodemoji">${ZODIAC[c.life_palaces.animal][0]}</span>` : ""}</h2>
+        <div class="csub"><div class="csub1">
+          <span class="dmchip" style="color:${EL_COL[STEM_EL[c.day_master]]}">${c.day_master} ${ELEMENT_ZH_OF_STEM(c.day_master)} ${EL_EN[STEM_EL[c.day_master]] || ""}</span>
+          ${c.strength.verdict} <b>${c.strength.score}</b></div>
+        ${c.life_palaces ? (() => { const a = c.life_palaces.animal, z = ZODIAC[a] || ["", ""];
+          return `<div class="csub2">生肖 ${a} ${z[1]} · 命宮 ${c.life_palaces.ming_gong} life palace</div>`; })() : ""}</div></div></div>
     <div class="cstats">
       ${tile("用神 medicine", fav.map((e) => elb(e)).join(" ") + ` <small>${cols}</small>`,
         "", "p5|用神")}
-      ${tile("主导 dominant god", `${dn(domG)} <small>${domP}% ${(c.tengods_legend[domG] || {}).en || TG_EN_FALLBACK[domG] || ""}</small>`,
+      ${tile("主导 dominant god", `${dn(domG)} <small><b class="pctpop">${domP}%</b> ${(c.tengods_legend[domG] || {}).en || TG_EN_FALLBACK[domG] || ""}</small>`,
         `<i style="width:${Math.min(100, domP * 3)}%;background:${EL_COL[godEl(c.day_master, domG)]}"></i>`, "p3|十神")}
       ${tile("缺失 missing gods", missing.length
         ? `<span style="font-size:11.5px">${missing.map((g) =>
             `${dn(g)}<small> ${TG_EN_FALLBACK[g]}</small>`).join(" · ")}</span>`
         : "无 none — all ten present",
         "", "p3|十神")}
-      ${best ? tile(`${best.zh} · best`, `${best.score}<small>/100 ${best.en}</small>`,
-        `<i style="width:${best.score}%;background:#1e8e3e"></i>`, "p4|人生领域") : ""}
-      ${worst && worst !== best ? tile(`${worst.zh} · support`, `${worst.score}<small>/100 ${worst.en}</small>`,
-        `<i style="width:${worst.score}%;background:#b8860b"></i>`, "p4|人生领域") : ""}
       ${tile("大运 decade now", `<span style="font-size:13px">${luck.gz || dec.gz || "—"}
         <small>${luck.ages || dec.ages || ""}${decPhase
           ? " · " + dn(decPhase) + (dec.phase ? " " + dec.phase : "") : ""}</small></span>`,
         `<i style="width:40%;background:${phaseCol}"></i>`, "p4|时运")}
+      ${doms6.length ? `<div class="cstat go dom6" data-go="p4|人生领域" role="button" tabindex="0">
+        <div class="l">人生领域 life domains <span class="chev">›</span></div>
+        <div class="dgrid6">${doms6.map((d) => `<div class="dm">
+          <div class="t"><span class="dz">${d.zh}</span>
+            <b class="ds ${d.score >= 70 ? "hi" : d.score < 45 ? "lo" : ""}">${d.score}</b></div>
+          <div class="de">${d.en}</div>
+          <div class="dbarm"><i class="${d.score >= 70 ? "good" : d.score < 45 ? "bad" : ""}"
+            style="width:${d.score}%"></i></div></div>`).join("")}</div></div>` : ""}
     </div></div>`;
 }
 

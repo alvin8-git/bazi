@@ -67,6 +67,7 @@ button:disabled{opacity:.5;cursor:default}
 .doms{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
 .doms span{background:#f3efe7;border:1px solid var(--line);border-radius:6px;
   padding:1px 6px;font-size:11.5px}
+.doms .den{font-size:9.5px;color:var(--muted)}
 .pcard .acts{margin-top:8px;display:flex;gap:8px}
 .pcard a{color:var(--accent);font-size:13px}
 .pcard .del{color:#999;font-size:12px;cursor:pointer;background:none;border:none;padding:0}
@@ -172,8 +173,16 @@ async function api(path, opts) {
 const elb = e => `<span class="elb el-${e}">${e}</span>`;
 const elbs = a => (a || []).map(elb).join("");
 
+const ZODIAC = { 鼠: ["🐭", "Rat"], 牛: ["🐮", "Ox"], 虎: ["🐯", "Tiger"], 兔: ["🐰", "Rabbit"],
+  龙: ["🐲", "Dragon"], 蛇: ["🐍", "Snake"], 马: ["🐴", "Horse"], 羊: ["🐑", "Goat"],
+  猴: ["🐵", "Monkey"], 鸡: ["🐔", "Rooster"], 狗: ["🐶", "Dog"], 猪: ["🐷", "Pig"],
+  龍: ["🐲", "Dragon"], 馬: ["🐴", "Horse"], 雞: ["🐔", "Rooster"], 豬: ["🐷", "Pig"] };
+
 function personCard(p, i) {
-  const doms = Object.entries(p.domains).map(([k, v]) => `<span>${k} ${v}</span>`).join("");
+  const doms = (p.domains || []).map((d) => Array.isArray(d)
+    ? `<span>${d[0]} <span class="den">${d[1]}</span> <b>${d[2]}</b></span>`
+    : "").join("");
+  const z = ZODIAC[p.animal] || ["", ""];
   const tk = p.time_known === false
     ? ' <span class="badge">hour approximate</span>' : "";
   return `<div class="pcard elth-${(p.favourable || [])[0] || ""}${(p.favourable || [])[1]
@@ -184,12 +193,13 @@ function personCard(p, i) {
         <button class="ic del" data-i="${i}" title="remove">🗑</button>
       </span></h3>
     <div>${["year","month","day","hour"].map(k => `<span class="pz">${p.pillars[k]}</span>`).join("")}</div>
-    <div class="kv"><b class="cat">日主</b> <b>${p.day_master}</b> ·
-      <b class="cat">强弱</b> ${p.strength} · <b class="cat">生肖</b> ${p.animal}</div>
-    <div class="kv"><b class="cat">命卦</b> ${p.gua} (${p.group}) ·
-      <b class="cat">命星</b> ${p.life_star}</div>
-    <div class="kv"><b class="cat">用神</b> ${elbs(p.favourable)} &nbsp;
-      <b class="cat">avoid</b> ${elbs(p.unfavourable)}</div>
+    <div class="kv"><b class="cat">日主 day master</b> <b>${p.day_master}</b> ·
+      <b class="cat">强弱 strength</b> ${p.strength} ·
+      <b class="cat">生肖 zodiac</b> ${z[0]} ${p.animal} ${z[1]}</div>
+    <div class="kv"><b class="cat">命卦 life gua</b> ${p.gua} ${(p.group || "").replace(/[()]/g, "")} ·
+      <b class="cat">命星 life star</b> ${p.life_star}</div>
+    <div class="kv"><b class="cat">用神 medicine</b> ${elbs(p.favourable)} &nbsp;
+      <b class="cat">避 avoid</b> ${elbs(p.unfavourable)}</div>
     <div class="kv"><b class="cat">career fit</b> ${p.top_careers.join(" · ")}</div>
     <div class="doms">${doms}</div>
     <div class="kv" style="margin-top:7px;color:var(--accent);font-weight:700">Open the full Reading 命书 →</div>

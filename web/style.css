@@ -367,21 +367,41 @@ button.small { font-size: 12px; padding: 3px 10px; }
 .charcard{background:linear-gradient(160deg,#fffdf7,#f7f2e6);border:1px solid var(--line);
  border-radius:16px;padding:14px 14px 12px;margin:10px 0;box-shadow:0 1px 6px rgba(60,50,20,.07)}
 .charcard .who{display:flex;align-items:center;gap:12px}
-.charcard .gua{width:54px;height:54px;border-radius:14px;background:#2e4a2f;color:#fff;display:flex;
+.charcard .gua{width:58px;height:58px;border-radius:14px;background:#2e4a2f;color:#fff;display:flex;
  flex-direction:column;align-items:center;justify-content:center;font-weight:800;flex:none}
-.charcard .gua b{font-size:24px;line-height:1}.charcard .gua span{font-size:9.5px;font-weight:600;opacity:.85}
-.charcard .who h2{margin:0;font-size:18px;border:0;padding:0}
-.charcard .who .csub{font-size:12px;color:var(--muted)}
+.charcard .gua b{font-size:24px;line-height:1}
+.charcard .gua span{font-size:9px;font-weight:600;opacity:.85;letter-spacing:-.01em}
+.charcard .who h2{margin:0;font-size:21px;letter-spacing:-.01em;border:0;padding:0}
+.charcard .who h2 .zodemoji{font-size:15px;vertical-align:-1px;margin-left:3px}
+.charcard .who .csub{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:2px}
+.charcard .who .csub2{font-size:11px;opacity:.9}
 .charcard .dmchip{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:8px;
  padding:1px 8px;font-weight:700}
 .cstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 @media(max-width:520px){.cstats{grid-template-columns:repeat(2,1fr)}}
-.cstat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:7px 9px 6px}
+.cstat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:7px 9px 6px;
+ display:flex;flex-direction:column;justify-content:space-between}
 .cstat .l{font-size:10.5px;color:var(--muted);letter-spacing:.02em}
+.cstat .chev{color:var(--accent);font-weight:900;font-size:14px}
 .cstat .v{font-size:15px;font-weight:800;margin-top:1px}
 .cstat .v small{font-size:10.5px;font-weight:600;color:var(--muted)}
-.cstat .cbar{height:4px;border-radius:2px;background:rgba(0,0,0,.07);margin-top:5px;overflow:hidden}
-.cstat .cbar i{display:block;height:100%;border-radius:2px}
+.cstat .v .pctpop{font-weight:800;font-size:11.5px}
+.cstat .cbar{height:5px;border-radius:2.5px;background:rgba(0,0,0,.07);margin-top:auto;overflow:hidden}
+.cstat .cbar:empty{display:none}
+.cstat .cbar i{display:block;height:100%;border-radius:2.5px}
+.cstat.dom6{grid-column:1/-1}
+.dgrid6{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 14px;margin-top:4px}
+@media(max-width:430px){.dgrid6{grid-template-columns:repeat(2,1fr)}}
+.dgrid6 .dm{min-width:0}
+.dgrid6 .t{display:flex;justify-content:space-between;align-items:baseline}
+.dgrid6 .dz{font-size:11.5px;font-weight:600}
+.dgrid6 .ds{font-size:13.5px;font-weight:800}
+.dgrid6 .ds.hi{color:var(--good)}.dgrid6 .ds.lo{color:var(--bad)}
+.dgrid6 .de{font-size:10px;color:var(--muted);line-height:1.15;margin:1px 0 3px;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dgrid6 .dbarm{height:5px;border-radius:3px;background:rgba(0,0,0,.08);overflow:hidden}
+.dgrid6 .dbarm i{display:block;height:100%;border-radius:3px;background:var(--gold)}
+.dgrid6 .dbarm i.good{background:var(--good)}.dgrid6 .dbarm i.bad{background:var(--bad)}
 .ptabs{position:sticky;top:0;z-index:6;display:flex;background:var(--card);
  border-bottom:2px solid var(--line);margin:8px 0 4px}
 .ptabs button{flex:1;padding:11px 2px 9px;border:0;background:none;font-size:12.5px;font-weight:700;

@@ -181,17 +181,17 @@ def _summary(p: dict) -> dict:
     m, c = _chart_of(p)
     ys = yong_shen(c)
     lp = life_palaces(c)
-    doms = {d["key"]: d["score"] for d in life_domains(c, ys)}
+    doms = [[_tosimp(d["zh"]), d["en"], d["score"]] for d in life_domains(c, ys)]
     return {
         "name": _tosimp(m.name), "sex": m.sex, "dob": p["dob"],
         "birth_time": p.get("birth_time", "12:00"),
         "time_known": p.get("time_known", True),
         "pillars": {k: str(v) for k, v in c.pillars.items()},
         "day_master": c.day_master,
-        "strength": c.strength["verdict"],
+        "strength": _tosimp(c.strength["verdict"]),
         "gua": ming_gua(c.lichun_year, c.sex),
-        "group": gua_group(ming_gua(c.lichun_year, c.sex)),
-        "life_star": lp["life_star_zh"], "animal": lp["animal"],
+        "group": _tosimp(gua_group(ming_gua(c.lichun_year, c.sex))),
+        "life_star": _tosimp(lp["life_star_zh"]), "animal": _tosimp(lp["animal"]),
         "favourable": ys["favourable"], "unfavourable": ys["unfavourable"],
         "top_careers": [a["en"] for a in career_paths(c, ys)["top"][:3]],
         "domains": doms,

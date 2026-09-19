@@ -26,7 +26,10 @@ def test_workspace_create_and_summary():
     p = d["people"][0]
     assert p["day_master"] and len(p["pillars"]) == 4
     assert p["favourable"] and p["top_careers"]
-    assert set(p["domains"]) >= {"career", "wealth", "health"}
+    # domains are bilingual triples [zh, en, score] for the roster card
+    assert len(p["domains"]) == 6
+    assert all(len(d) == 3 and isinstance(d[2], int) for d in p["domains"])
+    assert any("Career" in d[1] for d in p["domains"])
 
 
 def test_workspace_harmony_and_cap():
