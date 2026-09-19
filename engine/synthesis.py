@@ -108,7 +108,8 @@ def xiji_table(c, ys: dict, pct: dict) -> list[dict]:
     return rows
 
 
-def synthesis(c, ys: dict, pct: dict, insights: dict, windows: dict) -> list[str]:
+def synthesis(c, ys: dict, pct: dict, insights: dict, windows: dict,
+              tiaohou: dict | None = None) -> list[str]:
     """~6 sentences, one voice: diagnosis → mechanism → latency → arc → counsel
     → confidence. Returns a list of sentences (rendered as one paragraph)."""
     dm = c.day_master
@@ -164,11 +165,21 @@ def synthesis(c, ys: dict, pct: dict, insights: dict, windows: dict) -> list[str
     S.append(f"The medicine is {fav}: choose environments, colours, fields and "
              "sectors that carry it, and treat the abundant elements as weather "
              "to dress for, not fuel to add.")
-    # 6 · confidence
-    S.append("Confidence note: the verdict is the 扶抑 (support-the-weak) "
-             "method's; the 調候 climate school weighs the birth season "
-             "separately and can lean differently — where the two disagree, "
-             "satisfying both is the safe posture.")
+    # 6 · confidence — chart-specific when the 調候 table has this cell
+    if tiaohou and tiaohou.get("verdict"):
+        v = tiaohou["verdict"]
+        gods = "、".join(i["stem"] for i in tiaohou["gods"])
+        S.append(f"Confidence note: the verdict above is the 扶抑 method's; the "
+                 f"窮通寶鑑 調候 prescription for this month is {gods}, which "
+                 f"{v} with it"
+                 + ("." if v == "agrees" else
+                    " — satisfy the climate stems through use and the 扶抑 "
+                    "elements through support; both, not either."))
+    else:
+        S.append("Confidence note: the verdict is the 扶抑 (support-the-weak) "
+                 "method's; the 調候 climate school weighs the birth season "
+                 "separately and can lean differently — where the two disagree, "
+                 "satisfying both is the safe posture.")
     return S
 
 

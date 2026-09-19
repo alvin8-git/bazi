@@ -19,7 +19,7 @@ const T2S_PAIRS =
   "幫帮論论據据見见訣诀經经續续變变讓让選选適适頭头帶带極极過过還还沒没內内發发間间問问" +
   "題题響响環环風风師师傳传統统現现綜综標标準准側侧測测記记計计認认證证誤误說说詳详註注" +
   "釋释義义儀仪" +
-  "斷断壞坏謹谨聽听觀观際际團团隊队條条確确實实稱称雜杂濕湿燥燥";
+  "斷断壞坏謹谨聽听觀观際际團团隊队條条確确實实稱称雜杂濕湿燥燥窮穷寶宝鑑鉴";
 const T2S = {};
 for (let i = 0; i < T2S_PAIRS.length; i += 2) T2S[T2S_PAIRS[i]] = T2S_PAIRS[i + 1];
 const toSimp = (s) => [...String(s)].map((c) => T2S[c] || c).join("");
@@ -1465,6 +1465,8 @@ async function renderPerson(name) {
     </div>
     <div class="section"><h4>用神 the medicine, applied</h4>
       ${c.medicine_rank ? `<div class="cite"><b>${dnAll(c.medicine_rank)}</b></div>` : ""}
+      ${c.tiaohou && c.tiaohou.line ? `<div class="cite">${dnAll(c.tiaohou.line)}
+        <span class="tag">${dnAll(c.tiaohou.source_ref)}</span></div>` : ""}
       ${c.xiji ? `<table class="xiji">${c.xiji.map((r) => `<tr>
         <th>${r.band} <span class="sub">${dnAll(r.zh)}</span></th>
         <td>${r.elements.map((e) => elb(e)).join(" ")}</td>

@@ -37,6 +37,7 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
     from .shensha import (TEN_GOD_MEANING, life_palaces, natal_interactions,
                           pillar_extras, shensha, ten_god_pct)
     from .windows import timing_windows
+    from .tiaohou import tiaohou_reading
     from .synthesis import (geju_line, medicine_ranking, spouse_reading,
                             synthesis, xiji_table)
     from .bazi import TEN_GOD_EN
@@ -49,9 +50,11 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
     _insights = ten_god_insights(c, ys)
     _palaces = four_palaces(c, ys)
     _windows = timing_windows(c, ys, dayun_detail(c, year), year)
+    _tiaohou = tiaohou_reading(c, ys)
     return {"name": name, "sex": c.sex, **chart_json(c), "yongshen": ys,
-            "synthesis": synthesis(c, ys, _pct, _insights, _windows),
+            "synthesis": synthesis(c, ys, _pct, _insights, _windows, _tiaohou),
             "geju": geju_line(c),
+            "tiaohou": _tiaohou,
             "medicine_rank": medicine_ranking(c, ys),
             "xiji": xiji_table(c, ys, _pct),
             "spouse_reading": spouse_reading(c, ys, _pct, _palaces, _windows),
