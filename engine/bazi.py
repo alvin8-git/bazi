@@ -170,7 +170,10 @@ def analyze(chart: Chart) -> None:
         "steps": [
             {"step": 1, "name": "Season 得令", "value": season_state,
              "detail": f"month branch {p['month'].branch} is {ELEMENT_EN[month_el]}; "
-                       f"Day Master {dm} is {ELEMENT_EN[dm_el]} → {season_state}"},
+                       f"Day Master {dm} is {ELEMENT_EN[dm_el]} → {season_state} "
+                       "(branch-element reading; the seasonal-qi 旺相休囚死 school "
+                       "reads the month by its SEASON's element and can differ — "
+                       "e.g. early-辰月 metal is 囚 under the lingering 木令)"},
             {"step": 2, "name": "Support count", "value": round(support, 2),
              "detail": f"比劫 {ELEMENT_EN[dm_el]} {round(w[dm_el], 2)} + "
                        f"印 {ELEMENT_EN[SHENG_REV[dm_el]]} {round(w[SHENG_REV[dm_el]], 2)}"},

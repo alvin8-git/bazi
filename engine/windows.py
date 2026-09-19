@@ -21,6 +21,26 @@ from .liunian import year_element_read, year_ganzhi
 from .wuxing import (BRANCH_ELEMENT, CHONG_MAP, HE_MAP, HIDDEN_STEMS, KE,
                      SANHE, STEM_ELEMENT)
 
+# 合化 — the element a combination PRODUCES (audit 2026-09-19: a 合 that feeds an
+# unfavourable element is engagement, not blessing). 六合 per the standard table;
+# 三合(半合) by frame element.
+LIUHE_ELEMENT = {frozenset("子丑"): "土", frozenset("寅亥"): "木",
+                 frozenset("卯戌"): "火", frozenset("辰酉"): "金",
+                 frozenset("巳申"): "水", frozenset("午未"): "土"}
+TRINE_ELEMENT = {b: el for grp, el in SANHE for b in grp}
+LU_BRANCH = {"甲": "寅", "乙": "卯", "丙": "巳", "丁": "午", "戊": "巳",
+             "己": "午", "庚": "申", "辛": "酉", "壬": "亥", "癸": "子"}
+
+
+def _he_element(a: str, b: str) -> str | None:
+    """Element produced by the a-b combination (六合 first, else shared trine)."""
+    el = LIUHE_ELEMENT.get(frozenset((a, b)))
+    if el:
+        return el
+    if b in _TRINE.get(a, set()):
+        return TRINE_ELEMENT.get(a)
+    return None
+
 _TRINE = {b: set(grp) for grp, _ in SANHE for b in grp}
 _TAOHUA = {"申": "酉", "子": "酉", "辰": "酉", "寅": "卯", "午": "卯", "戌": "卯",
            "巳": "午", "酉": "午", "丑": "午", "亥": "子", "卯": "子", "未": "子"}
@@ -82,7 +102,12 @@ def _year_row(chart, ys, hm_excess, hm_weak, y, decade_score) -> dict:
     if CHONG_MAP.get(br) == month_br:
         career = dim("caution", f"年支{br} 沖 month pillar {month_br} — don't force career moves")
     elif HE_MAP.get(br) == month_br or (br in _TRINE.get(month_br, set()) and br != month_br):
-        career = dim("window", f"年支{br} 合 month pillar — career pillar activated, leverage window")
+        he_el = _he_element(br, month_br)
+        if he_el in unfav:
+            career = dim("caution", f"年支{br} 合 month pillar but 合化{he_el} feeds an "
+                                    "unfavourable element — engagement without tailwind, choose battles")
+        else:
+            career = dim("window", f"年支{br} 合 month pillar — career pillar activated, leverage window")
     elif gods & OFFICER_GODS:
         if gods & SUPPORT_GODS or not weak:
             career = dim("window", f"{'/'.join(gods & OFFICER_GODS)} arrives with support — authority spotlight")
@@ -97,18 +122,30 @@ def _year_row(chart, ys, hm_excess, hm_weak, y, decade_score) -> dict:
                                     "wealth passes through; strengthen first, don't overreach")
         else:
             wealth = dim("window", f"{'/'.join(gods & WEALTH_GODS)} arrives — income moves possible")
+    elif CHONG_MAP.get(br) == VAULT[wealth_el]:
+        wealth = dim("window", f"年支{br} 沖開財庫 {VAULT[wealth_el]} — the vault OPENS: "
+                               "a classical accumulation year")
     elif br == VAULT[wealth_el]:
-        wealth = dim("window", f"年支{br} opens the 財庫 wealth vault")
+        wealth = dim("quiet", f"年支{br} sits ON the sealed 財庫 (值庫, not the 沖 that "
+                              "opens it) — store, don't expect release")
     else:
         wealth = dim("quiet", "no wealth activation")
     # relationship — 桃花 and spouse palace
     th = _TAOHUA[chart.pillars["year"].branch]
-    if CHONG_MAP.get(br) == day_br:
+    if br == day_br:
+        rel = dim("caution", f"年支{br} 伏吟 the spouse palace {day_br} — the palace doubled: "
+                             "emotional intensification, avoid forcing relationship decisions")
+    elif CHONG_MAP.get(br) == day_br:
         rel = dim("caution", f"年支{br} 沖 spouse palace {day_br} — relationships need extra care")
     elif br == th:
         rel = dim("window", f"桃花 year ({br}) — social magnetism and relational openings")
     elif HE_MAP.get(br) == day_br or (br in _TRINE.get(day_br, set()) and br != day_br):
-        rel = dim("window", f"年支{br} 合 spouse palace — partnership supported")
+        he_el = _he_element(br, day_br)
+        if he_el in unfav:
+            rel = dim("caution", f"年支{br} 合 spouse palace but 合化{he_el} is unfavourable — "
+                                 "closeness with friction, communicate early")
+        else:
+            rel = dim("window", f"年支{br} 合 spouse palace — partnership supported")
     else:
         rel = dim("quiet", "no relationship activation")
     # health — feeds an excess or replenishes a weakness
@@ -123,8 +160,10 @@ def _year_row(chart, ys, hm_excess, hm_weak, y, decade_score) -> dict:
     # overall — climate (decade) × weather (year elements)
     elem = year_element_read(chart, ys["favourable"], y)["explanation"]
     yr_score = elem.count("favourable") - elem.count("unfavourable")
+    n_caution = sum(1 for d in (career, wealth, rel, health) if d["flag"] == "caution")
     overall, zh = (("peak", "峰值窗口") if decade_score > 0 and yr_score > 0 else
-                   ("careful", "謹慎年") if decade_score < 0 and yr_score < 0 else
+                   ("careful", "謹慎年") if (decade_score < 0 and yr_score < 0)
+                   or n_caution >= 2 else
                    ("steady", "平穩"))
     return {"y": y, "gz": st + br, "overall": overall, "overall_zh": zh,
             "career": career, "wealth": wealth, "relationship": rel,
@@ -147,7 +186,18 @@ def timing_windows(chart, ys: dict, dayun: list[dict], year_now: int) -> dict:
     th_type = ("牆內 within walls — stable affection" if {"year", "month"} & set(where)
                else "牆外 outside walls — variable attraction" if where
                else "not in the natal chart — activated only in 桃花 years")
-    return {"decades": decades, "years": years,
+    # life-arc headline: element runs + the 祿 decade (structural turning point)
+    dm = chart.day_master
+    lu = LU_BRANCH[dm]
+    lu_dec = next((d for d in decades if d["gz"][1] == lu), None)
+    def _dec_el(d):
+        return "/".join(sorted({STEM_ELEMENT[d["gz"][0]], BRANCH_ELEMENT[d["gz"][1]]}))
+    runs = " → ".join(f'{d["ages"]} {_dec_el(d)}' for d in decades[:4])
+    arc = (f"Element arc: {runs} …"
+           + (f' — 祿 ({lu}, the Day Master\'s own station) arrives in the {lu_dec["gz"]} '
+              f'decade (ages {lu_dec["ages"]}): the structural turning point where the chart '
+              "finally stands on its own element." if lu_dec else ""))
+    return {"decades": decades, "years": years, "arc": arc,
             "taohua": {"branch": th, "pillars": where, "type": th_type},
             "source_ref": "timing cross-layer — 大運/流年 × natal pillars × 用神 "
                           "(month pillar = career, 財星+財庫 = wealth, 日支+桃花 = "

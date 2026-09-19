@@ -74,7 +74,10 @@ def life_domains(chart, ys: dict) -> list[dict]:
 
     def add(key, zh, en, chips):
         chips = [c for c in chips if c]
-        score = max(5, min(95, 50 + sum(d for _, d in chips)))
+        raw = 50 + sum(d for _, d in chips)
+        score = max(5, min(95, raw))
+        if raw > 95:
+            chips = chips + [("capped at 95", 95 - raw)]
         band = ("prominent 强" if score >= 70 else
                 "balanced 中" if score >= 45 else "needs support 待补")
         signals.append({"key": key, "zh": zh, "en": en, "score": score, "band": band,
@@ -170,14 +173,20 @@ ELEMENT_INDUSTRIES = {
 
 def health_map(chart) -> list[dict]:
     """Per-element balance vs the TCM organ systems (weak ≤7%, excess ≥30%)."""
-    from .wuxing import ELEMENTS, ELEMENT_EN
+    from .wuxing import ELEMENTS, ELEMENT_EN, STEM_ELEMENT
     w = chart.element_weights
     total = sum(w.values()) or 1
     out = []
+    dm_el = STEM_ELEMENT[chart.day_master]
+    rootless = chart.strength.get("root_ratio", 100) == 0
     for e in ELEMENTS:
         share = w[e] / total
         status = ("excess 過旺" if share >= .30 else
-                  "weak 不足" if share <= .07 else "balanced")
+                  "weak 不足" if share <= .07 else
+                  # audit 2026-09-19: the Day Master's OWN element, thin and 無根,
+                  # deserves a watch flag even above the absolute 7% floor
+                  "watch 偏弱 (day-master element thin, 無根)"
+                  if e == dm_el and rootless and share <= .15 else "balanced")
         organs, aspects = ELEMENT_ORGANS[e]
         out.append({"element": e, "en": ELEMENT_EN[e], "share": round(100 * share, 1),
                     "organs": organs, "aspects": aspects, "status": status})

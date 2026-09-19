@@ -37,13 +37,20 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
     from .shensha import (TEN_GOD_MEANING, life_palaces, natal_interactions,
                           pillar_extras, shensha, ten_god_pct)
     from .windows import timing_windows
+    from .synthesis import spouse_reading, synthesis
     from .bazi import TEN_GOD_EN
     from .wuxing import HIDDEN_STEMS
     # advice layer lives with the report templates; imported here so the
     # Reading tab carries the strategy content in-place (one source of truth)
     from scripts.bazi_report import strategy_payload
     st, br = year_ganzhi(year)
+    _pct = ten_god_pct(c)
+    _insights = ten_god_insights(c, ys)
+    _palaces = four_palaces(c, ys)
+    _windows = timing_windows(c, ys, dayun_detail(c, year), year)
     return {"name": name, "sex": c.sex, **chart_json(c), "yongshen": ys,
+            "synthesis": synthesis(c, ys, _pct, _insights, _windows),
+            "spouse_reading": spouse_reading(c, ys, _pct, _palaces, _windows),
             "strategy": strategy_payload(c, ys, year),
             "element_relations": element_relations(c),
             "tengod_insights": ten_god_insights(c, ys),
@@ -70,7 +77,7 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
             "health": health_map(c), "industries": industry_map(ys),
             "careers": career_paths(c, ys),
             "life_palaces": life_palaces(c),
-            "windows": timing_windows(c, ys, dayun_detail(c, year), year),
+            "windows": _windows,
             "interpretation": interpret_person(c, ys, year)}
 
 
