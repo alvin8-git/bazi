@@ -28,7 +28,7 @@ GOD_STYLE = {
 # key, en, zh, field elements, working-style gods {god: weight}, stars {star: bonus}
 ARCHETYPES = [
     ("research", "Research & analysis", "研究分析", ["水"],
-     {"正印": 2, "偏印": 2}, {"華蓋": 6, "學堂": 6, "文昌貴人": 6}),
+     {"正印": 2, "偏印": 2}, {"華蓋": 6, "學堂": 6, "文昌貴人": 6, "太極貴人": 6}),
     ("engineering", "Engineering & technical craft", "工程技术", ["金"],
      {"正官": 2, "食神": 1}, {"文昌貴人": 6}),
     ("tech", "Tech & software product", "科技产品", ["火"],

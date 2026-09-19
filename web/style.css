@@ -447,3 +447,16 @@ details.deep>.deepbody{padding:2px 11px 9px}
 tr.wrow{cursor:pointer}
 tr.wrow:hover th{color:var(--accent)}
 tr.wdetail td{background:#fbf8ef;font-size:12px;line-height:1.5}
+/* follow-up batch 2026-09-19e */
+.xiji{margin:8px 0;font-size:12.5px}
+.xiji th{white-space:nowrap;font-size:12px}
+.shen-neg{color:var(--vwarn)}.shen-pos{color:var(--vok)}
+.rchips{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
+.rchips span{border:1px solid var(--line);border-radius:7px;padding:1px 7px;font-size:11px;
+ color:var(--muted);background:var(--card)}
+.tgsides td{font-size:12px;line-height:1.4}
+.ccdayun{position:relative}
+.ccdayun::after{content:"⟶ scroll";position:absolute;right:2px;top:-14px;font-size:10px;
+ color:var(--muted)}
+.ccdayun{-webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);
+ mask-image:linear-gradient(90deg,#000 92%,transparent)}

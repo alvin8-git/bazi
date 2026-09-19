@@ -19,7 +19,7 @@ const T2S_PAIRS =
   "幫帮論论據据見见訣诀經经續续變变讓让選选適适頭头帶带極极過过還还沒没內内發发間间問问" +
   "題题響响環环風风師师傳传統统現现綜综標标準准側侧測测記记計计認认證证誤误說说詳详註注" +
   "釋释義义儀仪" +
-  "斷断壞坏謹谨聽听觀观際际團团隊队條条確确實实稱称";
+  "斷断壞坏謹谨聽听觀观際际團团隊队條条確确實实稱称雜杂濕湿燥燥";
 const T2S = {};
 for (let i = 0; i < T2S_PAIRS.length; i += 2) T2S[T2S_PAIRS[i]] = T2S_PAIRS[i + 1];
 const toSimp = (s) => [...String(s)].map((c) => T2S[c] || c).join("");
@@ -843,9 +843,6 @@ function palacesBlock(c) {
         <div class="palages">${p.ages}</div>
         <div class="palzh">${p.zh}</div>
         <div class="palgz">${p.gz}</div>
-        <div class="palgods">${[p.stem_god, ...p.hidden]
-          .filter((g) => g && g !== "日主")
-          .map(chip).join("")}</div>
         <div class="palgov">${p.governs}</div>
       </div>`).join("")}</div>
     ${P.pillars.map((p) => `<div class="cite"><b>${p.zh.split(" ")[0]}:</b>
@@ -977,9 +974,9 @@ function charCard(c, name) {
       ${tile("missing gods", missing.length
         ? `<span style="font-size:12.5px">${missing.join("·")}</span>` : "none — all ten present",
         "", "p3|十神")}
-      ${best ? tile(`best · ${best.zh}`, `${best.score} <small>${best.en}</small>`,
+      ${best ? tile(`best · ${best.zh}`, `${best.score}<small>/100 ${best.en}</small>`,
         `<i style="width:${best.score}%;background:#1e8e3e"></i>`, "p4|人生领域") : ""}
-      ${worst && worst !== best ? tile(`support · ${worst.zh}`, `${worst.score} <small>${worst.en}</small>`,
+      ${worst && worst !== best ? tile(`support · ${worst.zh}`, `${worst.score}<small>/100 ${worst.en}</small>`,
         `<i style="width:${worst.score}%;background:#b8860b"></i>`, "p4|人生领域") : ""}
       ${tile("decade now", `<span style="font-size:13px">${luck.gz || dec.gz || "—"}
         <small>${luck.ages || dec.ages || ""}${decPhase ? " · " + decPhase : ""}</small></span>`,
@@ -1097,13 +1094,9 @@ async function renderPerson(name) {
   const wmax = Math.max(...Object.values(c.element_weights));
   const EL_ZH = { Wood: "木", Fire: "火", Earth: "土", Metal: "金", Water: "水" };
   $("#tab-person").innerHTML = jt(explain(
-    "<b>What this page shows:</b> the full BaZi reading, laid out like a geomancer's report. " +
-    "The birth moment is converted to <b>true solar time</b> (Singapore ran on UTC+7:30 before " +
-    "1982), then mapped to four stem-branch pillars. The element bars show the balance of the " +
-    "Five Elements in the chart; the strength steps explain <i>why</i> the Day Master is judged " +
-    "strong or weak; 十神 (Ten Gods) name each pillar's relationship to the Day Master; 大运 " +
-    "are the 10-year luck cycles; and the 八宅 row grades each compass direction for this " +
-    "person (green = favourable, red = avoid). Every number cites the rule that produced it.",
+    "<b>What this page shows:</b> the full BaZi reading — birth moment → true solar time → " +
+    "four pillars, read across five tabs. Every number cites the rule that produced it; " +
+    "the mechanics live in <a href='/learn/four-pillars-explained' target='_blank'>Learn ▸</a>.",
     "person") + `
     ${charCard(c, name)}
     ${c.synthesis ? `<div class="synth"><b>綜合論斷 The Synthesis</b>
@@ -1112,11 +1105,7 @@ async function renderPerson(name) {
     <div class="sub">effective time ${c.effective_time}</div>
     ${chartCard(c)}
     ${nb.rest.length ? narrBlock({ paragraphs: nb.rest }) : ""}
-    <div class="pillar-cards">${POS.map((k) => `
-      <div class="pillar-card"><div class="gz">${c.pillars[k]}</div>
-        <div class="pos">${POS_LAB[k]}</div>
-        <div class="god">${c.ten_gods[k] || ""}</div>
-        <div class="sub">${c.pillar_extras[k].nayin} · ${c.pillar_extras[k].stage}</div></div>`).join("")}
+    <div class="pillar-cards">
       ${c.transit.luck ? `<div class="pillar-card transit"><div class="gz">${c.transit.luck.gz}</div>
         <div class="pos">LUCK 大運</div>
         <div class="god">${c.transit.luck.stem_god}/${c.transit.luck.branch_god}</div>
@@ -1137,10 +1126,9 @@ async function renderPerson(name) {
         ${voidPillars.join("/")} pillar (branch ${voidPillars.map(brOf).join("/")}) is void —
         its promises need a second confirmation${jie ? "; a natal combination touches it (partial 解空): the void softens when that alliance is actively lived" : ""}.</div>`;
     })()}
-    <div class="cite" style="margin:-6px 0 10px">The four solid cards are the birth chart
-      (fixed for life); the two dashed cards are the energies currently overlaid on it —
-      the active 10-year luck pillar and this year's pillar — labelled with their ten
-      gods relative to this Day Master.</div>
+    <div class="cite" style="margin:-6px 0 10px">The two dashed cards are the energies
+      currently overlaid on the birth chart above — the active 10-year luck pillar and
+      this year's pillar — labelled with their ten gods relative to this Day Master.</div>
     ${lg("chart")}
     ${palacesBlock(c)}
     <div class="section"><h3>五行与日主 Elements &amp; the Day Master</h3>
@@ -1169,7 +1157,8 @@ async function renderPerson(name) {
         </div>
       </div>` : ""}
       ${narr(1)}${lg(1)}</div>
-    <div class="section"><h4>Day Master strength 强弱判定</h4>
+    <div class="section">${c.geju ? `<div class="cite" style="margin:0 0 8px"><b>${dnAll(c.geju)}</b></div>` : ""}
+      <h4>Day Master strength 强弱判定</h4>
       ${strengthGauge(c.strength)}
       <p style="text-align:center;margin:0 0 4px">
         <span class="tag">support ratio ${c.strength.support_ratio}%</span>
@@ -1203,15 +1192,10 @@ async function renderPerson(name) {
       })()}</div></div>
       <div class="cite">All ten gods are shown — dashed rows are what this chart LACKS:
         those life-domains do not run on autopilot and reward deliberate effort.</div>
-      <div class="tgdefs">${Object.entries(c.tengods_pct).map(([g]) => `
+      ${deepWrap("十神定义 God definitions — each god's meaning, one line",
+        Object.entries(c.tengods_pct).map(([g]) => `
         <div><b style="color:${EL_COL[godEl(c.day_master, g)]}">●</b>
-          <b>${g}</b> ${c.tengods_legend[g].en} — ${c.tengods_legend[g].meaning}</div>`).join("")}
-      </div>
-      <div class="cite" style="margin-top:6px"><b>The cycle as a tree 生剋循环:</b>
-        比劫 roots absorb nutrients → 食傷 branches and leaves grow → 財 flowers set
-        fruit → 官殺 pickers arrive for the harvest → 印 the soil rests and recovers →
-        feeding new 比劫 roots. Creation → accumulation → constraint → nourishment,
-        around forever.</div>
+          <b>${g}</b> ${c.tengods_legend[g].en} — ${c.tengods_legend[g].meaning}</div>`).join(""))}
       <h4>Your ten-god ↔ stem map 十神对应 <span class="tag">日主 ${c.day_master}</span></h4>
       <div class="tgmap">${(() => {
         const bystem = {};
@@ -1227,7 +1211,7 @@ async function renderPerson(name) {
         (时运 tab), it brings that god's themes with it.</div>
       <h4>Two sides of each god 双面性
         <span class="tag warn">rows ordered by presence in YOUR chart</span></h4>
-      <div style="overflow-x:auto"><table>
+      <div style="overflow-x:auto"><table class="tgsides">
         <tr><th>God · share</th><th>Bright side 优</th><th>Shadow side 忌</th></tr>
         ${Object.entries(c.tengods_pct).sort((a, b) => b[1] - a[1]).map(([g, p]) => {
           const sd = TG_SIDES[tgCanon(g)] || ["", ""];
@@ -1253,7 +1237,9 @@ async function renderPerson(name) {
             ${r.god} ${r.state === "rooted" ? "rooted 有根" : "floating 虛浮"}</span>`).join(" ")}
           — a rooted god delivers durably; a floating one shows socially but needs backing.</div>
         ${ti.patterns.length ? ti.patterns.map((p) => `<div class="ninline">
-            <b>${p.name} — ${p.zh}:</b> ${p.note}</div>`).join("")
+            <b>${p.name} — ${p.zh}</b>
+            ${p.state ? `<span class="dirchip ${p.state.startsWith("formed") ? "good" : ""}">${p.state}</span>` : ""}
+            <div>${p.note}${p.activation ? ` <b>${p.activation}.</b>` : ""}</div></div>`).join("")
           : `<div class="cite">No classical pair pattern triggers — the gods operate
              independently in this chart.</div>`}
         <div class="cite">Personality is not static: the current decade (时运 tab) overlays its
@@ -1435,6 +1421,7 @@ async function renderPerson(name) {
         <div class="cite">${dnAll(c.spouse_reading.star_line)}</div>
         <div class="cite">${dnAll(c.spouse_reading.palace_line)}</div>
         ${c.spouse_reading.pattern_line ? `<div class="ninline">${dnAll(c.spouse_reading.pattern_line)}</div>` : ""}
+        ${c.spouse_reading.mix_line ? `<div class="cite">⚠ ${dnAll(c.spouse_reading.mix_line)}</div>` : ""}
         ${c.spouse_reading.years.length ? `<div class="cite"><b>Activation years:</b><br>
           ${c.spouse_reading.years.map((y) => dnAll(y)).join("<br>")}</div>` : ""}
         <div class="cite" style="color:var(--muted)">${c.spouse_reading.source_ref}</div>` : ""}
@@ -1477,6 +1464,11 @@ async function renderPerson(name) {
       ${narr(7)}${lg(7)}
     </div>
     <div class="section"><h4>用神 the medicine, applied</h4>
+      ${c.medicine_rank ? `<div class="cite"><b>${dnAll(c.medicine_rank)}</b></div>` : ""}
+      ${c.xiji ? `<table class="xiji">${c.xiji.map((r) => `<tr>
+        <th>${r.band} <span class="sub">${dnAll(r.zh)}</span></th>
+        <td>${r.elements.map((e) => elb(e)).join(" ")}</td>
+        <td class="sub">${r.gods.join("·")}</td></tr>`).join("")}</table>` : ""}
       <p>Favourable: ${elbs(c.yongshen.favourable)} · avoid ${elbs(c.yongshen.unfavourable)}
          · colours <b>${c.yongshen.colours.join("、")}</b></p>
       ${c.element_relations ? `<div class="cite"><b>In god vocabulary:</b> your 用神
@@ -1518,7 +1510,16 @@ async function renderPerson(name) {
       ${c.careers.top.map((a, i) => `<div class="cite"><b>#${i + 1} ${a.en} ${a.zh}</b>
         <span class="tag ${a.score >= 12 ? "" : "warn"}">${a.score >= 12 ? "strong fit" :
           a.score >= 4 ? "good fit" : "workable"}</span>
-        <div class="sub" style="margin-top:2px">${a.reasons.join(" · ")}</div></div>`).join("")}
+        <div class="rchips">${a.reasons.map((r) => `<span>${r}</span>`).join("")}</div></div>`).join("")}
+      ${(() => {
+        const learn = (c.domains || []).find((d) => d.key === "learning");
+        const eduAvoid = (c.industries.avoid || []).some((it) => /教育|education/i.test(it.industries));
+        return learn && learn.score >= 80 && eduAvoid ? `<div class="cite"><b>Reconciliation:</b>
+          Learning ${learn.score} measures the chart's STUDY capacity (印 + study stars); the
+          understated education INDUSTRY note is about element recharge — teaching-adjacent
+          work fits when run 用神-style (institutions, credentials, research) rather than as
+          pure 木-element schooling.</div>` : "";
+      })()}
       <div class="cite" style="margin-top:7px"><b>Priced against this chart:</b>
         ${c.careers.avoid.map((a) => `${a.en} ${a.zh} — ${a.reasons.join("; ")}`).join(" · ")}</div>
       ${stb(12)}${narr(12)}${lg(12)}
@@ -1528,8 +1529,10 @@ async function renderPerson(name) {
         lookup tables — flavour on top of the structural reading. The small tag shows
         which pillar (year=ancestry/childhood, month=career/parents, day=self/spouse,
         hour=later life/children) carries each star.</div>
-      ${c.shensha.map((s) => `<div class="cite"><b>${s.star}</b>
-        <span class="tag">${s.pillars.join("·")}</span> ${s.meaning}</div>`).join("")}
+      ${c.shensha.map((s) => { const neg = ["劫煞", "空亡", "災煞", "亡神",
+          "羊刃", "孤辰", "寡宿"].includes(s.star);
+        return `<div class="cite"><b class="${neg ? "shen-neg" : "shen-pos"}">${neg ? "⚠" : "✦"} ${s.star}</b>
+        <span class="tag">${s.pillars.join("·")}</span> ${s.meaning}</div>`; }).join("")}
       ${c.interactions.length ? `<div class="cite" style="margin-top:7px"><b>Natal branch interactions:</b>
         ${c.interactions.map((i) => `${i.pair} ${i.kind} (${i.pillars.join("+")}) — ${i.note}`).join("; ")}</div>` : ""}
       ${narr(9)}${lg(9)}

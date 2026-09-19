@@ -243,9 +243,42 @@ def ten_god_insights(chart, ys: dict) -> dict:
                        "state": "rooted" if el in branch_els else "floating"})
 
     patterns = []
+    # 透-state (follow-up audit 2026-09-19): a pattern whose components are all
+    # VISIBLE stems is formed 已成; one leaning on hidden-only gods is latent
+    # 待透 — and a luck decade that brings the missing god activates it.
+    from .bazi import ten_god as _tg
+    _canon = {"伤官": "傷官", "七杀": "七殺", "劫财": "劫財",
+              "正财": "正財", "偏财": "偏財"}
+    visible = {_canon.get(_tg(chart.day_master, chart.pillars[p].stem),
+                          _tg(chart.day_master, chart.pillars[p].stem))
+               for p in ("year", "month", "hour")}
 
-    def add(name, zh, note):
-        patterns.append({"name": name, "zh": zh, "note": note})
+    def _decade_with(gods):
+        from .wuxing import HIDDEN_STEMS
+        for d in getattr(chart, "dayun", []):
+            gz = str(d.gz)
+            ages = f"{int(d.start_age)}–{int(d.end_age)}"
+            dg = {_tg(chart.day_master, gz[0]),
+                  _tg(chart.day_master, HIDDEN_STEMS[gz[1]][0])}
+            dg = {_canon.get(x, x) for x in dg}
+            if dg & set(gods):
+                return {"gz": gz, "ages": ages}
+        return None
+
+    def add(name, zh, note, comps=()):
+        entry = {"name": name, "zh": zh, "note": note}
+        if comps:
+            missing = [g for g in comps if g not in visible]
+            if not missing:
+                entry["state"] = "formed 已成 (all components 透干)"
+            else:
+                entry["state"] = f"latent 待透 ({'/'.join(missing)} hidden only)"
+                dec = _decade_with(missing)
+                if dec:
+                    entry["activation"] = (f"the {dec['gz']} decade (ages "
+                                           f"{dec['ages']}) brings the missing "
+                                           "component — the pattern activates then")
+        patterns.append(entry)
 
     shi, shang = g("食神"), g("傷官", "伤官")
     sha, guan = g("七殺", "七杀"), g("正官")
@@ -256,24 +289,27 @@ def ten_god_insights(chart, ys: dict) -> dict:
     if shi >= 8 and sha >= 8:
         add("食神制殺", "refined skill tames force",
             "the advisor pattern — influence through mastery, not dominance; "
-            "demanding roles suit you when you bring craft to them")
+            "demanding roles suit you when you bring craft to them",
+            comps=("食神", "七殺"))
     if shang >= 8 and guan >= 5:
         add("傷官見官", "talent chafes against authority",
             "the classic friction pattern — candour collides with hierarchy; "
             "choose environments that price honesty as an asset, and document "
-            "wins before challenging rules")
+            "wins before challenging rules", comps=("傷官", "正官"))
     if sha >= 8 and (yin + pyin) >= 8:
         add("殺印相生", "pressure converts to growth",
             "stress becomes study: credentials, mentors and frameworks turn "
-            "七殺 pressure into rank — the high-stakes professional pattern")
+            "七殺 pressure into rank — the high-stakes professional pattern",
+            comps=("七殺", "正印"))
     if shang >= 8 and yin >= 8:
         add("傷官配印", "talent under discipline",
             "raw output with built-in quality control — creative work that "
-            "survives editing; protect the learning time that powers it")
+            "survives editing; protect the learning time that powers it",
+            comps=("傷官", "正印"))
     if guan >= 8 and yin >= 8:
         add("官印相生", "authority feeds learning",
             "the steady-ascent pattern — institutions reward you; rank comes "
-            "through credentials rather than risk")
+            "through credentials rather than risk", comps=("正官", "正印"))
     if bj >= 20 and cai <= 8:
         add("比劫奪財", "peers crowd the wealth",
             "partnerships and 'friends' bleed money faster than rivals do — "
