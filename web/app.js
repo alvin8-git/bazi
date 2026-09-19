@@ -849,11 +849,7 @@ function palacesBlock(c) {
       </div>`).join("")}</div>
     ${P.pillars.map((p) => `<div class="cite"><b>${p.zh.split(" ")[0]}:</b>
       ${dnAll(p.line)}</div>`).join("")}
-    ${legendBlock([
-      ["宮位", "each pillar is a palace: a life-stage (its age span) AND a life-area"],
-      ["age spans", "year 0–15 · month 16–32 · day 33–48 · hour 49+ — when that palace's themes dominate"],
-      ["god chips", "the gods resident in that palace (stem + hidden), coloured by their element for your Day Master"],
-      ["day pillar", "outlined — its stem IS you; its branch is the spouse palace, read in depth in §8"]])}
+    ${learnLink("palaces")}
   </div>`;
 }
 
@@ -928,15 +924,121 @@ const LEGENDS = {
     ["桃花", "peach-blossom: the romance/charm activation branch"]],
 };
 
+
+/* ===== Reading rework 2026-09-19 (mockup data/out/readingMockup.html, decisions: A-tabs,
+   inline SVG, card stats = medicine/dominant/missing/best/watch/decade) ===== */
+const ALLGODS = ["比肩", "劫財", "食神", "傷官", "正財", "偏財", "正官", "七殺", "正印", "偏印"];
+const TG_EN_FALLBACK = { 比肩: "Friend", 劫財: "Rob Wealth", 食神: "Eating God",
+  傷官: "Hurting Officer", 正財: "Direct Wealth", 偏財: "Indirect Wealth",
+  正官: "Direct Officer", 七殺: "Seven Killings", 正印: "Direct Resource", 偏印: "Indirect Resource" };
+const LEARN_OF = { chart: ["four-pillars-explained", "how to read a pillar"],
+  1: ["five-elements-cycles", "the five elements & 生克"],
+  2: ["day-masters-explained", "day masters & strength"],
+  3: ["ten-gods-guide", "the ten gods"], 4: ["ten-gods-guide", "the ten gods"],
+  5: ["useful-god-colors", "applying your 用神"],
+  6: ["luck-cycles-and-windows", "luck cycles"], 7: ["eight-house-directions", "八宅 directions"],
+  8: ["four-pillars-explained", "the four palaces"], 9: ["shensha-symbolic-stars", "神煞 stars"],
+  10: ["ten-gods-guide", "personality from ten gods"], 11: ["five-elements-cycles", "element health map"],
+  12: ["useful-god-colors", "elements & industries"], 13: ["luck-cycles-and-windows", "windows & annual overlays"],
+  palaces: ["four-pillars-explained", "the four palaces"] };
+const learnLink = (k) => { const t = LEARN_OF[k];
+  return t ? `<div class="learnlink"><a href="/learn/${t[0]}" target="_blank">Learn: ${t[1]} ▸</a></div>` : ""; };
+const deepWrap = (label, inner) => inner
+  ? `<details class="deep"><summary>${label}</summary><div class="deepbody">${inner}</div></details>` : "";
+
+function charCard(c, name) {
+  const doms = (c.domains || []).slice().sort((a, b) => b.score - a.score);
+  const best = doms[0], worst = doms[doms.length - 1];
+  const missing = ALLGODS.filter((g) => !(g in c.tengods_pct));
+  const [domG, domP] = Object.entries(c.tengods_pct).sort((a, b) => b[1] - a[1])[0] || ["—", 0];
+  const dec = ((c.windows || {}).decades || []).find((d) => d.current) || {};
+  const luck = (c.transit || {}).luck || {};
+  const decPhase = dec.phase_zh ? `${dec.phase_zh}` : "";
+  const phaseCol = { 成長: "#1e8e3e", 整固: "#5f8a3e", 過渡: "#b8860b", 修整: "#c5221f" }[decPhase] || "#b8860b";
+  const fav = c.yongshen.favourable, cols = c.yongshen.colours.join("·");
+  const tile = (l, v, bar) => `<div class="cstat"><div class="l">${l}</div>
+    <div class="v">${v}</div><div class="cbar">${bar || ""}</div></div>`;
+  return `<div class="ccard">
+    <div class="who"><div class="gua"><b>${c.gua}</b><span>${(c.group || "").split(" ")[0]}</span></div>
+      <div><h2>${dn(name || c.name)}</h2><div class="csub">
+        <span class="dmchip" style="color:${EL_COL[STEM_EL[c.day_master]]}">${c.day_master} ${ELEMENT_ZH_OF_STEM(c.day_master)}</span>
+        ${c.strength.verdict} <b>${c.strength.score}</b>
+        ${c.life_palaces ? ` · 生肖 ${c.life_palaces.animal} · 命宮 ${c.life_palaces.ming_gong}` : ""}</div></div></div>
+    <div class="cstats">
+      ${tile("用神 medicine", fav.map((e) => elb(e)).join(" ") + ` <small>${cols}</small>`)}
+      ${tile("dominant god", `${domG} <small>${domP}% ${(c.tengods_legend[domG] || {}).en || ""}</small>`,
+        `<i style="width:${Math.min(100, domP * 3)}%;background:${EL_COL[godEl(c.day_master, domG)]}"></i>`)}
+      ${tile("missing gods", missing.length
+        ? `<span style="font-size:12.5px">${missing.join("·")}</span>` : "none — all ten present")}
+      ${best ? tile(`best · ${best.zh}`, `${best.score} <small>${best.en}</small>`,
+        `<i style="width:${best.score}%;background:#1e8e3e"></i>`) : ""}
+      ${worst && worst !== best ? tile(`support · ${worst.zh}`, `${worst.score} <small>${worst.en}</small>`,
+        `<i style="width:${worst.score}%;background:#b8860b"></i>`) : ""}
+      ${tile("decade now", `<span style="font-size:13px">${luck.gz || dec.gz || "—"}
+        <small>${luck.ages || dec.ages || ""}${decPhase ? " · " + decPhase : ""}</small></span>`,
+        `<i style="width:40%;background:${phaseCol}"></i>`)}
+    </div></div>`;
+}
+
+function bazhaiCompass(c) {
+  const cell = (pal, dir) => { const s = c.youxing[pal];
+    const good = ["生氣", "天醫", "延年", "伏位"].includes(s);
+    return `<div class="${good ? "g" : "b"}"><b>${dir} ${pal}</b>${s}</div>`; };
+  return `<div class="cmpx">
+    ${cell("乾", "NW")}${cell("坎", "N")}${cell("艮", "NE")}
+    ${cell("兌", "W")}<div class="c"><b>·</b>${dn(c.name)}</div>${cell("震", "E")}
+    ${cell("坤", "SW")}${cell("離", "S")}${cell("巽", "SE")}</div>`;
+}
+
+const READING_TABS = [["p1", "四柱<br>Pillars"], ["p2", "五行<br>Elements"],
+  ["p3", "十神<br>Gods"], ["p4", "时运<br>Timing"], ["p5", "方位<br>Compass"]];
+const PANE_OF_SECTION = [[/Four Palaces|宫位|宮位/, "p1"], [/Five Elements/, "p2"],
+  [/Core Identity/, "p2"], [/Ten Gods 十神/, "p3"], [/distribution/, "p3"],
+  [/用神 Favourable/, "p5"], [/Luck Cycles/, "p4"], [/八宅/, "p5"], [/Life-domain/, "p4"],
+  [/神煞/, "p1"], [/Personality/, "p3"], [/Health element/, "p5"], [/Career paths/, "p5"],
+  [/Windows/, "p4"]];
+
+function applyReadingTabs(root) {
+  const kids = Array.from(root.children);
+  const cardIdx = kids.findIndex((el) => el.classList && el.classList.contains("ccard"));
+  const nav = document.createElement("nav");
+  nav.className = "ptabs";
+  nav.innerHTML = READING_TABS.map(([id, lbl], i) =>
+    `<button class="${i === 0 ? "on" : ""}" data-pane="${id}">${lbl}</button>`).join("");
+  const panes = {};
+  READING_TABS.forEach(([id], i) => { const d = document.createElement("div");
+    d.className = "ppane" + (i === 0 ? " on" : ""); d.id = "pane-" + id; panes[id] = d; });
+  root.insertBefore(nav, kids[cardIdx + 1] || null);
+  READING_TABS.forEach(([id]) => root.appendChild(panes[id]));
+  kids.forEach((el) => {
+    if (el === nav || (el.classList && el.classList.contains("ccard"))) return;
+    let pane = "p1";
+    if (el.classList && el.classList.contains("section")) {
+      const h = el.querySelector("h3, h4");
+      const t = h ? h.textContent : "";
+      const hit = PANE_OF_SECTION.find(([re]) => re.test(t));
+      if (hit) pane = hit[1];
+    }
+    panes[pane].appendChild(el);
+  });
+  nav.addEventListener("click", (ev) => {
+    const b = ev.target.closest("button"); if (!b) return;
+    nav.querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b));
+    READING_TABS.forEach(([id]) => panes[id].classList.toggle("on", id === b.dataset.pane));
+    nav.scrollIntoView({ block: "start", behavior: "instant" });
+  });
+}
+const ELEMENT_ZH_OF_STEM = (st) => ({ 木: "木", 火: "火", 土: "土", 金: "金", 水: "水" }[STEM_EL[st]] || "");
+
 async function renderPerson(name) {
   const url = window.__CHART_URL__ ||
     `/api/chart/${encodeURIComponent(name)}?policy=${state.policy}&year=${state.year}`;
   const c = await api(url);
   const nb = splitNarr(c.interpretation);
-  const narr = (n) => (nb.by[n] || []).map((t) =>
-    `<div class="ninline"><b>解读 Narrative:</b> ${dnAll(t)}</div>`).join("");
-  const lg = (k) => legendBlock(LEGENDS[k]);
-  const stb = (n) => stratBlock(n, c.strategy);
+  const narr = (n) => deepWrap("解读 Narrative — the numbers above, read out",
+    (nb.by[n] || []).map((t) => `<div class="ninline">${dnAll(t)}</div>`).join(""));
+  const lg = (k) => learnLink(k);
+  const stb = (n) => deepWrap("策略 Strategy — what this asks of you", stratBlock(n, c.strategy));
   const wmax = Math.max(...Object.values(c.element_weights));
   const EL_ZH = { Wood: "木", Fire: "火", Earth: "土", Metal: "金", Water: "水" };
   $("#tab-person").innerHTML = jt(explain(
@@ -948,6 +1050,7 @@ async function renderPerson(name) {
     "are the 10-year luck cycles; and the 八宅 row grades each compass direction for this " +
     "person (green = favourable, red = avoid). Every number cites the rule that produced it.",
     "person") + `
+    ${charCard(c, name)}
     <h2>${dn(name || c.name)} — Four Pillars (${state.policy === "true_solar" ? "TRUE SOLAR" : "CLOCK"})</h2>
     <div class="sub">effective time ${c.effective_time}</div>
     ${chartCard(c)}
@@ -1024,13 +1127,16 @@ async function renderPerson(name) {
         <div class="cite" style="text-align:center;margin-top:2px">十神对照 — each group
           coloured by ITS element for this Day Master (same palette as §1)</div></div>
       <div class="bars" style="flex:1;min-width:300px">${(() => {
-        const rows = Object.entries(c.tengods_pct).sort((a, b) => b[1] - a[1]);
+        const rows = ALLGODS.map((g) => [g, c.tengods_pct[g] || 0]);
         const pmax = Math.max(...rows.map(([, v]) => v)) || 1;
         return rows.map(([g, p]) => `
-          <div class="bar-row tg-row2"><span><b>${g}</b> <span class="sub">${c.tengods_legend[g].en}</span></span>
-            <div class="bar"><i style="width:${(p / pmax * 100).toFixed(0)}%;background:${EL_COL[godEl(c.day_master, g)]}"></i></div>
-            <b>${p}%</b></div>`).join("");
+          <div class="bar-row tg-row2${p ? "" : " tg-zero"}"><span><b>${g}</b>
+            <span class="sub">${(c.tengods_legend[g] || {}).en || TG_EN_FALLBACK[g]}</span></span>
+            <div class="bar">${p ? `<i style="width:${(p / pmax * 100).toFixed(0)}%;background:${EL_COL[godEl(c.day_master, g)]}"></i>` : ""}</div>
+            <b>${p ? p + "%" : "0 absent"}</b></div>`).join("");
       })()}</div></div>
+      <div class="cite">All ten gods are shown — dashed rows are what this chart LACKS:
+        those life-domains do not run on autopilot and reward deliberate effort.</div>
       <div class="tgdefs">${Object.entries(c.tengods_pct).map(([g]) => `
         <div><b style="color:${EL_COL[godEl(c.day_master, g)]}">●</b>
           <b>${g}</b> ${c.tengods_legend[g].en} — ${c.tengods_legend[g].meaning}</div>`).join("")}
@@ -1173,12 +1279,9 @@ async function renderPerson(name) {
         each person. Use green directions for the things you do for hours (bed
         headboard, desk facing, main door); red directions are fine for storage and
         bathrooms.</div>
-      <table><tr><th>Palace</th>${Object.keys(c.youxing).map((p) => `<th>${p}</th>`).join("")}</tr>
-        <tr><td>Direction</td>${Object.keys(c.youxing).map((p) => `<td>${PALACE_DIR[p]}</td>`).join("")}</tr>
-        <tr><td>遊年星</td>${Object.values(c.youxing).map((s) =>
-          `<td class="${["生氣", "天醫", "延年", "伏位"].includes(s) ? "good" : "bad"}">${s}</td>`).join("")}</tr>
-      </table>
-      ${BAZHAI_ORDER.map((s) => `<div class="cite"><b>${s} ${BAZHAI_EN[s][0]}</b> — ${BAZHAI_EN[s][1]}</div>`).join("")}
+      ${bazhaiCompass(c)}
+      ${deepWrap("The eight stars, defined", BAZHAI_ORDER.map((s) =>
+        `<div class="cite"><b>${s} ${BAZHAI_EN[s][0]}</b> — ${BAZHAI_EN[s][1]}</div>`).join(""))}
       ${(() => {
         const good = Object.entries(c.youxing)
           .filter(([, s]) => ["生氣", "天醫", "延年", "伏位"].includes(s))
@@ -1338,6 +1441,7 @@ async function renderPerson(name) {
     <div class="section"><h3>Rule citations</h3>
       ${c.citations.map((x) => `<div class="cite"><b>[${layerZh(x.layer)}] ${x.source_ref}:</b> ${x.explanation}</div>`).join("")}
     </div>`);
+  applyReadingTabs($("#tab-person"));
 }
 
 /* ---------- House tab ---------- */
@@ -1684,7 +1788,37 @@ if (window.__PUBLIC_READING__) {
     try { state.primer = await api("/api/primer"); } catch (e) { /* optional */ }
     window.__CHART_URL__ = window.__PUBLIC_READING__.chartUrl;
     try { await renderPerson(window.__PUBLIC_READING__.name); }
-    catch (e) { $("#tab-person").innerHTML = `<p class="hint">load failed: ${e.message}</p>`; }
+    catch (e) { $("#tab-person").innerHTML = `<p class="hint">load failed: ${e.message}</p>`; return; }
+    // compare drawer: workspace members' cards side by side + share link (2026-09-19)
+    try {
+      const pr = window.__PUBLIC_READING__;
+      const ws = await api(`/api/pub/w/${pr.token}`);
+      const card = document.querySelector("#tab-person .ccard");
+      if (!card || !ws.people || ws.people.length < 2) return;
+      const row = document.createElement("div");
+      row.className = "cmprow";
+      row.innerHTML = `<span class="hint" style="align-self:center">⇄ Compare:</span>` +
+        ws.people.map((p, i) => i === pr.idx ? "" :
+          `<button data-idx="${i}">${p.name}</button>`).join("") +
+        `<button class="ghost" data-share="1">🔗 Copy share link</button>`;
+      card.after(row);
+      const slot = document.createElement("div");
+      row.after(slot);
+      row.addEventListener("click", async (ev) => {
+        const b = ev.target.closest("button"); if (!b) return;
+        if (b.dataset.share) {
+          try { await navigator.clipboard.writeText(location.href);
+            b.textContent = "✓ link copied"; } catch (e) { prompt("Copy this link:", location.href); }
+          return;
+        }
+        b.disabled = true;
+        const c2 = await api(`/api/pub/w/${pr.token}/person/${b.dataset.idx}/chart`);
+        slot.innerHTML = charCard(c2, c2.name) +
+          `<div class="cite" style="margin:-4px 0 10px">↑ ${c2.name}'s card beside the page owner's —
+           open <a href="/w/${pr.token}/person/${b.dataset.idx}/reading">${c2.name}'s full reading ▸</a></div>`;
+        b.disabled = false;
+      });
+    } catch (e) { /* compare is optional */ }
   })();
 } else {
   controls();

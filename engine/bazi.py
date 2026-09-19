@@ -172,7 +172,8 @@ def analyze(chart: Chart) -> None:
              "detail": f"month branch {p['month'].branch} is {ELEMENT_EN[month_el]}; "
                        f"Day Master {dm} is {ELEMENT_EN[dm_el]} → {season_state}"},
             {"step": 2, "name": "Support count", "value": round(support, 2),
-             "detail": f"比劫 {ELEMENT_EN[dm_el]} {w[dm_el]} + 印 {ELEMENT_EN[SHENG_REV[dm_el]]} {w[SHENG_REV[dm_el]]}"},
+             "detail": f"比劫 {ELEMENT_EN[dm_el]} {round(w[dm_el], 2)} + "
+                       f"印 {ELEMENT_EN[SHENG_REV[dm_el]]} {round(w[SHENG_REV[dm_el]], 2)}"},
             {"step": 3, "name": "Drain count", "value": round(drain, 2),
              "detail": "食傷 + 財 + 官殺 weights combined"},
             {"step": 4, "name": "Root check", "value": "有根 " + "、".join(roots) if roots else "無根",

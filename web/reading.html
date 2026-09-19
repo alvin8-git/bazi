@@ -28,6 +28,7 @@ main{padding:18px 22px 60px;max-width:1180px;margin:0 auto}
   const m = location.pathname.match(/^\/w\/([A-Za-z0-9_-]+)\/person\/(\d+)\/reading/);
   window.__PUBLIC_READING__ = m ? {
     chartUrl: `/api/pub/w/${m[1]}/person/${m[2]}/chart`,
+    token: m[1], idx: +m[2],
     name: "",
   } : null;
   if (m) document.getElementById("back").href = `/w/${m[1]}`;
