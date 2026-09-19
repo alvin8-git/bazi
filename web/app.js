@@ -955,28 +955,34 @@ function charCard(c, name) {
   const luck = (c.transit || {}).luck || {};
   const decPhase = dec.phase_zh ? `${dec.phase_zh}` : "";
   const phaseCol = { 成長: "#1e8e3e", 整固: "#5f8a3e", 過渡: "#b8860b", 修整: "#c5221f" }[decPhase] || "#b8860b";
-  const fav = c.yongshen.favourable, cols = c.yongshen.colours.join("·");
-  const tile = (l, v, bar) => `<div class="cstat"><div class="l">${l}</div>
+  const cols = c.yongshen.colours.join("·");
+  const tile = (l, v, bar, go) => `<div class="cstat${go ? " go" : ""}"${go
+      ? ` data-go="${go}" role="button" tabindex="0"` : ""}><div class="l">${l}
+      ${go ? '<span class="chev">›</span>' : ""}</div>
     <div class="v">${v}</div><div class="cbar">${bar || ""}</div></div>`;
-  return `<div class="ccard">
+  const fav = c.yongshen.favourable;
+  return `<div class="charcard elth-${fav[0] || ""}${fav[1] ? " elth2-" + fav[1] : ""}"
+      data-elem="${fav.join("")}">
     <div class="who"><div class="gua"><b>${c.gua}</b><span>${(c.group || "").split(" ")[0]}</span></div>
       <div><h2>${dn(name || c.name)}</h2><div class="csub">
         <span class="dmchip" style="color:${EL_COL[STEM_EL[c.day_master]]}">${c.day_master} ${ELEMENT_ZH_OF_STEM(c.day_master)}</span>
         ${c.strength.verdict} <b>${c.strength.score}</b>
         ${c.life_palaces ? ` · 生肖 ${c.life_palaces.animal} · 命宮 ${c.life_palaces.ming_gong}` : ""}</div></div></div>
     <div class="cstats">
-      ${tile("用神 medicine", fav.map((e) => elb(e)).join(" ") + ` <small>${cols}</small>`)}
+      ${tile("用神 medicine", fav.map((e) => elb(e)).join(" ") + ` <small>${cols}</small>`,
+        "", "p5|用神")}
       ${tile("dominant god", `${domG} <small>${domP}% ${(c.tengods_legend[domG] || {}).en || ""}</small>`,
-        `<i style="width:${Math.min(100, domP * 3)}%;background:${EL_COL[godEl(c.day_master, domG)]}"></i>`)}
+        `<i style="width:${Math.min(100, domP * 3)}%;background:${EL_COL[godEl(c.day_master, domG)]}"></i>`, "p3|distribution")}
       ${tile("missing gods", missing.length
-        ? `<span style="font-size:12.5px">${missing.join("·")}</span>` : "none — all ten present")}
+        ? `<span style="font-size:12.5px">${missing.join("·")}</span>` : "none — all ten present",
+        "", "p3|distribution")}
       ${best ? tile(`best · ${best.zh}`, `${best.score} <small>${best.en}</small>`,
-        `<i style="width:${best.score}%;background:#1e8e3e"></i>`) : ""}
+        `<i style="width:${best.score}%;background:#1e8e3e"></i>`, "p4|Life-domain") : ""}
       ${worst && worst !== best ? tile(`support · ${worst.zh}`, `${worst.score} <small>${worst.en}</small>`,
-        `<i style="width:${worst.score}%;background:#b8860b"></i>`) : ""}
+        `<i style="width:${worst.score}%;background:#b8860b"></i>`, "p4|Life-domain") : ""}
       ${tile("decade now", `<span style="font-size:13px">${luck.gz || dec.gz || "—"}
         <small>${luck.ages || dec.ages || ""}${decPhase ? " · " + decPhase : ""}</small></span>`,
-        `<i style="width:40%;background:${phaseCol}"></i>`)}
+        `<i style="width:40%;background:${phaseCol}"></i>`, "p4|Luck Cycles")}
     </div></div>`;
 }
 
@@ -1000,7 +1006,7 @@ const PANE_OF_SECTION = [[/Four Palaces|宫位|宮位/, "p1"], [/Five Elements/,
 
 function applyReadingTabs(root) {
   const kids = Array.from(root.children);
-  const cardIdx = kids.findIndex((el) => el.classList && el.classList.contains("ccard"));
+  const cardIdx = kids.findIndex((el) => el.classList && el.classList.contains("charcard"));
   const nav = document.createElement("nav");
   nav.className = "ptabs";
   nav.innerHTML = READING_TABS.map(([id, lbl], i) =>
@@ -1011,7 +1017,7 @@ function applyReadingTabs(root) {
   root.insertBefore(nav, kids[cardIdx + 1] || null);
   READING_TABS.forEach(([id]) => root.appendChild(panes[id]));
   kids.forEach((el) => {
-    if (el === nav || (el.classList && el.classList.contains("ccard"))) return;
+    if (el === nav || (el.classList && el.classList.contains("charcard"))) return;
     let pane = "p1";
     if (el.classList && el.classList.contains("section")) {
       const h = el.querySelector("h3, h4");
@@ -1021,11 +1027,25 @@ function applyReadingTabs(root) {
     }
     panes[pane].appendChild(el);
   });
+  const activate = (paneId) => {
+    nav.querySelectorAll("button").forEach((x) =>
+      x.classList.toggle("on", x.dataset.pane === paneId));
+    READING_TABS.forEach(([id]) => panes[id].classList.toggle("on", id === paneId));
+  };
   nav.addEventListener("click", (ev) => {
     const b = ev.target.closest("button"); if (!b) return;
-    nav.querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b));
-    READING_TABS.forEach(([id]) => panes[id].classList.toggle("on", id === b.dataset.pane));
+    activate(b.dataset.pane);
     nav.scrollIntoView({ block: "start", behavior: "instant" });
+  });
+  // clickable character-card stats: data-go="paneId|heading text prefix"
+  const card = root.querySelector(".charcard");
+  if (card) card.addEventListener("click", (ev) => {
+    const t = ev.target.closest("[data-go]"); if (!t) return;
+    const [paneId, frag] = t.dataset.go.split("|");
+    activate(paneId);
+    const h = Array.from(panes[paneId].querySelectorAll("h3, h4"))
+      .find((x) => x.textContent.includes(frag));
+    (h || panes[paneId]).scrollIntoView({ block: "start", behavior: "smooth" });
   });
 }
 const ELEMENT_ZH_OF_STEM = (st) => ({ 木: "木", 火: "火", 土: "土", 金: "金", 水: "水" }[STEM_EL[st]] || "");
@@ -1793,7 +1813,7 @@ if (window.__PUBLIC_READING__) {
     try {
       const pr = window.__PUBLIC_READING__;
       const ws = await api(`/api/pub/w/${pr.token}`);
-      const card = document.querySelector("#tab-person .ccard");
+      const card = document.querySelector("#tab-person .charcard");
       if (!card || !ws.people || ws.people.length < 2) return;
       const row = document.createElement("div");
       row.className = "cmprow";

@@ -28,6 +28,17 @@ button:disabled{opacity:.5;cursor:default}
 .err{color:var(--accent);font-size:13px;margin-top:6px;min-height:1em}
 .people{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
 .pcard{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fff}
+/* element-affinity tints (用神 favourable[0]) — matches the reading page's charcard themes */
+.pcard.elth-木{background:linear-gradient(160deg,#f3f9ef,#e2efd8);border-color:#b9d3ab}
+.pcard.elth-火{background:linear-gradient(160deg,#fdf1ec,#f9ded4);border-color:#e8c0b1}
+.pcard.elth-土{background:linear-gradient(160deg,#faf4e6,#f0e3c6);border-color:#d9c395}
+.pcard.elth-金{background:linear-gradient(160deg,#fbf9f1,#f4ecd4);border-color:#d6bf72}
+.pcard.elth-水{background:linear-gradient(160deg,#eff5fa,#dce9f4);border-color:#b4cde2}
+.pcard.elth2-木{box-shadow:inset 0 0 0 2px rgba(63,135,70,.18)}
+.pcard.elth2-火{box-shadow:inset 0 0 0 2px rgba(214,58,82,.15)}
+.pcard.elth2-土{box-shadow:inset 0 0 0 2px rgba(138,84,16,.18)}
+.pcard.elth2-金{box-shadow:inset 0 0 0 2px rgba(201,155,46,.25)}
+.pcard.elth2-水{box-shadow:inset 0 0 0 2px rgba(48,89,168,.16)}
 .pcard h3{margin:0 0 4px;font-size:16px}
 .pz{display:inline-block;border:1px solid #ecd9cf;border-radius:7px;padding:2px 7px;
   margin:1px;font-size:16px;font-weight:700;color:var(--accent)}
@@ -156,7 +167,8 @@ function personCard(p, i) {
   const doms = Object.entries(p.domains).map(([k, v]) => `<span>${k} ${v}</span>`).join("");
   const tk = p.time_known === false
     ? ' <span class="badge">hour approximate</span>' : "";
-  return `<div class="pcard" data-i="${i}" title="open the full Reading 命书">
+  return `<div class="pcard elth-${(p.favourable || [])[0] || ""}${(p.favourable || [])[1]
+      ? " elth2-" + p.favourable[1] : ""}" data-i="${i}" title="open the full Reading 命书">
     <h3>${p.name}${tk}
       <span class="cardops">
         <button class="ic edit" data-i="${i}" title="rename">✏️</button>

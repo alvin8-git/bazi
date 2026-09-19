@@ -356,15 +356,15 @@ button.small { font-size: 12px; padding: 3px 10px; }
 .wtable td.wf-quiet b{color:#bbb}
 
 /* ===== Reading rework 2026-09-19: character card + tabs (design mockup readingMockup.html) ===== */
-.ccard{background:linear-gradient(160deg,#fffdf7,#f7f2e6);border:1px solid var(--line);
+.charcard{background:linear-gradient(160deg,#fffdf7,#f7f2e6);border:1px solid var(--line);
  border-radius:16px;padding:14px 14px 12px;margin:10px 0;box-shadow:0 1px 6px rgba(60,50,20,.07)}
-.ccard .who{display:flex;align-items:center;gap:12px}
-.ccard .gua{width:54px;height:54px;border-radius:14px;background:#2e4a2f;color:#fff;display:flex;
+.charcard .who{display:flex;align-items:center;gap:12px}
+.charcard .gua{width:54px;height:54px;border-radius:14px;background:#2e4a2f;color:#fff;display:flex;
  flex-direction:column;align-items:center;justify-content:center;font-weight:800;flex:none}
-.ccard .gua b{font-size:24px;line-height:1}.ccard .gua span{font-size:9.5px;font-weight:600;opacity:.85}
-.ccard .who h2{margin:0;font-size:18px;border:0;padding:0}
-.ccard .who .csub{font-size:12px;color:var(--muted)}
-.ccard .dmchip{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:8px;
+.charcard .gua b{font-size:24px;line-height:1}.charcard .gua span{font-size:9.5px;font-weight:600;opacity:.85}
+.charcard .who h2{margin:0;font-size:18px;border:0;padding:0}
+.charcard .who .csub{font-size:12px;color:var(--muted)}
+.charcard .dmchip{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:8px;
  padding:1px 8px;font-weight:700}
 .cstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 @media(max-width:520px){.cstats{grid-template-columns:repeat(2,1fr)}}
@@ -398,3 +398,25 @@ details.deep>.deepbody{padding:2px 11px 9px}
 .cmprow button{border:1px solid var(--line);background:var(--card);border-radius:9px;padding:6px 12px;
  font-size:12.5px;font-weight:700;color:var(--accent);cursor:pointer;font-family:inherit}
 .cmprow button.ghost{border-style:dashed;color:var(--muted)}
+
+/* ===== element-affinity themes (用神 favourable[0]) — light tints, ink text (contrast
+   checked: #22242a on the darkest tint #e8dcc0 ≈ 12:1; badge whites on badge colors ≥4.6:1) ===== */
+.charcard.elth-木, .pcard.elth-木{background:linear-gradient(160deg,#f3f9ef,#e2efd8);border-color:#b9d3ab}
+.charcard.elth-火, .pcard.elth-火{background:linear-gradient(160deg,#fdf1ec,#f9ded4);border-color:#e8c0b1}
+.charcard.elth-土, .pcard.elth-土{background:linear-gradient(160deg,#faf4e6,#f0e3c6);border-color:#d9c395}
+.charcard.elth-金, .pcard.elth-金{background:linear-gradient(160deg,#fbf9f1,#f4ecd4);border-color:#d6bf72}
+.charcard.elth-水, .pcard.elth-水{background:linear-gradient(160deg,#eff5fa,#dcE9f4);border-color:#b4cde2}
+/* accent border from favourable[1] */
+.charcard.elth2-木,.pcard.elth2-木{box-shadow:inset 0 0 0 2px rgba(63,135,70,.18)}
+.charcard.elth2-火,.pcard.elth2-火{box-shadow:inset 0 0 0 2px rgba(214,58,82,.15)}
+.charcard.elth2-土,.pcard.elth2-土{box-shadow:inset 0 0 0 2px rgba(138,84,16,.18)}
+.charcard.elth2-金,.pcard.elth2-金{box-shadow:inset 0 0 0 2px rgba(201,155,46,.25)}
+.charcard.elth2-水,.pcard.elth2-水{box-shadow:inset 0 0 0 2px rgba(48,89,168,.16)}
+/* 命卦 badge takes the element color */
+.charcard.elth-木 .gua{background:#3c7a44}.charcard.elth-火 .gua{background:#b03a3f}
+.charcard.elth-土 .gua{background:#7c5514}.charcard.elth-金 .gua{background:#9a7b1c}
+.charcard.elth-水 .gua{background:#31567e}
+/* clickable stat tiles */
+.cstat.go{cursor:pointer;transition:box-shadow .12s,border-color .12s}
+.cstat.go:hover,.cstat.go:focus{border-color:var(--accent);box-shadow:0 1px 5px rgba(120,50,30,.12)}
+.cstat .chev{float:right;color:var(--muted);font-weight:800}
