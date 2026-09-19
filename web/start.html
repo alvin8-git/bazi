@@ -39,6 +39,12 @@ button:disabled{opacity:.5;cursor:default}
 .pcard.elth2-土{box-shadow:inset 0 0 0 2px rgba(138,84,16,.18)}
 .pcard.elth2-金{box-shadow:inset 0 0 0 2px rgba(201,155,46,.25)}
 .pcard.elth2-水{box-shadow:inset 0 0 0 2px rgba(48,89,168,.16)}
+.share-sec{border:2px solid var(--accent);background:#fff8f0}
+.share-sec .st{font-weight:800;color:var(--accent)}
+.share-sec .kv2{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0}
+.share-sec .url{font-size:13px;background:#fff;border:1px solid var(--line);border-radius:8px;
+ padding:6px 10px;word-break:break-all;flex:1;min-width:200px}
+.share-sec #btn-copy{white-space:nowrap}
 .pcard h3{margin:0 0 4px;font-size:16px}
 .pz{display:inline-block;border:1px solid #ecd9cf;border-radius:7px;padding:2px 7px;
   margin:1px;font-size:16px;font-weight:700;color:var(--accent)}
@@ -128,10 +134,13 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
     <div class="err" id="add-err"></div>
   </div>
 
+  <div class="sec share-sec" id="share-sec" hidden>
+    <div class="share" id="share"></div>
+  </div>
+
   <div class="sec" id="people-sec" hidden>
     <h2>People 命盘 <span class="hint" id="pcount"></span></h2>
     <div class="people" id="people"></div>
-    <div class="share" id="share" hidden></div>
   </div>
 
   <div class="sec" id="harmony-sec" hidden>
@@ -214,7 +223,7 @@ function render() {
   $("#btn-add").disabled = ws.people.length >= ws.max_people;
   $("#add-title").textContent = "Add another person 再加一人";
   const url = `${location.origin}/w/${token}`;
-  $("#share").hidden = false;
+  $("#share-sec").hidden = false;
   $("#share").innerHTML = `<div class="st">🔗 Your private workspace link — save it,
       it IS your login</div>
     <div class="kv2"><span class="url" id="share-url">${url}</span>

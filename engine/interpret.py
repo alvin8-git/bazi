@@ -303,7 +303,7 @@ _PALACE_TMPL = {
     "year": "Roots & first impressions read as {god}: {meaning}",
     "month": "The career HQ is {god}-flavoured: {meaning} — the environment "
              "your working life grows in",
-    "day": "You sit on {god}: {meaning} — see the spouse-palace reading in §8",
+    "day": "You sit on {god}: {meaning} — see the spouse-palace reading (十神/婚戀)",
     "hour": "The fruit palace carries {god}: {meaning} — the flavour of "
             "children, students and late-life work",
 }
@@ -371,7 +371,7 @@ def four_palaces(chart, ys: dict) -> dict:
                  "state": ("natally OPEN 已開 — the storehouse works from "
                            "birth; accumulation compounds" if opener in branches
                            else f"present but sealed — it opens in {opener} "
-                           "years (the 財庫 vault years flagged in §13); "
+                           "years (the 財庫 vault years in the timing windows); "
                            "those are the accumulation windows")}
     else:
         vault = {"present": False, "element": w_el,
@@ -567,12 +567,12 @@ def interpret_person(chart, ys: dict, year: int) -> dict:
         paras.append("[§11] Where this chart's body keeps score: "
                      + "; ".join(parts)
                      + ". Balanced elements are not risk markers. Reference "
-                       "against the trigger years in §13, not medical advice.")
+                       "against the timing trigger years, not medical advice.")
     else:
         paras.append("[§11] All five elements sit in the balanced band — no "
                      "organ system is structurally flagged. Maintenance beats "
                      "intervention: seasonal food, regular sleep, and use the "
-                     "§13 recovery years for elective procedures.")
+                     "the timing-window recovery years for elective procedures.")
 
     cp = career_paths(chart, ys)
     t1, t2 = cp["top"][0], cp["top"][1]
