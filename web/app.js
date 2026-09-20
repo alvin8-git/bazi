@@ -1044,6 +1044,20 @@ const PANE_OF_SECTION = [[/Four Palaces|宫位|宮位/, "p1"], [/神煞/, "p1"],
    excludes 水平/火车/金额/土豆-style non-element words; skips svg/script. */
 const GOD_LIST = ["比肩", "劫財", "劫财", "食神", "傷官", "伤官", "正財", "正财",
   "偏財", "偏财", "正官", "七殺", "七杀", "正印", "偏印"];
+/* 用神 colour advice words painted in their own colour. 白 is NEVER white —
+   it would vanish on the light card tints — it gets ink + a thin chip instead. */
+const COLOUR_WORDS = { 红: "#c5221f", 紅: "#c5221f", 紫: "#7b3fa0",
+  黄: "#7d5800", 黃: "#7d5800", 棕: "#8a5a2b", 绿: "#17702f", 綠: "#17702f",
+  青: "#17702f", 蓝: "#1a56b0", 藍: "#1a56b0", 黑: "#22242a", 灰: "#4b5563",
+  金: "#7d5c00", 白: "#4b5563" };
+const COLOUR_EN = { red: "#c5221f", purple: "#7b3fa0", yellow: "#7d5800",
+  brown: "#8a5a2b", green: "#17702f", blue: "#1a56b0", black: "#22242a",
+  grey: "#4b5563", gray: "#4b5563", white: "#4b5563" };
+// only standalone colour words / dot-separated colour lists — never 明白, 黄金,
+// 青年, 红包, 黑马 … (a colour char followed or preceded by another CJK char)
+const CJK = "\u4e00-\u9fff";
+const COLOUR_RE = new RegExp(
+  `(?<![${CJK}])([红紅紫黄黃棕绿綠青蓝藍黑灰白金])(?![${CJK}])`, "g");
 const TG_GRP_EN = { 比劫: "peers", 印: "resource", 食傷: "output", 食伤: "output",
   財: "wealth", 财: "wealth", 官殺: "authority", 官杀: "authority" };
 function colorizeTerms(root, dm) {
@@ -1063,10 +1077,47 @@ function colorizeTerms(root, dm) {
       frag.appendChild(document.createTextNode(s.slice(last, m.index)));
       const el = m[1] ? godEl(dm, tgCanon(m[1])) : (EN2EL[m[0]] || m[0]);
       const b = document.createElement("b");
+      b.className = "tcol";
       b.style.color = EL_COL[el] || "";
       b.textContent = m[0];
       frag.appendChild(b);
       last = m.index + m[0].length;
+    }
+    frag.appendChild(document.createTextNode(s.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+  }
+}
+
+function colorizeColours(root) {
+  if (!root) return;
+  const enRe = new RegExp(`\\b(${Object.keys(COLOUR_EN).join("|")})\\b`, "gi");
+  const nodes = [];
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) => n.parentElement
+      && !n.parentElement.closest("script,style,svg,input,textarea,.nocolor,.tcol,.elb")
+      ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+  let t; while ((t = w.nextNode())) {
+    COLOUR_RE.lastIndex = 0; enRe.lastIndex = 0;
+    if (COLOUR_RE.test(t.nodeValue) || enRe.test(t.nodeValue)) nodes.push(t);
+  }
+  for (const node of nodes) {
+    const s = node.nodeValue, frag = document.createDocumentFragment();
+    const hits = [];
+    COLOUR_RE.lastIndex = 0; enRe.lastIndex = 0;
+    let m;
+    while ((m = COLOUR_RE.exec(s))) hits.push([m.index, m[0], COLOUR_WORDS[m[0]]]);
+    while ((m = enRe.exec(s))) hits.push([m.index, m[0], COLOUR_EN[m[0].toLowerCase()]]);
+    hits.sort((a, b) => a[0] - b[0]);
+    let last = 0;
+    for (const [idx, txt, col] of hits) {
+      if (idx < last) continue;                       // no overlapping repaint
+      frag.appendChild(document.createTextNode(s.slice(last, idx)));
+      const b = document.createElement("b");
+      b.className = "cw" + (/^(白|white)$/i.test(txt) ? " cw-white" : "");
+      b.style.color = col;
+      b.textContent = txt;
+      frag.appendChild(b);
+      last = idx + txt.length;
     }
     frag.appendChild(document.createTextNode(s.slice(last)));
     node.parentNode.replaceChild(frag, node);
@@ -1194,11 +1245,11 @@ async function renderPerson(name) {
           <small class="be2">Units are weighted character counts, not a tally of the eight
           characters: each stem 1.0, each branch's main hidden stem 1.0, each minor hidden
           stem 1/3 (total ${wtot.toFixed(1)}). The bracketed figure is that element's share.</small></div>
-        <div class="bars">${Object.entries(c.element_weights).map(([en, v]) => `
+        <div class="bars elbars">${Object.entries(c.element_weights).map(([en, v]) => `
           <div class="bar-row el-${EL_ZH[en]}"><span>${elb(EL_ZH[en])} ${en}</span>
             <div class="bar"><i style="width:${(100 * v / wmax).toFixed(0)}%"></i></div>
-            <b>${v.toFixed(1)} <small>(${(100 * v / wtot).toFixed(0)}%)</small>${EL_ZH[en] === dmEl
-              ? ' · <b class="dmtag">日主 Day Master</b>' : ""}</b></div>`).join("")}
+            <b>${v.toFixed(1)} <small>(${(100 * v / wtot).toFixed(0)}%)</small></b>${EL_ZH[en] === dmEl
+              ? '<span class="dmcell">· <b class="dmtag">日主 Day Master</b></span>' : '<span class="dmcell"></span>'}</div>`).join("")}
         </div>
         <div class="cite"><b>日主 ≠ 最多的五行。</b>日主是「我是谁」——只是日柱天干那一个字；
           上面的占比是「全盘由什么构成」。${dmEl} 占比低正说明${c.strength.verdict.startsWith("身弱")
@@ -1672,6 +1723,7 @@ async function renderPerson(name) {
     </div>`);
   applyReadingTabs($("#tab-person"));
   colorizeTerms($("#tab-person"), c.day_master);
+  colorizeColours($("#tab-person"));
 }
 
 /* ---------- House tab ---------- */

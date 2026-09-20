@@ -545,7 +545,22 @@ tr.wdetail td{background:#fbf8ef;font-size:12px;line-height:1.5}
  padding:0 4px;vertical-align:1px;white-space:nowrap}
 .bar-row b small{color:var(--muted);font-weight:600;font-size:11px}
 /* 五行 rows: value cell holds "1.0 (10%) · 日主 Day Master" on ONE line */
-.bars .bar-row:not(.tg-row2){grid-template-columns:96px 1fr auto}
-.bars .bar-row:not(.tg-row2)>b{white-space:nowrap;text-align:right}
-@media (max-width:720px){.bars .bar-row:not(.tg-row2){grid-template-columns:78px 1fr auto;
- font-size:12px}}
+/* ONE shared grid for the five element rows (rows are display:contents) so every
+   bar TRACK is identical; the 日主 tag sits in its own trailing column */
+.elbars{display:grid;grid-template-columns:96px 1fr 76px max-content;
+ gap:6px 8px;align-items:center}
+.elbars .bar-row{display:contents}
+.elbars .bar-row>b{white-space:nowrap;text-align:right}
+.elbars .dmcell{white-space:nowrap}
+/* phones: drop the tag onto its own line so the bar keeps full width */
+@media (max-width:720px){.elbars{grid-template-columns:70px 1fr 62px;font-size:12px;
+ gap:3px 8px}
+ .elbars .dmcell:empty{display:none}
+ .elbars .dmcell{grid-column:1/-1;justify-self:end;margin:-2px 0 2px}
+ .elbars .dmtag{font-size:9px;padding:0 3px}}
+
+/* colour-advice words painted in their own colour; 白 gets ink + a chip so it
+   never disappears against the light card tints or in print */
+.cw{font-weight:700}
+.cw-white{background:#fff;border:1px solid #d8d2c2;border-radius:4px;padding:0 3px;
+ -webkit-print-color-adjust:exact;print-color-adjust:exact}

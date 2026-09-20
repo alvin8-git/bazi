@@ -66,6 +66,9 @@ h2 small{color:var(--muted);font-weight:600;font-size:10px;margin-left:6px}
 .scorechip{display:inline-block;font-weight:800;font-size:11px;border-radius:7px;
   padding:0 7px;color:#fff;background:var(--fb,#b8860b);margin-left:5px;
   -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.cw{font-weight:700}
+.cw-white{background:#fff;border:1px solid #d8d2c2;border-radius:4px;padding:0 3px;
+ -webkit-print-color-adjust:exact;print-color-adjust:exact}
 .pitem{font-size:11.5px;margin:5px 0;padding:6px 9px;background:#f8f5ec;border-radius:8px;
   break-inside:avoid}
 .pitem.warn{background:#fdf1ec}
@@ -113,7 +116,7 @@ const be = (o) => `<small class="be">${esc(o.en)}</small>`;
 const elb = (e) => e ? `<span class="elb el-${e}">${e}</span>` : "";
 const STEM_EL = { 甲: "木", 乙: "木", 丙: "火", 丁: "火", 戊: "土", 己: "土",
   庚: "金", 辛: "金", 壬: "水", 癸: "水" };
-const EL_COL = { 木: "#1e8e3e", 火: "#c5221f", 土: "#8a6d1f", 金: "#a67c00", 水: "#1a56b0" };
+const EL_COL = { 木: "#1e8e3e", 火: "#c5221f", 土: "#8a6d1f", 金: "#7d5c00", 水: "#1a56b0" };
 const ZODIAC = { 鼠: ["🐭", "Rat"], 牛: ["🐮", "Ox"], 虎: ["🐯", "Tiger"], 兔: ["🐰", "Rabbit"],
   龙: ["🐲", "Dragon"], 蛇: ["🐍", "Snake"], 马: ["🐴", "Horse"], 羊: ["🐑", "Goat"],
   猴: ["🐵", "Monkey"], 鸡: ["🐔", "Rooster"], 狗: ["🐶", "Dog"], 猪: ["🐷", "Pig"],
@@ -129,6 +132,47 @@ const elthBg = (el) => ELTH[el]
   : "";
 const BAND_COL = (s) => s >= 70 ? ["#1e7d32", "#e9f7ee"] : s >= 55 ? ["#5f8a3e", "#eef3e3"]
   : s >= 45 ? ["#b8860b", "#faf3dd"] : ["#b03a2e", "#fdecea"];
+const COLOUR_WORDS = { 红: "#c5221f", 紅: "#c5221f", 紫: "#7b3fa0", 黄: "#7d5800",
+  黃: "#7d5800", 棕: "#8a5a2b", 绿: "#17702f", 綠: "#17702f", 青: "#17702f",
+  蓝: "#1a56b0", 藍: "#1a56b0", 黑: "#22242a", 灰: "#4b5563", 金: "#7d5c00",
+  白: "#4b5563" };                              // 白 = ink + chip, never white
+const COLOUR_EN = { red: "#c5221f", purple: "#7b3fa0", yellow: "#7d5800",
+  brown: "#8a5a2b", green: "#17702f", blue: "#1a56b0", black: "#22242a",
+  grey: "#4b5563", gray: "#4b5563", white: "#4b5563" };
+const CJK = "\u4e00-\u9fff";
+function colorizeColoursRep(root) {             // standalone colour words only
+  const zhRe = new RegExp(`(?<![${CJK}])([红紅紫黄黃棕绿綠青蓝藍黑灰白金])(?![${CJK}])`, "g");
+  const enRe = new RegExp(`\\b(${Object.keys(COLOUR_EN).join("|")})\\b`, "gi");
+  const nodes = [];
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) => n.parentElement
+      && !n.parentElement.closest("script,style,svg,.elb,.tcol,.nocolor")
+      ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+  let t; while ((t = w.nextNode())) {
+    zhRe.lastIndex = 0; enRe.lastIndex = 0;
+    if (zhRe.test(t.nodeValue) || enRe.test(t.nodeValue)) nodes.push(t);
+  }
+  for (const node of nodes) {
+    const s = node.nodeValue, frag = document.createDocumentFragment(), hits = [];
+    zhRe.lastIndex = 0; enRe.lastIndex = 0;
+    let m;
+    while ((m = zhRe.exec(s))) hits.push([m.index, m[0], COLOUR_WORDS[m[0]]]);
+    while ((m = enRe.exec(s))) hits.push([m.index, m[0], COLOUR_EN[m[0].toLowerCase()]]);
+    hits.sort((a, b) => a[0] - b[0]);
+    let last = 0;
+    for (const [idx, txt, col] of hits) {
+      if (idx < last) continue;
+      frag.appendChild(document.createTextNode(s.slice(last, idx)));
+      const b = document.createElement("b");
+      b.className = "cw" + (/^(白|white)$/i.test(txt) ? " cw-white" : "");
+      b.style.color = col; b.textContent = txt;
+      frag.appendChild(b); last = idx + txt.length;
+    }
+    frag.appendChild(document.createTextNode(s.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+  }
+}
+
 function colorizeRep(root) {                    // element mentions in running text
   const re = /(木|火(?!车|車)|土(?!豆)|金(?!额|額)|水(?!平|准|準))|\b(Wood|Fire|Earth|Metal|Water)\b/g;
   const EN2EL = { Wood: "木", Fire: "火", Earth: "土", Metal: "金", Water: "水" };
@@ -144,6 +188,7 @@ function colorizeRep(root) {                    // element mentions in running t
     while ((m = re.exec(s))) {
       frag.appendChild(document.createTextNode(s.slice(last, m.index)));
       const b = document.createElement("b");
+      b.className = "tcol";
       b.style.color = EL_COL[EN2EL[m[0]] || m[0]] || "";
       b.textContent = m[0];
       frag.appendChild(b);
@@ -274,6 +319,7 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
       <div class="foot">${esc(d.source_ref)} · 明细相加与主表分数完全一致 the component table sums exactly to
         the harmony-matrix score · bazifor.me/w/${esc(token).slice(0, 3)}····</div>`;
     colorizeRep(rep);
+    colorizeColoursRep(rep);
     fetch("/api/pub/version", {cache: "no-store"}).then((r) => r.json())
       .then((v) => { const el = document.getElementById("verline");
         if (el && v && v.version) el.textContent = ` · v ${v.version}`; })
