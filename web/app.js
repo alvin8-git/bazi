@@ -1195,10 +1195,10 @@ async function renderPerson(name) {
           characters: each stem 1.0, each branch's main hidden stem 1.0, each minor hidden
           stem 1/3 (total ${wtot.toFixed(1)}). The bracketed figure is that element's share.</small></div>
         <div class="bars">${Object.entries(c.element_weights).map(([en, v]) => `
-          <div class="bar-row el-${EL_ZH[en]}"><span>${elb(EL_ZH[en])} ${en}${EL_ZH[en] === dmEl
-            ? ' <b class="dmtag">日主 Day Master</b>' : ""}</span>
+          <div class="bar-row el-${EL_ZH[en]}"><span>${elb(EL_ZH[en])} ${en}</span>
             <div class="bar"><i style="width:${(100 * v / wmax).toFixed(0)}%"></i></div>
-            <b>${v.toFixed(1)} <small>(${(100 * v / wtot).toFixed(0)}%)</small></b></div>`).join("")}
+            <b>${v.toFixed(1)} <small>(${(100 * v / wtot).toFixed(0)}%)</small>${EL_ZH[en] === dmEl
+              ? ' · <b class="dmtag">日主 Day Master</b>' : ""}</b></div>`).join("")}
         </div>
         <div class="cite"><b>日主 ≠ 最多的五行。</b>日主是「我是谁」——只是日柱天干那一个字；
           上面的占比是「全盘由什么构成」。${dmEl} 占比低正说明${c.strength.verdict.startsWith("身弱")
