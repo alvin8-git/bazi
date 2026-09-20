@@ -973,8 +973,9 @@ function charCard(c, name) {
         <div class="csub"><div class="csub1">
           <span class="dmchip" style="color:${EL_COL[STEM_EL[c.day_master]]}">${c.day_master} ${ELEMENT_ZH_OF_STEM(c.day_master)} ${EL_EN[STEM_EL[c.day_master]] || ""}</span>
           ${c.strength.verdict} <b>${c.strength.score}</b></div>
-        ${c.life_palaces ? (() => { const a = c.life_palaces.animal, z = ZODIAC[a] || ["", ""];
-          return `<div class="csub2">生肖 ${a} ${z[1]} · 命宮 ${c.life_palaces.ming_gong} life palace</div>`; })() : ""}</div></div></div>
+        ${c.life_palaces ? (() => { const a = c.life_palaces.animal, z = ZODIAC[a] || ["", a];
+          return `<div class="csub2"><b class="gf">生肖</b> ${z[0]} ${z[1]} ·
+            <b class="gf">命宮</b> ${c.life_palaces.ming_gong} life palace</div>`; })() : ""}</div></div></div>
     <div class="cstats">
       ${tile("用神 medicine", fav.map((e) => elb(e)).join(" ") + ` <small>${cols}</small>`,
         "", "p5|用神")}
@@ -1039,6 +1040,8 @@ const PANE_OF_SECTION = [[/Four Palaces|宫位|宮位/, "p1"], [/神煞/, "p1"],
    excludes 水平/火车/金额/土豆-style non-element words; skips svg/script. */
 const GOD_LIST = ["比肩", "劫財", "劫财", "食神", "傷官", "伤官", "正財", "正财",
   "偏財", "偏财", "正官", "七殺", "七杀", "正印", "偏印"];
+const TG_GRP_EN = { 比劫: "peers", 印: "resource", 食傷: "output", 食伤: "output",
+  財: "wealth", 财: "wealth", 官殺: "authority", 官杀: "authority" };
 function colorizeTerms(root, dm) {
   if (!root) return;
   const re = new RegExp(`(${GOD_LIST.join("|")})|(木|火(?!车|車)|土(?!豆)|金(?!额|額)|水(?!平|准|準))|\\b(Wood|Fire|Earth|Metal|Water)\\b`, "g");
@@ -1212,6 +1215,22 @@ async function renderPerson(name) {
         <span class="tag">support ratio ${c.strength.support_ratio}%</span>
         <span class="tag">root mass ${c.strength.root_ratio}%</span>
         <span class="tag">${c.strength.formation.status}</span></p>
+      ${(() => {                                    // 帮扶 vs 克泄耗 breakdown bars
+        const pt = c.strength.parts;
+        if (!pt) return "";
+        const wmax = Math.max(...pt.groups.map((g) => g.w)) || 1;
+        const row = (g) => `<div class="sbrow">
+          <span class="sbl">${g.zh} <small>${TG_GRP_EN[g.zh] || ""} · ${g.el}</small></span>
+          <div class="sbar ${g.side}"><i style="width:${(g.w / wmax * 100).toFixed(0)}%;background:${EL_COL[g.el]}"></i></div>
+          <b class="sbv">${g.side === "support" ? "+" : "−"}${g.w}</b></div>`;
+        return `<div class="sbwrap">
+          <div class="sbhead">帮扶 supporting (同类) vs 克泄耗 draining (异类) — the score's own numbers</div>
+          ${pt.groups.map(row).join("")}
+          <div class="cite" style="margin-top:5px">score = 得令 ${pt.season_pts > 0 ? "+" : ""}${pt.season_pts}
+            (季节 season) + 2 × (帮扶 ${pt.support} − 克泄耗 ${pt.drain}) / 总量 ${pt.total}
+            + 通根 ${pt.root_pts > 0 ? "+" : ""}${pt.root_pts} (roots) =
+            <b>${c.strength.score}</b> → ${c.strength.verdict}</div></div>`;
+      })()}
       ${deepWrap("How the verdict is derived — formation check + the 4 steps",
         `<div class="cite">Formation check: ${c.strength.formation.detail}. Support ratio =
         share of the chart feeding the Day Master; root mass = share of hidden stems
@@ -1220,6 +1239,10 @@ async function renderPerson(name) {
       ${stb(2)}${narr(2)}${lg(2)}
     </div>
     <div class="section"><h3>十神 Ten Gods 十神全览</h3>
+      <div class="cite" style="margin:0 0 6px">十神的五行因人而异——同一个神对不同日主属不同五行，
+        所以颜色随每个人的命盘而变。 Each god's element depends on the DAY MASTER (正官 is
+        "the element that controls it") — the same god can be a different colour on a
+        family member's page, and that is correct, not a bug.</div>
       <div class="cite" style="margin:0 0 8px">How the chart's energy is divided
         among the ten archetypes (weighted count of visible + hidden stems — the raw
         pillar data is collapsed below). Where the chart is heavy shows where life's attention

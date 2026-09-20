@@ -167,6 +167,19 @@ def analyze(chart: Chart) -> None:
         "support_ratio": round(100 * support_ratio, 1),
         "root_ratio": round(100 * root_w / total, 1),
         "formation": formation,
+        # numeric parts of the SAME arithmetic above, for the UI breakdown bars
+        "parts": {
+            "season_pts": season_pts, "root_pts": root_pts,
+            "support": round(support, 2), "drain": round(drain, 2),
+            "total": round(total, 2),
+            "groups": [
+                {"zh": "比劫", "el": dm_el, "w": round(w[dm_el], 2), "side": "support"},
+                {"zh": "印", "el": SHENG_REV[dm_el], "w": round(w[SHENG_REV[dm_el]], 2), "side": "support"},
+                {"zh": "食傷", "el": SHENG[dm_el], "w": round(w[SHENG[dm_el]], 2), "side": "drain"},
+                {"zh": "財", "el": KE[dm_el], "w": round(w[KE[dm_el]], 2), "side": "drain"},
+                {"zh": "官殺", "el": officer_el, "w": round(w[officer_el], 2), "side": "drain"},
+            ],
+        },
         "steps": [
             {"step": 1, "name": "Season 得令", "value": season_state,
              "detail": f"month branch {p['month'].branch} is {ELEMENT_EN[month_el]}; "
