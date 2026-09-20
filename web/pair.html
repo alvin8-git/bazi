@@ -47,6 +47,20 @@ h2 small{color:var(--muted);font-weight:600;font-size:10px;margin-left:6px}
   font-size:8px;color:var(--muted)}
 .frame3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 @media(max-width:560px){.frame3{grid-template-columns:1fr}}
+.elb{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;
+  border-radius:50%;border:1.5px solid;font-size:10.5px;font-weight:700;margin:0 2px;
+  vertical-align:-3px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.elb.el-木{color:#1e8e3e;border-color:#1e8e3e;background:#e9f7ee}
+.elb.el-火{color:#c5221f;border-color:#c5221f;background:#fdecea}
+.elb.el-土{color:#8a6d1f;border-color:#8a6d1f;background:#f6efdc}
+.elb.el-金{color:#a67c00;border-color:#c9a227;background:#faf3dd}
+.elb.el-水{color:#1a56b0;border-color:#1a56b0;background:#e8f0fe}
+.frame3 .pitem{border-left:4px solid var(--fb,#b8860b);
+  background:var(--fbg,#faf3dd) !important;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.scorechip{display:inline-block;font-weight:800;font-size:11px;border-radius:7px;
+  padding:0 7px;color:#fff;background:var(--fb,#b8860b);margin-left:5px;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
 .pitem{font-size:11.5px;margin:5px 0;padding:6px 9px;background:#f8f5ec;border-radius:8px;
   break-inside:avoid}
 .pitem.warn{background:#fdf1ec}
@@ -90,6 +104,11 @@ const token = m && m[1], A = m && m[2], B = m && m[3];
 document.getElementById("back").href = `/w/${token}`;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const be = (o) => `<small class="be">${esc(o.en)}</small>`;
+const elb = (e) => e ? `<span class="elb el-${e}">${e}</span>` : "";
+const STEM_EL = { 甲: "木", 乙: "木", 丙: "火", 丁: "火", 戊: "土", 己: "土",
+  庚: "金", 辛: "金", 壬: "水", 癸: "水" };
+const BAND_COL = (s) => s >= 70 ? ["#1e7d32", "#e9f7ee"] : s >= 55 ? ["#5f8a3e", "#eef3e3"]
+  : s >= 45 ? ["#b8860b", "#faf3dd"] : ["#b03a2e", "#fdecea"];
 
 function gauge(score) {                       // band zones + marker, inline SVG
   const x = 20 + (score / 100) * 320;
@@ -125,7 +144,8 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
     ]);
     const pa = ws.people[A] || {}, pb = ws.people[B] || {};
     const idc = (p, n) => `<div class="idchip"><b>${esc(n)}</b>
-      <div class="sub">日主 ${p.day_master || "—"} · 生肖 ${p.animal || "—"} · ${esc(p.strength || "")}</div></div>`;
+      <div class="sub">日主 ${p.day_master || "—"}${elb(STEM_EL[p.day_master])} ·
+        生肖 ${p.animal || "—"} · ${esc(p.strength || "")}</div></div>`;
     const cls = (dl) => dl > 0 ? "pos" : dl < 0 ? "neg" : "neu";
     const rows = d.arithmetic.map((r) => `<tr>
       <td>${esc(r.label.zh)}${be(r.label)}</td>
@@ -138,24 +158,24 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
         .map(([who, r]) => `<tr><td class="nb">${esc(who)}</td><td class="nb"><b>${r.god}</b></td>
           <td>${esc(r.zh)}${be(r)}</td></tr>`).join("")}</table>`;
     // strengths + frictions merged: one factor-detail table in component order
-    const act = (s) => {                       // action = the practical clause
-      const seg = s.explanation.zh.split("——");
-      return seg.length > 1 ? seg[seg.length - 1] : "顺势而为，多共处即可";
-    };
+    const lmap = {};                            // ledger label → element (for badges)
+    d.arithmetic.forEach((r) => { if (r.element) lmap[r.label.zh] = r.element; });
+    const fbadge = (lbl) => elb(lmap[lbl.zh]);
     const rowsS = d.strengths.map((s) => ({
       cite: s.source_ref,
-      f: `<b class="pos">+${s.delta}</b> ${esc(s.chip_label.zh)}${be(s.chip_label)}`,
+      f: `<b class="pos">+${s.delta}</b> ${fbadge(s.chip_label)}${esc(s.chip_label.zh)}${be(s.chip_label)}`,
       why: `${esc(s.explanation.zh)}${be(s.explanation)}`,
-      how: `✓ ${esc(act(s))}`,
+      how: s.action ? `✓ ${esc(s.action.zh)}<small class="be">${esc(s.action.en)}</small>`
+                    : `✓ ${esc(s.explanation.zh.split("——").pop())}`,
     }));
     const rowsF = d.frictions.map((f) => ({
       cite: f.source_ref,
-      f: `<b class="neg">${f.delta}</b> ${esc(f.chip_label.zh)}${be(f.chip_label)}`,
+      f: `<b class="neg">${f.delta}</b> ${fbadge(f.chip_label)}${esc(f.chip_label.zh)}${be(f.chip_label)}`,
       why: `${esc(f.element.why.zh)}（${esc(f.mechanism)}）${be(f.element.why)}`,
-      how: `<div>五行: <b>${esc(f.element.zh)}</b>${f.element.colour_material ? " — " + esc(f.element.colour_material) : ""}${f.element.direction ? " · " + esc(f.element.direction) : ""}</div>
-            <div>策略: ${esc(f.behaviour.zh)}</div>
-            <div>时机: ${esc(f.timing.zh)}</div>
-            <small class="be">${esc(f.behaviour.en)}</small>`,
+      how: `<div>五行: ${elb(f.element.zh.length === 1 ? f.element.zh : "")}<b>${esc(f.element.zh)}</b>${f.element.colour_material ? " — " + esc(f.element.colour_material) : ""}${f.element.direction ? " · " + esc(f.element.direction) : ""}
+              <small class="be">${esc(f.element.why.en)}</small></div>
+            <div>策略: ${esc(f.behaviour.zh)}<small class="be">${esc(f.behaviour.en)}</small></div>
+            <div>时机: ${esc(f.timing.zh)}<small class="be">${esc(f.timing.en)}</small></div>`,
     }));
     const factorRows = [...rowsS, ...rowsF];
     const factorTable = factorRows.length ? `<table class="dtable">
@@ -187,11 +207,19 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
       ${factorTable}
       ${sweep}
       <h2>三种关系视角 <small>the same pair, three framings</small></h2>
-      <div class="frame3">
-        <div class="pitem"><b>家人 Family</b> ${esc(d.framing.family.zh)}${be(d.framing.family)}</div>
-        <div class="pitem"><b>夫妻 Couple</b> ${esc(d.framing.couple.zh)}${be(d.framing.couple)}</div>
-        <div class="pitem"><b>同事 Colleagues</b> ${esc(d.framing.colleagues.zh)}${be(d.framing.colleagues)}</div>
-      </div>
+      ${(() => {
+        const [fb, fbg] = BAND_COL(d.score);
+        const card = (t, o) => `<div class="pitem" style="--fb:${fb};--fbg:${fbg}">
+          <b>${t}</b><span class="scorechip" style="--fb:${fb}">${d.score} ${esc(d.band.zh)}</span><br>
+          ${esc(o.zh)}${be(o)}</div>`;
+        return `<div class="frame3">
+          ${card("家人 Family", d.framing.family)}
+          ${card("夫妻 Couple", d.framing.couple)}
+          ${card("同事 Colleagues", d.framing.colleagues)}
+        </div>
+        <div class="cite2">三个视角共用同一总分，仅措辞不同 · the three framings share the one
+          frozen score — per-context sub-scores are a proposed v2 item</div>`;
+      })()}
       <div class="foot">${esc(d.source_ref)} · 明细相加与主表分数完全一致 the component table sums exactly to
         the harmony-matrix score · bazifor.me/w/${esc(token).slice(0, 3)}····</div>`;
   } catch (e) { rep.innerHTML = `<b>could not load this pair</b> — ${esc(e.message)}`; }
