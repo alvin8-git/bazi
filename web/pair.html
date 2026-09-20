@@ -1,0 +1,171 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>合婚配对报告 Pair Compatibility Report — bazifor.me</title>
+<style>
+:root{--bg:#f6f2ea;--card:#fffdf7;--ink:#22242a;--muted:#8b8f9a;--line:#e4ddcc;
+  --accent:#a63d2f;--gold:#8a6d00;--good:#1e7d32;--bad:#b03a2e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.5 system-ui,"Noto Sans SC","PingFang SC",sans-serif}
+.page{max-width:760px;margin:0 auto;padding:18px 16px 60px}
+.report{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:22px 24px;box-shadow:0 1px 8px rgba(60,50,20,.08)}
+.rhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
+  border-bottom:2px solid var(--gold);padding-bottom:10px;margin-bottom:12px}
+.rhead h1{margin:0;font-size:19px;color:var(--accent)}
+.rhead h1 small{display:block;font-size:11px;color:var(--gold);font-weight:600}
+.rmeta{text-align:right;font-size:10.5px;color:var(--muted)}
+.idrow{display:flex;gap:10px;margin:10px 0}
+.idchip{flex:1;background:#f8f5ec;border:1px solid var(--line);border-radius:10px;
+  padding:8px 12px;font-size:12.5px}
+.idchip b{font-size:15px}
+.idchip .sub{color:var(--muted);font-size:11px}
+.vs{align-self:center;font-weight:800;color:var(--gold)}
+h2{font-size:13px;color:var(--gold);margin:16px 0 6px;border-bottom:1px solid var(--line);
+  padding-bottom:3px}
+h2 small{color:var(--muted);font-weight:600;font-size:10px;margin-left:6px}
+.be{display:block;color:var(--muted);font-size:9.5px;line-height:1.3}
+.gauge{margin:6px 0 2px}
+.ctable{width:100%;border-collapse:collapse;font-size:12px}
+.ctable th{font-size:10px;color:var(--muted);text-align:left;font-weight:600;
+  padding:2px 6px;border-bottom:1px solid var(--line)}
+.ctable td{padding:4px 6px;border-bottom:1px solid #efe9da;vertical-align:middle}
+.ctable td.pts{text-align:right;font-weight:800;width:40px;white-space:nowrap}
+.ctable .pos{color:var(--good)}.ctable .neg{color:var(--bad)}.ctable .neu{color:var(--muted)}
+.ctable .tot td{font-weight:800;border-top:2px solid var(--line);border-bottom:none}
+.rng{width:120px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px}
+@media(max-width:560px){.two{grid-template-columns:1fr}}
+.pitem{font-size:11.5px;margin:5px 0;padding:6px 9px;background:#f8f5ec;border-radius:8px;
+  break-inside:avoid}
+.pitem.warn{background:#fdf1ec}
+.cite2{font-size:8.5px;color:var(--muted);margin-top:2px}
+.frame3 .pitem{background:#f4f1ea}
+details{margin:8px 0}summary{font-size:11.5px;font-weight:700;cursor:pointer;color:var(--muted)}
+.toolbar{display:flex;gap:10px;margin:0 0 12px}
+.toolbar a,.toolbar button{font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;
+  border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 14px;
+  color:var(--accent);text-decoration:none}
+.foot{font-size:9px;color:var(--muted);margin-top:12px;border-top:1px solid var(--line);
+  padding-top:6px}
+@media print{
+  body{background:#fff;font-size:9.5px;line-height:1.35}
+  .page{max-width:none;padding:0}
+  .report{border:none;box-shadow:none;border-radius:0;padding:0 1mm}
+  .toolbar,details{display:none}
+  .pitem{padding:2px 5px;margin:2px 0;background:#f6f3ec !important;border-radius:4px;
+    font-size:9px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .cite2{font-size:7px}.be{font-size:7.5px;line-height:1.2}
+  h2{margin:5px 0 2px;font-size:10.5px;padding-bottom:1px}
+  .rhead{padding-bottom:5px;margin-bottom:5px}.rhead h1{font-size:15px}
+  .idrow{margin:5px 0}.idchip{padding:3px 8px;font-size:10px}.idchip b{font-size:12px}
+  .ctable{font-size:9.5px}.ctable td{padding:1.5px 5px}
+  .rng{width:90px}.gauge{max-height:38px}
+  .two{gap:2px 10px}
+  .foot{margin-top:5px;padding-top:3px}
+  @page{size:A4;margin:9mm}
+}
+</style></head><body>
+<div class="page">
+  <div class="toolbar"><a id="back" href="#">← 返回 workspace</a>
+    <button onclick="print()">🖨 打印 Print</button></div>
+  <div class="report" id="rep">loading…</div>
+</div>
+<script>
+const m = location.pathname.match(/^\/w\/([^/]+)\/pair\/(\d+)\/(\d+)/);
+const token = m && m[1], A = m && m[2], B = m && m[3];
+document.getElementById("back").href = `/w/${token}`;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const be = (o) => `<small class="be">${esc(o.en)}</small>`;
+
+function gauge(score) {                       // band zones + marker, inline SVG
+  const x = 20 + (score / 100) * 320;
+  const zone = (a, b, c) => `<rect x="${20 + a * 3.2}" y="22" width="${(b - a) * 3.2}" height="10" fill="${c}"/>`;
+  return `<svg viewBox="0 0 360 52" class="gauge" role="img" aria-label="score ${score} of 100">
+    ${zone(0, 45, "#f3d8cf")}${zone(45, 55, "#efe6cf")}${zone(55, 70, "#e3e8cf")}${zone(70, 100, "#cfe3cf")}
+    <text x="21" y="18" font-size="8" fill="#8b8f9a">0 需磨合</text>
+    <text x="164" y="18" font-size="8" fill="#8b8f9a">45 中</text>
+    <text x="196" y="46" font-size="8" fill="#8b8f9a">55 中上</text>
+    <text x="244" y="18" font-size="8" fill="#8b8f9a">70 上等</text>
+    <text x="340" y="18" font-size="8" fill="#8b8f9a" text-anchor="end">100</text>
+    <line x1="${x}" y1="18" x2="${x}" y2="36" stroke="#a63d2f" stroke-width="2"/>
+    <circle cx="${x}" cy="27" r="6" fill="#a63d2f"/>
+    <text x="${x}" y="30" font-size="7" fill="#fff" text-anchor="middle" font-weight="700">${score}</text>
+  </svg>`;
+}
+function rangeBar(delta) {                    // zero-axis reference-range strip
+  const MAX = 15, w = Math.min(Math.abs(delta), MAX) / MAX * 55;
+  const bar = delta > 0 ? `<rect x="60" y="4" width="${w}" height="8" rx="2" fill="#1e7d32"/>`
+    : delta < 0 ? `<rect x="${60 - w}" y="4" width="${w}" height="8" rx="2" fill="#b03a2e"/>`
+    : `<circle cx="60" cy="8" r="3" fill="#b9b4a6"/>`;
+  return `<svg viewBox="0 0 120 16" class="rng" role="img" aria-label="${delta} points">
+    <line x1="60" y1="1" x2="60" y2="15" stroke="#d8d2c2" stroke-width="1"/>
+    <line x1="4" y1="8" x2="116" y2="8" stroke="#eee8d9" stroke-width="1"/>${bar}</svg>`;
+}
+
+(async () => {
+  const rep = document.getElementById("rep");
+  try {
+    const [d, ws] = await Promise.all([
+      fetch(`/api/pub/w/${token}/pair?a=${A}&b=${B}`).then((r) => { if (!r.ok) throw Error(r.status); return r.json(); }),
+      fetch(`/api/pub/w/${token}`).then((r) => r.json()),
+    ]);
+    const pa = ws.people[A] || {}, pb = ws.people[B] || {};
+    const idc = (p, n) => `<div class="idchip"><b>${esc(n)}</b>
+      <div class="sub">日主 ${p.day_master || "—"} · 生肖 ${p.animal || "—"} · ${esc(p.strength || "")}</div></div>`;
+    const cls = (dl) => dl > 0 ? "pos" : dl < 0 ? "neg" : "neu";
+    const rows = d.arithmetic.map((r) => `<tr>
+      <td>${esc(r.label.zh)}${be(r.label)}</td>
+      <td>${rangeBar(r.delta)}</td>
+      <td class="pts ${cls(r.delta)}">${r.delta > 0 ? "+" : ""}${r.delta}</td></tr>`).join("");
+    const strengths = d.strengths.length ? d.strengths.map((s) => `<div class="pitem">✓
+        <b>${esc(s.chip_label.zh)}</b> (+${s.delta})<br>${esc(s.explanation.zh)}${be(s.explanation)}
+        <div class="cite2">${esc(s.source_ref)}</div></div>`).join("")
+      : `<div class="pitem">此配对无已计分的相合项——参考四柱互动与十神互看。
+         <small class="be">no scored bonds — see the pillar sweep and mutual reading</small></div>`;
+    const frictions = d.frictions.length ? d.frictions.map((f) => `<div class="pitem warn">⚠
+        <b>${esc(f.chip_label.zh)}</b> (${f.delta}) · ${esc(f.mechanism)}
+        <div>五行 <b>${esc(f.element.zh)} ${esc(f.element.en)}</b> — ${esc(f.element.why.zh)}
+          ${f.element.colour_material ? `（${esc(f.element.colour_material)}${f.element.direction ? " · " + esc(f.element.direction) : ""}）` : ""}${be(f.element.why)}</div>
+        <div>策略 <b>${esc(f.behaviour.axis)}</b> — ${esc(f.behaviour.zh)}<br><small class="be">${esc(f.behaviour.en)}</small></div>
+        <div>时机 — ${esc(f.timing.zh)}<br><small class="be">${esc(f.timing.en)}</small></div>
+        <div class="cite2">${esc(f.source_ref)}</div></div>`).join("")
+      : `<div class="pitem">无已计分的摩擦项。<small class="be">no scored frictions in this pair</small></div>`;
+    const see = (who, r) => `<div class="pitem">${esc(who)}: <b>${r.god}</b> — ${esc(r.zh)}${be(r)}</div>`;
+    const sweep = d.pillar_sweep.length ? `<details><summary>四柱全盘互动 full pillar sweep（描述性，不计分 · 打印时省略）</summary>
+      ${d.pillar_sweep.map((p) => `<div class="pitem">${esc(p.meaning.zh)}
+        （${p.branch_a}${p.branch_b} ${esc(p.relation.zh)}${p.already_scored ? " · 已计分" : ""}）
+        <small class="be">${esc(p.meaning.en)}</small></div>`).join("")}</details>` : "";
+    rep.innerHTML = `
+      <div class="rhead"><h1>合婚配对报告<small>Pair Compatibility Report · bazifor.me</small></h1>
+        <div class="rmeta">${new Date().toISOString().slice(0, 10)}<br>deterministic · every number cites its rule</div></div>
+      <div class="idrow">${idc(pa, d.a)}<div class="vs">✕</div>${idc(pb, d.b)}</div>
+      <h2>总评 <small>overall reading</small></h2>
+      ${gauge(d.score)}
+      <div style="font-size:12.5px"><b>${d.score}/100 · ${esc(d.band.zh)}</b> <small class="be">${esc(d.band.en)}</small></div>
+      <h2>成分明细 <small>component table — each factor against its reference range</small></h2>
+      <table class="ctable"><tr><th>因素 factor</th><th>范围 range (−15 ⟵ 0 ⟶ +15)</th><th>分 pts</th></tr>
+        <tr><td>基础分 <small class="be">baseline</small></td><td>${rangeBar(0)}</td><td class="pts neu">50</td></tr>
+        ${rows}
+        <tr class="tot"><td>总分（5–95 区间）<small class="be">total, clamped</small></td><td></td>
+          <td class="pts">${d.score}</td></tr></table>
+      <div class="two">
+        <div><h2>相互看对方 <small>how they see each other</small></h2>
+          ${see(`${d.a} 眼中的 ${d.b}`, d.relation.a_sees_b)}
+          ${see(`${d.b} 眼中的 ${d.a}`, d.relation.b_sees_a)}
+          <h2>为什么相配 <small>why compatible</small></h2>${strengths}</div>
+        <div><h2>化解与策略 <small>remedies &amp; strategies</small></h2>${frictions}</div>
+      </div>
+      ${sweep}
+      <h2>三种关系视角 <small>the same pair, three framings</small></h2>
+      <div class="two frame3">
+        <div class="pitem"><b>家人 Family</b><br>${esc(d.framing.family.zh)}${be(d.framing.family)}</div>
+        <div class="pitem"><b>夫妻 Couple</b><br>${esc(d.framing.couple.zh)}${be(d.framing.couple)}</div>
+        <div class="pitem"><b>同事 Colleagues</b><br>${esc(d.framing.colleagues.zh)}${be(d.framing.colleagues)}</div>
+      </div>
+      <div class="foot">${esc(d.source_ref)} · 明细相加与主表分数完全一致 the component table sums exactly to
+        the harmony-matrix score · bazifor.me/w/${esc(token).slice(0, 3)}····</div>`;
+  } catch (e) { rep.innerHTML = `<b>could not load this pair</b> — ${esc(e.message)}`; }
+})();
+</script></body></html>

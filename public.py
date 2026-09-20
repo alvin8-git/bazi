@@ -315,6 +315,15 @@ def person_reading_page(token: str, idx: int):
     return FileResponse(ROOT / "web/reading.html")
 
 
+@router.get("/w/{token}/pair/{a}/{b}")
+def pair_report_page(token: str, a: int, b: int):
+    ws = _load(token)
+    n = len(ws["people"])
+    if not (0 <= a < n and 0 <= b < n) or a == b:
+        raise HTTPException(404, "no such pair")
+    return FileResponse(ROOT / "web/pair.html")
+
+
 @router.get("/w/{token}/person/{idx}/report")
 def person_report(token: str, idx: int):
     """The full strategy report — same composition the family reports use."""
