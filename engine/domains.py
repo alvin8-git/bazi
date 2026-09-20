@@ -49,7 +49,35 @@ def personality_axes(chart) -> list[dict]:
          "contained" if r >= .25 and e < .1 else "no strong tendency",
          f"比劫 {b:.0%}; 印 {r:.0%} with 食傷 {e:.0%}"),
     ]
-    return [{"axis": ax, "verdict": v, "basis": basis} for ax, v, basis in axes]
+    # Quantitative display layer (2026-09-20): the SAME rules above, with the
+    # driving percentages and which pole the verdict landed on. No new logic —
+    # several axes are two-metric (the rule compares two shares), so we expose
+    # the metrics rather than invent a single fake scalar.
+    poles = [
+        (("内敛", "reserved"), ("外放", "expressive")),
+        (("审慎", "deliberate"), ("果断", "decisive")),
+        (("挑战权威", "challenges rules"), ("守规矩", "works within structure")),
+        (("务实", "pragmatic"), ("思辨", "reflective")),
+        (("内敛含蓄", "contained"), ("直接外显", "direct & open")),
+    ]
+    left_kw = ("reserved", "deliberate", "challenges", "pragmatic", "contained")
+    metrics = [
+        [("食傷", e)],
+        [("七殺+劫財", a)],
+        [("官殺", guan), ("傷官", shang)],
+        [("印", r), ("財", w)],
+        [("比劫", b), ("印", r), ("食傷", e)],
+    ]
+    out = []
+    for i, (ax, v, basis) in enumerate(axes):
+        zone = ("mid" if v == "no strong tendency"
+                else "left" if any(k in v for k in left_kw) else "right")
+        out.append({"axis": ax, "verdict": v, "basis": basis, "zone": zone,
+                    "poles": {"left": {"zh": poles[i][0][0], "en": poles[i][0][1]},
+                              "right": {"zh": poles[i][1][0], "en": poles[i][1][1]}},
+                    "metrics": [{"label": lbl, "pct": round(100 * val, 1)}
+                                for lbl, val in metrics[i]]})
+    return out
 
 
 def life_domains(chart, ys: dict) -> list[dict]:

@@ -622,10 +622,11 @@ function chartCard(c) {
       ${d.current ? `<div class="ccdyhere">▲ ${state.year} 在此</div>` : ""}</div>`).join("")}</div>`;
   const tg = Object.entries(c.tengods_pct).sort((a, b) => b[1] - a[1]);
   const tgmax = Math.max(...tg.map(([, v]) => v)) || 1;
-  const bars = tg.map(([g, v]) => `<div class="cctgrow"><span class="cctgl">${g}
-      ${c.tengods_legend[g].en}</span>
-    <div class="cctgbar"><div style="width:${Math.round(v / tgmax * 100)}%"></div></div>
-    <span class="cctgv">${v.toFixed(0)}%</span></div>`).join("");
+  const bars = tg.map(([g, v]) => { const gel = godEl(c.day_master, g);
+    return `<div class="cctgrow"><span class="cctgl" style="color:${EL_COL[gel]};font-weight:700">${g}
+      <span style="color:var(--muted);font-weight:400">${c.tengods_legend[g].en}</span></span>
+    <div class="cctgbar"><div style="width:${Math.round(v / tgmax * 100)}%;background:${EL_COL[gel]}"></div></div>
+    <span class="cctgv">${v.toFixed(0)}%</span></div>`; }).join("");
   const stars = c.shensha.map((s) => s.star).join(" · ");
   return `<div class="ccard">
     <div class="cchead">
@@ -965,8 +966,11 @@ function charCard(c, name) {
       ${go ? '<span class="chev">›</span>' : ""}</div>
     <div class="v">${v}</div><div class="cbar">${bar || ""}</div></div>`;
   const fav = c.yongshen.favourable;
-  return `<div class="charcard elth-${fav[0] || ""}${fav[1] ? " elth2-" + fav[1] : ""}"
-      data-elem="${fav.join("")}">
+  // card identity = DAY MASTER element ("who I am"); the 用神 keeps the accent ring
+  // and owns the badges/medicine advice ("what I need").
+  const dmEl = STEM_EL[c.day_master];
+  return `<div class="charcard elth-${dmEl || ""}${fav[0] ? " elth2-" + fav[0] : ""}"
+      data-elem="${dmEl}" data-fav="${fav.join("")}">
     <div class="who"><div class="gua"><b>${c.gua}</b><span>${(c.group || "").replace(/[()]/g, "")}</span></div>
       <div><h2>${dn(name || c.name)}${c.life_palaces && ZODIAC[c.life_palaces.animal]
           ? ` <span class="zodemoji">${ZODIAC[c.life_palaces.animal][0]}</span>` : ""}</h2>
@@ -1183,11 +1187,27 @@ async function renderPerson(name) {
     ${lg("chart")}
     ${palacesBlock(c)}
     <div class="section"><h3>五行与日主 Elements &amp; the Day Master</h3>
-      <div class="bars">${Object.entries(c.element_weights).map(([en, v]) => `
-        <div class="bar-row el-${EL_ZH[en]}"><span>${elb(EL_ZH[en])} ${en}</span>
-          <div class="bar"><i style="width:${(100 * v / wmax).toFixed(0)}%"></i></div>
-          <b>${v.toFixed(1)}</b></div>`).join("")}
-      </div>
+      ${(() => { const wtot = Object.values(c.element_weights).reduce((x, y) => x + y, 0) || 1;
+        const dmEl = STEM_EL[c.day_master];
+        return `<div class="cite" style="margin:0 0 6px">单位 = 字重，不是个数：天干各 1.0、
+          地支本气 1.0、余气 1/3，全盘合计 ${wtot.toFixed(1)}；括号内为占比。
+          <small class="be2">Units are weighted character counts, not a tally of the eight
+          characters: each stem 1.0, each branch's main hidden stem 1.0, each minor hidden
+          stem 1/3 (total ${wtot.toFixed(1)}). The bracketed figure is that element's share.</small></div>
+        <div class="bars">${Object.entries(c.element_weights).map(([en, v]) => `
+          <div class="bar-row el-${EL_ZH[en]}"><span>${elb(EL_ZH[en])} ${en}${EL_ZH[en] === dmEl
+            ? ' <b class="dmtag">日主 Day Master</b>' : ""}</span>
+            <div class="bar"><i style="width:${(100 * v / wmax).toFixed(0)}%"></i></div>
+            <b>${v.toFixed(1)} <small>(${(100 * v / wtot).toFixed(0)}%)</small></b></div>`).join("")}
+        </div>
+        <div class="cite"><b>日主 ≠ 最多的五行。</b>日主是「我是谁」——只是日柱天干那一个字；
+          上面的占比是「全盘由什么构成」。${dmEl} 占比低正说明${c.strength.verdict.startsWith("身弱")
+            ? "身弱——这也正是用神要补的原因" : "本命需要留意的地方"}。
+          <small class="be2">Your Day Master is WHO YOU ARE — one single character (the day
+          stem). The shares above describe WHAT THE WHOLE CHART IS MADE OF. A ${EL_EN[dmEl]}
+          person having little ${EL_EN[dmEl]} is not a contradiction: that is exactly what a
+          weak Day Master means, and it is why the medicine aims to supply it.</small></div>`;
+      })()}
       ${c.element_relations ? `<h4>生克 Interaction between the five elements</h4>
       <div class="ewrap">${elementWheel(c.element_relations)}
         <div class="eflows">
@@ -1218,14 +1238,26 @@ async function renderPerson(name) {
       ${(() => {                                    // 帮扶 vs 克泄耗 breakdown bars
         const pt = c.strength.parts;
         if (!pt) return "";
-        const wmax = Math.max(...pt.groups.map((g) => g.w)) || 1;
-        const row = (g) => `<div class="sbrow">
+        const net0 = pt.support - pt.drain;
+        const wmax = Math.max(...pt.groups.map((g) => g.w), Math.abs(net0)) || 1;
+        // diverging zero axis: 帮扶 grows right of centre, 克泄耗 grows left
+        const row = (g) => { const pct = (g.w / wmax * 50).toFixed(1);
+          const sup = g.side === "support";
+          return `<div class="sbrow">
           <span class="sbl">${g.zh} <small>${TG_GRP_EN[g.zh] || ""} · ${g.el}</small></span>
-          <div class="sbar ${g.side}"><i style="width:${(g.w / wmax * 100).toFixed(0)}%;background:${EL_COL[g.el]}"></i></div>
-          <b class="sbv">${g.side === "support" ? "+" : "−"}${g.w}</b></div>`;
+          <div class="sbax"><span class="zero"></span>
+            <i style="${sup ? "left:50%" : `right:50%`};width:${pct}%;background:${EL_COL[g.el]}"></i></div>
+          <b class="sbv ${sup ? "sup" : "drn"}">${sup ? "+" : "−"}${g.w}</b></div>`; };
+        const net = net0;
+        const netPct = (Math.abs(net) / wmax * 50).toFixed(1);
         return `<div class="sbwrap">
           <div class="sbhead">帮扶 supporting (同类) vs 克泄耗 draining (异类) — the score's own numbers</div>
+          <div class="sbaxhead"><span>← 克泄耗</span><span>帮扶 →</span></div>
           ${pt.groups.map(row).join("")}
+          <div class="sbrow sbnet"><span class="sbl">净值 <small>net balance</small></span>
+            <div class="sbax"><span class="zero"></span>
+              <i style="${net >= 0 ? "left:50%" : "right:50%"};width:${netPct}%;background:${net >= 0 ? "#1e7d32" : "#b03a2e"}"></i></div>
+            <b class="sbv ${net >= 0 ? "sup" : "drn"}">${net >= 0 ? "+" : "−"}${Math.abs(net).toFixed(2)}</b></div>
           <div class="cite" style="margin-top:5px">score = 得令 ${pt.season_pts > 0 ? "+" : ""}${pt.season_pts}
             (季节 season) + 2 × (帮扶 ${pt.support} − 克泄耗 ${pt.drain}) / 总量 ${pt.total}
             + 通根 ${pt.root_pts > 0 ? "+" : ""}${pt.root_pts} (roots) =
@@ -1383,8 +1415,20 @@ async function renderPerson(name) {
         <tr><th>藏干</th>${POS.map((k) => `<td>${(c.hidden_gods[k] || []).join("<br>")}</td>`).join("")}</tr>
       </table>`)}${narr(3)}${lg(3)}</div>
     <div class="section"><h4>性格轴 Personality axes <span class="tag warn">modern synthesis · tendencies only</span></h4>
-      <div class="paxchips">${c.personality.map((a) => `<div class="pax"><b>${a.axis}</b>
-        ${a.verdict}<div class="sub">${a.basis}</div></div>`).join("")}</div>
+      <div class="paxchips">${c.personality.map((a) => {
+        if (!a.zone) return `<div class="pax"><b>${a.axis}</b> ${a.verdict}
+          <div class="sub">${a.basis}</div></div>`;
+        const pos = a.zone === "left" ? 16 : a.zone === "right" ? 84 : 50;
+        return `<div class="pax"><b>${a.axis}</b>
+          <div class="paxv ${a.zone}">${a.verdict}</div>
+          <div class="paxstrip">
+            <span class="pz l"></span><span class="pz m"></span><span class="pz r"></span>
+            <i style="left:${pos}%"></i></div>
+          <div class="paxends"><span>${a.poles.left.zh} <small>${a.poles.left.en}</small></span>
+            <span class="mid">中 neutral</span>
+            <span>${a.poles.right.zh} <small>${a.poles.right.en}</small></span></div>
+          <div class="paxm">${a.metrics.map((m) => `<span>${m.label} <b>${m.pct}%</b></span>`).join("")}</div>
+          <div class="sub">${a.basis}</div></div>`; }).join("")}</div>
       <div class="cite">Read straight off the distribution above — "no strong tendency"
         is a legitimate result, not a failure.</div>
       ${stb(10)}${narr(10)}${lg(10)}</div>

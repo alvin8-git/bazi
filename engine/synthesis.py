@@ -50,10 +50,11 @@ def medicine_ranking(c, ys: dict) -> str:
     fav = ys["favourable"]
     if not fav:
         return ""
-    if dm_el in fav:
-        primary, rest = dm_el, [e for e in fav if e != dm_el]
-    else:
-        primary, rest = fav[0], fav[1:]
+    # ONE convention site-wide (2026-09-20): the primary medicine is yong_shen()'s
+    # own first pick (weak DM → 印 before 比劫), which is what the badges, colours
+    # and 喜忌 table already show. Previously this promoted the Day Master's own
+    # element, so the page could say "金 primary" while the badges led with 土.
+    primary, rest = fav[0], fav[1:]
     bits = [f"{primary} ({ELEMENT_EN[primary]}) primary"]
     bits += [f"{e} ({ELEMENT_EN[e]}) secondary" for e in rest]
     line = "Medicine, ranked: " + " · ".join(bits) + "."

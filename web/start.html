@@ -234,8 +234,8 @@ function personCard(p, i) {
   const z = ZODIAC[p.animal] || ["", ""];
   const tk = p.time_known === false
     ? ' <span class="badge">hour approximate</span>' : "";
-  return `<div class="pcard elth-${(p.favourable || [])[0] || ""}${(p.favourable || [])[1]
-      ? " elth2-" + p.favourable[1] : ""}" data-i="${i}" title="open the full Reading 命书">
+  return `<div class="pcard elth-${STEM_EL[p.day_master] || ""}${(p.favourable || [])[0]
+      ? " elth2-" + p.favourable[0] : ""}" data-i="${i}" title="open the full Reading 命书">
     <h3>${p.name}${tk}
       <span class="cardops">
         <button class="ic edit" data-i="${i}" title="rename">✏️</button>
