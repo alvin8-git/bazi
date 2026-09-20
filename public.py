@@ -31,7 +31,7 @@ from fastapi.responses import (FileResponse, HTMLResponse, PlainTextResponse,
 from pydantic import BaseModel, Field
 
 from engine.bazhai import STAR_SCORE, gua_group, ming_gua, youxing_stars
-from engine.bazi import TRUE_SOLAR, build_chart
+from engine.bazi import TEN_GOD_EN, TRUE_SOLAR, build_chart
 from engine.careers import career_paths
 from engine.domains import life_domains
 from engine.extras import harmony_matrix
@@ -176,6 +176,17 @@ def _chart_of(p: dict):
     return m, build_chart(m.name, m.sex, m.birth_dt, TRUE_SOLAR)
 
 
+def _dominant_god(c) -> list:
+    """[zh, en, share%] of the strongest ten god — mirrors the reading card."""
+    from engine.shensha import ten_god_distribution
+    dist = ten_god_distribution(c)
+    total = sum(dist.values()) or 1
+    if not dist:
+        return ["—", "", 0]
+    g, w = max(dist.items(), key=lambda kv: kv[1])
+    return [_tosimp(g), TEN_GOD_EN.get(g, ""), round(100 * w / total, 1)]
+
+
 def _summary(p: dict) -> dict:
     """Compact card payload for the workspace page."""
     m, c = _chart_of(p)
@@ -193,7 +204,9 @@ def _summary(p: dict) -> dict:
         "group": _tosimp(gua_group(ming_gua(c.lichun_year, c.sex))),
         "life_star": _tosimp(lp["life_star_zh"]), "animal": _tosimp(lp["animal"]),
         "favourable": ys["favourable"], "unfavourable": ys["unfavourable"],
-        "top_careers": [a["en"] for a in career_paths(c, ys)["top"][:3]],
+        "top_careers": [[_tosimp(a["zh"]), a["en"]]
+                        for a in career_paths(c, ys)["top"][:3]],
+        "dominant": _dominant_god(c),
         "domains": doms,
     }
 
@@ -231,6 +244,20 @@ def create_workspace(person: PersonIn):
 @router.get("/api/pub/w/{token}")
 def get_workspace(token: str):
     return _ws_payload(token, _load(token))
+
+
+@router.get("/api/pub/w/{token}/pair")
+def get_pair(token: str, a: int, b: int):
+    """合婚 drill-down for two members (by index) — explains the matrix score."""
+    from engine.hehun_detail import pair_breakdown
+    ws = _load(token)
+    ppl = ws["people"]
+    if not (0 <= a < len(ppl) and 0 <= b < len(ppl)) or a == b:
+        raise HTTPException(400, "bad pair indexes")
+    _, ca = _chart_of(ppl[a])
+    _, cb = _chart_of(ppl[b])
+    out = pair_breakdown(ca, cb, yong_shen(ca), yong_shen(cb))
+    return json.loads(_tosimp(json.dumps(out, ensure_ascii=False)))
 
 
 @router.post("/api/pub/w/{token}/person")

@@ -1527,7 +1527,9 @@ async function renderPerson(name) {
         working style (shares ≥8% count), and 神煞 talents that serve the path. "Fit"
         means effort converts to reward efficiently there — low-ranked fields are priced
         against the chart, never forbidden. For the children read these as directions to
-        expose and nurture, revisited as 大運 decades turn.</div>
+        expose and nurture, revisited as 大運 decades turn. Each archetype also shows its
+        raw score in 分 (points; open scale — the same arithmetic behind the ranking):
+        ≥12 分 strong fit · 4–12 分 good fit · &lt;4 分 workable.</div>
       <h4>Favourable industries by element 行業五行</h4>
       ${c.industries.favourable.map((it) => `<div class="cite"><b>Favourable ${elb(it.element)} ${it.en}
         industries</b> — ${it.industries}</div>`).join("")}
@@ -1535,9 +1537,9 @@ async function renderPerson(name) {
         `${elb(it.element)} (${it.industries.split(",")[0]}…)`).join("; ")}
         — not forbidden, just not where this chart recharges.</div>
       <h4>Career archetypes ranked 事業方向</h4>
-      ${c.careers.top.map((a, i) => `<div class="cite"><b>#${i + 1} ${a.en} ${a.zh}</b>
+      ${c.careers.top.map((a, i) => `<div class="cite"><b>#${i + 1} ${a.zh} ${a.en}</b>
         <span class="tag ${a.score >= 12 ? "" : "warn"}">${a.score >= 12 ? "strong fit" :
-          a.score >= 4 ? "good fit" : "workable"}</span>
+          a.score >= 4 ? "good fit" : "workable"} · ${a.score} 分</span>
         <div class="rchips">${a.reasons.map((r) => `<span>${r}</span>`).join("")}</div></div>`).join("")}
       ${(() => {
         const learn = (c.domains || []).find((d) => d.key === "learning");
@@ -1549,7 +1551,7 @@ async function renderPerson(name) {
           pure 木-element schooling.</div>` : "";
       })()}
       <div class="cite" style="margin-top:7px"><b>Priced against this chart:</b>
-        ${c.careers.avoid.map((a) => `${a.en} ${a.zh} — ${a.reasons.join("; ")}`).join(" · ")}</div>
+        ${c.careers.avoid.map((a) => `${a.zh} ${a.en} (${a.score} 分) — ${a.reasons.join("; ")}`).join(" · ")}</div>
       ${stb(12)}${narr(12)}${lg(12)}
     </div>` : ""}
     ${c.shensha.length ? `<div class="section"><h3>神煞 Symbolic stars</h3>
