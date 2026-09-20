@@ -58,6 +58,8 @@ button:disabled{opacity:.5;cursor:default}
 .fcell .den,.fcareer .den{display:block;font-size:9px;color:#8a6d00;opacity:.75;line-height:1.2;white-space:nowrap}
 .fcell .fv{font-size:12.5px;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .fcell .fv small{font-size:9.5px;color:var(--muted)}
+.fv .vz{display:block;font-size:12.5px;line-height:1.25}
+.fv .ve{display:block;font-size:9px;color:var(--muted);line-height:1.2}
 .fcareer{display:grid;grid-template-columns:auto 1fr;gap:0 8px;align-items:center;margin:6px 0 2px}
 .fcareer .cchip{display:inline-block;background:#f3efe7;border:1px solid var(--line);
   border-radius:6px;padding:1px 7px;font-size:11px;margin:1px 3px 1px 0}
@@ -205,6 +207,14 @@ const ZODIAC = { 鼠: ["🐭", "Rat"], 牛: ["🐮", "Ox"], 虎: ["🐯", "Tiger
   猴: ["🐵", "Monkey"], 鸡: ["🐔", "Rooster"], 狗: ["🐶", "Dog"], 猪: ["🐷", "Pig"],
   龍: ["🐲", "Dragon"], 馬: ["🐴", "Horse"], 雞: ["🐔", "Rooster"], 豬: ["🐷", "Pig"] };
 
+const STEM_EL = { 甲: "木", 乙: "木", 丙: "火", 丁: "火", 戊: "土", 己: "土",
+  庚: "金", 辛: "金", 壬: "水", 癸: "水" };
+const EL_EN = { 木: "Wood", 火: "Fire", 土: "Earth", 金: "Metal", 水: "Water" };
+const EL_COL = { 木: "#1e8e3e", 火: "#c5221f", 土: "#8a6d1f", 金: "#a67c00", 水: "#1a56b0" };
+const STAR_EN = { 一白: "1 White", 二黑: "2 Black", 三碧: "3 Jade", 四绿: "4 Green",
+  五黄: "5 Yellow", 六白: "6 White", 七赤: "7 Red", 八白: "8 White", 九紫: "9 Purple" };
+const vv = (zh, en) => `<span class="vz">${zh}</span><span class="ve">${en || ""}</span>`;
+
 function personCard(p, i) {
   const doms = (p.domains || []).map((d) => { if (!Array.isArray(d)) return "";
     const cls = d[2] >= 70 ? "g" : d[2] < 45 ? "b" : "";
@@ -223,15 +233,28 @@ function personCard(p, i) {
       </span></h3>
     <div>${["year","month","day","hour"].map(k => `<span class="pz">${p.pillars[k]}</span>`).join("")}</div>
     <div class="fgrid">
-      ${[["日主", "Day Master", `<b>${p.day_master}</b>`],
-         ["生肖", "Zodiac", `${z[0]} ${p.animal} ${z[1]}`],
-         ["强弱", "Strength", p.strength],
-         ["主导", "Dominant God", p.dominant
-            ? `<b>${p.dominant[0]}</b> <small>${p.dominant[1]}</small>` : "—"],
-         ["命卦", "Life Gua", `${p.gua} ${(p.group || "").replace(/[()]/g, "")}`],
-         ["命星", "Life Star", p.life_star],
-         ["用神", "Medicine", elbs(p.favourable)],
-         ["避", "Avoid", elbs(p.unfavourable)]].map(([zh, en, v]) => `
+      ${(() => {
+        const stEl = STEM_EL[p.day_master] || "";
+        const [sZh, sEn] = (p.strength || "").match(/^(.*?)\s*\((.*)\)\s*$/)?.slice(1)
+          || [p.strength, ""];
+        const grp = (p.group || "").replace(/[()]/g, "");
+        const grpEn = (grp.match(/[A-Za-z]+/) || [""])[0];
+        const dom = p.dominant || ["—", "", ""];
+        return [
+          ["日主", "Day Master", vv(`<b>${p.day_master}</b> ${stEl}`, EL_EN[stEl])],
+          ["生肖", "Zodiac", vv(`${z[0]} ${p.animal}`, z[1])],
+          ["强弱", "Strength", vv(sZh, sEn)],
+          ["主导", "Dominant God", vv(`<b style="color:${EL_COL[dom[2]] || "inherit"}">${dom[0]}</b>`,
+            dom[1] + (dom[2] ? ` · ${EL_EN[dom[2]]}` : ""))],
+          ["命卦", "Life Gua", vv(`${p.gua} ${grp.replace(/[A-Za-z ]+/g, "").trim()}`,
+            grpEn ? grpEn + "-group gua" : "")],
+          ["命星", "Life Star", vv(p.life_star, STAR_EN[(p.life_star || "").slice(0, 2)] || "")],
+          ["用神", "Medicine", vv(elbs(p.favourable),
+            (p.favourable || []).map((e) => EL_EN[e]).join(" · "))],
+          ["避", "Avoid", vv(elbs(p.unfavourable),
+            (p.unfavourable || []).map((e) => EL_EN[e]).join(" · "))],
+        ];
+      })().map(([zh, en, v]) => `
         <div class="fcell"><div class="fl"><span class="dz">${zh}</span><span class="den">${en}</span></div>
           <div class="fv">${v}</div></div>`).join("")}
     </div>

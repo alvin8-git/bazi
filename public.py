@@ -177,14 +177,16 @@ def _chart_of(p: dict):
 
 
 def _dominant_god(c) -> list:
-    """[zh, en, share%] of the strongest ten god — mirrors the reading card."""
+    """[zh, en, element] of the strongest ten god — mirrors the reading card."""
+    from engine.bazi import ten_god
     from engine.shensha import ten_god_distribution
+    from engine.wuxing import STEM_ELEMENT, STEMS
     dist = ten_god_distribution(c)
-    total = sum(dist.values()) or 1
     if not dist:
-        return ["—", "", 0]
-    g, w = max(dist.items(), key=lambda kv: kv[1])
-    return [_tosimp(g), TEN_GOD_EN.get(g, ""), round(100 * w / total, 1)]
+        return ["—", "", ""]
+    g = max(dist.items(), key=lambda kv: kv[1])[0]
+    el = next((STEM_ELEMENT[s] for s in STEMS if ten_god(c.day_master, s) == g), "")
+    return [_tosimp(g), TEN_GOD_EN.get(g, ""), el]
 
 
 def _summary(p: dict) -> dict:
