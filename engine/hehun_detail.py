@@ -351,6 +351,10 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
                     f"{na}的{PALACE_ZH[pa][1]}遇{nb}的{PALACE_ZH[pb][1]}——{gz}",
                     f"{na}'s {PALACE_ZH[pa][2]} meets {nb}'s {PALACE_ZH[pb][2]} — {ge}")})
 
+    def _god_el(dm, g):
+        from .wuxing import STEM_ELEMENT, STEMS
+        return next((STEM_ELEMENT[s] for s in STEMS if ten_god(dm, s) == g), "")
+
     g_ab, g_ba = base["relation"]["a_sees_b"], base["relation"]["b_sees_a"]
     band_zh = _BAND_KEY(base["score"])
     fr = FRAMING[band_zh]
@@ -359,8 +363,10 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
             "day_pillars": base["day_pillars"],
             "arithmetic": ledger,
             "pillar_sweep": sweep,
-            "relation": {"a_sees_b": {"god": g_ab, **_bi(*TG_SEES[g_ab])},
-                         "b_sees_a": {"god": g_ba, **_bi(*TG_SEES[g_ba])}},
+            "relation": {"a_sees_b": {"god": g_ab, "element": _god_el(da.stem, g_ab),
+                                      **_bi(*TG_SEES[g_ab])},
+                         "b_sees_a": {"god": g_ba, "element": _god_el(db.stem, g_ba),
+                                      **_bi(*TG_SEES[g_ba])}},
             "strengths": strengths, "frictions": frictions,
             "framing": {k: _bi(*fr[k]) for k in ("family", "couple", "colleagues")},
             "source_ref": base["source_ref"]}

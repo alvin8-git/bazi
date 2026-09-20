@@ -21,6 +21,7 @@ body{margin:0;background:var(--bg);color:var(--ink);
   padding:8px 12px;font-size:12.5px}
 .idchip b{font-size:15px}
 .idchip .sub{color:var(--muted);font-size:11px}
+.idchip .gf{color:var(--gold);font-weight:700;font-size:10px}
 .vs{align-self:center;font-weight:800;color:var(--gold)}
 h2{font-size:13px;color:var(--gold);margin:16px 0 6px;border-bottom:1px solid var(--line);
   padding-bottom:3px}
@@ -107,8 +108,40 @@ const be = (o) => `<small class="be">${esc(o.en)}</small>`;
 const elb = (e) => e ? `<span class="elb el-${e}">${e}</span>` : "";
 const STEM_EL = { 甲: "木", 乙: "木", 丙: "火", 丁: "火", 戊: "土", 己: "土",
   庚: "金", 辛: "金", 壬: "水", 癸: "水" };
+const EL_COL = { 木: "#1e8e3e", 火: "#c5221f", 土: "#8a6d1f", 金: "#a67c00", 水: "#1a56b0" };
+const ZODIAC = { 鼠: ["🐭", "Rat"], 牛: ["🐮", "Ox"], 虎: ["🐯", "Tiger"], 兔: ["🐰", "Rabbit"],
+  龙: ["🐲", "Dragon"], 蛇: ["🐍", "Snake"], 马: ["🐴", "Horse"], 羊: ["🐑", "Goat"],
+  猴: ["🐵", "Monkey"], 鸡: ["🐔", "Rooster"], 狗: ["🐶", "Dog"], 猪: ["🐷", "Pig"],
+  龍: ["🐲", "Dragon"], 馬: ["🐴", "Horse"], 雞: ["🐔", "Rooster"], 豬: ["🐷", "Pig"] };
+const ELTH = { 木: "linear-gradient(160deg,#f3f9ef,#e2efd8)", 火: "linear-gradient(160deg,#fdf1ec,#f9ded4)",
+  土: "linear-gradient(160deg,#faf4e6,#f0e3c6)", 金: "linear-gradient(160deg,#fbf9f1,#f4ecd4)",
+  水: "linear-gradient(160deg,#eff5fa,#dce9f4)" };
 const BAND_COL = (s) => s >= 70 ? ["#1e7d32", "#e9f7ee"] : s >= 55 ? ["#5f8a3e", "#eef3e3"]
   : s >= 45 ? ["#b8860b", "#faf3dd"] : ["#b03a2e", "#fdecea"];
+function colorizeRep(root) {                    // element mentions in running text
+  const re = /(木|火(?!车|車)|土(?!豆)|金(?!额|額)|水(?!平|准|準))|\b(Wood|Fire|Earth|Metal|Water)\b/g;
+  const EN2EL = { Wood: "木", Fire: "火", Earth: "土", Metal: "金", Water: "水" };
+  const nodes = [];
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) => n.parentElement
+      && !n.parentElement.closest("script,style,svg,.elb,.nocolor")
+      ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+  let t; while ((t = w.nextNode())) { re.lastIndex = 0; if (re.test(t.nodeValue)) nodes.push(t); }
+  for (const node of nodes) {
+    const s = node.nodeValue, frag = document.createDocumentFragment();
+    let last = 0, m; re.lastIndex = 0;
+    while ((m = re.exec(s))) {
+      frag.appendChild(document.createTextNode(s.slice(last, m.index)));
+      const b = document.createElement("b");
+      b.style.color = EL_COL[EN2EL[m[0]] || m[0]] || "";
+      b.textContent = m[0];
+      frag.appendChild(b);
+      last = m.index + m[0].length;
+    }
+    frag.appendChild(document.createTextNode(s.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+  }
+}
 
 function gauge(score) {                       // band zones + marker, inline SVG
   const x = 20 + (score / 100) * 320;
@@ -143,9 +176,12 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
       fetch(`/api/pub/w/${token}`).then((r) => r.json()),
     ]);
     const pa = ws.people[A] || {}, pb = ws.people[B] || {};
-    const idc = (p, n) => `<div class="idchip"><b>${esc(n)}</b>
-      <div class="sub">日主 ${p.day_master || "—"}${elb(STEM_EL[p.day_master])} ·
-        生肖 ${p.animal || "—"} · ${esc(p.strength || "")}</div></div>`;
+    const idc = (p, n) => { const fav = (p.favourable || [])[0];
+      const z = ZODIAC[p.animal] || ["", p.animal || "—"];
+      return `<div class="idchip" style="${ELTH[fav] ? "background:" + ELTH[fav] : ""}"><b>${esc(n)}</b>
+      <div class="sub"><span class="gf">日主</span> ${p.day_master || "—"}${elb(STEM_EL[p.day_master])} ·
+        <span class="gf">生肖</span> ${z[0]} ${z[1]} ·
+        <span class="gf">强弱</span> ${esc(p.strength || "")}</div></div>`; };
     const cls = (dl) => dl > 0 ? "pos" : dl < 0 ? "neg" : "neu";
     const rows = d.arithmetic.map((r) => `<tr>
       <td>${esc(r.label.zh)}${be(r.label)}</td>
@@ -155,7 +191,8 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
     const seeTable = `<table class="dtable">
       <tr><th>视角 view</th><th>十神 god</th><th>解读 meaning</th></tr>
       ${[[`${d.a} → ${d.b}`, d.relation.a_sees_b], [`${d.b} → ${d.a}`, d.relation.b_sees_a]]
-        .map(([who, r]) => `<tr><td class="nb">${esc(who)}</td><td class="nb"><b>${r.god}</b></td>
+        .map(([who, r]) => `<tr><td class="nb">${esc(who)}</td>
+          <td class="nb"><b style="color:${EL_COL[r.element] || "inherit"}">${r.god}</b>${elb(r.element)}</td>
           <td>${esc(r.zh)}${be(r)}</td></tr>`).join("")}</table>`;
     // strengths + frictions merged: one factor-detail table in component order
     const lmap = {};                            // ledger label → element (for badges)
@@ -194,7 +231,9 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
       <div class="idrow">${idc(pa, d.a)}<div class="vs">✕</div>${idc(pb, d.b)}</div>
       <h2>总评 <small>overall reading</small></h2>
       ${gauge(d.score)}
-      <div style="font-size:12.5px"><b>${d.score}/100 · ${esc(d.band.zh)}</b> <small class="be">${esc(d.band.en)}</small></div>
+      ${(() => { const [fb] = BAND_COL(d.score);
+        return `<div style="font-size:12.5px"><b style="color:${fb}">${d.score}/100 · ${esc(d.band.zh)}</b>
+          <small class="be" style="color:${fb}">${esc(d.band.en)}</small></div>`; })()}
       <h2>成分明细 <small>component table — each factor against its reference range</small></h2>
       <table class="ctable"><tr><th>因素 factor</th><th>范围 range (−15 ⟵ 0 ⟶ +15)</th><th>分 pts</th></tr>
         <tr><td>基础分 <small class="be">baseline</small></td><td>${rangeBar(0)}</td><td class="pts neu">50</td></tr>
@@ -222,6 +261,7 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
       })()}
       <div class="foot">${esc(d.source_ref)} · 明细相加与主表分数完全一致 the component table sums exactly to
         the harmony-matrix score · bazifor.me/w/${esc(token).slice(0, 3)}····</div>`;
+    colorizeRep(rep);
   } catch (e) { rep.innerHTML = `<b>could not load this pair</b> — ${esc(e.message)}`; }
 })();
 </script></body></html>

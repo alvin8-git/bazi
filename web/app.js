@@ -53,7 +53,7 @@ function explain(t, tab) {
     <div class="lede">${t}</div>${primer}</details>`;
 }
 const narrBlock = (i) => !i ? "" : `<div class="section interp">
-    <h3>Narrative 解读 <span class="tag">rule-based · auto-generated · no AI</span></h3>
+    <h3>解读 Narrative <span class="tag">rule-based · auto-generated · no AI</span></h3>
     ${i.paragraphs.map((t) => `<p>${dnAll(t)}</p>`).join("")}</div>`;
 
 /* Reading-tab helpers: narrative paragraphs carry [§N] tags — distribute each
@@ -381,13 +381,13 @@ function harmonyHtml(h) {
     .sort((x, y) => x.score - y.score)
     .map((p) => `<p class="cite">⚠ <b>${p.a} × ${p.b} (${p.score})</b>:
       ${p.chips.slice(0, 3).join("; ")}</p>`).join("");
-  return `<div class="section"><h3>Family harmony 合婚互动
+  return `<div class="section"><h3>合婚互动 Family harmony
       <span class="tag">day-pillar based · same in every home</span></h3>
     <table class="ptable">${head}${rows}</table>${rough}</div>`;
 }
 
 const auditHtml = (audit) => !audit ? "" : `<div class="section">
-  <h3>Placement audit 宅内布局
+  <h3>宅内布局 Placement audit
     <span class="tag">缺角 · entry · stove · wet rooms · 財位</span></h3>
   <table class="ptable">${audit.map((r) =>
     `<tr><th>${r.zh}</th><td>${r.text}</td></tr>`).join("")}</table></div>`;
@@ -835,7 +835,7 @@ function palacesBlock(c) {
     const col = EL_COL[godEl(c.day_master, g)] || "#8a8177";
     return `<span class="dirchip" style="border-color:${col};color:${col}">${g}</span>`;
   };
-  return `<div class="section"><h3>Four Palaces 宮位 — the when &amp; where
+  return `<div class="section"><h3>宫位 Four Palaces — the when &amp; where
       <span class="tag">year→hour = the arc of a life</span></h3>
     <div class="cite" style="margin:0 0 8px">The ten gods say WHAT an energy is; the
       palace it sits in says WHEN it peaks and WHERE it plays out.</div>
@@ -1034,6 +1034,38 @@ const PANE_OF_SECTION = [[/Four Palaces|宫位|宮位/, "p1"], [/神煞/, "p1"],
   [/时运|Timing/, "p4"], [/方位|Directions/, "p5"], [/健康|Health/, "p5"],
   [/事業|Career/, "p5"]];
 
+/* Site-wide term coloring (2026-09-20): element + ten-god mentions in running
+   text get bold + their element color. Text-node walker, conservative regex —
+   excludes 水平/火车/金额/土豆-style non-element words; skips svg/script. */
+const GOD_LIST = ["比肩", "劫財", "劫财", "食神", "傷官", "伤官", "正財", "正财",
+  "偏財", "偏财", "正官", "七殺", "七杀", "正印", "偏印"];
+function colorizeTerms(root, dm) {
+  if (!root) return;
+  const re = new RegExp(`(${GOD_LIST.join("|")})|(木|火(?!车|車)|土(?!豆)|金(?!额|額)|水(?!平|准|準))|\\b(Wood|Fire|Earth|Metal|Water)\\b`, "g");
+  const EN2EL = { Wood: "木", Fire: "火", Earth: "土", Metal: "金", Water: "水" };
+  const nodes = [];
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) => n.parentElement
+      && !n.parentElement.closest("script,style,svg,input,textarea,.nocolor")
+      ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+  let t; while ((t = w.nextNode())) { re.lastIndex = 0; if (re.test(t.nodeValue)) nodes.push(t); }
+  for (const node of nodes) {
+    const s = node.nodeValue, frag = document.createDocumentFragment();
+    let last = 0, m; re.lastIndex = 0;
+    while ((m = re.exec(s))) {
+      frag.appendChild(document.createTextNode(s.slice(last, m.index)));
+      const el = m[1] ? godEl(dm, tgCanon(m[1])) : (EN2EL[m[0]] || m[0]);
+      const b = document.createElement("b");
+      b.style.color = EL_COL[el] || "";
+      b.textContent = m[0];
+      frag.appendChild(b);
+      last = m.index + m[0].length;
+    }
+    frag.appendChild(document.createTextNode(s.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+  }
+}
+
 function applyReadingTabs(root) {
   const kids = Array.from(root.children);
   const cardIdx = kids.findIndex((el) => el.classList && el.classList.contains("charcard"));
@@ -1153,7 +1185,7 @@ async function renderPerson(name) {
           <div class="bar"><i style="width:${(100 * v / wmax).toFixed(0)}%"></i></div>
           <b>${v.toFixed(1)}</b></div>`).join("")}
       </div>
-      ${c.element_relations ? `<h4>Interaction between the five elements 生剋</h4>
+      ${c.element_relations ? `<h4>生克 Interaction between the five elements</h4>
       <div class="ewrap">${elementWheel(c.element_relations)}
         <div class="eflows">
           <div class="cite" style="margin:0 0 6px">How every other element relates to
@@ -1174,7 +1206,7 @@ async function renderPerson(name) {
       </div>` : ""}
       ${narr(1)}${lg(1)}</div>
     <div class="section">${c.geju ? `<div class="cite" style="margin:0 0 8px"><b>${dnAll(c.geju)}</b></div>` : ""}
-      <h4>Day Master strength 强弱判定</h4>
+      <h4>强弱判定 Day Master strength</h4>
       ${strengthGauge(c.strength)}
       <p style="text-align:center;margin:0 0 4px">
         <span class="tag">support ratio ${c.strength.support_ratio}%</span>
@@ -1212,7 +1244,7 @@ async function renderPerson(name) {
         Object.entries(c.tengods_pct).map(([g]) => `
         <div><b style="color:${EL_COL[godEl(c.day_master, g)]}">●</b>
           <b>${g}</b> ${c.tengods_legend[g].en} — ${c.tengods_legend[g].meaning}</div>`).join(""))}
-      <h4>Your ten-god ↔ stem map 十神对应 <span class="tag">日主 ${c.day_master}</span></h4>
+      <h4>十神对应 Your ten-god ↔ stem map <span class="tag">日主 ${c.day_master}</span></h4>
       <div class="tgmap">${(() => {
         const bystem = {};
         Object.keys(STEM_YANG).forEach(st => {
@@ -1225,7 +1257,7 @@ async function renderPerson(name) {
       })()}</div>
       <div class="cite">Whenever one of these stems arrives in a luck pillar or year
         (时运 tab), it brings that god's themes with it.</div>
-      <h4>Two sides of each god 双面性
+      <h4>双面性 Two sides of each god
         <span class="tag warn">rows ordered by presence in YOUR chart</span></h4>
       <div style="overflow-x:auto"><table class="tgsides">
         <tr><th>God · share</th><th>Bright side 优</th><th>Shadow side 忌</th></tr>
@@ -1240,7 +1272,7 @@ async function renderPerson(name) {
         unsupported — read the bold (prominent) rows as both your engine AND your
         watch-list; faded rows barely operate in this chart.</div>
       ${c.tengod_insights ? (() => { const ti = c.tengod_insights;
-        return `<h4>Structure check 結構
+        return `<h4>结构 Structure check
           <span class="tag warn">percentages are the start — structure decides</span></h4>
         <div class="cite" style="margin:0 0 6px">Three checks a percentage chart cannot
           make: is the heavy god <b>aligned with your 用神</b>, is it <b>rooted</b> in
@@ -1520,7 +1552,7 @@ async function renderPerson(name) {
       </table>
       ${stb(11)}${narr(11)}${lg(11)}
     </div>
-    ${c.careers ? `<div class="section"><h3>事業 Career paths 事業方向
+    ${c.careers ? `<div class="section"><h3>事业方向 Career paths
         <span class="tag warn">rule-based ranking · fit, not fate</span></h3>
       <div class="cite" style="margin:0 0 8px">Fifteen career archetypes, each scored on
         three cited terms: the field's element(s) against the 用神 lists, the ten-god
@@ -1530,13 +1562,13 @@ async function renderPerson(name) {
         expose and nurture, revisited as 大運 decades turn. Each archetype also shows its
         raw score in 分 (points; open scale — the same arithmetic behind the ranking):
         ≥12 分 strong fit · 4–12 分 good fit · &lt;4 分 workable.</div>
-      <h4>Favourable industries by element 行業五行</h4>
+      <h4>行业五行 Favourable industries by element</h4>
       ${c.industries.favourable.map((it) => `<div class="cite"><b>Favourable ${elb(it.element)} ${it.en}
         industries</b> — ${it.industries}</div>`).join("")}
       <div class="cite" style="margin-bottom:8px">Understated: ${c.industries.avoid.map((it) =>
         `${elb(it.element)} (${it.industries.split(",")[0]}…)`).join("; ")}
         — not forbidden, just not where this chart recharges.</div>
-      <h4>Career archetypes ranked 事業方向</h4>
+      <h4>事业方向 Career archetypes ranked</h4>
       ${c.careers.top.map((a, i) => `<div class="cite"><b>#${i + 1} ${a.zh} ${a.en}</b>
         <span class="tag ${a.score >= 12 ? "" : "warn"}">${a.score >= 12 ? "strong fit" :
           a.score >= 4 ? "good fit" : "workable"} · ${a.score} 分</span>
@@ -1572,6 +1604,7 @@ async function renderPerson(name) {
         c.citations.map((x) => `<div class="cite"><b>[${layerZh(x.layer)}] ${x.source_ref}:</b> ${x.explanation}</div>`).join(""))}
     </div>`);
   applyReadingTabs($("#tab-person"));
+  colorizeTerms($("#tab-person"), c.day_master);
 }
 
 /* ---------- House tab ---------- */

@@ -66,7 +66,10 @@ button:disabled{opacity:.5;cursor:default}
 .fcareer .cchip small{display:block;font-size:8.5px;color:var(--muted);line-height:1.1}
 /* one visible row of chips: a chip that would wrap falls to a hidden 2nd row */
 .fcareer .fv.oneln{display:flex;flex-wrap:wrap;max-height:36px;overflow:hidden}
-.hcell{cursor:pointer}.hcell:hover{background:#f7f2e6}
+.hcell{cursor:pointer;border-radius:6px;padding:5px 8px}
+.hcell:hover{filter:brightness(.96)}
+.hcell .hband{display:block;font-size:9.5px;font-weight:700;line-height:1.2}
+.hcell .hgo{display:block;font-size:8.5px;color:var(--muted)}
 .dhead{color:#8a6d00;font-size:11px;font-weight:700;letter-spacing:.3px;margin:8px 0 2px}
 .doms2{display:grid;grid-template-columns:1fr;gap:6px;margin-top:2px}
 .doms2 .dr{display:grid;grid-template-columns:118px 1fr 26px;gap:0 8px;
@@ -213,6 +216,12 @@ const EL_EN = { 木: "Wood", 火: "Fire", 土: "Earth", 金: "Metal", 水: "Wate
 const EL_COL = { 木: "#1e8e3e", 火: "#c5221f", 土: "#8a6d1f", 金: "#a67c00", 水: "#1a56b0" };
 const STAR_EN = { 一白: "1 White", 二黑: "2 Black", 三碧: "3 Jade", 四绿: "4 Green",
   五黄: "5 Yellow", 六白: "6 White", 七赤: "7 Red", 八白: "8 White", 九紫: "9 Purple" };
+const STAR_EL = { 一白: "水", 二黑: "土", 三碧: "木", 四绿: "木", 五黄: "土",
+  六白: "金", 七赤: "金", 八白: "土", 九紫: "火" };
+const GUA_EL = { 坎: "水", 艮: "土", 震: "木", 巽: "木", 离: "火", 離: "火",
+  坤: "土", 兑: "金", 兌: "金", 乾: "金" };
+const BAND_COL = (s) => s >= 70 ? ["#1e7d32", "#e9f7ee"] : s >= 55 ? ["#5f8a3e", "#eef3e3"]
+  : s >= 45 ? ["#b8860b", "#faf3dd"] : ["#b03a2e", "#fdecea"];
 const vv = (zh, en) => `<span class="vz">${zh}</span><span class="ve">${en || ""}</span>`;
 
 function personCard(p, i) {
@@ -240,19 +249,21 @@ function personCard(p, i) {
         const grp = (p.group || "").replace(/[()]/g, "");
         const grpEn = (grp.match(/[A-Za-z]+/) || [""])[0];
         const dom = p.dominant || ["—", "", ""];
+        const star2 = (p.life_star || "").slice(0, 2);
+        const elEn = (a) => (a || []).map((e) =>
+          `<b style="color:${EL_COL[e]}">${EL_EN[e]}</b>`).join(" · ");
         return [
-          ["日主", "Day Master", vv(`<b>${p.day_master}</b> ${stEl}`, EL_EN[stEl])],
-          ["生肖", "Zodiac", vv(`${z[0]} ${p.animal}`, z[1])],
+          ["日主", "Day Master", vv(`<b style="color:${EL_COL[stEl] || "inherit"}">${p.day_master} ${stEl}</b>`, EL_EN[stEl])],
+          ["生肖", "Zodiac", vv(z[0] || p.animal, z[1])],
           ["强弱", "Strength", vv(sZh, sEn)],
           ["主导", "Dominant God", vv(`<b style="color:${EL_COL[dom[2]] || "inherit"}">${dom[0]}</b>`,
             dom[1] + (dom[2] ? ` · ${EL_EN[dom[2]]}` : ""))],
-          ["命卦", "Life Gua", vv(`${p.gua} ${grp.replace(/[A-Za-z ]+/g, "").trim()}`,
+          ["命卦", "Life Gua", vv(`<b style="color:${EL_COL[GUA_EL[p.gua]] || "inherit"}">${p.gua}</b> ${grp.replace(/[A-Za-z ]+/g, "").trim()}`,
             grpEn ? grpEn + "-group gua" : "")],
-          ["命星", "Life Star", vv(p.life_star, STAR_EN[(p.life_star || "").slice(0, 2)] || "")],
-          ["用神", "Medicine", vv(elbs(p.favourable),
-            (p.favourable || []).map((e) => EL_EN[e]).join(" · "))],
-          ["避", "Avoid", vv(elbs(p.unfavourable),
-            (p.unfavourable || []).map((e) => EL_EN[e]).join(" · "))],
+          ["命星", "Life Star", vv(`<b style="color:${EL_COL[STAR_EL[star2]] || "inherit"}">${p.life_star}</b>`,
+            STAR_EN[star2] || "")],
+          ["用神", "Medicine", vv(elbs(p.favourable), elEn(p.favourable))],
+          ["避", "Avoid", vv(elbs(p.unfavourable), elEn(p.unfavourable))],
         ];
       })().map(([zh, en, v]) => `
         <div class="fcell"><div class="fl"><span class="dz">${zh}</span><span class="den">${en}</span></div>
@@ -276,15 +287,16 @@ function harmonyTable(h) {
     `<tr><th>${a}</th>${names.slice(1).map((b, j) => {
       if (j < i) return "<td></td>";
       const p = cell[a + "|" + b];
-      const col = p.score >= 60 ? "#1e7d32" : p.score >= 45 ? "#8a8177" : "#b03a2e";
+      const [bc, bg] = BAND_COL(p.score);
       return `<td class="hcell" role="button" tabindex="0" data-a="${i}" data-b="${j + 1}"
-        title="查看配对详解 tap for the pair breakdown"><b style="color:${col}">${p.score}</b>
-        <span class="hint">${p.band}</span></td>`;
+        style="background:${bg};border-left:3px solid ${bc}"
+        title="查看配对详解 tap for the pair breakdown">
+        <b style="color:${bc};font-size:15px">${p.score}</b>
+        <span class="hband" style="color:${bc}">${p.band}</span>
+        <span class="hgo">详解 tap ▸</span></td>`;
     }).join("")}</tr>`).join("");
-  const rough = h.pairs.filter(p => p.score < 50)
-    .map(p => `<div class="kv">⚠ <b>${p.a} × ${p.b} (${p.score})</b>: ${p.chips.slice(0,3).join("; ")}</div>`).join("");
-  return `<div class="hwrap"><table>${head}${rows}</table></div>${rough}
-    <div class="kv" style="color:var(--muted)">点击任一分数查看两人详解 · tap any score for the pair-wise breakdown</div>`;
+  return `<div class="hwrap"><table>${head}${rows}</table></div>
+    <div class="kv" style="color:var(--muted)">点击任一分数查看两人配对报告 · tap any score to open the pair-wise report</div>`;
 }
 
 const openPair = (a, b) => { location.href = `/w/${token}/pair/${a}/${b}`; };
