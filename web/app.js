@@ -1291,7 +1291,7 @@ async function renderPerson(name) {
           <div class="bar-row tg-row2${p ? "" : " tg-zero"}"><span><b>${g}</b>
             <span class="sub">${(c.tengods_legend[g] || {}).en || TG_EN_FALLBACK[g]}</span></span>
             <div class="bar">${p ? `<i style="width:${(p / pmax * 100).toFixed(0)}%;background:${EL_COL[godEl(c.day_master, g)]}"></i>` : ""}</div>
-            <b>${p ? p + "%" : "0 absent"}</b></div>`).join("");
+            <b>${p ? p + "%" : "0% (absent)"}</b></div>`).join("");
       })()}</div></div>
       <div class="cite">All ten gods are shown — dashed rows are what this chart LACKS:
         those life-domains do not run on autopilot and reward deliberate effort.</div>
@@ -2019,36 +2019,6 @@ if (window.__PUBLIC_READING__) {
     window.__CHART_URL__ = window.__PUBLIC_READING__.chartUrl;
     try { await renderPerson(window.__PUBLIC_READING__.name); }
     catch (e) { $("#tab-person").innerHTML = `<p class="hint">load failed: ${e.message}</p>`; return; }
-    // compare drawer: workspace members' cards side by side + share link (2026-09-19)
-    try {
-      const pr = window.__PUBLIC_READING__;
-      const ws = await api(`/api/pub/w/${pr.token}`);
-      const card = document.querySelector("#tab-person .charcard");
-      if (!card || !ws.people || ws.people.length < 2) return;
-      const row = document.createElement("div");
-      row.className = "cmprow";
-      row.innerHTML = `<span class="hint" style="align-self:center">⇄ Compare:</span>` +
-        ws.people.map((p, i) => i === pr.idx ? "" :
-          `<button data-idx="${i}">${p.name}</button>`).join("") +
-        `<button class="ghost" data-share="1">🔗 Copy share link</button>`;
-      card.after(row);
-      const slot = document.createElement("div");
-      row.after(slot);
-      row.addEventListener("click", async (ev) => {
-        const b = ev.target.closest("button"); if (!b) return;
-        if (b.dataset.share) {
-          try { await navigator.clipboard.writeText(location.href);
-            b.textContent = "✓ link copied"; } catch (e) { prompt("Copy this link:", location.href); }
-          return;
-        }
-        b.disabled = true;
-        const c2 = await api(`/api/pub/w/${pr.token}/person/${b.dataset.idx}/chart`);
-        slot.innerHTML = charCard(c2, c2.name) +
-          `<div class="cite" style="margin:-4px 0 10px">↑ ${c2.name}'s card beside the page owner's —
-           open <a href="/w/${pr.token}/person/${b.dataset.idx}/reading">${c2.name}'s full reading ▸</a></div>`;
-        b.disabled = false;
-      });
-    } catch (e) { /* compare is optional */ }
   })();
 } else {
   controls();
