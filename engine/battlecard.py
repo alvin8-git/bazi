@@ -1,10 +1,13 @@
-"""Three-home battlecard — deterministic comparison page (no LLM).
+"""Multi-home battlecard — deterministic comparison page (no LLM).
 
-Computes every figure fresh from the engine for TowerA / TowerC / TowerB and
-renders data/out/fengshuiBattlecard.html. Regenerate any time with:
+Computes every figure fresh from the engine for whichever homes HOMES lists
+and renders fengshuiBattlecard.html. Regenerate any time with:
     .venv/bin/python -m engine.battlecard
-Assumes data/house.json + data/rooms.json currently hold the TowerA configs
-(the repo's committed state).
+Output goes to data/out; set FENGSHUI_OUT_DIR to file it elsewhere.
+
+Every home on the card is read from its own house/rooms config, so nothing here
+depends on which home data/house.json currently holds. The card is entirely
+computed — authored narrative for a home lives in that home's own report.
 """
 from __future__ import annotations
 
@@ -36,6 +39,8 @@ def _out_dir() -> Path:
     return d
 
 DIR = lambda p: PALACES[p]["dir"] if p in PALACES else "C"
+COUPLE = ["王大明", "李小华"]
+KIDS = ["王一心", "王二强", "王三美"]
 
 # Candidate set 2026-09-17: TowerA (old home) and TowerB (sold to another
 # buyer) removed; the three live candidates compare against each other.
@@ -84,7 +89,7 @@ def analyse(tag: str, hf: str, rf: str, members, charts, ys_map, year=2026):
                    if r["sleeping"] and r["palace_pie"] in bad]
     # study: which home-room holds each child's personal 文昌
     study = {}
-    for n in ("王一心", "王二强", "王三美"):
+    for n in KIDS:
         wc = WENCHANG[charts[n].day_master]
         pal = BRANCH_PALACE[wc]
         in_rooms = [r["label"] for r in rooms["rooms"] if r["palace_pie"] == pal]
@@ -146,11 +151,12 @@ def build() -> str:
     ys_map = {n: yong_shen(c) for n, c in charts.items()}
     homes = [analyse(t, hf, rf, members, charts, ys_map) for t, _, hf, rf in HOMES]
     H = {h["tag"]: h for h in homes}
-    order = ["TowerC", "TowerA", "TowerB"]
+    order = [tag for tag, _, _, _ in HOMES]
     winner = max(homes, key=lambda h: h["best"])["tag"]
     sub = {t: s for t, s, _, _ in HOMES}
     B = []
-    B.append("<h1>⚔️ 三宅對決 Three-Home Fengshui Battlecard</h1>")
+    n_cn = "一二三四五六七八九"[len(order) - 1]
+    B.append(f"<h1>⚔️ {n_cn}宅對決 {len(order)}-Home Fengshui Battlecard</h1>")
     B.append('<div class="sub">黃家 five-member family · Period 8 charts · 2026 · '
              'rule-based, every figure engine-computed · regenerate with '
              '<code>python -m engine.battlecard</code></div>')
@@ -158,6 +164,8 @@ def build() -> str:
     B.append('<div class="cards">' + "".join(
         f'<div class="hcard{" win" if t == winner else ""}"><b>{t}</b>'
         f'<div class="sub">{sub[t]}</div>'
+        f'<div class="sub">facing {H[t]["house"]["facing_deg"]}° · '
+        f'P{"/".join(str(x) for x in H[t]["house"].get("periods", []))} per config</div>'
         f'<div class="big">{H[t]["best"]:+.2f}</div>'
         f'<div class="sub">optimal household fit · {H[t]["structure8"]} (P8)</div></div>'
         for t in order) + "</div>")
@@ -172,12 +180,12 @@ def build() -> str:
              + "".join(f"<th>{t}</th>" for t in order) + "<th>Edge</th></tr>")
     B.append(row("Structure P8 → P9",
                  [f"{H[t]['structure8']} → {H[t]['structure9']}" for t in order],
-                 "TowerA & TowerB (P8)"))
-    B.append(row("House type 宅卦", [H[t]["gua"] for t in order], "TowerC & TowerB"))
+                 "—"))
+    B.append(row("House type 宅卦", [H[t]["gua"] for t in order], "—"))
     def argmax(f):
         return max(order, key=lambda t: f(H[t]))
 
-    kids = lambda h: sum(h["per"][n]["score"] for n in ("王一心", "王二强", "王三美"))
+    kids = lambda h: sum(h["per"][n]["score"] for n in KIDS)
     B.append(row("Optimal household fit",
                  [f"<b>{H[t]['best']:+.2f}</b>" for t in order],
                  argmax(lambda h: h["best"])))
@@ -200,16 +208,16 @@ def build() -> str:
                  argmax(lambda h: h["shengqi"])))
     B.append(row("Wealth 財富 — 向8 & durability",
                  [f"向8: {('、'.join(H[t]['w8_rooms']) or 'balcony/facing')} · "
-                  f"P9: {H[t]['wealth_p9']}" for t in order], "TowerB"))
+                  f"P9: {H[t]['wealth_p9']}" for t in order],
+                 argmax(lambda h: len(h["w8_rooms"]))))
     B.append(row("Health 健康 — beds & 天醫",
                  [f"beds on 山8: {('、'.join(H[t]['m8_beds']) or 'none')} · "
                   f"{H[t]['tianyi']}× in 天醫 rooms" for t in order],
                  argmax(lambda h: len(h["m8_beds"]) + h["tianyi"])))
-    B.append(row("Water & surroundings", [WATER_NOTE[t] for t in order],
-                 "TowerB (era-proof)"))
+    B.append(row("Water & surroundings", [WATER_NOTE[t] for t in order], "—"))
     B.append(row("Couple 桃花位 (兌 W) — romance corner",
                  [("、".join(H[t]["taohua"]) or "not in enclosed area") for t in order],
-                 "TowerC (living)"))
+                 argmax(lambda h: len(h["taohua"]))))
     B.append(row("2026 afflicted bedrooms (no-reno zones)",
                  ["、".join(H[t]["hits"][2026]) or "none" for t in order], "—"))
     B.append(row("2027 afflicted bedrooms",
@@ -232,17 +240,19 @@ def build() -> str:
     B.append("</table>")
 
     B.append("<h2>3 · Relationship 感情</h2>")
-    B.append('<div class="note">The pair bond itself (合婚 70/100 — 辰申半三合, mutual '
-             'element supply) travels with you; what each home changes is the shared '
-             'bedroom. <b>TowerA</b> is mum\'s individual best (延年 master +1.24, dad '
-             'compensates at 五鬼) and the strongest couple-combined room. <b>TowerC</b> '
-             'flips the burden onto mum at its heaviest (絕命 −0.88) — her in-room '
-             'compensations (headboard N/S/E, 黑藍綠青) matter most here, and the living '
-             'room doubles as both parents\' 桃花位 (兌) — a daily-use romance corner no '
-             'other home offers. <b>TowerB</b> keeps the burden on mum but lighter '
-             '(五鬼 −0.66) and gives her 天醫 daytime sectors. Net: for the marriage '
-             'specifically, TowerA &gt; TowerC ≈ TowerB; for mum personally, '
-             'TowerA &gt; TowerB &gt; TowerC.</div>')
+    B.append('<div class="sub">The pair bond itself travels with you; what each '
+             'home changes is the shared master bedroom.</div>')
+    couple_rank = sorted(order, key=lambda t_: -H[t_]["couple"])
+    B.append("<table><tr><th>Home</th><th>Couple combined</th>"
+             + "".join(f"<th>{n}</th>" for n in COUPLE) + "</tr>")
+    for t_ in couple_rank:
+        cells = "".join(
+            f'<td class="{"good" if H[t_]["per"][n]["score"] >= 0.5 else "bad" if H[t_]["per"][n]["score"] < 0 else ""}">'
+            f'{H[t_]["per"][n]["score"]:+.2f} · {H[t_]["per"][n]["room"]} '
+            f'({DIR(H[t_]["per"][n]["palace"])} {H[t_]["per"][n]["star"]})</td>'
+            for n in COUPLE)
+        B.append(f'<tr><th>{t_}</th><td><b>{H[t_]["couple"]:+.2f}</b></td>{cells}</tr>')
+    B.append("</table>")
 
     B.append("<h2>4 · Study 學業 (three students)</h2>")
     B.append("<table><tr><th>Child</th>"
@@ -256,41 +266,33 @@ def build() -> str:
             cells.append(f"<td>文昌 {s['dir']} {s['palace']}宮: {where}{own}</td>")
         B.append(f"<tr><th>{n}</th>" + "".join(cells) + "</tr>")
     B.append("</table>")
-    B.append('<div class="note">TowerB\'s house-level 文昌水 (pool on the N study star) '
-             'holds only on the 乾 side of its 307.5° boundary — under the measured '
-             '戌-side 替卦 the N pool sits on 向星3 instead; its dining table on 向星8 '
-             'holds either way. TowerC\'s house 文昌星 sits in the central dining '
-             'palace — the homework table; TowerA\'s falls on Bedroom 2.</div>')
+    own_room = {t_: [n for n in KIDS if H[t_]["study"][n]["own_room"]] for t_ in order}
+    B.append('<div class="note">Own-bedroom 文昌 (study star inside the child\'s '
+             'own room, the strongest placement): '
+             + " · ".join(f"<b>{t_}</b> {'、'.join(own_room[t_]) or 'none'}"
+                          for t_ in order) + "</div>")
 
     B.append("<h2>5 · Verdict 總評</h2>")
-    B.append(f'<div class="note"><b>TowerB now tops the realized fit '
-             f'({H["TowerB"]["best"]:+.2f})</b> under its compass-measured 307° 替卦 '
-             'chart (+1.96 even on the 乾 side of the boundary), with 旺山旺向 holding on '
-             'BOTH sides of its 騎線 — a 4th bedroom, 三美\'s ensuite doubling as her '
-             'own-room 文昌 and 生氣, beds on the 山星8 side, and a lighter burden on mum '
-             '(五鬼 −0.64 vs 絕命 −0.88 at TowerC). Its two open risks: which side of '
-             '307.5° the true facing sits (it decides the pool\'s 文昌水-vs-三碧 story '
-             'AND makes a P9 renovation 上山下水 on the 戌 side — re-measure before any '
-             'reno), and the stack-mirroring check. '
-             f'<b>TowerC — your current home — </b> ({H["TowerC"]["best"]:+.2f}) '
-             'keeps the abstract ceiling '
-             f'({H["TowerC"]["coarse"]:+.2f}) with your existing allocation already '
-             'optimal; its limits stay the 3-bedroom plan (girls share) and mum\'s 絕命 '
-             f'master. <b>TowerA</b> ({H["TowerA"]["best"]:+.2f}) remains the marriage- '
-             'and mum-friendly home but the weakest for the children — a coherent asset, '
-             'a less coherent family residence. Nothing here is destiny: scores are '
-             'person-room fits, and every negative has a stated compensation.</div>')
-    B.append('<div class="sub">TowerB compass-measured 307° (騎線 — which side of '
-             '307.5° still to settle, 2-3 readings away from metal) &amp; '
-             'stack-mirroring await viewing-day checks; TowerC compass-confirmed '
-             '343°; TowerA facing 135° per brief. Sources: '
-             'fengshuiTowerA/TowerC/TowerB.html carry the full cited breakdowns.</div>')
+    rank = sorted(order, key=lambda t_: -H[t_]["best"])
+    B.append('<div class="note"><b>' + winner + f' tops the realized fit '
+             f'({H[winner]["best"]:+.2f})</b> on optimal room allocation. Full order: '
+             + " &gt; ".join(f"{t_} {H[t_]['best']:+.2f}" for t_ in rank)
+             + '. Scores are person-room fits under each home\'s own optimal '
+               'arrangement — not destiny, and every negative has a stated '
+               'compensation in that home\'s own report.</div>')
+    B.append('<div class="sub">Every figure on this card is engine-computed from '
+             'each home\'s house/rooms config. The authored narrative — sources, '
+             'measured-bearing caveats and remedies — lives in each home\'s own '
+             'report under properties/&lt;home&gt;/analysis/, and the five-home '
+             'board is scripts/residences_battlecard.py.</div>')
 
     body = _tosimp("\n".join(B))
+    n_cn = "一二三四五六七八九"[len(HOMES) - 1]
     return ("<!doctype html><html><head><meta charset='utf-8'>"
             "<meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover'>"
             "<meta name='format-detection' content='telephone=no'>"
-            f"<title>三宅对决 Battlecard</title><style>{CSS}</style></head>"
+            f"<title>{_tosimp(n_cn)}宅对决 Battlecard</title>"
+            f"<style>{CSS}</style></head>"
             f"<body>{body}</body></html>")
 
 

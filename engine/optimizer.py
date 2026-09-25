@@ -83,20 +83,32 @@ def optimize(charts: dict, ys_map: dict, rooms: list[dict], natal: dict, annual:
     free = [n for n in names if allow_master_split or n not in couple]
     candidates = []
     room_ids = [r["id"] for r in sleeping]
-    for combo in product(room_ids, repeat=len(free)):
-        assignment = {rid: [] for rid in room_ids}
-        if not allow_master_split:
-            for n in couple:
-                assignment["master"].append(n)
-        for n, rid in zip(free, combo):
-            assignment[rid].append(n)
-        if any(len(v) > rooms_by_id[rid]["capacity"] for rid, v in assignment.items()):
-            continue
-        res = score_assignment(assignment, charts, ys_map, rooms_by_id, natal, annual,
-                               method, lam)
-        if res["violations"]:
-            continue
-        candidates.append({"assignment": {k: v for k, v in assignment.items() if v}, **res})
+    # The couple shares one master suite. Nearly every home has exactly one
+    # ("master"), but a reconfigured unit can have two (master_w / master_e) —
+    # and which suite they take is precisely the question, so enumerate each.
+    master_ids = [rid for rid in room_ids if rid == "master"
+                  or rid.startswith("master_")]
+    pin_couple = bool(couple) and not allow_master_split
+    if pin_couple and not master_ids:
+        raise ValueError("master_couple given but rooms.json has no master room "
+                         f"(sleeping rooms: {room_ids}) — rename one 'master', "
+                         "or pass allow_master_split=True")
+    for master_id in (master_ids if pin_couple else [None]):
+        for combo in product(room_ids, repeat=len(free)):
+            assignment = {rid: [] for rid in room_ids}
+            if master_id is not None:
+                assignment[master_id].extend(couple)
+            for n, rid in zip(free, combo):
+                assignment[rid].append(n)
+            if any(len(v) > rooms_by_id[rid]["capacity"]
+                   for rid, v in assignment.items()):
+                continue
+            res = score_assignment(assignment, charts, ys_map, rooms_by_id, natal,
+                                   annual, method, lam)
+            if res["violations"]:
+                continue
+            candidates.append({"assignment": {k: v for k, v in assignment.items()
+                                              if v}, **res})
 
     if not candidates:
         raise ValueError("no feasible assignment — constraints are unsatisfiable "
