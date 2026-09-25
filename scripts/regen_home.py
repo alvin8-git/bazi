@@ -2,17 +2,27 @@
 
 Usage: .venv/bin/python scripts/regen_home.py <Name> [verdict_file]
   <Name>        e.g. TowerB → writes data/out/fengshuiTowerB.html
+                (set FENGSHUI_OUT_DIR to write elsewhere)
   verdict_file  optional HTML fragment injected as its OWN first tab
                 ("Verdict 结论", the landing tab)
 
 The active data/house.json + data/rooms.json + floorplan.jpeg must already
 hold the home being generated (swap → restart server → run this → restore).
 """
+import os
 import sys
 import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+
+
+def _out_dir() -> Path:
+    """Output directory. Defaults to data/out; override with FENGSHUI_OUT_DIR
+    (relative to the repo root) to file a report next to its own source data."""
+    d = ROOT / os.environ.get("FENGSHUI_OUT_DIR", "data/out")
+    d.mkdir(parents=True, exist_ok=True)
+    return d
 
 
 def inject_verdict_tab(html: str, verdict: str) -> str:
@@ -37,7 +47,7 @@ def main() -> None:
     html = html.replace("fengshuiTowerA.html", f"fengshui{name}.html")
     if verdict_file:
         html = inject_verdict_tab(html, (ROOT / verdict_file).read_text("utf8"))
-    out = ROOT / "data/out" / f"fengshui{name}.html"
+    out = _out_dir() / f"fengshui{name}.html"
     out.write_text(html, "utf8")
     print(f"{out} written ({len(html)} bytes)")
 

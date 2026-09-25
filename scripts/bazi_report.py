@@ -12,7 +12,7 @@ The point is interpretation, not just calculation: every figure is followed
 by what it MEANS and what to DO — all advice rule-selected (authored rules,
 no runtime AI), every number engine-computed.
 
-Writes data/out/bazi{Name}.html ×5.
+Writes data/out/people/bazi{Name}.html ×5.
 Usage: .venv/bin/python scripts/bazi_report.py
 """
 import sys
@@ -750,7 +750,7 @@ def main():
     charts = {m.name: build_chart(m.name, m.sex, m.birth_dt, TRUE_SOLAR)
               for m in members}
     ys_map = {n: yong_shen(c) for n, c in charts.items()}
-    (ROOT / "data/out").mkdir(parents=True, exist_ok=True)
+    (ROOT / "data/out/people").mkdir(parents=True, exist_ok=True)
     fam = family_section(members, charts, ys_map,
                          axis_note="the 寅申 clash runs through 二强 and both "
                                    "parents — remedies in the harmony handbook; his "
@@ -761,7 +761,7 @@ def main():
                    key=charts[m.name].element_weights.get))
               for m in members]
     for m in members:
-        out = ROOT / "data/out" / f"bazi{FILE_NAME[m.name]}.html"
+        out = ROOT / "data/out/people" / f"bazi{FILE_NAME[m.name]}.html"
         out.write_text(build_person(m, charts[m.name], ys_map[m.name], fam,
                                     others), "utf8")
         print(f"{out.name} written ({out.stat().st_size} bytes)")

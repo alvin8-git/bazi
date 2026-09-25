@@ -9,6 +9,7 @@ Assumes data/house.json + data/rooms.json currently hold the TowerA configs
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 from .bazi import TRUE_SOLAR, build_chart
@@ -25,6 +26,15 @@ from .yongshen import yong_shen
 from .join import score_direction
 
 ROOT = Path(__file__).resolve().parent.parent
+
+
+def _out_dir() -> Path:
+    """Output directory. Defaults to data/out; override with FENGSHUI_OUT_DIR
+    (relative to the repo root) to file a report next to its own source data."""
+    d = ROOT / os.environ.get("FENGSHUI_OUT_DIR", "data/out")
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
 DIR = lambda p: PALACES[p]["dir"] if p in PALACES else "C"
 
 # Candidate set 2026-09-17: TowerA (old home) and TowerB (sold to another
@@ -285,8 +295,7 @@ def build() -> str:
 
 
 def main():
-    out = ROOT / "data/out/fengshuiBattlecard.html"
-    out.parent.mkdir(parents=True, exist_ok=True)
+    out = _out_dir() / "fengshuiBattlecard.html"
     out.write_text(build(), "utf8")
     print(f"battlecard → {out} ({out.stat().st_size / 1024:.0f} KB)")
 

@@ -13,3 +13,7 @@ uv-*.lock
 .env*
 data/face_landmarker.task
 data/mp_test_portrait.jpg
+Crashpad/
+graphify-out/
+properties/*/analysis/
+research/face/
