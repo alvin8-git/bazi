@@ -874,18 +874,7 @@ const ZODIAC = { 鼠: ["🐭", "Rat"], 牛: ["🐮", "Ox"], 虎: ["🐯", "Tiger
 const EL_EN = { 木: "Wood", 火: "Fire", 土: "Earth", 金: "Metal", 水: "Water" };
 
 function charCard(c, name) {
-  const doms6 = c.domains || [];        // payload order — comparable across people
-  const missing = ALLGODS.filter((g) => !(g in c.tengods_pct));
-  const [domG, domP] = Object.entries(c.tengods_pct).sort((a, b) => b[1] - a[1])[0] || ["—", 0];
-  const dec = ((c.windows || {}).decades || []).find((d) => d.current) || {};
-  const luck = (c.transit || {}).luck || {};
-  const decPhase = dec.phase_zh ? `${dec.phase_zh}` : "";
-  const phaseCol = { 成長: "#1e8e3e", 整固: "#5f8a3e", 過渡: "#b8860b", 修整: "#c5221f" }[decPhase] || "#b8860b";
   const cols = c.yongshen.colours.join("·");
-  const tile = (l, v, bar, go) => `<div class="cstat${go ? " go" : ""}"${go
-      ? ` data-go="${go}" role="button" tabindex="0"` : ""}><div class="l">${l}
-      ${go ? '<span class="chev">›</span>' : ""}</div>
-    <div class="v">${v}</div><div class="cbar">${bar || ""}</div></div>`;
   const fav = c.yongshen.favourable;
   // card identity = DAY MASTER element ("who I am"); the 用神 keeps the accent ring
   // and owns the badges/medicine advice ("what I need").
@@ -901,29 +890,9 @@ function charCard(c, name) {
         ${c.life_palaces ? (() => { const a = c.life_palaces.animal, z = ZODIAC[a] || ["", a];
           return `<div class="csub2"><b class="gf">生肖</b> ${z[0]} ${z[1]} ·
             <b class="gf">命宮</b> ${c.life_palaces.ming_gong} life palace</div>`; })() : ""}</div></div></div>
-    <div class="cstats">
-      ${tile("用神 medicine", fav.map((e) => elb(e)).join(" ") + ` <small>${cols}</small>`,
-        "", "p5|用神")}
-      ${tile("主导 dominant god", `${dn(domG)} <small><b class="pctpop">${domP}%</b> ${(c.tengods_legend[domG] || {}).en || TG_EN_FALLBACK[domG] || ""}</small>`,
-        `<i style="width:${Math.min(100, domP * 3)}%;background:${EL_COL[godEl(c.day_master, domG)]}"></i>`, "p3|十神")}
-      ${tile("缺失 missing gods", missing.length
-        ? `<span style="font-size:11.5px">${missing.map((g) =>
-            `${dn(g)}<small> ${TG_EN_FALLBACK[g]}</small>`).join(" · ")}</span>`
-        : "无 none — all ten present",
-        "", "p3|十神")}
-      ${tile("大运 decade now", `<span style="font-size:13px">${luck.gz || dec.gz || "—"}
-        <small>${luck.ages || dec.ages || ""}${decPhase
-          ? " · " + dn(decPhase) + (dec.phase ? " " + dec.phase : "") : ""}</small></span>`,
-        `<i style="width:40%;background:${phaseCol}"></i>`, "p4|时运")}
-      ${doms6.length ? `<div class="cstat go dom6" data-go="p3|人生领域" role="button" tabindex="0">
-        <div class="l">人生领域 life domains <span class="chev">›</span></div>
-        <div class="dgrid6">${doms6.map((d) => `<div class="dm">
-          <div class="t"><span class="dz">${d.zh}</span>
-            <b class="ds ${d.score >= 70 ? "hi" : d.score < 45 ? "lo" : ""}">${d.score}</b></div>
-          <div class="de">${d.en}</div>
-          <div class="dbarm"><i class="${d.score >= 70 ? "good" : d.score < 45 ? "bad" : ""}"
-            style="width:${d.score}%"></i></div></div>`).join("")}</div></div>` : ""}
-    </div></div>`;
+    <div class="cfav" data-go="p5|用神" role="button" tabindex="0"><span class="l">用神 medicine</span>
+      ${fav.map((e) => elb(e)).join(" ")} <small>${cols}</small> <span class="chev">›</span></div>
+  </div>`;
 }
 
 function strengthGauge(st) {
@@ -1127,19 +1096,24 @@ function interactionsSvg(c) {
   const order = ["hour", "day", "month", "year"], zh = { hour: "时", day: "日", month: "月", year: "年" };
   const xs = {}; order.forEach((k, i) => (xs[k] = 80 + i * 160));
   let s = "";
-  (c.interactions || []).forEach((it) => {
+  const placed = [];                                   // label boxes, to nudge collisions apart
+  (c.interactions || []).slice().sort((p, q) => Math.abs(xs[p.pillars[0]] - xs[p.pillars[1]]) - Math.abs(xs[q.pillars[0]] - xs[q.pillars[1]])).forEach((it) => {
     const [a, b] = it.pillars; const [x1, x2] = [xs[a], xs[b]].sort((p, q) => p - q);
     const h = 40 + 28 * (x2 - x1) / 160, good = it.kind.includes("合"), col = good ? "#0e7a6a" : "#b45309";
-    s += `<path d="M${x1} 128 Q${(x1 + x2) / 2} ${(128 - h * 1.6).toFixed(0)} ${x2} 128" fill="none" stroke="${col}"
-      stroke-width="2"${good ? "" : ' stroke-dasharray="5 4"'}/>
-      <text x="${(x1 + x2) / 2}" y="${(128 - h * 0.8 - 7).toFixed(0)}" text-anchor="middle" font-size="16"
+    const lx = (x1 + x2) / 2, half = (it.kind.length + it.pair.length + 1) * 11.5;
+    let ly = 124 - h * 0.8 - 8;
+    while (placed.some(([px, py, ph]) => Math.abs(px - lx) < half + ph && Math.abs(py - ly) < 24)) ly -= 24;
+    placed.push([lx, ly, half]);
+    s += `<path d="M${x1} 124 Q${lx} ${(124 - h * 1.6).toFixed(0)} ${x2} 124" fill="none" stroke="${col}"
+      stroke-width="2.5"${good ? "" : ' stroke-dasharray="5 4"'}/>
+      <text x="${lx}" y="${ly.toFixed(0)}" text-anchor="middle" font-size="22"
       font-weight="700" fill="${col}">${it.kind} ${it.pair}</text>`;
   });
   order.forEach((k) => { const br = c.pillars[k][1], col = EL_COL[BR_EL[br]], x = xs[k];
-    s += `<circle cx="${x}" cy="150" r="22" fill="#fff" stroke="${col}" stroke-width="2"/>
-      <text x="${x}" y="157" text-anchor="middle" font-size="20" font-weight="700" fill="${col}">${br}</text>
-      <text x="${x}" y="190" text-anchor="middle" font-size="11" fill="#8a8177">${zh[k]}柱 ${k}</text>`; });
-  return `<svg class="ixsvg" viewBox="0 0 640 200" role="img" aria-label="branch interactions">${s}</svg>`;
+    s += `<circle cx="${x}" cy="150" r="26" fill="#fff" stroke="${col}" stroke-width="2.5"/>
+      <text x="${x}" y="159" text-anchor="middle" font-size="26" font-weight="700" fill="${col}">${br}</text>
+      <text x="${x}" y="194" text-anchor="middle" font-size="15" fill="#8a8177">${zh[k]}柱 ${k}</text>`; });
+  return `<svg class="ixsvg" viewBox="0 -46 640 251" role="img" aria-label="branch interactions">${s}</svg>`;
 }
 function interactionsLine(c) {
   const its = c.interactions || [], n = its.length;
@@ -1538,8 +1512,8 @@ function buildCompass(c, R) {
   const colEn = cols.map((z) => COLOUR_ZH_EN[z] || z).slice(0, 2).join("/");
   const chart = `${c.medicine_rank ? `<p class="cite" style="margin:0 0 6px"><b>Medicine, ranked:</b> ${c.medicine_rank.replace(/^Medicine, ranked:\s*/, "")}</p>` : ""}
     <p class="cite" style="margin:0 0 8px">Favourable ${elbs(fav)} · avoid ${elbs(unf)} · colours <b>${cols.join("、")}</b></p>
-    ${c.xiji ? `<table class="xiji">${c.xiji.map((r) => `<tr><th>${r.band} <span class="sub">${r.zh}</span></th>
-      <td>${r.elements.map((e) => elb(e)).join(" ")}</td><td class="sub">${r.gods.join("·")}</td></tr>`).join("")}</table>` : ""}`;
+    ${c.xiji ? `<div class="scrollx"><table class="xiji htable">${c.xiji.map((r) => `<tr><th>${r.band} <span class="sub">${r.zh}</span></th>
+      <td>${r.elements.map((e) => elb(e)).join(" ")}</td><td class="sub">${r.gods.join("·")}</td></tr>`).join("")}</table></div>` : ""}`;
   const c34 = rdFig({ tier: "hero", span: 7, extra: "rd-pair2", label: "用神 the medicine", learn: 5, chart,
     line: `Add ${elw(fav[0])} ${elc(fav[0])}${colEn ? ` (${colEn})` : ""} through lighting or an accent wall; keep ${unf.map((e) => EL_EN[e]).join("/")} ${unf.map(elc).join("")} out of your main room.`,
     facts: [["用神", elbs(fav)], ["忌神", elbs(unf)], c.tiaohou ? ["调候", c.tiaohou.verdict] : null].filter(Boolean),
@@ -1563,6 +1537,11 @@ function wireReadingTabs(root) {
     activate(b.dataset.pane); nav.scrollIntoView({ block: "start", behavior: "instant" }); });
   const hm = (location.hash || "").match(/^#tab-(p[1-5])$/);
   if (hm) activate(hm[1]);
+  // swipe hint only on tables that actually overflow their column (hidden panes measure 0 → re-check on activate)
+  const markOverflow = () => root.querySelectorAll(".rd-fig .scrollx").forEach((w) =>
+    w.classList.toggle("has-overflow", w.scrollWidth > w.clientWidth + 2));
+  markOverflow(); window.addEventListener("resize", markOverflow);
+  nav.addEventListener("click", () => setTimeout(markOverflow, 0));
   root.addEventListener("click", (ev) => { const tr = ev.target.closest("tr.wrow"); if (!tr) return;
     const det = tr.nextElementSibling; if (det && det.classList.contains("wdetail")) det.hidden = !det.hidden; });
   // character-card stats: data-go="paneId|figure label prefix"
@@ -1597,7 +1576,9 @@ async function renderPerson(name) {
     "the mechanics live in <a href='/learn/four-pillars-explained' target='_blank'>Learn ▸</a>.",
     "person") + `
     ${charCard(c, name)}
-    ${c.synthesis ? `<div class="synth"><b>綜合論斷 The Synthesis</b><p>${c.synthesis.join(" ")}</p></div>` : ""}
+    ${c.synthesis && c.synthesis.length ? `<div class="rd-synth-note"><span class="rd-synth-kicker">綜合論斷 The Synthesis</span>
+      <p class="rd-synth-lede">${c.synthesis[0]}</p>
+      ${c.synthesis.length > 1 ? `<details class="rd-synth-more"><summary>read the synthesis ›</summary><p>${c.synthesis.slice(1).join(" ")}</p></details>` : ""}</div>` : ""}
     <nav class="ptabs">${READING_TABS.map(([id, lbl], i) =>
       `<button class="${i === 0 ? "on" : ""}" data-pane="${id}">${lbl}</button>`).join("")}</nav>
     ${READING_TABS.map(([id], i) => `<div class="ppane${i === 0 ? " on" : ""}" id="pane-${id}">${panes[id]}</div>`).join("")}`);
