@@ -1095,25 +1095,31 @@ const GLOSS_IX = { 六害: "harms", 害: "harms", 冲: "clashes with", 六冲: "
 function interactionsSvg(c) {
   const order = ["hour", "day", "month", "year"], zh = { hour: "时", day: "日", month: "月", year: "年" };
   const xs = {}; order.forEach((k, i) => (xs[k] = 80 + i * 160));
-  let s = "";
-  const placed = [];                                   // label boxes, to nudge collisions apart
-  (c.interactions || []).slice().sort((p, q) => Math.abs(xs[p.pillars[0]] - xs[p.pillars[1]]) - Math.abs(xs[q.pillars[0]] - xs[q.pillars[1]])).forEach((it) => {
+  const its = (c.interactions || []).slice()
+    .sort((p, q) => Math.abs(xs[p.pillars[0]] - xs[p.pillars[1]]) - Math.abs(xs[q.pillars[0]] - xs[q.pillars[1]]));
+  const many = its.length >= 4;                    // four or more: arc carries the kind only, a legend carries the rest
+  const NY = 150, R = 26, boxes = [];
+  let s = "", minY = NY - R - 10, maxY = NY + 48;
+  its.forEach((it, i) => {
     const [a, b] = it.pillars; const [x1, x2] = [xs[a], xs[b]].sort((p, q) => p - q);
     const h = 40 + 28 * (x2 - x1) / 160, good = it.kind.includes("合"), col = good ? "#0e7a6a" : "#b45309";
-    const lx = (x1 + x2) / 2, half = (it.kind.length + it.pair.length + 1) * 11.5;
-    let ly = 124 - h * 0.8 - 8;
-    while (placed.some(([px, py, ph]) => Math.abs(px - lx) < half + ph && Math.abs(py - ly) < 24)) ly -= 24;
-    placed.push([lx, ly, half]);
-    s += `<path d="M${x1} 124 Q${lx} ${(124 - h * 1.6).toFixed(0)} ${x2} 124" fill="none" stroke="${col}"
+    const below = its.length >= 3 && i % 2 === 1;   // alternate sides once three arcs share the strip
+    const y0 = below ? NY + R : NY - R, ctl = below ? y0 + h * 1.6 : y0 - h * 1.6;
+    const text = many ? it.kind : `${it.kind} ${it.pair}`;
+    const lx = (x1 + x2) / 2, half = text.length * 11.5;
+    let ly = below ? y0 + h * 0.8 + 22 : y0 - h * 0.8 - 8;
+    while (boxes.some(([px, py, ph]) => Math.abs(px - lx) < half + ph && Math.abs(py - ly) < 26)) ly += below ? 26 : -26;
+    boxes.push([lx, ly, half]); minY = Math.min(minY, ly - 24); maxY = Math.max(maxY, ly + 6);
+    s += `<path d="M${x1} ${y0} Q${lx} ${ctl.toFixed(0)} ${x2} ${y0}" fill="none" stroke="${col}"
       stroke-width="2.5"${good ? "" : ' stroke-dasharray="5 4"'}/>
-      <text x="${lx}" y="${ly.toFixed(0)}" text-anchor="middle" font-size="22"
-      font-weight="700" fill="${col}">${it.kind} ${it.pair}</text>`;
+      <text x="${lx}" y="${ly.toFixed(0)}" text-anchor="middle" font-size="22" font-weight="700" fill="${col}">${text}</text>`;
   });
   order.forEach((k) => { const br = c.pillars[k][1], col = EL_COL[BR_EL[br]], x = xs[k];
-    s += `<circle cx="${x}" cy="150" r="26" fill="#fff" stroke="${col}" stroke-width="2.5"/>
-      <text x="${x}" y="159" text-anchor="middle" font-size="26" font-weight="700" fill="${col}">${br}</text>
-      <text x="${x}" y="194" text-anchor="middle" font-size="15" fill="#8a8177">${zh[k]}柱 ${k}</text>`; });
-  return `<svg class="ixsvg" viewBox="0 -46 640 251" role="img" aria-label="branch interactions">${s}</svg>`;
+    s += `<circle cx="${x}" cy="${NY}" r="${R}" fill="#fff" stroke="${col}" stroke-width="2.5"/>
+      <text x="${x}" y="${NY + 9}" text-anchor="middle" font-size="26" font-weight="700" fill="${col}">${br}</text>
+      <text x="${x}" y="${NY + 44}" text-anchor="middle" font-size="15" fill="#8a8177">${zh[k]}柱 ${k}</text>`; });
+  const legend = many ? `<div class="ixlegend">${its.map((it) => `<span><b style="color:${it.kind.includes("合") ? "#0e7a6a" : "#b45309"}">${it.kind}</b> ${it.pair} · ${it.pillars.map((k) => zh[k]).join("+")}柱</span>`).join("")}</div>` : "";
+  return `<svg class="ixsvg" viewBox="0 ${minY.toFixed(0)} 640 ${(maxY - minY).toFixed(0)}" role="img" aria-label="branch interactions">${s}</svg>${legend}`;
 }
 function interactionsLine(c) {
   const its = c.interactions || [], n = its.length;
@@ -1374,7 +1380,7 @@ function buildGods(c, R) {
     const row = (zh, enTxt, score, band, s, ev) => { const cls = score == null ? "" : score >= 70 ? "good" : score < 45 ? "weak" : "";
       const sc = score == null ? '<span class="sub">— signal only</span>' : `<div class="dbar"><i class="${cls}" style="width:${score}%"></i></div><b class="dnum ${cls === "good" ? "b-good" : cls === "weak" ? "b-weak" : ""}">${score}</b>`;
       return `<tr><td><b>${zh}</b><span class="sub">${enTxt}</span></td><td class="ldscore">${sc}</td>
-        <td class="sub">${s ? `${s[0]} <b>${s[1]}%</b>` : "—"}</td><td class="sub">${s ? `${s[4]} · ${inPal(s[2], s[3]) ? "✓ seated 得位" : "elsewhere"}` : "—"}</td>
+        <td class="sub">${s ? `${s[0]} <b>${s[1]}%</b>` : "—"}</td><td class="seat">${s ? `<span class="seat-pal">${s[4]}</span><span class="dirchip ${inPal(s[2], s[3]) ? "good" : ""}">${inPal(s[2], s[3]) ? "✓ 得位 seated" : "elsewhere"}</span>` : "—"}</td>
         <td class="ldev">${ev.slice().sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta)).slice(0, 3).map(chip).join(" ")}</td></tr>`; };
     const doms = c.domains.slice().sort((a, b) => b.score - a.score);
     const table = `<div class="scrollx"><table class="bc-table ldtable"><tr><th>Life domain</th><th>Score</th><th>Signal gods · share</th><th>Seat</th><th>Evidence</th></tr>
@@ -1445,7 +1451,7 @@ function buildTiming(c, R) {
       ${x.keywords ? `<div class="dykw">${x.keywords}</div>` : ""}${d.current ? `<div class="ccdyhere">▲ now</div>` : ""}</div>`; }).join("")}</div>`;
   const ci = W.decades.findIndex((d) => d.current), cur = W.decades[ci], nxt = W.decades[ci + 1];
   const arc = ((W.arc || "").match(/Element arc: (.*?) —/) || [])[1];
-  const t1 = rdFig({ tier: "hero", span: 12, label: "T1 · 大运 decade strip", learn: 6, chart: strip,
+  const t1 = rdFig({ tier: "hero", span: 12, label: "大运 · decade strip", learn: 6, chart: strip,
     line: cur ? `In the ${cur.gz} decade (${cur.ages}, ${cur.phase}) — ${nxt ? `shifts to ${nxt.gz} (${nxt.phase}) at age ${String(nxt.ages).split(/[–-]/)[0]}.` : "the last charted decade."}`
       : `Before the first decade — ${W.decades[0] ? `${W.decades[0].gz} begins at age ${String(W.decades[0].ages).split(/[–-]/)[0]}.` : ""}`,
     facts: [cur ? ["大运", `${cur.gz} · ${cur.ages}`] : null, nxt ? ["next", `${nxt.gz} · ${nxt.ages}`] : null,
@@ -1455,7 +1461,7 @@ function buildTiming(c, R) {
   const T = c.transit || {}, L = T.luck || {};
   const gDec = [grpOfGod(L.stem_god || ""), grpOfGod(L.branch_god || "")], gYr = [grpOfGod(T.year_stem_god || ""), grpOfGod(T.year_branch_god || "")];
   const theme = (pair) => pair[0] === pair[1] ? GRP_THEME[pair[0]] : `${GRP_THEME[pair[0]]} with ${GRP_THEME[pair[1]]}`;
-  const p8 = rdFig({ tier: "secondary", span: 5, label: "P8 · this year, on this decade", learn: 13,
+  const p8 = rdFig({ tier: "secondary", span: 5, label: "流年 · this year, on this decade", learn: 13,
     chart: `<div class="pillar-cards"><div class="pillar-card transit"><div class="gz">${T.year_gz}</div><div class="pos">YEAR 流年 ${state.year}</div>
         <div class="god">${T.year_stem_god}/${T.year_branch_god}</div><div class="sub">annual transit</div></div>
       ${L.gz ? `<div class="pillar-chip">on the ${L.gz} decade · ages ${L.ages} · ${L.stem_god}/${L.branch_god}</div>` : ""}</div>`,
@@ -1470,7 +1476,7 @@ function buildTiming(c, R) {
         out.push(i === j ? order[idx[i]] : `${order[idx[i]]}–${order[idx[j]]}`); i = j + 1; } return out.join(", "); };
     const good = RH.filter((r) => r.cls === "good"), bad = RH.filter((r) => r.cls !== "good");
     const gel = [...new Set(good.map((r) => r.el))].map(elw).join(" and ");
-    t6 = rdFig({ tier: "secondary", span: 7, label: "T6 · 月令 monthly rhythm", learn: 13, chart: `<div class="rhy">${cells}</div>`,
+    t6 = rdFig({ tier: "secondary", span: 7, label: "月令 · monthly rhythm", learn: 13, chart: `<div class="rhy">${cells}</div>`,
       line: good.length ? `Good months: ${ranges(good.map((r) => r.mon))} (${gel}). Pace ${ranges(bad.map((r) => r.mon))}.` : "No month carries your medicine — pace the whole year evenly.",
       facts: [["good", `${good.length}`], ["pace", `${bad.length}`]],
       legend: "Each solar month carries a branch and its element. Months whose element is your medicine are marked good; months carrying a 忌神 element are marked to pace. The rhythm is the same every year — the 流年 table says which years lift or lower it." });
@@ -1489,14 +1495,43 @@ function buildTiming(c, R) {
   const best = W.years.map((yr) => [yr, score(yr, "window")]).sort((a, b) => b[1].length - a[1].length)[0];
   const worst = W.years.map((yr) => [yr, score(yr, "caution")]).sort((a, b) => b[1].length - a[1].length)[0];
   const list = (ks) => ks.map((k) => DIM[k]).join(ks.length === 2 ? " & " : ", ");
-  const t2 = rdFig({ tier: "secondary", span: 12, label: "T2 · next ten years", learn: 13, chart: table,
+  const t2 = rdFig({ tier: "secondary", span: 12, label: "流年 · next ten years", learn: 13, chart: table,
     line: `${best && best[1].length ? `Act in ${best[0].y} ${best[0].gz} — ${list(best[1])} window${best[1].length > 1 ? "s align" : ""}.` : "No peak window in the next ten years — steady years, build quietly."}
       ${worst && worst[1].length ? ` Be careful in ${worst[0].y} ${worst[0].gz} — ${worst[1].length} caution${worst[1].length > 1 ? "s" : ""}.` : ""}`,
     facts: [best && best[1].length ? ["act", `${best[0].y} ${best[0].gz}`] : null, worst && worst[1].length ? ["careful", `${worst[0].y} ${worst[0].gz}`] : null].filter(Boolean),
     legend: `<div>The decade is the climate, the year the weather. Each year is checked per dimension — career (month-pillar activation or clash, 官殺 arrival), wealth (財星 arrival with a can-the-chart-hold-it check, 財庫 vault years), relationship (桃花 and spouse-palace 日支 activation) and health (years that feed an excess or replenish a weak element). Tap a year row for the full notes.</div>${legendList(13)}` });
+  const daily = dailyFig(c);
   return rdSection("timing", "时运 Timing", "Where am I now?",
-    [rdGrid("hero", [t1]), rdGrid("secondary", [p8, t6]), rdGrid("secondary", [t2])],
+    [rdGrid("hero", [t1]), rdGrid("secondary", [p8, t6]), rdGrid("secondary", [t2]), rdGrid("secondary", [daily])],
     [R.stb(13), R.narr(13), R.narr(6)]);
+}
+
+/* 流日 daily fortune — the next 30 days, six activities, from the engine's daily layer */
+const ACT_EN = { moving: "moving", signing: "signing", marriage: "marriage", travel: "travel", medical: "medical", launch: "launch" };
+function dailyFig(c) {
+  const D = c.daily; if (!D || !(D.rows || []).length) return "";
+  const dm = c.day_master, acts = D.activities || [];
+  const mark = (f) => f.verdict === "good" ? "◉" : f.verdict === "avoid" ? "⚠" : "·";
+  const rows = D.rows.map((r) => `<tr class="${r.today ? "today" : ""}${r.officer === "破" || r.interactions.some((x) => x.startsWith("沖")) ? " dclash" : ""}">
+      <th>${r.date.slice(5)} <small>${r.weekday}</small></th>
+      <td><b>${elc(r.gz[0])}${elc(r.gz[1])}</b> <small class="sub">${r.officer}日</small></td>
+      <td class="sub">${godc(dm, r.stem_god)}/${godc(dm, r.branch_god)}${r.interactions.length ? ` <span class="tag${r.interactions.some((x) => x.startsWith("沖") || x.startsWith("害")) ? " warn" : ""}">${r.interactions.join(" ")}</span>` : ""}</td>
+      <td>${elb(r.element)} <small class="sub">${r.medicine === "favourable" ? "用神" : r.medicine === "against" ? "忌" : ""}</small></td>
+      ${acts.map(([k]) => { const f = r.flags[k]; return `<td class="wf-${f.verdict === "good" ? "window" : f.verdict === "avoid" ? "caution" : "quiet"}" title="${f.why}"><b>${mark(f)}</b></td>`; }).join("")}</tr>`).join("");
+  const table = `<div class="scrollx"><table class="wtable dtable-daily"><tr><th>Date</th><th>日柱 day</th><th>十神 gods</th><th>五行</th>
+    ${acts.map(([, lab]) => `<th>${lab}</th>`).join("")}</tr>${rows}</table></div>`;
+  const B = D.best, W = D.worst;
+  const line = (B ? `Best day this month for ${B.for.slice(0, 2).map((k) => ACT_EN[k]).join(" or ")}: ${B.date.slice(5)} ${B.gz} (${B.officer}日).` : "No clear best day this month.")
+    + (W && W.avoid.length ? ` Avoid ${W.avoid.slice(0, 2).map((k) => ACT_EN[k]).join(" and ")} on ${W.date.slice(5)} ${W.gz} — ${W.why}.` : "");
+  const nGood = D.rows.filter((r) => Object.values(r.flags).some((f) => f.verdict === "good")).length;
+  const nAvoid = D.rows.filter((r) => Object.values(r.flags).some((f) => f.verdict === "avoid")).length;
+  return rdFig({ tier: "secondary", span: 12, label: "流日 · daily fortune, next 30 days", learn: 13, chart: table, line,
+    facts: [["from", D.start], ["good days", `${nGood}`], ["days with a caution", `${nAvoid}`]],
+    legend: `<div><b>◉ good · ⚠ avoid · · neutral</b> — per activity, hover a cell for the deciding rule.</div>
+      <div><b>十二建除</b> the day officer: 成 success, 開 open, 定 settled are good for most acts; 除 removal suits treatment; 閉 closed and 危 danger hold back travel and moving; 破 (and any day that 沖 the month) is avoided for everything.</div>
+      <div><b>Your branches</b> a day branch that 沖 your day branch (${elc(c.pillars.day[1])}) or year branch (${elc(c.pillars.year[1])}) is avoided for marriage, moving and launches; 六合 to your day branch favours marriage and signing; 害 holds back medical.</div>
+      <div><b>Element of the day</b> a day stem carrying your primary 用神 favours launches and signing; one carrying your chief 忌神 is avoided for banking and launches.</div>
+      <div class="sub">${D.source_ref}</div>` });
 }
 
 /* --- 方位 Compass ------------------------------------------------------------- */
@@ -1537,6 +1572,8 @@ function wireReadingTabs(root) {
     activate(b.dataset.pane); nav.scrollIntoView({ block: "start", behavior: "instant" }); });
   const hm = (location.hash || "").match(/^#tab-(p[1-5])$/);
   if (hm) activate(hm[1]);
+  const hl = root.querySelector("[data-howto]"), hd = root.querySelector("#howto");
+  if (hl && hd) hl.addEventListener("click", (ev) => { ev.preventDefault(); hd.open = true; hd.scrollIntoView({ block: "start", behavior: "smooth" }); });
   // swipe hint only on tables that actually overflow their column (hidden panes measure 0 → re-check on activate)
   const markOverflow = () => root.querySelectorAll(".rd-fig .scrollx").forEach((w) =>
     w.classList.toggle("has-overflow", w.scrollWidth > w.clientWidth + 2));
@@ -1593,16 +1630,31 @@ async function renderPerson(name) {
     stb: (n) => deepWrap(`策略 ${SEC_ZH[n] || ""} strategy — what this asks of you`, stratBlock(n, c.strategy)) };
   const panes = { p1: buildPillars(c, R), p2: buildElements(c, R), p3: buildGods(c, R),
     p4: buildTiming(c, R), p5: buildCompass(c, R) };
-  $("#tab-person").innerHTML = jt(explain(
-    "<b>What this page shows:</b> the full BaZi reading — birth moment → true solar time → " +
-    "four pillars, read across five tabs. Every figure carries one interpretation line; " +
-    "the mechanics live in <a href='/learn/four-pillars-explained' target='_blank'>Learn ▸</a>.",
-    "person") + `
+  const howto = explain(
+    "<b>What this page is.</b> A full BaZi reading built from the birth moment (true solar time → four pillars), " +
+    "read in five dashboards. <b>The character card</b> is identity: name, zodiac, 命卦 life gua, day master with its strength " +
+    "verdict, and the 用神 medicine chips. <b>The geomancer's report</b> under it is the one-page synthesis — summary, findings, " +
+    "assessment, plan — every sentence a rule over the chart's own numbers.<br>" +
+    "<b>The five tabs, five questions.</b> 四柱 Pillars — what am I made of? · 五行 Elements — what is out of balance, and which " +
+    "element is the medicine? · 十神 Gods — what drives me? · 时运 Timing — where am I now (decades, this year, the next ten " +
+    "years, the next 30 days)? · 方位 Compass — which way do I face?<br>" +
+    "<b>How to read a figure.</b> Bold header → the chart → the accented line beneath it is the interpretation (the one sentence " +
+    "to take away) → small facts → the <b>?</b> button opens the legend for that figure → <b>learn ›</b> opens the background article.<br>" +
+    "<b>Colour key.</b> <b style='color:#1e8e3e'>木 Wood</b> · <b style='color:#c5221f'>火 Fire</b> · <b style='color:#8a6d1f'>土 Earth</b> · " +
+    "<b style='color:#5f6b7a'>金 Metal</b> · <b style='color:#1a56b0'>水 Water</b> — every element, stem, branch and ten god is painted in its " +
+    "element for <i>this</i> day master, so the same god can be a different colour on another person's page.<br>" +
+    "<b>Timing is climate × weather, not prediction:</b> the decade sets the climate, the year the weather, the day the hour-to-hour; " +
+    "◉ marks a window, ⚠ a caution — navigation notes, never verdicts. The 解读 narrative and 策略 strategy expanders at the foot " +
+    "of each tab hold the longer prose.",
+    "person").replace('<details class="explain">', '<details class="explain" id="howto">');
+  $("#tab-person").innerHTML = jt(`
+    <div class="rd-topline"><a href="#" class="howto-link" data-howto>ℹ️ How to read this page ›</a></div>
     ${charCard(c, name)}
     ${synthNote(c.synthesis)}
     <nav class="ptabs">${READING_TABS.map(([id, lbl], i) =>
       `<button class="${i === 0 ? "on" : ""}" data-pane="${id}">${lbl}</button>`).join("")}</nav>
-    ${READING_TABS.map(([id], i) => `<div class="ppane${i === 0 ? " on" : ""}" id="pane-${id}">${panes[id]}</div>`).join("")}`);
+    ${READING_TABS.map(([id], i) => `<div class="ppane${i === 0 ? " on" : ""}" id="pane-${id}">${panes[id]}</div>`).join("")}
+    <div class="rd-howto">${howto}</div>`);
   wireReadingTabs($("#tab-person"));
   colorizeTerms($("#tab-person"), c.day_master);
   colorizeColours($("#tab-person"));

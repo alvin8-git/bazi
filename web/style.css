@@ -714,3 +714,14 @@ tr.wdetail td{background:#fbf8ef;font-size:12px;line-height:1.5}
 /* compass centre: the day-master circle sits centred above the name */
 .rd-fig .cmpx .c{display:flex;flex-direction:column;align-items:center;justify-content:center}
 .rd-fig .cmpx .c .dmark{display:block;width:1.6em;height:1.6em;line-height:1.5em;margin:0 auto 4px;font-size:15px;text-align:center}
+
+/* ===== Reading v4.2 (2026-09-27): diagram legend, daily fortune, seat column, how-to at the foot ===== */
+.ixlegend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--muted);margin-top:6px}
+.ixlegend b{margin-right:3px}
+.dtable-daily th{white-space:nowrap}.dtable-daily tr.today th,.dtable-daily tr.today td{background:#fff7dc}
+.dtable-daily tr.today th{color:var(--accent)}.dtable-daily td b{font-size:14px}
+.ldtable .seat{min-width:132px}.ldtable .seat .seat-pal{display:block;white-space:nowrap;font-size:12px;color:var(--muted);margin-bottom:3px}
+.ldtable .seat .dirchip{white-space:nowrap}
+.rd-topline{display:flex;justify-content:flex-end;margin:0 0 6px}
+.howto-link{font-size:12.5px;font-weight:600;color:var(--accent);text-decoration:none}
+.rd-howto{margin-top:28px}.rd-howto details.explain{margin:0}

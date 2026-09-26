@@ -40,6 +40,7 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
     from .tiaohou import tiaohou_reading
     from .synthesis import (clinical_report, geju_line, medicine_ranking,
                             spouse_reading, synthesis, xiji_table)
+    from .daily import daily_fortune
     from .bazi import TEN_GOD_EN
     from .wuxing import HIDDEN_STEMS
     # advice layer lives with the report templates; imported here so the
@@ -88,6 +89,7 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
             "interpretation": interpret_person(c, ys, year)}
     # the geomancer's report reads the assembled payload so it cites the same numbers the tabs draw
     p["synthesis"] = clinical_report(p)
+    p["daily"] = daily_fortune(c, ys)          # next 30 days from today, six activities
     return p
 
 
