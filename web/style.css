@@ -701,8 +701,16 @@ tr.wdetail td{background:#fbf8ef;font-size:12px;line-height:1.5}
 .charcard .cfav .chev{color:var(--accent);font-weight:900;font-size:14px}
 .rd-synth-note{border-top:1px solid var(--line);margin:6px 0 4px;padding:8px 0 2px}
 .rd-synth-kicker{display:block;font-size:11px;font-weight:600;letter-spacing:.3px;color:var(--muted);margin-bottom:3px}
-.rd-synth-lede{margin:0;font-size:14px;font-weight:500;line-height:1.5;color:var(--ink);max-width:60ch}
+.rd-synth-lede{margin:0;font-size:14px;font-weight:500;line-height:1.55;color:var(--ink)}
 .rd-synth-more{margin-top:4px}
 .rd-synth-more>summary{cursor:pointer;list-style:none;font-size:13px;font-weight:600;color:var(--accent)}
 .rd-synth-more>summary::-webkit-details-marker{display:none}
-.rd-synth-more>p{margin:6px 0 0;font-size:13.5px;line-height:1.6;color:var(--muted);max-width:72ch}
+.rd-synth-more>p{margin:6px 0 0;font-size:13.5px;line-height:1.6;color:var(--muted)}
+.rd-synth-body{margin-top:6px;font-size:13.5px;line-height:1.6;color:var(--ink)}
+.rd-synth-body h4{margin:10px 0 2px;font-size:12px;font-weight:700;letter-spacing:.3px;color:var(--muted);text-transform:uppercase}
+.rd-synth-body .rd-synth-p{margin:4px 0}.rd-synth-body .rd-synth-p>b{color:var(--ink)}
+.rd-synth-plan{margin:4px 0 0;padding-left:20px}.rd-synth-plan li{margin:3px 0}
+.rd-synth-conf{margin:8px 0 0;font-size:12.5px;color:var(--muted)}
+/* compass centre: the day-master circle sits centred above the name */
+.rd-fig .cmpx .c{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.rd-fig .cmpx .c .dmark{display:block;width:1.6em;height:1.6em;line-height:1.5em;margin:0 auto 4px;font-size:15px;text-align:center}

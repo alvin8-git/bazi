@@ -240,3 +240,193 @@ def spouse_reading(c, ys: dict, pct: dict, palaces: dict, windows: dict) -> dict
             "source_ref": "spouse star (十神) × spouse palace (日支) × "
                           "activation years (流年) — the three-legged classical "
                           "marriage reading"}
+
+
+# ---------------------------------------------------------------------------
+# 綜合論斷 as a clinical report (2026-09-26). Built from the ASSEMBLED payload
+# so every sentence reads the same numbers the dashboards draw. Deterministic:
+# templates over fields; nothing here invents a number.
+# ---------------------------------------------------------------------------
+_DIR = {"坎": "N", "艮": "NE", "震": "E", "巽": "SE", "離": "S", "坤": "SW", "兌": "W", "乾": "NW"}
+_GRP_EN = {"比劫": "peers", "印": "resource", "食傷": "output", "財": "wealth", "官殺": "authority"}
+_SHADOW = {"比劫": "keep money and friendships in separate ledgers",
+           "官殺": "budget recovery after every push",
+           "財": "store before you spend",
+           "食傷": "finish one thing before opening the next",
+           "印": "act before you feel fully prepared"}
+_NEG_STARS = ("劫煞", "空亡", "災煞", "亡神", "羊刃", "孤辰", "寡宿")
+
+
+def _grp_of(g: str) -> str:
+    g = g.replace("杀", "殺").replace("财", "財").replace("伤", "傷")
+    if g in _PEERS: return "比劫"
+    if g in _OUTPUT: return "食傷"
+    if g in _WEALTH: return "財"
+    if g in _OFFICER: return "官殺"
+    return "印"
+
+
+def _first_clause(s: str) -> str:
+    return (s or "").split(" — ")[0].split("; ")[0].strip()
+
+
+def clinical_report(p: dict) -> dict:
+    """summary · findings · assessment · plan · confidence — the geomancer's
+    report a client reads first. Every claim names its number or rule."""
+    dm = p["day_master"]; dm_el = STEM_ELEMENT[dm]; en = ELEMENT_EN
+    st = p["strength"]; weak = st["verdict"].startswith("身弱")
+    parts = st.get("parts") or {}
+    ys = p["yongshen"]; fav, unfav = list(ys["favourable"]), list(ys["unfavourable"])
+    pct = p.get("tengods_pct") or {}
+    legend = p.get("tengods_legend") or {}
+    er = p.get("element_relations") or {}; share = er.get("share") or {}
+    gods = sorted(pct.items(), key=lambda kv: -kv[1])
+    g1, p1 = gods[0] if gods else ("—", 0)
+    g2, p2 = gods[1] if len(gods) > 1 else ("—", 0)
+    groups = {}
+    for g, v in pct.items():
+        groups[_grp_of(g)] = round(groups.get(_grp_of(g), 0) + v, 1)
+    top_grp = max(groups.items(), key=lambda kv: kv[1]) if groups else ("—", 0)
+    heavy_el = max(share.items(), key=lambda kv: kv[1])[0] if share else dm_el
+    fav_en = " and ".join(en[e] for e in fav) if fav else "—"
+    lack = fav[0] if fav else dm_el
+    mb = p["pillars"]["month"][1]
+    stage = ((p.get("pillar_extras") or {}).get("month") or {}).get("stage", "")
+    season_pts = parts.get("season_pts", 0)
+    season = ("out of season: the month works against it" if season_pts < 0 else
+              "in season: the month carries it" if season_pts > 0 else "neutral to the month")
+    # ---- summary
+    summary = (f"A {'weak' if weak else 'strong'} {dm} {en[dm_el]} day master "
+               f"{'carried by' if weak else 'driven by'} {_GRP_EN.get(top_grp[0], top_grp[0])} "
+               f"({top_grp[0]} {top_grp[1]}%), {'short of' if weak else 'heavy in'} "
+               f"{en[heavy_el] if not weak else en[lack]}: "
+               f"{'supply' if weak else 'spend through'} {fav_en}, "
+               f"pace {en[unfav[0]] if unfav else '—'} years.")
+    F = []
+    # ---- constitution
+    F.append(("Constitution",
+              f"{dm} {en[dm_el]} born in the {mb} month ({stage} stage): {st['verdict']}, score {st['score']}; "
+              f"{(st.get('formation') or {}).get('status', '')}. {season[0].upper() + season[1:]}."))
+    # ---- balance
+    fav_share = ", ".join(f"{e} {en[e]} {share.get(e, 0)}%" for e in fav if e != heavy_el) if share else ""
+    why = ("a weak day master is fed by its resource and its own element" if weak else
+           "a strong day master spends through output, wealth and pressure")
+    F.append(("Balance",
+              f"{heavy_el} {en[heavy_el]} dominates the chart at {share.get(heavy_el, '—')}%"
+              + (f"; {fav_share}" if fav_share else "") + ". "
+              f"Medicine: {fav_en} — {why}. "
+              f"Keep {'、'.join(unfav) if unfav else '—'} ({', '.join(en[e] for e in unfav)}) light — "
+              f"{'they drain what the chart lacks' if weak else 'they add to what is already heavy'}."))
+    # ---- drivers
+    ins = p.get("tengod_insights") or {}
+    favor = ins.get("favor") or []
+    bad = next((f for f in favor if f.get("status") == "unfavourable"), None)
+    rooted = [r for r in (ins.get("rooted") or []) if r.get("state") == "rooted"]
+    axis = next((a for a in (p.get("personality") or []) if a.get("zone") and a["zone"] != "mid"), None)
+    drv = (f"{g1} {legend.get(g1, {}).get('en', '')} {p1}% leads, {g2} {legend.get(g2, {}).get('en', '')} {p2}% second — "
+           f"{_first_clause(legend.get(g1, {}).get('meaning', ''))}. ")
+    drv += (f"{bad['god']} at {bad['pct']}% carries {bad['el']} {en.get(bad['el'], '')}, a 忌 element: it delivers, but on borrowed energy. "
+            if bad else "The heavy gods all carry favourable elements: engine and medicine point the same way. ")
+    if ins.get("rooted"):
+        drv += f"{len(rooted)} of {len(ins['rooted'])} visible stems are rooted. "
+    if axis:
+        drv += f"Personality: {axis['verdict']}."
+    F.append(("Drivers", drv.strip()))
+    # ---- palaces & stars
+    P = p.get("palaces") or {}
+    sp, ch, vt = P.get("spouse") or {}, P.get("children") or {}, P.get("vault") or {}
+    pal = ""
+    if sp:
+        pal += f"Spouse palace {sp.get('branch', '')} is {_first_clause(sp.get('state', ''))}. "
+    if ch:
+        pal += f"Children palace output stars {ch.get('output_share', '—')}%. "
+    if vt:
+        tail = (vt.get("state") or "").split(" — ")
+        pal += ("Wealth vault " + (f"{vt.get('branch', '')} is {'open' if vt.get('open') else 'sealed'}"
+                                    + (f"; {tail[1].split(' (')[0]}" if len(tail) > 1 else "") + ". "
+                                    if vt.get("present") else "absent — wealth flows rather than stores. "))
+    stars = p.get("shensha") or []
+    pos = next((s for s in stars if s["star"] not in _NEG_STARS), None)
+    neg = next((s for s in stars if s["star"] in _NEG_STARS), None)
+    if pos:
+        pal += f"{pos['star']} in the {'/'.join(pos['pillars'])} pillar: {_first_clause(pos['meaning'].split(' — ')[-1])}. "
+    if neg:
+        pal += f"Watch {neg['star']} in the {'/'.join(neg['pillars'])} pillar: {_first_clause(neg['meaning'].split(' — ')[-1])}."
+    if not stars:
+        pal += "No symbolic star is carried — the structure reads unadorned."
+    F.append(("Palaces & stars", pal.strip()))
+    # ---- timing now
+    W = p.get("windows") or {}; T = p.get("transit") or {}; L = T.get("luck") or {}
+    cur = next((d for d in W.get("decades", []) if d.get("current")), None)
+    tim = ""
+    if cur:
+        tim += (f"The {cur['gz']} decade (ages {cur['ages']}, {cur['phase_zh']} {cur['phase']}) brings "
+                f"{L.get('stem_god', '')}/{L.get('branch_god', '')}; ")
+    tim += f"{T.get('year_gz', '')} this year adds {T.get('year_stem_god', '')}/{T.get('year_branch_god', '')}. "
+    years = W.get("years") or []
+    dims = ("career", "wealth", "relationship", "health")
+    def flags(y, f): return [d for d in dims if (y.get(d) or {}).get("flag") == f]
+    win = max(years, key=lambda y: len(flags(y, "window")), default=None)
+    cau = max(years, key=lambda y: len(flags(y, "caution")), default=None)
+    if win and flags(win, "window"):
+        tim += f"Next window: {win['y']} {win['gz']} ({', '.join(flags(win, 'window'))}). "
+    if cau and flags(cau, "caution"):
+        tim += f"Next caution: {cau['y']} {cau['gz']} ({', '.join(flags(cau, 'caution'))})."
+    F.append(("Timing now", tim.strip()))
+    # ---- orientation
+    yx = p.get("youxing") or {}
+    dir_of = {s: _DIR.get(k, k) for k, s in yx.items()}
+    best, worst = dir_of.get("生氣"), dir_of.get("絕命")
+    F.append(("Orientation",
+              f"{p.get('group', '')} ({p.get('gua', '')}): face {best or '—'} (生氣) for bed and desk; "
+              f"keep {worst or '—'} (絕命) for storage. "
+              f"Colours {'、'.join(ys.get('colours', []))} carry the medicine."))
+    # ---- assessment
+    A = []
+    if bad and _grp_of(bad["god"]) == top_grp[0]:
+        A.append(f"The chart's defining tension is that its engine is also its drain: {bad['god']} carries "
+                 f"{bad['el']} {en.get(bad['el'], '')}, which a {'weak' if weak else 'strong'} {en[dm_el]} day master cannot afford to run on unchecked.")
+    elif bad:
+        A.append(f"The defining tension is {bad['god']} ({bad['pct']}%) on {bad['el']} {en.get(bad['el'], '')}: "
+                 f"it supplies {_GRP_EN.get(_grp_of(bad['god']), '')} the chart uses, at the cost of the recovery a "
+                 f"{'weak' if weak else 'strong'} day master {'needs' if weak else 'can spare'}.")
+    else:
+        A.append("The chart's heavy gods and its medicine point the same way: what drives this person also feeds them.")
+    if parts:
+        if weak and parts.get("support", 0) > parts.get("drain", 0):
+            A.append(f"Support outweighs drain ({parts['support']} to {parts['drain']}) yet the {mb} month sets the verdict: "
+                     "well-backed but under-lit — it needs warmth more than help.")
+        elif weak:
+            A.append(f"Drain exceeds support ({parts.get('drain')} to {parts.get('support')}): the chart is genuinely thin and every "
+                     "favourable element added is felt.")
+        elif parts.get("support", 0) > parts.get("drain", 0):
+            A.append(f"Support exceeds drain ({parts['support']} to {parts['drain']}): the chart has surplus to spend, and spending it is the medicine.")
+    if cur:
+        A.append(f"The present {cur['gz']} decade is {cur['phase']}: "
+                 + ("the timing supports building now." if cur.get("phase") in ("growth", "consolidation") else
+                    "hold structure and pace effort until the next growth decade."))
+    # ---- plan
+    plan = []
+    inds = ((p.get("industries") or {}).get("favourable") or [])
+    ind = f" — fields: {inds[0]['industries'].split(',')[0].strip()}, {inds[0]['industries'].split(',')[1].strip()}" if inds and "," in inds[0].get("industries", "") else ""
+    if fav:
+        plan.append(f"Supply {fav[0]} {en[fav[0]]} first: {'、'.join(ys.get('colours', [])[:2])} in the rooms you spend hours in{ind}.")
+    if best:
+        plan.append(f"Set bed head and desk to face {best}; keep long sitting out of {worst or 'the 絕命 sector'}.")
+    if win and flags(win, "window"):
+        plan.append(f"Act in {win['y']} {win['gz']}" + (f"; protect {cau['y']} {cau['gz']} ({', '.join(flags(cau, 'caution'))})." if cau and flags(cau, "caution") else "."))
+    doms = p.get("domains") or []
+    if doms:
+        low = min(doms, key=lambda d: d["score"])
+        plan.append(f"Support {low['zh']} {low['en']} ({low['score']}), the lowest domain, with routine rather than effort spikes.")
+    plan.append(f"Offset {g1}'s shadow: {_SHADOW.get(_grp_of(g1), '')}.")
+    # ---- confidence
+    th = p.get("tiaohou") or {}
+    if th.get("verdict"):
+        conf = (f"Method: the verdict is 扶抑's; the 窮通寶鑑 調候 prescription for the {mb} month "
+                f"({'、'.join(g['stem'] for g in th.get('gods', []))}) {th['verdict']}"
+                + ("." if th["verdict"] == "agrees" else " — satisfy both: climate stems through use, 扶抑 elements through support."))
+    else:
+        conf = "Method note: the verdict is the 扶抑 method's; the 調候 climate school can lean differently — where they disagree, satisfying both is the safe posture."
+    return {"summary": summary, "findings": [{"label": l, "text": t} for l, t in F],
+            "assessment": " ".join(A), "plan": plan, "confidence": conf}

@@ -38,8 +38,8 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
                           pillar_extras, shensha, ten_god_pct)
     from .windows import timing_windows
     from .tiaohou import tiaohou_reading
-    from .synthesis import (geju_line, medicine_ranking, spouse_reading,
-                            synthesis, xiji_table)
+    from .synthesis import (clinical_report, geju_line, medicine_ranking,
+                            spouse_reading, synthesis, xiji_table)
     from .bazi import TEN_GOD_EN
     from .wuxing import HIDDEN_STEMS
     # advice layer lives with the report templates; imported here so the
@@ -51,8 +51,8 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
     _palaces = four_palaces(c, ys)
     _windows = timing_windows(c, ys, dayun_detail(c, year), year)
     _tiaohou = tiaohou_reading(c, ys)
-    return {"name": name, "sex": c.sex, **chart_json(c), "yongshen": ys,
-            "synthesis": synthesis(c, ys, _pct, _insights, _windows, _tiaohou),
+    p = {"name": name, "sex": c.sex, **chart_json(c), "yongshen": ys,
+            "synthesis_lines": synthesis(c, ys, _pct, _insights, _windows, _tiaohou),
             "geju": geju_line(c),
             "tiaohou": _tiaohou,
             "medicine_rank": medicine_ranking(c, ys),
@@ -86,6 +86,9 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
             "life_palaces": life_palaces(c),
             "windows": _windows,
             "interpretation": interpret_person(c, ys, year)}
+    # the geomancer's report reads the assembled payload so it cites the same numbers the tabs draw
+    p["synthesis"] = clinical_report(p)
+    return p
 
 
 def chart_json(c) -> dict:

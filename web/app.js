@@ -1555,6 +1555,29 @@ function wireReadingTabs(root) {
   });
 }
 
+/* 綜合論斷 as a note under the card: one-line summary always visible, the
+   geomancer's report (findings · assessment · plan · method note) behind one disclosure.
+   Accepts the structured report or the older list of sentences. */
+function synthNote(sy) {
+  if (!sy) return "";
+  if (Array.isArray(sy)) {
+    if (!sy.length) return "";
+    return `<div class="rd-synth-note"><span class="rd-synth-kicker">綜合論斷 The Synthesis</span>
+      <p class="rd-synth-lede">${sy[0]}</p>
+      ${sy.length > 1 ? `<details class="rd-synth-more"><summary>read the synthesis ›</summary><p>${sy.slice(1).join(" ")}</p></details>` : ""}</div>`;
+  }
+  const F = (sy.findings || []).map((f) => `<p class="rd-synth-p"><b>${f.label}.</b> ${f.text}</p>`).join("");
+  return `<div class="rd-synth-note"><span class="rd-synth-kicker">綜合論斷 The Synthesis — the geomancer's report</span>
+    <p class="rd-synth-lede">${sy.summary || ""}</p>
+    <details class="rd-synth-more"><summary>read the full report ›</summary>
+      <div class="rd-synth-body">
+        ${F ? `<h4>Findings</h4>${F}` : ""}
+        ${sy.assessment ? `<h4>Assessment</h4><p class="rd-synth-p">${sy.assessment}</p>` : ""}
+        ${(sy.plan || []).length ? `<h4>Plan</h4><ul class="rd-synth-plan">${sy.plan.map((x) => `<li>${x}</li>`).join("")}</ul>` : ""}
+        ${sy.confidence ? `<p class="rd-synth-conf">${sy.confidence}</p>` : ""}
+      </div></details></div>`;
+}
+
 async function renderPerson(name) {
   const url = window.__CHART_URL__ ||
     `/api/chart/${encodeURIComponent(name)}?policy=${state.policy}&year=${state.year}`;
@@ -1576,9 +1599,7 @@ async function renderPerson(name) {
     "the mechanics live in <a href='/learn/four-pillars-explained' target='_blank'>Learn ▸</a>.",
     "person") + `
     ${charCard(c, name)}
-    ${c.synthesis && c.synthesis.length ? `<div class="rd-synth-note"><span class="rd-synth-kicker">綜合論斷 The Synthesis</span>
-      <p class="rd-synth-lede">${c.synthesis[0]}</p>
-      ${c.synthesis.length > 1 ? `<details class="rd-synth-more"><summary>read the synthesis ›</summary><p>${c.synthesis.slice(1).join(" ")}</p></details>` : ""}</div>` : ""}
+    ${synthNote(c.synthesis)}
     <nav class="ptabs">${READING_TABS.map(([id, lbl], i) =>
       `<button class="${i === 0 ? "on" : ""}" data-pane="${id}">${lbl}</button>`).join("")}</nav>
     ${READING_TABS.map(([id], i) => `<div class="ppane${i === 0 ? " on" : ""}" id="pane-${id}">${panes[id]}</div>`).join("")}`);
