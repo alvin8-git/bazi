@@ -594,60 +594,6 @@ const BR_EL = { 子: "水", 丑: "土", 寅: "木", 卯: "木", 辰: "土", 巳:
 const BR_ANIMAL = { 子: "鼠", 丑: "牛", 寅: "虎", 卯: "兔", 辰: "龙", 巳: "蛇",
                     午: "马", 未: "羊", 申: "猴", 酉: "鸡", 戌: "狗", 亥: "猪" };
 
-function chartCard(c) {
-  const lp = c.life_palaces;
-  const order = ["hour", "day", "month", "year"];
-  const labels = { hour: "時 Hour", day: "日 Day", month: "月 Month", year: "年 Year" };
-  const pcols = order.map((p) => {
-    const gz = c.pillars[p], st = gz[0], br = gz[1];
-    return `<div class="ccol${p === "day" ? " dm" : ""}">
-      <div class="cclab">${labels[p]}</div>
-      <div class="ccgod">${c.ten_gods[p] === "日主" ? "日主 DM" : c.ten_gods[p]}</div>
-      <div class="ccstem" style="color:${EL_COL[STEM_EL[st]]}">${st}<span>${STEM_EL[st]}</span></div>
-      <div class="ccbranch" style="color:${EL_COL[BR_EL[br]]}">${br}<span>${BR_ANIMAL[br]} ${BR_EL[br]}</span></div>
-      <div class="ccstage">${c.pillar_extras[p].stage} · ${c.pillar_extras[p].nayin}</div>
-      <div class="cchid">${c.hidden_gods[p].join("<br>")}</div>
-    </div>`;
-  }).join("");
-  const favOrder = ["生氣", "天醫", "延年", "伏位"];
-  const badOrder = ["禍害", "六煞", "五鬼", "絕命"];
-  const dirOf = {};
-  Object.entries(c.youxing).forEach(([pal, s]) => (dirOf[s] = PALACE_DIR[pal]));
-  const dirPanel = (stars, cls) => `<div class="ccdirs ${cls}">${stars.map((s) =>
-    `<div><b>${dirOf[s]}</b> ${s} <span>${BAZHAI_EN[s][0]}</span></div>`).join("")}</div>`;
-  const dayun = `<div class="ccdayun">${c.dayun_detail.map((d) => `
-    <div class="ccdy${d.current ? " now" : ""}"><div class="ccdyage">${d.ages}</div>
-      <div class="ccdygz">${d.gz}</div>
-      <div class="ccdygod">${d.stem_god}/${d.branch_god}</div>
-      ${d.current ? `<div class="ccdyhere">▲ ${state.year} 在此</div>` : ""}</div>`).join("")}</div>`;
-  const tg = Object.entries(c.tengods_pct).sort((a, b) => b[1] - a[1]);
-  const tgmax = Math.max(...tg.map(([, v]) => v)) || 1;
-  const bars = tg.map(([g, v]) => { const gel = godEl(c.day_master, g);
-    return `<div class="cctgrow"><span class="cctgl" style="color:${EL_COL[gel]};font-weight:700">${g}
-      <span style="color:var(--muted);font-weight:400">${c.tengods_legend[g].en}</span></span>
-    <div class="cctgbar"><div style="width:${Math.round(v / tgmax * 100)}%;background:${EL_COL[gel]}"></div></div>
-    <span class="cctgv">${v.toFixed(0)}%</span></div>`; }).join("");
-  const stars = c.shensha.map((s) => s.star).join(" · ");
-  return `<div class="ccard">
-    <div class="cchead">
-      <div class="ccbig"><div class="ccgua">${c.gua}</div>
-        <div>命卦 ${c.gua} (${c.group}) · 命星 ${lp.life_star_zh} ${lp.life_star_element}</div></div>
-      <div class="ccfacts">
-        <div><span>生肖</span>${lp.animal}</div>
-        <div><span>日主</span>${c.day_master} ${STEM_EL[c.day_master]} · ${c.strength.verdict}</div>
-        <div><span>命宮</span>${lp.ming_gong}</div>
-        <div><span>用神</span>${elbs(c.yongshen.favourable)} <em>avoid</em> ${elbs(c.yongshen.unfavourable)}</div>
-        <div><span>神煞</span>${stars}</div>
-        <div><span>胎元</span>${lp.tai_yuan}</div>
-      </div>
-    </div>
-    <div class="ccpillars">${pcols}</div>
-    <div class="ccdirwrap">${dirPanel(favOrder, "fav")}${dirPanel(badOrder, "bad")}</div>
-    ${dayun}
-    <div class="cctg">${bars}</div>
-  </div>`;
-}
-
 /* personalised 生剋 wheel: node size = element share, gold ring = Day Master,
    green arrows = generating cycle, red = controlling (solid when afflicted) */
 function elementWheel(er) {
@@ -753,7 +699,7 @@ function godOfStem(dm, st) {
   return same ? "偏印" : "正印";
 }
 
-function tenGodsWheel(c) {
+function tenGodsWheel(c, opts = {}) {
   const pct = c.tengods_pct || {};
   const p = keys => { for (const k of keys) if (pct[k] != null) return pct[k]; return 0; };
   const dmEl = STEM_EL[c.day_master];
@@ -785,12 +731,12 @@ function tenGodsWheel(c) {
   const G = i => GROUPS[i];
   const SHENGI = [[2, 3], [3, 4], [4, 0], [0, 1], [1, 2]];   // 比劫→食傷→財→官殺→印→比劫
   const KEI = [[2, 4], [3, 0], [4, 1], [0, 2], [1, 3]];      // 剋 star
-  let s = `<svg viewBox="0 0 340 345" class="ewheel tgwheel"><defs>
+  let s = `<svg viewBox="${opts.groupsOnly ? "45 45 250 265" : "0 0 340 345"}" class="ewheel tgwheel${opts.groupsOnly ? " tgwheel-groups" : ""}"><defs>
     <marker id="tS" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5"
       orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7aa87f"/></marker>
     <marker id="tK" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5"
       orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c98a86"/></marker></defs>`;
-  GROUPS.forEach(g => g.sat.forEach(t => {                    // connectors first
+  if (!opts.groupsOnly) GROUPS.forEach(g => g.sat.forEach(t => {   // connectors first
     s += `<line x1="${g.x}" y1="${g.y}" x2="${t.x}" y2="${t.y}"
       stroke="#cbc2b4" stroke-width="1" stroke-dasharray="2 3"/>`;
   }));
@@ -816,7 +762,7 @@ function tenGodsWheel(c) {
         font-weight="700" fill="#fff">${g.zh}</text>
       <text x="${g.x}" y="${g.y + g.r + 11}" text-anchor="middle" font-size="9"
         fill="#6b6357">${g.sum}%</text>`;
-    g.sat.forEach(t => {
+    if (!opts.groupsOnly) g.sat.forEach(t => {
       s += `<circle cx="${t.x}" cy="${t.y}" r="${t.r}" fill="${EL_COL[g.el]}"
         opacity="${t.v < 5 ? 0.35 : 0.68}"/>
       <text x="${t.x}" y="${t.y + 3.5}" text-anchor="middle" font-size="9.5"
@@ -826,31 +772,6 @@ function tenGodsWheel(c) {
     });
   });
   return s + "</svg>";
-}
-
-/* Four Palaces 宮位 — each pillar as a life-stage palace with resident gods */
-function palacesBlock(c) {
-  const P = c.palaces;
-  if (!P) return "";
-  const chip = (g) => {
-    const col = EL_COL[godEl(c.day_master, g)] || "#8a8177";
-    return `<span class="dirchip" style="border-color:${col};color:${col}">${g}</span>`;
-  };
-  return `<div class="section"><h3>宫位 Four Palaces — the when &amp; where
-      <span class="tag">year→hour = the arc of a life</span></h3>
-    <div class="cite" style="margin:0 0 8px">The ten gods say WHAT an energy is; the
-      palace it sits in says WHEN it peaks and WHERE it plays out.</div>
-    <div class="palarc">${P.pillars.map((p) => `
-      <div class="palcol${p.key === "day" ? " dm" : ""}">
-        <div class="palages">${p.ages}</div>
-        <div class="palzh">${p.zh}</div>
-        <div class="palgz">${p.gz}</div>
-        <div class="palgov">${p.governs}</div>
-      </div>`).join("")}</div>
-    ${P.pillars.map((p) => `<div class="cite"><b>${p.zh.split(" ")[0]}:</b>
-      ${dnAll(p.line)}</div>`).join("")}
-    ${learnLink("palaces")}
-  </div>`;
 }
 
 const LEGENDS = {
@@ -994,7 +915,7 @@ function charCard(c, name) {
         <small>${luck.ages || dec.ages || ""}${decPhase
           ? " · " + dn(decPhase) + (dec.phase ? " " + dec.phase : "") : ""}</small></span>`,
         `<i style="width:40%;background:${phaseCol}"></i>`, "p4|时运")}
-      ${doms6.length ? `<div class="cstat go dom6" data-go="p4|人生领域" role="button" tabindex="0">
+      ${doms6.length ? `<div class="cstat go dom6" data-go="p3|人生领域" role="button" tabindex="0">
         <div class="l">人生领域 life domains <span class="chev">›</span></div>
         <div class="dgrid6">${doms6.map((d) => `<div class="dm">
           <div class="t"><span class="dz">${d.zh}</span>
@@ -1028,17 +949,12 @@ function bazhaiCompass(c) {
     return `<div class="${good ? "g" : "b"}"><b>${dir} ${pal}</b>${s}</div>`; };
   return `<div class="cmpx">
     ${cell("乾", "NW")}${cell("坎", "N")}${cell("艮", "NE")}
-    ${cell("兌", "W")}<div class="c"><b>·</b>${dn(c.name)}</div>${cell("震", "E")}
+    ${cell("兌", "W")}<div class="c"><b class="dmark" style="color:${EL_COL[STEM_EL[c.day_master]]}">${c.day_master}</b>${dn(c.name)}</div>${cell("震", "E")}
     ${cell("坤", "SW")}${cell("離", "S")}${cell("巽", "SE")}</div>`;
 }
 
 const READING_TABS = [["p1", "四柱<br>Pillars"], ["p2", "五行<br>Elements"],
   ["p3", "十神<br>Gods"], ["p4", "时运<br>Timing"], ["p5", "方位<br>Compass"]];
-const PANE_OF_SECTION = [[/Four Palaces|宫位|宮位/, "p1"], [/神煞/, "p1"],
-  [/Rule citations/, "p1"], [/五行|Elements/, "p2"], [/十神|Ten Gods/, "p3"],
-  [/时运|Timing/, "p4"], [/方位|Directions/, "p5"], [/健康|Health/, "p5"],
-  [/事業|Career/, "p5"]];
-
 /* Site-wide term coloring (2026-09-20): element + ten-god mentions in running
    text get bold + their element color. Text-node walker, conservative regex —
    excludes 水平/火车/金额/土豆-style non-element words; skips svg/script. */
@@ -1124,64 +1040,541 @@ function colorizeColours(root) {
   }
 }
 
-function applyReadingTabs(root) {
-  const kids = Array.from(root.children);
-  const cardIdx = kids.findIndex((el) => el.classList && el.classList.contains("charcard"));
-  const nav = document.createElement("nav");
-  nav.className = "ptabs";
-  nav.innerHTML = READING_TABS.map(([id, lbl], i) =>
-    `<button class="${i === 0 ? "on" : ""}" data-pane="${id}">${lbl}</button>`).join("");
-  const panes = {};
-  READING_TABS.forEach(([id], i) => { const d = document.createElement("div");
-    d.className = "ppane" + (i === 0 ? " on" : ""); d.id = "pane-" + id; panes[id] = d; });
-  root.insertBefore(nav, kids[cardIdx + 1] || null);
-  READING_TABS.forEach(([id]) => root.appendChild(panes[id]));
-  let lastPane = "p1";
-  kids.forEach((el) => {
-    if (el === nav || (el.classList && el.classList.contains("charcard"))) return;
-    let pane = "p1";
-    if (el.classList && el.classList.contains("section")) {
-      const h = el.querySelector("h3");
-      if (h) {
-        const hit = PANE_OF_SECTION.find(([re]) => re.test(h.textContent));
-        pane = hit ? hit[1] : lastPane;
-      } else {
-        pane = lastPane;            // h3-less section = continuation of the previous flow
-      }
-      lastPane = pane;
-    }
-    panes[pane].appendChild(el);
+const ELEMENT_ZH_OF_STEM = (st) => ({ 木: "木", 火: "火", 土: "土", 金: "金", 水: "水" }[STEM_EL[st]] || "");
+
+/* ===== Reading v4 (2026-09-26): five chart-led dashboards, one per tab.
+   Spec: docs/designs/mockups/reading-<section>-v4.html, reading-dashboard-composition.md,
+   reading-dashboard-synthesis-v4.md. Every figure = chart · one interpretation line ·
+   facts · `?` legend. The interpretation lines are templates over payload fields. ===== */
+const EL_ZH_OF_EN = { Wood: "木", Fire: "火", Earth: "土", Metal: "金", Water: "水" };
+const elc = (ch) => { const e = EL_COL[ch] || EL_COL[STEM_EL[ch]] || EL_COL[BR_EL[ch]];
+  return e ? `<b class="tcol" style="color:${e}">${ch}</b>` : ch; };
+const elw = (el) => `<b class="tcol" style="color:${EL_COL[el]}">${EL_EN[el]}</b>`;
+const godc = (dm, g) => `<b class="tcol" style="color:${EL_COL[godEl(dm, g)] || "inherit"}">${g}</b>`;
+const grpOfGod = (g) => { g = tgCanon(g);
+  return ["比肩", "劫財"].includes(g) ? "比劫" : ["食神", "傷官"].includes(g) ? "食傷"
+    : ["正財", "偏財"].includes(g) ? "財" : ["正官", "七殺"].includes(g) ? "官殺" : "印"; };
+const GRP_THEME = { 比劫: "peers and self-drive", 印: "learning and support", 食傷: "expression and output",
+  財: "wealth and practical results", 官殺: "structure and pressure" };
+const GRP_WORD = { 比劫: "peers", 印: "support", 食傷: "expression", 財: "wealth", 官殺: "pressure" };
+const GRP_EN = { 官殺: "authority", 印星: "resource", 比劫: "peers", 食傷: "output", 財星: "wealth" };
+const COLOUR_ZH_EN = { 红: "red", 紅: "red", 紫: "purple", 黄: "yellow", 黃: "yellow", 棕: "brown",
+  绿: "green", 綠: "green", 青: "green", 蓝: "blue", 藍: "blue", 黑: "black", 灰: "grey", 白: "white", 金: "gold" };
+const legendList = (n) => (LEGENDS[n] || []).map(([k, v]) => `<div><b>${k}</b> — ${v}</div>`).join("");
+const clip = (s, n) => { s = String(s || ""); return s.length > n ? s.slice(0, n - 1) + "…" : s; };
+
+/* --- the figure ------------------------------------------------------------ */
+function rdFig(o) {
+  const learn = o.learn && LEARN_OF[o.learn]
+    ? `<a class="rd-learn" href="/learn/${LEARN_OF[o.learn][0]}" target="_blank">learn ›</a>` : "";
+  const legend = o.legend ? `<details class="rd-legend"><summary aria-label="how to read this">?</summary>
+      <div class="rd-legend-body">${o.legend}</div></details>` : "";
+  const facts = o.facts && o.facts.length ? `<div class="facts rd-facts">${o.facts
+      .map(([k, v]) => `<span><span class="fk">${k}</span> ${v}</span>`).join("")}</div>` : "";
+  return `<figure class="rd-fig rd-${o.tier}${o.extra ? " " + o.extra : ""}" style="grid-column: span ${o.span}">
+    <figcaption class="rd-label"><span>${o.label}</span>${learn}</figcaption>
+    <div class="rd-chart">${o.chart}</div>
+    <div class="rd-line-row"><p class="rd-line">${o.line}</p>${legend}</div>
+    ${o.line2 ? `<p class="rd-line rd-line2">${o.line2}</p>` : ""}${facts}</figure>`;
+}
+const rdGrid = (tier, figs) => { figs = figs.filter(Boolean);
+  return figs.length ? `<div class="rd-grid rd-tier-${tier}">${figs.join("")}</div>` : ""; };
+const rdSection = (id, title, q, grids, tail) =>
+  `<section id="sec-${id}" class="rd-section"><header class="rd-head"><h2>${title}</h2>
+    <span class="rd-q">${q}</span></header>${grids.join("")}
+    ${tail && tail.filter(Boolean).length ? `<div class="rd-tail">${tail.filter(Boolean).join("")}</div>` : ""}</section>`;
+
+/* --- shared pieces ----------------------------------------------------------- */
+function pillarGrid(c) {
+  const lp = c.life_palaces;
+  const order = ["hour", "day", "month", "year"];
+  const labels = { hour: "時 Hour", day: "日 Day", month: "月 Month", year: "年 Year" };
+  const pcols = order.map((p) => {
+    const gz = c.pillars[p], st = gz[0], br = gz[1];
+    return `<div class="ccol${p === "day" ? " dm" : ""}">
+      <div class="cclab">${labels[p]}</div>
+      <div class="ccgod">${c.ten_gods[p] === "日主" ? "日主 DM" : c.ten_gods[p]}</div>
+      <div class="ccstem" style="color:${EL_COL[STEM_EL[st]]}">${st}<span>${STEM_EL[st]}</span></div>
+      <div class="ccbranch" style="color:${EL_COL[BR_EL[br]]}">${br}<span>${BR_ANIMAL[br]} ${BR_EL[br]}</span></div>
+      <div class="ccstage">${c.pillar_extras[p].stage} · ${c.pillar_extras[p].nayin}</div>
+      <div class="cchid">${c.hidden_gods[p].join("<br>")}</div>
+    </div>`;
+  }).join("");
+  const tp = (c.citations || []).find((x) => x.rule_id === "time-policy") || {};
+  const clock = (tp.explanation || "").match(/clock (\S+)/);
+  return `<div class="cchead">
+    <div class="ccbig"><div class="ccgua">${c.gua}</div>
+      <div>命卦 ${c.gua} (${c.group}) · 命星 ${lp.life_star_zh} ${elc(lp.life_star_element)}</div></div>
+    <div class="ccfacts">
+      <div><span>生肖</span>${lp.animal}</div>
+      <div><span>日主</span>${elc(c.day_master)} ${elc(STEM_EL[c.day_master])} · ${c.strength.verdict}</div>
+      <div><span>命宮</span>${lp.ming_gong}</div>
+      <div><span>胎元</span>${lp.tai_yuan}</div>
+      <div><span>真太阳时</span>${(c.effective_time || "").slice(11)}${clock ? ` <em>clock ${clock[1]}</em>` : ""}</div>
+    </div></div>
+    <div class="ccpillars">${pcols}</div>`;
+}
+function bazhaiPanel(c) {
+  const dirOf = {};
+  Object.entries(c.youxing).forEach(([pal, s]) => (dirOf[s] = PALACE_DIR[pal]));
+  const panel = (stars, cls) => `<div class="ccdirs ${cls}">${stars.map((s) =>
+    `<div><b>${dirOf[s]}</b> ${s} <span>${BAZHAI_EN[s][0]}</span></div>`).join("")}</div>`;
+  return { html: `<div class="ccdirwrap">${panel(["生氣", "天醫", "延年", "伏位"], "fav")}${panel(["禍害", "六煞", "五鬼", "絕命"], "bad")}</div>`, dirOf };
+}
+const GLOSS_IX = { 六害: "harms", 害: "harms", 冲: "clashes with", 六冲: "clashes with", 刑: "punishes",
+  破: "breaks", 六合: "combines with", 三合: "combines with", 半合: "half-combines with" };
+function interactionsSvg(c) {
+  const order = ["hour", "day", "month", "year"], zh = { hour: "时", day: "日", month: "月", year: "年" };
+  const xs = {}; order.forEach((k, i) => (xs[k] = 80 + i * 160));
+  let s = "";
+  (c.interactions || []).forEach((it) => {
+    const [a, b] = it.pillars; const [x1, x2] = [xs[a], xs[b]].sort((p, q) => p - q);
+    const h = 40 + 28 * (x2 - x1) / 160, good = it.kind.includes("合"), col = good ? "#0e7a6a" : "#b45309";
+    s += `<path d="M${x1} 128 Q${(x1 + x2) / 2} ${(128 - h * 1.6).toFixed(0)} ${x2} 128" fill="none" stroke="${col}"
+      stroke-width="2"${good ? "" : ' stroke-dasharray="5 4"'}/>
+      <text x="${(x1 + x2) / 2}" y="${(128 - h * 0.8 - 7).toFixed(0)}" text-anchor="middle" font-size="16"
+      font-weight="700" fill="${col}">${it.kind} ${it.pair}</text>`;
   });
+  order.forEach((k) => { const br = c.pillars[k][1], col = EL_COL[BR_EL[br]], x = xs[k];
+    s += `<circle cx="${x}" cy="150" r="22" fill="#fff" stroke="${col}" stroke-width="2"/>
+      <text x="${x}" y="157" text-anchor="middle" font-size="20" font-weight="700" fill="${col}">${br}</text>
+      <text x="${x}" y="190" text-anchor="middle" font-size="11" fill="#8a8177">${zh[k]}柱 ${k}</text>`; });
+  return `<svg class="ixsvg" viewBox="0 0 640 200" role="img" aria-label="branch interactions">${s}</svg>`;
+}
+function interactionsLine(c) {
+  const its = c.interactions || [], n = its.length;
+  if (!n) return "No 合冲刑害 among your four branches — the pillars sit quietly with each other.";
+  const seen = new Map();
+  its.forEach((it) => { const k = it.kind + "|" + it.pair.split("").sort().join(""); seen.set(k, (seen.get(k) || 0) + 1); });
+  const tail = [...seen.entries()].map(([k, cnt]) => { const [kind, pair] = k.split("|");
+    const t = kind === "自刑" ? `${elc(pair[0])} doubles on itself` : `${elc(pair[0])} ${GLOSS_IX[kind] || kind} ${elc(pair[1])}`;
+    return t + (cnt === 2 ? " twice" : cnt > 2 ? ` ×${cnt}` : ""); });
+  const clash = its.some((it) => it.kind.includes("冲"));
+  const words = ["", "One", "Two", "Three", "Four", "Five", "Six"];
+  const list = tail.length > 1 ? tail.slice(0, -1).join(", ") + " and " + tail[tail.length - 1] : tail[0];
+  return `${words[n] || n} branch ${n === 1 ? "tension" : "tensions"}, ${clash ? "one of them a clash" : "none a clash"}: ${list} — ${clash ? "watch the clash" : "quiet friction, not rupture"}.`;
+}
+function eflowsList(c) {
+  const er = c.element_relations; if (!er) return "";
+  return `<div class="eflows"><div class="cite" style="margin:0 0 6px">How every other element relates to
+      YOUR Day Master ${elb(er.dm)} — the same five roles the ten gods (十神 tab) are built from:</div>
+    ${["resource", "output", "wealth", "pressure", "peer"].map((k) => { const f = er.flows[k];
+      const peerNote = (k === "peer" && !((c.tengods_pct["比肩"] || 0) + (c.tengods_pct["劫財"] || 0)))
+        ? ` <span class="sub">(this share is the Day Master's own element — as ten-god 比肩/劫財 peers the chart counts 0%)</span>` : "";
+      return `<div class="eflow"><span class="efr">${f.role}</span> ${elb(f.el)} <b>${f.share}%</b>
+        <span class="efb ef-${f.band}">${f.band}</span> <span class="sub">${f.meaning}</span>${peerNote}</div>`; }).join("")}</div>`;
+}
+function supportDrain(c) {
+  const pt = c.strength.parts; if (!pt) return "";
+  const net = pt.support - pt.drain;
+  const wmax = Math.max(...pt.groups.map((g) => g.w), Math.abs(net)) || 1;
+  const row = (g) => { const pct = (g.w / wmax * 50).toFixed(1), sup = g.side === "support";
+    return `<div class="sbrow"><span class="sbl">${g.zh} <small>${TG_GRP_EN[g.zh] || ""} · ${elc(g.el)}</small></span>
+      <div class="sbax"><span class="zero"></span>
+        <i style="${sup ? "left:50%" : "right:50%"};width:${pct}%;background:${EL_COL[g.el]}"></i></div>
+      <b class="sbv ${sup ? "sup" : "drn"}">${sup ? "+" : "−"}${g.w}</b></div>`; };
+  const netPct = (Math.abs(net) / wmax * 50).toFixed(1);
+  return `<div class="sbwrap">
+    <div class="sbhead">帮扶 supporting (同类) vs 克泄耗 draining (异类) — the score's own numbers</div>
+    <div class="sbaxhead"><span>← 克泄耗</span><span>帮扶 →</span></div>
+    ${pt.groups.map(row).join("")}
+    <div class="sbrow sbnet"><span class="sbl">净值 <small>net balance</small></span>
+      <div class="sbax"><span class="zero"></span>
+        <i style="${net >= 0 ? "left:50%" : "right:50%"};width:${netPct}%;background:${net >= 0 ? "#1e7d32" : "#b03a2e"}"></i></div>
+      <b class="sbv ${net >= 0 ? "sup" : "drn"}">${net >= 0 ? "+" : "−"}${Math.abs(net).toFixed(2)}</b></div>
+    <div class="cite" style="margin-top:5px">score = 得令 ${pt.season_pts > 0 ? "+" : ""}${pt.season_pts}
+      (季节 season) + 2 × (帮扶 ${pt.support} − 克泄耗 ${pt.drain}) / 总量 ${pt.total}
+      + 通根 ${pt.root_pts > 0 ? "+" : ""}${pt.root_pts} (roots) = <b>${c.strength.score}</b> → ${c.strength.verdict}</div></div>`;
+}
+function tiaohouStrip(c) {
+  const t = c.tiaohou; if (!t || !t.gods) return "";
+  const chips = t.gods.map((g) => `<span class="thchip">${elc(g.stem)} ${g.god}
+    <small>${g.aligned ? "✓ aligned with the medicine" : g.visible ? "visible" : "not visible"}</small></span>`).join(" ");
+  return `<div class="tiaohou"><b>调候 season</b> the ${elc(c.pillars.month[1])} month asks for ${chips}
+    — <b>${t.verdict}</b> with the 扶抑 verdict above</div>`;
+}
+function groupSums(c) {
+  const p = (k) => c.tengods_pct[k] || c.tengods_pct[TG_CANON[k] || ""] || 0;
+  const alt = (k) => p(k) || p(Object.keys(TG_CANON).find((s) => TG_CANON[s] === k) || "");
+  return [["官殺", alt("正官") + alt("七殺")], ["印星", alt("正印") + alt("偏印")],
+    ["比劫", alt("比肩") + alt("劫財")], ["食傷", alt("食神") + alt("傷官")],
+    ["財星", alt("正財") + alt("偏財")]].map(([z, v]) => [z, Math.round(v * 10) / 10]);
+}
+const isWeak = (c) => /弱|weak/i.test(c.strength.verdict);
+const topGod = (c) => Object.entries(c.tengods_pct).sort((a, b) => b[1] - a[1])[0] || ["—", 0];
+
+/* --- 四柱 Pillars ------------------------------------------------------------- */
+function buildPillars(c, R) {
+  const dm = c.day_master, dmEl = STEM_EL[dm], fav = c.yongshen.favourable, weak = isWeak(c);
+  const sp = (c.strength.parts || {}).season_pts || 0;
+  const season = sp < 0 ? "fighting the season" : sp > 0 ? "carried by the season" : "level with the season";
+  const p1 = rdFig({ tier: "hero", span: 12, label: "四柱 · Four-Pillar Grid", learn: "chart",
+    chart: pillarGrid(c),
+    line: `A ${weak ? "weak" : "strong"} ${elc(dm)} ${elw(dmEl)} day master, ${season} — ${fav.map(elw).join(" and ")} ${fav.length > 1 ? "are" : "is"} your medicine.`,
+    facts: [[c.strength.verdict.split(" ")[0], `score ${c.strength.score}`],
+      c.geju ? ["格局", clip(c.geju.replace(/^格局[:：]\s*/, "").split(/[.。] /)[0], 40)] : null].filter(Boolean),
+    legend: legendList("chart") });
+  const its = c.interactions || [], kinds = {};
+  its.forEach((it) => (kinds[it.kind] = (kinds[it.kind] || 0) + 1));
+  const p6 = rdFig({ tier: "secondary", span: 5, label: "合冲刑害 · branch interactions", learn: "chart",
+    chart: interactionsSvg(c), line: interactionsLine(c),
+    facts: [...Object.entries(kinds).map(([k, n]) => [k, `×${n}`]), ...(its.some((i) => i.kind.includes("冲")) ? [] : [["冲", "none"]])],
+    legend: `Arcs join the pillars whose branches interact. Dashed amber = 害·刑·冲 (friction, punishment, clash);
+      solid green = 合 (combination). Read with the palaces: a tension between Year and Month touches ancestry
+      and career; Day is the self and spouse.${its.length ? "<hr>" + its.map((i) => `<div><b>${i.pair} ${i.kind}</b> (${i.pillars.join("+")}) — ${i.note}</div>`).join("") : ""}` });
+  const P = c.palaces; let p4 = "";
+  if (P) {
+    const god = (p) => p.stem_god && p.stem_god !== "日主" ? p.stem_god : (p.hidden || [])[0] || "";
+    const cols = P.pillars.map((p) => `<div class="palcol${p.key === "day" ? " dm" : ""}">
+      <div class="palages">${p.ages}</div><div class="palzh">${p.zh}</div><div class="palgz">${p.gz}</div>
+      <div class="palgod" style="color:${EL_COL[godEl(dm, god(p))] || "#8a8177"}">${god(p)}</div>
+      <div class="palgov">${p.governs}</div></div>`).join("");
+    const V = P.vault;
+    const states = `<div class="palstates">
+      <div><b>夫妻宫 spouse</b> 日支 ${elc(P.spouse.branch)} · ${P.spouse.gods.join("/")} — ${P.spouse.state.split(" — ")[0]}</div>
+      <div><b>子女宫 children</b> ${[...new Set(P.children.gods)].join("/")} · output stars ${P.children.output_share}%</div>
+      <div><b>财库 vault</b> ${V.present ? `${elc(V.branch)} ${elc(V.element)} · ${V.open ? "open 已開" : "sealed 未開"} — ${V.state.split(" (")[0]}` : `absent 無庫 — ${V.state}`}</div></div>`;
+    const day = P.pillars.find((p) => p.key === "day"), mon = P.pillars.find((p) => p.key === "month");
+    p4 = rdFig({ tier: "secondary", span: 7, label: "宫位 · Four Palaces", learn: "palaces",
+      chart: `<div class="palarc">${cols}</div>${states}`,
+      line: `Self &amp; spouse (${day.ages.replace(/^ages\s*/, "")}) run on ${godc(dm, god(day))} — ${GRP_WORD[grpOfGod(god(day))]}; career years (${mon.ages.replace(/^ages\s*/, "")}) run on ${godc(dm, god(mon))} ${GRP_WORD[grpOfGod(god(mon))]}.`,
+      facts: [["day palace", "(self) highlighted"], ["ages", `${P.pillars[0].ages.replace(/^ages\s*/, "").split(/[–-]/)[0]} → ${P.pillars[3].ages.replace(/^ages\s*/, "")} span a lifetime`]],
+      legend: P.pillars.map((p) => `<div><b>${p.zh.split(" ")[0]}:</b> ${p.line}</div>`).join("") + `<div class="sub">${P.source_ref || ""}</div>` });
+  }
+  const bz = bazhaiPanel(c), goodDirs = ["生氣", "天醫", "延年", "伏位"].map((s) => bz.dirOf[s]);
+  const p3 = rdFig({ tier: "reference", span: 5, label: "八宅 · Which Way to Face", learn: 7,
+    chart: bz.html,
+    line: `You are <b>${c.group.split(" ")[0]}</b> (${c.gua}): your four good directions are ${goodDirs.join(", ")}.`,
+    facts: [["命卦", `${c.gua} · ${c.group}`], ["↔", "same data as the Compass grid"]], legend: legendList(7) });
+  let p5 = "";
+  if ((c.shensha || []).length) {
+    const NEG = ["劫煞", "空亡", "災煞", "亡神", "羊刃", "孤辰", "寡宿"];
+    const rows = c.shensha.map((s) => { const neg = NEG.includes(s.star);
+      return `<div class="cite"><b class="${neg ? "shen-neg" : "shen-pos"}">${neg ? "⚠" : "✦"} ${s.star}</b>
+        <span class="tag">${s.pillars.join("·")}</span> ${s.meaning}</div>`; }).join("");
+    const pos = c.shensha.find((s) => !NEG.includes(s.star)), neg = c.shensha.find((s) => NEG.includes(s.star));
+    const short = (s) => clip((s.meaning.split(" — ")[1] || s.meaning).split(";")[0], 48);
+    const line = (pos ? `${pos.star} brings ${short(pos)}` : "No auspicious star is carried")
+      + (neg ? `; watch ${neg.star} in your ${neg.pillars[0]} pillar — ${short(neg)}.` : " — and no cautionary star either.");
+    p5 = rdFig({ tier: "reference", span: 7, label: "神煞 · Symbolic Stars", learn: 9, chart: rows, line,
+      facts: [["stars", `${c.shensha.length} total`], ["flagged", `${c.shensha.filter((s) => NEG.includes(s.star)).length} ⚠`]],
+      legend: legendList(9) });
+  }
+  return rdSection("pillars", "四柱 Pillars", "What am I made of?",
+    [rdGrid("hero", [p1]), rdGrid("secondary", [p6, p4]), rdGrid("reference", [p3, p5])],
+    [R.nb.rest.length ? deepWrap("解读 narrative — the numbers read out", R.nb.rest.map((t) => `<div class="ninline">${dnAll(t)}</div>`).join("")) : "",
+      R.narr(9), deepWrap("Every rule this reading cites",
+        c.citations.map((x) => `<div class="cite"><b>[${layerZh(x.layer)}] ${x.source_ref}:</b> ${x.explanation}</div>`).join(""))]);
+}
+
+/* --- 五行 Elements ------------------------------------------------------------ */
+function buildElements(c, R) {
+  const dm = c.day_master, dmEl = STEM_EL[dm], fav = c.yongshen.favourable, unf = c.yongshen.unfavourable;
+  const wtot = Object.values(c.element_weights).reduce((x, y) => x + y, 0) || 1;
+  const wmax = Math.max(...Object.values(c.element_weights)) || 1;
+  const share = {}; Object.entries(c.element_weights).forEach(([en, v]) => (share[EL_ZH_OF_EN[en]] = 100 * v / wtot));
+  const heavy = Object.entries(share).sort((a, b) => b[1] - a[1])[0][0];
+  const bars = `<div class="bars elbars">${Object.entries(c.element_weights).map(([en, v]) => { const zh = EL_ZH_OF_EN[en];
+    const badge = zh === dmEl ? `<span class="elbadge dmb">${dm} 日主 YOU</span>` : fav[0] === zh ? `<span class="elbadge fvb">用神 MEDICINE</span>` : "";
+    return `<div class="bar-row el-${zh}"><span class="ellab" style="color:${EL_COL[zh]}"><b>${zh}</b><small>${en}</small></span>
+      <div class="bar"><i style="width:${(100 * v / wmax).toFixed(0)}%"></i></div>
+      <b>${(100 * v / wtot).toFixed(0)}%</b><span class="dmcell">${badge}</span></div>`; }).join("")}</div>`;
+  const e1 = rdFig({ tier: "hero", span: 7, label: "五行 — element bars", learn: 1, chart: bars,
+    line: heavy === fav[0]
+      ? `${elw(heavy)} leads the chart and is your medicine — keep it fed.`
+      : `Too much ${elw(heavy)}, not enough ${elw(fav[0])} — ${elw(fav[0])} is your medicine.`,
+    facts: [[heavy, `${share[heavy].toFixed(0)}%`], [fav[0], `${share[fav[0]].toFixed(0)}%`], ["用神", elbs(fav)]],
+    legend: `<div class="cite">单位 = 字重，不是个数：天干各 1.0、地支本气 1.0、余气 1/3，全盘合计 ${wtot.toFixed(1)}。
+      Units are weighted character counts: each stem 1.0, each branch's main hidden stem 1.0, each minor hidden stem 1/3.</div>${legendList(1)}` });
+  const er = c.element_relations; let e2 = "";
+  if (er) {
+    const pr = er.flows.pressure, rs = er.flows.resource;
+    e2 = rdFig({ tier: "hero", span: 5, extra: "rd-pair2", label: "生克 — element pentagon", learn: 1,
+      chart: `<div class="ewrap"><div class="svg-plate">${elementWheel(er)}</div></div>`,
+      line: `${elb(pr.el)} ${elw(pr.el)} fights you hardest (${pr.share}%); ${elb(rs.el)} ${elw(rs.el)} feeds you ${pr.share > rs.share ? "only " : ""}${rs.share}% — ${pr.share > rs.share ? "pressure outweighs support" : "support outweighs pressure"}.`,
+      facts: [["克我 官殺", `${elc(pr.el)} ${pr.share}%`], ["生我 印", `${elc(rs.el)} ${rs.share}%`]],
+      legend: `<b>五行关系 — the five relations, listed</b>${eflowsList(c)}` });
+  }
+  const st = c.strength, pt = st.parts || {}, sp = pt.season_pts || 0, weak = isWeak(c);
+  const stage = (c.pillar_extras.month || {}).stage;
+  const topSup = (pt.groups || []).filter((g) => g.side === "support").sort((a, b) => b.w - a.w)[0];
+  const e45 = rdFig({ tier: "secondary", span: 7, label: "强弱 — strength gauge and its arithmetic", learn: 2,
+    chart: `<div class="svg-plate">${strengthGauge(st)}</div>
+      <p class="rd-tags"><span class="tag">support ratio ${st.support_ratio}%</span> <span class="tag">root mass ${st.root_ratio}%</span> <span class="tag">${st.formation.status}</span></p>
+      ${supportDrain(c)}${tiaohouStrip(c)}`,
+    line: `${weak ? "Weak" : "Strong"} (${st.score}) — ${sp < 0 ? "the season controls you" : sp > 0 ? "the season carries you" : "the season is neutral"}${stage ? ` (${stage})` : ""}, not which element has the biggest bar.`,
+    line2: topSup ? `${elb(topSup.el)} ${topSup.zh} ${elw(topSup.el)} supports hardest (${topSup.w}) — support ${pt.support} ${pt.support > pt.drain ? "beats" : "trails"} drain ${pt.drain}, ${weak && pt.support > pt.drain ? "yet the season still tips it weak" : !weak && pt.support < pt.drain ? "yet the season still carries it strong" : "and the verdict follows"}.` : "",
+    facts: [[st.verdict.split(" ")[0], `${st.score}`], ["帮扶", `${pt.support}`], ["克泄耗", `${pt.drain}`],
+      c.tiaohou ? ["调候", c.tiaohou.verdict] : null].filter(Boolean),
+    legend: `<div class="cite">Formation check: ${st.formation.detail}. Support ratio = share of the chart feeding the Day Master; root mass = share of hidden stems carrying its element.</div>
+      ${(st.steps || []).map((s) => `<div class="cite"><b>${s.step}. ${s.name}:</b> ${s.value} — ${s.detail}</div>`).join("")}${legendList(2)}
+      ${c.tiaohou && c.tiaohou.line ? `<div class="cite">${c.tiaohou.line} <span class="tag">${c.tiaohou.source_ref}</span></div>` : ""}` });
+  const H = c.health || [];
+  const table = `<div class="scrollx"><table class="htable"><tr><th>Element</th><th>Organ systems</th><th>Watch aspects</th><th>Status</th></tr>
+    ${H.map((h) => `<tr><td>${elb(h.element)} ${elw(h.element)}</td><td class="sub">${h.organs}</td><td class="sub">${h.aspects}</td>
+      <td class="${h.status.startsWith("balanced") ? "" : "bad"}">${h.status}</td></tr>`).join("")}</table></div>`;
+  const excess = H.find((h) => /excess|過旺|过旺/i.test(h.status)), weakEl = H.find((h) => /weak|不足/i.test(h.status));
+  const hline = excess ? `${elb(excess.element)} ${elw(excess.element)} excess (${excess.share}%) — watch ${excess.organs}; ${(excess.aspects.split(";").pop() || "").trim()} is the pattern to notice.`
+    : weakEl ? `${elb(weakEl.element)} ${elw(weakEl.element)} weak (${weakEl.share}%) — support ${weakEl.organs}; watch ${weakEl.aspects}.`
+    : "All five elements sit in range — no organ system is flagged.";
+  const h1 = rdFig({ tier: "secondary", span: 5, label: "健康 — health element map", learn: 11, chart: table, line: hline,
+    facts: [["过旺", H.filter((h) => /excess|過旺|过旺/i.test(h.status)).map((h) => elc(h.element)).join("·") || "—"],
+      ["不足", H.filter((h) => /weak|不足/i.test(h.status)).map((h) => elc(h.element)).join("·") || "—"]],
+    legend: legendList(11) });
+  return rdSection("elements", "五行 Elements", "What is out of balance — and which element is the medicine?",
+    [rdGrid("hero", [e1, e2]), rdGrid("secondary", [e45, h1])],
+    [R.narr(1), R.narr(2), R.stb(2), R.narr(11), R.stb(11)]);
+}
+
+/* --- 十神 Gods -------------------------------------------------------------- */
+function buildGods(c, R) {
+  const dm = c.day_master, en = (g) => (c.tengods_legend[g] || {}).en || TG_EN_FALLBACK[g] || "";
+  const gs = groupSums(c).sort((a, b) => b[1] - a[1]);
+  const g2 = rdFig({ tier: "hero", span: 5, label: "十神轮 The god wheel", learn: 4,
+    chart: `<div class="tgwrap svg-plate">${tenGodsWheel(c, { groupsOnly: true })}</div>`,
+    line: `${gs[0][0]} ${GRP_EN[gs[0][0]]} lead your wheel at ${gs[0][1]}%, ${gs[1][0]} ${GRP_EN[gs[1][0]]} ${gs[0][1] - gs[1][1] < 12 ? "close behind" : "behind"} at ${gs[1][1]}%.`,
+    facts: gs.slice(0, 2).map(([z, v]) => [z, `${v}%`]), legend: legendList(4) });
+  const rows = ALLGODS.map((g) => [g, c.tengods_pct[g] || 0]), pmax = Math.max(...rows.map(([, v]) => v)) || 1;
+  const [g1, p1] = topGod(c), absent = ALLGODS.filter((g) => !(c.tengods_pct[g] > 0));
+  const bars = `<div class="bars tgbars">${rows.map(([g, p]) => `<div class="bar-row tg-row2${p ? "" : " tg-zero"}">
+      <span><b style="color:${EL_COL[godEl(dm, g)]}">${g}</b> <span class="sub">${en(g)}</span></span>
+      <div class="bar">${p ? `<i style="width:${(p / pmax * 100).toFixed(0)}%;background:${EL_COL[godEl(dm, g)]}"></i>` : ""}</div>
+      <b>${p ? p + "%" : "0% (absent)"}</b></div>`).join("")}</div>`;
+  const sex = c.sex, grp = (gods) => Math.round(gods.reduce((a, g) => a + (c.tengods_pct[g] || 0), 0) * 10) / 10;
+  const band = (p) => p >= 20 ? "prominent" : p >= 8 ? "present" : p > 0 ? "faint" : "absent";
+  const starRows = [["配偶星 Spouse star", sex === "M" ? "正財+偏財" : "正官+七殺", sex === "M" ? ["正財", "偏財"] : ["正官", "七殺"]],
+    ["財星 Wealth stars", "正財+偏財", ["正財", "偏財"]], ["官殺 Authority stars", "正官+七殺", ["正官", "七殺"]],
+    ["印 Resource stars", "正印+偏印", ["正印", "偏印"]], ["食傷 Output stars", "食神+傷官", ["食神", "傷官"]],
+    ["比劫 Peer stars", "比肩+劫財", ["比肩", "劫財"]]];
+  const g1f = rdFig({ tier: "hero", span: 7, extra: "rd-pair2", label: "十神 Ten-god bars", learn: 4, chart: bars,
+    line: `Your chart runs on ${godc(dm, g1)} ${en(g1)} (${Math.round(p1)}%) — ${(c.tengods_legend[g1] || {}).meaning || GRP_THEME[grpOfGod(g1)]}.`,
+    facts: [[g1, `${p1}%`], ["absent", `${absent.length} of 10 gods`]],
+    legend: `<div><b>Bands</b> ≥20% prominent · ≥8% present · &lt;8% faint · 0% absent.</div>
+      <table class="tgsides"><tr><th>Term</th><th>Gods</th><th>This chart</th></tr>${starRows.map(([t, d, gods]) => { const p = grp(gods);
+        return `<tr><td><b>${t}</b></td><td class="sub">${d}</td><td>${p}% — ${band(p)}</td></tr>`; }).join("")}</table>
+      ${Object.entries(c.tengods_pct).map(([g]) => `<div><b style="color:${EL_COL[godEl(dm, g)]}">●</b> <b>${g}</b> ${en(g)} — ${(c.tengods_legend[g] || {}).meaning || ""}</div>`).join("")}` });
+  const axes = c.personality || [];
+  const pax = `<div class="paxchips">${axes.map((a) => { if (!a.zone) return `<div class="pax"><b>${a.axis}</b> ${a.verdict}<div class="sub">${a.basis}</div></div>`;
+    const pos = a.zone === "left" ? 16 : a.zone === "right" ? 84 : 50;
+    return `<div class="pax"><b>${a.axis}</b><div class="paxv ${a.zone}">${a.verdict}</div>
+      <div class="paxstrip"><span class="pz l"></span><span class="pz m"></span><span class="pz r"></span><i style="left:${pos}%"></i></div>
+      <div class="paxends"><span>${a.poles.left.zh} <small>${a.poles.left.en}</small></span><span class="mid">中 neutral</span>
+        <span>${a.poles.right.zh} <small>${a.poles.right.en}</small></span></div>
+      <div class="paxm">${a.metrics.map((m) => `<span>${m.label} <b>${m.pct}%</b></span>`).join("")}</div><div class="sub">${a.basis}</div></div>`; }).join("")}</div>`;
+  const sharp = axes.filter((a) => a.zone && a.zone !== "mid" && a.metrics && a.metrics.length)
+    .sort((a, b) => Math.max(...b.metrics.map((m) => m.pct)) - Math.max(...a.metrics.map((m) => m.pct)))[0];
+  const g8 = rdFig({ tier: "secondary", span: 6, label: "性格轴 Personality axes", learn: 10, chart: pax,
+    line: sharp ? `${sharp.verdict.charAt(0).toUpperCase() + sharp.verdict.slice(1)} — ${sharp.metrics[0].label} make up ${sharp.metrics[0].pct}% of your chart, your sharpest trait.`
+      : "No strong tendency on any axis — a balanced profile, not a failure.",
+    facts: axes.filter((a) => a.zone && a.zone !== "mid").slice(0, 2).map((a) => [a.axis.split(" ")[0], a.verdict.split(" — ")[0]]),
+    legend: legendList(10) });
+  const ti = c.tengod_insights; let g5 = "";
+  if (ti) {
+    const geju = c.geju ? `<div class="geju"><b>格局</b> ${c.geju.replace(/^格局[:：]\s*/, "").split(/[.。] /)[0]}</div>` : "";
+    const chart = geju + ti.favor.map((f) => `<div class="cite structrow"><b>${f.god} ${f.pct}%</b> ${elb(f.el)}
+        <span class="dirchip ${f.status === "favourable" ? "good" : f.status === "unfavourable" ? "bad" : ""}">${f.status}</span> — ${f.note}</div>`).join("")
+      + `<div class="cite" style="margin-top:6px"><b>Visible stems:</b> ${ti.rooted.map((r) => `<span class="dirchip ${r.state === "rooted" ? "good" : "bad"}">${r.god} ${r.state === "rooted" ? "rooted 有根" : "floating 虛浮"}</span>`).join(" ")}</div>`
+      + (ti.patterns.length ? ti.patterns.map((p) => `<div class="ninline"><b>${p.name} — ${p.zh}</b> ${p.state ? `<span class="dirchip ${p.state.startsWith("formed") ? "good" : ""}">${p.state}</span>` : ""}<div>${p.note}${p.activation ? ` <b>${p.activation}.</b>` : ""}</div></div>`).join("")
+        : `<div class="cite">No classical pair pattern triggers — the gods operate independently in this chart.</div>`);
+    const bad = ti.favor.find((f) => f.status === "unfavourable"), good = ti.favor.find((f) => f.status === "favourable");
+    g5 = rdFig({ tier: "secondary", span: 6, label: "结构 Structure check", learn: 4, chart,
+      line: bad ? `${godc(dm, bad.god)} (${bad.pct}%) carries an unfavourable element (${elc(bad.el)}) — use it deliberately, budget recovery.`
+        : good ? `${godc(dm, good.god)} (${good.pct}%) carries ${elc(good.el)}, one of your 用神 — a clean engine; using it strengthens the chart.`
+        : "The heavy gods sit outside both lists — structure is neutral here.",
+      facts: [["favourable", `${ti.favor.filter((f) => f.status === "favourable").length} of ${ti.favor.length} heavy gods`],
+        ["rooted", `${ti.rooted.filter((r) => r.state === "rooted").length} stems`]],
+      legend: `<div>Three checks a percentage chart cannot make: is the heavy god aligned with your 用神, is it rooted in the branches, and what do the gods form together. Personality is not static: the current decade (时运 tab) overlays its own gods.</div>` });
+  }
+  const P = c.palaces; let ld = "";
+  if (P && c.domains) {
+    const g = (...n) => Math.round(n.reduce((a, k) => a + (c.tengods_pct[k] || 0), 0) * 10) / 10;
+    const inPal = (keys, groups) => keys.some((k) => { const p = P.pillars.find((x) => x.key === k);
+      return p && [p.stem_god, ...(p.hidden || [])].some((gd) => groups.includes(tgCanon(gd))); });
+    const sig = { 事业官星: ["正官·七殺", g("正官", "七殺", "七杀"), ["month"], ["正官", "七殺"], "Month 月柱"],
+      财富财库: ["正財·偏財", g("正財", "正财", "偏財", "偏财"), ["month", "day"], ["正財", "偏財"], "Month · Day"],
+      学习文昌: ["正印·偏印", g("正印", "偏印"), ["year", "month"], ["正印", "偏印"], "Year · Month"],
+      感情稳定: [sex === "M" ? "正財·偏財 (spouse star)" : "正官·七殺 (spouse star)", sex === "M" ? g("正財", "正财", "偏財", "偏财") : g("正官", "七殺", "七杀"), ["day"], sex === "M" ? ["正財", "偏財"] : ["正官", "七殺"], "Day branch 日支"] };
+    const extra = [["才华 Talent &amp; enterprise", "食神·傷官", g("食神", "傷官", "伤官"), ["hour"], ["食神", "傷官"], "Hour 時柱"],
+      ["人脉 Network &amp; competition", "比肩·劫財", g("比肩", "劫財", "劫财"), ["year", "month"], ["比肩", "劫財"], "Year · Month"]];
+    const chip = (e) => `<span class="tag${e.delta < 0 ? " warn" : ""}">${e.label} ${e.delta > 0 ? "+" : ""}${e.delta}</span>`;
+    const row = (zh, enTxt, score, band, s, ev) => { const cls = score == null ? "" : score >= 70 ? "good" : score < 45 ? "weak" : "";
+      const sc = score == null ? '<span class="sub">— signal only</span>' : `<div class="dbar"><i class="${cls}" style="width:${score}%"></i></div><b class="dnum ${cls === "good" ? "b-good" : cls === "weak" ? "b-weak" : ""}">${score}</b>`;
+      return `<tr><td><b>${zh}</b><span class="sub">${enTxt}</span></td><td class="ldscore">${sc}</td>
+        <td class="sub">${s ? `${s[0]} <b>${s[1]}%</b>` : "—"}</td><td class="sub">${s ? `${s[4]} · ${inPal(s[2], s[3]) ? "✓ seated 得位" : "elsewhere"}` : "—"}</td>
+        <td class="ldev">${ev.slice().sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta)).slice(0, 3).map(chip).join(" ")}</td></tr>`; };
+    const doms = c.domains.slice().sort((a, b) => b.score - a.score);
+    const table = `<div class="scrollx"><table class="bc-table ldtable"><tr><th>Life domain</th><th>Score</th><th>Signal gods · share</th><th>Seat</th><th>Evidence</th></tr>
+      ${doms.map((d) => row(d.zh, d.en, d.score, d.band, sig[d.zh], d.evidence)).join("")}
+      ${extra.map(([n, sg, sh, keys, groups, pal]) => row(n.split(" ")[0], n.split(" ").slice(1).join(" "), null, null, [sg, sh, keys, groups, pal], [])).join("")}</table></div>`;
+    const top = doms[0], low = doms[doms.length - 1];
+    const sigs = [...Object.entries(sig).map(([k, v]) => [k, v]), ...extra.map((e) => [e[0], [e[1], e[2], e[3], e[4], e[5]]])];
+    const heavy = sigs.sort((a, b) => b[1][1] - a[1][1])[0];
+    const heavyName = (c.domains.find((d) => d.zh === heavy[0]) || {}).en || heavy[0].replace(/^\S+\s/, "").replace("&amp;", "&");
+    ld = rdFig({ tier: "secondary", span: 12, label: "人生领域 · life domains: score, signal, seat", learn: 8, chart: table,
+      line: `${top.en} leads at ${top.score}; your heaviest signal is ${heavyName.toLowerCase()} — ${heavy[1][1]}%, ${inPal(heavy[1][2], heavy[1][3]) ? "seated in" : "from"} ${heavy[1][4]}.`,
+      facts: [["strongest", `${top.zh} ${top.score}`], ["weakest", `${low.zh} ${low.score}`], ["domains", `${doms.length + extra.length}`]],
+      legend: `<div><b>Score</b> starts at a neutral 50; every chip is a rule that moved it. <b>Signal gods</b> govern the domain; <b>seat</b> is the pillar they sit in and whether that is the domain's own palace (得位).</div>
+        ${doms.map((d) => `<div class="cite"><b>${d.zh} ${d.en}</b> · ${d.band} — ${d.evidence.map(chip).join(" ")}</div>`).join("")}
+        ${c.spouse_reading ? `<div class="cite"><b>婚戀:</b> ${c.spouse_reading.star_line} ${c.spouse_reading.palace_line}</div>` : ""}${legendList(8)}` });
+  }
+  const bystem = {};
+  Object.keys(STEM_YANG).forEach((st) => { const g = godOfStem(dm, st); (bystem[g] = bystem[g] || []).push(st); });
+  const key = `<div class="tgkey"><span class="tgkey-l">key · what each stem is to a ${elc(dm)} day master</span><div class="tgmap">${ALLGODS.map((g) =>
+    `<span class="tgm"><b style="color:${EL_COL[godEl(dm, g)]}">${g}</b>${(bystem[g] || []).map((st) =>
+      `<i class="stemchip" style="color:${EL_COL[STEM_EL[st]]};border-color:${EL_COL[STEM_EL[st]]}">${st}</i>`).join("")}</span>`).join("")}</div></div>`;
+  const raw = `<div class="scrollx"><table class="rawtable"><tr><th></th>${POS.map((k) => `<th>${POS_LAB[k]}</th>`).join("")}</tr>
+    <tr><th>Stem</th>${POS.map((k) => `<td>${c.ten_gods[k] === "日主" ? "日主" : godc(dm, c.ten_gods[k])}</td>`).join("")}</tr>
+    <tr><th>藏干</th>${POS.map((k) => `<td>${(c.hidden_gods[k] || []).join("<br>")}</td>`).join("")}</tr></table></div>`;
+  const vis = POS.filter((k) => tgCanon(c.ten_gods[k]) === tgCanon(g1)), lab = (k) => POS_LAB[k].split(" ")[0].toLowerCase().replace(/^./, (x) => x.toUpperCase());
+  const hid = POS.filter((k) => (c.hidden_gods[k] || []).some((h) => h.includes(tgCanon(g1)) || h.includes(g1)));
+  const g7 = rdFig({ tier: "reference", span: 5, label: "原始数据 Raw pillar data", learn: 3, chart: key + raw,
+    line: vis.length ? `Your dominant ${godc(dm, g1)} sits as the visible stem in ${vis.length === 1 ? "the " : ""}${vis.map(lab).join(vis.length === 2 ? " and " : ", ")} pillar${vis.length > 1 ? "s" : ""}.`
+      : `Your dominant ${godc(dm, g1)} lives only in the hidden stems${hid.length ? ` — ${hid.map(lab).join(", ")}` : ""}.`,
+    facts: [[g1, `visible in ${vis.length} of 4 pillars`], ["藏干", `${POS.reduce((a, k) => a + (c.hidden_gods[k] || []).length, 0)} hidden stems`]],
+    legend: `${legendList(3)}<div>Whenever one of these stems arrives in a luck pillar or year (时运 tab), it brings that god's themes with it.</div>` });
+  let k1 = "", k2 = "";
+  if (c.industries) {
+    const F = c.industries.favourable || [], A = c.industries.avoid || [];
+    const chart = `<div class="klist-ind">${F.map((it) => `<div class="cite"><b>Favourable ${elb(it.element)} ${elw(it.element)} industries</b> — ${it.industries}</div>`).join("")}
+      <div class="cite">Understated: ${A.map((it) => `${elb(it.element)} (${it.industries.split(",")[0]}…)`).join("; ")} — not forbidden, just not where this chart recharges.</div></div>`;
+    const f0 = F[0];
+    k1 = rdFig({ tier: "reference", span: 3, label: "行业五行 — favourable industries", learn: 12, chart,
+      line: f0 ? `${elw(f0.element)} suits you best — ${f0.industries.split(",").slice(0, 3).map((s) => s.trim()).join(", ")} top the list.` : "No favourable field is listed for this chart.",
+      facts: [["宜", elbs(F.map((it) => it.element))], ["慎", elbs(A.map((it) => it.element))]], legend: legendList(12) });
+  }
+  if (c.careers) {
+    const top = c.careers.top || [], avoid = c.careers.avoid || [], mx = Math.max(...[...top, ...avoid].map((a) => Math.abs(a.score))) || 1;
+    const krow = (a, i, neg) => `<div class="krow${neg ? " neg" : ""}"><span class="klab">${neg ? "avoid · " : `#${i + 1} `}${a.zh} <small>${a.en}</small></span>
+      <div class="kbar"><i style="width:${(Math.abs(a.score) / mx * 100).toFixed(0)}%"></i></div><b>${a.score}</b></div>`;
+    const chart = `<div class="klist">${top.map((a, i) => krow(a, i, false)).join("")}${avoid.map((a, i) => krow(a, i, true)).join("")}</div>`;
+    const a0 = top[0], short = (r) => clip(r.split(" — ")[0], 40);
+    k2 = rdFig({ tier: "reference", span: 4, label: "事业方向 Career archetypes ranked", learn: 12, chart,
+      line: a0 ? `#1 fit: ${a0.en} (${a0.score} pts) — ${a0.reasons.slice(0, 2).map(short).join(", ")}.` : "No archetype is ranked for this chart.",
+      facts: [a0 ? ["#1", `${a0.score} pts`] : null, avoid.length ? ["avoid", avoid.map((a) => a.zh).join("、")] : null].filter(Boolean),
+      legend: `<div>Fifteen archetypes, each scored on the field's element against the 用神 lists, the ten-god working style (shares ≥8%) and 神煞 talents. ≥12 分 strong fit · 4–12 分 good fit · &lt;4 分 workable. Low-ranked fields are priced against the chart, never forbidden.</div>
+        ${[...top, ...avoid].map((a) => `<div><b>${a.zh} ${a.en}</b> (${a.score} 分) — ${a.reasons.join("; ")}</div>`).join("")}${legendList(12)}` });
+  }
+  return rdSection("gods", "十神 Ten Gods", "What drives me?",
+    [rdGrid("hero", [g2, g1f]), rdGrid("secondary", [g8, g5]), rdGrid("secondary", [ld]), rdGrid("reference", [g7, k1, k2])],
+    [R.narr(4), R.narr(3), R.stb(10), R.narr(10), R.stb(8), R.narr(8), R.stb(12), R.narr(12)]);
+}
+
+/* --- 时运 Timing ---------------------------------------------------------------- */
+function buildTiming(c, R) {
+  const W = c.windows; if (!W) return rdSection("timing", "时运 Timing", "Where am I now?", [], [R.narr(6), R.narr(13)]);
+  const dd = c.dayun_detail || [];
+  const strip = `<div class="ccdayun">${W.decades.map((d) => { const x = dd.find((y) => y.gz === d.gz) || {};
+    return `<div class="ccdy${d.current ? " now" : ""}" title="${(d.notes || []).join("; ")}">
+      <div class="ccdyage">${d.ages}</div><div class="ccdygz">${d.gz}</div>
+      <div class="wphase w-${d.phase}">${d.phase_zh}<span class="wp-en"> ${d.phase}</span></div>
+      <div class="dygods">${x.stem_god ? `${x.stem_god}/${x.branch_god}` : ""}</div>
+      ${x.keywords ? `<div class="dykw">${x.keywords}</div>` : ""}${d.current ? `<div class="ccdyhere">▲ now</div>` : ""}</div>`; }).join("")}</div>`;
+  const ci = W.decades.findIndex((d) => d.current), cur = W.decades[ci], nxt = W.decades[ci + 1];
+  const arc = ((W.arc || "").match(/Element arc: (.*?) —/) || [])[1];
+  const t1 = rdFig({ tier: "hero", span: 12, label: "T1 · 大运 decade strip", learn: 6, chart: strip,
+    line: cur ? `In the ${cur.gz} decade (${cur.ages}, ${cur.phase}) — ${nxt ? `shifts to ${nxt.gz} (${nxt.phase}) at age ${String(nxt.ages).split(/[–-]/)[0]}.` : "the last charted decade."}`
+      : `Before the first decade — ${W.decades[0] ? `${W.decades[0].gz} begins at age ${String(W.decades[0].ages).split(/[–-]/)[0]}.` : ""}`,
+    facts: [cur ? ["大运", `${cur.gz} · ${cur.ages}`] : null, nxt ? ["next", `${nxt.gz} · ${nxt.ages}`] : null,
+      c.dayun && c.dayun[0] ? ["起运", `${String(c.dayun[0].ages).split(/[–-]/)[0]}岁`] : null, arc ? ["arc", arc] : null].filter(Boolean),
+    legend: `${legendList(6)}${W.arc ? `<div class="cite"><b>Life arc:</b> ${W.arc}</div>` : ""}
+      ${W.taohua ? `<div class="cite"><b>桃花:</b> ${W.taohua.branch} — ${W.taohua.type}${W.taohua.pillars.length ? ` (in the ${W.taohua.pillars.join("/")} pillar)` : ""}</div>` : ""}` });
+  const T = c.transit || {}, L = T.luck || {};
+  const gDec = [grpOfGod(L.stem_god || ""), grpOfGod(L.branch_god || "")], gYr = [grpOfGod(T.year_stem_god || ""), grpOfGod(T.year_branch_god || "")];
+  const theme = (pair) => pair[0] === pair[1] ? GRP_THEME[pair[0]] : `${GRP_THEME[pair[0]]} with ${GRP_THEME[pair[1]]}`;
+  const p8 = rdFig({ tier: "secondary", span: 5, label: "P8 · this year, on this decade", learn: 13,
+    chart: `<div class="pillar-cards"><div class="pillar-card transit"><div class="gz">${T.year_gz}</div><div class="pos">YEAR 流年 ${state.year}</div>
+        <div class="god">${T.year_stem_god}/${T.year_branch_god}</div><div class="sub">annual transit</div></div>
+      ${L.gz ? `<div class="pillar-chip">on the ${L.gz} decade · ages ${L.ages} · ${L.stem_god}/${L.branch_god}</div>` : ""}</div>`,
+    line: `${L.gz ? `This decade ${gDec[0] === gDec[1] ? "doubles down on" : "mixes"} ${theme(gDec)}; this year adds` : "This year brings"} ${theme(gYr)} on top.`,
+    facts: [L.gz ? ["LUCK 大运", `ages ${L.ages}`] : null, ["YEAR 流年", `${state.year}`]].filter(Boolean),
+    legend: "The two cards are the energies currently overlaid on the birth chart — the active 10-year luck pillar and this year's pillar — labelled with their ten gods relative to this Day Master." });
+  const RH = ((c.strategy || {}).s5 || {}).rhythm; let t6 = "";
+  if (RH && RH.length) {
+    const cells = RH.map((r) => `<div class="rcell ${r.cls}"><small>${r.mon}</small><b style="color:${EL_COL[r.el]}">${r.br}</b><span>${elc(r.el)}</span></div>`).join("");
+    const order = RH.map((r) => r.mon), ranges = (ms) => { const idx = ms.map((m) => order.indexOf(m)).sort((a, b) => a - b), out = []; let i = 0;
+      while (i < idx.length) { let j = i; while (j + 1 < idx.length && idx[j + 1] === idx[j] + 1) j++;
+        out.push(i === j ? order[idx[i]] : `${order[idx[i]]}–${order[idx[j]]}`); i = j + 1; } return out.join(", "); };
+    const good = RH.filter((r) => r.cls === "good"), bad = RH.filter((r) => r.cls !== "good");
+    const gel = [...new Set(good.map((r) => r.el))].map(elw).join(" and ");
+    t6 = rdFig({ tier: "secondary", span: 7, label: "T6 · 月令 monthly rhythm", learn: 13, chart: `<div class="rhy">${cells}</div>`,
+      line: good.length ? `Good months: ${ranges(good.map((r) => r.mon))} (${gel}). Pace ${ranges(bad.map((r) => r.mon))}.` : "No month carries your medicine — pace the whole year evenly.",
+      facts: [["good", `${good.length}`], ["pace", `${bad.length}`]],
+      legend: "Each solar month carries a branch and its element. Months whose element is your medicine are marked good; months carrying a 忌神 element are marked to pace. The rhythm is the same every year — the 流年 table says which years lift or lower it." });
+  }
+  const short = (d) => d.flag === "quiet" ? "·" : d.note.split(" — ")[0].replace(/^年支./, "").slice(0, 26);
+  const cell = (d) => `<td class="wf-${d.flag}"><b>${d.flag === "window" ? "◉" : d.flag === "caution" ? "⚠" : ""}</b> <span class="wshort">${short(d)}</span></td>`;
+  const table = `<div class="scrollx"><table class="wtable"><tr><th>Year</th><th>Overall</th><th>事業 Career</th><th>財富 Wealth</th><th>感情 Relationship</th><th>健康 Health</th></tr>
+    ${W.years.map((yr, yi) => { const full = [["事業", yr.career], ["財富", yr.wealth], ["感情", yr.relationship], ["健康", yr.health]]
+        .filter(([, d]) => d.flag !== "quiet").map(([l, d]) => `<b>${l}:</b> ${d.note}`).join("<br>") || "quiet year";
+      return `<tr class="wrow" data-yi="${yi}"><th>${yr.y} ${yr.gz}</th>
+        <td class="wf-${yr.overall === "peak" ? "window" : yr.overall === "careful" ? "caution" : "quiet"}"><b>${yr.overall_zh}</b></td>
+        ${cell(yr.career)}${cell(yr.wealth)}${cell(yr.relationship)}${cell(yr.health)}</tr>
+        <tr class="wdetail" hidden><td colspan="6">${full}</td></tr>`; }).join("")}</table></div>`;
+  const DIM = { career: "career", wealth: "wealth", relationship: "relationship", health: "health" };
+  const score = (yr, flag) => Object.keys(DIM).filter((k) => yr[k].flag === flag);
+  const best = W.years.map((yr) => [yr, score(yr, "window")]).sort((a, b) => b[1].length - a[1].length)[0];
+  const worst = W.years.map((yr) => [yr, score(yr, "caution")]).sort((a, b) => b[1].length - a[1].length)[0];
+  const list = (ks) => ks.map((k) => DIM[k]).join(ks.length === 2 ? " & " : ", ");
+  const t2 = rdFig({ tier: "secondary", span: 12, label: "T2 · next ten years", learn: 13, chart: table,
+    line: `${best && best[1].length ? `Act in ${best[0].y} ${best[0].gz} — ${list(best[1])} window${best[1].length > 1 ? "s align" : ""}.` : "No peak window in the next ten years — steady years, build quietly."}
+      ${worst && worst[1].length ? ` Be careful in ${worst[0].y} ${worst[0].gz} — ${worst[1].length} caution${worst[1].length > 1 ? "s" : ""}.` : ""}`,
+    facts: [best && best[1].length ? ["act", `${best[0].y} ${best[0].gz}`] : null, worst && worst[1].length ? ["careful", `${worst[0].y} ${worst[0].gz}`] : null].filter(Boolean),
+    legend: `<div>The decade is the climate, the year the weather. Each year is checked per dimension — career (month-pillar activation or clash, 官殺 arrival), wealth (財星 arrival with a can-the-chart-hold-it check, 財庫 vault years), relationship (桃花 and spouse-palace 日支 activation) and health (years that feed an excess or replenish a weak element). Tap a year row for the full notes.</div>${legendList(13)}` });
+  return rdSection("timing", "时运 Timing", "Where am I now?",
+    [rdGrid("hero", [t1]), rdGrid("secondary", [p8, t6]), rdGrid("secondary", [t2])],
+    [R.stb(13), R.narr(13), R.narr(6)]);
+}
+
+/* --- 方位 Compass ------------------------------------------------------------- */
+function buildCompass(c, R) {
+  const dirOf = {}; Object.entries(c.youxing).forEach(([pal, s]) => (dirOf[s] = PALACE_DIR[pal]));
+  const c1 = rdFig({ tier: "hero", span: 5, label: "八宅 3×3 grid", learn: 7,
+    chart: `<div class="cmpx-wrap">${bazhaiCompass(c)}</div>`,
+    line: `Face <b>${dirOf["生氣"]}</b> (生氣) for bed and desk; keep long sitting out of <b>${dirOf["絕命"]}</b> (絕命).`,
+    facts: [["命卦", `${c.gua} · ${c.group.split(" ")[0]}`], ["生氣", dirOf["生氣"]], ["絕命", dirOf["絕命"]], ["五鬼", dirOf["五鬼"]]],
+    legend: `${BAZHAI_ORDER.map((s) => `<div><b>${s} ${BAZHAI_EN[s][0]}</b> — ${BAZHAI_EN[s][1]}</div>`).join("")}
+      <div class="cite"><b>Two layers:</b> 八宅 grades ORIENTATION — where to face and head long-stay activities; 用神 grades ELEMENT CONTENT — what colours, materials and fields feed the chart. A green direction whose element is unfavourable is still a good direction to FACE — furnish it in the 用神 palette. 命卦 comes from the birth year alone; the 用神 layer is the personal one.</div>${legendList(7)}` });
+  const fav = c.yongshen.favourable, unf = c.yongshen.unfavourable, cols = c.yongshen.colours || [];
+  const colEn = cols.map((z) => COLOUR_ZH_EN[z] || z).slice(0, 2).join("/");
+  const chart = `${c.medicine_rank ? `<p class="cite" style="margin:0 0 6px"><b>Medicine, ranked:</b> ${c.medicine_rank.replace(/^Medicine, ranked:\s*/, "")}</p>` : ""}
+    <p class="cite" style="margin:0 0 8px">Favourable ${elbs(fav)} · avoid ${elbs(unf)} · colours <b>${cols.join("、")}</b></p>
+    ${c.xiji ? `<table class="xiji">${c.xiji.map((r) => `<tr><th>${r.band} <span class="sub">${r.zh}</span></th>
+      <td>${r.elements.map((e) => elb(e)).join(" ")}</td><td class="sub">${r.gods.join("·")}</td></tr>`).join("")}</table>` : ""}`;
+  const c34 = rdFig({ tier: "hero", span: 7, extra: "rd-pair2", label: "用神 the medicine", learn: 5, chart,
+    line: `Add ${elw(fav[0])} ${elc(fav[0])}${colEn ? ` (${colEn})` : ""} through lighting or an accent wall; keep ${unf.map((e) => EL_EN[e]).join("/")} ${unf.map(elc).join("")} out of your main room.`,
+    facts: [["用神", elbs(fav)], ["忌神", elbs(unf)], c.tiaohou ? ["调候", c.tiaohou.verdict] : null].filter(Boolean),
+    legend: `<div><b>Technique:</b> 扶抑 supports a weak chart or restrains a strong one; 调候 corrects its season — for this chart, add ${fav.map((e) => EL_EN[e]).join(" and ")}, keep ${unf.map((e) => EL_EN[e]).join(", ")} light.</div>
+      ${c.tiaohou && c.tiaohou.line ? `<div class="cite">${c.tiaohou.line}</div>` : ""}
+      ${c.element_relations ? `<div class="cite"><b>In god vocabulary:</b> your 用神 ${fav.map((el) => { const f = Object.values(c.element_relations.flows).find((x) => x.el === el);
+        return `${elb(el)} arrives as <b>${f ? f.role : "—"}</b>`; }).join(" · ")} — those life-areas ARE the medicine.</div>` : ""}
+      ${(c.yongshen.citations || []).map((x) => `<div class="cite"><b>${x.source_ref}:</b> ${x.explanation}</div>`).join("")}${legendList(5)}` });
+  return rdSection("compass", "方位 Compass", "Which way do I face?", [rdGrid("hero", [c1, c34])],
+    [R.stb(5), R.narr(5), R.narr(7)]);
+}
+
+function wireReadingTabs(root) {
+  const nav = root.querySelector("nav.ptabs"); if (!nav) return;
+  const panes = {}; READING_TABS.forEach(([id]) => (panes[id] = root.querySelector("#pane-" + id)));
   const activate = (paneId) => {
-    nav.querySelectorAll("button").forEach((x) =>
-      x.classList.toggle("on", x.dataset.pane === paneId));
-    READING_TABS.forEach(([id]) => panes[id].classList.toggle("on", id === paneId));
+    nav.querySelectorAll("button").forEach((x) => x.classList.toggle("on", x.dataset.pane === paneId));
+    READING_TABS.forEach(([id]) => panes[id] && panes[id].classList.toggle("on", id === paneId));
   };
-  nav.addEventListener("click", (ev) => {
-    const b = ev.target.closest("button"); if (!b) return;
-    activate(b.dataset.pane);
-    nav.scrollIntoView({ block: "start", behavior: "instant" });
-  });
+  nav.addEventListener("click", (ev) => { const b = ev.target.closest("button"); if (!b) return;
+    activate(b.dataset.pane); nav.scrollIntoView({ block: "start", behavior: "instant" }); });
   const hm = (location.hash || "").match(/^#tab-(p[1-5])$/);
   if (hm) activate(hm[1]);
-  root.addEventListener("click", (ev) => {
-    const tr = ev.target.closest("tr.wrow");
-    if (!tr) return;
-    const det = tr.nextElementSibling;
-    if (det && det.classList.contains("wdetail")) det.hidden = !det.hidden;
-  });
-  // clickable character-card stats: data-go="paneId|heading text prefix"
+  root.addEventListener("click", (ev) => { const tr = ev.target.closest("tr.wrow"); if (!tr) return;
+    const det = tr.nextElementSibling; if (det && det.classList.contains("wdetail")) det.hidden = !det.hidden; });
+  // character-card stats: data-go="paneId|figure label prefix"
   const card = root.querySelector(".charcard");
   if (card) card.addEventListener("click", (ev) => {
     const t = ev.target.closest("[data-go]"); if (!t) return;
     const [paneId, frag] = t.dataset.go.split("|");
     activate(paneId);
-    const h = Array.from(panes[paneId].querySelectorAll("h3, h4"))
-      .find((x) => x.textContent.includes(frag));
-    (h || panes[paneId]).scrollIntoView({ block: "start", behavior: "smooth" });
+    const lab = Array.from(panes[paneId].querySelectorAll(".rd-label span")).find((x) => x.textContent.includes(frag));
+    ((lab && lab.closest(".rd-fig")) || panes[paneId]).scrollIntoView({ block: "start", behavior: "smooth" });
   });
 }
-const ELEMENT_ZH_OF_STEM = (st) => ({ 木: "木", 火: "火", 土: "土", 金: "金", 水: "水" }[STEM_EL[st]] || "");
 
 async function renderPerson(name) {
   const url = window.__CHART_URL__ ||
@@ -1192,536 +1585,23 @@ async function renderPerson(name) {
     4: "十神 distribution", 5: "用神 medicine", 6: "大运 decades", 7: "方位 directions",
     8: "人生领域 life domains", 9: "神煞 stars", 10: "性格 personality",
     11: "健康 health", 12: "事业 careers", 13: "时运 windows" };
-  const narr = (n) => deepWrap(`解读 ${SEC_ZH[n] || ""} narrative — the numbers read out`,
-    (nb.by[n] || []).map((t) => `<div class="ninline">${dnAll(t)}</div>`).join(""));
-  const lg = (k) => learnLink(k);
-  const stb = (n) => deepWrap(`策略 ${SEC_ZH[n] || ""} strategy — what this asks of you`,
-    stratBlock(n, c.strategy));
-  const wmax = Math.max(...Object.values(c.element_weights));
-  const EL_ZH = { Wood: "木", Fire: "火", Earth: "土", Metal: "金", Water: "水" };
+  const R = { nb,
+    narr: (n) => deepWrap(`解读 ${SEC_ZH[n] || ""} narrative — the numbers read out`,
+      (nb.by[n] || []).map((t) => `<div class="ninline">${dnAll(t)}</div>`).join("")),
+    stb: (n) => deepWrap(`策略 ${SEC_ZH[n] || ""} strategy — what this asks of you`, stratBlock(n, c.strategy)) };
+  const panes = { p1: buildPillars(c, R), p2: buildElements(c, R), p3: buildGods(c, R),
+    p4: buildTiming(c, R), p5: buildCompass(c, R) };
   $("#tab-person").innerHTML = jt(explain(
     "<b>What this page shows:</b> the full BaZi reading — birth moment → true solar time → " +
-    "four pillars, read across five tabs. Every number cites the rule that produced it; " +
+    "four pillars, read across five tabs. Every figure carries one interpretation line; " +
     "the mechanics live in <a href='/learn/four-pillars-explained' target='_blank'>Learn ▸</a>.",
     "person") + `
     ${charCard(c, name)}
-    ${c.synthesis ? `<div class="synth"><b>綜合論斷 The Synthesis</b>
-      <p>${c.synthesis.join(" ")}</p></div>` : ""}
-    <h2>${dn(name || c.name)} — Four Pillars (${state.policy === "true_solar" ? "TRUE SOLAR" : "CLOCK"})</h2>
-    <div class="sub">effective time ${c.effective_time}</div>
-    ${chartCard(c)}
-    ${nb.rest.length ? narrBlock({ paragraphs: nb.rest }) : ""}
-    <div class="pillar-cards">
-      ${c.transit.luck ? `<div class="pillar-card transit"><div class="gz">${c.transit.luck.gz}</div>
-        <div class="pos">LUCK 大運</div>
-        <div class="god">${c.transit.luck.stem_god}/${c.transit.luck.branch_god}</div>
-        <div class="sub">ages ${c.transit.luck.ages}</div></div>` : ""}
-      <div class="pillar-card transit"><div class="gz">${c.transit.year_gz}</div>
-        <div class="pos">YEAR 流年 ${state.year}</div>
-        <div class="god">${c.transit.year_stem_god}/${c.transit.year_branch_god}</div>
-        <div class="sub">annual transit</div></div>
-    </div>
-    ${(() => {
-      const kw = (c.shensha || []).find((x) => x.star === "空亡");
-      if (!kw) return "";
-      const voidPillars = kw.pillars;
-      const brOf = (p) => c.pillars[p][1];
-      const jie = (c.interactions || []).some((i) =>
-        i.pillars.some((p) => voidPillars.includes(p)));
-      return `<div class="cite" style="margin:-2px 0 8px"><b>空亡 void:</b> the
-        ${voidPillars.join("/")} pillar (branch ${voidPillars.map(brOf).join("/")}) is void —
-        its promises need a second confirmation${jie ? "; a natal combination touches it (partial 解空): the void softens when that alliance is actively lived" : ""}.</div>`;
-    })()}
-    <div class="cite" style="margin:-6px 0 10px">The two dashed cards are the energies
-      currently overlaid on the birth chart above — the active 10-year luck pillar and
-      this year's pillar — labelled with their ten gods relative to this Day Master.</div>
-    ${lg("chart")}
-    ${palacesBlock(c)}
-    <div class="section"><h3>五行与日主 Elements &amp; the Day Master</h3>
-      ${(() => { const wtot = Object.values(c.element_weights).reduce((x, y) => x + y, 0) || 1;
-        const dmEl = STEM_EL[c.day_master];
-        return `<div class="cite" style="margin:0 0 6px">单位 = 字重，不是个数：天干各 1.0、
-          地支本气 1.0、余气 1/3，全盘合计 ${wtot.toFixed(1)}；括号内为占比。
-          <small class="be2">Units are weighted character counts, not a tally of the eight
-          characters: each stem 1.0, each branch's main hidden stem 1.0, each minor hidden
-          stem 1/3 (total ${wtot.toFixed(1)}). The bracketed figure is that element's share.</small></div>
-        <div class="bars elbars">${Object.entries(c.element_weights).map(([en, v]) => `
-          <div class="bar-row el-${EL_ZH[en]}"><span>${elb(EL_ZH[en])} ${en}</span>
-            <div class="bar"><i style="width:${(100 * v / wmax).toFixed(0)}%"></i></div>
-            <b>${v.toFixed(1)} <small>(${(100 * v / wtot).toFixed(0)}%)</small></b>${EL_ZH[en] === dmEl
-              ? '<span class="dmcell">· <b class="dmtag">日主 Day Master</b></span>' : '<span class="dmcell"></span>'}</div>`).join("")}
-        </div>
-        <div class="cite"><b>日主 ≠ 最多的五行。</b>日主是「我是谁」——只是日柱天干那一个字；
-          上面的占比是「全盘由什么构成」。${dmEl} 占比低正说明${c.strength.verdict.startsWith("身弱")
-            ? "身弱——这也正是用神要补的原因" : "本命需要留意的地方"}。
-          <small class="be2">Your Day Master is WHO YOU ARE — one single character (the day
-          stem). The shares above describe WHAT THE WHOLE CHART IS MADE OF. A ${EL_EN[dmEl]}
-          person having little ${EL_EN[dmEl]} is not a contradiction: that is exactly what a
-          weak Day Master means, and it is why the medicine aims to supply it.</small></div>`;
-      })()}
-      ${c.element_relations ? `<h4>生克 Interaction between the five elements</h4>
-      <div class="ewrap">${elementWheel(c.element_relations)}
-        <div class="eflows">
-          <div class="cite" style="margin:0 0 6px">How every other element relates to
-            YOUR Day Master ${elb(c.element_relations.dm)} — the same five roles the
-            ten gods (十神 tab) are built from:</div>
-          ${["resource", "output", "wealth", "pressure", "peer"].map((k) => {
-            const f = c.element_relations.flows[k];
-            const peerNote = (k === "peer"
-              && !((c.tengods_pct["比肩"] || 0) + (c.tengods_pct["劫財"] || 0)))
-              ? ` <span class="sub">(this share is the Day Master's own element —
-                 as ten-god 比肩/劫財 peers the chart counts 0%)</span>` : "";
-            return `<div class="eflow"><span class="efr">${f.role}</span>
-              ${elb(f.el)} <b>${f.share}%</b>
-              <span class="efb ef-${f.band}">${f.band}</span>
-              <span class="sub">${f.meaning}</span>${peerNote}</div>`;
-          }).join("")}
-        </div>
-      </div>` : ""}
-      ${narr(1)}${lg(1)}</div>
-    <div class="section">${c.geju ? `<div class="cite" style="margin:0 0 8px"><b>${dnAll(c.geju)}</b></div>` : ""}
-      <h4>强弱判定 Day Master strength</h4>
-      ${strengthGauge(c.strength)}
-      <p style="text-align:center;margin:0 0 4px">
-        <span class="tag">support ratio ${c.strength.support_ratio}%</span>
-        <span class="tag">root mass ${c.strength.root_ratio}%</span>
-        <span class="tag">${c.strength.formation.status}</span></p>
-      ${(() => {                                    // 帮扶 vs 克泄耗 breakdown bars
-        const pt = c.strength.parts;
-        if (!pt) return "";
-        const net0 = pt.support - pt.drain;
-        const wmax = Math.max(...pt.groups.map((g) => g.w), Math.abs(net0)) || 1;
-        // diverging zero axis: 帮扶 grows right of centre, 克泄耗 grows left
-        const row = (g) => { const pct = (g.w / wmax * 50).toFixed(1);
-          const sup = g.side === "support";
-          return `<div class="sbrow">
-          <span class="sbl">${g.zh} <small>${TG_GRP_EN[g.zh] || ""} · ${g.el}</small></span>
-          <div class="sbax"><span class="zero"></span>
-            <i style="${sup ? "left:50%" : `right:50%`};width:${pct}%;background:${EL_COL[g.el]}"></i></div>
-          <b class="sbv ${sup ? "sup" : "drn"}">${sup ? "+" : "−"}${g.w}</b></div>`; };
-        const net = net0;
-        const netPct = (Math.abs(net) / wmax * 50).toFixed(1);
-        return `<div class="sbwrap">
-          <div class="sbhead">帮扶 supporting (同类) vs 克泄耗 draining (异类) — the score's own numbers</div>
-          <div class="sbaxhead"><span>← 克泄耗</span><span>帮扶 →</span></div>
-          ${pt.groups.map(row).join("")}
-          <div class="sbrow sbnet"><span class="sbl">净值 <small>net balance</small></span>
-            <div class="sbax"><span class="zero"></span>
-              <i style="${net >= 0 ? "left:50%" : "right:50%"};width:${netPct}%;background:${net >= 0 ? "#1e7d32" : "#b03a2e"}"></i></div>
-            <b class="sbv ${net >= 0 ? "sup" : "drn"}">${net >= 0 ? "+" : "−"}${Math.abs(net).toFixed(2)}</b></div>
-          <div class="cite" style="margin-top:5px">score = 得令 ${pt.season_pts > 0 ? "+" : ""}${pt.season_pts}
-            (季节 season) + 2 × (帮扶 ${pt.support} − 克泄耗 ${pt.drain}) / 总量 ${pt.total}
-            + 通根 ${pt.root_pts > 0 ? "+" : ""}${pt.root_pts} (roots) =
-            <b>${c.strength.score}</b> → ${c.strength.verdict}</div></div>`;
-      })()}
-      ${deepWrap("How the verdict is derived — formation check + the 4 steps",
-        `<div class="cite">Formation check: ${c.strength.formation.detail}. Support ratio =
-        share of the chart feeding the Day Master; root mass = share of hidden stems
-        carrying its element.</div>` +
-        c.strength.steps.map((s) => `<div class="cite"><b>${s.step}. ${s.name}:</b> ${s.value} — ${s.detail}</div>`).join(""))}
-      ${stb(2)}${narr(2)}${lg(2)}
-    </div>
-    <div class="section"><h3>十神 Ten Gods 十神全览</h3>
-      <div class="cite" style="margin:0 0 6px">十神的五行因人而异——同一个神对不同日主属不同五行，
-        所以颜色随每个人的命盘而变。 Each god's element depends on the DAY MASTER (正官 is
-        "the element that controls it") — the same god can be a different colour on a
-        family member's page, and that is correct, not a bug.</div>
-      <div class="cite" style="margin:0 0 8px">How the chart's energy is divided
-        among the ten archetypes (weighted count of visible + hidden stems — the raw
-        pillar data is collapsed below). Where the chart is heavy shows where life's attention
-        naturally goes; a faint or missing god marks a domain that needs deliberate
-        effort.</div>
-      ${deepWrap("十神轮 The god wheel — the same data as the bars, drawn as the five roles",
-        `<div class="tgwrap">${tenGodsWheel(c)}
-        <div class="cite" style="text-align:center;margin-top:2px">十神对照 — each group
-          coloured by ITS element for this Day Master (same palette as the element bars)</div></div>`)}
-      <div class="bars" style="min-width:280px">${(() => {
-        const rows = ALLGODS.map((g) => [g, c.tengods_pct[g] || 0]);
-        const pmax = Math.max(...rows.map(([, v]) => v)) || 1;
-        return rows.map(([g, p]) => `
-          <div class="bar-row tg-row2${p ? "" : " tg-zero"}"><span><b>${g}</b>
-            <span class="sub">${(c.tengods_legend[g] || {}).en || TG_EN_FALLBACK[g]}</span></span>
-            <div class="bar">${p ? `<i style="width:${(p / pmax * 100).toFixed(0)}%;background:${EL_COL[godEl(c.day_master, g)]}"></i>` : ""}</div>
-            <b>${p ? p + "%" : "0% (absent)"}</b></div>`).join("");
-      })()}</div></div>
-      <div class="cite">All ten gods are shown — dashed rows are what this chart LACKS:
-        those life-domains do not run on autopilot and reward deliberate effort.</div>
-      ${deepWrap("十神定义 God definitions — each god's meaning, one line",
-        Object.entries(c.tengods_pct).map(([g]) => `
-        <div><b style="color:${EL_COL[godEl(c.day_master, g)]}">●</b>
-          <b>${g}</b> ${c.tengods_legend[g].en} — ${c.tengods_legend[g].meaning}</div>`).join(""))}
-      <h4>十神对应 Your ten-god ↔ stem map <span class="tag">日主 ${c.day_master}</span></h4>
-      <div class="tgmap">${(() => {
-        const bystem = {};
-        Object.keys(STEM_YANG).forEach(st => {
-          const g = godOfStem(c.day_master, st);
-          (bystem[g] = bystem[g] || []).push(st);
-        });
-        return ["比肩", "劫財", "食神", "傷官", "正財", "偏財", "正官", "七殺", "正印", "偏印"]
-          .map(g => `<span class="tgm"><b>${g}</b>${(bystem[g] || []).map(st =>
-            `<i class="stemchip" style="color:${EL_COL[STEM_EL[st]]};border-color:${EL_COL[STEM_EL[st]]}">${st}</i>`).join("")}</span>`).join("");
-      })()}</div>
-      <div class="cite">Whenever one of these stems arrives in a luck pillar or year
-        (时运 tab), it brings that god's themes with it.</div>
-      <h4>双面性 Two sides of each god
-        <span class="tag warn">rows ordered by presence in YOUR chart</span></h4>
-      <div style="overflow-x:auto"><table class="tgsides">
-        <tr><th>God · share</th><th>Bright side 优</th><th>Shadow side 忌</th></tr>
-        ${Object.entries(c.tengods_pct).sort((a, b) => b[1] - a[1]).map(([g, p]) => {
-          const sd = TG_SIDES[tgCanon(g)] || ["", ""];
-          const cls = p >= 15 ? "tgs-hot" : p < 5 ? "tgs-faint" : "";
-          return `<tr class="${cls}"><td><b style="color:${EL_COL[godEl(c.day_master, g)]}">●</b>
-            <b>${g}</b> ${p}%</td><td>${sd[0]}</td><td class="sub">${sd[1]}</td></tr>`;
-        }).join("")}
-      </table></div>
-      <div class="cite">A god's shadow side activates when it is excessive or
-        unsupported — read the bold (prominent) rows as both your engine AND your
-        watch-list; faded rows barely operate in this chart.</div>
-      ${c.tengod_insights ? (() => { const ti = c.tengod_insights;
-        return `<h4>结构 Structure check
-          <span class="tag warn">percentages are the start — structure decides</span></h4>
-        <div class="cite" style="margin:0 0 6px">Three checks a percentage chart cannot
-          make: is the heavy god <b>aligned with your 用神</b>, is it <b>rooted</b> in
-          the branches, and what do the gods form <b>together</b>?</div>
-        ${ti.favor.map((f) => `<div class="cite"><b>${f.god} ${f.pct}%</b> ${elb(f.el)}
-          <span class="dirchip ${f.status === "favourable" ? "good" :
-            f.status === "unfavourable" ? "bad" : ""}">${f.status}</span> — ${f.note}</div>`).join("")}
-        <div class="cite" style="margin-top:6px"><b>Visible stems:</b>
-          ${ti.rooted.map((r) => `<span class="dirchip ${r.state === "rooted" ? "good" : "bad"}">
-            ${r.god} ${r.state === "rooted" ? "rooted 有根" : "floating 虛浮"}</span>`).join(" ")}
-          — a rooted god delivers durably; a floating one shows socially but needs backing.</div>
-        ${ti.patterns.length ? ti.patterns.map((p) => `<div class="ninline">
-            <b>${p.name} — ${p.zh}</b>
-            ${p.state ? `<span class="dirchip ${p.state.startsWith("formed") ? "good" : ""}">${p.state}</span>` : ""}
-            <div>${p.note}${p.activation ? ` <b>${p.activation}.</b>` : ""}</div></div>`).join("")
-          : `<div class="cite">No classical pair pattern triggers — the gods operate
-             independently in this chart.</div>`}
-        <div class="cite">Personality is not static: the current decade (时运 tab) overlays its
-          own gods — a 傷官 profile can behave like a 正官 one for ten years.</div>`;
-      })() : ""}
-      ${(() => {
-        const e = Object.entries(c.tengods_pct).sort((a, b) => b[1] - a[1]);
-        const [g1, p1] = e[0], [g2, p2] = e[1];
-        const faint = ALLGODS.filter((g) => (c.tengods_pct[g] || 0) < 5);
-        return `<div class="cite" style="margin-top:8px"><b>Reading:</b> this chart is
-          heaviest in ${g1} ${c.tengods_legend[g1].en} (${p1}% — ${c.tengods_legend[g1].meaning})
-          and ${g2} ${c.tengods_legend[g2].en} (${p2}%).${faint.length ? ` Faint or absent: ${faint.map((g) =>
-            `${g} ${(c.tengods_legend[g] || {}).en || TG_EN_FALLBACK[g]}`).join(", ")} — ${faint.length > 1 ? "these domains" : "this domain"}
-            won't come automatically and rewards conscious effort.` : ""}</div>`;
-      })()}
-      ${(() => {
-        const sex = ((state.family ? state.family.people : [])
-          .find((p) => p.name === name) || {}).sex || c.sex;
-        const grp = (gods) => Math.round(gods.reduce((a, g) => a + (c.tengods_pct[g] || 0), 0) * 10) / 10;
-        const band = (p) => p >= 20 ? "prominent" : p >= 8 ? "present" : p > 0 ? "faint" : "absent";
-        const rows = [
-          ["配偶星 Spouse star", sex === "M"
-            ? "正財+偏財 — in a man's chart the partner is represented by the wealth gods"
-            : "正官+七殺 — in a woman's chart the partner is represented by the authority gods",
-            sex === "M" ? "wife 妻" : "husband 夫",
-            sex === "M" ? ["正財", "偏財"] : ["正官", "七殺"]],
-          ["財星 Wealth stars", "正財+偏財 — income, assets, practical results; also " +
-            "personal values and how you 'monetise' effort",
-            "father 父" + (sex === "M" ? " · wife 妻" : ""), ["正財", "偏財"]],
-          ["官殺 Authority stars", "正官+七殺 — career, status, discipline, laws, pressure",
-            "bosses, authority figures" + (sex === "F" ? " · husband 夫" : ""), ["正官", "七殺"]],
-          ["印 Resource stars", "正印+偏印 — learning, support, protection, credentials, patience",
-            "mother 母 · mentors, elders", ["正印", "偏印"]],
-          ["食傷 Output stars", "食神+傷官 — expression, creativity, ambitions — your life's output",
-            (sex === "F" ? "children (食神=daughters, 傷官=sons) · " : "") + "students, works",
-            ["食神", "傷官"]],
-          ["比劫 Peer stars", "比肩+劫財 — self-identity, willpower, competition",
-            "siblings 兄弟姐妹 · friends & rivals", ["比肩", "劫財"]],
-        ];
-        return `<h4 style="margin-top:12px">Star-type reference 星名對照
-            <span class="tag">the vocabulary used by the life-domain evidence chips</span></h4>
-          <div style="overflow-x:auto"><table style="min-width:520px"><tr><th>Term</th><th>Which ten gods &amp; what they mean</th>
-            <th>People 六親</th><th>This chart</th></tr>
-            ${rows.map(([t, d, who, gods]) => { const p = grp(gods);
-              return `<tr><td><b>${t}</b></td><td class="sub">${d}</td>
-                <td class="sub">${who}</td>
-                <td class="${p >= 8 ? "good" : p === 0 ? "bad" : ""}">${p}% — ${band(p)}</td></tr>`; }).join("")}
-          </table></div>
-          <div class="cite"><b>Reading the pairs:</b> each domain has a milder and a
-            fiercer star. The classical "four benign" 四吉神 — 正官・正印・正財・食神 —
-            are the conventional, steady, low-friction flavours; the "four fierce"
-            四凶神 — 七殺・傷官・偏印・劫財 — are intense and unconventional, powerful
-            when channelled and costly when not (偏財 and 比肩 sit in between). The
-            正/偏 in the names marks yin-yang polarity against your Day Master, which
-            decides which star of each pair your chart carries.</div>
-          <div class="cite">Bands: ≥20% prominent · ≥8% present · &lt;8% faint · 0% absent —
-            the same thresholds behind chips like "spouse star faint". 配偶宮 Spouse palace =
-            the DAY branch (here ${c.pillars.day[1]}); clashes or combinations to it are read
-            in the 时运 tab's life domains. 財庫 wealth vault = the storage branch of the
-            wealth element (one of 辰戌丑未).</div>`;
-      })()}
-      ${narr(4)}${lg(4)}
-    </div>
-    <div class="section">${deepWrap("原始数据 Raw pillar data — every stem & hidden stem, classified", `
-      <div class="cite" style="margin:0 0 6px">The raw data behind the distribution
-        above: the Stem row classifies each visible character's relationship to the
-        Day Master; the 藏干 row lists the stems hidden inside each branch.</div>
-      <table><tr><th></th>${POS.map((k) => `<th>${POS_LAB[k]}</th>`).join("")}</tr>
-        <tr><th>Stem</th>${POS.map((k) => `<td>${c.ten_gods[k]}</td>`).join("")}</tr>
-        <tr><th>藏干</th>${POS.map((k) => `<td>${(c.hidden_gods[k] || []).join("<br>")}</td>`).join("")}</tr>
-      </table>`)}${narr(3)}${lg(3)}</div>
-    <div class="section"><h4>性格轴 Personality axes <span class="tag warn">modern synthesis · tendencies only</span></h4>
-      <div class="paxchips">${c.personality.map((a) => {
-        if (!a.zone) return `<div class="pax"><b>${a.axis}</b> ${a.verdict}
-          <div class="sub">${a.basis}</div></div>`;
-        const pos = a.zone === "left" ? 16 : a.zone === "right" ? 84 : 50;
-        return `<div class="pax"><b>${a.axis}</b>
-          <div class="paxv ${a.zone}">${a.verdict}</div>
-          <div class="paxstrip">
-            <span class="pz l"></span><span class="pz m"></span><span class="pz r"></span>
-            <i style="left:${pos}%"></i></div>
-          <div class="paxends"><span>${a.poles.left.zh} <small>${a.poles.left.en}</small></span>
-            <span class="mid">中 neutral</span>
-            <span>${a.poles.right.zh} <small>${a.poles.right.en}</small></span></div>
-          <div class="paxm">${a.metrics.map((m) => `<span>${m.label} <b>${m.pct}%</b></span>`).join("")}</div>
-          <div class="sub">${a.basis}</div></div>`; }).join("")}</div>
-      <div class="cite">Read straight off the distribution above — "no strong tendency"
-        is a legitimate result, not a failure.</div>
-      ${stb(10)}${narr(10)}${lg(10)}</div>
-    ${c.windows ? `<div class="section"><h3>时运 Timing 大运与流年
-        <span class="tag warn">climate × weather · not prediction</span></h3>
-      <div class="cite" style="margin:0 0 8px">The decade is the climate, the year is the
-        weather. Each 大運 is phase-labelled from its elements against the 用神 plus its
-        interactions with the day/month pillars; each of the next ten years is checked
-        per dimension — <b>career</b> (month-pillar activation or clash, 官殺 arrival),
-        <b>wealth</b> (財星 arrival with a can-the-chart-hold-it check, 財庫 vault years),
-        <b>relationship</b> (桃花 and spouse-palace 日支 activation) and <b>health</b>
-        (years that feed an excess or replenish a weak element). Green = window, red =
-        caution, grey = quiet. A caution is a navigation note, never a verdict.</div>
-      ${c.windows.arc ? `<div class="cite" style="margin:0 0 6px"><b>Life arc:</b> ${c.windows.arc}</div>` : ""}
-      <div class="ccdayun">${c.windows.decades.map((d) => `
-        <div class="ccdy${d.current ? " now" : ""}" title="${d.notes.join("; ")}">
-          <div class="ccdyage">${d.ages}</div><div class="ccdygz">${d.gz}</div>
-          <div class="wphase w-${d.phase}">${d.phase_zh}<span class="wp-en"> ${d.phase}</span></div>
-          <div class="dygods">${(x => x ? `${x.stem_god}/${x.branch_god}` : "")(
-            (c.dayun_detail || []).find(x => x.gz === d.gz))}</div>
-          ${d.current ? `<div class="ccdyhere">▲ now</div>` : ""}</div>`).join("")}
-      </div>
-      <div class="cite" style="margin:4px 0 8px"><b>桃花:</b> ${c.windows.taohua.branch}
-        — ${c.windows.taohua.type}${c.windows.taohua.pillars.length
-          ? ` (in the ${c.windows.taohua.pillars.join("/")} pillar)` : ""}</div>
-      <div style="overflow-x:auto"><table class="wtable"><tr><th>Year</th><th>Overall</th><th>事業 Career</th>
-        <th>財富 Wealth</th><th>感情 Relationship</th><th>健康 Health</th></tr>
-        ${c.windows.years.map((yr, yi) => {
-          const short = (d) => d.flag === "quiet" ? "·"
-            : d.note.split(" — ")[0].replace(/^年支./, "").slice(0, 14);
-          const cell = (d) => `<td class="wf-${d.flag}"><b>${
-            d.flag === "window" ? "◉" : d.flag === "caution" ? "⚠" : ""}</b>
-            <span class="wshort">${short(d)}</span></td>`;
-          const full = [["事業", yr.career], ["財富", yr.wealth],
-            ["感情", yr.relationship], ["健康", yr.health]]
-            .filter(([, d]) => d.flag !== "quiet")
-            .map(([l, d]) => `<b>${l}:</b> ${d.note}`).join("<br>") || "quiet year";
-          return `<tr class="wrow" data-yi="${yi}"><th>${yr.y} ${yr.gz}</th>
-            <td class="wf-${yr.overall === "peak" ? "window" : yr.overall === "careful" ? "caution" : "quiet"}">
-              <b>${yr.overall_zh}</b></td>
-            ${cell(yr.career)}${cell(yr.wealth)}${cell(yr.relationship)}${cell(yr.health)}</tr>
-            <tr class="wdetail" hidden><td colspan="6">${full}</td></tr>`;
-        }).join("")}
-      </table></div>
-      <div class="cite">Tap a year row for the full notes.</div>
-      ${stb(13)}${narr(13)}${lg(13)}</div>` : ""}
-    <div class="section">${deepWrap("大運 themes table — each decade's gods & keywords", `
-      <div class="cite" style="margin:0 0 6px">Each 10-year decade is labelled by the ten
-        gods its two characters bring. The highlighted column is the current decade.</div>
-      <div style="overflow-x:auto"><table><tr>${c.dayun_detail.map((d) =>
-          `<th class="${d.current ? "cur-dayun" : ""}">${d.gz}</th>`).join("")}</tr>
-        <tr>${c.dayun_detail.map((d) => `<td class="${d.current ? "cur-dayun" : ""}">${d.ages}</td>`).join("")}</tr>
-        <tr>${c.dayun_detail.map((d) => `<td class="${d.current ? "cur-dayun" : ""}">
-          <b>${d.stem_god}/${d.branch_god}</b><div class="sub" style="max-width:120px">${d.keywords}</div></td>`).join("")}</tr>
-      </table></div>`)}${narr(6)}${lg(6)}</div>
-    <div class="section"><h4>人生领域 Life domains
-        <span class="tag warn">structural tendencies · not guarantees</span></h4>
-      <div class="cite" style="margin:0 0 8px">Each score starts at a neutral 50; every
-        chip below shows a rule that moved it up or down. Above 70 = a natural strength,
-        below 45 = an area to consciously support.</div>
-      ${(() => {
-        const P = c.palaces;
-        if (!P) return "";
-        const g = (...n) => Math.round(n.reduce((a, k) => a + (c.tengods_pct[k] || 0), 0) * 10) / 10;
-        const inPal = (keys, groups) => keys.some((k) => {
-          const p = P.pillars.find((x) => x.key === k);
-          return p && [p.stem_god, ...p.hidden].some((gd) => groups.includes(tgCanon(gd)));
-        });
-        const rows = [
-          ["事业 Career & authority", "正官·七殺", g("正官", "七殺", "七杀"),
-            ["month"], ["正官", "七殺"], "Month 月柱"],
-          ["财富 Wealth & assets", "正財·偏財", g("正財", "正财", "偏財", "偏财"),
-            ["month", "day"], ["正財", "偏財"], "Month · Day"],
-          ["学业 Education & reputation", "正印·偏印", g("正印", "偏印"),
-            ["year", "month"], ["正印", "偏印"], "Year · Month"],
-          ["才华 Talent & enterprise", "食神·傷官", g("食神", "傷官", "伤官"),
-            ["hour"], ["食神", "傷官"], "Hour 時柱"],
-          ["人脉 Network & competition", "比肩·劫財", g("比肩", "劫財", "劫财"),
-            ["year", "month"], ["比肩", "劫財"], "Year · Month"],
-          ["婚恋 Marriage & romance",
-            c.sex === "M" ? "正財·偏財 (spouse star)" : "正官·七殺 (spouse star)",
-            c.sex === "M" ? g("正財", "正财", "偏財", "偏财") : g("正官", "七殺", "七杀"),
-            ["day"], c.sex === "M" ? ["正財", "偏財"] : ["正官", "七殺"], "Day branch 日支"],
-        ];
-        return deepWrap("Signals × palaces 信號與宮位 — which god sits in which palace", `
-        <div style="overflow-x:auto"><table class="bc-table">
-          <tr><th>Life domain</th><th>Signal gods</th><th>Your share</th>
-            <th>Primary palace</th><th>Seated?</th></tr>
-          ${rows.map(([d, sg, share, keys, groups, palName]) => `<tr>
-            <td><b>${d}</b></td><td class="sub">${sg}</td>
-            <td class="${share >= 15 ? "b-good" : share < 5 ? "b-weak" : ""}"><b>${share}%</b></td>
-            <td class="sub">${palName}</td>
-            <td class="${inPal(keys, groups) ? "b-good" : ""}">${inPal(keys, groups)
-              ? "✓ 得位 seated" : "— elsewhere"}</td></tr>`).join("")}
-        </table></div>`) + `
-        <div class="cite"><b>婚戀 spouse palace (day branch ${P.spouse.branch}):</b>
-          ${dnAll(P.spouse.line)}; the palace is ${dnAll(P.spouse.state)}.</div>
-        <div class="cite"><b>👶 Children palace:</b> ${dnAll(P.children.line)}.</div>
-        <div class="cite"><b>財庫 wealth vault:</b>
-          <span class="dirchip ${P.vault.present ? (P.vault.open ? "good" : "") : "bad"}">
-            ${P.vault.present ? (P.vault.open ? "OPEN 已開" : "sealed 未開") : "absent 無庫"}</span>
-          ${dnAll(P.vault.state)}</div>`;
-      })()}
-      ${c.spouse_reading ? `<h4>婚戀 Marriage &amp; spouse reading</h4>
-        <div class="cite">${dnAll(c.spouse_reading.star_line)}</div>
-        <div class="cite">${dnAll(c.spouse_reading.palace_line)}</div>
-        ${c.spouse_reading.pattern_line ? `<div class="ninline">${dnAll(c.spouse_reading.pattern_line)}</div>` : ""}
-        ${c.spouse_reading.mix_line ? `<div class="cite">⚠ ${dnAll(c.spouse_reading.mix_line)}</div>` : ""}
-        ${c.spouse_reading.years.length ? `<div class="cite"><b>Activation years:</b><br>
-          ${c.spouse_reading.years.map((y) => dnAll(y)).join("<br>")}</div>` : ""}
-        <div class="cite" style="color:var(--muted)">${c.spouse_reading.source_ref}</div>` : ""}
-      ${(() => {
-        const doms = c.domains.slice().sort((a, b) => b.score - a.score);
-        const chip = (e) => `<span class="tag ${e.delta < 0 ? "warn" : ""}">${e.label} ${e.delta > 0 ? "+" : ""}${e.delta}</span>`;
-        const top2 = (d) => d.evidence.slice()
-          .sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta)).slice(0, 2);
-        return `<div class="domrows">${doms.map((d) => `
-          <div class="domrow">
-            <div class="dlab"><b>${d.zh}</b><span class="sub">${d.en}</span></div>
-            <div class="dbar"><i class="${d.score >= 70 ? "good" : d.score < 45 ? "bad" : ""}"
-              style="width:${d.score}%"></i></div>
-            <b class="dnum ${d.score >= 70 ? "b-good" : d.score < 45 ? "b-weak" : ""}">${d.score}</b>
-            <div class="dchips">${top2(d).map(chip).join(" ")}</div>
-          </div>`).join("")}</div>` +
-          deepWrap("全部证据 all evidence — every rule that moved each score", doms.map((d) =>
-            `<div class="cite"><b>${d.zh} ${d.en}</b> · ${d.band} —
-              ${d.evidence.map(chip).join(" ")}</div>`).join(""));
-      })()}${stb(8)}${narr(8)}${lg(8)}</div>
-    <div class="section"><h3>方位与用神 Directions &amp; medicine <span class="tag">${c.gua}命 · ${c.group}</span></h3>
-      <div class="cite" style="margin:0 0 6px">Your personal trigram splits the compass
-        into four lucky (green) and four unlucky (red) directions — a different map for
-        each person. Use green directions for the things you do for hours (bed
-        headboard, desk facing, main door); red directions are fine for storage and
-        bathrooms.</div>
-      ${bazhaiCompass(c)}
-      <div class="cite"><b>Two layers, two questions (they can disagree — here is the
-        reconciliation):</b> 八宅 grades ORIENTATION — where to face and head long-stay
-        activities; 用神 grades ELEMENT CONTENT — what colours/materials/fields feed the
-        chart. A green direction whose element is unfavourable is still a good direction
-        to FACE — just furnish it in the 用神 palette rather than that palace's element.
-        (命卦 is derived from birth YEAR alone — everyone born the same year shares it;
-        the 用神 layer is the personal one.)</div>
-      ${deepWrap("The eight stars, defined", BAZHAI_ORDER.map((s) =>
-        `<div class="cite"><b>${s} ${BAZHAI_EN[s][0]}</b> — ${BAZHAI_EN[s][1]}</div>`).join(""))}
-      ${(() => {
-        const good = Object.entries(c.youxing)
-          .filter(([, s]) => ["生氣", "天醫", "延年", "伏位"].includes(s))
-          .sort((a, b) => BAZHAI_ORDER.indexOf(a[1]) - BAZHAI_ORDER.indexOf(b[1]))
-          .map(([p, s]) => `${PALACE_DIR[p]} (${s})`).join(", ");
-        const bad = Object.entries(c.youxing)
-          .filter(([, s]) => ["絕命", "五鬼"].includes(s))
-          .map(([p, s]) => `${PALACE_DIR[p]} (${s})`).join(", ");
-        return `<div class="cite" style="margin-top:7px"><b>Reading:</b> point the
-          headboard/desk toward ${good}. The heaviest cautions are ${bad} — avoid
-          sleeping or long sitting oriented to these. The Rooms tab applies exactly
-          this map when scoring bedroom sectors.</div>`;
-      })()}
-      ${narr(7)}${lg(7)}
-    </div>
-    <div class="section"><h4>用神 the medicine, applied</h4>
-      ${c.medicine_rank ? `<div class="cite"><b>${dnAll(c.medicine_rank)}</b></div>` : ""}
-      ${c.tiaohou && c.tiaohou.line ? `<div class="cite">${dnAll(c.tiaohou.line)}
-        <span class="tag">${dnAll(c.tiaohou.source_ref)}</span></div>` : ""}
-      ${c.xiji ? `<table class="xiji">${c.xiji.map((r) => `<tr>
-        <th>${r.band} <span class="sub">${dnAll(r.zh)}</span></th>
-        <td>${r.elements.map((e) => elb(e)).join(" ")}</td>
-        <td class="sub">${r.gods.join("·")}</td></tr>`).join("")}</table>` : ""}
-      <p>Favourable: ${elbs(c.yongshen.favourable)} · avoid ${elbs(c.yongshen.unfavourable)}
-         · colours <b>${c.yongshen.colours.join("、")}</b></p>
-      ${c.element_relations ? `<div class="cite"><b>In god vocabulary:</b> your 用神
-        ${c.yongshen.favourable.map((el) => {
-          const f = Object.values(c.element_relations.flows).find((x) => x.el === el);
-          return `${elb(el)} arrives as <b>${f ? f.role : "—"}</b>`;
-        }).join(" · ")} — those life-areas ARE the medicine: seeking them heals the
-        chart, forcing their opposites taxes it.</div>` : ""}
-      ${c.yongshen.citations.map((x) => `<div class="cite"><b>${x.source_ref}:</b> ${x.explanation}</div>`).join("")}
-      ${stb(5)}${narr(5)}${lg(5)}
-    </div>
-    <div class="section"><h3>健康 Health element map
-        <span class="tag warn">TCM correspondence · reference, not medical advice</span></h3>
-      <div class="cite" style="margin:0 0 6px">Traditional five-element medicine maps
-        each element to organ systems; a very weak or excessive element in the chart
-        marks the systems worth caring for.</div>
-      <table><tr><th>Element</th><th>Share</th><th>Organ systems</th><th>Watch aspects</th><th>Status</th></tr>
-        ${c.health.map((hh) => `<tr><td>${elb(hh.element)} ${hh.en}</td><td>${hh.share}%</td>
-          <td class="sub">${hh.organs}</td><td class="sub">${hh.aspects}</td>
-          <td class="${hh.status.startsWith("balanced") ? "" : "bad"}">${hh.status}</td></tr>`).join("")}
-      </table>
-      ${stb(11)}${narr(11)}${lg(11)}
-    </div>
-    ${c.careers ? `<div class="section"><h3>事业方向 Career paths
-        <span class="tag warn">rule-based ranking · fit, not fate</span></h3>
-      <div class="cite" style="margin:0 0 8px">Fifteen career archetypes, each scored on
-        three cited terms: the field's element(s) against the 用神 lists, the ten-god
-        working style (shares ≥8% count), and 神煞 talents that serve the path. "Fit"
-        means effort converts to reward efficiently there — low-ranked fields are priced
-        against the chart, never forbidden. For the children read these as directions to
-        expose and nurture, revisited as 大運 decades turn. Each archetype also shows its
-        raw score in 分 (points; open scale — the same arithmetic behind the ranking):
-        ≥12 分 strong fit · 4–12 分 good fit · &lt;4 分 workable.</div>
-      <h4>行业五行 Favourable industries by element</h4>
-      ${c.industries.favourable.map((it) => `<div class="cite"><b>Favourable ${elb(it.element)} ${it.en}
-        industries</b> — ${it.industries}</div>`).join("")}
-      <div class="cite" style="margin-bottom:8px">Understated: ${c.industries.avoid.map((it) =>
-        `${elb(it.element)} (${it.industries.split(",")[0]}…)`).join("; ")}
-        — not forbidden, just not where this chart recharges.</div>
-      <h4>事业方向 Career archetypes ranked</h4>
-      ${c.careers.top.map((a, i) => `<div class="cite"><b>#${i + 1} ${a.zh} ${a.en}</b>
-        <span class="tag ${a.score >= 12 ? "" : "warn"}">${a.score >= 12 ? "strong fit" :
-          a.score >= 4 ? "good fit" : "workable"} · ${a.score} 分</span>
-        <div class="rchips">${a.reasons.map((r) => `<span>${r}</span>`).join("")}</div></div>`).join("")}
-      ${(() => {
-        const learn = (c.domains || []).find((d) => d.key === "learning");
-        const eduAvoid = (c.industries.avoid || []).some((it) => /教育|education/i.test(it.industries));
-        return learn && learn.score >= 80 && eduAvoid ? `<div class="cite"><b>Reconciliation:</b>
-          Learning ${learn.score} measures the chart's STUDY capacity (印 + study stars); the
-          understated education INDUSTRY note is about element recharge — teaching-adjacent
-          work fits when run 用神-style (institutions, credentials, research) rather than as
-          pure 木-element schooling.</div>` : "";
-      })()}
-      <div class="cite" style="margin-top:7px"><b>Priced against this chart:</b>
-        ${c.careers.avoid.map((a) => `${a.zh} ${a.en} (${a.score} 分) — ${a.reasons.join("; ")}`).join(" · ")}</div>
-      ${stb(12)}${narr(12)}${lg(12)}
-    </div>` : ""}
-    ${c.shensha.length ? `<div class="section"><h3>神煞 Symbolic stars</h3>
-      <div class="cite" style="margin:0 0 8px">Special stem-branch patterns from classical
-        lookup tables — flavour on top of the structural reading. The small tag shows
-        which pillar (year=ancestry/childhood, month=career/parents, day=self/spouse,
-        hour=later life/children) carries each star.</div>
-      ${c.shensha.map((s) => { const neg = ["劫煞", "空亡", "災煞", "亡神",
-          "羊刃", "孤辰", "寡宿"].includes(s.star);
-        return `<div class="cite"><b class="${neg ? "shen-neg" : "shen-pos"}">${neg ? "⚠" : "✦"} ${s.star}</b>
-        <span class="tag">${s.pillars.join("·")}</span> ${s.meaning}</div>`; }).join("")}
-      ${c.interactions.length ? `<div class="cite" style="margin-top:7px"><b>Natal branch interactions:</b>
-        ${c.interactions.map((i) => `${i.pair} ${i.kind} (${i.pillars.join("+")}) — ${i.note}`).join("; ")}</div>` : ""}
-      ${narr(9)}${lg(9)}
-    </div>` : ""}
-    <div class="section"><h3>Rule citations</h3>
-      ${deepWrap("Every rule this reading cites",
-        c.citations.map((x) => `<div class="cite"><b>[${layerZh(x.layer)}] ${x.source_ref}:</b> ${x.explanation}</div>`).join(""))}
-    </div>`);
-  applyReadingTabs($("#tab-person"));
+    ${c.synthesis ? `<div class="synth"><b>綜合論斷 The Synthesis</b><p>${c.synthesis.join(" ")}</p></div>` : ""}
+    <nav class="ptabs">${READING_TABS.map(([id, lbl], i) =>
+      `<button class="${i === 0 ? "on" : ""}" data-pane="${id}">${lbl}</button>`).join("")}</nav>
+    ${READING_TABS.map(([id], i) => `<div class="ppane${i === 0 ? " on" : ""}" id="pane-${id}">${panes[id]}</div>`).join("")}`);
+  wireReadingTabs($("#tab-person"));
   colorizeTerms($("#tab-person"), c.day_master);
   colorizeColours($("#tab-person"));
 }
