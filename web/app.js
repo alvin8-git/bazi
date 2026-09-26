@@ -1272,7 +1272,7 @@ function buildElements(c, R) {
   const st = c.strength, pt = st.parts || {}, sp = pt.season_pts || 0, weak = isWeak(c);
   const stage = (c.pillar_extras.month || {}).stage;
   const topSup = (pt.groups || []).filter((g) => g.side === "support").sort((a, b) => b.w - a.w)[0];
-  const e45 = rdFig({ tier: "secondary", span: 7, label: "强弱 — strength gauge and its arithmetic", learn: 2,
+  const e45 = rdFig({ tier: "secondary", span: 5, label: "强弱 — strength gauge and its arithmetic", learn: 2,
     chart: `<div class="svg-plate">${strengthGauge(st)}</div>
       <p class="rd-tags"><span class="tag">support ratio ${st.support_ratio}%</span> <span class="tag">root mass ${st.root_ratio}%</span> <span class="tag">${st.formation.status}</span></p>
       ${supportDrain(c)}${tiaohouStrip(c)}`,
@@ -1291,7 +1291,7 @@ function buildElements(c, R) {
   const hline = excess ? `${elb(excess.element)} ${elw(excess.element)} excess (${excess.share}%) — watch ${excess.organs}; ${(excess.aspects.split(";").pop() || "").trim()} is the pattern to notice.`
     : weakEl ? `${elb(weakEl.element)} ${elw(weakEl.element)} weak (${weakEl.share}%) — support ${weakEl.organs}; watch ${weakEl.aspects}.`
     : "All five elements sit in range — no organ system is flagged.";
-  const h1 = rdFig({ tier: "secondary", span: 5, label: "健康 — health element map", learn: 11, chart: table, line: hline,
+  const h1 = rdFig({ tier: "secondary", span: 7, label: "健康 — health element map", learn: 11, chart: table, line: hline,
     facts: [["过旺", H.filter((h) => /excess|過旺|过旺/i.test(h.status)).map((h) => elc(h.element)).join("·") || "—"],
       ["不足", H.filter((h) => /weak|不足/i.test(h.status)).map((h) => elc(h.element)).join("·") || "—"]],
     legend: legendList(11) });
@@ -1348,7 +1348,7 @@ function buildGods(c, R) {
     const chart = geju + ti.favor.map((f) => `<div class="cite structrow"><b>${f.god} ${f.pct}%</b> ${elb(f.el)}
         <span class="dirchip ${f.status === "favourable" ? "good" : f.status === "unfavourable" ? "bad" : ""}">${f.status}</span> — ${f.note}</div>`).join("")
       + `<div class="cite" style="margin-top:6px"><b>Visible stems:</b> ${ti.rooted.map((r) => `<span class="dirchip ${r.state === "rooted" ? "good" : "bad"}">${r.god} ${r.state === "rooted" ? "rooted 有根" : "floating 虛浮"}</span>`).join(" ")}</div>`
-      + (ti.patterns.length ? ti.patterns.map((p) => `<div class="ninline"><b>${p.name} — ${p.zh}</b> ${p.state ? `<span class="dirchip ${p.state.startsWith("formed") ? "good" : ""}">${p.state}</span>` : ""}<div>${p.note}${p.activation ? ` <b>${p.activation}.</b>` : ""}</div></div>`).join("")
+      + (ti.patterns.length ? `<details class="deep pairpat"><summary>pair patterns · ${ti.patterns.length}</summary><div class="deepbody">${ti.patterns.map((p) => `<div class="ninline"><b>${p.name} — ${p.zh}</b> ${p.state ? `<span class="dirchip ${p.state.startsWith("formed") ? "good" : ""}">${p.state}</span>` : ""}<div>${p.note}${p.activation ? ` <b>${p.activation}.</b>` : ""}</div></div>`).join("")}</div></details>`
         : `<div class="cite">No classical pair pattern triggers — the gods operate independently in this chart.</div>`);
     const bad = ti.favor.find((f) => f.status === "unfavourable"), good = ti.favor.find((f) => f.status === "favourable");
     g5 = rdFig({ tier: "secondary", span: 6, label: "结构 Structure check", learn: 4, chart,
@@ -1475,7 +1475,7 @@ function buildTiming(c, R) {
       facts: [["good", `${good.length}`], ["pace", `${bad.length}`]],
       legend: "Each solar month carries a branch and its element. Months whose element is your medicine are marked good; months carrying a 忌神 element are marked to pace. The rhythm is the same every year — the 流年 table says which years lift or lower it." });
   }
-  const short = (d) => d.flag === "quiet" ? "·" : d.note.split(" — ")[0].replace(/^年支./, "").slice(0, 26);
+  const short = (d) => d.flag === "quiet" ? "·" : d.note.split(" — ")[0].replace(/^年支./, "");
   const cell = (d) => `<td class="wf-${d.flag}"><b>${d.flag === "window" ? "◉" : d.flag === "caution" ? "⚠" : ""}</b> <span class="wshort">${short(d)}</span></td>`;
   const table = `<div class="scrollx"><table class="wtable"><tr><th>Year</th><th>Overall</th><th>事業 Career</th><th>財富 Wealth</th><th>感情 Relationship</th><th>健康 Health</th></tr>
     ${W.years.map((yr, yi) => { const full = [["事業", yr.career], ["財富", yr.wealth], ["感情", yr.relationship], ["健康", yr.health]]
