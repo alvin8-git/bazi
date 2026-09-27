@@ -1,0 +1,13 @@
+{
+  "name": "bazifor-me",
+  "version": "0.1.0",
+  "description": "FengShui Family Compass - Vercel Web Analytics",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "postinstall": "echo 'Analytics package installed'"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.3.1"
+  }
+}

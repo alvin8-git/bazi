@@ -8,6 +8,7 @@ data/out/
 pytest-of-alvin/
 data/public_store/
 node-compile-cache/
+node_modules/
 uv-*.lock
 .vercel
 .env*
