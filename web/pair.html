@@ -231,7 +231,7 @@ function gauge(score) {                       // band zones + marker, inline SVG
   return `<svg viewBox="0 0 360 52" class="gauge" role="img" aria-label="score ${score} of 100">
     ${zone(0, 45, "#f3d8cf")}${zone(45, 55, "#efe6cf")}${zone(55, 70, "#e3e8cf")}${zone(70, 100, "#cfe3cf")}
     <text x="21" y="18" font-size="8" fill="#8b8f9a">0 需磨合</text>
-    <text x="164" y="18" font-size="8" fill="#8b8f9a">45 中</text>
+    <text x="164" y="18" font-size="8" fill="#8b8f9a">45 ���</text>
     <text x="196" y="46" font-size="8" fill="#8b8f9a">55 中上</text>
     <text x="244" y="18" font-size="8" fill="#8b8f9a">70 上等</text>
     <text x="340" y="18" font-size="8" fill="#8b8f9a" text-anchor="end">100</text>
@@ -378,4 +378,6 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
       .catch(() => {});
   } catch (e) { rep.innerHTML = `<b>could not load this pair</b> — ${esc(e.message)}`; }
 })();
-</script></body></html>
+</script>
+<script src="/static/analytics.js"></script>
+</body></html>
