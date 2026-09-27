@@ -81,7 +81,17 @@ details{margin:8px 0}summary{font-size:11.5px;font-weight:700;cursor:pointer;col
   color:var(--accent);text-decoration:none}
 .foot{font-size:9px;color:var(--muted);margin-top:12px;border-top:1px solid var(--line);
   padding-top:6px}
+.prep{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px 0 6px;margin:8px 0 4px}
+.prep-k{font-size:10.5px;font-weight:600;letter-spacing:.3px;color:var(--muted);margin-bottom:3px}
+.prep-lede{margin:0 0 4px;font-size:13px;font-weight:600;line-height:1.5;color:var(--ink)}
+.prep-body{font-size:12px;line-height:1.55;color:var(--ink)}.prep-body h4{margin:7px 0 2px;font-size:10.5px;font-weight:700;letter-spacing:.3px;color:var(--muted);text-transform:uppercase}
+.prep-body p{margin:3px 0}.prep-body ul{margin:3px 0 0;padding-left:18px}.prep-body li{margin:2px 0}
+.prep-conf{margin-top:6px!important;font-size:11px;color:var(--muted)}
+.basis{display:inline-block;font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:8px;border:1px solid var(--line);color:var(--muted)}
+.basis.classical{color:#0c5c50;border-color:#bfdcd4;background:#e6f2ef}.basis.modern{color:#8a5410;border-color:#e7cfa8;background:#f9efe0}
 @media print{
+  .prep{padding:4px 0}.prep-lede{font-size:10.5px}.prep-body{font-size:9px}.prep-body h4{font-size:8.5px;margin:4px 0 1px}.prep-conf{font-size:8px}
+  .basis{font-size:8px}
   body{background:#fff;font-size:9.5px;line-height:1.35}
   .page{max-width:none;padding:0}
   .report{border:none;box-shadow:none;border-radius:0;padding:0 1mm}
@@ -286,6 +296,12 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
       <div class="rhead"><h1>合婚配对报告<small>Pair Compatibility Report · bazifor.me</small></h1>
         <div class="rmeta">${new Date().toISOString().slice(0, 10)}<span id="verline"></span><br>deterministic · every number cites its rule</div></div>
       <div class="idrow">${idc(pa, d.a, A)}<div class="vs">✕</div>${idc(pb, d.b, B)}</div>
+      ${d.report ? `<div class="prep"><div class="prep-k">綜合論斷 The Synthesis — the geomancer's pair report</div>
+        <p class="prep-lede">${esc(d.report.summary)}</p>
+        <div class="prep-body"><h4>Findings</h4>${d.report.findings.map((f) => `<p><b>${esc(f.label)}.</b> ${esc(f.text)}</p>`).join("")}
+          <h4>Assessment</h4><p>${esc(d.report.assessment)}</p>
+          <h4>Plan</h4><ul>${d.report.plan.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
+          <p class="prep-conf">${esc(d.report.confidence)}</p></div></div>` : ""}
       <h2>总评 <small>overall reading</small></h2>
       ${gauge(d.score)}
       ${(() => { const [fb] = BAND_COL(d.score);
@@ -297,6 +313,14 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
         ${rows}
         <tr class="tot"><td>总分（5–95 区间）<small class="be">total, clamped</small></td><td></td>
           <td class="pts">${d.score}</td></tr></table>
+      ${d.modern && d.modern.rows && d.modern.rows.length ? `<h2>现代解读 <small>modern reading — classical principles on the two readings, own ledger</small></h2>
+      <table class="ctable"><tr><th>层 layer</th><th>依据 basis</th><th>分 pts</th></tr>
+        ${d.modern.rows.map((r) => `<tr><td>${esc(r.label.zh)}${be(r.label)}${r.note ? `<small class="be">${esc(r.note)}</small>` : ""}</td>
+          <td><span class="basis ${r.basis}">${r.basis === "classical" ? "classical 经典" : "modern 现代"}</span></td>
+          <td class="pts ${cls(r.delta)}">${r.delta > 0 ? "+" : ""}${r.delta}</td></tr>`).join("")}
+        <tr class="tot"><td>含现代层的读数（不改动经典总分）<small class="be">reading with the modern layers — the classical score above is unchanged</small></td><td></td>
+          <td class="pts">${d.modern.score_with_modern}</td></tr></table>
+      <div class="cite2">${esc(d.modern.source_ref)}</div>` : ""}
       <h2>相互看对方 <small>how they see each other</small></h2>
       ${seeTable}
       <h2>因素详解 <small>factor detail — reason &amp; action per scored factor</small></h2>

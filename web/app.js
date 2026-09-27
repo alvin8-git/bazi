@@ -1426,12 +1426,17 @@ function buildGods(c, R) {
     const top = c.careers.top || [], avoid = c.careers.avoid || [], mx = Math.max(...[...top, ...avoid].map((a) => Math.abs(a.score))) || 1;
     const krow = (a, i, neg) => `<div class="krow${neg ? " neg" : ""}"><span class="klab">${neg ? "avoid · " : `#${i + 1} `}${a.zh} <small>${a.en}</small></span>
       <div class="kbar"><i style="width:${(Math.abs(a.score) / mx * 100).toFixed(0)}%"></i></div><b>${a.score}</b></div>`;
-    const chart = `<div class="klist">${top.map((a, i) => krow(a, i, false)).join("")}${avoid.map((a, i) => krow(a, i, true)).join("")}</div>`;
+    const R = (c.career_roles || {}).top || [], rmx = Math.max(...R.map((x) => Math.abs(x.score)), 1);
+    const roles = R.length ? `<div class="klist-head">Roles today <small>present-day roles on the same rules</small></div><div class="klist">${R.map((x, i) =>
+      `<div class="krow"><span class="klab">#${i + 1} ${x.role} <small>${x.parent}${x.basis === "arguable" ? " · mapping arguable" : ""}</small></span>
+        <div class="kbar"><i style="width:${(Math.abs(x.score) / rmx * 100).toFixed(0)}%"></i></div><b>${x.score}</b></div>`).join("")}</div>` : "";
+    const chart = `<div class="klist-head">Archetypes</div><div class="klist">${top.map((a, i) => krow(a, i, false)).join("")}${avoid.map((a, i) => krow(a, i, true)).join("")}</div>${roles}`;
     const a0 = top[0], short = (r) => clip(r.split(" — ")[0], 40);
     k2 = rdFig({ tier: "reference", span: 4, label: "事业方向 Career archetypes ranked", learn: 12, chart,
       line: a0 ? `#1 fit: ${a0.en} (${a0.score} pts) — ${a0.reasons.slice(0, 2).map(short).join(", ")}.` : "No archetype is ranked for this chart.",
       facts: [a0 ? ["#1", `${a0.score} pts`] : null, avoid.length ? ["avoid", avoid.map((a) => a.zh).join("、")] : null].filter(Boolean),
       legend: `<div>Fifteen archetypes, each scored on the field's element against the 用神 lists, the ten-god working style (shares ≥8%) and 神煞 talents. ≥12 分 strong fit · 4–12 分 good fit · &lt;4 分 workable. Low-ranked fields are priced against the chart, never forbidden.</div>
+        ${R.length ? `<div><b>Roles today</b> — the same rules applied to present-day roles; each role carries its parent archetype and whether its element mapping is firm or arguable (modern synthesis).</div>${R.map((x) => `<div><b>${x.role}</b> (${x.score} 分) — ${x.reasons.join("; ")}</div>`).join("")}` : ""}
         ${[...top, ...avoid].map((a) => `<div><b>${a.zh} ${a.en}</b> (${a.score} 分) — ${a.reasons.join("; ")}</div>`).join("")}${legendList(12)}` });
   }
   return rdSection("gods", "十神 Ten Gods", "What drives me?",

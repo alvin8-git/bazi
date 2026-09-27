@@ -251,14 +251,17 @@ def get_workspace(token: str):
 @router.get("/api/pub/w/{token}/pair")
 def get_pair(token: str, a: int, b: int):
     """合婚 drill-down for two members (by index) — explains the matrix score."""
-    from engine.hehun_detail import pair_breakdown
+    from engine.hehun_detail import pair_full
+    from engine.report import chart_payload
     ws = _load(token)
     ppl = ws["people"]
     if not (0 <= a < len(ppl) and 0 <= b < len(ppl)) or a == b:
         raise HTTPException(400, "bad pair indexes")
-    _, ca = _chart_of(ppl[a])
-    _, cb = _chart_of(ppl[b])
-    out = pair_breakdown(ca, cb, yong_shen(ca), yong_shen(cb))
+    ma, ca = _chart_of(ppl[a])
+    mb, cb = _chart_of(ppl[b])
+    ya, yb = yong_shen(ca), yong_shen(cb)
+    out = pair_full(ca, cb, ya, yb, chart_payload(_tosimp(ma.name), ca, ya, YEAR),
+                    chart_payload(_tosimp(mb.name), cb, yb, YEAR))
     return json.loads(_tosimp(json.dumps(out, ensure_ascii=False)))
 
 

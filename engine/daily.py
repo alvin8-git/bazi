@@ -13,7 +13,10 @@ add when a verdict disagrees with an almanac the owner trusts.
 """
 from __future__ import annotations
 
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
+from zoneinfo import ZoneInfo
+
+SG = ZoneInfo("Asia/Singapore")
 
 from .bazi import ten_god
 from .wuxing import CHONG_MAP, HAI_MAP, HE_MAP, HIDDEN_STEMS, STEM_ELEMENT
@@ -33,7 +36,7 @@ def _set(flags: dict, key: str, verdict: str, why: str) -> None:
 
 
 def daily_fortune(c, ys: dict, start: date | None = None, days: int = 30) -> dict:
-    start = start or date.today()
+    start = start or datetime.now(SG).date()      # the server runs on UTC; the reader lives in SG
     dm = c.day_master
     natal_db = c.pillars["day"].branch
     natal_yb = c.pillars["year"].branch

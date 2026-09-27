@@ -100,3 +100,79 @@ def career_paths(chart, ys: dict, top: int = 5) -> dict:
     return {"top": scored[:top], "avoid": avoid,
             "source_ref": "career archetype ranking — 用神 field elements + "
                           "ten-god style + 神煞 (MODERN SYNTHESIS)"}
+
+
+# ---- roles for today's economy (2026-09-27; docs/designs/pair-compatibility-deep-dive.md §D) ----
+# role, field elements, working-style gods (first weighs 2, rest 1), parent archetype keys, firm|arguable
+ROLES = [
+    ("Data scientist", "水", ["正印", "偏印"], ["research"], "arguable"),
+    ("Machine-learning engineer", "火", ["食神", "傷官", "偏印"], ["tech"], "firm"),
+    ("Software engineer", "金火", ["正官", "食神", "傷官"], ["engineering", "tech"], "arguable"),
+    ("DevOps / SRE", "金", ["正官", "食神"], ["engineering"], "firm"),
+    ("Cybersecurity analyst", "金", ["七殺", "正官"], ["engineering", "law"], "arguable"),
+    ("Product manager", "火", ["傷官", "七殺"], ["venture", "management"], "arguable"),
+    ("UX / UI designer", "木火", ["傷官", "食神"], ["design"], "firm"),
+    ("Growth marketer", "水火", ["傷官", "劫財"], ["media"], "firm"),
+    ("Social media creator", "火", ["傷官"], ["media"], "arguable"),
+    ("Content strategist", "木", ["傷官", "正印", "劫財"], ["teaching", "media"], "arguable"),
+    ("Podcaster", "火", ["傷官", "劫財"], ["media"], "firm"),
+    ("Video editor", "火", ["食神"], ["design", "media"], "arguable"),
+    ("Game designer", "木火", ["傷官", "食神"], ["design"], "firm"),
+    ("Esports coach", "木", ["正印", "傷官"], ["teaching"], "arguable"),
+    ("E-commerce seller", "水", ["偏財", "劫財"], ["trading"], "firm"),
+    ("Logistics / supply-chain planner", "水", ["七殺", "偏財"], ["logistics"], "firm"),
+    ("Fintech product manager", "金火", ["正財", "偏財", "正官"], ["finance", "tech"], "arguable"),
+    ("Crypto / derivatives trader", "水", ["偏財", "劫財"], ["trading"], "arguable"),
+    ("ESG / sustainability analyst", "木土", ["正印", "傷官"], ["research", "teaching"], "arguable"),
+    ("HR business partner", "土", ["正官", "正印"], ["public"], "firm"),
+    ("Recruiter", "水火", ["偏財", "傷官"], ["trading", "media"], "arguable"),
+    ("Paralegal", "金", ["正官"], ["law"], "firm"),
+    ("Compliance officer", "金", ["正官"], ["law"], "firm"),
+    ("Teacher / tutor", "木", ["正印", "傷官"], ["teaching"], "firm"),
+    ("Edtech product manager", "木火", ["正印", "食神", "傷官"], ["teaching", "tech"], "arguable"),
+    ("Nurse practitioner", "木", ["正印", "食神"], ["care"], "arguable"),
+    ("Physiotherapist", "木", ["正印", "食神"], ["care"], "firm"),
+    ("Pharmacist", "金木", ["正官", "正印"], ["engineering", "care"], "arguable"),
+    ("Biomedical researcher", "水", ["正印", "偏印"], ["research"], "firm"),
+    ("Life coach / therapist", "木火", ["正印", "食神", "傷官"], ["care", "media"], "arguable"),
+    ("Real-estate agent", "土", ["偏財", "正財"], ["property", "trading"], "firm"),
+    ("Property manager", "土", ["正財", "正印"], ["property"], "firm"),
+    ("Chef / F&B founder", "火", ["食神", "偏財", "七殺"], ["venture"], "firm"),
+    ("Barista", "火", ["食神"], ["care"], "arguable"),
+    ("Event / wedding planner", "火土", ["傷官", "正財"], ["media", "property"], "arguable"),
+    ("Interior designer", "木火", ["傷官", "食神"], ["design"], "firm"),
+    ("Architect", "金木", ["正官", "傷官", "食神"], ["engineering", "design"], "arguable"),
+    ("Civil engineer", "金", ["正官", "食神"], ["engineering"], "firm"),
+    ("Drone / robotics operator", "金", ["正官", "食神"], ["engineering"], "firm"),
+]
+_ARCH_EN = {a[0]: a[1] for a in ARCHETYPES}
+
+
+def career_roles(chart, ys: dict, top: int = 8) -> dict:
+    """Present-day roles scored by the SAME rules as the archetypes: field
+    element vs 用神 (±12 averaged), ten-god style at ≥8% (first god ×2)."""
+    pct = ten_god_pct(chart)
+    fav, unfav = set(ys["favourable"]), set(ys["unfavourable"])
+    scored = []
+    for role, els, gods, parents, basis in ROLES:
+        score, reasons = 0.0, []
+        if els:
+            score += sum(12 if e in fav else -12 if e in unfav else 0 for e in els) / len(els)
+            for e in els:
+                if e in fav:
+                    reasons.append(f"field element {e} is a favourable 用神")
+                elif e in unfav:
+                    reasons.append(f"field element {e} is on the avoid list")
+        for i, god in enumerate(gods):
+            p = pct.get(god, 0)
+            if p >= 8:
+                w = 2 if i == 0 else 1
+                score += w * p / 10
+                reasons.append(f"{god} {p:.0f}% — {GOD_STYLE[god]}")
+        scored.append({"role": role, "elements": list(els), "score": round(score, 1),
+                       "reasons": reasons or ["no supporting structure"], "basis": basis,
+                       "parent": " / ".join(_ARCH_EN.get(k, k) for k in parents)})
+    scored.sort(key=lambda a: -a["score"])
+    return {"top": scored[:top],
+            "source_ref": "roles mapped onto the archetype rules — 用神 field elements + "
+                          "ten-god style; element assignments per deep-dive §D (MODERN SYNTHESIS)"}

@@ -370,3 +370,171 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
             "strengths": strengths, "frictions": frictions,
             "framing": {k: _bi(*fr[k]) for k in ("family", "couple", "colleagues")},
             "source_ref": base["source_ref"]}
+
+
+# ---------------------------------------------------------------------------
+# 2026-09-27 — modern layers and the pair clinical report
+# (docs/designs/pair-compatibility-deep-dive.md §B, §C). The frozen score is
+# untouched: the layers report their own delta and a second, labelled total.
+# ---------------------------------------------------------------------------
+from .shensha import ten_god_pct as _tg_pct
+from .wuxing import KE as _KE, SHENG as _SHENG, STEM_ELEMENT as _SE
+
+_GROUPS = {"官殺": ("正官", "七殺"), "食傷": ("食神", "傷官"), "印": ("正印", "偏印"),
+           "比劫": ("比肩", "劫財"), "財": ("正財", "偏財")}
+_GRP_EN = {"官殺": "authority", "食傷": "output", "印": "resource", "比劫": "peers", "財": "wealth"}
+
+
+def _g(pct: dict, grp: str) -> float:
+    return round(sum(pct.get(x, 0) for x in _GROUPS[grp]), 1)
+
+
+def _clamp(x: float) -> int:
+    return int(max(5, min(95, round(x))))
+
+
+def modern_layers(ca, cb, ys_a, ys_b) -> dict:
+    """Deep-dive §B rows: DEFENSIBLE items scored on their own ledger (basis:
+    classical principle on new data); descriptive rows carry delta 0."""
+    na, nb = ca.person, cb.person
+    pa, pb = _tg_pct(ca), _tg_pct(cb)
+    rows = []
+
+    def row(zh, en, delta, basis, note=""):
+        rows.append({"label": _bi(zh, en), "delta": delta, "basis": basis, "note": note})
+    # B1 complementarity — one prominent (≥20%) where the other is absent (0%)
+    comp = []
+    for grp in ("官殺", "食傷", "印"):
+        a, b = _g(pa, grp), _g(pb, grp)
+        if a >= 20 and b == 0:
+            comp.append((a, na, nb, grp))
+        elif b >= 20 and a == 0:
+            comp.append((b, nb, na, grp))
+    for share, giver, taker, grp in sorted(comp, reverse=True)[:2]:
+        row(f"十神互补：{giver}{grp}旺而{taker}缺", f"ten-god complementarity — {giver} carries {grp} {_GRP_EN[grp]} ({share}%) that {taker}'s chart lacks",
+            5, "classical", "十神互補 — a prominent god on one side fills an absent one on the other")
+    # B2 collision — both heavy in 比劫 or 食傷; 財↔比劫 risk
+    if _g(pa, "比劫") >= 20 and _g(pb, "比劫") >= 20:
+        row("双方比劫皆旺——争财", "both charts heavy in 比劫 peers — 比劫爭財, competing for the same resources", -6, "classical")
+    if pa.get("傷官", 0) >= 20 and pb.get("傷官", 0) >= 20:
+        row("双方伤官皆旺——两不相让", "both charts heavy in 傷官 — two critics, neither yields", -6, "classical")
+    for x, y, nx, ny in ((pa, pb, na, nb), (pb, pa, nb, na)):
+        if _g(x, "財") >= 20 and _g(y, "比劫") >= 20:
+            row(f"{nx}财旺遇{ny}比劫旺——劫财之虞", f"{nx}'s wealth stars meet {ny}'s heavy peers — 比劫爭財 risk: keep money matters explicit", -4, "classical")
+    # B4 strength pairing
+    wa, wb = ca.strength["verdict"].startswith("身弱"), cb.strength["verdict"].startswith("身弱")
+    if wa != wb:
+        weak, strong = (na, nb) if wa else (nb, na)
+        row("一弱一强——强者稳弱者", f"weak + strong pairing — {strong}'s structural surplus steadies {weak}'s chart", 6, "classical",
+            "overlaps in part with the 用神-supply chips above")
+    else:
+        row("强弱同类", f"both charts {'weak' if wa else 'strong'} — no steadying asymmetry; the pair leans on external structure" if wa else
+            "both charts strong — two engines; agree who leads each domain", 0, "modern")
+    # B5 element flow between the two day masters (descriptive)
+    ea, eb = _SE[ca.day_master], _SE[cb.day_master]
+    flow = ("same element — kindred, equal footing" if ea == eb else
+            f"{na}'s {ELEMENT_EN[ea]} generates {nb}'s {ELEMENT_EN[eb]} — {na} feeds, {nb} receives" if _SHENG[ea] == eb else
+            f"{nb}'s {ELEMENT_EN[eb]} generates {na}'s {ELEMENT_EN[ea]} — {nb} feeds, {na} receives" if _SHENG[eb] == ea else
+            f"{na}'s {ELEMENT_EN[ea]} controls {nb}'s {ELEMENT_EN[eb]} — {na} sets the frame" if _KE[ea] == eb else
+            f"{nb}'s {ELEMENT_EN[eb]} controls {na}'s {ELEMENT_EN[ea]} — {nb} sets the frame")
+    row("日主五行相互关系", f"day-master element flow: {flow}", 0, "classical")
+    # B6 用神 conflict — one side's medicine is the other's 忌
+    for x, y, nx, ny in ((ys_a, ys_b, na, nb), (ys_b, ys_a, nb, na)):
+        hit = [e for e in x["favourable"] if e in y["unfavourable"]]
+        if hit:
+            row(f"{nx}用神{''.join(hit)}为{ny}所忌", f"{nx}'s medicine ({'/'.join(ELEMENT_EN[e] for e in hit)}) is on {ny}'s avoid list", -4, "classical",
+                "remedies for one tax the other in shared space")
+    delta = sum(r["delta"] for r in rows)
+    return {"rows": rows, "delta": delta,
+            "source_ref": "deep-dive §B: 十神互補 / 比劫爭財 / 身強弱 pairing / 生剋 flow / 用神 prescription overlap — "
+                          "classical principles applied to the two readings; not part of the frozen 合婚 score"}
+
+
+def pair_clinical_report(pair: dict, pa: dict, pb: dict, modern: dict | None = None) -> dict:
+    """summary · findings (Bond, Exchange, Drivers, Fit, Friction, Timing) ·
+    assessment · plan · confidence — every sentence over payload fields."""
+    na, nb = pair["a"], pair["b"]
+    score, band = pair["score"], pair["band"]["en"]
+    arith = pair.get("arithmetic") or []
+    top = max(arith, key=lambda r: abs(r["delta"]), default=None)
+    m = modern or {"rows": [], "delta": 0}
+    score2 = _clamp(score + m["delta"])
+    tg = lambda p: max((p.get("tengods_pct") or {}).items(), key=lambda kv: kv[1], default=("—", 0))
+    ga, gb = tg(pa), tg(pb)
+    supply = [r for r in arith if r["delta"] > 0 and r.get("element")]
+    conflict = [r for r in arith if r["delta"] < 0 and r.get("element")]
+    # summary
+    summary = (f"{score}/100 — {band}. " + (f"The strongest factor: {top['label']['en']} ({top['delta']:+d})." if top and top["delta"] else "No single factor dominates; the day branches sit neutral.")
+               + (f" With the modern layers the reading reads {score2}." if m["delta"] else ""))
+    F = []
+    dp = pair.get("day_pillars") or ["", ""]
+    day = arith[0]["label"]["en"] if arith else ""
+    wuhe = next((r for r in arith if "五合" in r["label"]["zh"]), None)
+    F.append(("Bond", f"Day pillars {dp[0]} and {dp[1]}: {day}" + (f" ({arith[0]['delta']:+d})" if arith and arith[0]["delta"] else "") + ". "
+              + (f"Day stems bond by 五合 (+{wuhe['delta']}). " if wuhe else "No 五合 stem bond. ")
+              + "The day pillar is each person's spouse palace — this is the classical heart of 合婚."))
+    ex = "; ".join(f"{r['label']['en']} ({r['delta']:+d})" for r in supply) or "no supply chip fires — neither chart is rich in what the other needs"
+    cf = "; ".join(f"{r['label']['en']} ({r['delta']:+d})" for r in conflict)
+    b6 = [r for r in m["rows"] if "avoid list" in r["label"]["en"]]
+    F.append(("Exchange", f"Supply: {ex}. " + (f"Conflict: {cf}. " if cf else "") + (" ".join(r["label"]["en"] + f" ({r['delta']:+d})." for r in b6))))
+    rel = pair.get("relation") or {}
+    ab, ba = rel.get("a_sees_b", {}), rel.get("b_sees_a", {})
+    gl = lambda r: (r.get("en", "") or "").split(" — ")[0].rstrip(".")
+    F.append(("Drivers", f"To {na}, {nb} reads as {ab.get('god', '—')} — {gl(ab)}. To {nb}, {na} reads as {ba.get('god', '—')} — {gl(ba)}. "
+              f"Separately, {na} runs on {ga[0]} ({ga[1]}%) and {nb} on {gb[0]} ({gb[1]}%)."))
+    sa, sb = (pa.get("strength") or {}), (pb.get("strength") or {})
+    fit_rows = [r for r in m["rows"] if r["delta"] >= 0 and "avoid list" not in r["label"]["en"]]
+    F.append(("Fit", f"{na} is {sa.get('verdict', '—')} ({sa.get('score', '')}), {nb} is {sb.get('verdict', '—')} ({sb.get('score', '')}). "
+              + " ".join(r["label"]["en"] + (f" ({r['delta']:+d})" if r["delta"] else "") + "." for r in fit_rows)))
+    frs = pair.get("frictions") or []
+    coll = [r for r in m["rows"] if r["delta"] < 0 and "avoid list" not in r["label"]["en"]]
+    if frs or coll:
+        F.append(("Friction", " ".join(f"{'The ' + f['element']['en'] + ' chip above' if f.get('pillars') == 'chart-wide' else f['chip_label']['en'] + ' (' + str(f['delta']) + ')'}: mechanism {f['mechanism']} — {f['behaviour']['en']}" for f in frs)
+                  + " " + " ".join(r["label"]["en"] + f" ({r['delta']:+d})." for r in coll)))
+    else:
+        F.append(("Friction", "No day or year clash fires for this pair and the modern layers add no collision — frictions, if any, are situational, not structural."))
+    def yrs(p, flag):
+        return {y["y"] for y in ((p.get("windows") or {}).get("years") or []) if (y.get("relationship") or {}).get("flag") == flag}
+    both_c, both_w = sorted(yrs(pa, "caution") & yrs(pb, "caution")), sorted(yrs(pa, "window") & yrs(pb, "window"))
+    F.append(("Timing", (f"Both charts flag relationship caution in {', '.join(map(str, both_c))} — treat those as poor years for weddings and joint signings. " if both_c else "No year flags relationship caution for both charts at once. ")
+              + (f"Both open a relationship window in {', '.join(map(str, both_w))}." if both_w else "")))
+    # assessment
+    A = []
+    if top and top["delta"] > 0:
+        A.append(f"The pair is defined by an alignment: {top['label']['en']} — the largest single factor, and a supportive one.")
+    elif top and top["delta"] < 0:
+        A.append(f"The pair is defined by a tension: {top['label']['en']} — the largest single factor, and it works against the pair.")
+    else:
+        A.append("Nothing structural pulls the pair together or apart; what the two readings share decides it.")
+    if m["delta"]:
+        A.append(f"The modern layers {'add' if m['delta'] > 0 else 'subtract'} {abs(m['delta'])} points on their own ledger, taking the reading from {score} to {score2} — a description, not a change to the classical score.")
+    fr = (pair.get("framing") or {}).get("couple", {})
+    if fr.get("en"):
+        A.append(fr["en"].rstrip(".") + ".")
+    # plan
+    plan = []
+    for s in (pair.get("strengths") or [])[:2]:
+        if s.get("action", {}).get("en"): plan.append(s["action"]["en"])
+    for f in frs[:2]:
+        if f.get("behaviour", {}).get("en"): plan.append(f["behaviour"]["en"])
+    if any("比劫" in r["label"]["zh"] for r in coll):
+        plan.append("Write the ownership map — who owns money, decisions and time — two peers-heavy charts compete unless roles are explicit.")
+    if b6:
+        plan.append("Split shared rooms by palette: each person's medicine colours in their own zone, neutral tones in common space.")
+    if both_c:
+        plan.append(f"Keep weddings, purchases and joint signings out of {', '.join(map(str, both_c))}.")
+    if not plan:
+        plan.append("Let the neutral bond be: invest in shared time rather than shared assets until a window year opens.")
+    conf = (f"Method note: {score}/100 is the frozen 合婚 arithmetic (day and year branch relations, 五合, 用神 supply); "
+            "the modern layers are classical principles applied to the two readings, shown on their own ledger.")
+    return {"summary": summary, "findings": [{"label": l, "text": t.strip()} for l, t in F],
+            "assessment": " ".join(A), "plan": plan[:5], "confidence": conf, "score_with_modern": score2}
+
+
+def pair_full(ca, cb, ys_a, ys_b, pa: dict, pb: dict) -> dict:
+    """breakdown + modern layers + the clinical report, for the public pair route."""
+    out = pair_breakdown(ca, cb, ys_a, ys_b)
+    out["modern"] = modern_layers(ca, cb, ys_a, ys_b)
+    out["modern"]["score_with_modern"] = _clamp(out["score"] + out["modern"]["delta"])
+    out["report"] = pair_clinical_report(out, pa, pb, out["modern"])
+    return out

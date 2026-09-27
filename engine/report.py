@@ -28,7 +28,7 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
     the family /api/chart route and the public workspace reading route."""
     from .bazhai import gua_group, ming_gua, youxing_stars
     from .bazi import ten_god
-    from .careers import career_paths
+    from .careers import career_paths, career_roles
     from .domains import (health_map, industry_map, life_domains,
                           personality_axes)
     from .interpret import (element_relations, four_palaces, interpret_person,
@@ -90,6 +90,7 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
     # the geomancer's report reads the assembled payload so it cites the same numbers the tabs draw
     p["synthesis"] = clinical_report(p)
     p["daily"] = daily_fortune(c, ys)          # next 30 days from today, six activities
+    p["career_roles"] = career_roles(c, ys)
     return p
 
 
