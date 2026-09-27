@@ -608,7 +608,10 @@ tr.wdetail td{background:#fbf8ef;font-size:12px;line-height:1.5}
 .scrollx{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .svg-plate{background:transparent;padding:0}
 /* pillars */
-.rd-fig .cchead{margin-bottom:10px}
+.rd-fig .cchead{margin:0 auto 10px;max-width:980px}
+.rd-fig .ccfacts span{display:block;min-width:0;color:var(--ink);font-size:13px;font-weight:600;line-height:1.15}
+.rd-fig .ccfacts span small{display:block;font-size:10px;font-weight:500;color:var(--muted);letter-spacing:0}
+.rd-fig .ccfacts>div{align-items:flex-start;gap:8px}.rd-fig .ccfacts .zoi{font-size:18px;line-height:1}
 .rd-fig .ccpillars{max-width:980px;margin:0 auto}
 .ixsvg{max-width:640px;margin:0 auto}.ixsvg text{font-family:inherit}
 .palgod{display:inline-block;margin:4px auto;padding:1px 9px;border:1.5px solid currentColor;border-radius:12px;font-size:12px;font-weight:700}
@@ -718,7 +721,7 @@ tr.wdetail td{background:#fbf8ef;font-size:12px;line-height:1.5}
 /* ===== Reading v4.2 (2026-09-27): diagram legend, daily fortune, seat column, how-to at the foot ===== */
 .ixlegend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--muted);margin-top:6px}
 .ixlegend b{margin-right:3px}
-.dtable-daily th{white-space:nowrap}.dtable-daily tr.today th,.dtable-daily tr.today td{background:#fff7dc}
+.dtable-daily th{white-space:nowrap}.dtable-daily tr.today th{background:#fff7dc}
 .dtable-daily tr.today th{color:var(--accent)}.dtable-daily td b{font-size:14px}
 .ldtable .seat{min-width:132px}.ldtable .seat .seat-pal{display:block;white-space:nowrap;font-size:12px;color:var(--muted);margin-bottom:3px}
 .ldtable .seat .dirchip{white-space:nowrap}
@@ -731,7 +734,7 @@ tr.wdetail td{background:#fbf8ef;font-size:12px;line-height:1.5}
 
 /* ===== Reading v4.3 (2026-09-27): "now" outlines share .ccdy.now's treatment ===== */
 .rcell{position:relative}.rcell.now{outline:2px solid var(--accent);outline-offset:-1px}
-.dtable-daily tr.today th,.dtable-daily tr.today td,.wtable tr.wrow.now th,.wtable tr.wrow.now td{background:var(--card)}
+.dtable-daily tr.today th,.wtable tr.wrow.now th{background:var(--card)}
 .rnow{display:block;font-style:normal;font-size:10px;font-weight:700;color:var(--accent);margin-top:2px}
 .wtable th .th-zh{display:block;font-size:13px;font-weight:600;color:var(--ink);line-height:1.2}
 .wtable th .th-en{display:block;font-size:10px;font-weight:500;color:var(--muted);line-height:1.2}

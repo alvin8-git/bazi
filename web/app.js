@@ -591,6 +591,7 @@ const STEM_EL = { 甲: "木", 乙: "木", 丙: "火", 丁: "火", 戊: "土", �
                   庚: "金", 辛: "金", 壬: "水", 癸: "水" };
 const BR_EL = { 子: "水", 丑: "土", 寅: "木", 卯: "木", 辰: "土", 巳: "火",
                 午: "火", 未: "土", 申: "金", 酉: "金", 戌: "土", 亥: "水" };
+const GUA_EL = { 坎: "水", 離: "火", 离: "火", 震: "木", 巽: "木", 乾: "金", 兌: "金", 兑: "金", 坤: "土", 艮: "土" };
 const BR_ANIMAL = { 子: "鼠", 丑: "牛", 寅: "虎", 卯: "兔", 辰: "龙", 巳: "蛇",
                     午: "马", 未: "羊", 申: "猴", 酉: "鸡", 戌: "狗", 亥: "猪" };
 
@@ -1073,13 +1074,13 @@ function pillarGrid(c) {
   const clock = (tp.explanation || "").match(/clock (\S+)/);
   return `<div class="cchead">
     <div class="ccbig"><div class="ccgua">${c.gua}</div>
-      <div>命卦 ${c.gua} (${c.group}) · 命星 ${lp.life_star_zh} ${elc(lp.life_star_element)}</div></div>
+      <div>命卦 ${c.gua} (<b style="color:${EL_COL[GUA_EL[c.gua]] || "inherit"}">${c.group}</b>) · 命星 ${lp.life_star_zh} ${elc(lp.life_star_element)}</div></div>
     <div class="ccfacts">
-      <div><span>生肖</span>${lp.animal}</div>
-      <div><span>日主</span>${elc(c.day_master)} ${elc(STEM_EL[c.day_master])} · ${c.strength.verdict}</div>
-      <div><span>命宮</span>${lp.ming_gong}</div>
-      <div><span>胎元</span>${lp.tai_yuan}</div>
-      <div><span>真太阳时</span>${(c.effective_time || "").slice(11)}${clock ? ` <em>clock ${clock[1]}</em>` : ""}</div>
+      <div><span>生肖<small>Zodiac</small></span><i class="zoi">${(ZODIAC[lp.animal] || [""])[0]}</i>${lp.animal}</div>
+      <div><span>日主<small>Day master</small></span>${elc(c.day_master)} ${elc(STEM_EL[c.day_master])} · ${c.strength.verdict}</div>
+      <div><span>命宫<small>Life palace</small></span>${lp.ming_gong}</div>
+      <div><span>胎元<small>Conception</small></span>${lp.tai_yuan}</div>
+      <div><span>真太阳时<small>True solar</small></span>${(c.effective_time || "").slice(11)}${clock ? ` <em>clock ${clock[1]}</em>` : ""}</div>
     </div></div>
     <div class="ccpillars">${pcols}</div>`;
 }
