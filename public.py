@@ -33,7 +33,7 @@ from pydantic import BaseModel, Field
 from engine.bazhai import STAR_SCORE, gua_group, ming_gua, youxing_stars
 from engine.bazi import TEN_GOD_EN, TRUE_SOLAR, build_chart
 from engine.careers import career_paths
-from engine.domains import life_domains
+from engine.domains import industry_map, life_domains
 from engine.extras import harmony_matrix
 from engine.interpret import STRUCTURE_TEXT
 from engine.htmlreport import _tosimp
@@ -210,7 +210,30 @@ def _summary(p: dict) -> dict:
                         for a in career_paths(c, ys)["top"][:3]],
         "dominant": _dominant_god(c),
         "domains": doms,
+        "industries": [{"element": it["element"], "en": it["en"], "industries": it["industries"]}
+                       for it in industry_map(ys).get("favourable", [])],
+        "sharpest_axis": _sharpest_axis(c),
     }
+
+
+def _sharpest_axis(c) -> dict | None:
+    """The one personality axis with a non-neutral zone and the largest metric —
+    verdict, its leading metric label, and that god's element for this day master."""
+    from engine.bazi import ten_god
+    from engine.domains import personality_axes
+    from engine.wuxing import STEM_ELEMENT, STEMS
+    axes = [a for a in personality_axes(c) if a.get("zone") and a["zone"] != "mid" and a.get("metrics")]
+    if not axes:
+        return None
+    a = max(axes, key=lambda x: max(m["pct"] for m in x["metrics"]))
+    label = a["metrics"][0]["label"]
+    m = re.search(r"(比肩|劫財|劫财|食神|傷官|伤官|正財|正财|偏財|偏财|正官|七殺|七杀|正印|偏印|食傷|食伤|官殺|官杀|比劫|財|财|印)", label)
+    el = ""
+    if m:
+        g = {"食傷": "食神", "食伤": "食神", "官殺": "正官", "官杀": "正官", "比劫": "比肩", "財": "正財", "财": "正財", "印": "正印",
+             "劫财": "劫財", "伤官": "傷官", "正财": "正財", "偏财": "偏財", "七杀": "七殺"}.get(m.group(1), m.group(1))
+        el = next((STEM_ELEMENT[st] for st in STEMS if ten_god(c.day_master, st) == g), "")
+    return {"verdict": _tosimp(a["verdict"]), "label": _tosimp(label), "element": el, "axis": _tosimp(a["axis"]).replace("維", "维")}
 
 
 def _ws_payload(token: str, ws: dict) -> dict:

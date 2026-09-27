@@ -29,10 +29,12 @@ _GOOD_OFFICERS = {"成": "成日 success", "開": "開日 open", "定": "定日 
 _RANK = {"avoid": 2, "good": 1, "neutral": 0}
 
 
-def _set(flags: dict, key: str, verdict: str, why: str) -> None:
+def _set(flags: dict, key: str, verdict: str, why: str, short: str = "") -> None:
     cur = flags[key]
-    if _RANK[verdict] > _RANK[cur["verdict"]] or (verdict == cur["verdict"] and verdict != "neutral" and why not in cur["why"]):
-        flags[key] = {"verdict": verdict, "why": (cur["why"] + "; " + why).strip("; ") if cur["verdict"] == verdict else why}
+    if _RANK[verdict] > _RANK[cur["verdict"]]:
+        flags[key] = {"verdict": verdict, "why": why, "short": short}
+    elif verdict == cur["verdict"] and verdict != "neutral" and why not in cur["why"]:
+        flags[key] = {"verdict": verdict, "why": (cur["why"] + "; " + why).strip("; "), "short": cur["short"] or short}
 
 
 def daily_fortune(c, ys: dict, start: date | None = None, days: int = 30) -> dict:
@@ -55,35 +57,35 @@ def daily_fortune(c, ys: dict, start: date | None = None, days: int = 30) -> dic
         if HE_MAP.get(db) == natal_db: ix.append("合日支")
         if HAI_MAP.get(db) == natal_db: ix.append("害日支")
         if CHONG_MAP.get(db) == natal_yb: ix.append("沖生肖")
-        flags = {k: {"verdict": "neutral", "why": ""} for k, _ in ACTIVITIES}
+        flags = {k: {"verdict": "neutral", "why": "", "short": ""} for k, _ in ACTIVITIES}
         off = r["officer"]
         # ① officer layer
         if off in _GOOD_OFFICERS:
             for k in ("moving", "signing", "marriage", "travel", "launch"):
-                _set(flags, k, "good", _GOOD_OFFICERS[off])
-            if off == "成": _set(flags, "medical", "good", "成日 success")
-        if off == "除": _set(flags, "medical", "good", "除日 removal — treatment and cleansing")
+                _set(flags, k, "good", _GOOD_OFFICERS[off], f"{off}日")
+            if off == "成": _set(flags, "medical", "good", "成日 success", "成日")
+        if off == "除": _set(flags, "medical", "good", "除日 removal — treatment and cleansing", "除日")
         if off == "閉":
-            _set(flags, "moving", "avoid", "閉日 closed"); _set(flags, "travel", "avoid", "閉日 closed")
+            _set(flags, "moving", "avoid", "閉日 closed", "閉日"); _set(flags, "travel", "avoid", "閉日 closed", "閉日")
         if off == "危":
-            _set(flags, "medical", "avoid", "危日 danger"); _set(flags, "travel", "avoid", "危日 danger")
+            _set(flags, "medical", "avoid", "危日 danger", "危日"); _set(flags, "travel", "avoid", "危日 danger", "危日")
         podi = any(n["rule_id"] == "podi" for n in r["notes"]) or off == "破"
         if podi:
-            for k, _ in ACTIVITIES: _set(flags, k, "avoid", "破日 — day 沖 month")
+            for k, _ in ACTIVITIES: _set(flags, k, "avoid", "破日 — day 沖 month", "破日")
         # ② personal branch layer
         if "沖日支" in ix:
-            for k in ("marriage", "moving", "launch"): _set(flags, k, "avoid", f"day {db} 沖 your day branch {natal_db}")
+            for k in ("marriage", "moving", "launch"): _set(flags, k, "avoid", f"day {db} 沖 your day branch {natal_db}", "沖日支")
         if "沖生肖" in ix:
-            for k in ("marriage", "moving"): _set(flags, k, "avoid", f"day {db} 沖 your year branch {natal_yb}")
+            for k in ("marriage", "moving"): _set(flags, k, "avoid", f"day {db} 沖 your year branch {natal_yb}", "沖生肖")
         if "合日支" in ix:
-            for k in ("marriage", "signing"): _set(flags, k, "good", f"day {db} 六合 your day branch {natal_db}")
+            for k in ("marriage", "signing"): _set(flags, k, "good", f"day {db} 六合 your day branch {natal_db}", "合日支")
         if "害日支" in ix:
-            _set(flags, "medical", "avoid", f"day {db} 害 your day branch {natal_db}")
+            _set(flags, "medical", "avoid", f"day {db} 害 your day branch {natal_db}", "害日支")
         # ③ element layer
         if fav and el == fav[0]:
-            for k in ("launch", "signing"): _set(flags, k, "good", f"{el} day carries your primary 用神")
+            for k in ("launch", "signing"): _set(flags, k, "good", f"{el} day carries your primary 用神", "用神日")
         if unfav and el == unfav[0]:
-            for k in ("signing", "launch"): _set(flags, k, "avoid", f"{el} day carries your chief 忌神")
+            for k in ("signing", "launch"): _set(flags, k, "avoid", f"{el} day carries your chief 忌神", "忌神日")
         rows.append({"date": d.isoformat(), "weekday": d.strftime("%a"), "gz": gz, "officer": off,
                      "stem_god": stem_god, "branch_god": branch_god, "element": el, "medicine": med,
                      "interactions": ix, "score": r["score"], "flags": flags, "today": i == 0})

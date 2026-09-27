@@ -1403,13 +1403,13 @@ function buildGods(c, R) {
         ${c.spouse_reading ? `<div class="cite"><b>婚戀:</b> ${c.spouse_reading.star_line} ${c.spouse_reading.palace_line}</div>` : ""}${legendList(8)}` });
   }
   // raw pillar data (G7) retired 2026-09-27: the Pillars grid carries every stem/hidden stem; its key lives in the bars' legend. Gods = 7 figures.
-  let k1 = "", k2 = "";
+  let k1 = "", k2 = "", k3 = "";
   if (c.industries) {
     const F = c.industries.favourable || [], A = c.industries.avoid || [];
     const chart = `<div class="klist-ind">${F.map((it) => `<div class="cite"><b>Favourable ${elb(it.element)} ${elw(it.element)} industries</b> — ${it.industries}</div>`).join("")}
       <div class="cite">Understated: ${A.map((it) => `${elb(it.element)} (${it.industries.split(",")[0]}…)`).join("; ")} — not forbidden, just not where this chart recharges.</div></div>`;
     const f0 = F[0];
-    k1 = rdFig({ tier: "reference", span: 6, label: "行业五行 — favourable industries", learn: 12, chart,
+    k1 = rdFig({ tier: "reference", span: 12, label: "行业五行 — favourable industries", learn: 12, chart,
       line: f0 ? `${elw(f0.element)} suits you best — ${f0.industries.split(",").slice(0, 3).map((s) => s.trim()).join(", ")} top the list.` : "No favourable field is listed for this chart.",
       facts: [["宜", elbs(F.map((it) => it.element))], ["慎", elbs(A.map((it) => it.element))]], legend: legendList(12) });
   }
@@ -1418,20 +1418,27 @@ function buildGods(c, R) {
     const krow = (a, i, neg) => `<div class="krow${neg ? " neg" : ""}"><span class="klab">${neg ? "avoid · " : `#${i + 1} `}${a.zh} <small>${a.en}</small></span>
       <div class="kbar"><i style="width:${(Math.abs(a.score) / mx * 100).toFixed(0)}%"></i></div><b>${a.score}</b></div>`;
     const R = (c.career_roles || {}).top || [], rmx = Math.max(...R.map((x) => Math.abs(x.score)), 1);
-    const roles = R.length ? `<div class="klist-head">Roles today <small>present-day roles on the same rules</small></div><div class="klist">${R.map((x, i) =>
+    const rolesChart = R.length ? `<div class="klist">${R.map((x, i) =>
       `<div class="krow"><span class="klab">#${i + 1} ${x.role} <small>${x.parent}${x.basis === "arguable" ? " · mapping arguable" : ""}</small></span>
         <div class="kbar"><i style="width:${(Math.abs(x.score) / rmx * 100).toFixed(0)}%"></i></div><b>${x.score}</b></div>`).join("")}</div>` : "";
-    const chart = `<div class="klist-head">Archetypes</div><div class="klist">${top.map((a, i) => krow(a, i, false)).join("")}${avoid.map((a, i) => krow(a, i, true)).join("")}</div>${roles}`;
+    if (R.length) {
+      const r0 = R[0];
+      k3 = rdFig({ tier: "reference", span: 6, label: "职业今日 · roles today", learn: 12, chart: rolesChart,
+        line: `#1 today: ${r0.role} (${r0.score} pts) — ${clip(r0.reasons[0].split(" — ")[0], 44)}.`,
+        facts: [["#1", `${r0.score} pts`], ["arguable mappings", `${R.filter((x) => x.basis === "arguable").length} of ${R.length}`]],
+        legend: `<div>Present-day roles scored on the archetype rules — the field's element against the 用神 lists and the ten-god working style. Each role carries its parent archetype; "mapping arguable" marks roles whose element assignment is a modern convention, not a classical one.</div>
+          ${R.map((x) => `<div><b>${x.role}</b> (${x.score} 分) — ${x.reasons.join("; ")}</div>`).join("")}` });
+    }
+    const chart = `<div class="klist">${top.map((a, i) => krow(a, i, false)).join("")}${avoid.map((a, i) => krow(a, i, true)).join("")}</div>`;
     const a0 = top[0], short = (r) => clip(r.split(" — ")[0], 40);
     k2 = rdFig({ tier: "reference", span: 6, label: "事业方向 Career archetypes ranked", learn: 12, chart,
       line: a0 ? `#1 fit: ${a0.en} (${a0.score} pts) — ${a0.reasons.slice(0, 2).map(short).join(", ")}.` : "No archetype is ranked for this chart.",
       facts: [a0 ? ["#1", `${a0.score} pts`] : null, avoid.length ? ["avoid", avoid.map((a) => a.zh).join("、")] : null].filter(Boolean),
       legend: `<div>Fifteen archetypes, each scored on the field's element against the 用神 lists, the ten-god working style (shares ≥8%) and 神煞 talents. ≥12 分 strong fit · 4–12 分 good fit · &lt;4 分 workable. Low-ranked fields are priced against the chart, never forbidden.</div>
-        ${R.length ? `<div><b>Roles today</b> — the same rules applied to present-day roles; each role carries its parent archetype and whether its element mapping is firm or arguable (modern synthesis).</div>${R.map((x) => `<div><b>${x.role}</b> (${x.score} 分) — ${x.reasons.join("; ")}</div>`).join("")}` : ""}
         ${[...top, ...avoid].map((a) => `<div><b>${a.zh} ${a.en}</b> (${a.score} 分) — ${a.reasons.join("; ")}</div>`).join("")}${legendList(12)}` });
   }
   return rdSection("gods", "十神 Ten Gods", "What drives me?",
-    [rdGrid("hero", [g2, g1f]), rdGrid("secondary", [g8, g5]), rdGrid("secondary", [ld]), rdGrid("reference", [k1, k2])],
+    [rdGrid("hero", [g2, g1f]), rdGrid("secondary", [g8, g5]), rdGrid("secondary", [ld]), rdGrid("reference", [k1]), rdGrid("reference", [k2, k3])],
     [R.narr(4), R.narr(3), R.stb(10), R.narr(10), R.stb(8), R.narr(8), R.stb(12), R.narr(12)]);
 }
 
@@ -1482,7 +1489,8 @@ function buildTiming(c, R) {
   const cell = (d) => `<td class="wf-${d.flag}"><b>${d.flag === "window" ? "◉" : d.flag === "caution" ? "⚠" : ""}</b> <span class="wshort">${short(d)}</span></td>`;
   const nowY = c.daily && c.daily.start ? +c.daily.start.slice(0, 4) : null;
   const hasSM = W.years.length && W.years[0].study && W.years[0].movement;
-  const table = `<div class="scrollx"><table class="wtable"><tr><th>Year</th><th>Overall</th><th>事業 Career</th><th>財富 Wealth</th><th>感情 Relationship</th><th>健康 Health</th>${hasSM ? "<th>学业 Study</th><th>出行 Movement</th>" : ""}</tr>
+  const th2 = (zh, en) => `<th><span class="th-zh">${zh}</span><span class="th-en">${en}</span></th>`;
+  const table = `<div class="scrollx"><table class="wtable"><tr>${th2("年", "Year")}${th2("总评", "Overall")}${th2("事业", "Career")}${th2("财富", "Wealth")}${th2("感情", "Relationship")}${th2("健康", "Health")}${hasSM ? th2("学业", "Study") + th2("出行", "Movement") : ""}</tr>
     ${W.years.map((yr, yi) => { const full = [["事業", yr.career], ["財富", yr.wealth], ["感情", yr.relationship], ["健康", yr.health], ...(hasSM ? [["学业", yr.study], ["出行", yr.movement]] : [])]
         .filter(([, d]) => d && d.flag !== "quiet").map(([l, d]) => `<b>${l}:</b> ${d.note}`).join("<br>") || "quiet year";
       return `<tr class="wrow${yr.y === nowY ? " now" : ""}" data-yi="${yi}"><th>${yr.y} ${yr.gz}${yr.y === nowY ? ' <em class="rnow">▲ now</em>' : ""}</th>
@@ -1512,13 +1520,14 @@ function dailyFig(c) {
   const dm = c.day_master, acts = D.activities || [];
   const mark = (f) => f.verdict === "good" ? "◉" : f.verdict === "avoid" ? "⚠" : "·";
   const rows = D.rows.map((r) => `<tr class="${r.today ? "today" : ""}${r.officer === "破" || r.interactions.some((x) => x.startsWith("沖")) ? " dclash" : ""}">
-      <th>${r.date.slice(5)} <small>${r.weekday}</small></th>
+      <th>${r.date.slice(5)} <small>${r.weekday}</small>${r.today ? '<em class="rnow">▲ now</em>' : ""}</th>
       <td><b>${elc(r.gz[0])}${elc(r.gz[1])}</b> <small class="sub">${r.officer}日</small></td>
       <td class="sub">${godc(dm, r.stem_god)}/${godc(dm, r.branch_god)}${r.interactions.length ? ` <span class="tag${r.interactions.some((x) => x.startsWith("沖") || x.startsWith("害")) ? " warn" : ""}">${r.interactions.join(" ")}</span>` : ""}</td>
       <td>${elb(r.element)} <small class="sub">${r.medicine === "favourable" ? "用神" : r.medicine === "against" ? "忌" : ""}</small></td>
-      ${acts.map(([k]) => { const f = r.flags[k]; return `<td class="wf-${f.verdict === "good" ? "window" : f.verdict === "avoid" ? "caution" : "quiet"}" title="${f.why}"><b>${mark(f)}</b></td>`; }).join("")}</tr>`).join("");
-  const table = `<div class="scrollx"><table class="wtable dtable-daily"><tr><th>Date</th><th>日柱 day</th><th>十神 gods</th><th>五行</th>
-    ${acts.map(([, lab]) => `<th>${lab}</th>`).join("")}</tr>${rows}</table></div>`;
+      ${acts.map(([k]) => { const f = r.flags[k]; return `<td class="wf-${f.verdict === "good" ? "window" : f.verdict === "avoid" ? "caution" : "quiet"}" title="${f.why}"><b>${mark(f)}</b>${f.verdict !== "neutral" && f.short ? `<span class="wshort">${f.short}</span>` : ""}</td>`; }).join("")}</tr>`).join("");
+  const th2 = (zh, en) => `<th><span class="th-zh">${zh}</span><span class="th-en">${en}</span></th>`;
+  const table = `<div class="scrollx"><table class="wtable dtable-daily"><tr>${th2("日期", "Date")}${th2("日柱", "Day pillar")}${th2("十神", "Gods")}${th2("五行", "Element")}
+    ${acts.map(([, lab]) => { const [zh, ...en] = lab.split(" "); return th2(zh, en.join(" ")); }).join("")}</tr>${rows}</table></div>`;
   const B = D.best, W = D.worst;
   const line = (B ? `Best day this month for ${B.for.slice(0, 2).map((k) => ACT_EN[k]).join(" or ")}: ${B.date.slice(5)} ${B.gz} (${B.officer}日).` : "No clear best day this month.")
     + (W && W.avoid.length ? ` Avoid ${W.avoid.slice(0, 2).map((k) => ACT_EN[k]).join(" and ")} on ${W.date.slice(5)} ${W.gz} — ${W.why}.` : "");

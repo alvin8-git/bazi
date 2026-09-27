@@ -70,9 +70,10 @@ button:disabled{opacity:.5;cursor:default}
 .fcareer .cchip{display:inline-block;background:#f3efe7;border:1px solid var(--line);
   border-radius:6px;padding:1px 7px;font-size:11px;margin:1px 3px 1px 0}
 .fcareer .cchip small{display:block;font-size:8.5px;color:var(--muted);line-height:1.1}
-/* the two career chips each take their own line — nothing clips at any width */
-.fcareer .fv.oneln{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
-.fcareer .fv.oneln .cchip{max-width:100%;white-space:normal}
+.fcareer .fv.find{font-size:11px;line-height:1.3}
+.fcareer .fv.find .irow{display:block;margin:1px 0}.fcareer .fv.find .irow .elb{width:18px;height:18px;line-height:14px;font-size:11px;vertical-align:-3px}
+.fcareer .fv.find .irow span{color:var(--muted)}
+.fcareer .fv.fpers{font-size:12.5px;line-height:1.3}.fcareer .fv.fpers small{display:block;font-size:9px;color:var(--muted)}
 .hcell{cursor:pointer;border-radius:6px;padding:5px 8px}
 .hcell:hover{filter:brightness(.96)}
 .hcell .hband{display:block;font-size:9.5px;font-weight:700;line-height:1.2}
@@ -288,9 +289,10 @@ function personCard(p, i) {
         <div class="fcell"><div class="fl"><span class="dz">${zh}</span><span class="den">${en}</span></div>
           <div class="fv">${v}</div></div>`).join("")}
     </div>
-    <div class="fcareer"><div class="fl"><span class="dz">事业方向</span><span class="den">Career fit</span></div>
-      <div class="fv oneln">${(p.top_careers || []).slice(0, 2).map((a) => Array.isArray(a)
-        ? `<span class="cchip">${a[0]}<small>${a[1]}</small></span>` : `<span class="cchip">${a}</span>`).join("")}</div></div>
+    <div class="fcareer"><div class="fl"><span class="dz">行业五行</span><span class="den">Industries</span></div>
+      <div class="fv find">${(p.industries || []).map((it) => `<div class="irow">${elb(it.element)} <b style="color:${EL_COL[it.element] || "inherit"}">${it.en}</b> industries — <span>${it.industries}</span></div>`).join("") || "<span class='sub'>—</span>"}</div></div>
+    ${p.sharpest_axis ? `<div class="fcareer"><div class="fl"><span class="dz">性格</span><span class="den">Personality</span></div>
+      <div class="fv fpers"><b>${p.sharpest_axis.verdict}</b> — <b style="color:${EL_COL[p.sharpest_axis.element] || "inherit"}">${p.sharpest_axis.label}</b><small>${p.sharpest_axis.axis}</small></div></div>` : ""}
     <div class="dhead">人生领域 Life domains</div>
     <div class="doms2">${doms}</div>
     <div class="kv" style="margin-top:7px;color:var(--accent);font-weight:700">Open the full Reading 命书 →</div>

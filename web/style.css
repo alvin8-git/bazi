@@ -730,9 +730,12 @@ tr.wdetail td{background:#fbf8ef;font-size:12px;line-height:1.5}
 .klist + .klist-head{margin-top:14px}
 
 /* ===== Reading v4.3 (2026-09-27): "now" outlines share .ccdy.now's treatment ===== */
-.rcell{position:relative}.rcell.now,.dtable-daily tr.today th,.dtable-daily tr.today td,.wtable tr.wrow.now th,.wtable tr.wrow.now td{box-shadow:inset 0 0 0 1px var(--accent);border-color:var(--accent)}
-.rcell.now{outline:2px solid var(--accent);outline-offset:-1px}
-.dtable-daily tr.today th,.dtable-daily tr.today td{background:var(--card)}
+.rcell{position:relative}.rcell.now{outline:2px solid var(--accent);outline-offset:-1px}
+.dtable-daily tr.today th,.dtable-daily tr.today td,.wtable tr.wrow.now th,.wtable tr.wrow.now td{background:var(--card)}
 .rnow{display:block;font-style:normal;font-size:10px;font-weight:700;color:var(--accent);margin-top:2px}
-.wtable tr.wrow.now th .rnow{display:inline;margin-left:4px}
+.wtable th .th-zh{display:block;font-size:13px;font-weight:600;color:var(--ink);line-height:1.2}
+.wtable th .th-en{display:block;font-size:10px;font-weight:500;color:var(--muted);line-height:1.2}
+.dtable-daily td .wshort{display:block;font-size:10.5px;line-height:1.2;color:inherit;margin-top:1px}
+.dtable-daily td .tag{white-space:nowrap}
+.klist-ind{font-size:13.5px}.klist-ind .cite{margin:4px 0}
 .rd-legend-body .tgkey{margin:6px 0}.rd-legend-body .tgmap{font-size:12px}
