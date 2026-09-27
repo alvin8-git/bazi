@@ -56,6 +56,31 @@ TG_SEES = {
            "them simply makes things feel more settled"),
 }
 
+# §2c′ (2026-09-27) — the same ten relations read in a modern setting:
+# (home zh, home en, work zh, work en). MODERN SYNTHESIS — glosses, not scoring.
+TG_MODERN = {
+    "比肩": ("像室友般平等——分工要说清，否则两人都以为对方会做", "At home: equals, like flatmates — divide chores explicitly or both assume the other will",
+           "同级搭档，各有一摊——最怕抢同一个功劳", "At work: peer partners with parallel lanes — the one risk is competing for the same credit"),
+    "劫財": ("热闹又冲动的伴——钱和承诺分开管", "At home: lively, impulsive company — keep money and promises on separate ledgers",
+           "敢闯的同事，适合开局——别让他们碰共同预算", "At work: a bold co-founder type, good at starting things — keep them off the shared budget"),
+    "食神": ("轻松的伴侣，饭桌上最好——容易舒服到不做规划", "At home: an easy, restorative partner, best over a meal — comfortable enough that planning slips",
+           "创意与产品感强的同事——需要有人收尾", "At work: brings taste and product sense — pair with someone who closes"),
+    "傷官": ("会挑战你习惯的伴侣——新鲜但费神", "At home: a partner who questions your habits — refreshing, and tiring",
+           "敢说真话的同事——最好的评审，最差的执行者", "At work: the honest critic — your best reviewer, your worst rule-follower"),
+    "偏財": ("慷慨、爱玩的伴侣——不靠他们守家", "At home: generous and fun — not the one who keeps the house running",
+           "会找机会的同事，适合业务开拓——签合同前再核一遍", "At work: an opportunity-spotter, good for deals — re-read the contract before signing"),
+    "正財": ("踏实的照顾者——账目清楚、生活稳", "At home: the steady provider — bills paid, routines kept",
+           "可靠的执行者——交付准时，但不爱冒险", "At work: dependable delivery — on time, risk-averse"),
+    "七殺": ("推着你成长的伴侣——压力若不说破会变成控制", "At home: a partner who pushes you to act — pressure that turns into control if unspoken",
+           "高要求的上级或对手——让你清醒，也让你累", "At work: a demanding boss or rival — clarifying and exhausting in equal measure"),
+    "正官": ("讲规矩的伴侣——家有秩序，惊喜少", "At home: the rule-keeper — order at home, fewer surprises",
+           "守流程的同事——合规与稳定的保证", "At work: the process person — your guarantee of compliance and stability"),
+    "偏印": ("私密而直觉的伴侣——需要独处，也需要被理解", "At home: private and intuitive — needs solitude, and needs to be understood",
+           "另辟蹊径的专家——专项问题找他们，日常汇报别指望", "At work: the niche specialist — go to them for the hard problem, not the weekly update"),
+    "正印": ("让人安心的伴侣——照顾周到，偶尔过度保护", "At home: the steadying one — attentive care, occasionally over-protective",
+           "耐心的导师型同事——培养人，但决策慢", "At work: the patient mentor — grows people, decides slowly"),
+}
+
 # §2a — positive-chip expansions (display only): zh, en, cite, action{zh,en}
 STRENGTH_EXPL = {
     "day六合": ("日支相合如锁扣相接，夫妻宫自然相吸——生活习惯、亲密与默契天生契合",
@@ -358,15 +383,18 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
     g_ab, g_ba = base["relation"]["a_sees_b"], base["relation"]["b_sees_a"]
     band_zh = _BAND_KEY(base["score"])
     fr = FRAMING[band_zh]
+    def _rel(dm_stem, g):
+        mh_zh, mh_en, mw_zh, mw_en = TG_MODERN.get(g, ("", "", "", ""))
+        return {"god": g, "element": _god_el(dm_stem, g), **_bi(*TG_SEES[g]),
+                "modern_home": _bi(mh_zh, mh_en), "modern_work": _bi(mw_zh, mw_en)}
     return {"a": na, "b": nb, "score": base["score"],
             "band": _bi(band_zh, _BAND_EN[band_zh]),
             "day_pillars": base["day_pillars"],
             "arithmetic": ledger,
             "pillar_sweep": sweep,
-            "relation": {"a_sees_b": {"god": g_ab, "element": _god_el(da.stem, g_ab),
-                                      **_bi(*TG_SEES[g_ab])},
-                         "b_sees_a": {"god": g_ba, "element": _god_el(db.stem, g_ba),
-                                      **_bi(*TG_SEES[g_ba])}},
+            "sweep_matrix": sweep_matrix(ca, cb),
+            "sweep_reading": sweep_reading(ca, cb, sweep),
+            "relation": {"a_sees_b": _rel(da.stem, g_ab), "b_sees_a": _rel(db.stem, g_ba)},
             "strengths": strengths, "frictions": frictions,
             "framing": {k: _bi(*fr[k]) for k in ("family", "couple", "colleagues")},
             "source_ref": base["source_ref"]}
@@ -537,4 +565,98 @@ def pair_full(ca, cb, ys_a, ys_b, pa: dict, pb: dict) -> dict:
     out["modern"] = modern_layers(ca, cb, ys_a, ys_b)
     out["modern"]["score_with_modern"] = _clamp(out["score"] + out["modern"]["delta"])
     out["report"] = pair_clinical_report(out, pa, pb, out["modern"])
+    out["framings_table"] = framings_table(out, out["modern"])
     return out
+
+
+# ---------------------------------------------------------------------------
+# 2026-09-27 — pillar sweep as a 4×4 matrix with a layman reading; framings table
+# ---------------------------------------------------------------------------
+_BONDS = ("六合", "半三合")
+_KIND_DAY = {"六合": ("日常习惯自然对上", "daily habits line up on their own"),
+             "半三合": ("同频，容易并肩做事", "a shared current — easy to work alongside"),
+             "六沖": ("反应来得快、来得热——大事慢半拍再定", "reactions run hot and fast — pace the big decisions"),
+             "刑": ("摩擦在沉默里积累——早说", "friction builds under silence — talk early"),
+             "六害": ("小的耗损来自各自的假设——多交代背景", "small drains from mismatched assumptions — over-communicate context")}
+
+
+def sweep_matrix(ca, cb) -> list[list[dict]]:
+    """rows = A's pillars (year/month/day/hour), cols = B's."""
+    out = []
+    for pa in PALACES:
+        row = []
+        for pb in PALACES:
+            ba, bb = ca.pillars[pa].branch, cb.pillars[pb].branch
+            r = _branch_rel(ba, bb)
+            row.append({"pillar_a": pa, "pillar_b": pb, "branch_a": ba, "branch_b": bb,
+                        "element_a": BRANCH_ELEMENT.get(ba, ""), "element_b": BRANCH_ELEMENT.get(bb, ""),
+                        "relation": r[0] if r else None, "bond": bool(r and r[1] > 0),
+                        "scored": (pa == pb == "day") or (pa == pb == "year")})
+        out.append(row)
+    return out
+
+
+def sweep_reading(ca, cb, sweep: list[dict]) -> dict:
+    """The sweep read for a layman: how many bonds vs frictions, which palaces
+    they touch, the cell that matters most, and what it means day to day."""
+    na, nb = ca.person, cb.person
+    bonds = [x for x in sweep if x["relation"]["zh"] in _BONDS]
+    fric = [x for x in sweep if x["relation"]["zh"] not in _BONDS]
+    if not sweep:
+        return _bi("两盘四柱之间没有合冲刑害——这对关系靠五行与十神运转，不靠地支的化学反应。",
+                   "No branch of one chart touches a branch of the other — this pairing runs on the elements and the ten gods, not on branch chemistry.")
+    key = (next((x for x in sweep if x["pillar_a"] == x["pillar_b"] == "day"), None)
+           or (fric[0] if fric else bonds[0]))
+    kind = key["relation"]["zh"]
+    pal = lambda x: f"{na}'s {PALACE_ZH[x['pillar_a']][2]} × {nb}'s {PALACE_ZH[x['pillar_b']][2]}"
+    palz = lambda x: f"{na}的{PALACE_ZH[x['pillar_a']][1]}对{nb}的{PALACE_ZH[x['pillar_b']][1]}"
+    en = (f"{len(bonds)} bond{'s' if len(bonds) != 1 else ''} and {len(fric)} friction{'s' if len(fric) != 1 else ''} across the sixteen pairs of branches. "
+          + (f"Bonds touch {'; '.join(pal(x) for x in bonds[:2])}. " if bonds else "")
+          + (f"Frictions touch {'; '.join(pal(x) for x in fric[:2])}. " if fric else "")
+          + f"The cell that matters most is {pal(key)} — {kind}, {key['relation']['en']}"
+          + (" (already in the score)" if key["already_scored"] else " (descriptive, not scored)")
+          + f". Day to day: {_KIND_DAY[kind][1]}.")
+    zh = (f"十六组地支中有{len(bonds)}处相合、{len(fric)}处相冲刑害。"
+          + (f"相合落在{'；'.join(palz(x) for x in bonds[:2])}。" if bonds else "")
+          + (f"冲刑害落在{'；'.join(palz(x) for x in fric[:2])}。" if fric else "")
+          + f"最要紧的一格是{palz(key)}——{kind}，{REL_GLOSS[kind][0]}"
+          + ("（已计分）" if key["already_scored"] else "（描述性，不计分）") + f"。日常表现：{_KIND_DAY[kind][0]}。")
+    return _bi(zh, en)
+
+
+def framings_table(pair: dict, modern: dict) -> dict:
+    """family / couple / colleagues × meaning / lean_on / watch, bilingual."""
+    fr = pair.get("framing") or {}
+    strengths = pair.get("strengths") or []
+    frictions = pair.get("frictions") or []
+    mrows = (modern or {}).get("rows") or []
+    def st(pred):
+        return next((s for s in strengths if pred(s)), None)
+    def fx(pred):
+        return next((f for f in frictions if pred(f)), None)
+    supply = max((s for s in strengths if "五行" in s["chip_label"]["zh"]), key=lambda s: s["delta"], default=None)
+    dayb = st(lambda s: s["chip_label"]["zh"].startswith("日"))
+    yearb = st(lambda s: s["chip_label"]["zh"].startswith("年"))
+    comp = next((r for r in mrows if r["delta"] > 0 and "complementarity" in r["label"]["en"]), None)
+    ws = next((r for r in mrows if "weak + strong" in r["label"]["en"]), None)
+    dayf = fx(lambda f: f["pillars"] == "day-day")
+    yearf = fx(lambda f: f["pillars"] == "year-year")
+    domf = fx(lambda f: f["pillars"] == "chart-wide")
+    coll = next((r for r in mrows if r["delta"] < 0 and "avoid list" not in r["label"]["en"]), None)
+    conf = next((r for r in mrows if "avoid list" in r["label"]["en"]), None)
+    none_lean = _bi("没有现成可倚的结构——需要刻意建立", "nothing structural to lean on — build it deliberately")
+    none_watch = _bi("没有结构性的摩擦", "nothing structural to watch")
+    lab = lambda x: x["chip_label"] if x and "chip_label" in x else (x["label"] if x else None)
+    def cell(x, fallback):
+        return lab(x) if x else fallback
+    return {
+        "family": {"meaning": fr.get("family", _bi("", "")),
+                   "lean_on": cell(yearb or supply, none_lean),
+                   "watch": cell(yearf or domf or conf, none_watch)},
+        "couple": {"meaning": fr.get("couple", _bi("", "")),
+                   "lean_on": cell(dayb or supply or ws, none_lean),
+                   "watch": cell(dayf or conf or domf, none_watch)},
+        "colleagues": {"meaning": fr.get("colleagues", _bi("", "")),
+                       "lean_on": cell(comp or ws or supply, none_lean),
+                       "watch": cell(coll or domf or conf, none_watch)},
+    }

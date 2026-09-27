@@ -82,7 +82,19 @@ details{margin:8px 0}summary{font-size:11.5px;font-weight:700;cursor:pointer;col
 .foot{font-size:9px;color:var(--muted);margin-top:12px;border-top:1px solid var(--line);
   padding-top:6px}
 .prep{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px 0 6px;margin:8px 0 4px}
-.prep-k{font-size:10.5px;font-weight:600;letter-spacing:.3px;color:var(--muted);margin-bottom:3px}
+.prep-k{font-size:12px;font-weight:700;letter-spacing:.3px;color:var(--accent);margin-bottom:3px}.prep-k .be-in{font-weight:600;color:var(--muted);font-size:10.5px;margin-left:4px}
+.prep-more{margin:2px 0 0}.prep-more>summary{color:var(--accent);font-size:12px}
+.seetable td{vertical-align:top}.seetable th:nth-child(4),.seetable th:nth-child(5){min-width:120px}
+.swtable{width:100%;border-collapse:collapse;font-size:11.5px;margin:4px 0}
+.swtable th{padding:4px 5px;text-align:center;border-bottom:1px solid var(--line);font-weight:600;vertical-align:top}
+.swtable th b{display:block;font-size:17px;line-height:1.1}.swtable th small{display:block;font-size:9px;color:var(--muted);line-height:1.2}
+.swtable th.corner{text-align:left;font-weight:500}.swtable th.corner small{font-size:10px}
+.swtable td{text-align:center;padding:7px 4px;border-bottom:1px solid #efe9da;border-left:1px solid #efe9da;color:var(--muted)}
+.swtable td b{display:block;font-size:13px}.swtable td i{display:block;font-style:normal;font-size:8.5px;color:var(--muted)}
+.swtable td.sw-bond{background:#e6f2ef;color:#0e7a6a}.swtable td.sw-fric{background:#f9efe0;color:#b45309}.swtable td.sw-scored{outline:2px solid var(--gold);outline-offset:-2px}
+.swlegend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:10px;color:var(--muted);margin:4px 0 6px}.swlegend .sw-bond{color:#0e7a6a;font-weight:700}.swlegend .sw-fric{color:#b45309;font-weight:700}
+.frtable td{vertical-align:top;width:31%}.frtable td.nb{width:7%;white-space:nowrap}
+h2 .scorechip{float:right;margin-top:-2px}
 .prep-lede{margin:0 0 4px;font-size:13px;font-weight:600;line-height:1.5;color:var(--ink)}
 .prep-body{font-size:12px;line-height:1.55;color:var(--ink)}.prep-body h4{margin:7px 0 2px;font-size:10.5px;font-weight:700;letter-spacing:.3px;color:var(--muted);text-transform:uppercase}
 .prep-body p{margin:3px 0}.prep-body ul{margin:3px 0 0;padding-left:18px}.prep-body li{margin:2px 0}
@@ -95,7 +107,9 @@ details{margin:8px 0}summary{font-size:11.5px;font-weight:700;cursor:pointer;col
   body{background:#fff;font-size:9.5px;line-height:1.35}
   .page{max-width:none;padding:0}
   .report{border:none;box-shadow:none;border-radius:0;padding:0 1mm}
-  .toolbar,details{display:none}
+  .toolbar,details:not(.printable){display:none}
+  details.printable>summary{display:none}
+  .swtable{font-size:9px}.swtable th b{font-size:13px}.swtable td{padding:3px 2px}.swtable td b{font-size:10px}.seetable,.frtable{font-size:9px}
   .pitem{padding:2px 5px;margin:2px 0;background:#f6f3ec !important;border-radius:4px;
     font-size:9px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .cite2{font-size:7px}.be{font-size:7.5px;line-height:1.2}
@@ -183,13 +197,15 @@ function colorizeColoursRep(root) {             // standalone colour words only
   }
 }
 
-function colorizeRep(root) {                    // element mentions in running text
-  const re = /(木|火(?!车|車)|土(?!豆)|金(?!额|額)|水(?!平|准|準))|\b(Wood|Fire|Earth|Metal|Water)\b/g;
+const BR_EL = { 子: "水", 丑: "土", 寅: "木", 卯: "木", 辰: "土", 巳: "火", 午: "火", 未: "土", 申: "金", 酉: "金", 戌: "土", 亥: "水" };
+const GODS_RE = "比肩|劫財|劫财|食神|傷官|伤官|正財|正财|偏財|偏财|正官|七殺|七杀|正印|偏印";
+function colorizeRep(root) {                    // element, stem, branch and ten-god mentions in running text
+  const re = new RegExp(`(${GODS_RE})|([甲乙丙丁戊己庚辛壬癸])(?=[子丑寅卯辰巳午未申酉戌亥])|(?<![甲乙丙丁戊己庚辛壬癸])([子丑寅卯辰巳午未申酉戌亥])(?![年月日时柱支平女])|(木|火(?!车|車)|土(?!豆)|金(?!额|額)|水(?!平|准|準))|\\b(Wood|Fire|Earth|Metal|Water)\\b`, "g");
   const EN2EL = { Wood: "木", Fire: "火", Earth: "土", Metal: "金", Water: "水" };
   const nodes = [];
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: (n) => n.parentElement
-      && !n.parentElement.closest("script,style,svg,.elb,.nocolor")
+      && !n.parentElement.closest("script,style,svg,.elb,.nocolor,.idchip,.swtable th")
       ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
   let t; while ((t = w.nextNode())) { re.lastIndex = 0; if (re.test(t.nodeValue)) nodes.push(t); }
   for (const node of nodes) {
@@ -199,7 +215,7 @@ function colorizeRep(root) {                    // element mentions in running t
       frag.appendChild(document.createTextNode(s.slice(last, m.index)));
       const b = document.createElement("b");
       b.className = "tcol";
-      b.style.color = EL_COL[EN2EL[m[0]] || m[0]] || "";
+      b.style.color = m[1] ? "var(--gold)" : m[2] ? EL_COL[STEM_EL[m[2]]] : m[3] ? EL_COL[BR_EL[m[3]]] : (EL_COL[EN2EL[m[0]] || m[0]] || "");
       b.textContent = m[0];
       frag.appendChild(b);
       last = m.index + m[0].length;
@@ -255,12 +271,15 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
       <td>${rangeBar(r.delta)}</td>
       <td class="pts ${cls(r.delta)}">${r.delta > 0 ? "+" : ""}${r.delta}</td></tr>`).join("");
     // 相互看对方 as a 2-row table
-    const seeTable = `<table class="dtable">
-      <tr><th>视角 view</th><th>十神 god</th><th>解读 meaning</th></tr>
+    const seeTable = `<table class="dtable seetable">
+      <tr><th>视角 view</th><th>十神 god</th><th>经典 classical</th><th>家 at home</th><th>职 at work</th></tr>
       ${[[`${d.a} → ${d.b}`, d.relation.a_sees_b], [`${d.b} → ${d.a}`, d.relation.b_sees_a]]
         .map(([who, r]) => `<tr><td class="nb">${esc(who)}</td>
           <td class="nb"><b style="color:${EL_COL[r.element] || "inherit"}">${r.god}</b>${elb(r.element)}</td>
-          <td>${esc(r.zh)}${be(r)}</td></tr>`).join("")}</table>`;
+          <td>${esc(r.zh)}${be(r)}</td>
+          <td>${r.modern_home ? esc(r.modern_home.zh) + be(r.modern_home) : "—"}</td>
+          <td>${r.modern_work ? esc(r.modern_work.zh) + be(r.modern_work) : "—"}</td></tr>`).join("")}</table>
+      <div class="cite2">经典一栏为十神互看（子平法）；家/职两栏为现代读法（MODERN SYNTHESIS）· classical column = the ten-god relation; home/work = modern readings</div>`;
     // strengths + frictions merged: one factor-detail table in component order
     const lmap = {};                            // ledger label → element (for badges)
     d.arithmetic.forEach((r) => { if (r.element) lmap[r.label.zh] = r.element; });
@@ -288,20 +307,28 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
         <tr class="citer"><td colspan="3">${esc(r.cite)}</td></tr>`).join("")}</table>`
       : `<div class="pitem">此配对无已计分的相合或摩擦项——参考四柱互动与十神互看。
          <small class="be">no scored bonds or frictions — see the pillar sweep and mutual reading</small></div>`;
-    const sweep = d.pillar_sweep.length ? `<details><summary>四柱全盘互动 full pillar sweep（描述性，不计分 · 打印时省略）</summary>
-      ${d.pillar_sweep.map((p) => `<div class="pitem">${esc(p.meaning.zh)}
-        （${p.branch_a}${p.branch_b} ${esc(p.relation.zh)}${p.already_scored ? " · 已计分" : ""}）
-        <small class="be">${esc(p.meaning.en)}</small></div>`).join("")}</details>` : "";
+    const PZ = { year: ["年柱", "elders & roots"], month: ["月柱", "career & parents"], day: ["日柱", "self & spouse"], hour: ["时柱", "children & later"] };
+    const bcol = (e) => EL_COL[e] || "inherit";
+    const sweep = d.sweep_matrix ? `<table class="swtable">
+      <tr><th class="corner"><small>${esc(d.a)} ↓ · ${esc(d.b)} →</small></th>${d.sweep_matrix[0].map((c) =>
+        `<th><b style="color:${bcol(c.element_b)}">${c.branch_b}</b><small>${PZ[c.pillar_b][0]}<br>${PZ[c.pillar_b][1]}</small></th>`).join("")}</tr>
+      ${d.sweep_matrix.map((row) => `<tr><th><b style="color:${bcol(row[0].element_a)}">${row[0].branch_a}</b><small>${PZ[row[0].pillar_a][0]}<br>${PZ[row[0].pillar_a][1]}</small></th>
+        ${row.map((c) => `<td class="${c.relation ? (c.bond ? "sw-bond" : "sw-fric") : "sw-none"}${c.scored ? " sw-scored" : ""}">${c.relation ? `<b>${c.relation}</b>${c.scored ? `<i>已计分</i>` : ""}` : "·"}</td>`).join("")}</tr>`).join("")}</table>
+      <div class="swlegend"><span class="sw-bond">六合 · 半三合 bond</span><span class="sw-fric">六沖 · 刑 · 六害 friction</span><span class="sw-none">· none</span><span>已计分 = counted in the score (day-day, year-year)</span></div>
+      ${d.sweep_reading ? `<div class="pitem">${esc(d.sweep_reading.zh)}<small class="be">${esc(d.sweep_reading.en)}</small></div>` : ""}` : "";
     rep.innerHTML = `
       <div class="rhead"><h1>合婚配对报告<small>Pair Compatibility Report · bazifor.me</small></h1>
         <div class="rmeta">${new Date().toISOString().slice(0, 10)}<span id="verline"></span><br>deterministic · every number cites its rule</div></div>
       <div class="idrow">${idc(pa, d.a, A)}<div class="vs">✕</div>${idc(pb, d.b, B)}</div>
-      ${d.report ? `<div class="prep"><div class="prep-k">綜合論斷 The Synthesis — the geomancer's pair report</div>
-        <p class="prep-lede">${esc(d.report.summary)}</p>
+      ${d.report ? (() => { const [fb] = BAND_COL(d.score);
+        const lede = esc(d.report.summary).replace(/^(\d+\/100\s*—\s*[^.]+\.)/, (m0) => `<span style="color:${fb}">${m0}</span>`);
+        return `<div class="prep"><div class="prep-k">綜合論斷 <span class="be-in">The Synthesis — the geomancer's pair report</span></div>
+        <p class="prep-lede">${lede}</p>
+        <details class="prep-more printable"><summary>read the full report ›</summary>
         <div class="prep-body"><h4>Findings</h4>${d.report.findings.map((f) => `<p><b>${esc(f.label)}.</b> ${esc(f.text)}</p>`).join("")}
           <h4>Assessment</h4><p>${esc(d.report.assessment)}</p>
           <h4>Plan</h4><ul>${d.report.plan.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
-          <p class="prep-conf">${esc(d.report.confidence)}</p></div></div>` : ""}
+          <p class="prep-conf">${esc(d.report.confidence)}</p></div></details></div>`; })() : ""}
       <h2>总评 <small>overall reading</small></h2>
       ${gauge(d.score)}
       ${(() => { const [fb] = BAND_COL(d.score);
@@ -323,27 +350,28 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
       <div class="cite2">${esc(d.modern.source_ref)}</div>` : ""}
       <h2>相互看对方 <small>how they see each other</small></h2>
       ${seeTable}
-      <h2>因素详解 <small>factor detail — reason &amp; action per scored factor</small></h2>
-      ${factorTable}
+      <details class="printable"><summary>因素详解 factor detail — reason &amp; action per scored factor ›</summary>${factorTable}</details>
+      <h2>四柱互动 <small>pillar interactions — every branch of one chart against every branch of the other</small></h2>
       ${sweep}
-      <h2>三种关系视角 <small>the same pair, three framings</small></h2>
+      <h2>三种关系视角 <small>the same pair, three framings</small>
+        ${(() => { const [fb] = BAND_COL(d.score); return `<span class="scorechip" style="--fb:${fb}">${d.score} · ${esc(d.band.zh)} ${esc(d.band.en)}</span>`; })()}</h2>
       ${(() => {
-        const [fb, fbg] = BAND_COL(d.score);
-        const card = (t, o) => `<div class="pitem" style="--fb:${fb};--fbg:${fbg}">
-          <b>${t}</b><span class="scorechip" style="--fb:${fb}">${d.score} ${esc(d.band.zh)}</span><br>
-          ${esc(o.zh)}${be(o)}</div>`;
-        return `<div class="frame3">
-          ${card("家人 Family", d.framing.family)}
-          ${card("夫妻 Couple", d.framing.couple)}
-          ${card("同事 Colleagues", d.framing.colleagues)}
-        </div>
-        <div class="cite2">三个视角共用同一总分，仅措辞不同 · the three framings share the one
-          frozen score — per-context sub-scores are a proposed v2 item</div>`;
+        const F = d.framings_table; if (!F) return "";
+        const cellf = (o) => `${esc(o.zh)}${be(o)}`;
+        return `<table class="dtable frtable">
+          <tr><th></th><th>家人 Family</th><th>夫妻 Couple</th><th>同事 Colleagues</th></tr>
+          ${[["含义 meaning", "meaning"], ["可倚 lean on", "lean_on"], ["留意 watch", "watch"]].map(([lab, k]) =>
+            `<tr><td class="nb">${lab}</td><td>${cellf(F.family[k])}</td><td>${cellf(F.couple[k])}</td><td>${cellf(F.colleagues[k])}</td></tr>`).join("")}</table>
+        <div class="cite2">三个视角共用同一总分；可倚/留意各取该情境下最相关的已计分或现代层因素 · one frozen score; lean-on / watch pick the factor most relevant to each context</div>`;
       })()}
       <div class="foot">${esc(d.source_ref)} · 明细相加与主表分数完全一致 the component table sums exactly to
         the harmony-matrix score · bazifor.me/w/${esc(token).slice(0, 3)}····</div>`;
     colorizeRep(rep);
     colorizeColoursRep(rep);
+    const pd = () => Array.from(rep.querySelectorAll("details.printable"));
+    let wasOpen = [];
+    window.addEventListener("beforeprint", () => { wasOpen = pd().map((x) => x.open); pd().forEach((x) => (x.open = true)); });
+    window.addEventListener("afterprint", () => pd().forEach((x, i) => (x.open = !!wasOpen[i])));
     fetch("/api/pub/version", {cache: "no-store"}).then((r) => r.json())
       .then((v) => { const el = document.getElementById("verline");
         if (el && v && v.version) el.textContent = ` · v ${v.version}`; })
