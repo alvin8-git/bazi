@@ -20,7 +20,7 @@ SG = ZoneInfo("Asia/Singapore")
 
 from .bazi import ten_god
 from .wuxing import CHONG_MAP, HAI_MAP, HE_MAP, HIDDEN_STEMS, STEM_ELEMENT
-from .zeri import rate_day
+from .zeri import day_info, rate_day
 
 ACTIVITIES = [("moving", "搬家 moving house"), ("signing", "签约 signing & banking"),
               ("marriage", "婚嫁 marriage & proposals"), ("travel", "出行 travel"),
@@ -91,6 +91,7 @@ def daily_fortune(c, ys: dict, start: date | None = None, days: int = 30) -> dic
     best = max(goods, key=lambda t: (t[1] == 0, t[0], t[1]))[2] if rows else None
     worst = max(rows, key=lambda r: sum(1 for f in r["flags"].values() if f["verdict"] == "avoid")) if rows else None
     return {"start": start.isoformat(), "days": days, "rows": rows,
+            "now_month_branch": day_info(start)["month_branch"],   # the 月令 in force today (節-bounded)
             "best": {"date": best["date"], "gz": best["gz"], "officer": best["officer"],
                      "for": [k for k, f in best["flags"].items() if f["verdict"] == "good"]} if best else None,
             "worst": {"date": worst["date"], "gz": worst["gz"],

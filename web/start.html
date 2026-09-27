@@ -40,15 +40,20 @@ button:disabled{opacity:.5;cursor:default}
 .pcard.elth2-土{box-shadow:inset 0 0 0 2px rgba(138,84,16,.18)}
 .pcard.elth2-金{box-shadow:inset 0 0 0 2px rgba(201,155,46,.25)}
 .pcard.elth2-水{box-shadow:inset 0 0 0 2px rgba(48,89,168,.16)}
-.share-sec{border:2px solid var(--accent);background:#fff8f0}
+.share-sec{border:0;background:transparent;padding:0}
 .share-sec .st{font-weight:800;color:var(--accent)}
 .share-sec .kv2{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0}
 .share-sec .url{font-size:13px;background:#fff;border:1px solid var(--line);border-radius:8px;
  padding:6px 10px;word-break:break-all;flex:1;min-width:200px}
 .share-sec #btn-copy{white-space:nowrap}
 .pcard h3{margin:0 0 4px;font-size:16px}
-.pz{display:inline-block;border:1px solid #ecd9cf;border-radius:7px;padding:2px 7px;
-  margin:1px;font-size:16px;font-weight:700;color:var(--accent)}
+.pzrow{display:flex;justify-content:center;gap:6px;margin:4px 0 8px;flex-wrap:wrap}
+.pz{display:inline-flex;flex-direction:column;align-items:center;border:1.5px solid rgba(43,38,32,.42);border-radius:8px;
+  padding:3px 9px 2px;background:rgba(255,255,255,.9);font-size:17px;font-weight:700;line-height:1.15;min-width:38px}
+.pz small{font-size:9px;font-weight:600;color:var(--muted);letter-spacing:.3px;margin-top:1px}
+.editf{grid-column:1/-1;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0}
+.editf .row{grid-template-columns:2fr 1fr 1fr 1fr;gap:6px}.editf label{margin:2px 0 1px;font-size:11.5px}
+.editf input,.editf select{padding:5px 7px;font-size:14px}.editf .row2{margin-top:6px;gap:8px}.editf button{padding:6px 12px;font-size:13.5px}
 .kv{font-size:12.5px;color:var(--ink);margin:4px 0}
 .kv b.cat{color:#8a6d00;font-size:11px;letter-spacing:.3px;margin-right:1px}
 .kv .unit{display:inline-block;white-space:nowrap}
@@ -65,8 +70,9 @@ button:disabled{opacity:.5;cursor:default}
 .fcareer .cchip{display:inline-block;background:#f3efe7;border:1px solid var(--line);
   border-radius:6px;padding:1px 7px;font-size:11px;margin:1px 3px 1px 0}
 .fcareer .cchip small{display:block;font-size:8.5px;color:var(--muted);line-height:1.1}
-/* one visible row of chips: a chip that would wrap falls to a hidden 2nd row */
-.fcareer .fv.oneln{display:flex;flex-wrap:wrap;max-height:36px;overflow:hidden}
+/* the two career chips each take their own line — nothing clips at any width */
+.fcareer .fv.oneln{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.fcareer .fv.oneln .cchip{max-width:100%;white-space:normal}
 .hcell{cursor:pointer;border-radius:6px;padding:5px 8px}
 .hcell:hover{filter:brightness(.96)}
 .hcell .hband{display:block;font-size:9.5px;font-weight:700;line-height:1.2}
@@ -213,6 +219,8 @@ const ZODIAC = { 鼠: ["🐭", "Rat"], 牛: ["🐮", "Ox"], 虎: ["🐯", "Tiger
 
 const STEM_EL = { 甲: "木", 乙: "木", 丙: "火", 丁: "火", 戊: "土", 己: "土",
   庚: "金", 辛: "金", 壬: "水", 癸: "水" };
+const BR_EL = { 子: "水", 丑: "土", 寅: "木", 卯: "木", 辰: "土", 巳: "火", 午: "火", 未: "土", 申: "金", 酉: "金", 戌: "土", 亥: "水" };
+const PZ_LAB = { year: "年 year", month: "月 month", day: "日 day", hour: "时 hour" };
 const EL_EN = { 木: "Wood", 火: "Fire", 土: "Earth", 金: "Metal", 水: "Water" };
 const EL_COL = { 木: "#1e8e3e", 火: "#c5221f", 土: "#8a6d1f", 金: "#a67c00", 水: "#1a56b0" };
 const STAR_EN = { 一白: "1 White", 二黑: "2 Black", 三碧: "3 Jade", 四绿: "4 Green",
@@ -238,10 +246,20 @@ function personCard(p, i) {
       ? " elth2-" + p.favourable[0] : ""}" data-i="${i}" title="open the full Reading 命书">
     <h3>${p.name}${tk}
       <span class="cardops">
-        <button class="ic edit" data-i="${i}" title="rename">✏️</button>
+        <button class="ic edit" data-i="${i}" title="edit name, sex, birth date and time">✏️</button>
         <button class="ic del" data-i="${i}" title="remove">🗑</button>
       </span></h3>
-    <div>${["year","month","day","hour"].map(k => `<span class="pz">${p.pillars[k]}</span>`).join("")}</div>
+    <div class="pzrow">${["year","month","day","hour"].map(k => { const gz = p.pillars[k] || "", st = gz[0] || "", br = gz[1] || "";
+      return `<span class="pz"><span><b style="color:${EL_COL[STEM_EL[st]] || "inherit"}">${st}</b><b style="color:${EL_COL[BR_EL[br]] || "inherit"}">${br}</b></span><small>${PZ_LAB[k]}</small></span>`; }).join("")}</div>
+    <form class="editf" data-i="${i}" hidden>
+      <div class="row">
+        <div><label>Name 姓名</label><input name="name" maxlength="40" value="${(p.name || "").replace(/"/g, "&quot;")}"></div>
+        <div><label>Sex 性别</label><select name="sex"><option value="M" ${p.sex === "M" ? "selected" : ""}>M 男</option><option value="F" ${p.sex === "F" ? "selected" : ""}>F 女</option></select></div>
+        <div><label>Date of birth</label><input name="dob" type="date" value="${p.dob || ""}"></div>
+        <div><label>Time of birth</label><input name="birth_time" type="time" value="${p.birth_time || "12:00"}"></div>
+      </div>
+      <div class="row2"><button type="submit">Save 保存</button><button type="button" class="ghost cancel">Cancel</button><span class="err"></span></div>
+    </form>
     <div class="fgrid">
       ${(() => {
         const stEl = STEM_EL[p.day_master] || "";
@@ -348,16 +366,27 @@ function render() {
     ws = await api(`/api/pub/w/${token}/person/${b.dataset.i}`, {method: "DELETE"});
     render();
   }));
-  document.querySelectorAll(".edit").forEach(b => b.addEventListener("click", async () => {
-    const cur = ws.people[b.dataset.i].name;
-    const name = (prompt("Rename 改名:", cur) || "").trim();
-    if (!name || name === cur) return;
-    ws = await api(`/api/pub/w/${token}/person/${b.dataset.i}`, {method: "PATCH",
-      headers: {"Content-Type": "application/json"}, body: JSON.stringify({name})});
-    render();
+  document.querySelectorAll(".edit").forEach(b => b.addEventListener("click", () => {
+    const f = document.querySelector(`form.editf[data-i="${b.dataset.i}"]`);
+    if (f) { f.hidden = !f.hidden; if (!f.hidden) f.querySelector("input[name=name]").focus(); }
   }));
+  document.querySelectorAll("form.editf").forEach(f => {
+    f.querySelector(".cancel").addEventListener("click", () => { f.hidden = true; });
+    f.addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const fd = new FormData(f), err = f.querySelector(".err"); err.textContent = "";
+      const body = { name: (fd.get("name") || "").trim() || "Person", sex: fd.get("sex"), dob: fd.get("dob"),
+        birth_time: fd.get("birth_time") || "12:00", time_known: ws.people[f.dataset.i].time_known !== false };
+      if (!body.dob) { err.textContent = "date of birth is required"; return; }
+      try {
+        ws = await api(`/api/pub/w/${token}/person/${f.dataset.i}`, {method: "PUT",
+          headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+        render();
+      } catch (e) { err.textContent = e.message; }
+    });
+  });
   document.querySelectorAll(".pcard").forEach(cd => cd.addEventListener("click", e => {
-    if (e.target.closest("a,button")) return;   // links & remove keep their own action
+    if (e.target.closest("a,button,form,input,select,label")) return;   // controls keep their own action
     location.href = `/w/${token}/person/${cd.dataset.i}/reading`;
   }));
 }

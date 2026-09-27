@@ -16,6 +16,7 @@ Deterministic, no LLM; every flag carries its rule in the note.
 from __future__ import annotations
 
 from .bazi import ten_god
+from .shensha import TRINE_STARS, WENCHANG, XUETANG, ten_god_pct
 from .domains import VAULT, health_map
 from .liunian import year_element_read, year_ganzhi
 from .wuxing import (BRANCH_ELEMENT, CHONG_MAP, HE_MAP, HIDDEN_STEMS, KE,
@@ -45,6 +46,7 @@ _TRINE = {b: set(grp) for grp, _ in SANHE for b in grp}
 _TAOHUA = {"申": "酉", "子": "酉", "辰": "酉", "寅": "卯", "午": "卯", "戌": "卯",
            "巳": "午", "酉": "午", "丑": "午", "亥": "子", "卯": "子", "未": "子"}
 WEALTH_GODS = {"正財", "偏財"}
+RESOURCE_GODS = {"正印", "偏印"}
 OFFICER_GODS = {"正官", "七殺"}
 SUPPORT_GODS = {"比肩", "劫財", "正印", "偏印"}
 
@@ -157,6 +159,35 @@ def _year_row(chart, ys, hm_excess, hm_weak, y, decade_score) -> dict:
         health = dim("window", f"year replenishes weak {'/'.join(hit_wk)} — good recovery year")
     else:
         health = dim("quiet", "no imbalance triggered")
+    # study — resource arrival, scholar stars, month-pillar 合 (windows); 沖 month, 傷官 vs prominent 正官 (cautions)
+    pct = ten_god_pct(chart)
+    wc = {WENCHANG.get(dm), WENCHANG.get(chart.pillars["year"].stem)} - {None}
+    xt = XUETANG[STEM_ELEMENT[dm]]
+    if CHONG_MAP.get(br) == month_br:
+        study = dim("caution", f"年支{br} 沖 month pillar {month_br} — study plans disrupted; keep courses short")
+    elif g_st == "傷官" and pct.get("正官", 0) >= 15:
+        study = dim("caution", "傷官 year meets a chart with prominent 正官 — exams and credentials contested; verify before you rely")
+    elif gods & RESOURCE_GODS:
+        study = dim("window", f"{'/'.join(gods & RESOURCE_GODS)} arrives — learning, mentors and credentials favoured")
+    elif br in wc or br == xt:
+        study = dim("window", f"年支{br} is a {'文昌' if br in wc else '學堂'} year — scholar star active")
+    elif HE_MAP.get(br) == month_br:
+        study = dim("window", f"年支{br} 合 month pillar — structured study and training land")
+    else:
+        study = dim("quiet", "no study activation")
+    # movement — 驛馬 years and 合 to the day branch (windows); 沖 year or day branch (cautions)
+    yb = chart.pillars["year"].branch
+    yima = {TRINE_STARS[next(g for g in TRINE_STARS if base in g)]["驛馬"] for base in (yb, day_br)}
+    if CHONG_MAP.get(br) == yb:
+        movement = dim("caution", f"年支{br} 沖 year branch {yb} (生肖 clash) — forced moves; travel with margins, relocate only with cause")
+    elif CHONG_MAP.get(br) == day_br:
+        movement = dim("caution", f"年支{br} 沖 day branch {day_br} — the home base is shaken; delay a move if you can")
+    elif br in yima:
+        movement = dim("window", f"驛馬 year ({br}) — relocation, travel and job moves carry momentum")
+    elif HE_MAP.get(br) == day_br:
+        movement = dim("window", f"年支{br} 合 day branch — a move with support: settling somewhere new lands well")
+    else:
+        movement = dim("quiet", "no movement activation")
     # overall — climate (decade) × weather (year elements)
     elem = year_element_read(chart, ys["favourable"], y)["explanation"]
     yr_score = elem.count("favourable") - elem.count("unfavourable")
@@ -167,7 +198,7 @@ def _year_row(chart, ys, hm_excess, hm_weak, y, decade_score) -> dict:
                    ("steady", "平穩"))
     return {"y": y, "gz": st + br, "overall": overall, "overall_zh": zh,
             "career": career, "wealth": wealth, "relationship": rel,
-            "health": health}
+            "health": health, "study": study, "movement": movement}
 
 
 def timing_windows(chart, ys: dict, dayun: list[dict], year_now: int) -> dict:

@@ -290,6 +290,18 @@ def rename_person(token: str, idx: int, body: RenameIn):
     return _ws_payload(token, ws)
 
 
+@router.put("/api/pub/w/{token}/person/{idx}")
+def update_person(token: str, idx: int, person: PersonIn):
+    """Edit name, sex, birth date and time in place (the chart re-derives)."""
+    ws = _load(token)
+    if not 0 <= idx < len(ws["people"]):
+        raise HTTPException(404, "no such person")
+    _member(person.model_dump())
+    ws["people"][idx] = person.model_dump()
+    _save(token, ws)
+    return _ws_payload(token, ws)
+
+
 @router.delete("/api/pub/w/{token}/person/{idx}")
 def remove_person(token: str, idx: int):
     ws = _load(token)

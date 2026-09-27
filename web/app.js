@@ -1326,10 +1326,15 @@ function buildGods(c, R) {
     ["財星 Wealth stars", "正財+偏財", ["正財", "偏財"]], ["官殺 Authority stars", "正官+七殺", ["正官", "七殺"]],
     ["印 Resource stars", "正印+偏印", ["正印", "偏印"]], ["食傷 Output stars", "食神+傷官", ["食神", "傷官"]],
     ["比劫 Peer stars", "比肩+劫財", ["比肩", "劫財"]]];
+  const bystem0 = {};
+  Object.keys(STEM_YANG).forEach((st) => { const g = godOfStem(dm, st); (bystem0[g] = bystem0[g] || []).push(st); });
+  const keyRow = `<div class="tgkey"><span class="tgkey-l">key · what each stem is to a ${elc(dm)} day master</span><div class="tgmap">${ALLGODS.map((g) =>
+    `<span class="tgm"><b style="color:${EL_COL[godEl(dm, g)]}">${g}</b>${(bystem0[g] || []).map((st) =>
+      `<i class="stemchip" style="color:${EL_COL[STEM_EL[st]]};border-color:${EL_COL[STEM_EL[st]]}">${st}</i>`).join("")}</span>`).join("")}</div></div>`;
   const g1f = rdFig({ tier: "hero", span: 7, extra: "rd-pair2", label: "十神 Ten-god bars", learn: 4, chart: bars,
     line: `Your chart runs on ${godc(dm, g1)} ${en(g1)} (${Math.round(p1)}%) — ${(c.tengods_legend[g1] || {}).meaning || GRP_THEME[grpOfGod(g1)]}.`,
     facts: [[g1, `${p1}%`], ["absent", `${absent.length} of 10 gods`]],
-    legend: `<div><b>Bands</b> ≥20% prominent · ≥8% present · &lt;8% faint · 0% absent.</div>
+    legend: `<div><b>Bands</b> ≥20% prominent · ≥8% present · &lt;8% faint · 0% absent.</div>${keyRow}<div class="sub">Whenever one of these stems arrives in a luck pillar or year (时运 tab), it brings that god's themes with it. The full stem-by-stem classification is the Pillars grid.</div>
       <table class="tgsides"><tr><th>Term</th><th>Gods</th><th>This chart</th></tr>${starRows.map(([t, d, gods]) => { const p = grp(gods);
         return `<tr><td><b>${t}</b></td><td class="sub">${d}</td><td>${p}% — ${band(p)}</td></tr>`; }).join("")}</table>
       ${Object.entries(c.tengods_pct).map(([g]) => `<div><b style="color:${EL_COL[godEl(dm, g)]}">●</b> <b>${g}</b> ${en(g)} — ${(c.tengods_legend[g] || {}).meaning || ""}</div>`).join("")}` });
@@ -1397,28 +1402,14 @@ function buildGods(c, R) {
         ${doms.map((d) => `<div class="cite"><b>${d.zh} ${d.en}</b> · ${d.band} — ${d.evidence.map(chip).join(" ")}</div>`).join("")}
         ${c.spouse_reading ? `<div class="cite"><b>婚戀:</b> ${c.spouse_reading.star_line} ${c.spouse_reading.palace_line}</div>` : ""}${legendList(8)}` });
   }
-  const bystem = {};
-  Object.keys(STEM_YANG).forEach((st) => { const g = godOfStem(dm, st); (bystem[g] = bystem[g] || []).push(st); });
-  const key = `<div class="tgkey"><span class="tgkey-l">key · what each stem is to a ${elc(dm)} day master</span><div class="tgmap">${ALLGODS.map((g) =>
-    `<span class="tgm"><b style="color:${EL_COL[godEl(dm, g)]}">${g}</b>${(bystem[g] || []).map((st) =>
-      `<i class="stemchip" style="color:${EL_COL[STEM_EL[st]]};border-color:${EL_COL[STEM_EL[st]]}">${st}</i>`).join("")}</span>`).join("")}</div></div>`;
-  const raw = `<div class="scrollx"><table class="rawtable"><tr><th></th>${POS.map((k) => `<th>${POS_LAB[k]}</th>`).join("")}</tr>
-    <tr><th>Stem</th>${POS.map((k) => `<td>${c.ten_gods[k] === "日主" ? "日主" : godc(dm, c.ten_gods[k])}</td>`).join("")}</tr>
-    <tr><th>藏干</th>${POS.map((k) => `<td>${(c.hidden_gods[k] || []).join("<br>")}</td>`).join("")}</tr></table></div>`;
-  const vis = POS.filter((k) => tgCanon(c.ten_gods[k]) === tgCanon(g1)), lab = (k) => POS_LAB[k].split(" ")[0].toLowerCase().replace(/^./, (x) => x.toUpperCase());
-  const hid = POS.filter((k) => (c.hidden_gods[k] || []).some((h) => h.includes(tgCanon(g1)) || h.includes(g1)));
-  const g7 = rdFig({ tier: "reference", span: 5, label: "原始数据 Raw pillar data", learn: 3, chart: key + raw,
-    line: vis.length ? `Your dominant ${godc(dm, g1)} sits as the visible stem in ${vis.length === 1 ? "the " : ""}${vis.map(lab).join(vis.length === 2 ? " and " : ", ")} pillar${vis.length > 1 ? "s" : ""}.`
-      : `Your dominant ${godc(dm, g1)} lives only in the hidden stems${hid.length ? ` — ${hid.map(lab).join(", ")}` : ""}.`,
-    facts: [[g1, `visible in ${vis.length} of 4 pillars`], ["藏干", `${POS.reduce((a, k) => a + (c.hidden_gods[k] || []).length, 0)} hidden stems`]],
-    legend: `${legendList(3)}<div>Whenever one of these stems arrives in a luck pillar or year (时运 tab), it brings that god's themes with it.</div>` });
+  // raw pillar data (G7) retired 2026-09-27: the Pillars grid carries every stem/hidden stem; its key lives in the bars' legend. Gods = 7 figures.
   let k1 = "", k2 = "";
   if (c.industries) {
     const F = c.industries.favourable || [], A = c.industries.avoid || [];
     const chart = `<div class="klist-ind">${F.map((it) => `<div class="cite"><b>Favourable ${elb(it.element)} ${elw(it.element)} industries</b> — ${it.industries}</div>`).join("")}
       <div class="cite">Understated: ${A.map((it) => `${elb(it.element)} (${it.industries.split(",")[0]}…)`).join("; ")} — not forbidden, just not where this chart recharges.</div></div>`;
     const f0 = F[0];
-    k1 = rdFig({ tier: "reference", span: 3, label: "行业五行 — favourable industries", learn: 12, chart,
+    k1 = rdFig({ tier: "reference", span: 6, label: "行业五行 — favourable industries", learn: 12, chart,
       line: f0 ? `${elw(f0.element)} suits you best — ${f0.industries.split(",").slice(0, 3).map((s) => s.trim()).join(", ")} top the list.` : "No favourable field is listed for this chart.",
       facts: [["宜", elbs(F.map((it) => it.element))], ["慎", elbs(A.map((it) => it.element))]], legend: legendList(12) });
   }
@@ -1432,7 +1423,7 @@ function buildGods(c, R) {
         <div class="kbar"><i style="width:${(Math.abs(x.score) / rmx * 100).toFixed(0)}%"></i></div><b>${x.score}</b></div>`).join("")}</div>` : "";
     const chart = `<div class="klist-head">Archetypes</div><div class="klist">${top.map((a, i) => krow(a, i, false)).join("")}${avoid.map((a, i) => krow(a, i, true)).join("")}</div>${roles}`;
     const a0 = top[0], short = (r) => clip(r.split(" — ")[0], 40);
-    k2 = rdFig({ tier: "reference", span: 4, label: "事业方向 Career archetypes ranked", learn: 12, chart,
+    k2 = rdFig({ tier: "reference", span: 6, label: "事业方向 Career archetypes ranked", learn: 12, chart,
       line: a0 ? `#1 fit: ${a0.en} (${a0.score} pts) — ${a0.reasons.slice(0, 2).map(short).join(", ")}.` : "No archetype is ranked for this chart.",
       facts: [a0 ? ["#1", `${a0.score} pts`] : null, avoid.length ? ["avoid", avoid.map((a) => a.zh).join("、")] : null].filter(Boolean),
       legend: `<div>Fifteen archetypes, each scored on the field's element against the 用神 lists, the ten-god working style (shares ≥8%) and 神煞 talents. ≥12 分 strong fit · 4–12 分 good fit · &lt;4 分 workable. Low-ranked fields are priced against the chart, never forbidden.</div>
@@ -1440,7 +1431,7 @@ function buildGods(c, R) {
         ${[...top, ...avoid].map((a) => `<div><b>${a.zh} ${a.en}</b> (${a.score} 分) — ${a.reasons.join("; ")}</div>`).join("")}${legendList(12)}` });
   }
   return rdSection("gods", "十神 Ten Gods", "What drives me?",
-    [rdGrid("hero", [g2, g1f]), rdGrid("secondary", [g8, g5]), rdGrid("secondary", [ld]), rdGrid("reference", [g7, k1, k2])],
+    [rdGrid("hero", [g2, g1f]), rdGrid("secondary", [g8, g5]), rdGrid("secondary", [ld]), rdGrid("reference", [k1, k2])],
     [R.narr(4), R.narr(3), R.stb(10), R.narr(10), R.stb(8), R.narr(8), R.stb(12), R.narr(12)]);
 }
 
@@ -1475,7 +1466,8 @@ function buildTiming(c, R) {
     legend: "The two cards are the energies currently overlaid on the birth chart — the active 10-year luck pillar and this year's pillar — labelled with their ten gods relative to this Day Master." });
   const RH = ((c.strategy || {}).s5 || {}).rhythm; let t6 = "";
   if (RH && RH.length) {
-    const cells = RH.map((r) => `<div class="rcell ${r.cls}"><small>${r.mon}</small><b style="color:${EL_COL[r.el]}">${r.br}</b><span>${elc(r.el)}</span></div>`).join("");
+    const nowBr = (c.daily || {}).now_month_branch;
+    const cells = RH.map((r) => `<div class="rcell ${r.cls}${r.br === nowBr ? " now" : ""}"><small>${r.mon}</small><b style="color:${EL_COL[r.el]}">${r.br}</b><span>${elc(r.el)}</span>${r.br === nowBr ? `<em class="rnow">▲ now</em>` : ""}</div>`).join("");
     const order = RH.map((r) => r.mon), ranges = (ms) => { const idx = ms.map((m) => order.indexOf(m)).sort((a, b) => a - b), out = []; let i = 0;
       while (i < idx.length) { let j = i; while (j + 1 < idx.length && idx[j + 1] === idx[j] + 1) j++;
         out.push(i === j ? order[idx[i]] : `${order[idx[i]]}–${order[idx[j]]}`); i = j + 1; } return out.join(", "); };
@@ -1488,15 +1480,17 @@ function buildTiming(c, R) {
   }
   const short = (d) => d.flag === "quiet" ? "·" : d.note.split(" — ")[0].replace(/^年支./, "");
   const cell = (d) => `<td class="wf-${d.flag}"><b>${d.flag === "window" ? "◉" : d.flag === "caution" ? "⚠" : ""}</b> <span class="wshort">${short(d)}</span></td>`;
-  const table = `<div class="scrollx"><table class="wtable"><tr><th>Year</th><th>Overall</th><th>事業 Career</th><th>財富 Wealth</th><th>感情 Relationship</th><th>健康 Health</th></tr>
-    ${W.years.map((yr, yi) => { const full = [["事業", yr.career], ["財富", yr.wealth], ["感情", yr.relationship], ["健康", yr.health]]
-        .filter(([, d]) => d.flag !== "quiet").map(([l, d]) => `<b>${l}:</b> ${d.note}`).join("<br>") || "quiet year";
-      return `<tr class="wrow" data-yi="${yi}"><th>${yr.y} ${yr.gz}</th>
+  const nowY = c.daily && c.daily.start ? +c.daily.start.slice(0, 4) : null;
+  const hasSM = W.years.length && W.years[0].study && W.years[0].movement;
+  const table = `<div class="scrollx"><table class="wtable"><tr><th>Year</th><th>Overall</th><th>事業 Career</th><th>財富 Wealth</th><th>感情 Relationship</th><th>健康 Health</th>${hasSM ? "<th>学业 Study</th><th>出行 Movement</th>" : ""}</tr>
+    ${W.years.map((yr, yi) => { const full = [["事業", yr.career], ["財富", yr.wealth], ["感情", yr.relationship], ["健康", yr.health], ...(hasSM ? [["学业", yr.study], ["出行", yr.movement]] : [])]
+        .filter(([, d]) => d && d.flag !== "quiet").map(([l, d]) => `<b>${l}:</b> ${d.note}`).join("<br>") || "quiet year";
+      return `<tr class="wrow${yr.y === nowY ? " now" : ""}" data-yi="${yi}"><th>${yr.y} ${yr.gz}${yr.y === nowY ? ' <em class="rnow">▲ now</em>' : ""}</th>
         <td class="wf-${yr.overall === "peak" ? "window" : yr.overall === "careful" ? "caution" : "quiet"}"><b>${yr.overall_zh}</b></td>
-        ${cell(yr.career)}${cell(yr.wealth)}${cell(yr.relationship)}${cell(yr.health)}</tr>
-        <tr class="wdetail" hidden><td colspan="6">${full}</td></tr>`; }).join("")}</table></div>`;
-  const DIM = { career: "career", wealth: "wealth", relationship: "relationship", health: "health" };
-  const score = (yr, flag) => Object.keys(DIM).filter((k) => yr[k].flag === flag);
+        ${cell(yr.career)}${cell(yr.wealth)}${cell(yr.relationship)}${cell(yr.health)}${hasSM ? cell(yr.study) + cell(yr.movement) : ""}</tr>
+        <tr class="wdetail" hidden><td colspan="${hasSM ? 8 : 6}">${full}</td></tr>`; }).join("")}</table></div>`;
+  const DIM = { career: "career", wealth: "wealth", relationship: "relationship", health: "health", ...(hasSM ? { study: "study", movement: "movement" } : {}) };
+  const score = (yr, flag) => Object.keys(DIM).filter((k) => yr[k] && yr[k].flag === flag);
   const best = W.years.map((yr) => [yr, score(yr, "window")]).sort((a, b) => b[1].length - a[1].length)[0];
   const worst = W.years.map((yr) => [yr, score(yr, "caution")]).sort((a, b) => b[1].length - a[1].length)[0];
   const list = (ks) => ks.map((k) => DIM[k]).join(ks.length === 2 ? " & " : ", ");
@@ -1504,10 +1498,10 @@ function buildTiming(c, R) {
     line: `${best && best[1].length ? `Act in ${best[0].y} ${best[0].gz} — ${list(best[1])} window${best[1].length > 1 ? "s align" : ""}.` : "No peak window in the next ten years — steady years, build quietly."}
       ${worst && worst[1].length ? ` Be careful in ${worst[0].y} ${worst[0].gz} — ${worst[1].length} caution${worst[1].length > 1 ? "s" : ""}.` : ""}`,
     facts: [best && best[1].length ? ["act", `${best[0].y} ${best[0].gz}`] : null, worst && worst[1].length ? ["careful", `${worst[0].y} ${worst[0].gz}`] : null].filter(Boolean),
-    legend: `<div>The decade is the climate, the year the weather. Each year is checked per dimension — career (month-pillar activation or clash, 官殺 arrival), wealth (財星 arrival with a can-the-chart-hold-it check, 財庫 vault years), relationship (桃花 and spouse-palace 日支 activation) and health (years that feed an excess or replenish a weak element). Tap a year row for the full notes.</div>${legendList(13)}` });
+    legend: `<div>The decade is the climate, the year the weather. Each year is checked per dimension — career (month-pillar activation or clash, 官殺 arrival), wealth (財星 arrival with a can-the-chart-hold-it check, 財庫 vault years), relationship (桃花 and spouse-palace 日支 activation), health (years that feed an excess or replenish a weak element)${hasSM ? ", study (印 arrival, 文昌/學堂 years, month-pillar 合; 沖 month or 傷官 against a prominent 正官 as cautions) and movement (驛馬 years, 合 to the day branch; 沖 to the year or day branch as cautions)" : ""}. Tap a year row for the full notes.</div>${legendList(13)}` });
   const daily = dailyFig(c);
   return rdSection("timing", "时运 Timing", "Where am I now?",
-    [rdGrid("hero", [t1]), rdGrid("secondary", [p8, t6]), rdGrid("secondary", [t2]), rdGrid("secondary", [daily])],
+    [rdGrid("hero", [t1]), rdGrid("secondary", [daily]), rdGrid("secondary", [t6, p8]), rdGrid("secondary", [t2])],
     [R.stb(13), R.narr(13), R.narr(6)]);
 }
 

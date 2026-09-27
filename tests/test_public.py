@@ -305,3 +305,18 @@ def test_person_reading_13_sections():
     assert d["strategy"]["s12"]["advice"] and d["strategy"]["s13"]["wealth_pattern"]
     assert client.get(f"/w/{tok}/person/0/reading").status_code == 200
     assert client.get(f"/w/{tok}/person/5/reading").status_code == 404
+
+
+def test_put_person_edits_birth_and_name():
+    r = client.post("/api/pub/workspace", json={"name": "Edit A", "sex": "M", "dob": "1988-03-15", "birth_time": "09:30"})
+    assert r.status_code == 200
+    tok = r.json()["token"]
+    before = client.get(f"/api/pub/w/{tok}/person/0/chart").json()["pillars"]["day"]
+    r = client.put(f"/api/pub/w/{tok}/person/0", json={"name": "Edit B", "sex": "F", "dob": "1990-11-02", "birth_time": "14:20"})
+    assert r.status_code == 200
+    ws = r.json()
+    assert ws["people"][0]["name"] == "Edit B" and ws["people"][0]["sex"] == "F" and ws["people"][0]["dob"] == "1990-11-02"
+    after = client.get(f"/api/pub/w/{tok}/person/0/chart").json()["pillars"]["day"]
+    assert after != before
+    assert client.put(f"/api/pub/w/{tok}/person/7", json={"name": "x", "sex": "M", "dob": "1990-01-01"}).status_code == 404
+
