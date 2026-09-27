@@ -702,9 +702,14 @@ tr.wdetail td{background:#fbf8ef;font-size:12px;line-height:1.5}
 .charcard .cfav .l{font-size:12px;color:#8a6d00;font-weight:700;letter-spacing:.02em;margin-right:2px}
 .charcard .cfav small{color:var(--muted)}
 .charcard .cfav .chev{color:var(--accent);font-weight:900;font-size:14px}
-.rd-synth-note{border-top:1px solid var(--line);margin:6px 0 4px;padding:8px 0 2px}
-.rd-synth-kicker{display:block;font-size:11px;font-weight:600;letter-spacing:.3px;color:var(--muted);margin-bottom:3px}
-.rd-synth-lede{margin:0;font-size:14px;font-weight:500;line-height:1.55;color:var(--ink)}
+.rd-synth-note{margin:10px 0 6px;padding:12px 16px 10px;border-left:4px solid var(--accent);background:color-mix(in srgb,var(--accent) 6%,var(--card));border-radius:0 10px 10px 0}
+.rd-synth-kicker{display:block;font-size:14px;font-weight:700;letter-spacing:.3px;color:var(--accent);margin-bottom:6px}
+.rd-synth-lede{margin:0;font-size:20px;font-weight:600;line-height:1.45;color:var(--accent);font-family:Georgia,"Songti SC","Noto Serif CJK SC","Noto Serif SC","SimSun",serif}
+.rd-synth-more>summary{font-weight:700}
+@media (max-width:720px){.rd-synth-lede{font-size:18px}}
+.pltable th small,.aftable th small{display:block;font-size:10px;font-weight:500;color:var(--muted)}
+.pltable th,.aftable th{white-space:nowrap;vertical-align:top}.pdir{color:var(--accent);font-size:15px}
+.eldir td{vertical-align:top}.afhits{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .rd-synth-more{margin-top:4px}
 .rd-synth-more>summary{cursor:pointer;list-style:none;font-size:13px;font-weight:600;color:var(--accent)}
 .rd-synth-more>summary::-webkit-details-marker{display:none}

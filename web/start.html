@@ -288,7 +288,8 @@ function personCard(p, i) {
           <div class="fv">${v}</div></div>`).join("")}
     </div>
     <div class="fcareer"><div class="fl"><span class="dz">行业五行</span><span class="den">Industries</span></div>
-      <div class="fv find">${(p.industries || []).map((it) => `<b style="color:${EL_COL[it.element] || "inherit"}">${it.industries.split(",").slice(0, 2).map((x) => x.trim()).join(", ")}</b>`).join(" · ") || "<span class='sub'>—</span>"}</div></div>
+      <div class="fv find">${(() => { const I = p.industries || [], k = Math.ceil(6 / Math.max(I.length, 1));
+        return I.map((it) => `<b style="color:${EL_COL[it.element] || "inherit"}">${it.industries.split(",").slice(0, k).map((x) => x.trim()).join(", ")}</b>`).join(" · ") || "<span class='sub'>—</span>"; })()}</div></div>
     ${p.sharpest_axis ? `<div class="fcareer"><div class="fl"><span class="dz">性格</span><span class="den">Personality</span></div>
       <div class="fv fpers"><b>${p.sharpest_axis.verdict}</b> — <b style="color:${EL_COL[p.sharpest_axis.element] || "inherit"}">${p.sharpest_axis.label}</b><small>${p.sharpest_axis.axis}</small></div></div>` : ""}
     <div class="dhead">人生领域 Life domains</div>

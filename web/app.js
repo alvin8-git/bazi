@@ -1558,7 +1558,13 @@ function buildCompass(c, R) {
     <p class="cite" style="margin:0 0 8px">Favourable ${elbs(fav)} · avoid ${elbs(unf)} · colours <b>${cols.join("、")}</b></p>
     ${c.xiji ? `<div class="scrollx"><table class="xiji htable">${c.xiji.map((r) => `<tr><th>${r.band} <span class="sub">${r.zh}</span></th>
       <td>${r.elements.map((e) => elb(e)).join(" ")}</td><td class="sub">${r.gods.join("·")}</td></tr>`).join("")}</table></div>` : ""}`;
-  const c34 = rdFig({ tier: "hero", span: 7, extra: "rd-pair2", label: "用神 the medicine", learn: 5, chart,
+  const EL_DIR = { 木: ["东 E", "震·巽"], 火: ["南 S", "離"], 土: ["西南·东北 SW/NE", "坤·艮 (centre)"], 金: ["西 W", "乾·兌"], 水: ["北 N", "坎"] };
+  const EL_ROOM = { 木: "east wall, plants and timber, green accents", 火: "south wall, warm light, red/orange accent",
+    土: "centre or SW/NE, ceramics and stone, yellow/brown tones", 金: "west wall, metal frames and white/gold", 水: "north wall, glass or a water feature, blue/black" };
+  const dirTable = `<div class="scrollx"><table class="htable eldir"><tr><th>用神</th><th>方位 direction</th><th>宫 palace</th><th>in the room</th></tr>
+    ${fav.map((e) => `<tr><td>${elb(e)} ${EL_EN[e]}</td><td><b>${EL_DIR[e][0]}</b></td><td>${EL_DIR[e][1]}</td><td class="sub">${EL_ROOM[e]}</td></tr>`).join("")}</table></div>`;
+  const chart2 = dirTable + chart;
+  const c34 = rdFig({ tier: "hero", span: 7, extra: "rd-pair2", label: "五行方位 · where the medicine sits", learn: 5, chart: chart2,
     line: `Add ${elw(fav[0])} ${elc(fav[0])}${colEn ? ` (${colEn})` : ""} through lighting or an accent wall; keep ${unf.map((e) => EL_EN[e]).join("/")} ${unf.map(elc).join("")} out of your main room.`,
     facts: [["用神", elbs(fav)], ["忌神", elbs(unf)], c.tiaohou ? ["调候", c.tiaohou.verdict] : null].filter(Boolean),
     legend: `<div><b>Technique:</b> 扶抑 supports a weak chart or restrains a strong one; 调候 corrects its season — for this chart, add ${fav.map((e) => EL_EN[e]).join(" and ")}, keep ${unf.map((e) => EL_EN[e]).join(", ")} light.</div>
@@ -1566,7 +1572,26 @@ function buildCompass(c, R) {
       ${c.element_relations ? `<div class="cite"><b>In god vocabulary:</b> your 用神 ${fav.map((el) => { const f = Object.values(c.element_relations.flows).find((x) => x.el === el);
         return `${elb(el)} arrives as <b>${f ? f.role : "—"}</b>`; }).join(" · ")} — those life-areas ARE the medicine.</div>` : ""}
       ${(c.yongshen.citations || []).map((x) => `<div class="cite"><b>${x.source_ref}:</b> ${x.explanation}</div>`).join("")}${legendList(5)}` });
-  return rdSection("compass", "方位 Compass", "Which way do I face?", [rdGrid("hero", [c1, c34])],
+  const PL = c.placements || [], AF = c.afflictions;
+  const bed = PL.find((r) => r.key === "bed"), desk = PL.find((r) => r.key === "desk");
+  const c2 = PL.length ? rdFig({ tier: "secondary", span: 7, label: "安位 · placements", learn: 7,
+    chart: `<div class="scrollx"><table class="htable pltable"><tr><th>位</th><th>方向 direction</th><th>依据 rule</th></tr>
+      ${PL.map((r) => `<tr><th>${r.zh}<small>${r.en}</small></th><td><b class="pdir">${r.dir}</b> ${r.palace}${r.star ? ` <span class="tag">${r.star}</span>` : r.branch ? ` <span class="tag">${r.branch}</span>` : ""}</td><td class="sub">${r.rule}</td></tr>`).join("")}</table></div>`,
+    line: `Bed head to the <b>${bed.dir}</b> (${bed.star}), desk facing <b>${desk.dir}</b> (${desk.star}).`,
+    facts: [["床头", bed.dir], ["书桌", desk.dir], ["文昌", (PL.find((r) => r.key === "wenchang") || {}).dir || "—"], ["桃花", (PL.find((r) => r.key === "taohua") || {}).dir || "—"]],
+    legend: `<div>Long-stay items follow the 八宅 stars of your 命卦: 天醫 for the bed, 生氣 for desk and door, 延年 for the couples' bed, 伏位 for a quiet room. The three corners are personal 神煞 — 文昌 by day stem, 桃花 and 驛馬 by the year-branch trine — mapped to their palace.</div>
+      <div class="cite">A direction is where the head or face points; when the room cannot allow the first choice, take the next favourable star, never an unfavourable one.</div>` }) : "";
+  const c5 = AF ? rdFig({ tier: "secondary", span: 5, label: `流年煞 · ${AF.year} afflictions`, learn: 7,
+    chart: `<table class="htable aftable">
+      <tr><th>太岁 <small>Grand Duke</small></th><td><b class="pdir">${AF.taisui.dir}</b> ${AF.taisui.palace} · ${AF.taisui.branch}</td></tr>
+      <tr><th>岁破 <small>year breaker</small></th><td><b class="pdir">${AF.suipo.dir}</b> ${AF.suipo.palace} · ${AF.suipo.branch}</td></tr>
+      <tr><th>三煞 <small>three killings</small></th><td><b class="pdir">${AF.sansha.dirs.join(" · ")}</b> ${AF.sansha.palaces.join("·")} · ${AF.sansha.branches}</td></tr></table>
+      ${AF.collisions.length ? `<div class="afhits">${AF.collisions.map((h) => `<div class="tag warn">${h.affliction} on ${h.star} ${h.dir}</div>`).join("")}</div>` : ""}`,
+    line: AF.collisions.length ? `${AF.collisions[0].note.replace(/^your/, "Your")}.` : `None of this year's afflictions sits on your four favourable sectors.`,
+    facts: [["太岁", AF.taisui.dir], ["岁破", AF.suipo.dir], ["三煞", AF.sansha.dirs.join("/")]],
+    legend: `<div><b>太岁</b> — ${AF.taisui.rule}</div><div><b>岁破</b> — ${AF.suipo.rule}</div><div><b>三煞</b> — ${AF.sansha.rule}</div>
+      ${AF.collisions.map((h) => `<div class="cite">${h.affliction} on your ${h.star} (${h.dir}): ${h.note.split(" — ")[1] || h.note}.</div>`).join("")}` }) : "";
+  return rdSection("compass", "方位 Compass", "Which way do I face, sleep and work?", [rdGrid("hero", [c1, c34]), rdGrid("secondary", [c2, c5])],
     [R.stb(5), R.narr(5), R.narr(7)]);
 }
 
@@ -1613,7 +1638,7 @@ function synthNote(sy) {
       ${sy.length > 1 ? `<details class="rd-synth-more"><summary>read the synthesis ›</summary><p>${sy.slice(1).join(" ")}</p></details>` : ""}</div>`;
   }
   const F = (sy.findings || []).map((f) => `<p class="rd-synth-p"><b>${f.label}.</b> ${f.text}</p>`).join("");
-  return `<div class="rd-synth-note"><span class="rd-synth-kicker">綜合論斷 The Synthesis — the geomancer's report</span>
+  return `<div class="rd-synth-note"><span class="rd-synth-kicker">综合论断 The Synthesis — the geomancer's report</span>
     <p class="rd-synth-lede">${sy.summary || ""}</p>
     <details class="rd-synth-more"><summary>read the full report ›</summary>
       <div class="rd-synth-body">
@@ -1646,7 +1671,7 @@ async function renderPerson(name) {
     "assessment, plan — every sentence a rule over the chart's own numbers.<br>" +
     "<b>The five tabs, five questions.</b> 四柱 Pillars — what am I made of? · 五行 Elements — what is out of balance, and which " +
     "element is the medicine? · 十神 Gods — what drives me? · 时运 Timing — where am I now (decades, this year, the next ten " +
-    "years, the next 30 days)? · 方位 Compass — which way do I face?<br>" +
+    "years, the next 30 days)? · 方位 Compass — which way do I face, sleep and work?<br>" +
     "<b>How to read a figure.</b> Bold header → the chart → the accented line beneath it is the interpretation (the one sentence " +
     "to take away) → small facts → the <b>?</b> button opens the legend for that figure → <b>learn ›</b> opens the background article.<br>" +
     "<b>Colour key.</b> <b style='color:#1e8e3e'>木 Wood</b> · <b style='color:#c5221f'>火 Fire</b> · <b style='color:#8a6d1f'>土 Earth</b> · " +

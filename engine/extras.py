@@ -168,3 +168,71 @@ def harmony_matrix(charts: dict, ys_map: dict) -> dict:
                           "band": p["band"],
                           "chips": [c["label"] for c in p["chips"]]})
     return {"names": names, "pairs": pairs}
+
+
+# ---- Compass tab (2026-09-27): placements + this year's afflictions ------------
+PALACE_DIR = {"坎": "N", "艮": "NE", "震": "E", "巽": "SE", "離": "S", "坤": "SW", "兌": "W", "乾": "NW"}
+_GOOD_STARS = ("生氣", "天醫", "延年", "伏位")
+
+
+def placements(chart) -> list[dict]:
+    """Where to put the bed, desk, door and study corner — 八宅 star → palace
+    for the long-stay items, plus the personal 文昌 / 桃花 / 驛馬 branches
+    (classical 神煞 by day stem / year-branch trine) mapped to their palace."""
+    from .shensha import TRINE_STARS, WENCHANG
+    gua = ming_gua(chart.lichun_year, chart.sex)
+    stars = youxing_stars(gua)                       # palace → star
+    pal_of = {s: pal for pal, s in stars.items()}    # star → palace
+    yb = chart.pillars["year"].branch
+    trine = next(v for grp, v in TRINE_STARS.items() if yb in grp)
+    wc = WENCHANG[chart.day_master]
+
+    def row(key, zh, en, star=None, branch=None, rule=""):
+        pal = pal_of[star] if star else BRANCH_PALACE[branch]
+        return {"key": key, "zh": zh, "en": en, "palace": pal, "dir": PALACE_DIR[pal],
+                "star": star or "", "branch": branch or "", "rule": rule}
+    return [
+        row("bed", "床头", "bed head", star="天醫",
+            rule="八宅: 天醫 for rest and recovery; 生氣 is the alternate when the room cannot allow it"),
+        row("desk", "书桌", "work desk", star="生氣",
+            rule="八宅: face 生氣 for vitality and output"),
+        row("door", "大门", "main door", star="生氣",
+            rule="八宅: the door draws 氣 — 生氣 first, 延年 second"),
+        row("couple", "夫妻床", "couples' bed", star="延年",
+            rule="八宅: 延年 governs longevity and harmony between partners"),
+        row("quiet", "静室", "quiet study / retreat", star="伏位",
+            rule="八宅: 伏位 is the stable, low-drama sector for reflection"),
+        row("wenchang", "文昌位", "study corner", branch=wc,
+            rule=f"文昌 by day stem {chart.day_master} → {wc}; the classical seat for study and exams"),
+        row("taohua", "桃花位", "relationship corner", branch=trine["桃花"],
+            rule=f"桃花 of the {yb} trine → {trine['桃花']}; activate for social and romantic life"),
+        row("yima", "驿马位", "travel corner", branch=trine["驛馬"],
+            rule=f"驛馬 of the {yb} trine → {trine['驛馬']}; movement, travel and relocation"),
+    ]
+
+
+def compass_afflictions(chart, lichun_year: int) -> dict:
+    """annual_afflictions for the year plus the collisions with this person's
+    four favourable 八宅 sectors — the geomancer's pre-renovation check."""
+    from .liunian import annual_afflictions
+    a = annual_afflictions(lichun_year)
+    stars = youxing_stars(ming_gua(chart.lichun_year, chart.sex))
+    hits = []
+    for key, zh in (("taisui", "太歲"), ("suipo", "歲破")):
+        pal = a[key]["palace"]
+        if stars[pal] in _GOOD_STARS:
+            hits.append({"affliction": zh, "palace": pal, "dir": PALACE_DIR[pal], "star": stars[pal],
+                         "note": f"your {stars[pal]} sector carries {zh} this year — "
+                                 + ("sit with your back to it, do not renovate" if key == "taisui"
+                                    else "no ground-breaking or heavy disturbance there")})
+    for pal in a["sansha"]["palaces"]:
+        if stars[pal] in _GOOD_STARS:
+            hits.append({"affliction": "三煞", "palace": pal, "dir": PALACE_DIR[pal], "star": stars[pal],
+                         "note": f"your {stars[pal]} sector carries 三煞 this year — facing it is fine, avoid sitting toward it or renovating"})
+    a["year"] = lichun_year
+    a["collisions"] = hits
+    for k in ("taisui", "suipo"):
+        a[k]["dir"] = PALACE_DIR[a[k]["palace"]]
+    a["sansha"]["dirs"] = [PALACE_DIR[x] for x in a["sansha"]["palaces"]]
+    return a
+

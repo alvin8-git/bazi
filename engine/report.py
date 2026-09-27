@@ -19,6 +19,7 @@ from .sectors import load_rooms
 from .wuxing import ELEMENT_EN, mountain_of_degrees
 from .xuankong import annual_chart, annual_star, natal_chart_from_degrees
 from .yongshen import yong_shen
+from .extras import compass_afflictions, placements
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -91,6 +92,8 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
     p["synthesis"] = clinical_report(p)
     p["daily"] = daily_fortune(c, ys)          # next 30 days from today, six activities
     p["career_roles"] = career_roles(c, ys)
+    p["placements"] = placements(c)
+    p["afflictions"] = compass_afflictions(c, year)
     return p
 
 
