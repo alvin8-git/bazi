@@ -34,7 +34,8 @@ from engine.bazhai import STAR_SCORE, gua_group, ming_gua, youxing_stars
 from engine.bazi import TEN_GOD_EN, TRUE_SOLAR, build_chart
 from engine.careers import career_paths
 from engine.domains import industry_map, life_domains
-from engine.extras import harmony_matrix
+from engine.extras import compass_afflictions, harmony_matrix
+from engine.extras import placements as person_placements
 from engine.interpret import STRUCTURE_TEXT
 from engine.htmlreport import _tosimp
 from engine.jianchu import movein_dates, sitting_branches
@@ -706,7 +707,14 @@ def _placement(assignment: dict, rooms: list[dict], rooms_by_id: dict,
     """P3: per assigned bedroom occupant — ranked headboard walls, desk spot,
     and doctrine flags; plus 門對門 pairs across the whole trace. All from the
     traced geometry + each person's 八宅 stars."""
-    from engine.placement import door_pairs, propose_bed, propose_desk
+    from engine.placement import (SITE_CHECKS, DESK_SIDE_REMEDY, annotate_bed_flags,
+                                  clearance_warnings, desk_door_side, desk_rect_for,
+                                  door_pairs, propose_bed, propose_desk)
+    dims = [min(_bbox(r["poly"])[2], _bbox(r["poly"])[3]) for r in rooms
+            if r["id"] != "entrance"]
+    dims.sort()
+    # no metre scale on a traced plan: assume the median short side is ~3.0 m (approx)
+    m_per_unit = (3.0 / dims[len(dims) // 2]) if dims and dims[len(dims) // 2] else 0.0
     rows = []
     for rid, names in assignment.items():
         room = rooms_by_id[rid]
@@ -718,20 +726,68 @@ def _placement(assignment: dict, rooms: list[dict], rooms_by_id: dict,
             if c is None:
                 continue
             stars = youxing_stars(ming_gua(c.lichun_year, c.sex))
+            beds = annotate_bed_flags(propose_bed(rect, doors, windows, upb, stars)[:3])
+            desk = propose_desk(rect, doors, upb, stars, _GOOD_STARS)
+            warnings = []
+            if desk:
+                side = desk_door_side(rect, desk["edge"], doors)
+                desk["door_side"] = side
+                desk["remedy"] = DESK_SIDE_REMEDY[side]
+                if beds and m_per_unit:
+                    drect = desk_rect_for(rect, desk["edge"], beds[0]["bed"], doors,
+                                          0.6 / m_per_unit, 1.2 / m_per_unit)
+                    desk["rect"] = [round(v, 1) for v in drect]
+                    warnings = clearance_warnings(beds[0]["bed"], beds[0]["edge"], drect,
+                                                  m_per_unit, approx=True)
             rows.append({"room": room["label"], "room_id": rid, "person": n,
-                         "has_doors": bool(doors),
-                         "beds": propose_bed(rect, doors, windows, upb,
-                                             stars)[:3],
-                         "desk": propose_desk(rect, doors, upb, stars,
-                                              _GOOD_STARS)})
-    dims = [min(_bbox(r["poly"])[2], _bbox(r["poly"])[3]) for r in rooms
-            if r["id"] != "entrance"]
-    dims.sort()
+                         "has_doors": bool(doors), "beds": beds, "desk": desk,
+                         "warnings": warnings,
+                         "site_checks": [dict(sc) for sc in SITE_CHECKS]})
     gap = 0.6 * dims[len(dims) // 2] if dims else 0
     pairs = door_pairs([{"id": r["id"], "label": r["label"],
                          "rect": _bbox(r["poly"]), "doors": r.get("doors", [])}
                         for r in rooms if r.get("doors")], gap)
     return {"rows": rows, "door_pairs": pairs}
+
+
+def _room_placements(rooms: list[dict], charts: dict) -> dict:
+    """D1/D2: each person's 文昌/桃花/驛馬 palace and this year's afflictions, joined to the
+    traced rooms by palace. Every traced room gets an entry (possibly empty)."""
+    per_person = {}
+    for name, c in charts.items():
+        pl = [p for p in person_placements(c) if p["key"] in ("wenchang", "taohua", "yima")]
+        af = compass_afflictions(c, YEAR)
+        per_person[name] = (pl, af)
+    out = {}
+    for r in rooms:
+        if r["id"] == "entrance":
+            continue
+        pal = r.get("palace_pie")
+        pls, hits = [], []
+        for name, (pl, af) in per_person.items():
+            for p in pl:
+                if p["palace"] == pal:
+                    pls.append({"key": p["key"], "zh": p["zh"], "en": p["en"],
+                                "branch": p["branch"], "person": name, "rule": p["rule"]})
+            for key, zh in (("taisui", "太岁"), ("suipo", "岁破")):
+                if af[key]["palace"] == pal:
+                    hits.append({"affliction": zh, "rule": af[key]["rule"], "person": None})
+            if pal in af["sansha"]["palaces"]:
+                hits.append({"affliction": "三煞", "rule": af["sansha"]["rule"], "person": None})
+            for h in af["collisions"]:
+                if h["palace"] == pal:
+                    hits.append({"affliction": _tosimp(h["affliction"]), "rule": _tosimp(h["note"]),
+                                 "person": name, "star": _tosimp(h["star"])})
+        # de-duplicate the impersonal hits (same for every person)
+        seen, dedup = set(), []
+        for h in hits:
+            k = (h["affliction"], h["person"], h.get("star"))
+            if k in seen:
+                continue
+            seen.add(k); dedup.append(h)
+        out[r["id"]] = {"palace": pal, "placements": pls,
+                        "afflictions": {"year": YEAR, "hits": dedup}}
+    return out
 
 
 def _works_timing(rooms: list[dict], year: int) -> dict:
@@ -903,11 +959,24 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
         [r for r in rooms if r["id"] != "entrance"], natal,
         {rid: [_tosimp(n) for n in ns] for rid, ns in assignment.items()},
         ys_map, req.period)
+    result["room_placements"] = _room_placements(rooms, charts)
+    for rid, rp in result["room_placements"].items():
+        if rid in result["room_briefs"]:
+            result["room_briefs"][rid]["placements"] = rp["placements"]
+            result["room_briefs"][rid]["afflictions"] = rp["afflictions"]
     if assignment:
         result["colors"] = _room_colors(assignment, rooms_by_id, ys_map,
                                         natal, req.period)
         result["placement"] = _placement(assignment, rooms, rooms_by_id,
                                          charts, upb)
+        for row in result["placement"]["rows"]:
+            b = result["room_briefs"].get(row["room_id"])
+            if b is None:
+                continue
+            b.setdefault("beds", []).append({
+                "person": row["person"], "top": row["beds"][0] if row["beds"] else None,
+                "desk": row["desk"], "warnings": row["warnings"],
+                "site_checks": row["site_checks"], "has_doors": row["has_doors"]})
     home = _home_of(ws, hid)
     home.update({"facing_deg": req.facing_deg, "image_up_bearing": upb,
                  "period": req.period,

@@ -135,6 +135,16 @@ def test_analyze_fengshui():
     assert set(d["room_briefs"]) == {"master", "living"}
     assert d["room_briefs"]["master"]["colours_use"] and "severity" in d["room_briefs"]["master"]
     assert d["room_briefs"]["master"]["palace"] == d["main"]["rooms"]["master"]
+    # P2: placements/afflictions joined to every traced room, bed rows on assigned rooms
+    assert set(d["room_placements"]) == {"master", "living"}
+    for rid in ("master", "living"):
+        assert "placements" in d["room_briefs"][rid] and "afflictions" in d["room_briefs"][rid]
+        assert d["room_briefs"][rid]["afflictions"]["year"] == d["year"]
+    mb = d["room_briefs"]["master"]["beds"]
+    assert len(mb) == 2 and all("site_checks" in r and r["site_checks"] for r in mb)
+    for r in mb:
+        if r["desk"]:
+            assert r["desk"]["door_side"] in ("behind-left", "behind-right", "square-behind", "side", "front", "none")
     assert d["room_briefs"]["master"]["occupants"] and d["colors"]
     assert d["suggestion"]["assignment"]["Master"]
     assert isinstance(d["suggestion"]["household_total"], float)

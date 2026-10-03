@@ -259,3 +259,151 @@ def door_pairs(rooms: list[dict], gap_limit: float) -> list[dict]:
                               "remedy": "keep both doors closed as a standing "
                               "habit; a corridor light softens the line"})
     return pairs
+
+
+# ---------------- P2 (design doc v2 C2, C4, C5, C6, C7, B8) ----------------
+# Remedy order 避 → 擋 → 化: move first, block second, dissolve last.
+REMEDY_ORDER = {
+    "menchong": "避: shift the bed along the same wall out of the door line · 擋: if it "
+                "cannot move, a headboard-height closed unit or screen between pillow and "
+                "door · 化: door closed at night",
+    "strip": "避: slide the bed clear of the entry strip · 擋: a wardrobe, desk or high "
+             "shelf stationed between door and bed intercepts the strip · 化: door closed "
+             "at night",
+    "behind": "擋: soft-close hinge or doorstop, a bedside unit at headboard height on the "
+              "pillow's door side · 化: door closed at night",
+    "door-wall": "避: pillow at the far end of the wall from the door; a bedside mirror is "
+                 "NOT the fix in a bedroom",
+    "window-head": "避: head to a solid wall · 擋: if not possible, a tall solid headboard "
+                   "with heavy curtains behind it",
+    "bay-head": "避: use the bay for the bed's FLANK (platform with a raised solid rail) and "
+                "keep the pillow on a solid wall",
+}
+FORM_FIRST = ("形先於理 — a live door line is removed before the compass direction is "
+              "optimised; a flagged wall ranks below a cleaner one even when its star is "
+              "marginally better")
+DESK_SIDE_REMEDY = {
+    "behind-left": "solid high-back chair, door closed while studying, no mirror to 'see the door'",
+    "behind-right": "solid high-back chair, door closed while studying, no mirror to 'see the door'",
+    "square-behind": "move the desk so the door sits to the side; if it cannot move, a "
+                     "high-back chair and a screen or tall unit behind the chair",
+    "side": "fine — the sitter sees the door without sitting in its line",
+    "front": "fine — commanding view of the door; keep the chair out of the entry strip",
+    "none": "no door marked — mark it in the trace to unlock the door-line audit",
+}
+SITE_CHECKS = [
+    {"code": "beam", "zh": "橫樑壓頂", "text": "no structural beam or ceiling bulkhead over the "
+     "pillow zone — one photograph of the ceiling above the intended head settles it; if one "
+     "crosses, shift the pillow clear or box it with a false ceiling first", "doctrine": "形勢"},
+    {"code": "head-storage", "zh": "床頭無物", "text": "nothing stored above or behind the sleeping "
+     "head; the head-end panel stays a plain solid back", "doctrine": "形勢 [modern convention]"},
+    {"code": "headboard-solid", "zh": "靠山", "text": "the headboard piece must be solid, full "
+     "height and closed — a desk hutch is light, open and used, and is not a headboard",
+     "doctrine": "形勢 (靠山)"},
+    {"code": "mirror-glass", "zh": "鏡對床", "text": "no mirror facing the bed; no clear or mirror "
+     "glass on a run beside a bed — reeded or frosted glass in timber frames only, upper "
+     "section, solid below", "doctrine": "形勢 (鏡對床) [modern convention on glass]"},
+]
+OVERHEAD_SEAT = {"code": "overhead-seat", "zh": "座上壓頂", "text": "no wall cabinet or shelf "
+                 "cantilevered over the seated head — the same form as a beam; a high-level run "
+                 "stops before the desk", "remedy": "stop high-level joinery at the bookcase; "
+                 "shelving stands behind the desk, not over the chair", "site_check": True,
+                 "doctrine": "形勢 (橫樑壓頂 analogue)"}
+
+
+def annotate_bed_flags(beds: list[dict]) -> list[dict]:
+    """C2: replace each flag's remedy with the 避→擋→化 text, add doctrine, and put the
+    形先於理 sentence on the top-ranked bed when any flag is present."""
+    for i, b in enumerate(beds):
+        for f in b.get("flags", []):
+            f["remedy"] = REMEDY_ORDER.get(f["code"], f.get("remedy", ""))
+            f["doctrine"] = "形勢 [modern convention]"
+        if i == 0 and b.get("flags"):
+            b["note"] = FORM_FIRST
+    return beds
+
+
+def desk_door_side(rect, desk_edge: int, doors: list[dict]) -> str:
+    """C4: where the door sits relative to a chair facing `desk_edge`."""
+    if not doors:
+        return "none"
+    x, y, w, h = rect
+    depth = _edge_len(rect, (desk_edge + 1) % 4)
+    worst = "side"
+    rank = {"side": 0, "front": 1, "behind-left": 2, "behind-right": 2, "square-behind": 3}
+    for d in doors:
+        e = d["edge"]
+        if e == desk_edge:
+            side = "front"
+        elif e == (desk_edge + 2) % 4:
+            side = "square-behind"
+        else:
+            lo, hi = _span(d, rect, e)
+            centre = (lo + hi) / 2            # along the adjacent wall, from its origin
+            # distance of the door centre from the facing wall, along the room depth
+            if desk_edge == 0:
+                dist = centre                 # adjacent walls run top→bottom from the top
+            elif desk_edge == 2:
+                dist = depth - centre
+            elif desk_edge == 3:
+                dist = centre                 # adjacent walls run left→right from the left
+            else:
+                dist = depth - centre
+            behind = dist > 0.5 * depth
+            right = (e == (desk_edge + 1) % 4)
+            side = ("behind-right" if right else "behind-left") if behind else "side"
+        if rank[side] > rank[worst]:
+            worst = side
+    return worst
+
+
+def desk_rect_for(rect, desk_edge: int, bed: list[float] | None, doors: list[dict],
+                  depth_units: float, width_units: float) -> list[float]:
+    """A desk block against `desk_edge`, placed in the largest free interval of that wall
+    not taken by the bed footprint or a door swing."""
+    x, y, w, h = rect
+    wall = _edge_len(rect, desk_edge)
+    spans = [_span(d, rect, desk_edge) for d in doors if d["edge"] == desk_edge]
+    if bed:
+        bx, by, bw, bh = bed
+        if desk_edge in (0, 2):
+            spans.append((bx - x, bx - x + bw))
+        else:
+            spans.append((by - y, by - y + bh))
+    free = [iv for iv in _sub_intervals(wall, spans) if iv[1] - iv[0] >= width_units * 0.8]
+    lo, hi = max(free, key=lambda iv: iv[1] - iv[0]) if free else (0.0, wall)
+    along = lo + max(0.0, ((hi - lo) - width_units) / 2)
+    return _bed_rect(rect, desk_edge, along, width_units, depth_units)
+
+
+def _gap(a, b):
+    dx = max(0.0, max(a[0], b[0]) - min(a[0] + a[2], b[0] + b[2]))
+    dy = max(0.0, max(a[1], b[1]) - min(a[1] + a[3], b[1] + b[3]))
+    return (dx * dx + dy * dy) ** 0.5
+
+
+def clearance_warnings(bed: list[float], bed_edge: int, desk: list[float] | None,
+                       m_per_unit: float, approx: bool = False) -> list[dict]:
+    """C5: pillow end to desk edge under 600 mm; plus the overhead-at-seat site check."""
+    out = []
+    if desk is not None:
+        bx, by, bw, bh = bed
+        # pillow = the head third of the bed, at the headboard edge
+        if bed_edge == 0:
+            pillow = [bx, by, bw, bh / 3]
+        elif bed_edge == 2:
+            pillow = [bx, by + bh * 2 / 3, bw, bh / 3]
+        elif bed_edge == 3:
+            pillow = [bx, by, bw / 3, bh]
+        else:
+            pillow = [bx + bw * 2 / 3, by, bw / 3, bh]
+        gap_m = _gap(pillow, desk) * m_per_unit
+        if gap_m < 0.6:
+            out.append({"code": "desk-near-pillow", "zh": "書桌近枕",
+                        "text": f"desk edge about {gap_m:.1f} m from the pillow end"
+                                + (" (approx. scale)" if approx else ""),
+                        "remedy": "keep 600 mm between pillow end and desk edge — a bookcase or "
+                                  "bedside unit between them gives the gap and the divider",
+                        "doctrine": "形勢 [modern convention]"})
+    out.append(dict(OVERHEAD_SEAT))
+    return out

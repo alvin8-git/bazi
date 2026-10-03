@@ -941,6 +941,32 @@ const SEV_CHIP = (b) => {
     (b.worst ? `<span class="whychip neg" title="the worse of the two 二五 palaces — its 运星 feeds the pair">首要化解 first priority</span>` : "");
 };
 const ITEM = (it, cls) => `<span class="whychip ${cls}" title="${(it.why || "")} · ${(it.doctrine || "")}">${it.what}${it.scope ? ` <small>${it.scope === "planes" ? "墙面 planes" : it.scope === "textiles" ? "软装 textiles" : "物件 objects"}</small>` : ""}</span>`;
+const FLAG = (f) => `<span class="whychip neg" title="${(f.remedy || "")} · ${(f.doctrine || "")}">${f.zh} ${f.text || ""}</span>`;
+function bedTab(b) {
+  let h = "";
+  for (const r of (b.beds || [])) {
+    const t = r.top;
+    h += `<div class="rc-occ"><b>${r.person}</b>`;
+    if (t) {
+      h += ` · headboard <b>${t.dir}</b> wall <span class="dirchip ${t.score >= 0 ? "good" : "bad"}">${t.star}</span> score ${t.score}
+        ${t.flags && t.flags.length ? `<div>${t.flags.map(FLAG).join(" ")}</div>` : `<div class="hint">no form flag on this wall</div>`}
+        ${t.note ? `<div class="hint">${t.note}</div>` : ""}`;
+    }
+    if (r.desk) {
+      const d = r.desk;
+      h += `<div>📚 desk facing <b>${d.dir}</b> <span class="dirchip good">${d.star}</span> · door ${d.door_side || "—"}
+        <div class="hint">${d.remedy || ""}</div></div>`;
+    }
+    if (!r.has_doors) h += `<div class="hint">⚠ no door marked on this room — mark it in the trace to unlock the door-line audit</div>`;
+    if (r.warnings && r.warnings.length) h += `<div>${r.warnings.map(FLAG).join(" ")}</div>`;
+    if (r.site_checks && r.site_checks.length) h += `<div class="rc-lab" style="margin-top:6px">现场核对 Site checks</div><ul class="rc-list">${r.site_checks.map((s) => `<li><b>${s.zh}</b> ${s.text} <small class="hint">${s.doctrine || ""}</small></li>`).join("")}</ul>`;
+    h += `</div>`;
+  }
+  const pl = b.placements || [], af = (b.afflictions && b.afflictions.hits) || [];
+  h += `<div class="rc-lab" style="margin-top:8px">安位 Placements</div>${pl.length ? pl.map((p) => `<span class="whychip pos" title="${p.rule}">${p.zh} ${p.en} · ${p.person}</span>`).join(" ") : "<span class=hint>no 文昌 / 桃花 / 驿马 corner of any occupant lands here</span>"}`;
+  h += `<div class="rc-lab" style="margin-top:8px">流年 ${b.afflictions ? b.afflictions.year : ""} This year</div>${af.length ? af.map((a) => `<span class="whychip neg" title="${a.rule}">${a.affliction}${a.person ? ` on ${a.person}'s ${a.star}` : ""}</span>`).join(" ") : "<span class=hint>no annual affliction sits on this palace</span>"}`;
+  return h;
+}
 function roomCardsBlock(res) {
   const rb = res.room_briefs;
   if (!rb) return "";
@@ -963,8 +989,8 @@ function roomCardsBlock(res) {
     const tab2 = `${b.objects.length ? `<ul class="rc-list">${b.objects.map((o) => `<li><b>${o.what}</b> — ${o.where}<div class="hint">${o.why} · ${o.doctrine}</div></li>`).join("")}</ul>` : "<div class=hint>no object remedy needed in this palace</div>"}
         ${b.notes.length ? `<div class="hint">${b.notes.join(" · ")}</div>` : ""}`;
     return `<div class="rc" data-rid="${rid}">${head}
-      <div class="rc-tabs"><button class="on" data-t="1">颜色与材料 Colours & materials</button><button data-t="2">物件 Objects</button></div>
-      <div class="rc-pane" data-p="1">${tab1}</div><div class="rc-pane" data-p="2" hidden>${tab2}</div></div>`;
+      <div class="rc-tabs"><button class="on" data-t="1">颜色与材料 Colours & materials</button><button data-t="2">物件 Objects</button><button data-t="3">床位书桌 Bed & desk</button></div>
+      <div class="rc-pane" data-p="1">${tab1}</div><div class="rc-pane" data-p="2" hidden>${tab2}</div><div class="rc-pane" data-p="3" hidden>${bedTab(b)}</div></div>`;
   }).join("");
   return `<div class="sec"><h2>🏠 Room briefs 房间指引
       <span class="hint">palace stars × occupants' 用神 — colours, materials, objects; every chip cites its rule on hover</span></h2>
