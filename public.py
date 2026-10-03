@@ -40,6 +40,7 @@ from engine.htmlreport import _tosimp
 from engine.jianchu import movein_dates, sitting_branches
 from engine.liunian import BRANCH_PALACE, annual_afflictions, dayun_detail
 from engine.optimizer import optimize, score_assignment
+from engine.roombrief import room_briefs
 from engine.sectors import assign_pie
 from engine.shensha import WENCHANG, life_palaces
 from engine.windows import timing_windows
@@ -897,6 +898,11 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
                 "meaning": c.get("meaning")} for c in cards]
         for name, cards in asp["people"].items()}
     result["works_timing"] = _works_timing(rooms, YEAR)
+    # P1 room briefs: every traced room, occupants optional (design doc v2 §3)
+    result["room_briefs"] = room_briefs(
+        [r for r in rooms if r["id"] != "entrance"], natal,
+        {rid: [_tosimp(n) for n in ns] for rid, ns in assignment.items()},
+        ys_map, req.period)
     if assignment:
         result["colors"] = _room_colors(assignment, rooms_by_id, ys_map,
                                         natal, req.period)

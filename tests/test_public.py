@@ -131,6 +131,11 @@ def test_analyze_fengshui():
         assert len(p["dirs_good"]) == 4 and len(p["dirs_bad"]) == 4
         assert p["rooms"] and p["rooms"][0]["label"] == "Master"
         assert {"t", "v"} <= set(p["rooms"][0]["why"][0])
+    # P1 room briefs: one per traced room, old colors key still present
+    assert set(d["room_briefs"]) == {"master", "living"}
+    assert d["room_briefs"]["master"]["colours_use"] and "severity" in d["room_briefs"]["master"]
+    assert d["room_briefs"]["master"]["palace"] == d["main"]["rooms"]["master"]
+    assert d["room_briefs"]["master"]["occupants"] and d["colors"]
     assert d["suggestion"]["assignment"]["Master"]
     assert isinstance(d["suggestion"]["household_total"], float)
     # aspect scores ride along on every analysis

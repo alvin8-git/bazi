@@ -161,6 +161,21 @@ th{background:#f6f1e8}
 .whychip.pos{border-color:#b7e1c3;background:#f2faf4;color:#155d24}
 .whychip.neg{border-color:#f5c6c0;background:#fdf3f2;color:#a12a20}
 .whychip b{font-weight:700}
+/* P1 room cards */
+.rc-wrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.rc{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff}
+.rc-head{font-size:14px;margin-bottom:6px}
+.rc-tabs{display:flex;gap:6px;margin:4px 0 8px}
+.rc-tabs button{font-size:12px;padding:3px 9px;border:1px solid var(--line);border-radius:7px;background:#fafafa;color:#333;cursor:pointer}
+.rc-tabs button.on{background:#2b3a55;color:#fff;border-color:#2b3a55}
+.rc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px}
+.rc-lab{font-size:11px;font-weight:700;color:#666;margin-bottom:3px}
+.rc-grid .whychip{margin:2px 2px 2px 0;white-space:normal;text-align:left}
+.rc-grid .whychip small{color:#777;font-weight:400}
+.rc-occ{margin-top:8px;font-size:13px;border-top:1px dashed var(--line);padding-top:6px}
+.rc-list{margin:0;padding-left:18px;font-size:13px}.rc-list li{margin:4px 0}
+@media (max-width:720px){.rc-wrap{grid-template-columns:1fr}.rc-grid{grid-template-columns:1fr}}
+
 .verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#b9b0a4;
   z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
 .bc-table td,.bc-table th{font-size:12.5px}
@@ -917,6 +932,51 @@ function worksBlock(res) {
       动土. Rooms not listed are clean in both years.</div></div>`;
 }
 
+
+/* ---- P1 room cards: colours & materials · objects (design doc v2 §3) ---- */
+const SEV_CHIP = (b) => {
+  if (!b || !b.severity) return "";
+  const t = b.severity >= 2 ? "二五 pair" : "二五 one star";
+  return `<span class="whychip neg" title="severity ${b.severity}${b.run_star_element ? " · 运星 " + b.run_star_element : ""}">${t}</span>` +
+    (b.worst ? `<span class="whychip neg" title="the worse of the two 二五 palaces — its 运星 feeds the pair">首要化解 first priority</span>` : "");
+};
+const ITEM = (it, cls) => `<span class="whychip ${cls}" title="${(it.why || "")} · ${(it.doctrine || "")}">${it.what}${it.scope ? ` <small>${it.scope === "planes" ? "墙面 planes" : it.scope === "textiles" ? "软装 textiles" : "物件 objects"}</small>` : ""}</span>`;
+function roomCardsBlock(res) {
+  const rb = res.room_briefs;
+  if (!rb) return "";
+  const ids = Object.keys(rb);
+  if (!ids.length) return "";
+  const cards = ids.map((rid) => {
+    const b = rb[rid];
+    const head = `<div class="rc-head"><b>${b.label || rid}</b> · ${b.palace || "—"}宫${b.mountain !== undefined ? ` · 山${b.mountain}向${b.water}` : ""} ${SEV_CHIP(b)}</div>`;
+    if (b.note && !b.colours_use.length) return `<div class="rc">${head}<div class="hint">${b.note}</div></div>`;
+    const occ = (b.occupants || []).map((o) => `<div class="rc-occ"><b>${o.name}</b> · 用神 ${o.palette_personal.join(" · ") || "—"}
+        <small>${o.palette_scope === "textiles" ? "软装 textiles only" : "墙面 planes ok"}</small>
+        ${o.palette_avoid.length ? ` · 忌 ${o.palette_avoid.join(" · ")}` : ""}
+        ${o.compensation.map((c) => `<div class="hint">補 ${c.what} — ${c.where}</div>`).join("")}
+        ${o.cost ? `<div class="hint">⚑ ${o.cost}</div>` : ""}</div>`).join("");
+    const tab1 = `<div class="rc-grid"><div><div class="rc-lab">宜 USE</div>${b.colours_use.map((i) => ITEM(i, "pos")).join(" ")}</div>
+        <div><div class="rc-lab">忌 AVOID</div>${b.colours_avoid.map((i) => ITEM(i, "neg")).join(" ")}</div>
+        <div><div class="rc-lab">材料宜 materials</div>${b.materials_use.map((i) => ITEM(i, "pos")).join(" ") || "<span class=hint>—</span>"}</div>
+        <div><div class="rc-lab">材料忌 avoid</div>${b.materials_avoid.map((i) => ITEM(i, "neg")).join(" ") || "<span class=hint>—</span>"}</div></div>
+        ${b.override_note ? `<div class="hint">⚑ ${b.override_note}</div>` : ""}${occ}`;
+    const tab2 = `${b.objects.length ? `<ul class="rc-list">${b.objects.map((o) => `<li><b>${o.what}</b> — ${o.where}<div class="hint">${o.why} · ${o.doctrine}</div></li>`).join("")}</ul>` : "<div class=hint>no object remedy needed in this palace</div>"}
+        ${b.notes.length ? `<div class="hint">${b.notes.join(" · ")}</div>` : ""}`;
+    return `<div class="rc" data-rid="${rid}">${head}
+      <div class="rc-tabs"><button class="on" data-t="1">颜色与材料 Colours & materials</button><button data-t="2">物件 Objects</button></div>
+      <div class="rc-pane" data-p="1">${tab1}</div><div class="rc-pane" data-p="2" hidden>${tab2}</div></div>`;
+  }).join("");
+  return `<div class="sec"><h2>🏠 Room briefs 房间指引
+      <span class="hint">palace stars × occupants' 用神 — colours, materials, objects; every chip cites its rule on hover</span></h2>
+    <div class="rc-wrap">${cards}</div></div>`;
+}
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".rc-tabs button"); if (!btn) return;
+  const card = btn.closest(".rc"); const t = btn.dataset.t;
+  card.querySelectorAll(".rc-tabs button").forEach((b) => b.classList.toggle("on", b === btn));
+  card.querySelectorAll(".rc-pane").forEach((p) => { p.hidden = p.dataset.p !== t; });
+});
+
 function colorsBlock(res) {
   if (!res.colors || !res.colors.length) return "";
   return `<div class="sec"><h2>🎨 Room colours 房间用色
@@ -1051,6 +1111,7 @@ function renderResults(res) {
   }
   html += placementBlock(res);
   html += worksBlock(res);
+  html += roomCardsBlock(res);
   html += colorsBlock(res);
   html += moveinBlock();
   html += `<div class="sec hint">Scores blend 八宅命卦 + 玄空飞星 + 用神 element fit —
