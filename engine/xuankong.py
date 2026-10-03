@@ -265,6 +265,20 @@ def classical_checks(chart: dict) -> dict:
     return out
 
 
+def guard_chengmen(gates: list[dict], palaces: dict) -> list[dict]:
+    """D3 (design doc v2): a gate that qualifies but shares its palace with 向星5 must
+    not be activated. Pure: returns new dicts with `guarded` set."""
+    out = []
+    for g in gates:
+        g = dict(g, guarded=False)
+        if g.get("valid") and palaces.get(g["palace"], {}).get("water") == 5:
+            g["valid"] = False
+            g["guarded"] = True
+            g["why"] = g["why"] + " · 向星5同宮，不可開門"
+        out.append(g)
+    return out
+
+
 def chengmen(period: int, facing_mountain: str) -> list[dict]:
     """城門訣 (沈氏 method, audit C5/F10): the two palaces flanking the facing
     palace are gate candidates. A gate WORKS when the 運盤 star resident there,

@@ -45,7 +45,7 @@ from engine.roombrief import room_briefs
 from engine.sectors import assign_pie
 from engine.shensha import WENCHANG, life_palaces
 from engine.windows import timing_windows
-from engine.xuankong import annual_chart, natal_chart_from_degrees
+from engine.xuankong import annual_chart, chengmen, guard_chengmen, natal_chart_from_degrees
 from engine.yongshen import yong_shen
 from scripts.bazi_report import build_person, family_section
 
@@ -959,6 +959,35 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
         [r for r in rooms if r["id"] != "entrance"], natal,
         {rid: [_tosimp(n) for n in ns] for rid, ns in assignment.items()},
         ys_map, req.period)
+    # P3: F2 timing sentence + §3 timing block on afflicted rooms; D3 城門 guard
+    for row in result["works_timing"]["rooms"]:
+        b = result["room_briefs"].get(row["id"])
+        if b is None:
+            continue
+        years = [y for y, hits in ((YEAR, row["now"]), (YEAR + 1, row["next"])) if hits]
+        b.setdefault("timing_rules", []).append({
+            "code": "F2", "zh": "動土界線", "years": years,
+            "text": f"{' / '.join(map(str, years))}: a platform, a wall-fixed panel, a floor overlay "
+                    "or a cabinet run is finish work and may proceed; chasing, wall-opening, wet "
+                    "works and anything that breaks the slab or an external wall wait for a clean "
+                    "year or 立春", "doctrine": "流年 (太歲/歲破/三煞/五黃)"})
+        b["timing"] = {"now": row["now"], "next": row["next"], "finish_ok": True,
+                       "structure_ok": not row["now"]}
+    for b in result["room_briefs"].values():
+        b.setdefault("timing", {"now": [], "next": [], "finish_ok": True, "structure_ok": True})
+    gates = guard_chengmen(chengmen(req.period, natal["facing"]), natal["palaces"])
+    result["chengmen"] = gates
+    for g in gates:
+        for r in rooms:
+            b = result["room_briefs"].get(r["id"])
+            if b is not None and r.get("palace_pie") == g["palace"]:
+                b["gate"] = {"rank": g["rank"], "valid": g["valid"], "guarded": g["guarded"],
+                             "why": g["why"],
+                             "text": ("an opening (door, window kept open, or active use) in this "
+                                      "palace is favourable 城門" if g["valid"] else
+                                      "qualifies as 城門 but shares the palace with 向星5 — do not "
+                                      "activate; keep the opening quiet" if g["guarded"] else
+                                      "gate candidate that does not open in this period")}
     result["room_placements"] = _room_placements(rooms, charts)
     for rid, rp in result["room_placements"].items():
         if rid in result["room_briefs"]:

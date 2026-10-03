@@ -140,6 +140,13 @@ def test_analyze_fengshui():
     for rid in ("master", "living"):
         assert "placements" in d["room_briefs"][rid] and "afflictions" in d["room_briefs"][rid]
         assert d["room_briefs"][rid]["afflictions"]["year"] == d["year"]
+    # P3: lighting on every brief, F2 + timing on afflicted rooms, two gate candidates
+    assert all("fixed_k" in b["lighting"] for b in d["room_briefs"].values())
+    assert len(d["chengmen"]) == 2 and all("guarded" in g for g in d["chengmen"])
+    for row in d["works_timing"]["rooms"]:
+        b = d["room_briefs"][row["id"]]
+        assert any(r["code"] == "F2" for r in b["timing_rules"])
+        assert b["timing"]["structure_ok"] == (not row["now"])
     mb = d["room_briefs"]["master"]["beds"]
     assert len(mb) == 2 and all("site_checks" in r and r["site_checks"] for r in mb)
     for r in mb:

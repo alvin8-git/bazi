@@ -967,6 +967,20 @@ function bedTab(b) {
   h += `<div class="rc-lab" style="margin-top:8px">流年 ${b.afflictions ? b.afflictions.year : ""} This year</div>${af.length ? af.map((a) => `<span class="whychip neg" title="${a.rule}">${a.affliction}${a.person ? ` on ${a.person}'s ${a.star}` : ""}</span>`).join(" ") : "<span class=hint>no annual affliction sits on this palace</span>"}`;
   return h;
 }
+function lightTab(b) {
+  const L = b.lighting || {}, hasBeds = (b.beds || []).length > 0;
+  const notes = (L.notes || []).filter((n) => !n.bedroom_only || hasBeds);
+  let h = `<div><b>固定灯 Fixed:</b> ${L.fixed_k || "—"}</div><div><b>台灯 Lamps:</b> ${L.lamps_k || "—"}</div>`;
+  if (notes.length) h += `<ul class="rc-list">${notes.map((n) => `<li><b>${n.zh}</b> ${n.text} <small class="hint">${n.doctrine || ""}</small></li>`).join("")}</ul>`;
+  const T = b.timing || {}, rules = (b.timing_rules || []).slice().sort((a, c) => (a.code === "F3" ? -1 : c.code === "F3" ? 1 : 0));
+  h += `<div class="rc-lab" style="margin-top:8px">动工时序 Timing</div>`;
+  h += `<span class="whychip pos" title="platform, wall-fixed panel, overlay, cabinet run">finish-fit ✓</span> `;
+  h += T.structure_ok === false ? `<span class="whychip neg" title="${(T.now || []).join(" ")}">structure ✗ until ${T.next && T.next.length ? "a clean year" : "立春 " + ((b.afflictions && b.afflictions.year + 1) || "")}</span>`
+                                : `<span class="whychip pos" title="no annual affliction this year">structure ✓</span>`;
+  if (rules.length) h += `<ul class="rc-list">${rules.map((r) => `<li><b>${r.zh}</b> ${r.text} <small class="hint">${r.doctrine || ""}</small></li>`).join("")}</ul>`;
+  if (b.gate) h += `<div class="rc-lab" style="margin-top:8px">城门 Gate</div><span class="whychip ${b.gate.valid ? "pos" : "neg"}" title="${b.gate.why}">${b.gate.rank}${b.gate.guarded ? " · 向星5" : ""}</span> <span class="hint">${b.gate.text}</span>`;
+  return h;
+}
 function roomCardsBlock(res) {
   const rb = res.room_briefs;
   if (!rb) return "";
@@ -989,8 +1003,8 @@ function roomCardsBlock(res) {
     const tab2 = `${b.objects.length ? `<ul class="rc-list">${b.objects.map((o) => `<li><b>${o.what}</b> — ${o.where}<div class="hint">${o.why} · ${o.doctrine}</div></li>`).join("")}</ul>` : "<div class=hint>no object remedy needed in this palace</div>"}
         ${b.notes.length ? `<div class="hint">${b.notes.join(" · ")}</div>` : ""}`;
     return `<div class="rc" data-rid="${rid}">${head}
-      <div class="rc-tabs"><button class="on" data-t="1">颜色与材料 Colours & materials</button><button data-t="2">物件 Objects</button><button data-t="3">床位书桌 Bed & desk</button></div>
-      <div class="rc-pane" data-p="1">${tab1}</div><div class="rc-pane" data-p="2" hidden>${tab2}</div><div class="rc-pane" data-p="3" hidden>${bedTab(b)}</div></div>`;
+      <div class="rc-tabs"><button class="on" data-t="1">颜色与材料 Colours & materials</button><button data-t="2">物件 Objects</button><button data-t="3">床位书桌 Bed & desk</button><button data-t="4">灯光与时序 Lighting & timing</button></div>
+      <div class="rc-pane" data-p="1">${tab1}</div><div class="rc-pane" data-p="2" hidden>${tab2}</div><div class="rc-pane" data-p="3" hidden>${bedTab(b)}</div><div class="rc-pane" data-p="4" hidden>${lightTab(b)}</div></div>`;
   }).join("");
   return `<div class="sec"><h2>🏠 Room briefs 房间指引
       <span class="hint">palace stars × occupants' 用神 — colours, materials, objects; every chip cites its rule on hover</span></h2>

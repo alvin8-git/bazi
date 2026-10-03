@@ -143,6 +143,43 @@ def room_brief(palace: str, stars: dict, period: int, occupants: list[dict],
         use.append(_item("neutral — follow the occupant's 用神 palette", "planes",
                          f"山{m}向{w} sets no colour of its own", "玄空"))
 
+    # ---- E1–E5 lighting, F3 timing ----------------------------------------
+    erwu = m in (2, 5) or w in (2, 5)
+    fire_people = [o["name"] for o in occupants if FIRE in (o.get("favourable") or [])]
+    lnotes: list[dict] = []
+    if erwu:
+        fixed_k, lamps_k = "4000K", "2700–3000K switchable lamps only"
+        lnotes.append({"code": "E1", "zh": "二五忌暖光", "text": "no amber cove, LED strip or "
+                       "concealed warm backlight — a warm plane is 火生土 feeding the pair; warmth "
+                       "lives in switchable lamps", "doctrine": "玄空·五行"})
+    elif w == 3 or (fire_people and not afflicted):
+        fixed_k = lamps_k = "2700–3000K"
+        trig = "向星3 quarrel star — fire drains wood" if w == 3 else \
+            f"{'、'.join(fire_people)}'s 用神 火"
+        lnotes.append({"code": "E2", "zh": "暖光", "text": f"warm throughout: {trig}",
+                       "doctrine": "玄空·五行" if w == 3 else "五行 用神"})
+    elif m in timely:
+        fixed_k, lamps_k = "3000K low output", "2700K lamps"
+        lnotes.append({"code": "E3", "zh": "山星宜靜", "text": "low and warm, no bright "
+                       "downlights — the people star acts through stillness",
+                       "doctrine": "玄空 山星要靜"})
+    else:
+        fixed_k, lamps_k = "3000–3500K", "2700K lamps"
+    lnotes.append({"code": "E4", "zh": "枕上无灯", "text": "no ceiling fitting directly above the "
+                   "pillow — pendant or downlight sits over the foot or the circulation, bedside "
+                   "lamps carry the head end", "doctrine": "形勢 [modern convention]",
+                   "bedroom_only": True})
+    if {7, 9} <= {m, w}:
+        lnotes.append({"code": "E5", "zh": "七九忌火", "text": "no candles, flame diffusers or "
+                       "heaters left plugged in; no extension-lead chains behind the bed",
+                       "doctrine": "玄空 七九合轍"})
+    lighting = {"fixed_k": fixed_k, "lamps_k": lamps_k, "notes": lnotes}
+    timing_rules: list[dict] = []
+    if erwu:
+        timing_rules.append({"code": "F3", "zh": "二五不動", "text": "no renovation, drilling or "
+                             "plumbing moves in this palace in any year — furniture-fit and finish "
+                             "only", "doctrine": "玄空"})
+
     # ---- A2 / A3 occupants ----------------------------------------------
     occ_out = []
     for o in occupants:
@@ -183,7 +220,7 @@ def room_brief(palace: str, stars: dict, period: int, occupants: list[dict],
             "colours_use": use, "colours_avoid": avoid,
             "materials_use": mats_use, "materials_avoid": mats_avoid,
             "objects": objects, "notes": notes, "override_note": override_note,
-            "occupants": occ_out}
+            "occupants": occ_out, "lighting": lighting, "timing_rules": timing_rules}
 
 
 def room_briefs(rooms: list[dict], natal: dict, assignment: dict, ys_map: dict,
@@ -196,7 +233,9 @@ def room_briefs(rooms: list[dict], natal: dict, assignment: dict, ys_map: dict,
             out[r["id"]] = {"palace": pal, "severity": 0, "note": "中宫 — no palace brief",
                             "colours_use": [], "colours_avoid": [], "materials_use": [],
                             "materials_avoid": [], "objects": [], "notes": [], "occupants": [],
-                            "override_note": None}
+                            "override_note": None, "timing_rules": [],
+                            "lighting": {"fixed_k": "3000–3500K", "lamps_k": "2700K lamps",
+                                         "notes": []}}
             continue
         stars = natal["palaces"][pal]
         run_el = STAR_ELEMENT.get(stars.get("base")) if stars.get("base") else None
