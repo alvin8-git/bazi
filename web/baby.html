@@ -101,9 +101,19 @@ h2{font-size:16px;color:var(--gold);margin:0 0 10px}
 .btn.primary{background:var(--accent);color:#fff;font-weight:600}
 .empty-msg{padding:18px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:10px}
 /* C · name card */
-.namebig{display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap}
-.nb{text-align:center}.nb .py{font-size:14px;color:var(--muted)}.nb .ch{font-size:56px;font-weight:700;line-height:1.05}
-.nb .role{display:inline-block;font-size:12px;border:1px solid;border-radius:999px;padding:1px 8px;margin-top:4px}
+.nameband{display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap}
+.namegrid{display:grid;grid-auto-flow:column;grid-template-rows:auto auto auto;column-gap:18px;justify-items:center;text-align:center}
+.namegrid .py{font-size:14px;color:var(--muted)}.namegrid .ch{font-size:56px;font-weight:700;line-height:1.05}
+.namegrid .det{align-self:start;max-width:170px;min-height:74px}.namegrid .det>span{display:block}
+.namegrid .role{display:inline-block!important;font-size:12px;border:1px solid;border-radius:999px;padding:1px 8px;margin-top:4px}
+.namegrid .mk{min-height:17px;font-size:11px}.gm{display:inline-block;color:var(--muted);margin-top:2px}.gm.bad{color:var(--xiong);font-weight:700}
+.gls b{display:block;font-size:14px;margin-top:3px}
+.interp{flex:1;min-width:220px;border-left:3px solid var(--gold);padding:6px 0 6px 16px;align-self:center}
+.interp .ilab{font-size:12px;color:var(--muted)}.interp .izh{font-size:24px;font-weight:700;line-height:1.3;margin-top:2px}.interp .ien{font-size:15px;color:var(--muted);margin-top:2px}
+.scoreband{display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin-top:14px;padding:14px 16px;border:1px solid var(--line,#e6e0d4);border-radius:12px;background:#fffdf8}
+.sbtot{min-width:150px}.grade{font-size:22px;font-weight:700;color:var(--gold);margin:4px 0}.grade small{font-size:14px;font-weight:500;margin-left:6px;color:var(--muted)}
+.grade.g-reconsider{color:var(--xiong)}
+.bk.gmk{background:#b7791f}
 .tradline{margin:12px 0 4px;font-size:15px}.tradline b{font-size:20px;letter-spacing:6px}
 .tsw{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-left:8px;vertical-align:middle}
 .tsw button{border:0;background:#fff;font:inherit;font-size:16px;padding:6px 12px;min-height:40px;cursor:pointer;color:var(--ink)}
@@ -132,12 +142,11 @@ table.sl th,table.sl td{border-bottom:1px solid var(--line);padding:8px 6px;text
 @media (max-width:640px){
   .ysbox{grid-template-columns:1fr}
   .optrow{grid-template-columns:1fr auto}.optrow .meta{grid-column:1/-1;order:3}
-  .scorebox{margin-left:0;text-align:left;width:100%}
   .boxes{flex-wrap:wrap}.bctl{margin-left:0;width:100%;justify-content:space-between;gap:8px}
   .grid2{grid-template-columns:1fr}.flab{min-width:100%}
   .box{width:64px;height:78px;font-size:34px}.box small{font-size:10px}.boxes{gap:8px}
   .tiles{grid-template-columns:repeat(5,1fr);gap:6px}.tile{min-height:80px}.tile .ch{font-size:24px}
-  .seg{margin-left:0}.nb .ch{font-size:46px}.cert .cn{font-size:42px}.pil .gz{font-size:26px}
+  .seg{margin-left:0}.namegrid .ch{font-size:46px}.namegrid{column-gap:10px}.namegrid .det{max-width:104px}.cert .cn{font-size:42px}.pil .gz{font-size:26px}
   table.wg th,table.wg td{padding:6px 3px}
 }
 @media (prefers-reduced-motion:reduce){.tile{transition:none}}
@@ -164,17 +173,20 @@ table.sl th,table.sl td{border-bottom:1px solid var(--line);padding:8px 6px;text
 .optrow .tot{font-size:22px;font-weight:700;text-align:right}
 .optrow .tot small{font-size:11px;font-weight:500;color:var(--muted);display:block}
 .newch{outline:2px solid var(--gold);outline-offset:1px;border-radius:4px}
-.scorebox{margin-left:auto;text-align:right;min-width:190px}
-.scoretot{font-size:38px;font-weight:700;line-height:1}
+.scoretot{font-size:44px;font-weight:700;line-height:1}
 .scoretot small{font-size:14px;font-weight:500;color:var(--muted)}
-.sparts{margin-top:6px;font-size:12px;color:var(--muted)}
-.spart{display:grid;grid-template-columns:48px 1fr 62px;gap:6px;align-items:center;margin:2px 0}
-.spart .track{height:8px;border-radius:4px;background:#f0ece4;overflow:hidden}
+.sparts{flex:1;min-width:260px;display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;font-size:14px}
+.spart{display:grid;grid-template-columns:auto 1fr auto;gap:2px 8px;align-items:center}
+.spart .sl{font-weight:700}.spart .sl small{font-weight:400;color:var(--muted);margin-left:5px;font-size:12px}
+.spart .sv{font-variant-numeric:tabular-nums;font-weight:700}.spart .sn{grid-column:1/-1;font-size:12px;color:var(--muted);line-height:1.3}
+.spart .track{height:12px;border-radius:6px;background:#f0ece4;overflow:hidden;min-width:60px}
 .spart .fill{height:100%;background:var(--gold);border-radius:4px}
 .busy{opacity:.55;transition:opacity .15s ease-out}
 .verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#8a8177;z-index:99;background:rgba(255,255,255,.8);border-radius:6px;padding:1px 7px}
 a.btn{text-decoration:none;display:inline-flex;align-items:center}
 @media (max-width:640px){.form{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.sparts{grid-template-columns:1fr}.interp{flex-basis:100%;border-left:0;border-top:3px solid var(--gold);padding:10px 0 0}
+  .scoreband{padding:12px}.namegrid .mk{min-height:30px}}
 </style></head><body>
 <span class="verbadge" id="ver"></span>
 <script>fetch("/api/pub/version").then(r=>r.json())
@@ -272,13 +284,13 @@ function chipsHtml() {
 function tilesHtml() {
   if (!S.data) return `<div class="empty-msg">${L("载入中…", "loading…")}</div>`;
   if (!S.tiles.length) return `<div class="empty-msg">${L("没有符合条件的字", "No character matches these filters")}<div style="margin-top:8px">${S.meaning[S.active] ? `<button class="btn" data-mean="${S.meaning[S.active]}">取消字义 clear the meaning filter</button> ` : ""}<button class="btn" data-reset="1">重置筛选 reset filters</button></div></div>`;
-  return `<div class="tiles">${S.tiles.map(c => `<button class="tile ${c.el ? "" : "noel"} ${c.blocked ? "blk" : ""}" data-pick="${c.ch}" title="${c.blocked ? "不宜取名 not for names — " + esc(c.why) : esc(c.gloss || "")}" aria-label="${c.ch} ${esc(c.py)}, ${c.el || "element not set"}, ${c.ks} strokes${c.gloss ? ", " + esc(c.gloss) : ""}${c.blocked ? ", not recommended for names: " + esc(c.why) : ""}">
-      ${c.blocked ? `<span class="bk">不宜</span>` : c.pool ? `<span class="pm">名</span>` : ""}<span class="jn">${c.blocked ? "" : c.ji ? c.ji + "吉" : ""}</span>
-      <span class="ch el-${c.el || ""}">${c.ch}</span><span class="py">${esc(c.py)}</span><span class="ks">${c.ks}画 · ${c.el || "未定"}</span></button>`).join("")}</div>
+  return `<div class="tiles">${S.tiles.map(c => `<button class="tile ${c.el ? "" : "noel"} ${c.blocked ? "blk" : ""}" data-pick="${c.ch}" title="${c.blocked ? "不宜取名 not for names — " + esc(c.why) : c.mismatch ? (c.gender === "F" ? "女性字 — usually a girl's name character" : "男性字 — usually a boy's name character") : esc(c.sense ? c.sense.zh + " · " + c.sense.en : c.gloss || "")}" aria-label="${c.ch} ${esc(c.py)}, ${c.el || "element not set"}, ${c.ks} strokes${c.gloss ? ", " + esc(c.gloss) : ""}${c.blocked ? ", not recommended for names: " + esc(c.why) : ""}">
+      ${c.blocked ? `<span class="bk">不宜</span>` : c.mismatch ? `<span class="bk gmk">${c.gender === "F" ? "女性字" : "男性字"}</span>` : c.pool ? `<span class="pm">名</span>` : ""}<span class="jn">${c.blocked ? "" : c.ji ? c.ji + "吉" : ""}</span>
+      <span class="ch el-${c.el || ""}">${c.ch}</span><span class="py">${esc(c.py)}</span><span class="ks">${c.ks}画 · ${c.el || "未定"}${c.gender ? " · " + (c.gender === "F" ? "女" : "男") : ""}</span></button>`).join("")}</div>
     ${S.data.total > S.tiles.length ? `<div class="more"><button class="btn" data-more="1">更多 more (${S.data.total - S.tiles.length})</button></div>` : ""}`;
 }
 function countHtml() {
-  return `${S.data ? S.data.total : "…"} ${Li("字", "characters")} · ★ = 用神 element · <span style="background:var(--gold);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">名</span> = 常用名字 common name character · 未定 = element not set · <span style="background:var(--xiong);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">不宜</span> = adverse meaning (pinyin search only). 未定 characters also appear when a 字义 meaning is chosen`;
+  return `${S.data ? S.data.total : "…"} ${Li("字", "characters")} · ★ = 用神 element · <span style="background:var(--gold);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">名</span> = 常用名字 common name character · 未定 = element not set · <span style="background:var(--xiong);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">不宜</span> = adverse meaning (pinyin search only) · 女性字 / 男性字 = usually the other gender (pinyin search only, lowers the score). 未定 characters also appear when a 字义 meaning is chosen`;
 }
 function panelHtml() {
   if (complete()) return "";
@@ -307,8 +319,7 @@ function builderBlock() {
 }
 
 function scoreParts(sc) {
-  const row = (zh, k) => `<div class="spart"><span>${zh}</span><div class="track"><div class="fill" style="width:${sc.parts[k] / sc.max[k] * 100}%"></div></div><span>${sc.parts[k]}/${sc.max[k]}</span></div>`;
-  return `<div class="sparts" title="${esc(sc.basis)}">${row("用神", "yongshen")}${row("五格", "wuge")}${row("三才", "sancai")}${row("字义", "meaning")}${row("可信度", "confidence")}</div>`;
+  return `<div class="sparts">${Object.keys(sc.max).map(k => `<div class="spart"><span class="sl">${sc.labels[k].zh}<small>${sc.labels[k].en}</small></span><div class="track"><div class="fill" style="width:${sc.parts[k] / sc.max[k] * 100}%"></div></div><span class="sv">${sc.parts[k]}/${sc.max[k]}</span>${sc.notes ? `<span class="sn">${esc(sc.notes[k])}</span>` : ""}</div>`).join("")}</div>`;
 }
 function optRow(r, cur) {
   const chips = `<span class="luck ${r.ji === 5 ? "ji" : "amber"}">${r.ji}/5 吉</span> ${luckChip(r.sancai, true).replace(">", ">三才 ")} ${luckChip(r.zong, true).replace(">", ">總格 ")}`;
@@ -326,7 +337,7 @@ function optHtml() {
     ? L("更优的替换", "Better alternatives — one character changed, the other kept")
     : L("最佳补全", "Best characters for the empty box" + (S.mode === 2 && !S.slots[0] && !S.slots[1] ? "es" : ""));
   return `<div class="opt"><div class="opthead"><b>${head}</b>
-      <span class="count">${L("按总分排序", "ranked by score: 用神 30 + 五格 30 + 三才 15 + 字义 15 + 可信度 10")} · ${Li("元素", "elements")} ${o.els.join("·")}${(o.meaning || []).some(Boolean) ? ` · ${Li("字义", "meaning")} ${o.meaning.map((m, i) => m ? `${i + 1}:${catOf(m).zh}` : "").filter(Boolean).join(" ")}` : ""}</span>
+      <span class="count">${L("按总分排序", "ranked by score: 用神 30 + 五格 25 + 三才 15 + 字义 15 + 性别 5 + 可信度 10")} · ${Li("元素", "elements")} ${o.els.join("·")}${(o.meaning || []).some(Boolean) ? ` · ${Li("字义", "meaning")} ${o.meaning.map((m, i) => m ? `${i + 1}:${catOf(m).zh}` : "").filter(Boolean).join(" ")}` : ""}</span>
       <button class="fchip" data-optclose="1">关闭 close</button></div>
     ${o.baseline ? optRow(o.baseline, true) : ""}
     ${o.results.length ? o.results.map(r => optRow(r, false)).join("")
@@ -366,14 +377,20 @@ function cardBlock() {
   const amb = c.chars.filter(x => !x.surname && x.trad_alts);
   const ct = c.chars.filter(x => !x.surname && x.contested);
   return `<div class="sec" id="card"><h2>${L("名字评析", "Name card")}</h2>
-    <div class="namebig">${c.chars.map(x => `<div class="nb"><div class="py">${esc(x.py)}</div><div class="ch ${x.surname ? "" : "el-" + (x.el || "")}">${x.ch}</div>
-        <span class="role ${!x.surname && x.el ? "bg-" + x.el + " el-" + x.el : ""}">${Li(!x.surname && x.el ? x.el + " · " + x.role : x.role, x.role_en)}</span>
-        ${x.radical_inferred ? `<span class="rinf" title="element taken from the radical only — weaker evidence, half credit on 可信度">部首推断 radical-inferred</span>` : ""}
-        ${!x.surname ? `<span class="gls">${catChips(x.tags)}${x.gloss ? `<small>${esc(x.gloss)}</small>` : ""}</span>` : ""}</div>`).join("")}
-      <div class="scorebox"><div class="scoretot">${c.score.total}<small>/100 ${Li("评分", "score")}</small></div>
-        <span class="luck ${c.ji === 5 ? "ji" : "amber"}">${c.ji}/5 吉</span> ${luckChip(c.sancai.verdict, true).replace(">", ">三才 ")}
-        ${scoreParts(c.score)}</div></div>
-    ${(c.warnings || []).map(w => `<div class="warn" role="alert"><b>${w.ch}</b> ${Li("字义不宜取名", "adverse meaning — not recommended in a name")}: ${esc(w.why)}</div>`).join("")}
+    <div class="nameband">
+      <div class="namegrid" role="group" aria-label="${c.name}">${c.chars.map(x => `<div class="py">${esc(x.py)}</div><div class="ch ${x.surname ? "" : "el-" + (x.el || "")}">${x.ch}</div>
+        <div class="det"><span class="role ${!x.surname && x.el ? "bg-" + x.el + " el-" + x.el : ""}">${Li(!x.surname && x.el ? x.el + " · " + x.role : x.role, x.role_en)}</span>
+          <span class="mk">${x.gender ? `<span class="${x.mismatch ? "gm bad" : "gm"}">${x.gender === "F" ? "女性字 feminine" : "男性字 masculine"}</span>` : ""}${x.radical_inferred ? `<span class="rinf" title="element taken from the radical only — weaker evidence, half credit on 可信度">部首推断 radical-inferred</span>` : ""}</span>
+          ${!x.surname ? `<span class="gls">${catChips(x.tags)}${x.sense ? `<b>${x.sense.zh}</b><small>${esc(x.sense.en)}</small>` : x.gloss ? `<small>${esc(x.gloss)}</small>` : ""}</span>` : ""}</div>`).join("")}</div>
+      <div class="interp"><div class="ilab">${L("名字寓意", "a possible reading of the name")}</div>
+        <div class="izh">${esc(c.interpretation.zh)}</div><div class="ien">${esc(c.interpretation.en)}</div>
+        ${c.interpretation.partial ? `<div class="count">部分字无固定寓意 — one character has no stock name sense; its dictionary gloss is shown.</div>` : ""}</div></div>
+    <div class="scoreband" title="${esc(c.score.basis)}">
+      <div class="sbtot"><div class="scoretot">${c.score.total}<small>/100 ${Li("评分", "score")}</small></div>
+        <div class="grade g-${c.score.grade.en}">${c.score.grade.zh}<small>${c.score.grade.en}</small></div>
+        <div><span class="luck ${c.ji === 5 ? "ji" : "amber"}">${c.ji}/5 吉</span> ${luckChip(c.sancai.verdict, true).replace(">", ">三才 ")}</div></div>
+      ${scoreParts(c.score)}</div>
+    ${(c.warnings || []).map(w => `<div class="warn" role="alert"><b>${w.ch}</b> ${w.class === "gender" ? Li("性别不符", "gender mismatch — lowers the 性别 score") : Li("字义不宜取名", "adverse meaning — not recommended in a name")}: ${esc(w.why)}</div>`).join("")}
     <div class="tradline">${Li("繁體", "traditional")} <b>${c.trad}</b>
       <span class="count">${c.strokes.join(" + ")} 画 (康熙)</span>
       ${amb.map(x => `<span class="tsw" role="group" aria-label="traditional form of ${x.ch}">${Object.entries(x.trad_alts).map(([f, k]) => `<button data-trad="${x.ch}:${f}" aria-pressed="${x.trad === f}">${f} <small>${k}画</small></button>`).join("")}</span>`).join("")}</div>

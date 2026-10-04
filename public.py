@@ -1281,7 +1281,7 @@ def name_chars(surname: str, sex: str, dob: str, birth_time: str = "12:00",
         ks = [int(x) for x in strokes.split(",") if x.strip()]
         return slot_candidates(ys, _tosimp(surname.strip()), boxes, slot, els=els, strokes=ks,
                                py=py[:12], page=max(1, min(page, 200)), trad=_parse_trad(trad),
-                               meaning=mean or None)
+                               meaning=mean or None, sex=sex)
     except (ValueError, TypeError) as e:
         raise HTTPException(400, str(e))
 
@@ -1298,7 +1298,7 @@ def name_optimise(surname: str, sex: str, dob: str, birth_time: str = "12:00",
     try:
         cats = [None if m in ("", "_") else m for m in mean.split(",")] if mean else None
         return optimise_name(ys, _tosimp(surname.strip()), boxes, els=els, trad=_parse_trad(trad),
-                             meaning=cats)
+                             meaning=cats, sex=sex)
     except (ValueError, TypeError) as e:
         raise HTTPException(400, str(e))
 
@@ -1310,7 +1310,7 @@ def name_score(surname: str, given: str, sex: str, dob: str,
     from engine.naming import name_card
     _, ys = _name_chart(sex, dob, birth_time)
     try:
-        return name_card(ys, _tosimp(surname.strip()), given, _parse_trad(trad))
+        return name_card(ys, _tosimp(surname.strip()), given, _parse_trad(trad), sex=sex)
     except (ValueError, TypeError) as e:
         raise HTTPException(400, str(e))
 
@@ -1351,6 +1351,8 @@ def certificate(surname: str, given: str, sex: str, dob: str,
     fav = ys["favourable"]
     full = surname + given
     trad = "".join(e.get("trad") or ch for ch, e in infos)
+    from engine.naming import interpret_name
+    _interp = interpret_name(_tosimp(given))
     from engine.wuxing import BRANCH_ELEMENT, STEM_ELEMENT
     pillars = "".join(
         f'<div class="pil"><b><i style="color:{_EL_HEX[STEM_ELEMENT[c.pillars[k].stem]]}">{c.pillars[k].stem}</i>'
@@ -1388,6 +1390,7 @@ h1{{text-align:center;font-size:34px;letter-spacing:14px;color:#9e2b25;
 .name{{text-align:center;font-size:64px;letter-spacing:12px;color:#1c1712;
   margin:10px 0 0;font-weight:700}}
 .trad{{text-align:center;color:#8a7a5a;font-size:15px;letter-spacing:6px}}
+.interp{{text-align:center;color:#5a4a2a;font-size:17px;margin-top:6px}}.interp small{{display:block;font-size:12px;color:#8a7a5a;margin-top:2px}}
 .line{{border:0;border-top:1px solid #c8a959;margin:24px 10%}}
 h2{{font-size:15px;color:#9e2b25;letter-spacing:4px;margin:20px 0 8px;
   text-align:center}}
@@ -1426,6 +1429,7 @@ td{{border:1px solid #e0d3b8;padding:5px 12px;text-align:center}}
   <div class="sub">CERTIFICATE OF NAMING · 依古法推演 · 條條有據</div>
   <div class="name">{_tosimp(full)}</div>
   {f'<div class="trad">繁體 {trad}</div>' if trad != full else ''}
+  <div class="interp">{_interp["zh"]}<small>{_interp["en"]}</small></div>
   <div class="meta">{'男' if sex == 'M' else '女'}嬰 · 生於 {dob} {birth_time}
     （新加坡時間，經真太陽時校正）<br>
     生肖屬{lp['animal']} · 日主 <b>{c.day_master}</b> · {c.strength['verdict'].split(' ')[0]}
