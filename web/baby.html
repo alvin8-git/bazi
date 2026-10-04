@@ -37,6 +37,20 @@ h2{font-size:16px;color:var(--gold);margin:0 0 10px}
 .fill.f-木{background:var(--wood)}.fill.f-火{background:var(--fire)}.fill.f-土{background:var(--earth)}.fill.f-金{background:var(--metal)}.fill.f-水{background:var(--water)}
 .chip{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:13px;background:#fff;margin:2px 4px 2px 0}
 .ysline{margin-top:10px;font-size:14px}
+.ysbox{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.ysgrp{border-radius:12px;padding:10px 12px}
+.ysgrp.use{background:#f1f8f2;border:2px solid var(--ji)}
+.ysgrp.avoid{background:#faf7f2;border:1.5px dashed #c9bfae}
+.ystitle{font-weight:700;font-size:15px;margin-bottom:8px}
+.ysgrp.use .ystitle{color:var(--ji)}.ysgrp.avoid .ystitle{color:var(--muted)}
+.ysdiscs{display:flex;gap:12px;flex-wrap:wrap}
+.ysd{width:86px;border-radius:12px;padding:8px 4px;text-align:center;color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.ysd span{display:block;font-size:38px;font-weight:700;line-height:1.1}
+.ysd small{display:block;font-size:11.5px;font-weight:600}
+.ysd-木{background:#176b33}.ysd-火{background:#b3261e}.ysd-土{background:#7a5f16}.ysd-金{background:#7a5a00}.ysd-水{background:#174ea6}
+.ysd.off{background:#fff;border:1.5px solid var(--line);box-shadow:none;color:var(--muted);width:64px}
+.ysd.off span{font-size:26px;opacity:.75;text-decoration:line-through;text-decoration-thickness:2px}
+.ysd.off small{font-weight:500}
 /* B · builder */
 .boxes{display:flex;gap:12px;align-items:flex-end;flex-wrap:nowrap}
 .box{width:76px;height:88px;border:2px solid var(--line);border-radius:12px;background:#fffdf9;display:flex;flex-direction:column;
@@ -54,8 +68,14 @@ h2{font-size:16px;color:var(--gold);margin:0 0 10px}
 .frow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0}
 .flab{min-width:92px;font-size:13px;font-weight:700}
 .fchip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font:inherit;font-size:14px;cursor:pointer;min-height:44px;color:var(--ink)}
-.fchip[aria-pressed=true]{border-width:2px;font-weight:700}
-.fchip.st[aria-pressed=true]{border-color:var(--accent);background:#fdf3ee;color:var(--accent)}
+.fchip[aria-pressed=true]{font-weight:700;color:#fff;border-color:transparent;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.fchip[aria-pressed=true]::before{content:"✓ ";font-weight:700}
+.fchip[aria-pressed=true] b,.fchip[aria-pressed=true] .n{color:#fff}
+.fchip[aria-pressed=false]{color:var(--muted)}
+.fchip.st[aria-pressed=true]{background:var(--accent)}
+.fchip.elc-木[aria-pressed=true]{background:#176b33}.fchip.elc-火[aria-pressed=true]{background:#b3261e}
+.fchip.elc-土[aria-pressed=true]{background:#7a5f16}.fchip.elc-金[aria-pressed=true]{background:#7a5a00}
+.fchip.elc-水[aria-pressed=true]{background:#174ea6}
 .fchip .n{font-size:11px;color:var(--ji);font-weight:700;margin-left:4px}
 .pyin{font:inherit;font-size:16px;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;width:180px;min-height:44px}
 .count{font-size:13px;color:var(--muted);margin:6px 0}
@@ -103,6 +123,7 @@ table.sl th,table.sl td{border-bottom:1px solid var(--line);padding:8px 6px;text
 .cert .ct{text-align:center;color:var(--muted);letter-spacing:6px}
 .note{font-size:12.5px;color:var(--muted);margin-top:8px}
 @media (max-width:640px){
+  .ysbox{grid-template-columns:1fr}
   .grid2{grid-template-columns:1fr}.flab{min-width:100%}
   .box{width:64px;height:78px;font-size:34px}.box small{font-size:10px}.boxes{gap:8px}
   .tiles{grid-template-columns:repeat(5,1fr);gap:6px}.tile{min-height:80px}.tile .ch{font-size:24px}
@@ -189,9 +210,13 @@ function pillarsBlock() {
       <div class="gz"><span class="el-${p.sel}" title="${p.sel}">${p.stem}</span><span class="el-${p.bel}" title="${p.bel}">${p.branch}</span></div>
       <div class="elx">${p.sel} · ${p.bel}${p.k === "day" ? " · 日主" : ""}</div></div>`).join("")}</div>
     <div class="bars">${EL.map(e => `<div class="bar"><b class="el-${e}">${e}</b><div class="track"><div class="fill f-${e}" style="width:${P.weights[e] || 0}%"></div></div><span>${P.weights[e] || 0}%</span></div>`).join("")}</div>
-    <div class="ysline">${Li("日主", "day master")} <b class="el-${P.pillars[2].sel}">${P.day_master}</b> · ${esc(P.strength)} ·
-      ${Li("用神", "useful")} ${P.fav.map((e, i) => `<span class="chip bg-${e}"><b class="el-${e}">${e}</b> ${i === 0 ? "用神" : "喜"}</span>`).join("")}
-      ${Li("忌", "avoid")} ${P.unfav.map(e => `<span class="chip"><b class="el-${e}">${e}</b></span>`).join("")}</div></div>`;
+    <div class="ysline">${Li("日主", "day master")} <b class="el-${P.pillars[2].sel}">${P.day_master}</b> · ${esc(P.strength)}</div>
+    <div class="ysbox">
+      <div class="ysgrp use"><div class="ystitle">${L("宜选 · 用神", "Choose names with these elements")}</div>
+        <div class="ysdiscs">${P.fav.map((e, i) => `<div class="ysd ysd-${e}"><span>${e}</span><small>${i === 0 ? "用神" : "喜"} · ${EL_EN[e]}</small></div>`).join("")}</div></div>
+      <div class="ysgrp avoid"><div class="ystitle">${L("忌 · 少用", "Avoid these elements")}</div>
+        <div class="ysdiscs">${P.unfav.map(e => `<div class="ysd off"><span class="el-${e}">${e}</span><small>${EL_EN[e]}</small></div>`).join("") || `<span class="count">—</span>`}</div></div>
+    </div></div>`;
 }
 
 /* ---------- B · builder ---------- */
@@ -226,7 +251,7 @@ function panelHtml() {
   return `<div class="panel">
     <div style="font-weight:700">${L(`为第 ${S.active + 1} 字选字`, `Pick character ${S.active + 1}`)}</div>
     <div class="frow" role="group" aria-label="element filter"><span class="flab">${L("五行", "element")}</span>
-      ${EL.map(e => `<button class="fchip bg-${e}" data-el="${e}" aria-pressed="${S.els.has(e)}"><b class="el-${e}">${e}</b> ${EL_EN[e]}${P.fav.includes(e) ? " ★" : ""}</button>`).join("")}</div>
+      ${EL.map(e => `<button class="fchip elc-${e}" data-el="${e}" aria-pressed="${S.els.has(e)}"><b class="el-${e}">${e}</b> ${EL_EN[e]}${P.fav.includes(e) ? " ★" : ""}</button>`).join("")}</div>
     <div class="frow" role="group" aria-label="stroke filter"><span class="flab">${L("笔画 (康熙)", partnerEmpty ? "best reachable 吉 of 4" : "吉 of 4 with this stroke count")}</span>
       <span id="chips" style="display:contents">${chipsHtml()}</span></div>
     <div class="frow"><label class="flab" for="py">${L("拼音", "pinyin, no tones")}</label>
