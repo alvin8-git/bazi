@@ -407,3 +407,14 @@ def test_name_optimise_endpoint():
     assert s["score"]["total"] == d2["baseline"]["score"]["total"]
     assert client.get(f"/api/pub/name/optimise?surname=王&{NAME_Q}&given=___").status_code in (200, 400)
     assert client.get(f"/api/pub/name/optimise?surname=王王王&{NAME_Q}&given=__").status_code == 400
+
+
+def test_name_api_carries_meaning_and_confidence_fields():
+    r = client.get(f"/api/pub/name/chars?surname=王&{NAME_Q}&given=__&slot=0&py=yun&el=all").json()
+    t = {x["ch"]: x for x in r["tiles"]}
+    assert t["晕"]["blocked"] is True and t["晕"]["why"]
+    s = client.get(f"/api/pub/name/score?surname=王&given=禄晕&{NAME_Q}").json()
+    assert s["warnings"] and s["warnings"][0]["ch"] == "晕"
+    assert all("conf" in c for c in s["chars"])
+    d = client.get(f"/api/pub/name/optimise?surname=王&{NAME_Q}&given=_婷").json()
+    assert "晕" not in "".join(x["given"] for x in d["results"])

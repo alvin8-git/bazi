@@ -49,6 +49,15 @@ def _chardata() -> dict:
     return json.loads(DATA.read_text("utf8"))
 
 
+@lru_cache(maxsize=1)
+def meaning_exclude() -> dict:
+    """Characters screened out for clearly adverse meaning (data/naming/meaning_exclude.json)."""
+    path = ROOT / "data/naming/meaning_exclude.json"
+    if not path.exists():
+        return {}
+    return {k: v for k, v in json.loads(path.read_text("utf8")).items() if not k.startswith("_")}
+
+
 def char_info(ch: str, trad: str | None = None) -> dict | None:
     """Dataset entry for one character. `trad` selects one of its traditional forms
     (data `trad_alts`); the returned `ks` is the 康熙 stroke count of that form."""
@@ -73,13 +82,12 @@ def five_grids(surname_ks: list[int], given_ks: list[int]) -> dict:
     ren = s[-1] + g[0]
     di = (g[0] + g[1]) if len(g) > 1 else (g[0] + 1)
     zong = sum(s) + sum(g)
-    wai = zong - ren + (1 if len(s) == 1 and len(g) > 1 else
-                        2 if len(s) == 1 and len(g) == 1 else
-                        1 if len(g) > 1 else 2)
-    # standard convention: 外格 = 總格 − 人格 + 1 for 单姓; the widely-used
-    # simple form for 单姓双名 is 第二名字笔画 + 1, for 单姓单名 it is 2.
+    # 外格, the common convention:
+    #   单姓双名 = 名末 + 1 · 单姓单名 = 2 · 复姓双名 = 姓首 + 名末 · 复姓单名 = 姓首 + 1
     if len(s) == 1:
         wai = (g[1] + 1) if len(g) > 1 else 2
+    else:
+        wai = (s[0] + g[1]) if len(g) > 1 else (s[0] + 1)
     grids = {"天格": tian, "人格": ren, "地格": di, "外格": wai, "總格": zong}
     return {k: {"num": v, "luck": _grid_luck(v)} for k, v in grids.items()}
 
@@ -282,10 +290,13 @@ def slot_candidates(ys: dict, surname: str, given: list[str | None], slot: int,
     taken = set(surname) | {ch for ch in given if ch}
     want = set(els) if els is not None else set(ys["favourable"])
     q = strip_pinyin(py.strip())
+    blocked = meaning_exclude()
     base = []
     for ch, e, pyn, in_pool in _universe():
         if ch in taken:
             continue
+        if ch in blocked and not q:
+            continue                         # screened characters surface only in a pinyin search
         el = e.get("el")
         if q:
             if not pyn.startswith(q):
@@ -303,13 +314,14 @@ def slot_candidates(ys: dict, surname: str, given: list[str | None], slot: int,
             cache[ks] = projected_ji(s_ks, g_ks, slot, ks)
         return cache[ks]
 
-    chips = sorted({e["ks"] for _, e, _ in base}, key=lambda k: (-ji(k), k))[:6]
+    chips = sorted({e["ks"] for ch, e, _ in base if ch not in blocked}, key=lambda k: (-ji(k), k))[:6]
     rows = [r for r in base if not strokes or r[1]["ks"] in set(strokes)]
-    rows.sort(key=lambda r: (not r[2], -ji(r[1]["ks"]), r[1]["lvl"], r[1]["ks"], r[0]))
+    rows.sort(key=lambda r: (r[0] in blocked, not r[2], -ji(r[1]["ks"]), r[1]["lvl"], r[1]["ks"], r[0]))
     start = max(0, (page - 1) * per)
     tiles = [{"ch": ch, "py": e.get("py") or "", "ks": e["ks"], "el": e.get("el"),
               "pool": in_pool, "lvl": e["lvl"], "ji": ji(e["ks"]),
-              "contested": bool(e.get("el_contested"))}
+              "contested": bool(e.get("el_contested")),
+              "blocked": ch in blocked, "why": (blocked.get(ch) or {}).get("why")}
              for ch, e, in_pool in rows[start:start + per]]
     return {"slot": slot, "total": len(rows), "page": page, "per": per, "tiles": tiles,
             "chips": [{"ks": k, "ji": ji(k)} for k in chips],
@@ -318,32 +330,55 @@ def slot_candidates(ys: dict, surname: str, given: list[str | None], slot: int,
 
 # ---- quantitative score (0–100) ------------------------------------------------
 # Three parts, each stated so it can be audited:
-#   五格 50 — only the four grids the given name controls (天格 is fixed by the surname).
-#            人格 16 (主運, the core) · 總格 14 (後運) · 地格 12 (前運) · 外格 8 (副運);
-#            a grid scores its weight when 吉, 0 otherwise (the dataset has one cited 吉 set;
-#            no 大吉/半吉 grades until a cited 81數理 table is supplied).
+#   五格 50 — only the grids the given name controls (天格 is fixed by the surname).
+#            双名: 人格 16 (主運, the core) · 總格 14 (後運) · 地格 12 (前運) · 外格 8 (副運).
+#            单名: 人格 and 總格 are the same number, so it is scored once at 30; 地格 20;
+#                  外格 is the fixed convention (2 or 姓首+1) and carries no points.
+#            A grid scores its weight when 吉, 0 otherwise (one cited 吉 set; no 大吉/半吉
+#            grades until a cited 81數理 table is supplied).
 #   三才 25 — two relations (天→人, 人→地), 12.5 each: 生 or 比 full, 洩 half, 剋/受剋 zero.
-#   用神 25 — mean over the given characters: 用神 1.0 · 喜 0.8 · 闲 0.4 · 未定 0.3 · 忌 0.
+#   用神 25 — mean over the given characters of role × element confidence.
+#            role: 用神 1.0 · 喜 0.8 · 闲 0.4 · 未定 0.3 · 忌 0.
+#            confidence: curated element 1.0 · curated but disputed 0.85 · inferred from the
+#            radical only 0.8 (a radical is weak evidence of a character's element).
 GRID_WEIGHT = {"人格": 16, "總格": 14, "地格": 12, "外格": 8}
+GRID_WEIGHT_SINGLE = {"人格": 30, "地格": 20}
 RELATION_SCORE = {"生": 1.0, "比": 1.0, "洩": 0.5, "剋": 0.0, "受剋": 0.0}
 ROLE_SCORE = {"用神": 1.0, "喜": 0.8, "闲": 0.4, "未定": 0.3, "忌": 0.0}
+CONF_CURATED, CONF_CONTESTED, CONF_RADICAL = 1.0, 0.85, 0.8
 
 
-def stroke_score(grids: dict, sc: dict) -> tuple[float, float]:
+def grid_weights(n_given: int) -> dict:
+    return GRID_WEIGHT_SINGLE if n_given == 1 else GRID_WEIGHT
+
+
+def confidence(entry: dict | None) -> float:
+    """How far the element assignment can be trusted (see the scoring note above)."""
+    if not entry or not entry.get("el"):
+        return 1.0                      # 未定 already carries its own low role score
+    if (entry.get("el_src") or "").startswith("curated:"):
+        return CONF_CONTESTED if entry.get("el_contested") else CONF_CURATED
+    return CONF_RADICAL
+
+
+def stroke_score(grids: dict, sc: dict, n_given: int = 2) -> tuple[float, float]:
     """(五格 part of 50, 三才 part of 25) — depends on stroke counts only."""
-    wuge = sum(w for k, w in GRID_WEIGHT.items() if grids[k]["luck"] == "吉")
+    wuge = sum(w for k, w in grid_weights(n_given).items() if grids[k]["luck"] == "吉")
     san = sum(12.5 * RELATION_SCORE[r] for r in sc["relations"])
     return float(wuge), san
 
 
-def score_name(grids: dict, sc: dict, roles: list[str]) -> dict:
-    wuge, san = stroke_score(grids, sc)
-    ysp = 25.0 * sum(ROLE_SCORE[r] for r in roles) / max(1, len(roles))
+def score_name(grids: dict, sc: dict, roles: list[str], confs: list[float] | None = None) -> dict:
+    confs = confs or [1.0] * len(roles)
+    wuge, san = stroke_score(grids, sc, len(roles))
+    ysp = 25.0 * sum(ROLE_SCORE[r] * c for r, c in zip(roles, confs)) / max(1, len(roles))
+    gw = ("人/總 30 · 地 20 (单名; 外格 unscored)" if len(roles) == 1 else "人16 總14 地12 外8")
     return {"total": round(wuge + san + ysp, 1),
             "parts": {"wuge": wuge, "sancai": san, "yongshen": round(ysp, 1)},
             "max": {"wuge": 50, "sancai": 25, "yongshen": 25},
-            "basis": "五格 50 (人16 總14 地12 外8, 吉 only) + 三才 25 (生/比 full, 洩 half) + "
-                     "用神 25 (用神 1.0 · 喜 0.8 · 闲 0.4 · 未定 0.3 · 忌 0)"}
+            "basis": f"五格 50 ({gw}, 吉 only) + 三才 25 (生/比 full, 洩 half) + 用神 25 "
+                     "(用神 1.0 · 喜 0.8 · 闲 0.4 · 未定 0.3 · 忌 0, × element confidence: "
+                     "curated 1.0 · disputed 0.85 · radical-inferred 0.8)"}
 
 
 def optimise_name(ys: dict, surname: str, given: list[str | None],
@@ -365,9 +400,11 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
     if any(ch is not None and e is None for ch, e in zip(given, fixed)):
         raise ValueError("character not in dataset")
     taken = set(surname) | {ch for ch in given if ch}
+    blocked = meaning_exclude()
     pool = [(ch, e, in_pool) for ch, e, _, in_pool in _universe()
-            if e.get("el") in want and ch not in taken]
-    pool.sort(key=lambda r: (-ROLE_SCORE[_role(r[1]["el"], ys)], not r[2], r[1]["lvl"], r[1]["ks"], r[0]))
+            if e.get("el") in want and ch not in taken and ch not in blocked]
+    pool.sort(key=lambda r: (-ROLE_SCORE[_role(r[1]["el"], ys)] * confidence(r[1]), not r[2],
+                             r[1]["lvl"], r[1]["ks"], r[0]))
     by_ks: dict[int, list] = {}
     for r in pool:
         by_ks.setdefault(r[1]["ks"], []).append(r)
@@ -377,20 +414,22 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
         if g_ks not in scache:
             grids = five_grids(s_ks, list(g_ks))
             sc = sancai(grids)
-            scache[g_ks] = (grids, sc, sum(stroke_score(grids, sc)))
+            scache[g_ks] = (grids, sc, sum(stroke_score(grids, sc, len(g_ks))))
         return scache[g_ks]
 
     def row(chars: list[tuple], changed: list[int]) -> dict:
         """chars = [(ch, entry, in_pool)] for every given box."""
         grids, sc, _ = strokes_part(tuple(e["ks"] for _, e, _ in chars))
         roles = [_role(e.get("el"), ys) for _, e, _ in chars]
+        confs = [confidence(e) for _, e, _ in chars]
         return {"given": "".join(ch for ch, _, _ in chars),
                 "name": surname + "".join(ch for ch, _, _ in chars),
                 "chars": [{"ch": ch, "py": e.get("py") or "", "el": e.get("el"), "role": ro,
-                           "ks": e["ks"], "pool": ip} for (ch, e, ip), ro in zip(chars, roles)],
+                           "ks": e["ks"], "pool": ip, "conf": cf}
+                          for (ch, e, ip), ro, cf in zip(chars, roles, confs)],
                 "ji": sum(1 for v in grids.values() if v["luck"] == "吉"),
                 "sancai": sc["verdict"], "zong": grids["總格"]["luck"],
-                "score": score_name(grids, sc, roles), "changed": changed,
+                "score": score_name(grids, sc, roles, confs), "changed": changed,
                 "_k": (not all(ip for _, _, ip in chars), max(e["lvl"] for _, e, _ in chars),
                        sum(e["ks"] for _, e, _ in chars))}
 
@@ -456,15 +495,21 @@ def name_card(ys: dict, surname: str, given: str, trad: dict | None = None) -> d
         role = _role(e.get("el"), ys) if is_given else "姓"
         chars.append({"ch": ch, "py": e.get("py") or "", "el": e.get("el"), "ks": e["ks"],
                       "trad": e["trad"], "trad_alts": (char_info(ch) or {}).get("trad_alts") if is_given else None,
-                      "role": role, "role_en": ROLE_EN[role],
+                      "role": role, "role_en": ROLE_EN[role], "conf": confidence(e) if is_given else 1.0,
+                      "radical_inferred": bool(is_given and e.get("el") and not (e.get("el_src") or "").startswith("curated:")),
                       "contested": bool(e.get("el_contested")), "el_alt": e.get("el_alt"),
                       "surname": not is_given})
     grids = five_grids(s_ks, [c["ks"] for c in chars[len(surname):]])
     for k, v in grids.items():
         v["el"] = GRID_EL[v["num"] % 10]
     sc = sancai(grids)
-    score = score_name(grids, sc, [c["role"] for c in chars[len(surname):]])
+    gv = chars[len(surname):]
+    score = score_name(grids, sc, [c["role"] for c in gv], [c["conf"] for c in gv])
+    blocked = meaning_exclude()
+    warnings = [{"ch": c["ch"], "why": blocked[c["ch"]]["why"], "class": blocked[c["ch"]]["class"]}
+                for c in gv if c["ch"] in blocked]
     return {"name": surname + given, "surname": surname, "given": given, "chars": chars, "score": score,
+            "warnings": warnings,
             "grids": [{"grid": k, **grids[k]} for k in GRID_ORDER],
             "ji": sum(1 for v in grids.values() if v["luck"] == "吉"),
             "sancai": sc, "trad": "".join(c["trad"] for c in chars),

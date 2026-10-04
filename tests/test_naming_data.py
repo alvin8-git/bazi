@@ -118,3 +118,15 @@ def test_char_info_selects_a_traditional_form():
     assert char_info("历", "曆")["trad"] == "曆"
     with pytest.raises(ValueError):
         char_info("云", "雨")
+
+
+def test_meaning_exclude_file_shape(data):
+    ex = json.loads((DATA.parent / "meaning_exclude.json").read_text("utf8"))
+    assert ex["_note"] and len(ex["_reviewed_keep"]) > 100
+    for ch, ent in ex.items():
+        if ch.startswith("_"):
+            continue
+        assert ch in data and data[ch].get("lvl") in (1, 2), ch
+        assert ent["class"] in ("illness", "death", "violence", "misfortune", "body", "pejorative", "sorrow", "other")
+        assert ent["why"]
+    assert not (set(ex["_reviewed_keep"]) & {k for k in ex if not k.startswith("_")})

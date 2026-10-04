@@ -1,0 +1,1620 @@
+{
+"_note": "Characters never offered as name characters (meaning screen). Candidates came from scripts/naming_meaning_scan.py (Unihan kDefinition keyword scan over 通用规范汉字表 levels 1–2) plus adverse characters the keywords missed; every entry was reviewed by hand. `why` is the Unihan gloss. `_reviewed_keep` lists scan hits that were reviewed and left allowed (false positives such as 山 'hill', 基 'base', surnames, neutral words).",
+"_reviewed_keep": "丏亢伎佛俗俳冈凌凛切刈刘刻剞勒千华厝吡吽呤呱咂哄哇哙唼啄啉啜啾喀嗝嗥嗷嘁坏坑垄垤埃埵培基埽堙填墟夔娴孝宰尘山屺岘岣峁崮嵌嵫巧帼徂志忸怔怩恫憨戡扫扼技捋掺昭是昵术朵村柚柢栏根槔槛樗汔汨油沽泊泖泮洎浪涟涠涤淡湿溅满漆澶濂瀑火炀炎炼炽烨焜焰焱煅煎片牢犍猛猬獬瑛璀璘璟璨甲画甾畋盛眭眯砻硌磴礴示祓禾秋秾策筱簇粹绉缌胡脔苁莅莞莳莹萃萄葑葡藁藿蚝蛘蛸蜃蜡螂螭诃诔诖诨诿谖趄辉辣邱郊钩钻铡铣铭锁锥锲镂镌镰镶闵阱陵隧雪静鞘韬顸骰骼魅鲁黑",
+"疔": {
+"class": "illness",
+"why": "carbuncle, boil, ulcer"
+},
+"疖": {
+"class": "illness",
+"why": "pimple, sore, boil"
+},
+"疙": {
+"class": "illness",
+"why": "pimple, sore, boil, wart, pustule"
+},
+"疚": {
+"class": "illness",
+"why": "chronic disease, chronic illness; sorrow"
+},
+"疠": {
+"class": "illness",
+"why": "a sore, ulcer; pestilence"
+},
+"疡": {
+"class": "illness",
+"why": "ulcers, sores; infection"
+},
+"疣": {
+"class": "illness",
+"why": "wart; tumor; goiter; papule"
+},
+"疥": {
+"class": "illness",
+"why": "scabies, itch"
+},
+"疫": {
+"class": "illness",
+"why": "epidemic, plague, pestilence"
+},
+"疮": {
+"class": "illness",
+"why": "tumor, boil, sore, wound"
+},
+"疯": {
+"class": "illness",
+"why": "crazy, insane, mentally ill"
+},
+"疳": {
+"class": "illness",
+"why": "childhood diseases"
+},
+"疴": {
+"class": "illness",
+"why": "illness, sickness, disease; pain"
+},
+"疵": {
+"class": "illness",
+"why": "flaw, fault, defect; disease"
+},
+"疽": {
+"class": "illness",
+"why": "ulcer, carbuncle, abscess"
+},
+"疾": {
+"class": "illness",
+"why": "illness, disease, sickness; to hate"
+},
+"痂": {
+"class": "illness",
+"why": "scab"
+},
+"病": {
+"class": "illness",
+"why": "illness, sickness, disease"
+},
+"症": {
+"class": "illness",
+"why": "disease, illness, ailment"
+},
+"痈": {
+"class": "illness",
+"why": "carbuncle, sore, ulcer, abscess"
+},
+"痍": {
+"class": "illness",
+"why": "wound, bruise, sore"
+},
+"痪": {
+"class": "illness",
+"why": "paralysis, numbness of limbs"
+},
+"痱": {
+"class": "illness",
+"why": "heat rash, prickly heat; ulcers"
+},
+"痴": {
+"class": "illness",
+"why": "foolish, stupid, dumb, silly"
+},
+"痹": {
+"class": "illness",
+"why": "paralysis, numbness"
+},
+"痼": {
+"class": "illness",
+"why": "chronic disease"
+},
+"痿": {
+"class": "illness",
+"why": "paralysis; impotence"
+},
+"瘌": {
+"class": "illness",
+"why": "severe; poisonous; dangerous; itch and other skin diseases"
+},
+"瘐": {
+"class": "illness",
+"why": "to die in prison from cold and hunger; to treat with cruelty"
+},
+"瘘": {
+"class": "illness",
+"why": "fistula, sore, ulcer, goiter"
+},
+"瘛": {
+"class": "illness",
+"why": "childhood disease"
+},
+"瘟": {
+"class": "illness",
+"why": "epidemic, plague, pestilence"
+},
+"瘠": {
+"class": "illness",
+"why": "thin, emaciated; barren"
+},
+"瘤": {
+"class": "illness",
+"why": "tumor, lump, goiter"
+},
+"瘫": {
+"class": "illness",
+"why": "paralysis, palsy, numbness"
+},
+"瘵": {
+"class": "illness",
+"why": "a wasting disease"
+},
+"瘸": {
+"class": "illness",
+"why": "lameness, paralysis of hands, leg"
+},
+"瘼": {
+"class": "illness",
+"why": "sickness; distress"
+},
+"癃": {
+"class": "illness",
+"why": "weakness, infirmity retention of urine"
+},
+"癌": {
+"class": "illness",
+"why": "cancer; marmoset"
+},
+"癞": {
+"class": "illness",
+"why": "leprosy, scabies, mange; shoddy"
+},
+"癫": {
+"class": "illness",
+"why": "crazy, mad; madness, mania, insane"
+},
+"恙": {
+"class": "illness",
+"why": "illness, sickness; indisposition"
+},
+"恹": {
+"class": "illness",
+"why": "feeble, sickly; tranquil, calm"
+},
+"胬": {
+"class": "illness",
+"why": "a disease's name in Chinese medicine"
+},
+"脓": {
+"class": "illness",
+"why": "pus"
+},
+"菌": {
+"class": "illness",
+"why": "mushroom; germ, microbe"
+},
+"霉": {
+"class": "illness",
+"why": "mildew, mold; moldy, mildewed"
+},
+"泻": {
+"class": "illness",
+"why": "drain off, leak; flow, pour down"
+},
+"晕": {
+"class": "illness",
+"why": "halo in sky; fog; dizzy, faint"
+},
+"眩": {
+"class": "illness",
+"why": "to confuse; dizzy, dazed, disoriented"
+},
+"盲": {
+"class": "illness",
+"why": "blind; unperceptive, shortsighted"
+},
+"眇": {
+"class": "illness",
+"why": "blind in one eye; minute, minuscule"
+},
+"眵": {
+"class": "illness",
+"why": "eyes diseased and dim"
+},
+"瞎": {
+"class": "illness",
+"why": "blind, reckless; rash"
+},
+"瞢": {
+"class": "illness",
+"why": "eyesight obscured; to feel ashamed"
+},
+"瞽": {
+"class": "illness",
+"why": "blind; blind musician; stupid"
+},
+"聋": {
+"class": "illness",
+"why": "deaf"
+},
+"聩": {
+"class": "illness",
+"why": "deaf"
+},
+"哑": {
+"class": "illness",
+"why": "dumb, mute; become hoarse"
+},
+"喑": {
+"class": "illness",
+"why": "to be dumb; the sobbing of infants"
+},
+"跛": {
+"class": "illness",
+"why": "lame"
+},
+"蹇": {
+"class": "illness",
+"why": "lame, crippled; unlucky; hexagram ䷦"
+},
+"矬": {
+"class": "illness",
+"why": "a dwarf"
+},
+"畸": {
+"class": "illness",
+"why": "odd, fractional, remainder, odds"
+},
+"丧": {
+"class": "death",
+"why": "mourning; mourn; funeral"
+},
+"亡": {
+"class": "death",
+"why": "death, destroyed; lose, perish"
+},
+"死": {
+"class": "death",
+"why": "die; dead; death"
+},
+"殁": {
+"class": "death",
+"why": "die; death; dead"
+},
+"殂": {
+"class": "death",
+"why": "to die"
+},
+"殃": {
+"class": "death",
+"why": "misfortune, disaster, calamity"
+},
+"殇": {
+"class": "death",
+"why": "die young; national mourning"
+},
+"殉": {
+"class": "death",
+"why": "die for cause, be martyr for"
+},
+"殍": {
+"class": "death",
+"why": "to starve to death"
+},
+"殒": {
+"class": "death",
+"why": "die, perish; vanish; fall"
+},
+"殓": {
+"class": "death",
+"why": "dress corpse for burial"
+},
+"殛": {
+"class": "death",
+"why": "to put to death to imprison for life"
+},
+"殡": {
+"class": "death",
+"why": "encoffin; embalm; funeral"
+},
+"殪": {
+"class": "death",
+"why": "die; kill, exterminate"
+},
+"毙": {
+"class": "death",
+"why": "kill; die violent death"
+},
+"夭": {
+"class": "death",
+"why": "young, fresh-looking; die young"
+},
+"逝": {
+"class": "death",
+"why": "pass away; die"
+},
+"薨": {
+"class": "death",
+"why": "death of prince; swarming"
+},
+"尸": {
+"class": "death",
+"why": "corpse; to impersonate the dead; to preside; Kangxi radical "
+},
+"柩": {
+"class": "death",
+"why": "coffin which contains corpse"
+},
+"棺": {
+"class": "death",
+"why": "coffin"
+},
+"椁": {
+"class": "death",
+"why": "outer-coffin; vault"
+},
+"坟": {
+"class": "death",
+"why": "grave, mound; bulge; bulging"
+},
+"墓": {
+"class": "death",
+"why": "grave, tomb"
+},
+"茔": {
+"class": "death",
+"why": "grave, tomb, cemetery"
+},
+"圹": {
+"class": "death",
+"why": "tomb, grave: prairie; open wilderness"
+},
+"葬": {
+"class": "death",
+"why": "bury, inter"
+},
+"埋": {
+"class": "death",
+"why": "bury, secrete, conceal"
+},
+"堋": {
+"class": "death",
+"why": "bury"
+},
+"讣": {
+"class": "death",
+"why": "obituary; give notice of death"
+},
+"悼": {
+"class": "death",
+"why": "grieve, mourn, lament; grieved"
+},
+"吊": {
+"class": "death",
+"why": "condole, mourn, pity; hang"
+},
+"赙": {
+"class": "death",
+"why": "gift of money help pay funeral"
+},
+"俑": {
+"class": "death",
+"why": "wooden figure buried with dead"
+},
+"杀": {
+"class": "violence",
+"why": "kill, slaughter, murder; hurt"
+},
+"戕": {
+"class": "violence",
+"why": "kill, slay; wound, injure, hurt"
+},
+"戮": {
+"class": "violence",
+"why": "kill, massacre; oppress"
+},
+"斩": {
+"class": "violence",
+"why": "cut, chop, sever; behead"
+},
+"弑": {
+"class": "violence",
+"why": "to kill one's superior"
+},
+"屠": {
+"class": "violence",
+"why": "butcher, slaughter, massacre"
+},
+"诛": {
+"class": "violence",
+"why": "execute, kill, put to death; punish"
+},
+"歼": {
+"class": "violence",
+"why": "annihilate, wipe out, kill off"
+},
+"剿": {
+"class": "violence",
+"why": "destroy, exterminate, annihilate"
+},
+"刎": {
+"class": "violence",
+"why": "behead, cut throat"
+},
+"刖": {
+"class": "violence",
+"why": "cutting off feet as form of punishment"
+},
+"刿": {
+"class": "violence",
+"why": "to cut, injure, stab, stick on"
+},
+"刑": {
+"class": "violence",
+"why": "punishment, penalty; law"
+},
+"拷": {
+"class": "violence",
+"why": "torture and interrogate; hit"
+},
+"笞": {
+"class": "violence",
+"why": "bamboo rod used for beatings"
+},
+"桎": {
+"class": "violence",
+"why": "fetters, shackles, handcuffs"
+},
+"梏": {
+"class": "violence",
+"why": "handcuffs, manacles, fetters"
+},
+"枷": {
+"class": "violence",
+"why": "cangue scaffold"
+},
+"铐": {
+"class": "violence",
+"why": "shackles, manacles"
+},
+"镣": {
+"class": "violence",
+"why": "fetters"
+},
+"锢": {
+"class": "violence",
+"why": "run metal into cracks; confine"
+},
+"缢": {
+"class": "violence",
+"why": "hang, strangle"
+},
+"缧": {
+"class": "violence",
+"why": "a chain or rope used bind criminals"
+},
+"缳": {
+"class": "violence",
+"why": "noose; hang death; tie, bind"
+},
+"囚": {
+"class": "violence",
+"why": "prisoner, convict; confine"
+},
+"囹": {
+"class": "violence",
+"why": "prison, enclosure"
+},
+"圄": {
+"class": "violence",
+"why": "prison, jail"
+},
+"狱": {
+"class": "violence",
+"why": "prison, jail; case; lawsuit"
+},
+"劫": {
+"class": "violence",
+"why": "take by force, coerce; disaster"
+},
+"寇": {
+"class": "violence",
+"why": "bandits, thieves; enemy; invade"
+},
+"匪": {
+"class": "violence",
+"why": "bandits, robbers, gangsters"
+},
+"盗": {
+"class": "violence",
+"why": "rob, steal; thief, bandit"
+},
+"贼": {
+"class": "violence",
+"why": "thief, traitor; kill"
+},
+"偷": {
+"class": "violence",
+"why": "to steal, burglar, thief"
+},
+"窃": {
+"class": "violence",
+"why": "secretly, stealthily; steal; thief"
+},
+"剽": {
+"class": "violence",
+"why": "rob, plunder; slice off; fast"
+},
+"虏": {
+"class": "violence",
+"why": "to capture, imprison, seize; a prison"
+},
+"俘": {
+"class": "violence",
+"why": "prisoner of war; take as prisoner"
+},
+"虐": {
+"class": "violence",
+"why": "cruel, harsh, oppressive"
+},
+"暴": {
+"class": "violence",
+"why": "violent, brutal, tyrannical"
+},
+"刽": {
+"class": "violence",
+"why": "amputate, cut off"
+},
+"刺": {
+"class": "violence",
+"why": "stab; prick, irritate; prod"
+},
+"割": {
+"class": "violence",
+"why": "cut, divide, partition; cede"
+},
+"剐": {
+"class": "violence",
+"why": "cut, cut flesh from bones"
+},
+"剁": {
+"class": "violence",
+"why": "chop by pounding, mince, hash"
+},
+"剥": {
+"class": "violence",
+"why": "peel"
+},
+"砍": {
+"class": "violence",
+"why": "hack, chop, cut, fell"
+},
+"砸": {
+"class": "violence",
+"why": "smash, crush, break; pound, mash"
+},
+"桀": {
+"class": "violence",
+"why": "chicken roost; ancient emperor"
+},
+"灾": {
+"class": "misfortune",
+"why": "calamity, disaster, catastrophe"
+},
+"祸": {
+"class": "misfortune",
+"why": "misfortune, calamity, disaster"
+},
+"凶": {
+"class": "misfortune",
+"why": "culprit; murder; bad, sad"
+},
+"祟": {
+"class": "misfortune",
+"why": "evil spirit; evil influence"
+},
+"煞": {
+"class": "misfortune",
+"why": "malignant deity; baleful, noxious; strike dead"
+},
+"咒": {
+"class": "misfortune",
+"why": "curse, damn, incantation"
+},
+"诅": {
+"class": "misfortune",
+"why": "curse; swear, pledge"
+},
+"罹": {
+"class": "misfortune",
+"why": "sorrow, grief; incur, meet with"
+},
+"旱": {
+"class": "misfortune",
+"why": "drought; dry; dry land"
+},
+"涝": {
+"class": "misfortune",
+"why": "inundate, flood; torrent"
+},
+"霾": {
+"class": "misfortune",
+"why": "misty, foggy; dust storm"
+},
+"崩": {
+"class": "misfortune",
+"why": "rupture, split apart, collapse"
+},
+"塌": {
+"class": "misfortune",
+"why": "fall in ruins, collapse"
+},
+"垮": {
+"class": "misfortune",
+"why": "be defeated, fail, collapse"
+},
+"坍": {
+"class": "misfortune",
+"why": "collapse; landslide"
+},
+"堕": {
+"class": "misfortune",
+"why": "fall, sink, let fall; degenerate"
+},
+"坠": {
+"class": "misfortune",
+"why": "fall down, drop, sink, go to ruin"
+},
+"陨": {
+"class": "misfortune",
+"why": "fall, slip; let fall; die"
+},
+"陷": {
+"class": "misfortune",
+"why": "submerge, sink, plunge; trap"
+},
+"险": {
+"class": "misfortune",
+"why": "narrow pass, strategic point"
+},
+"隳": {
+"class": "misfortune",
+"why": "to destroy; to overthrow"
+},
+"圮": {
+"class": "misfortune",
+"why": "destroyed, ruined; to subvert to injure"
+},
+"溃": {
+"class": "misfortune",
+"why": "flooding river; militarily defeat"
+},
+"灭": {
+"class": "misfortune",
+"why": "extinguish; wipe out, exterminate"
+},
+"焚": {
+"class": "misfortune",
+"why": "burn"
+},
+"烬": {
+"class": "misfortune",
+"why": "cinders, ashes, embers; remnants"
+},
+"毁": {
+"class": "misfortune",
+"why": "destroy"
+},
+"破": {
+"class": "misfortune",
+"why": "break, ruin, destroy; rout"
+},
+"碎": {
+"class": "misfortune",
+"why": "break, smash; broken, busted"
+},
+"朽": {
+"class": "misfortune",
+"why": "decayed, rotten; rot, decay"
+},
+"枯": {
+"class": "misfortune",
+"why": "dried out, withered, decayed"
+},
+"槁": {
+"class": "misfortune",
+"why": "wither; withered, rotten, dead"
+},
+"萎": {
+"class": "misfortune",
+"why": "wither, wilt"
+},
+"蔫": {
+"class": "misfortune",
+"why": "withered, faded, decayed; calm"
+},
+"凋": {
+"class": "misfortune",
+"why": "be withered, fallen; exhausted"
+},
+"败": {
+"class": "misfortune",
+"why": "be defeated, decline, fail"
+},
+"衰": {
+"class": "misfortune",
+"why": "decline, falter, decrease; weaken"
+},
+"亏": {
+"class": "misfortune",
+"why": "lose, fail; damage; deficient"
+},
+"损": {
+"class": "misfortune",
+"why": "diminish; impair; injure"
+},
+"穷": {
+"class": "misfortune",
+"why": "poor, destitute, impoverished"
+},
+"饥": {
+"class": "misfortune",
+"why": "hunger, starving; hungry; a famine"
+},
+"饿": {
+"class": "misfortune",
+"why": "hungry; greedy for; hunger"
+},
+"馁": {
+"class": "misfortune",
+"why": "hungry, starving, famished"
+},
+"馑": {
+"class": "misfortune",
+"why": "time of famine or crop failure"
+},
+"荒": {
+"class": "misfortune",
+"why": "wasteland, desert; uncultivated"
+},
+"废": {
+"class": "misfortune",
+"why": "abrogate, terminate, discard"
+},
+"弃": {
+"class": "misfortune",
+"why": "reject, abandon, discard"
+},
+"落": {
+"class": "misfortune",
+"why": "fall, drop; net income, surplus"
+},
+"沦": {
+"class": "misfortune",
+"why": "be lost; sink, be submerged"
+},
+"没": {
+"class": "misfortune",
+"why": "not, have not, none; drown, sink"
+},
+"消": {
+"class": "misfortune",
+"why": "vanish, die out; melt away"
+},
+"泯": {
+"class": "misfortune",
+"why": "destroy, eliminate; perish"
+},
+"湮": {
+"class": "misfortune",
+"why": "bury, sink, block up; stain"
+},
+"淹": {
+"class": "misfortune",
+"why": "drown; cover with liquid, steep"
+},
+"溺": {
+"class": "misfortune",
+"why": "drown; submerge in water; indulge"
+},
+"涸": {
+"class": "misfortune",
+"why": "dried up; exhausted, tired; dry"
+},
+"漏": {
+"class": "misfortune",
+"why": "leak, drip; funnel; hour glass"
+},
+"泄": {
+"class": "misfortune",
+"why": "leak; vent; flow; reveal"
+},
+"滞": {
+"class": "misfortune",
+"why": "block up, obstruct; stagnant"
+},
+"阻": {
+"class": "misfortune",
+"why": "impede, hinder, obstruct; oppose"
+},
+"碍": {
+"class": "misfortune",
+"why": "obstruct, hinder, block, deter"
+},
+"障": {
+"class": "misfortune",
+"why": "separate; shield; barricade"
+},
+"塞": {
+"class": "misfortune",
+"why": "stop up, block, seal, cork; pass, frontier; fortress"
+},
+"堵": {
+"class": "misfortune",
+"why": "wall; stop, prevent; stop up"
+},
+"晦": {
+"class": "misfortune",
+"why": "dark, unclear, obscure; night"
+},
+"暗": {
+"class": "misfortune",
+"why": "dark; obscure; in secret, covert"
+},
+"昏": {
+"class": "misfortune",
+"why": "dusk, nightfall, twilight, dark"
+},
+"昧": {
+"class": "misfortune",
+"why": "obscure, dark; darken"
+},
+"阴": {
+"class": "misfortune",
+"why": "'female' principle; dark; secret"
+},
+"尿": {
+"class": "body",
+"why": "urine; urinate"
+},
+"屁": {
+"class": "body",
+"why": "break wind; fart; buttocks"
+},
+"屎": {
+"class": "body",
+"why": "excrement, shit, dung"
+},
+"粪": {
+"class": "body",
+"why": "manure, dung, excrement, night soil"
+},
+"吐": {
+"class": "body",
+"why": "vomit, spew out, cough up"
+},
+"吣": {
+"class": "body",
+"why": "vomit"
+},
+"呕": {
+"class": "body",
+"why": "vomit; annoy, enrage"
+},
+"哕": {
+"class": "body",
+"why": "belch; vomit"
+},
+"涕": {
+"class": "body",
+"why": "tear; snivel, nasal mucus"
+},
+"汗": {
+"class": "body",
+"why": "perspiration, sweat"
+},
+"臭": {
+"class": "body",
+"why": "smell, stink, emit foul odor"
+},
+"馊": {
+"class": "body",
+"why": "spoiled, rotten, stale, rancid"
+},
+"腐": {
+"class": "body",
+"why": "rot, decay, spoil; rotten"
+},
+"烂": {
+"class": "body",
+"why": "rotten, spoiled, decayed"
+},
+"秽": {
+"class": "body",
+"why": "dirty, unclean; immoral, obscene"
+},
+"污": {
+"class": "body",
+"why": "filthy, dirty, impure, polluted"
+},
+"垢": {
+"class": "body",
+"why": "dirt, filth, stains; dirty"
+},
+"垃": {
+"class": "body",
+"why": "garbage, refuse, waste"
+},
+"圾": {
+"class": "body",
+"why": "garbage, rubbish; shaking; danger"
+},
+"渣": {
+"class": "body",
+"why": "refuse, dregs, lees, sediment"
+},
+"浊": {
+"class": "body",
+"why": "muddy, turbid, dirty, filthy"
+},
+"溷": {
+"class": "body",
+"why": "privy, latrine; turbid, dirty"
+},
+"臜": {
+"class": "body",
+"why": "dirty; filthy"
+},
+"秃": {
+"class": "body",
+"why": "bald"
+},
+"肥": {
+"class": "body",
+"why": "fat, plump, obese; fertile"
+},
+"胖": {
+"class": "body",
+"why": "fat, obese; fatty"
+},
+"矮": {
+"class": "body",
+"why": "short, dwarf; low"
+},
+"侏": {
+"class": "body",
+"why": "small, little, tiny, dwarf"
+},
+"倭": {
+"class": "body",
+"why": "dwarf; dwarfish, short"
+},
+"恶": {
+"class": "pejorative",
+"why": "evil, wicked, bad, foul"
+},
+"歹": {
+"class": "pejorative",
+"why": "bad, vicious, depraved, wicked"
+},
+"邪": {
+"class": "pejorative",
+"why": "wrong, evil, depraved, vicious, perverse, heterodox"
+},
+"奸": {
+"class": "pejorative",
+"why": "crafty, villainous, false"
+},
+"妄": {
+"class": "pejorative",
+"why": "absurd, foolish, reckless; false"
+},
+"狂": {
+"class": "pejorative",
+"why": "insane, mad; violent; wild"
+},
+"狠": {
+"class": "pejorative",
+"why": "vicious, cruel; severely, extreme"
+},
+"狡": {
+"class": "pejorative",
+"why": "cunning, deceitful, treacherous"
+},
+"猖": {
+"class": "pejorative",
+"why": "mad, wild, reckless, unruly"
+},
+"猥": {
+"class": "pejorative",
+"why": "vulgar, low, cheap; wanton; obscene"
+},
+"鄙": {
+"class": "pejorative",
+"why": "mean; low"
+},
+"陋": {
+"class": "pejorative",
+"why": "narrow; crude, coarse; ugly"
+},
+"俚": {
+"class": "pejorative",
+"why": "rustic, vulgar, unpolished; mean"
+},
+"伧": {
+"class": "pejorative",
+"why": "vulgar person, country man"
+},
+"愚": {
+"class": "pejorative",
+"why": "stupid, doltish, foolish"
+},
+"蠢": {
+"class": "pejorative",
+"why": "wriggle; stupid; silly; fat"
+},
+"笨": {
+"class": "pejorative",
+"why": "foolish, stupid, dull; awkward"
+},
+"呆": {
+"class": "pejorative",
+"why": "dull; dull-minded, simple, stupid"
+},
+"傻": {
+"class": "pejorative",
+"why": "foolish, silly, stupid; an imbecile"
+},
+"戆": {
+"class": "pejorative",
+"why": "stupid, simple, simple-minded"
+},
+"懵": {
+"class": "pejorative",
+"why": "stupid, ignorant, dull"
+},
+"拙": {
+"class": "pejorative",
+"why": "stupid, clumsy, crude; convention"
+},
+"孬": {
+"class": "pejorative",
+"why": "bad; cowardly"
+},
+"懦": {
+"class": "pejorative",
+"why": "weak, timid, cowardly"
+},
+"憎": {
+"class": "pejorative",
+"why": "hate, detest, abhor; hatred"
+},
+"恨": {
+"class": "pejorative",
+"why": "hatred, dislike; resent, hate"
+},
+"怼": {
+"class": "pejorative",
+"why": "hate, abhor; hatred, resentment"
+},
+"仇": {
+"class": "pejorative",
+"why": "enemy, hate, hatred, enmity"
+},
+"厌": {
+"class": "pejorative",
+"why": "dislike, detest, reject; satiate"
+},
+"嫌": {
+"class": "pejorative",
+"why": "hate, detest; suspect; criticize"
+},
+"欺": {
+"class": "pejorative",
+"why": "cheat, double-cross, deceive"
+},
+"诈": {
+"class": "pejorative",
+"why": "cheat, defraud, swindle; trick"
+},
+"讹": {
+"class": "pejorative",
+"why": "swindle, cheat; erroneous, wrong"
+},
+"诓": {
+"class": "pejorative",
+"why": "cheat, swindle, lie"
+},
+"诳": {
+"class": "pejorative",
+"why": "deceive, lie, delude, cheat"
+},
+"骗": {
+"class": "pejorative",
+"why": "swindle, cheat out of, defraud"
+},
+"瞒": {
+"class": "pejorative",
+"why": "deceive, lie; eyes half-closed"
+},
+"诡": {
+"class": "pejorative",
+"why": "deceive, cheat, defraud; sly"
+},
+"谗": {
+"class": "pejorative",
+"why": "slander, defame, misrepresent"
+},
+"谤": {
+"class": "pejorative",
+"why": "slander, libel"
+},
+"诽": {
+"class": "pejorative",
+"why": "slander, vilify, condemn"
+},
+"诋": {
+"class": "pejorative",
+"why": "slander, condemn, reproach"
+},
+"讪": {
+"class": "pejorative",
+"why": "abuse, slander; vilify; ridicule"
+},
+"谩": {
+"class": "pejorative",
+"why": "deceive, insult"
+},
+"谮": {
+"class": "pejorative",
+"why": "to slander"
+},
+"谰": {
+"class": "pejorative",
+"why": "accuse falsely; slander, libel"
+},
+"诼": {
+"class": "pejorative",
+"why": "slander; gossip; rumors"
+},
+"诮": {
+"class": "pejorative",
+"why": "criticize, scold, blame, ridicule"
+},
+"詈": {
+"class": "pejorative",
+"why": "scold, abuse verbally, curse"
+},
+"骂": {
+"class": "pejorative",
+"why": "accuse, blame, curse, scold"
+},
+"辱": {
+"class": "pejorative",
+"why": "humiliate, insult, abuse"
+},
+"侮": {
+"class": "pejorative",
+"why": "insult, ridicule, disgrace"
+},
+"羞": {
+"class": "pejorative",
+"why": "disgrace, shame; ashamed; shy"
+},
+"耻": {
+"class": "pejorative",
+"why": "shame, humiliation; ashamed"
+},
+"愧": {
+"class": "pejorative",
+"why": "ashamed, conscience-stricken"
+},
+"惭": {
+"class": "pejorative",
+"why": "ashamed, humiliated; shameful"
+},
+"怍": {
+"class": "pejorative",
+"why": "to be ashamed"
+},
+"忝": {
+"class": "pejorative",
+"why": "disgraced; ashamed; self-deprecating"
+},
+"贪": {
+"class": "pejorative",
+"why": "be greedy, covet; covetous"
+},
+"馋": {
+"class": "pejorative",
+"why": "gluttonous, greedy; lewd, lecherous"
+},
+"饕": {
+"class": "pejorative",
+"why": "gluttonous, greedy, covetous"
+},
+"餮": {
+"class": "pejorative",
+"why": "a legendary animal; a greedy person"
+},
+"淫": {
+"class": "pejorative",
+"why": "obscene, licentious, lewd"
+},
+"娼": {
+"class": "pejorative",
+"why": "prostitute, harlot"
+},
+"妓": {
+"class": "pejorative",
+"why": "prostitute"
+},
+"婊": {
+"class": "pejorative",
+"why": "whore, prostitute"
+},
+"嫖": {
+"class": "pejorative",
+"why": "patronize prostitutes, frequent"
+},
+"奴": {
+"class": "pejorative",
+"why": "slave, servant"
+},
+"丐": {
+"class": "pejorative",
+"why": "beggar; beg; give"
+},
+"鬼": {
+"class": "pejorative",
+"why": "ghost; spirit of dead; devil; Kangxi radical 194; 23rd lunar"
+},
+"魃": {
+"class": "pejorative",
+"why": "drought demon"
+},
+"魉": {
+"class": "pejorative",
+"why": "a kind of monster"
+},
+"魍": {
+"class": "pejorative",
+"why": "demons, mountain spirits"
+},
+"魑": {
+"class": "pejorative",
+"why": "a mountain demon resembling a tiger"
+},
+"魔": {
+"class": "pejorative",
+"why": "demon, evil spirits; magic power"
+},
+"伥": {
+"class": "pejorative",
+"why": "ghost of one devoured by tiger"
+},
+"豺": {
+"class": "pejorative",
+"why": "wolf; cruel, wicked, mean"
+},
+"虺": {
+"class": "pejorative",
+"why": "large poisonous snake"
+},
+"蝮": {
+"class": "pejorative",
+"why": "venomous snake, viper"
+},
+"蛊": {
+"class": "pejorative",
+"why": "poison; venom; harm; bewitch"
+},
+"毒": {
+"class": "pejorative",
+"why": "poison, venom; poisonous"
+},
+"弊": {
+"class": "pejorative",
+"why": "evil, wrong, bad; criminal"
+},
+"罪": {
+"class": "pejorative",
+"why": "crime, sin, vice; evil; hardship"
+},
+"辜": {
+"class": "pejorative",
+"why": "crime, criminal offense"
+},
+"犯": {
+"class": "pejorative",
+"why": "commit crime, violate; criminal"
+},
+"孽": {
+"class": "pejorative",
+"why": "evil; son of concubine; ghost"
+},
+"慝": {
+"class": "pejorative",
+"why": "do evil in secret; evil, vice"
+},
+"罔": {
+"class": "pejorative",
+"why": "net; deceive; libel; negative"
+},
+"错": {
+"class": "pejorative",
+"why": "error, blunder, mistake; wrong"
+},
+"钝": {
+"class": "pejorative",
+"why": "blunt, obtuse; dull; flat; dull-witted"
+},
+"锈": {
+"class": "pejorative",
+"why": "rust, corrode"
+},
+"滥": {
+"class": "pejorative",
+"why": "flood, overflow; excessive"
+},
+"渎": {
+"class": "pejorative",
+"why": "ditch, sluice, gutter, drain"
+},
+"潦": {
+"class": "pejorative",
+"why": "to flood; a puddle; without care"
+},
+"滑": {
+"class": "pejorative",
+"why": "slip, slide; slippery, polished"
+},
+"荡": {
+"class": "pejorative",
+"why": "pond, pool; wash away, cleanse"
+},
+"蔑": {
+"class": "pejorative",
+"why": "disdain, disregard; slight"
+},
+"藐": {
+"class": "pejorative",
+"why": "disregard, slight, disdain"
+},
+"苛": {
+"class": "pejorative",
+"why": "small, petty; harsh, rigorous"
+},
+"荼": {
+"class": "pejorative",
+"why": "thistle, sowthistle; bitter"
+},
+"秕": {
+"class": "pejorative",
+"why": "empty grain or rice husk, chaff"
+},
+"稗": {
+"class": "pejorative",
+"why": "darnels, weeds, tares small"
+},
+"莠": {
+"class": "pejorative",
+"why": "weeds, tares; undesirable, evil"
+},
+"莽": {
+"class": "pejorative",
+"why": "thicket, underbrush; poisonous"
+},
+"篡": {
+"class": "pejorative",
+"why": "usurp"
+},
+"枭": {
+"class": "pejorative",
+"why": "an owl ; ill-omen"
+},
+"枉": {
+"class": "pejorative",
+"why": "useless, in vain; bent, crooked"
+},
+"害": {
+"class": "pejorative",
+"why": "injure, harm; destroy, kill"
+},
+"媸": {
+"class": "pejorative",
+"why": "an ugly woman"
+},
+"嫫": {
+"class": "pejorative",
+"why": "Huangdi's ugly concubine; nurse"
+},
+"姗": {
+"class": "pejorative",
+"why": "slander; ridicule; proceed slowly"
+},
+"虮": {
+"class": "pejorative",
+"why": "louse eggs, nits"
+},
+"虱": {
+"class": "pejorative",
+"why": "louse; bug; parasite"
+},
+"蚜": {
+"class": "pejorative",
+"why": "plant louse, aphids"
+},
+"蚤": {
+"class": "pejorative",
+"why": "flea; louse"
+},
+"蛆": {
+"class": "pejorative",
+"why": "maggots"
+},
+"蛴": {
+"class": "pejorative",
+"why": "maggots, grubs"
+},
+"蜣": {
+"class": "pejorative",
+"why": "dung beetle"
+},
+"螫": {
+"class": "pejorative",
+"why": "poison; sting; poisonous insect"
+},
+"哀": {
+"class": "sorrow",
+"why": "sad, mournful, pitiful; pity"
+},
+"哭": {
+"class": "sorrow",
+"why": "weep, cry, wail"
+},
+"泣": {
+"class": "sorrow",
+"why": "cry, sob, weep"
+},
+"泪": {
+"class": "sorrow",
+"why": "tears; weep, cry"
+},
+"泫": {
+"class": "sorrow",
+"why": "weep; cry; shine, glisten"
+},
+"潸": {
+"class": "sorrow",
+"why": "weep; tears flowing"
+},
+"啕": {
+"class": "sorrow",
+"why": "wail"
+},
+"啼": {
+"class": "sorrow",
+"why": "weep, whimper; howl, twitter"
+},
+"唏": {
+"class": "sorrow",
+"why": "weep or sob; grieve"
+},
+"哽": {
+"class": "sorrow",
+"why": "choke (with grief)"
+},
+"悲": {
+"class": "sorrow",
+"why": "sorrow, grief; sorry, sad"
+},
+"惨": {
+"class": "sorrow",
+"why": "sad, pitiful, wretched; cruel"
+},
+"恸": {
+"class": "sorrow",
+"why": "sadness, grief; mourn; be moved"
+},
+"愤": {
+"class": "sorrow",
+"why": "resent, hate; indignant"
+},
+"恼": {
+"class": "sorrow",
+"why": "angered, filled with hate"
+},
+"悒": {
+"class": "sorrow",
+"why": "sorrowful, depressed, unhappy"
+},
+"懑": {
+"class": "sorrow",
+"why": "be sick at heart, sorrowful, sad"
+},
+"忧": {
+"class": "sorrow",
+"why": "sad, grieved; grief, melancholy"
+},
+"愁": {
+"class": "sorrow",
+"why": "anxiety; to worry about, be anxious"
+},
+"苦": {
+"class": "sorrow",
+"why": "bitter; hardship, suffering"
+},
+"凄": {
+"class": "sorrow",
+"why": "bitter cold, miserable, dreary"
+},
+"沮": {
+"class": "sorrow",
+"why": "stop, prevent; defeated, dejected"
+},
+"蹙": {
+"class": "sorrow",
+"why": "urgent, suddenly; grieve, lament"
+},
+"畏": {
+"class": "sorrow",
+"why": "fear, dread, awe, reverence"
+},
+"怯": {
+"class": "sorrow",
+"why": "lacking in courage, afraid"
+},
+"寡": {
+"class": "sorrow",
+"why": "widowed; alone, friendless"
+},
+"嫠": {
+"class": "sorrow",
+"why": "a widow"
+},
+"孀": {
+"class": "sorrow",
+"why": "widow"
+},
+"鳏": {
+"class": "sorrow",
+"why": "huge fish; widower; bachelor"
+},
+"剖": {
+"class": "other",
+"why": "split in two, slice; dissect"
+},
+"削": {
+"class": "other",
+"why": "scrape off, pare, trim"
+},
+"刮": {
+"class": "other",
+"why": "shave, pare off, scrape"
+},
+"剔": {
+"class": "other",
+"why": "pick out; scrape off; scrape meat"
+},
+"剩": {
+"class": "other",
+"why": "leftovers, residue, remains"
+},
+"降": {
+"class": "other",
+"why": "descend, fall, drop; lower, down"
+},
+"薄": {
+"class": "other",
+"why": "thin, slight, weak; poor, stingy"
+},
+"硗": {
+"class": "other",
+"why": "barren land; sandy soil"
+},
+"黥": {
+"class": "other",
+"why": "to tattoo; to brand the face of criminals"
+},
+"谪": {
+"class": "other",
+"why": "charge, blame; disgrace; demote"
+}
+}
