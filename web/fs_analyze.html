@@ -98,6 +98,11 @@ button:disabled{opacity:.45;cursor:default}
 .rect span{background:#6b5b95;border-radius:5px;padding:1px 8px;font-weight:600;
   white-space:nowrap;max-width:96%;overflow:hidden;text-overflow:ellipsis}
 .rect.ns{border-color:var(--good);background:rgba(46,125,50,.18)}
+.rect.outdoor{border-style:dashed;background:rgba(46,125,50,.07)}
+.rect .odtag{position:absolute;right:3px;bottom:2px;font-size:10px;font-style:normal;color:#2e7d32;
+  background:rgba(255,255,255,.8);border-radius:3px;padding:0 4px}
+.tc-box{background:#fff6df;border:1px solid #eedc9a;border-radius:8px;padding:8px 12px;margin:0 0 10px}
+.tc-box .whychip{margin:2px 4px 2px 0}.tc-box div{font-size:13px;margin:3px 0}
 .rect.ns span{background:var(--good)}
 .rect.sel{outline:2px solid var(--gold);cursor:move;overflow:visible}
 .rh{position:absolute;width:10px;height:10px;background:#fff;border:2px solid var(--gold);border-radius:2px;
@@ -349,6 +354,8 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
         <option value="8">Period 8 (2004–24)</option>
         <option value="7">Period 7 (1984–04)</option>
       </select>
+      <label class="hint" id="outdoor-wrap" title="默认排除 excluded by default — the 太极点 belongs to the enclosed home; balconies still get their own palace reading"
+        style="display:inline-flex;align-items:center;gap:4px;margin-right:8px"><input type="checkbox" id="f-outdoor"> 阳台计入太极点 <small>balconies count toward the centre</small></label>
       <button class="dark" id="btn-analyze">Analyze Plan →</button>
     </div>
     <div class="hint" style="margin:8px 2px">Measure the facing with a phone compass at
@@ -378,13 +385,15 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
         <select id="p-type">
           <option>Living 客厅</option><option>Dining 餐厅</option>
           <option>Master Bedroom 主卧</option><option>Bedroom 卧室</option>
-          <option>Balcony 阳台</option><option>Kitchen 厨房</option>
+          <option>Balcony 阳台</option><option>Patio 露台</option><option>Kitchen 厨房</option>
           <option>Bathroom 卫浴</option><option>Study 书房</option>
           <option>Store 储藏</option><option>Other 其他</option>
         </select>
         <label>Custom Name</label>
         <input id="p-name" maxlength="40" placeholder="optional — e.g. Kai Lin's room">
         <div id="p-size"></div>
+        <div id="cap-wrap"><label>Beds 床位 <small class="hint">one child per room — the optimiser never doubles up beyond this</small></label>
+          <input type="number" id="p-cap" min="1" max="4" style="width:70px"></div>
         <div id="occ-wrap"><label>Who sleeps here 住户</label><div id="occ"></div></div>
         <div class="acts">
           <button id="btn-confirm">✓ Confirm Room</button>
@@ -413,6 +422,8 @@ let token = null, ws = null, rooms = [], drag = null, imgNatural = [0, 0];
 let mode = "draw", selected = -1, entrance = null;   // entrance = [rx,ry] 0..1
 let homes = [], cur = null, pendingRestore = null, lastRes = null;
 const SLEEP_TYPES = ["Master Bedroom 主卧", "Bedroom 卧室"];
+const isOutdoorType = t => /^(Balcony|Patio|Planter)/.test(t || "");
+const capFor = t => (t || "").startsWith("Master") ? 2 : 1;   // parents share the master; one child per room
 const mm = location.pathname.match(/^\/w\/([A-Za-z0-9_-]{8,64})/);
 if (mm) token = mm[1];
 
@@ -503,6 +514,7 @@ async function selectHome(hid) {
   $("#f-upb").value = (cfg.image_up_bearing != null &&
     cfg.image_up_bearing !== cfg.facing_deg) ? cfg.image_up_bearing : "";
   if (cfg.period) $("#f-period").value = cfg.period;
+  $("#f-outdoor").checked = !!cfg.include_outdoor;
   if (cfg.floorplan) {
     pendingRestore = cfg;                    // rooms rebuilt once the plan loads
     showStep("anno");
@@ -738,7 +750,7 @@ wrap.addEventListener("pointerup", () => {
   const w = parseFloat(s.width || 0), h = parseFloat(s.height || 0);
   if (w < 12 || h < 12) { drag.el.remove(); drag = null; return; }
   const id = "r" + Date.now() % 100000;
-  rooms.push({id, type: "Bedroom 卧室", name: "", sleeping: true,
+  rooms.push({id, type: "Bedroom 卧室", name: "", sleeping: true, capacity: 1,
     px: [parseFloat(s.left), parseFloat(s.top), w, h], el: drag.el, occupants: [],
     doors: [], windows: []});
   undoStack.push({kind: "room"});
@@ -761,7 +773,7 @@ function rebuildFromSaved(cfg) {
     $("#rects").appendChild(el);
     const type = r.rtype || (r.sleeping ? "Bedroom 卧室" : "Other 其他");
     rooms.push({id: r.id, type, name: r.label === type ? "" : r.label,
-      sleeping: r.sleeping, px: [l, t, w, h], el,
+      sleeping: r.sleeping, capacity: r.cap_set ? r.capacity : capFor(type), capSet: !!r.cap_set, px: [l, t, w, h], el,
       occupants: (cfg.assignment || {})[r.id] || [],
       doors: r.doors || [], windows: r.windows || []});
     decorate(rooms.length - 1);
@@ -772,7 +784,8 @@ function rebuildFromSaved(cfg) {
 function decorate(i) {
   const r = rooms[i];
   r.el.classList.toggle("ns", !r.sleeping);
-  r.el.innerHTML = `<span>${r.name || r.type.split(" ")[0]}</span>`;
+  r.el.classList.toggle("outdoor", isOutdoorType(r.type));
+  r.el.innerHTML = `<span>${r.name || r.type.split(" ")[0]}</span>${isOutdoorType(r.type) ? `<em class="odtag">户外 outdoor</em>` : ""}`;
   drawMarks(r);
   r.el.onclick = () => select(i);
   r.el.onpointerdown = e => {
@@ -983,6 +996,8 @@ function select(i) {
   $("#panel").hidden = false;
   $("#p-type").value = r.type;
   $("#p-name").value = r.name;
+  $("#cap-wrap").hidden = !r.sleeping;
+  $("#p-cap").value = r.capacity ?? capFor(r.type);
   rooms.forEach((x, j) => { if (j !== i) x.el.querySelectorAll(".rh").forEach(h => h.remove()); });
   drawHandles(r);
   sizeReadout();
@@ -1004,7 +1019,13 @@ $("#p-type").addEventListener("change", () => {
   r.type = $("#p-type").value;
   r.sleeping = SLEEP_TYPES.includes(r.type);
   if (!r.sleeping) r.occupants = [];
+  if (!r.capSet) r.capacity = capFor(r.type);
+  $("#cap-wrap").hidden = !r.sleeping; $("#p-cap").value = r.capacity;
   decorate(selected); r.el.classList.add("sel"); renderOcc();
+});
+$("#p-cap").addEventListener("input", () => {
+  const r = rooms[selected]; if (!r) return;
+  r.capacity = Math.max(1, Math.min(4, parseInt($("#p-cap").value) || 1)); r.capSet = true;
 });
 $("#p-name").addEventListener("input", () => {
   rooms[selected].name = $("#p-name").value; decorate(selected);
@@ -1041,7 +1062,7 @@ $("#btn-analyze").addEventListener("click", async () => {
   const w0 = $("#plan").offsetWidth, h0 = $("#plan").offsetHeight;
   const sx = imgNatural[0] / w0, sy = imgNatural[1] / h0;
   const rlist = rooms.map(r => ({id: r.id, label: label(r), sleeping: r.sleeping,
-    capacity: 2, rtype: r.type,
+    capacity: r.sleeping ? (r.capacity ?? capFor(r.type)) : 0, rtype: r.type, cap_set: !!r.capSet,
     doors: (r.doors || []).map(({edge, offset, width, hinge}) => ({edge, offset, width, hinge})),
     windows: (r.windows || []).map(({edge, offset, width, bay}) => ({edge, offset, width, bay})),
     poly: [[r.px[0]*sx, r.px[1]*sy], [(r.px[0]+r.px[2])*sx, r.px[1]*sy],
@@ -1058,6 +1079,7 @@ $("#btn-analyze").addEventListener("click", async () => {
     facing_deg: parseFloat($("#f-facing").value || 0),
     image_up_bearing: $("#f-upb").value === "" ? null : parseFloat($("#f-upb").value),
     period: parseInt($("#f-period").value),
+    include_outdoor: $("#f-outdoor").checked,
     rooms: rlist,
     entrance,
     assignment: Object.fromEntries(rooms.filter(r => r.sleeping && r.occupants.length)
@@ -1532,6 +1554,15 @@ function houseNote(res) {
     the room ranking and bed directions are how it is worked around.</div>`;
 }
 
+function traceChecksBlock(res) {
+  const tc = res.trace_checks || [];
+  if (!tc.length) return "";
+  return `<div class="tc-box"><b>描图核对 Trace checks</b>
+    ${tc.map(c => `<div><span class="whychip ${c.severity === "warn" ? "neg" : ""}">${L(c.zh, c.code.replace(/-/g, " "))}</span>
+      ${c.text}${c.rooms && c.rooms.length ? ` <b>(${c.rooms.join(", ")})</b>` : ""}</div>`).join("")}
+    <div class="hint">${res.include_outdoor ? "balconies are counted toward the centre (box ticked)" : "balconies and patios are excluded from the 太极点 by default; tick the box above the plan to include them"}</div></div>`;
+}
+
 function renderResults(res) {
   lastRes = res;
   let html = "";
@@ -1540,6 +1571,7 @@ function renderResults(res) {
       from the ${res.boundary.mountain} mountain centre near the ${res.boundary.neighbor}
       boundary — both charts shown; re-measure on site to settle which rules.</div>`;
   }
+  html += traceChecksBlock(res);
   html += chartBlock("Main chart 主盘", res.main);
   if (res.alternate) {
     html += `<div class="warn">Why an alternate chart? The measured facing sits in the

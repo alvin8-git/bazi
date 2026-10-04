@@ -50,11 +50,34 @@ def _dir_of(bearing: float) -> str:
     return DIR_OF_BEARING[int(((bearing + 22.5) % 360) // 45)]
 
 
-def assign_pie(rooms: list[dict], image_up_bearing: float) -> dict[str, str]:
-    cx, cy = house_centroid(rooms)
-    xs = [x for r in rooms for x, _ in r["poly"]]
-    ys = [y for r in rooms for _, y in r["poly"]]
-    center_zone = 0.08 * math.hypot(max(xs) - min(xs), max(ys) - min(ys))
+# Outdoor areas never move the 太極點: the centre belongs to the enclosed dwelling.
+# They still receive a palace reading from that centre (a balcony opens onto a palace).
+OUTDOOR_TYPES = ("Balcony", "Patio", "Planter", "Ledge", "阳台", "露台", "花槽")
+
+
+def is_outdoor(room: dict) -> bool:
+    if room.get("outdoor") is True:
+        return True
+    rt = room.get("rtype") or room.get("type") or ""
+    return any(rt.startswith(t) or t in rt for t in OUTDOOR_TYPES)
+
+
+def enclosed_rooms(rooms: list[dict], include_outdoor: bool = False) -> list[dict]:
+    base = [r for r in rooms if include_outdoor or not is_outdoor(r)]
+    return base or list(rooms)
+
+
+def _pie_geometry(rooms: list[dict], include_outdoor: bool):
+    base = enclosed_rooms(rooms, include_outdoor)
+    cx, cy = house_centroid(base)
+    xs = [x for r in base for x, _ in r["poly"]]
+    ys = [y for r in base for _, y in r["poly"]]
+    return cx, cy, 0.08 * math.hypot(max(xs) - min(xs), max(ys) - min(ys))
+
+
+def assign_pie(rooms: list[dict], image_up_bearing: float,
+               include_outdoor: bool = False) -> dict[str, str]:
+    cx, cy, center_zone = _pie_geometry(rooms, include_outdoor)
     out = {}
     for r in rooms:
         rx, ry = _centroid(r["poly"])
@@ -65,11 +88,73 @@ def assign_pie(rooms: list[dict], image_up_bearing: float) -> dict[str, str]:
     return out
 
 
-def assign_grid(rooms: list[dict], image_up_bearing: float) -> dict[str, str]:
+def room_bearings(rooms: list[dict], image_up_bearing: float,
+                  include_outdoor: bool = False) -> dict[str, dict]:
+    """Per room: bearing from the centre, margin to the nearest palace line, centre flag."""
+    cx, cy, center_zone = _pie_geometry(rooms, include_outdoor)
+    out = {}
+    for r in rooms:
+        rx, ry = _centroid(r["poly"])
+        b = bearing_of_point(cx, cy, rx, ry, image_up_bearing)
+        m = (b - 22.5) % 45
+        margin = min(m, 45 - m)
+        line = (b - m + 45) % 360 if m > 22.5 else (b - m) % 360   # nearest 22.5+45k
+        out[r["id"]] = {"bearing": round(b, 1), "margin": round(margin, 1),
+                        "centre": math.hypot(rx - cx, ry - cy) < center_zone,
+                        "line": line,
+                        "between": [DIR_TO_PALACE[_dir_of(line - 1)], DIR_TO_PALACE[_dir_of(line + 1)]]}
+    return out
+
+
+BOUNDARY_DEG = 3.0
+
+
+def trace_checks(rooms: list[dict], image_up_bearing: float,
+                 include_outdoor: bool = False) -> list[dict]:
+    """Warnings about the trace itself (not the house): {code, zh, text, rooms}."""
+    lab = lambda r: r.get("label") or r["id"]
+    pie = assign_pie(rooms, image_up_bearing, include_outdoor)
+    rb = room_bearings(rooms, image_up_bearing, include_outdoor)
+    outdoor = [r for r in rooms if is_outdoor(r)]
+    enclosed = [r for r in rooms if not is_outdoor(r)]
+    out = []
+    centre_beds = [lab(r) for r in rooms if r.get("sleeping") and pie[r["id"]] == "中"]
+    if centre_beds:
+        out.append({"code": "centre-bedroom", "zh": "卧室落中宫", "severity": "warn",
+                    "text": "a bedroom sits on the centre and gets no palace star — the centre has "
+                            "drifted (balconies traced as rooms, or enclosed areas missing); fix the "
+                            "trace before reading its score", "rooms": centre_beds})
+    near = [(lab(r), rb[r["id"]]) for r in rooms if not rb[r["id"]]["centre"]
+            and rb[r["id"]]["margin"] <= BOUNDARY_DEG and not is_outdoor(r)]
+    if near:
+        out.append({"code": "boundary", "zh": "贴近宫界", "severity": "warn",
+                    "text": "; ".join(f"{n} is {v['margin']}° from the {v['between'][0]}/{v['between'][1]} line"
+                                      for n, v in near) + " — a small change in the trace flips its "
+                            "palace; trace every enclosed area and check the box on the plan",
+                    "rooms": [n for n, _ in near]})
+    if outdoor and not include_outdoor:
+        out.append({"code": "outdoor-excluded", "zh": "户外已排除", "severity": "info",
+                    "text": f"{len(outdoor)} outdoor area(s) left out of the centre — each still "
+                            "gets its own palace reading", "rooms": [lab(r) for r in outdoor]})
+    if outdoor and include_outdoor:
+        out.append({"code": "outdoor-included", "zh": "户外计入", "severity": "warn",
+                    "text": "balconies are counting toward the centre — this is not the usual "
+                            "doctrine; the 太極點 belongs to the enclosed home",
+                    "rooms": [lab(r) for r in outdoor]})
+    if len(enclosed) < 6:
+        out.append({"code": "few-rooms", "zh": "描图不全", "severity": "info",
+                    "text": "corridors, lobby, wardrobes and the yard move the centre — trace "
+                            "every enclosed area, not only the rooms you care about", "rooms": []})
+    return out
+
+
+def assign_grid(rooms: list[dict], image_up_bearing: float,
+                include_outdoor: bool = False) -> dict[str, str]:
     """九宮 3×3 over the enclosed bounding box, cells mapped by their bearing
     from the box centre so any image orientation works."""
-    xs = [x for r in rooms for x, _ in r["poly"]]
-    ys = [y for r in rooms for _, y in r["poly"]]
+    base = enclosed_rooms(rooms, include_outdoor)
+    xs = [x for r in base for x, _ in r["poly"]]
+    ys = [y for r in base for _, y in r["poly"]]
     x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
     cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
     out = {}

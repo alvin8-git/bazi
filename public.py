@@ -43,7 +43,7 @@ from engine.jianchu import movein_dates, sitting_branches
 from engine.liunian import BRANCH_PALACE, annual_afflictions, dayun_detail
 from engine.optimizer import optimize, score_assignment
 from engine.roombrief import room_briefs
-from engine.sectors import assign_pie
+from engine.sectors import assign_pie, trace_checks
 from engine.shensha import WENCHANG, life_palaces
 from engine.windows import timing_windows
 from engine.xuankong import annual_chart, chengmen, guard_chengmen, natal_chart_from_degrees
@@ -410,6 +410,7 @@ class RoomIn(BaseModel):
     capacity: int = Field(default=2, ge=0, le=8)
     poly: list[list[float]] = Field(min_length=3, max_length=12)
     rtype: str | None = Field(default=None, max_length=40)   # UI room type, round-tripped
+    cap_set: bool = False                                     # user edited the bed count (else type default)
     doors: list[DoorIn] = Field(default=[], max_length=4)
     windows: list[WindowIn] = Field(default=[], max_length=6)
 
@@ -418,6 +419,7 @@ class AnalyzeIn(BaseModel):
     facing_deg: float = Field(ge=0, lt=360)
     image_up_bearing: float | None = None   # default: image top = facing
     period: int = Field(default=9, ge=1, le=9)
+    include_outdoor: bool = False          # balconies count toward the 太極點 (not the doctrine)
     rooms: list[RoomIn] = Field(min_length=1, max_length=24)
     assignment: dict[str, list[str]] = {}
     entrance: list[float] | None = Field(default=None, min_length=2, max_length=2)
@@ -926,9 +928,10 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
     rooms = [r.model_dump() for r in req.rooms]
     if len({r["id"] for r in rooms}) != len(rooms):
         raise HTTPException(400, "duplicate room ids")
-    pie = assign_pie(rooms, upb)
+    pie = assign_pie(rooms, upb, req.include_outdoor)
     for r in rooms:
         r["palace_pie"] = pie[r["id"]]
+    checks = trace_checks([r for r in rooms if r["id"] != "entrance"], upb, req.include_outdoor)
     rooms_by_id = {r["id"]: r for r in rooms}
     known = {_tosimp(p["name"]): p for p in ws["people"]}
     assignment: dict[str, list[str]] = {}
@@ -945,7 +948,8 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
         charts[_tosimp(m.name)], ys_map[_tosimp(m.name)] = c, yong_shen(c)
     natal = natal_chart_from_degrees(req.period, req.facing_deg)
     annual = annual_chart(YEAR)
-    result = {"year": YEAR, "period": req.period,
+    result = {"year": YEAR, "period": req.period, "trace_checks": checks,
+              "include_outdoor": req.include_outdoor,
               "boundary": natal.get("boundary"),
               "main": _chart_block(natal, rooms, annual, req.period)}
     result.update(_people_analysis(req, charts, ys_map, rooms, rooms_by_id,
@@ -1033,7 +1037,7 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
                 "site_checks": row["site_checks"], "has_doors": row["has_doors"]})
     home = _home_of(ws, hid)
     home.update({"facing_deg": req.facing_deg, "image_up_bearing": upb,
-                 "period": req.period,
+                 "period": req.period, "include_outdoor": req.include_outdoor,
                  "rooms": [r.model_dump() for r in req.rooms],
                  "assignment": assignment,
                  "entrance": req.entrance,

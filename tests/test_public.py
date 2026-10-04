@@ -140,6 +140,19 @@ def test_analyze_fengshui():
     for rid in ("master", "living"):
         assert "placements" in d["room_briefs"][rid] and "afflictions" in d["room_briefs"][rid]
         assert d["room_briefs"][rid]["afflictions"]["year"] == d["year"]
+    # trace checks are always present; a balcony is excluded from the centre and reported
+    assert isinstance(d["trace_checks"], list) and d["include_outdoor"] is False
+    balc = {"id": "balc", "label": "Balcony", "sleeping": False, "capacity": 0, "rtype": "Balcony 阳台",
+            "poly": [[50, 400], [500, 400], [500, 520], [50, 520]]}
+    r2 = client.post(f"/api/pub/w/{tok}/analyze", json=dict(req, rooms=ROOMS + [balc]))
+    assert r2.status_code == 200, r2.text
+    d2 = r2.json()
+    assert d2["main"]["rooms"]["master"] == d["main"]["rooms"]["master"]
+    assert any(c["code"] == "outdoor-excluded" and c["rooms"] == ["Balcony"] for c in d2["trace_checks"])
+    assert "balc" in d2["main"]["rooms"]
+    r3 = client.post(f"/api/pub/w/{tok}/analyze", json=dict(req, rooms=ROOMS + [balc], include_outdoor=True))
+    assert any(c["code"] == "outdoor-included" for c in r3.json()["trace_checks"])
+    r = client.post(f"/api/pub/w/{tok}/analyze", json=req); d = r.json()      # restore the fixture state
     # selection-driven report: roles, two assignment options, rows for every pair, palettes for all
     assert all(p["role"] in ("parent", "adult", "child") and "age" in p for p in d["people"])
     assert d["suggestion"]["default"]["assignment"] and d["suggestion"]["optimal"]["assignment"]
