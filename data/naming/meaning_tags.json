@@ -1,0 +1,2402 @@
+{
+"_note": "Meaning categories for name characters. Ten fixed categories; each character carries at most two, assigned by hand (candidates can be listed with scripts/naming_meaning_scan.py --categories). `gloss` is the Unihan kDefinition gloss. Curated POOL characters with no honest category carry a gloss and an empty tag list.",
+"_categories": [
+{
+"id": "de",
+"zh": "德",
+"en": "noble · virtuous"
+},
+{
+"id": "ci",
+"zh": "慈",
+"en": "kind · gentle"
+},
+{
+"id": "yong",
+"zh": "勇",
+"en": "brave · strong"
+},
+{
+"id": "zhi",
+"zh": "智",
+"en": "wise · learned"
+},
+{
+"id": "mei",
+"zh": "美",
+"en": "beautiful · graceful"
+},
+{
+"id": "fu",
+"zh": "福",
+"en": "fortune · prosperity"
+},
+{
+"id": "zhiyuan",
+"zh": "志",
+"en": "ambition · achievement"
+},
+{
+"id": "ziran",
+"zh": "自然",
+"en": "nature"
+},
+{
+"id": "guang",
+"zh": "光",
+"en": "light · bright"
+},
+{
+"id": "le",
+"zh": "乐",
+"en": "joy · harmony"
+}
+],
+"德": {
+"tags": [
+"de"
+],
+"gloss": "ethics, morality, virtue"
+},
+"仁": {
+"tags": [
+"de"
+],
+"gloss": "humaneness, benevolence, kindness"
+},
+"义": {
+"tags": [
+"de"
+],
+"gloss": "right conduct, righteousness"
+},
+"礼": {
+"tags": [
+"de"
+],
+"gloss": "social custom; manners; courtesy; rites"
+},
+"信": {
+"tags": [
+"de"
+],
+"gloss": "trust, believe; letter"
+},
+"贤": {
+"tags": [
+"de"
+],
+"gloss": "virtuous, worthy, good; able"
+},
+"圣": {
+"tags": [
+"de"
+],
+"gloss": "holy, sacred"
+},
+"正": {
+"tags": [
+"de"
+],
+"gloss": "right, proper, correct"
+},
+"诚": {
+"tags": [
+"de"
+],
+"gloss": "sincere, honest; true, real"
+},
+"善": {
+"tags": [
+"de"
+],
+"gloss": "good, virtuous, charitable, kind"
+},
+"忠": {
+"tags": [
+"de"
+],
+"gloss": "loyalty, devotion, fidelity"
+},
+"孝": {
+"tags": [
+"de"
+],
+"gloss": "filial piety, obedience; mourning"
+},
+"廉": {
+"tags": [
+"de"
+],
+"gloss": "upright, honorable, honest"
+},
+"节": {
+"tags": [
+"de"
+],
+"gloss": "knot, node, joint; section"
+},
+"恭": {
+"tags": [
+"de"
+],
+"gloss": "respectful, polite, reverent"
+},
+"谦": {
+"tags": [
+"de"
+],
+"gloss": "humble, modest"
+},
+"让": {
+"tags": [
+"de"
+],
+"gloss": "allow, permit, yield, concede"
+},
+"敬": {
+"tags": [
+"de"
+],
+"gloss": "respect, honor; respectfully"
+},
+"贞": {
+"tags": [
+"de"
+],
+"gloss": "virtuous, chaste, pure; loyal"
+},
+"淳": {
+"tags": [
+"de"
+],
+"gloss": "honest, simple, unsophisticated; cyanogen; ethane dinitrile"
+},
+"厚": {
+"tags": [
+"de"
+],
+"gloss": "thick; substantial; greatly"
+},
+"笃": {
+"tags": [
+"de"
+],
+"gloss": "deep, true, sincere, genuine"
+},
+"良": {
+"tags": [
+"de"
+],
+"gloss": "good, virtuous, respectable"
+},
+"端": {
+"tags": [
+"de"
+],
+"gloss": "end, extreme; head; beginning"
+},
+"庄": {
+"tags": [
+"de"
+],
+"gloss": "village, hamlet; villa, manor"
+},
+"谨": {
+"tags": [
+"de"
+],
+"gloss": "prudent, cautious; attentive"
+},
+"恪": {
+"tags": [
+"de"
+],
+"gloss": "respectful, reverent"
+},
+"恕": {
+"tags": [
+"de"
+],
+"gloss": "forgive, excuse, show mercy"
+},
+"恒": {
+"tags": [
+"de"
+],
+"gloss": "constant, regular, persistent"
+},
+"朴": {
+"tags": [
+"de"
+],
+"gloss": "simple, unadorned; sincere; surname; a tree"
+},
+"纯": {
+"tags": [
+"de"
+],
+"gloss": "pure, clean, simple"
+},
+"洁": {
+"tags": [
+"de"
+],
+"gloss": "clean, purify, pure"
+},
+"清": {
+"tags": [
+"de"
+],
+"gloss": "clear, pure, clean; peaceful"
+},
+"直": {
+"tags": [
+"de"
+],
+"gloss": "straight, erect, vertical"
+},
+"公": {
+"tags": [
+"de"
+],
+"gloss": "fair, equitable; public; duke"
+},
+"诺": {
+"tags": [
+"de"
+],
+"gloss": "promise; assent, approve"
+},
+"允": {
+"tags": [
+"de"
+],
+"gloss": "to grant, to allow, to consent"
+},
+"懿": {
+"tags": [
+"de"
+],
+"gloss": "virtuous, admirable, esteemed"
+},
+"俭": {
+"tags": [
+"de"
+],
+"gloss": "temperate, frugal, economical"
+},
+"惇": {
+"tags": [
+"de"
+],
+"gloss": "be kind, cordial, sincere"
+},
+"钦": {
+"tags": [
+"de"
+],
+"gloss": "respect, admire; respectful"
+},
+"尚": {
+"tags": [
+"de"
+],
+"gloss": "still, yet; even; fairly, rather"
+},
+"崇": {
+"tags": [
+"de"
+],
+"gloss": "esteem, honor, revere, venerate"
+},
+"修": {
+"tags": [
+"de"
+],
+"gloss": "study; repair; cultivate"
+},
+"守": {
+"tags": [
+"de"
+],
+"gloss": "defend, protect, guard, conserve"
+},
+"慎": {
+"tags": [
+"de"
+],
+"gloss": "act with care, be cautious"
+},
+"磊": {
+"tags": [
+"de"
+],
+"gloss": "pile of rocks or stones; great"
+},
+"玉": {
+"tags": [
+"de",
+"mei"
+],
+"gloss": "jade, precious stone, gem"
+},
+"冰": {
+"tags": [
+"de",
+"ziran"
+],
+"gloss": "ice; ice-cold"
+},
+"丹": {
+"tags": [
+"de"
+],
+"gloss": "cinnabar (native HgS); vermilion (artificial HgS used as pigment)"
+},
+"慈": {
+"tags": [
+"ci"
+],
+"gloss": "kind, charitable, benevolent"
+},
+"惠": {
+"tags": [
+"ci"
+],
+"gloss": "favor, benefit, confer kindness"
+},
+"柔": {
+"tags": [
+"ci"
+],
+"gloss": "soft; gentle, pliant"
+},
+"淑": {
+"tags": [
+"ci"
+],
+"gloss": "good, pure, virtuous, charming"
+},
+"婉": {
+"tags": [
+"ci"
+],
+"gloss": "amiable, congenial; restrained"
+},
+"温": {
+"tags": [
+"ci"
+],
+"gloss": "lukewarm"
+},
+"和": {
+"tags": [
+"ci"
+],
+"gloss": "harmony, peace; peaceful, calm"
+},
+"蔼": {
+"tags": [
+"ci"
+],
+"gloss": "lush; affable, friendly"
+},
+"恩": {
+"tags": [
+"ci"
+],
+"gloss": "kindness, mercy, charity"
+},
+"宽": {
+"tags": [
+"ci"
+],
+"gloss": "broad, wide; spacious, vast"
+},
+"容": {
+"tags": [
+"ci"
+],
+"gloss": "looks, appearance; figure, form"
+},
+"恬": {
+"tags": [
+"ci"
+],
+"gloss": "quiet, calm, tranquil, peaceful"
+},
+"静": {
+"tags": [
+"ci"
+],
+"gloss": "quiet, still, motionless; gentle"
+},
+"娴": {
+"tags": [
+"ci"
+],
+"gloss": "elegant, refined; skillful"
+},
+"爱": {
+"tags": [
+"ci"
+],
+"gloss": "love, be fond of, like"
+},
+"亲": {
+"tags": [
+"ci"
+],
+"gloss": "relatives, parents; intimate the hazel nut or filbert tree a thorny tr"
+},
+"睦": {
+"tags": [
+"ci"
+],
+"gloss": "friendly, amiable, peaceful"
+},
+"顺": {
+"tags": [
+"ci"
+],
+"gloss": "obey, submit to, go along with"
+},
+"煦": {
+"tags": [
+"ci"
+],
+"gloss": "kind, gentle, gracious, genial"
+},
+"暖": {
+"tags": [
+"ci"
+],
+"gloss": "warm, genial"
+},
+"念": {
+"tags": [
+"ci"
+],
+"gloss": "think of, recall, study"
+},
+"惜": {
+"tags": [
+"ci"
+],
+"gloss": "pity, regret, rue, begrudge"
+},
+"润": {
+"tags": [
+"ci"
+],
+"gloss": "soft, moist; sleek; freshen"
+},
+"泽": {
+"tags": [
+"ci"
+],
+"gloss": "marsh, swamp; grace, brilliance"
+},
+"沐": {
+"tags": [
+"ci"
+],
+"gloss": "bathe, cleanse, wash, shampoo"
+},
+"涵": {
+"tags": [
+"ci"
+],
+"gloss": "soak, wet; tolerate, be lenient"
+},
+"慰": {
+"tags": [
+"ci"
+],
+"gloss": "comfort, console, calm"
+},
+"佑": {
+"tags": [
+"ci"
+],
+"gloss": "help, protect, bless"
+},
+"护": {
+"tags": [
+"ci"
+],
+"gloss": "protect, guard, defend, shelter"
+},
+"眷": {
+"tags": [
+"ci"
+],
+"gloss": "take interest in, care for"
+},
+"恤": {
+"tags": [
+"ci"
+],
+"gloss": "show pity; relieve, help"
+},
+"谧": {
+"tags": [
+"ci"
+],
+"gloss": "calm, quiet, still; cautious"
+},
+"心": {
+"tags": [
+"ci"
+],
+"gloss": "heart; mind, intelligence; soul; 5th lunar mansion, determinative star"
+},
+"勇": {
+"tags": [
+"yong"
+],
+"gloss": "brave, courageous, fierce"
+},
+"毅": {
+"tags": [
+"yong"
+],
+"gloss": "resolute, decisive, firm, persist"
+},
+"刚": {
+"tags": [
+"yong"
+],
+"gloss": "hard, tough, rigid, strong"
+},
+"强": {
+"tags": [
+"yong"
+],
+"gloss": "strong, powerful, energetic"
+},
+"威": {
+"tags": [
+"yong"
+],
+"gloss": "pomp, power; powerful; dominate"
+},
+"武": {
+"tags": [
+"yong"
+],
+"gloss": "military; martial, warlike"
+},
+"雄": {
+"tags": [
+"yong"
+],
+"gloss": "male of species; hero; manly"
+},
+"豪": {
+"tags": [
+"yong"
+],
+"gloss": "brave, heroic, chivalrous"
+},
+"健": {
+"tags": [
+"yong"
+],
+"gloss": "strong, robust, healthy; strength"
+},
+"壮": {
+"tags": [
+"yong"
+],
+"gloss": "big, large; robust; name of tribe"
+},
+"猛": {
+"tags": [
+"yong"
+],
+"gloss": "violent, savage, cruel; bold"
+},
+"劲": {
+"tags": [
+"yong"
+],
+"gloss": "strong, unyielding, tough, power"
+},
+"坚": {
+"tags": [
+"yong"
+],
+"gloss": "hard, strong, firm; resolute"
+},
+"韧": {
+"tags": [
+"yong"
+],
+"gloss": "strong and pliable, resilient"
+},
+"卫": {
+"tags": [
+"yong"
+],
+"gloss": "guard, protect, defend"
+},
+"捷": {
+"tags": [
+"yong"
+],
+"gloss": "win, victory, triumph"
+},
+"骁": {
+"tags": [
+"yong"
+],
+"gloss": "excellent horse; brave, valiant"
+},
+"骏": {
+"tags": [
+"yong"
+],
+"gloss": "excellent horse, noble steed"
+},
+"彪": {
+"tags": [
+"yong"
+],
+"gloss": "tiger; tiger stripes; tiger-like"
+},
+"虎": {
+"tags": [
+"yong"
+],
+"gloss": "tiger; brave, fierce; surname"
+},
+"龙": {
+"tags": [
+"yong"
+],
+"gloss": "dragon; symbolic of emperor"
+},
+"鹰": {
+"tags": [
+"yong"
+],
+"gloss": "falcon; Accipiter species (various)"
+},
+"鹏": {
+"tags": [
+"yong"
+],
+"gloss": "fabulous bird of enormous size"
+},
+"擎": {
+"tags": [
+"yong"
+],
+"gloss": "lift up, hold up, support"
+},
+"锐": {
+"tags": [
+"yong"
+],
+"gloss": "sharp, keen, acute, pointed"
+},
+"锋": {
+"tags": [
+"yong"
+],
+"gloss": "point of spear, sharp point"
+},
+"铮": {
+"tags": [
+"yong"
+],
+"gloss": "clanging sound; small gong"
+},
+"铁": {
+"tags": [
+"yong"
+],
+"gloss": "iron; strong, solid, firm"
+},
+"钢": {
+"tags": [
+"yong"
+],
+"gloss": "steel; hard, strong, tough"
+},
+"胜": {
+"tags": [
+"yong"
+],
+"gloss": "victory; excel, be better than"
+},
+"克": {
+"tags": [
+"yong"
+],
+"gloss": "gram; overcome; transliteration"
+},
+"拓": {
+"tags": [
+"yong"
+],
+"gloss": "expand; open up; support or push"
+},
+"烈": {
+"tags": [
+"yong"
+],
+"gloss": "fiery, violent, vehement, ardent"
+},
+"凛": {
+"tags": [
+"yong"
+],
+"gloss": "to shiver with cold or fear"
+},
+"昂": {
+"tags": [
+"yong"
+],
+"gloss": "rise, raise; proud, bold; upright"
+},
+"腾": {
+"tags": [
+"yong"
+],
+"gloss": "fly; gallop; run; prance; rise"
+},
+"奋": {
+"tags": [
+"yong"
+],
+"gloss": "strive, exert effort; arouse"
+},
+"挺": {
+"tags": [
+"yong"
+],
+"gloss": "to stand upright, straighten; rigid"
+},
+"军": {
+"tags": [
+"yong"
+],
+"gloss": "army, military; soldiers, troops"
+},
+"智": {
+"tags": [
+"zhi"
+],
+"gloss": "wisdom, knowledge, intelligence"
+},
+"慧": {
+"tags": [
+"zhi"
+],
+"gloss": "bright, intelligent; intelligence"
+},
+"睿": {
+"tags": [
+"zhi"
+],
+"gloss": "shrewd, astute, clever, keen"
+},
+"哲": {
+"tags": [
+"zhi"
+],
+"gloss": "wise, sagacious; wise man, sage"
+},
+"聪": {
+"tags": [
+"zhi"
+],
+"gloss": "intelligent, clever, bright"
+},
+"明": {
+"tags": [
+"zhi",
+"guang"
+],
+"gloss": "bright, light, brilliant; clear"
+},
+"敏": {
+"tags": [
+"zhi"
+],
+"gloss": "fast, quick, clever, smart"
+},
+"文": {
+"tags": [
+"zhi"
+],
+"gloss": "literature, culture, writing"
+},
+"博": {
+"tags": [
+"zhi"
+],
+"gloss": "gamble, play games; wide, broad"
+},
+"学": {
+"tags": [
+"zhi"
+],
+"gloss": "learning, knowledge; school"
+},
+"思": {
+"tags": [
+"zhi"
+],
+"gloss": "think, consider, ponder; final particle"
+},
+"悟": {
+"tags": [
+"zhi"
+],
+"gloss": "to apprehend, realize, become aware"
+},
+"颖": {
+"tags": [
+"zhi"
+],
+"gloss": "rice tassel; sharp point; clever"
+},
+"识": {
+"tags": [
+"zhi"
+],
+"gloss": "recognize, understand, know"
+},
+"鉴": {
+"tags": [
+"zhi"
+],
+"gloss": "mirror, looking glass; reflect"
+},
+"理": {
+"tags": [
+"zhi"
+],
+"gloss": "reason, logic; manage"
+},
+"知": {
+"tags": [
+"zhi"
+],
+"gloss": "know, perceive, comprehend"
+},
+"书": {
+"tags": [
+"zhi"
+],
+"gloss": "book, letter, document; writings"
+},
+"墨": {
+"tags": [
+"zhi"
+],
+"gloss": "ink; writing"
+},
+"翰": {
+"tags": [
+"zhi"
+],
+"gloss": "writing brush, pen, pencil"
+},
+"儒": {
+"tags": [
+"zhi"
+],
+"gloss": "Confucian scholar"
+},
+"彦": {
+"tags": [
+"zhi"
+],
+"gloss": "elegant"
+},
+"才": {
+"tags": [
+"zhi"
+],
+"gloss": "talent, ability; just, only"
+},
+"艺": {
+"tags": [
+"zhi"
+],
+"gloss": "art; talent, ability; craft"
+},
+"策": {
+"tags": [
+"zhi"
+],
+"gloss": "scheme, plan; to whip; urge"
+},
+"谋": {
+"tags": [
+"zhi"
+],
+"gloss": "plan, scheme; stratagem"
+},
+"略": {
+"tags": [
+"zhi"
+],
+"gloss": "approximately, roughly; outline"
+},
+"诗": {
+"tags": [
+"zhi"
+],
+"gloss": "poetry; poem, verse, ode"
+},
+"章": {
+"tags": [
+"zhi"
+],
+"gloss": "composition; chapter, section"
+},
+"典": {
+"tags": [
+"zhi"
+],
+"gloss": "law, canon; documentation; classic, scripture"
+},
+"经": {
+"tags": [
+"zhi"
+],
+"gloss": "classic works; pass through"
+},
+"研": {
+"tags": [
+"zhi"
+],
+"gloss": "grind, rub; study, research"
+},
+"辨": {
+"tags": [
+"zhi"
+],
+"gloss": "distinguish, discriminate"
+},
+"画": {
+"tags": [
+"zhi"
+],
+"gloss": "a painting, picture, drawing; to draw"
+},
+"棋": {
+"tags": [
+"zhi"
+],
+"gloss": "chess; any game similar to chess"
+},
+"美": {
+"tags": [
+"mei"
+],
+"gloss": "beautiful, pretty; pleasing"
+},
+"丽": {
+"tags": [
+"mei"
+],
+"gloss": "beautiful, magnificent, elegant"
+},
+"婷": {
+"tags": [
+"mei"
+],
+"gloss": "pretty; attractive; graceful"
+},
+"妍": {
+"tags": [
+"mei"
+],
+"gloss": "beautiful, handsome; seductive"
+},
+"雅": {
+"tags": [
+"mei"
+],
+"gloss": "elegant, graceful, refined"
+},
+"秀": {
+"tags": [
+"mei"
+],
+"gloss": "ear of grain; flowering, luxuriant; refined, elegant, graceful"
+},
+"倩": {
+"tags": [
+"mei"
+],
+"gloss": "beautiful, lovely; son-in-law"
+},
+"娟": {
+"tags": [
+"mei"
+],
+"gloss": "beautiful, graceful"
+},
+"媛": {
+"tags": [
+"mei"
+],
+"gloss": "beauty, beautiful woman"
+},
+"嫣": {
+"tags": [
+"mei"
+],
+"gloss": "charming, fascinating; gay"
+},
+"姿": {
+"tags": [
+"mei"
+],
+"gloss": "one's manner, carriage, bearing"
+},
+"娇": {
+"tags": [
+"mei"
+],
+"gloss": "seductive and loveable; tender"
+},
+"婵": {
+"tags": [
+"mei"
+],
+"gloss": "beautiful, lovely, pretty, graceful"
+},
+"娥": {
+"tags": [
+"mei"
+],
+"gloss": "be beautiful; good; surname"
+},
+"妙": {
+"tags": [
+"mei"
+],
+"gloss": "mysterious, subtle; exquisite"
+},
+"姝": {
+"tags": [
+"mei"
+],
+"gloss": "a beautiful girl"
+},
+"婧": {
+"tags": [
+"mei"
+],
+"gloss": "modest; supple"
+},
+"绮": {
+"tags": [
+"mei"
+],
+"gloss": "fine thin silk; elegant, beautiful"
+},
+"艳": {
+"tags": [
+"mei"
+],
+"gloss": "beautiful, sexy, voluptuous"
+},
+"靓": {
+"tags": [
+"mei"
+],
+"gloss": "make up face; ornament; quiet"
+},
+"俏": {
+"tags": [
+"mei"
+],
+"gloss": "like, similar; resemble; pretty"
+},
+"窈": {
+"tags": [
+"mei"
+],
+"gloss": "obscure, secluded; refined"
+},
+"曼": {
+"tags": [
+"mei"
+],
+"gloss": "long, extended, vast; beautiful"
+},
+"妩": {
+"tags": [
+"mei"
+],
+"gloss": "charming, enchanting"
+},
+"媚": {
+"tags": [
+"mei"
+],
+"gloss": "charming, attractive; flatter"
+},
+"婕": {
+"tags": [
+"mei"
+],
+"gloss": "handsome"
+},
+"姣": {
+"tags": [
+"mei"
+],
+"gloss": "beautiful, handsome, pretty"
+},
+"佳": {
+"tags": [
+"mei"
+],
+"gloss": "good, auspicious; beautiful; delightful"
+},
+"俊": {
+"tags": [
+"mei"
+],
+"gloss": "talented, capable; handsome"
+},
+"韶": {
+"tags": [
+"mei"
+],
+"gloss": "music of the emperor Shun; beautiful"
+},
+"华": {
+"tags": [
+"mei"
+],
+"gloss": "flowery; illustrious; Chinese"
+},
+"绚": {
+"tags": [
+"mei"
+],
+"gloss": "variegated, adorned; brilliant"
+},
+"芳": {
+"tags": [
+"mei",
+"ziran"
+],
+"gloss": "fragrant; virtuous; beautiful"
+},
+"凤": {
+"tags": [
+"mei"
+],
+"gloss": "male phoenix; symbol of joy"
+},
+"玲": {
+"tags": [
+"mei"
+],
+"gloss": "tinkling of jade"
+},
+"珠": {
+"tags": [
+"mei"
+],
+"gloss": "precious stone, gem, jewel, pearl"
+},
+"红": {
+"tags": [
+"mei"
+],
+"gloss": "red, vermillion; blush, flush"
+},
+"琪": {
+"tags": [
+"mei"
+],
+"gloss": "type of jade"
+},
+"琳": {
+"tags": [
+"mei"
+],
+"gloss": "beautiful jade, gem"
+},
+"琦": {
+"tags": [
+"mei"
+],
+"gloss": "gem, precious stone, jade"
+},
+"璇": {
+"tags": [
+"mei"
+],
+"gloss": "beautiful jade; star"
+},
+"花": {
+"tags": [
+"mei",
+"ziran"
+],
+"gloss": "flower; blossoms"
+},
+"英": {
+"tags": [
+"mei",
+"zhiyuan"
+],
+"gloss": "petal, flower, leaf; brave, a hero; England, English"
+},
+"福": {
+"tags": [
+"fu"
+],
+"gloss": "happiness, good fortune, blessing"
+},
+"禄": {
+"tags": [
+"fu"
+],
+"gloss": "blessing, happiness, prosperity"
+},
+"寿": {
+"tags": [
+"fu"
+],
+"gloss": "old age, long life; lifespan"
+},
+"祥": {
+"tags": [
+"fu"
+],
+"gloss": "good luck, good omen; happiness"
+},
+"瑞": {
+"tags": [
+"fu"
+],
+"gloss": "felicitous omen; auspicious"
+},
+"吉": {
+"tags": [
+"fu"
+],
+"gloss": "lucky, propitious, good"
+},
+"富": {
+"tags": [
+"fu"
+],
+"gloss": "abundant, ample; rich, wealthy"
+},
+"贵": {
+"tags": [
+"fu"
+],
+"gloss": "expensive, costly, valuable"
+},
+"安": {
+"tags": [
+"fu"
+],
+"gloss": "peaceful, tranquil, quiet"
+},
+"康": {
+"tags": [
+"fu"
+],
+"gloss": "peaceful, quiet; happy, healthy"
+},
+"宁": {
+"tags": [
+"fu"
+],
+"gloss": "calm, peaceful, serene; healthy"
+},
+"泰": {
+"tags": [
+"fu"
+],
+"gloss": "great, exalted, superior; big; hexagram ䷊"
+},
+"昌": {
+"tags": [
+"fu"
+],
+"gloss": "light of sun; good, proper"
+},
+"盛": {
+"tags": [
+"fu"
+],
+"gloss": "abundant, flourishing; contain; fill"
+},
+"兴": {
+"tags": [
+"fu"
+],
+"gloss": "thrive, prosper, flourish"
+},
+"隆": {
+"tags": [
+"fu"
+],
+"gloss": "prosperous, plentiful, abundant"
+},
+"裕": {
+"tags": [
+"fu"
+],
+"gloss": "abundant, rich, plentiful"
+},
+"丰": {
+"tags": [
+"fu"
+],
+"gloss": "abundant, lush, bountiful, plenty"
+},
+"禧": {
+"tags": [
+"fu"
+],
+"gloss": "happiness; congratulations"
+},
+"祺": {
+"tags": [
+"fu"
+],
+"gloss": "good luck, good fortune"
+},
+"祯": {
+"tags": [
+"fu"
+],
+"gloss": "lucky, auspicious, good omen"
+},
+"祉": {
+"tags": [
+"fu"
+],
+"gloss": "happiness, blessings, good luck"
+},
+"庆": {
+"tags": [
+"fu"
+],
+"gloss": "congratulate, celebrate"
+},
+"荣": {
+"tags": [
+"fu"
+],
+"gloss": "glory, honor; flourish, prosper"
+},
+"旺": {
+"tags": [
+"fu"
+],
+"gloss": "prosper; prosperous; increase"
+},
+"茂": {
+"tags": [
+"fu"
+],
+"gloss": "thick, lush, dense; talented"
+},
+"满": {
+"tags": [
+"fu"
+],
+"gloss": "fill; full, satisfied"
+},
+"财": {
+"tags": [
+"fu"
+],
+"gloss": "wealth, valuables, riches"
+},
+"宝": {
+"tags": [
+"fu"
+],
+"gloss": "treasure, jewel; precious, rare"
+},
+"运": {
+"tags": [
+"fu"
+],
+"gloss": "luck, fortune; ship, transport"
+},
+"平": {
+"tags": [
+"fu"
+],
+"gloss": "flat, level, even; peaceful"
+},
+"宸": {
+"tags": [
+"fu"
+],
+"gloss": "imperial; imperial palace"
+},
+"霖": {
+"tags": [
+"fu",
+"ziran"
+],
+"gloss": "long spell of rain, copious rain"
+},
+"珍": {
+"tags": [
+"fu"
+],
+"gloss": "precious, valuable, rare"
+},
+"家": {
+"tags": [
+"fu"
+],
+"gloss": "house, home, residence; family"
+},
+"永": {
+"tags": [
+"fu"
+],
+"gloss": "long, perpetual, eternal, forever"
+},
+"长": {
+"tags": [
+"fu"
+],
+"gloss": "long; length; excel in; leader"
+},
+"久": {
+"tags": [
+"fu"
+],
+"gloss": "long time (ago); time passage, grow late"
+},
+"金": {
+"tags": [
+"fu"
+],
+"gloss": "gold; metals in general; money; Kangxi radical 167"
+},
+"银": {
+"tags": [
+"fu"
+],
+"gloss": "silver; cash, money, wealth"
+},
+"志": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "purpose, will, determination; annals"
+},
+"宏": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "wide, spacious, great, vast"
+},
+"远": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "distant, remote, far; profound"
+},
+"杰": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "hero; heroic, outstanding"
+},
+"成": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "completed, finished, fixed"
+},
+"达": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "arrive at, reach; intelligent; smooth, slippery"
+},
+"卓": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "profound, brilliant, lofty"
+},
+"冠": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "cap, crown, headgear"
+},
+"超": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "jump over, leap over; surpass"
+},
+"凯": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "triumphant; triumph, victory"
+},
+"翔": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "soar, glide, hover; detailed"
+},
+"飞": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "fly; go quickly; dart; high"
+},
+"展": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "open, unfold; stretch, extend"
+},
+"鸿": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "species of wild swan; vast"
+},
+"鹄": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "target"
+},
+"图": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "diagram; chart, map, picture"
+},
+"立": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "stand; let stand; establish, set"
+},
+"业": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "profession, business; GB radical 111"
+},
+"功": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "achievement, merit, good result"
+},
+"勋": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "meritorious deed; merits; rank"
+},
+"竞": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "contend, vie, compete"
+},
+"进": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "advance, make progress, enter"
+},
+"取": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "take, receive, obtain; select"
+},
+"升": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "arise, go up; hoist; advance; hexagram ䷭"
+},
+"晋": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "advance, increase; promote"
+},
+"跃": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "skip, jump, frolic"
+},
+"驰": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "go quickly or swiftly; hurry"
+},
+"启": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "open; begin, commence; explain"
+},
+"创": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "establish, create; knife cut"
+},
+"建": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "build, establish, erect, found"
+},
+"伟": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "great, robust; extraordinary"
+},
+"宇": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "house; building, structure; eaves"
+},
+"轩": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "carriage; high; wide; balcony"
+},
+"铭": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "inscribe, engrave"
+},
+"浩": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "great, numerous, vast, abundant"
+},
+"国": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "nation, country, nation-state"
+},
+"邦": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "nation, country, state"
+},
+"基": {
+"tags": [
+"zhiyuan"
+],
+"gloss": "foundation, base"
+},
+"山": {
+"tags": [
+"ziran"
+],
+"gloss": "mountain, hill, peak"
+},
+"川": {
+"tags": [
+"ziran"
+],
+"gloss": "stream, river; flow; boil"
+},
+"林": {
+"tags": [
+"ziran"
+],
+"gloss": "forest, grove; surname"
+},
+"海": {
+"tags": [
+"ziran"
+],
+"gloss": "sea, ocean; maritime"
+},
+"月": {
+"tags": [
+"ziran"
+],
+"gloss": "moon; month; Kangxi radical 74"
+},
+"星": {
+"tags": [
+"ziran"
+],
+"gloss": "a star, planet; any point of light; 25th lunar mansion, determinative "
+},
+"云": {
+"tags": [
+"ziran"
+],
+"gloss": "say, speak; clouds"
+},
+"雪": {
+"tags": [
+"ziran"
+],
+"gloss": "snow; wipe away shame, avenge"
+},
+"梅": {
+"tags": [
+"ziran"
+],
+"gloss": "plums; prunes; surname"
+},
+"兰": {
+"tags": [
+"ziran"
+],
+"gloss": "orchid; elegant, graceful"
+},
+"竹": {
+"tags": [
+"ziran"
+],
+"gloss": "bamboo; flute; Kangxi radical 118"
+},
+"松": {
+"tags": [
+"ziran"
+],
+"gloss": "pine tree; fir tree"
+},
+"柏": {
+"tags": [
+"ziran"
+],
+"gloss": "cypress, cedar"
+},
+"桐": {
+"tags": [
+"ziran"
+],
+"gloss": "name applied various trees"
+},
+"枫": {
+"tags": [
+"ziran"
+],
+"gloss": "maple tree"
+},
+"桂": {
+"tags": [
+"ziran"
+],
+"gloss": "cassia or cinnamon"
+},
+"荷": {
+"tags": [
+"ziran"
+],
+"gloss": "lotus, water lily; Holland"
+},
+"莲": {
+"tags": [
+"ziran"
+],
+"gloss": "lotus, water lily; paradise"
+},
+"菊": {
+"tags": [
+"ziran"
+],
+"gloss": "chrysanthemum"
+},
+"芝": {
+"tags": [
+"ziran"
+],
+"gloss": "sesame; a purplish or brown mushroom thought to have miraculous powers"
+},
+"蕙": {
+"tags": [
+"ziran"
+],
+"gloss": "species of fragrant orchid"
+},
+"芷": {
+"tags": [
+"ziran"
+],
+"gloss": "angelica"
+},
+"薇": {
+"tags": [
+"ziran"
+],
+"gloss": "Osmunda regalis, a species of fern"
+},
+"蓉": {
+"tags": [
+"ziran"
+],
+"gloss": "hibiscus; Chengdu, Sichuan"
+},
+"江": {
+"tags": [
+"ziran"
+],
+"gloss": "large river; the Yangzi; surname"
+},
+"河": {
+"tags": [
+"ziran"
+],
+"gloss": "river; stream; the Yellow River"
+},
+"湖": {
+"tags": [
+"ziran"
+],
+"gloss": "a lake; Hubei, Hunan; bluish-green"
+},
+"泉": {
+"tags": [
+"ziran"
+],
+"gloss": "spring, fountain; wealth, money"
+},
+"溪": {
+"tags": [
+"ziran"
+],
+"gloss": "mountain stream, creek"
+},
+"岚": {
+"tags": [
+"ziran"
+],
+"gloss": "mountain mist, mountain haze"
+},
+"峰": {
+"tags": [
+"ziran"
+],
+"gloss": "peak, summit; hump of camel"
+},
+"岭": {
+"tags": [
+"ziran"
+],
+"gloss": "mountain ridge, mountain peak"
+},
+"岩": {
+"tags": [
+"ziran"
+],
+"gloss": "cliff; rocks; mountain"
+},
+"雨": {
+"tags": [
+"ziran"
+],
+"gloss": "rain; rainy; Kangxi radical 173"
+},
+"露": {
+"tags": [
+"ziran"
+],
+"gloss": "dew; bare, open, exposed"
+},
+"霞": {
+"tags": [
+"ziran"
+],
+"gloss": "rosy clouds"
+},
+"风": {
+"tags": [
+"ziran"
+],
+"gloss": "wind; air; manners, atmosphere"
+},
+"森": {
+"tags": [
+"ziran"
+],
+"gloss": "forest; luxuriant vegetation"
+},
+"涛": {
+"tags": [
+"ziran"
+],
+"gloss": "large waves"
+},
+"淇": {
+"tags": [
+"ziran"
+],
+"gloss": "river in Henan province"
+},
+"梓": {
+"tags": [
+"ziran"
+],
+"gloss": "Chinese catalpa, Catalpa ovata"
+},
+"天": {
+"tags": [
+"ziran"
+],
+"gloss": "sky, heaven; god, celestial"
+},
+"洋": {
+"tags": [
+"ziran"
+],
+"gloss": "ocean, sea; foreign; western"
+},
+"杨": {
+"tags": [
+"ziran"
+],
+"gloss": "willow, poplar, aspen; surname"
+},
+"柳": {
+"tags": [
+"ziran"
+],
+"gloss": "willow tree; pleasure; 24th lunar mansion, determinative star δ Hydrae"
+},
+"草": {
+"tags": [
+"ziran"
+],
+"gloss": "grass, straw, thatch, herbs"
+},
+"春": {
+"tags": [
+"ziran"
+],
+"gloss": "spring; wanton"
+},
+"夏": {
+"tags": [
+"ziran"
+],
+"gloss": "summer; great, grand, big"
+},
+"秋": {
+"tags": [
+"ziran"
+],
+"gloss": "autumn, fall; year"
+},
+"冬": {
+"tags": [
+"ziran"
+],
+"gloss": "winter, 11th lunar month"
+},
+"光": {
+"tags": [
+"guang"
+],
+"gloss": "light, brilliant, shine; only"
+},
+"辉": {
+"tags": [
+"guang"
+],
+"gloss": "brightness, luster, brilliance"
+},
+"耀": {
+"tags": [
+"guang"
+],
+"gloss": "shine, sparkle, dazzle; glory"
+},
+"晨": {
+"tags": [
+"guang"
+],
+"gloss": "early morning, daybreak"
+},
+"曦": {
+"tags": [
+"guang"
+],
+"gloss": "sunlight, sunshine, early dawn"
+},
+"煜": {
+"tags": [
+"guang"
+],
+"gloss": "bright, shining, brilliant"
+},
+"阳": {
+"tags": [
+"guang"
+],
+"gloss": "'male' principle; light; sun"
+},
+"旭": {
+"tags": [
+"guang"
+],
+"gloss": "rising sun; brilliance; radiant"
+},
+"昊": {
+"tags": [
+"guang"
+],
+"gloss": "summer time; sky; heaven"
+},
+"晓": {
+"tags": [
+"guang"
+],
+"gloss": "dawn, daybreak; clear, explicit"
+},
+"昭": {
+"tags": [
+"guang"
+],
+"gloss": "bright, luminous; illustrious"
+},
+"朗": {
+"tags": [
+"guang"
+],
+"gloss": "clear, bright; distinct"
+},
+"亮": {
+"tags": [
+"guang"
+],
+"gloss": "bright, brilliant, radiant, light"
+},
+"晶": {
+"tags": [
+"guang"
+],
+"gloss": "crystal; clear, bright; radiant"
+},
+"莹": {
+"tags": [
+"guang"
+],
+"gloss": "luster of gems; bright, lustrous"
+},
+"灿": {
+"tags": [
+"guang"
+],
+"gloss": "vivid, illuminating; bright"
+},
+"炫": {
+"tags": [
+"guang"
+],
+"gloss": "shine, glitter; show off, flaunt"
+},
+"焕": {
+"tags": [
+"guang"
+],
+"gloss": "shining"
+},
+"烨": {
+"tags": [
+"guang"
+],
+"gloss": "bright, glorious, splendid, flame"
+},
+"煌": {
+"tags": [
+"guang"
+],
+"gloss": "bright, shining, luminous"
+},
+"熠": {
+"tags": [
+"guang"
+],
+"gloss": "bright and sparkling"
+},
+"曜": {
+"tags": [
+"guang"
+],
+"gloss": "glorious, as sun; daylight, sunlight; one of the seven planets of pre-"
+},
+"昕": {
+"tags": [
+"guang"
+],
+"gloss": "dawn; early morning; day"
+},
+"晟": {
+"tags": [
+"guang"
+],
+"gloss": "clear, bright; splendor, brightness"
+},
+"晴": {
+"tags": [
+"guang"
+],
+"gloss": "clear weather, fine weather"
+},
+"景": {
+"tags": [
+"guang"
+],
+"gloss": "scenery, view; conditions"
+},
+"映": {
+"tags": [
+"guang"
+],
+"gloss": "project; reflect light"
+},
+"照": {
+"tags": [
+"guang"
+],
+"gloss": "shine, illumine, reflect"
+},
+"朝": {
+"tags": [
+"guang"
+],
+"gloss": "dynasty; morning"
+},
+"旦": {
+"tags": [
+"guang"
+],
+"gloss": "dawn; morning; day"
+},
+"乐": {
+"tags": [
+"le"
+],
+"gloss": "happy, glad; enjoyable; music"
+},
+"欣": {
+"tags": [
+"le"
+],
+"gloss": "happy, joyous, delighted"
+},
+"怡": {
+"tags": [
+"le"
+],
+"gloss": "harmony; pleasure, joy; be glad"
+},
+"悦": {
+"tags": [
+"le"
+],
+"gloss": "pleased, contented, gratified"
+},
+"喜": {
+"tags": [
+"le"
+],
+"gloss": "like, love, enjoy; joyful thing"
+},
+"嘉": {
+"tags": [
+"le"
+],
+"gloss": "excellent; joyful; auspicious"
+},
+"欢": {
+"tags": [
+"le"
+],
+"gloss": "happy, pleased, glad; joy; enjoy"
+},
+"愉": {
+"tags": [
+"le"
+],
+"gloss": "pleasant, delightful; please"
+},
+"畅": {
+"tags": [
+"le"
+],
+"gloss": "smoothly, freely, unrestrained"
+},
+"逸": {
+"tags": [
+"le"
+],
+"gloss": "flee, escape, break loose"
+},
+"笑": {
+"tags": [
+"le"
+],
+"gloss": "smile, laugh, giggle; snicker"
+},
+"歌": {
+"tags": [
+"le"
+],
+"gloss": "song, lyrics; sing, chant; praise"
+},
+"舞": {
+"tags": [
+"le"
+],
+"gloss": "dance, posture, prance; brandish"
+},
+"琴": {
+"tags": [
+"le"
+],
+"gloss": "Chinese lute or guitar"
+},
+"韵": {
+"tags": [
+"le"
+],
+"gloss": "rhyme; vowel"
+},
+"音": {
+"tags": [
+"le"
+],
+"gloss": "sound, tone, pitch, pronunciation; Kangxi radical 180"
+},
+"咏": {
+"tags": [
+"le"
+],
+"gloss": "sing song or poem, hum, chant"
+},
+"谐": {
+"tags": [
+"le"
+],
+"gloss": "harmonize, agree; joke, jest"
+},
+"融": {
+"tags": [
+"le"
+],
+"gloss": "melt, fuse; blend, harmonize"
+},
+"洽": {
+"tags": [
+"le"
+],
+"gloss": "to blend with, be in harmony; to penetrate; to cover; a river in Shenx"
+},
+"舒": {
+"tags": [
+"le"
+],
+"gloss": "open up, unfold, stretch out; comfortable, easy"
+},
+"爽": {
+"tags": [
+"le"
+],
+"gloss": "happy, cheerful; refreshing"
+},
+"悠": {
+"tags": [
+"le"
+],
+"gloss": "long, far, remote, distant; leisurely"
+},
+"然": {
+"tags": [
+"le"
+],
+"gloss": "yes, certainly; pledge, promise"
+},
+"甜": {
+"tags": [
+"le"
+],
+"gloss": "sweet, sweetness"
+},
+"馨": {
+"tags": [
+"le"
+],
+"gloss": "fragrant, aromatic; distant fragrance"
+},
+"熙": {
+"tags": [
+"le"
+],
+"gloss": "bright, splendid, glorious"
+},
+"快": {
+"tags": [
+"le"
+],
+"gloss": "rapid, quick, speedy, fast; soon"
+},
+"逍": {
+"tags": [
+"le"
+],
+"gloss": "ramble, stroll, jaunt, loiter"
+},
+"遥": {
+"tags": [
+"le"
+],
+"gloss": "far away, distant, remote"
+},
+"芯": {
+"tags": [],
+"gloss": "pith from rush (Juncus effusus)"
+},
+"铜": {
+"tags": [],
+"gloss": "copper, brass, bronze"
+},
+"城": {
+"tags": [],
+"gloss": "castle; city, town; municipality"
+}
+}

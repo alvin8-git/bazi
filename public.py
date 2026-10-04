@@ -1254,6 +1254,8 @@ def name_chart(sex: str, dob: str, birth_time: str = "12:00", surname: str = "")
            "day_master": c.day_master, "strength": c.strength["verdict"],
            "weights": {el: round(w / total * 100) for el, w in c.element_weights.items()},
            "fav": ys["favourable"], "unfav": ys["unfavourable"]}
+    from engine.naming import meaning_categories
+    out["categories"] = meaning_categories()
     surname = _tosimp(surname.strip())
     if surname:
         infos = [char_info(ch) for ch in surname]
@@ -1268,7 +1270,7 @@ def name_chart(sex: str, dob: str, birth_time: str = "12:00", surname: str = "")
 @router.get("/api/pub/name/chars")
 def name_chars(surname: str, sex: str, dob: str, birth_time: str = "12:00",
                given: str = "__", slot: int = 0, el: str | None = None,
-               strokes: str = "", py: str = "", page: int = 1, trad: str = ""):
+               strokes: str = "", py: str = "", page: int = 1, trad: str = "", mean: str = ""):
     """Candidate tiles for one empty box. `given` uses '_' for an empty box ('禄_');
     `el` = comma list, omitted = the 用神 elements, 'all' = no element filter."""
     from engine.naming import slot_candidates
@@ -1278,14 +1280,15 @@ def name_chars(surname: str, sex: str, dob: str, birth_time: str = "12:00",
     try:
         ks = [int(x) for x in strokes.split(",") if x.strip()]
         return slot_candidates(ys, _tosimp(surname.strip()), boxes, slot, els=els, strokes=ks,
-                               py=py[:12], page=max(1, min(page, 200)), trad=_parse_trad(trad))
+                               py=py[:12], page=max(1, min(page, 200)), trad=_parse_trad(trad),
+                               meaning=mean or None)
     except (ValueError, TypeError) as e:
         raise HTTPException(400, str(e))
 
 
 @router.get("/api/pub/name/optimise")
 def name_optimise(surname: str, sex: str, dob: str, birth_time: str = "12:00",
-                  given: str = "__", el: str | None = None, trad: str = ""):
+                  given: str = "__", el: str | None = None, trad: str = "", mean: str = ""):
     """Best completions of a partly chosen name, or one-character improvements of a
     complete one, ranked by the quantitative score. `given` uses '_' for an empty box."""
     from engine.naming import optimise_name
@@ -1293,7 +1296,9 @@ def name_optimise(surname: str, sex: str, dob: str, birth_time: str = "12:00",
     boxes = [None if ch == "_" else ch for ch in given][:2]
     els = None if el in (None, "", "all") else [e for e in el.split(",") if e]
     try:
-        return optimise_name(ys, _tosimp(surname.strip()), boxes, els=els, trad=_parse_trad(trad))
+        cats = [None if m in ("", "_") else m for m in mean.split(",")] if mean else None
+        return optimise_name(ys, _tosimp(surname.strip()), boxes, els=els, trad=_parse_trad(trad),
+                             meaning=cats)
     except (ValueError, TypeError) as e:
         raise HTTPException(400, str(e))
 

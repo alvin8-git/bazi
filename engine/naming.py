@@ -92,27 +92,47 @@ def five_grids(surname_ks: list[int], given_ks: list[int]) -> dict:
     return {k: {"num": v, "luck": _grid_luck(v)} for k, v in grids.items()}
 
 
-def sancai(grids: dict) -> dict:
-    """三才 (天人地) harmony via the 生剋 cycle."""
-    els = [GRID_EL[grids[k]["num"] % 10] for k in ("天格", "人格", "地格")]
+# Directional 三才 factors (reviewer's proposal 2026-10-04; school-dependent). Each pair is read
+# upper → lower (天→人, 人→地):
+#   上生下 "生" 1.0 · 同 "比" 0.8 · 下生上 "洩" 0.4 · 人剋对方 0.2 · 人被剋 0
+SANCAI_FACTOR = {"生": 1.0, "比": 0.8, "洩": 0.4, "人剋": 0.2, "被剋": 0.0}
 
-    def rel(a, b):
+
+def sancai(grids: dict) -> dict:
+    """三才 (天人地) harmony via the 生剋 cycle, scored by direction.
+
+    `relations` keeps the short labels (生/比/洩/剋/受剋 read from the upper position);
+    `detail` carries the plain reading and factor of each pair; `score` is the mean factor
+    (0–1) and `verdict` 吉 ≥ 0.8 · 中 ≥ 0.4 · 凶 below."""
+    els = [GRID_EL[grids[k]["num"] % 10] for k in ("天格", "人格", "地格")]
+    names = ("天", "人", "地")
+
+    def rel(i: int) -> tuple[str, str, str]:
+        a, b = els[i], els[i + 1]
+        up, lo = names[i], names[i + 1]
         if SHENG[a] == b:
-            return "生", 1
+            return "生", "生", f"{up}{a}生{lo}{b}"
         if a == b:
-            return "比", 1
+            return "比", "比", f"{up}{a}{lo}{b}比和"
         if SHENG[b] == a:
-            return "洩", 0
-        if KE[a] == b:
-            return "剋", -1
-        return "受剋", -1
-    r1, s1 = rel(els[0], els[1])
-    r2, s2 = rel(els[1], els[2])
-    score = s1 + s2
-    verdict = "吉" if score >= 2 else "中" if score >= 0 else "凶"
-    return {"elements": els, "relations": [r1, r2], "score": score,
+            return "洩", "洩", f"{lo}{b}生{up}{a}"
+        upper_overcomes = KE[a] == b
+        ren_is_upper = up == "人"
+        if upper_overcomes:                       # 上剋下
+            kind = "人剋" if ren_is_upper else "被剋"
+            return "剋", kind, f"{up}{a}剋{lo}{b}"
+        kind = "被剋" if ren_is_upper else "人剋"  # 下剋上
+        return "受剋", kind, f"{lo}{b}剋{up}{a}"
+
+    rs = [rel(0), rel(1)]
+    factors = [SANCAI_FACTOR[k] for _, k, _ in rs]
+    score = sum(factors) / 2
+    verdict = "吉" if score >= 0.8 else "中" if score >= 0.4 else "凶"
+    return {"elements": els, "relations": [r[0] for r in rs], "score": round(score, 3),
             "verdict": verdict,
-            "explanation": f"天{els[0]}{r1}人{els[1]}, 人{els[1]}{r2}地{els[2]}"}
+            "detail": [{"pair": f"{names[i]}→{names[i + 1]}", "text": rs[i][2], "kind": rs[i][1],
+                        "factor": factors[i]} for i in range(2)],
+            "explanation": "，".join(r[2] for r in rs)}
 
 
 def _candidates(ys: dict) -> list[dict]:
@@ -153,7 +173,7 @@ def suggest_names(ys: dict, surname: str, top: int = 20,
         sc = sancai(grids)
         lucky = sum(1 for v in grids.values() if v["luck"] == "吉")
         contested = any(c.get("el_contested") for c in chars)
-        score = (lucky * 10 + sc["score"] * 8
+        score = (lucky * 10 + sc["score"] * 16
                  + sum(6 if c["el"] == fav[0] else 3 for c in chars)
                  - (4 if contested else 0))
         if sc["verdict"] == "凶":
@@ -273,7 +293,7 @@ def _universe() -> tuple:
 def slot_candidates(ys: dict, surname: str, given: list[str | None], slot: int,
                     els: list[str] | None = None, strokes: list[int] | None = None,
                     py: str = "", page: int = 1, per: int = 48,
-                    trad: dict | None = None) -> dict:
+                    trad: dict | None = None, meaning: str | None = None) -> dict:
     """Characters offered for one empty box of the name.
 
     `given` holds the chosen characters (None for an empty box); its length is the name
@@ -291,21 +311,24 @@ def slot_candidates(ys: dict, surname: str, given: list[str | None], slot: int,
     want = set(els) if els is not None else set(ys["favourable"])
     q = strip_pinyin(py.strip())
     blocked = meaning_exclude()
+    mtags = meaning_tags()
+    cat = _check_category(meaning)
     base = []
     for ch, e, pyn, in_pool in _universe():
         if ch in taken:
             continue
         if ch in blocked and not q:
             continue                         # screened characters surface only in a pinyin search
+        if cat and cat not in (mtags.get(ch) or {}).get("tags", []):
+            continue
         el = e.get("el")
-        if q:
-            if not pyn.startswith(q):
+        if q and not pyn.startswith(q):
+            continue
+        if el:
+            if want and el not in want:
                 continue
-            if el and want and el not in want:
-                continue
-        else:
-            if not el or (want and el not in want):
-                continue
+        elif not (q or cat):
+            continue                         # 未定 characters need a pinyin query or a meaning category
         base.append((ch, e, in_pool))
     cache: dict[int, int] = {}
 
@@ -316,36 +339,38 @@ def slot_candidates(ys: dict, surname: str, given: list[str | None], slot: int,
 
     chips = sorted({e["ks"] for ch, e, _ in base if ch not in blocked}, key=lambda k: (-ji(k), k))[:6]
     rows = [r for r in base if not strokes or r[1]["ks"] in set(strokes)]
-    rows.sort(key=lambda r: (r[0] in blocked, not r[2], -ji(r[1]["ks"]), r[1]["lvl"], r[1]["ks"], r[0]))
+    rows.sort(key=lambda r: (r[0] in blocked, not r[1].get("el"), not r[2], -ji(r[1]["ks"]),
+                             r[1]["lvl"], r[1]["ks"], r[0]))
     start = max(0, (page - 1) * per)
     tiles = [{"ch": ch, "py": e.get("py") or "", "ks": e["ks"], "el": e.get("el"),
               "pool": in_pool, "lvl": e["lvl"], "ji": ji(e["ks"]),
               "contested": bool(e.get("el_contested")),
-              "blocked": ch in blocked, "why": (blocked.get(ch) or {}).get("why")}
+              "blocked": ch in blocked, "why": (blocked.get(ch) or {}).get("why"),
+              "tags": (mtags.get(ch) or {}).get("tags", []), "gloss": (mtags.get(ch) or {}).get("gloss", "")}
              for ch, e, in_pool in rows[start:start + per]]
     return {"slot": slot, "total": len(rows), "page": page, "per": per, "tiles": tiles,
             "chips": [{"ks": k, "ji": ji(k)} for k in chips],
-            "fav": ys["favourable"], "els": sorted(want)}
+            "fav": ys["favourable"], "els": sorted(want), "meaning": cat}
 
 
 # ---- quantitative score (0–100) ------------------------------------------------
-# Three parts, each stated so it can be audited:
-#   五格 50 — only the grids the given name controls (天格 is fixed by the surname).
-#            双名: 人格 16 (主運, the core) · 總格 14 (後運) · 地格 12 (前運) · 外格 8 (副運).
-#            单名: 人格 and 總格 are the same number, so it is scored once at 30; 地格 20;
-#                  外格 is the fixed convention (2 or 姓首+1) and carries no points.
-#            A grid scores its weight when 吉, 0 otherwise (one cited 吉 set; no 大吉/半吉
-#            grades until a cited 81數理 table is supplied).
-#   三才 25 — two relations (天→人, 人→地), 12.5 each: 生 or 比 full, 洩 half, 剋/受剋 zero.
-#   用神 25 — mean over the given characters of role × element confidence.
-#            role: 用神 1.0 · 喜 0.8 · 闲 0.4 · 未定 0.3 · 忌 0.
-#            confidence: curated element 1.0 · curated but disputed 0.85 · inferred from the
-#            radical only 0.8 (a radical is weak evidence of a character's element).
-GRID_WEIGHT = {"人格": 16, "總格": 14, "地格": 12, "外格": 8}
-GRID_WEIGHT_SINGLE = {"人格": 30, "地格": 20}
-RELATION_SCORE = {"生": 1.0, "比": 1.0, "洩": 0.5, "剋": 0.0, "受剋": 0.0}
-ROLE_SCORE = {"用神": 1.0, "喜": 0.8, "闲": 0.4, "未定": 0.3, "忌": 0.0}
-CONF_CURATED, CONF_CONTESTED, CONF_RADICAL = 1.0, 0.85, 0.8
+# Reviewer's weights (research/naming_method_review_2026-10-04.md §4), adopted 2026-10-04:
+#   用神 30 — mean over the given characters of the role: 用神 1.0 · 喜 0.7 · 闲 0.3 · 未定 0.3 · 忌 0.
+#   五格 30 — only the grids the given name controls (天格 is fixed by the surname).
+#            双名: 人格 10 · 地格 8 · 總格 8 · 外格 4.
+#            单名: 人格 = 總格 (one number) 18 · 地格 12 · 外格 unscored (a fixed convention).
+#            A grid scores its weight when 吉, else 0 (one cited 吉 set; no 大吉/半吉 grades yet).
+#   三才 15 — the mean directional factor of the two relations (see SANCAI_FACTOR).
+#   字义 15 — mean over the given characters: 1.0 with at least one meaning category,
+#            0.5 allowed but uncategorised, 0 screened as adverse. Sound and tone are not
+#            judged yet, so meaning carries the whole 15.
+#   可信度 10 — how far each element assignment can be trusted: curated 1.0 · curated but
+#            disputed 0.6 · inferred from the radical only 0.5 · no element 0.
+GRID_WEIGHT = {"人格": 10, "地格": 8, "總格": 8, "外格": 4}
+GRID_WEIGHT_SINGLE = {"人格": 18, "地格": 12}
+ROLE_SCORE = {"用神": 1.0, "喜": 0.7, "闲": 0.3, "未定": 0.3, "忌": 0.0}
+CONF_CURATED, CONF_CONTESTED, CONF_RADICAL = 1.0, 0.6, 0.5
+SCORE_MAX = {"yongshen": 30, "wuge": 30, "sancai": 15, "meaning": 15, "confidence": 10}
 
 
 def grid_weights(n_given: int) -> dict:
@@ -353,37 +378,75 @@ def grid_weights(n_given: int) -> dict:
 
 
 def confidence(entry: dict | None) -> float:
-    """How far the element assignment can be trusted (see the scoring note above)."""
+    """How far the element assignment can be trusted (the 可信度 part)."""
     if not entry or not entry.get("el"):
-        return 1.0                      # 未定 already carries its own low role score
+        return 0.0
     if (entry.get("el_src") or "").startswith("curated:"):
         return CONF_CONTESTED if entry.get("el_contested") else CONF_CURATED
     return CONF_RADICAL
 
 
+@lru_cache(maxsize=1)
+def meaning_tags() -> dict:
+    """{char: {tags: [category ids], gloss}} — data/naming/meaning_tags.json."""
+    path = ROOT / "data/naming/meaning_tags.json"
+    if not path.exists():
+        return {}
+    return {k: v for k, v in json.loads(path.read_text("utf8")).items() if not k.startswith("_")}
+
+
+@lru_cache(maxsize=1)
+def meaning_categories() -> list:
+    path = ROOT / "data/naming/meaning_tags.json"
+    return json.loads(path.read_text("utf8"))["_categories"] if path.exists() else []
+
+
+def meaning_value(ch: str) -> float:
+    """字义 credit of one character: categorised 1.0 · plain 0.5 · screened 0."""
+    if ch in meaning_exclude():
+        return 0.0
+    return 1.0 if (meaning_tags().get(ch) or {}).get("tags") else 0.5
+
+
 def stroke_score(grids: dict, sc: dict, n_given: int = 2) -> tuple[float, float]:
-    """(五格 part of 50, 三才 part of 25) — depends on stroke counts only."""
+    """(五格 part of 30, 三才 part of 15) — depends on stroke counts only."""
     wuge = sum(w for k, w in grid_weights(n_given).items() if grids[k]["luck"] == "吉")
-    san = sum(12.5 * RELATION_SCORE[r] for r in sc["relations"])
-    return float(wuge), san
+    return float(wuge), round(SCORE_MAX["sancai"] * sc["score"], 2)
 
 
-def score_name(grids: dict, sc: dict, roles: list[str], confs: list[float] | None = None) -> dict:
-    confs = confs or [1.0] * len(roles)
+def score_name(grids: dict, sc: dict, roles: list[str], confs: list[float] | None = None,
+               meanings: list[float] | None = None) -> dict:
+    n = max(1, len(roles))
+    confs = confs if confs is not None else [1.0] * len(roles)
+    meanings = meanings if meanings is not None else [1.0] * len(roles)
     wuge, san = stroke_score(grids, sc, len(roles))
-    ysp = 25.0 * sum(ROLE_SCORE[r] * c for r, c in zip(roles, confs)) / max(1, len(roles))
-    gw = ("人/總 30 · 地 20 (单名; 外格 unscored)" if len(roles) == 1 else "人16 總14 地12 外8")
-    return {"total": round(wuge + san + ysp, 1),
-            "parts": {"wuge": wuge, "sancai": san, "yongshen": round(ysp, 1)},
-            "max": {"wuge": 50, "sancai": 25, "yongshen": 25},
-            "basis": f"五格 50 ({gw}, 吉 only) + 三才 25 (生/比 full, 洩 half) + 用神 25 "
-                     "(用神 1.0 · 喜 0.8 · 闲 0.4 · 未定 0.3 · 忌 0, × element confidence: "
-                     "curated 1.0 · disputed 0.85 · radical-inferred 0.8)"}
+    parts = {"yongshen": round(SCORE_MAX["yongshen"] * sum(ROLE_SCORE[r] for r in roles) / n, 1),
+             "wuge": wuge, "sancai": san,
+             "meaning": round(SCORE_MAX["meaning"] * sum(meanings) / n, 1),
+             "confidence": round(SCORE_MAX["confidence"] * sum(confs) / n, 1)}
+    gw = ("人/總 18 · 地 12 (单名; 外格 unscored)" if len(roles) == 1 else "人10 地8 總8 外4")
+    return {"total": round(sum(parts.values()), 1), "parts": parts, "max": dict(SCORE_MAX),
+            "basis": f"用神 30 (用神 1.0 · 喜 0.7 · 闲 0.3 · 未定 0.3 · 忌 0) + 五格 30 ({gw}, 吉 only) + "
+                     "三才 15 (生 1.0 · 比 0.8 · 洩 0.4 · 人剋 0.2 · 被剋 0) + 字义 15 (categorised 1.0 · "
+                     "plain 0.5 · adverse 0; sound not judged yet) + 五行可信度 10 (curated 1.0 · "
+                     "disputed 0.6 · radical-inferred 0.5)"}
+
+
+def _check_category(cat: str | None) -> str | None:
+    if cat and cat not in {c["id"] for c in meaning_categories()}:
+        raise ValueError(f"unknown meaning category {cat}")
+    return cat or None
+
+
+def char_value(e: dict, ys: dict, ch: str) -> float:
+    """Per-character contribution to the score that does not depend on strokes."""
+    return (SCORE_MAX["yongshen"] * ROLE_SCORE[_role(e.get("el"), ys)]
+            + SCORE_MAX["meaning"] * meaning_value(ch) + SCORE_MAX["confidence"] * confidence(e))
 
 
 def optimise_name(ys: dict, surname: str, given: list[str | None],
                   els: list[str] | None = None, trad: dict | None = None,
-                  top: int = 12) -> dict:
+                  top: int = 12, meaning: list[str | None] | None = None) -> dict:
     """Best completions of a partly chosen name, or single-character improvements of a
     complete one, ranked by `score_name` total.
 
@@ -401,13 +464,23 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
         raise ValueError("character not in dataset")
     taken = set(surname) | {ch for ch in given if ch}
     blocked = meaning_exclude()
+    mtags = meaning_tags()
+    meaning = [_check_category(m) for m in (meaning or [None] * len(given))][:len(given)]
+    meaning += [None] * (len(given) - len(meaning))
     pool = [(ch, e, in_pool) for ch, e, _, in_pool in _universe()
             if e.get("el") in want and ch not in taken and ch not in blocked]
-    pool.sort(key=lambda r: (-ROLE_SCORE[_role(r[1]["el"], ys)] * confidence(r[1]), not r[2],
-                             r[1]["lvl"], r[1]["ks"], r[0]))
-    by_ks: dict[int, list] = {}
-    for r in pool:
-        by_ks.setdefault(r[1]["ks"], []).append(r)
+    pool.sort(key=lambda r: (-char_value(r[1], ys, r[0]), not r[2], r[1]["lvl"], r[1]["ks"], r[0]))
+
+    def pool_for(i: int) -> list:
+        """Characters allowed in box i: the meaning category chosen for that box, if any."""
+        cat = meaning[i]
+        return pool if not cat else [r for r in pool if cat in (mtags.get(r[0]) or {}).get("tags", [])]
+
+    def group(rows: list) -> dict:
+        g: dict[int, list] = {}
+        for r in rows:
+            g.setdefault(r[1]["ks"], []).append(r)
+        return g
     scache: dict[tuple, tuple] = {}
 
     def strokes_part(g_ks: tuple) -> tuple:
@@ -422,14 +495,17 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
         grids, sc, _ = strokes_part(tuple(e["ks"] for _, e, _ in chars))
         roles = [_role(e.get("el"), ys) for _, e, _ in chars]
         confs = [confidence(e) for _, e, _ in chars]
+        means = [meaning_value(ch) for ch, _, _ in chars]
         return {"given": "".join(ch for ch, _, _ in chars),
                 "name": surname + "".join(ch for ch, _, _ in chars),
                 "chars": [{"ch": ch, "py": e.get("py") or "", "el": e.get("el"), "role": ro,
-                           "ks": e["ks"], "pool": ip, "conf": cf}
+                           "ks": e["ks"], "pool": ip, "conf": cf,
+                           "tags": (mtags.get(ch) or {}).get("tags", []),
+                           "gloss": (mtags.get(ch) or {}).get("gloss", "")}
                           for (ch, e, ip), ro, cf in zip(chars, roles, confs)],
                 "ji": sum(1 for v in grids.values() if v["luck"] == "吉"),
                 "sancai": sc["verdict"], "zong": grids["總格"]["luck"],
-                "score": score_name(grids, sc, roles, confs), "changed": changed,
+                "score": score_name(grids, sc, roles, confs, means), "changed": changed,
                 "_k": (not all(ip for _, _, ip in chars), max(e["lvl"] for _, e, _ in chars),
                        sum(e["ks"] for _, e, _ in chars))}
 
@@ -440,22 +516,24 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
         mode = "improve"
         baseline = row([as_item(i) for i in range(len(given))], [])
         for i in range(len(given)):
-            for r in pool:
+            for r in pool_for(i):
                 chars = [as_item(j) for j in range(len(given))]
                 chars[i] = r
                 rows.append(row(chars, [i]))
     elif len(given) == 1 or len(empty) == 1:
         i = empty[0]
-        for r in pool:
+        for r in pool_for(i):
             chars = [None if j == i else as_item(j) for j in range(len(given))]
             chars[i] = r
             rows.append(row(chars, [i]))
     else:                                    # both boxes empty: rank stroke pairs first, then expand
-        pairs = sorted(((a, b) for a in by_ks for b in by_ks),
-                       key=lambda ab: -strokes_part(ab)[2])
-        for a, b in pairs[:60]:
-            for ra in by_ks[a][:4]:
-                for rb in by_ks[b][:4]:
+        g0, g1 = group(pool_for(0)), group(pool_for(1))
+        pairs = sorted(((a, b) for a in g0 for b in g1),
+                       key=lambda ab: -(strokes_part(ab)[2] + char_value(g0[ab[0]][0][1], ys, g0[ab[0]][0][0])
+                                        + char_value(g1[ab[1]][0][1], ys, g1[ab[1]][0][0])))
+        for a, b in pairs[:80]:
+            for ra in g0[a][:4]:
+                for rb in g1[b][:4]:
                     if ra[0] != rb[0]:
                         rows.append(row([ra, rb], [0, 1]))
     rows.sort(key=lambda r: (-r["score"]["total"], r["_k"], r["given"]))
@@ -474,8 +552,8 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
             break
     if baseline:
         baseline.pop("_k")
-    return {"mode": mode, "baseline": baseline, "results": out, "els": sorted(want),
-            "criteria": ["total score (五格 50 + 三才 25 + 用神 25), highest first",
+    return {"mode": mode, "baseline": baseline, "results": out, "els": sorted(want), "meaning": meaning,
+            "criteria": ["total score (用神 30 + 五格 30 + 三才 15 + 字义 15 + 可信度 10), highest first",
                          "then curated name characters, common level 1 before 2, fewer strokes",
                          "empty boxes filled only from: " + "·".join(sorted(want))]}
 
@@ -496,6 +574,8 @@ def name_card(ys: dict, surname: str, given: str, trad: dict | None = None) -> d
         chars.append({"ch": ch, "py": e.get("py") or "", "el": e.get("el"), "ks": e["ks"],
                       "trad": e["trad"], "trad_alts": (char_info(ch) or {}).get("trad_alts") if is_given else None,
                       "role": role, "role_en": ROLE_EN[role], "conf": confidence(e) if is_given else 1.0,
+                      "tags": (meaning_tags().get(ch) or {}).get("tags", []) if is_given else [],
+                      "gloss": (meaning_tags().get(ch) or {}).get("gloss", "") if is_given else "",
                       "radical_inferred": bool(is_given and e.get("el") and not (e.get("el_src") or "").startswith("curated:")),
                       "contested": bool(e.get("el_contested")), "el_alt": e.get("el_alt"),
                       "surname": not is_given})
@@ -504,7 +584,8 @@ def name_card(ys: dict, surname: str, given: str, trad: dict | None = None) -> d
         v["el"] = GRID_EL[v["num"] % 10]
     sc = sancai(grids)
     gv = chars[len(surname):]
-    score = score_name(grids, sc, [c["role"] for c in gv], [c["conf"] for c in gv])
+    score = score_name(grids, sc, [c["role"] for c in gv], [c["conf"] for c in gv],
+                       [meaning_value(c["ch"]) for c in gv])
     blocked = meaning_exclude()
     warnings = [{"ch": c["ch"], "why": blocked[c["ch"]]["why"], "class": blocked[c["ch"]]["class"]}
                 for c in gv if c["ch"] in blocked]

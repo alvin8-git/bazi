@@ -418,3 +418,17 @@ def test_name_api_carries_meaning_and_confidence_fields():
     assert all("conf" in c for c in s["chars"])
     d = client.get(f"/api/pub/name/optimise?surname=王&{NAME_Q}&given=_婷").json()
     assert "晕" not in "".join(x["given"] for x in d["results"])
+
+
+def test_name_api_meaning_and_five_part_score():
+    ch = client.get(f"/api/pub/name/chart?{NAME_Q}&surname=王").json()
+    assert len(ch["categories"]) == 10
+    r = client.get(f"/api/pub/name/chars?surname=王&{NAME_Q}&given=__&slot=0&mean=zhi").json()
+    assert r["tiles"] and all("zhi" in t["tags"] for t in r["tiles"]) and r["meaning"] == "zhi"
+    assert client.get(f"/api/pub/name/chars?surname=王&{NAME_Q}&given=__&slot=0&mean=nope").status_code == 400
+    o = client.get(f"/api/pub/name/optimise?surname=王&{NAME_Q}&given=__&mean=zhi,mei").json()
+    assert o["results"] and all("zhi" in x["chars"][0]["tags"] and "mei" in x["chars"][1]["tags"] for x in o["results"])
+    assert client.get(f"/api/pub/name/optimise?surname=王&{NAME_Q}&given=__&mean=nope,_").status_code == 400
+    s = client.get(f"/api/pub/name/score?surname=王&given=禄婷&{NAME_Q}").json()
+    assert set(s["score"]["parts"]) == {"yongshen", "wuge", "sancai", "meaning", "confidence"}
+    assert s["sancai"]["detail"][0]["text"] and s["chars"][1]["gloss"]
