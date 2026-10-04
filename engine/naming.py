@@ -316,6 +316,131 @@ def slot_candidates(ys: dict, surname: str, given: list[str | None], slot: int,
             "fav": ys["favourable"], "els": sorted(want)}
 
 
+# ---- quantitative score (0–100) ------------------------------------------------
+# Three parts, each stated so it can be audited:
+#   五格 50 — only the four grids the given name controls (天格 is fixed by the surname).
+#            人格 16 (主運, the core) · 總格 14 (後運) · 地格 12 (前運) · 外格 8 (副運);
+#            a grid scores its weight when 吉, 0 otherwise (the dataset has one cited 吉 set;
+#            no 大吉/半吉 grades until a cited 81數理 table is supplied).
+#   三才 25 — two relations (天→人, 人→地), 12.5 each: 生 or 比 full, 洩 half, 剋/受剋 zero.
+#   用神 25 — mean over the given characters: 用神 1.0 · 喜 0.8 · 闲 0.4 · 未定 0.3 · 忌 0.
+GRID_WEIGHT = {"人格": 16, "總格": 14, "地格": 12, "外格": 8}
+RELATION_SCORE = {"生": 1.0, "比": 1.0, "洩": 0.5, "剋": 0.0, "受剋": 0.0}
+ROLE_SCORE = {"用神": 1.0, "喜": 0.8, "闲": 0.4, "未定": 0.3, "忌": 0.0}
+
+
+def stroke_score(grids: dict, sc: dict) -> tuple[float, float]:
+    """(五格 part of 50, 三才 part of 25) — depends on stroke counts only."""
+    wuge = sum(w for k, w in GRID_WEIGHT.items() if grids[k]["luck"] == "吉")
+    san = sum(12.5 * RELATION_SCORE[r] for r in sc["relations"])
+    return float(wuge), san
+
+
+def score_name(grids: dict, sc: dict, roles: list[str]) -> dict:
+    wuge, san = stroke_score(grids, sc)
+    ysp = 25.0 * sum(ROLE_SCORE[r] for r in roles) / max(1, len(roles))
+    return {"total": round(wuge + san + ysp, 1),
+            "parts": {"wuge": wuge, "sancai": san, "yongshen": round(ysp, 1)},
+            "max": {"wuge": 50, "sancai": 25, "yongshen": 25},
+            "basis": "五格 50 (人16 總14 地12 外8, 吉 only) + 三才 25 (生/比 full, 洩 half) + "
+                     "用神 25 (用神 1.0 · 喜 0.8 · 闲 0.4 · 未定 0.3 · 忌 0)"}
+
+
+def optimise_name(ys: dict, surname: str, given: list[str | None],
+                  els: list[str] | None = None, trad: dict | None = None,
+                  top: int = 12) -> dict:
+    """Best completions of a partly chosen name, or single-character improvements of a
+    complete one, ranked by `score_name` total.
+
+    Ranking: total score ↓, then curated POOL characters first, 通用规范汉字表 level 1 before 2,
+    fewer total strokes. Empty boxes are filled from the element-tagged level 1–2 universe,
+    limited to `els` (default: the 用神 elements, so a 忌 element appears only when asked for).
+    At most 2 results share the same first given character, for variety."""
+    if not 1 <= len(given) <= 2:
+        raise ValueError("given must have 1-2 boxes")
+    trad = trad or {}
+    s_ks = _surname_ks(surname)
+    want = set(els) if els else set(ys["favourable"])
+    fixed = [None if ch is None else char_info(ch, trad.get(ch)) for ch in given]
+    if any(ch is not None and e is None for ch, e in zip(given, fixed)):
+        raise ValueError("character not in dataset")
+    taken = set(surname) | {ch for ch in given if ch}
+    pool = [(ch, e, in_pool) for ch, e, _, in_pool in _universe()
+            if e.get("el") in want and ch not in taken]
+    pool.sort(key=lambda r: (-ROLE_SCORE[_role(r[1]["el"], ys)], not r[2], r[1]["lvl"], r[1]["ks"], r[0]))
+    by_ks: dict[int, list] = {}
+    for r in pool:
+        by_ks.setdefault(r[1]["ks"], []).append(r)
+    scache: dict[tuple, tuple] = {}
+
+    def strokes_part(g_ks: tuple) -> tuple:
+        if g_ks not in scache:
+            grids = five_grids(s_ks, list(g_ks))
+            sc = sancai(grids)
+            scache[g_ks] = (grids, sc, sum(stroke_score(grids, sc)))
+        return scache[g_ks]
+
+    def row(chars: list[tuple], changed: list[int]) -> dict:
+        """chars = [(ch, entry, in_pool)] for every given box."""
+        grids, sc, _ = strokes_part(tuple(e["ks"] for _, e, _ in chars))
+        roles = [_role(e.get("el"), ys) for _, e, _ in chars]
+        return {"given": "".join(ch for ch, _, _ in chars),
+                "name": surname + "".join(ch for ch, _, _ in chars),
+                "chars": [{"ch": ch, "py": e.get("py") or "", "el": e.get("el"), "role": ro,
+                           "ks": e["ks"], "pool": ip} for (ch, e, ip), ro in zip(chars, roles)],
+                "ji": sum(1 for v in grids.values() if v["luck"] == "吉"),
+                "sancai": sc["verdict"], "zong": grids["總格"]["luck"],
+                "score": score_name(grids, sc, roles), "changed": changed,
+                "_k": (not all(ip for _, _, ip in chars), max(e["lvl"] for _, e, _ in chars),
+                       sum(e["ks"] for _, e, _ in chars))}
+
+    empty = [i for i, ch in enumerate(given) if ch is None]
+    as_item = lambda i: (given[i], fixed[i], given[i] in set(POOL))
+    rows, mode, baseline = [], "fill", None
+    if len(empty) == 0:
+        mode = "improve"
+        baseline = row([as_item(i) for i in range(len(given))], [])
+        for i in range(len(given)):
+            for r in pool:
+                chars = [as_item(j) for j in range(len(given))]
+                chars[i] = r
+                rows.append(row(chars, [i]))
+    elif len(given) == 1 or len(empty) == 1:
+        i = empty[0]
+        for r in pool:
+            chars = [None if j == i else as_item(j) for j in range(len(given))]
+            chars[i] = r
+            rows.append(row(chars, [i]))
+    else:                                    # both boxes empty: rank stroke pairs first, then expand
+        pairs = sorted(((a, b) for a in by_ks for b in by_ks),
+                       key=lambda ab: -strokes_part(ab)[2])
+        for a, b in pairs[:60]:
+            for ra in by_ks[a][:4]:
+                for rb in by_ks[b][:4]:
+                    if ra[0] != rb[0]:
+                        rows.append(row([ra, rb], [0, 1]))
+    rows.sort(key=lambda r: (-r["score"]["total"], r["_k"], r["given"]))
+    out, per_first = [], {}
+    for r in rows:
+        first = r["given"][0]
+        if mode == "fill" and len(given) == 2 and 0 in r["changed"]:
+            if per_first.get(first, 0) >= 2:
+                continue
+            per_first[first] = per_first.get(first, 0) + 1
+        if baseline and r["score"]["total"] <= baseline["score"]["total"]:
+            continue                         # improvements only
+        r.pop("_k")
+        out.append(r)
+        if len(out) >= top:
+            break
+    if baseline:
+        baseline.pop("_k")
+    return {"mode": mode, "baseline": baseline, "results": out, "els": sorted(want),
+            "criteria": ["total score (五格 50 + 三才 25 + 用神 25), highest first",
+                         "then curated name characters, common level 1 before 2, fewer strokes",
+                         "empty boxes filled only from: " + "·".join(sorted(want))]}
+
+
 def name_card(ys: dict, surname: str, given: str, trad: dict | None = None) -> dict:
     """Everything the name card and certificate show for one complete name."""
     trad = trad or {}
@@ -338,7 +463,8 @@ def name_card(ys: dict, surname: str, given: str, trad: dict | None = None) -> d
     for k, v in grids.items():
         v["el"] = GRID_EL[v["num"] % 10]
     sc = sancai(grids)
-    return {"name": surname + given, "surname": surname, "given": given, "chars": chars,
+    score = score_name(grids, sc, [c["role"] for c in chars[len(surname):]])
+    return {"name": surname + given, "surname": surname, "given": given, "chars": chars, "score": score,
             "grids": [{"grid": k, **grids[k]} for k in GRID_ORDER],
             "ji": sum(1 for v in grids.values() if v["luck"] == "吉"),
             "sancai": sc, "trad": "".join(c["trad"] for c in chars),

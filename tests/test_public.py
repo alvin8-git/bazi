@@ -394,3 +394,16 @@ def test_name_score_trad_switch_and_certificate():
     assert r.status_code == 200 and "繁體 王優雲" in r.text and "color:#" in r.text
     r = client.get(f"/api/pub/certificate?surname=王&given=优云&trad=云:云&{NAME_Q}")
     assert "繁體 王優云" in r.text
+
+
+def test_name_optimise_endpoint():
+    r = client.get(f"/api/pub/name/optimise?surname=王&{NAME_Q}&given=禄_")
+    d = r.json()
+    assert r.status_code == 200 and d["mode"] == "fill" and d["results"]
+    assert all(x["given"][0] == "禄" and 0 <= x["score"]["total"] <= 100 for x in d["results"])
+    d2 = client.get(f"/api/pub/name/optimise?surname=王&{NAME_Q}&given=禄云").json()
+    assert d2["mode"] == "improve" and d2["baseline"]["given"] == "禄云"
+    s = client.get(f"/api/pub/name/score?surname=王&given=禄云&{NAME_Q}").json()
+    assert s["score"]["total"] == d2["baseline"]["score"]["total"]
+    assert client.get(f"/api/pub/name/optimise?surname=王&{NAME_Q}&given=___").status_code in (200, 400)
+    assert client.get(f"/api/pub/name/optimise?surname=王王王&{NAME_Q}&given=__").status_code == 400

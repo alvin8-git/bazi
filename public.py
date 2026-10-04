@@ -1283,6 +1283,21 @@ def name_chars(surname: str, sex: str, dob: str, birth_time: str = "12:00",
         raise HTTPException(400, str(e))
 
 
+@router.get("/api/pub/name/optimise")
+def name_optimise(surname: str, sex: str, dob: str, birth_time: str = "12:00",
+                  given: str = "__", el: str | None = None, trad: str = ""):
+    """Best completions of a partly chosen name, or one-character improvements of a
+    complete one, ranked by the quantitative score. `given` uses '_' for an empty box."""
+    from engine.naming import optimise_name
+    _, ys = _name_chart(sex, dob, birth_time)
+    boxes = [None if ch == "_" else ch for ch in given][:2]
+    els = None if el in (None, "", "all") else [e for e in el.split(",") if e]
+    try:
+        return optimise_name(ys, _tosimp(surname.strip()), boxes, els=els, trad=_parse_trad(trad))
+    except (ValueError, TypeError) as e:
+        raise HTTPException(400, str(e))
+
+
 @router.get("/api/pub/name/score")
 def name_score(surname: str, given: str, sex: str, dob: str,
                birth_time: str = "12:00", trad: str = ""):

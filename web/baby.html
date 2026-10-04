@@ -40,17 +40,15 @@ h2{font-size:16px;color:var(--gold);margin:0 0 10px}
 .ysbox{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
 .ysgrp{border-radius:12px;padding:10px 12px}
 .ysgrp.use{background:#f1f8f2;border:2px solid var(--ji)}
-.ysgrp.avoid{background:#faf7f2;border:1.5px dashed #c9bfae}
+.ysgrp.avoid{background:#fdf5f4;border:2px solid var(--xiong)}
 .ystitle{font-weight:700;font-size:15px;margin-bottom:8px}
-.ysgrp.use .ystitle{color:var(--ji)}.ysgrp.avoid .ystitle{color:var(--muted)}
+.ysgrp.use .ystitle{color:var(--ji)}.ysgrp.avoid .ystitle{color:var(--xiong)}
 .ysdiscs{display:flex;gap:12px;flex-wrap:wrap}
-.ysd{width:86px;border-radius:12px;padding:8px 4px;text-align:center;color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
-.ysd span{display:block;font-size:38px;font-weight:700;line-height:1.1}
-.ysd small{display:block;font-size:11.5px;font-weight:600}
+.ysd{width:64px;border-radius:12px;padding:8px 4px;text-align:center;color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.ysd span{display:block;font-size:26px;font-weight:700;line-height:1.1}
+.ysd small{display:block;font-size:11.5px;font-weight:500}
 .ysd-木{background:#176b33}.ysd-火{background:#b3261e}.ysd-土{background:#7a5f16}.ysd-金{background:#7a5a00}.ysd-水{background:#174ea6}
-.ysd.off{background:#fff;border:1.5px solid var(--line);box-shadow:none;color:var(--muted);width:64px}
-.ysd.off span{font-size:26px;opacity:.75;text-decoration:line-through;text-decoration-thickness:2px}
-.ysd.off small{font-weight:500}
+.ysd.off{background:#fff;border:1.5px solid var(--line);box-shadow:none;color:var(--muted)}
 /* B · builder */
 .boxes{display:flex;gap:12px;align-items:flex-end;flex-wrap:nowrap}
 .box{width:76px;height:88px;border:2px solid var(--line);border-radius:12px;background:#fffdf9;display:flex;flex-direction:column;
@@ -124,6 +122,9 @@ table.sl th,table.sl td{border-bottom:1px solid var(--line);padding:8px 6px;text
 .note{font-size:12.5px;color:var(--muted);margin-top:8px}
 @media (max-width:640px){
   .ysbox{grid-template-columns:1fr}
+  .optrow{grid-template-columns:1fr auto}.optrow .meta{grid-column:1/-1;order:3}
+  .scorebox{margin-left:0;text-align:left;width:100%}
+  .boxes{flex-wrap:wrap}.bctl{margin-left:0;width:100%;justify-content:space-between;gap:8px}
   .grid2{grid-template-columns:1fr}.flab{min-width:100%}
   .box{width:64px;height:78px;font-size:34px}.box small{font-size:10px}.boxes{gap:8px}
   .tiles{grid-template-columns:repeat(5,1fr);gap:6px}.tile{min-height:80px}.tile .ch{font-size:24px}
@@ -139,6 +140,28 @@ table.sl th,table.sl td{border-bottom:1px solid var(--line);padding:8px 6px;text
 .formbtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 .err{color:var(--xiong);font-size:14px;min-height:1.2em;margin-top:6px}
 .luck.amber{background:#fff1dc;color:#a35a00}
+.optbtn{margin-left:8px;white-space:nowrap}
+.bctl{margin-left:auto;display:flex;align-items:center}.bctl .seg{margin-left:0}.seg button{white-space:nowrap}
+.opthead .fchip{margin-left:auto}
+.opt{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.opthead{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:8px}
+.optrow{display:grid;grid-template-columns:minmax(120px,auto) 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;
+  border:1.5px solid var(--line);border-radius:10px;background:#fff;padding:8px 12px;margin:6px 0;cursor:pointer;font:inherit;color:var(--ink);min-height:56px}
+.optrow:hover{box-shadow:0 2px 8px rgba(0,0,0,.12)}.optrow:focus-visible{outline:3px solid #1a56b0;outline-offset:2px}
+.optrow.cur{background:#f6f1e8;cursor:default}
+.optrow .nm{font-size:26px;font-weight:700;white-space:nowrap}
+.optrow .nm small{display:block;font-size:12px;font-weight:400;color:var(--muted)}
+.optrow .meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:13px}
+.optrow .tot{font-size:22px;font-weight:700;text-align:right}
+.optrow .tot small{font-size:11px;font-weight:500;color:var(--muted);display:block}
+.newch{outline:2px solid var(--gold);outline-offset:1px;border-radius:4px}
+.scorebox{margin-left:auto;text-align:right;min-width:190px}
+.scoretot{font-size:38px;font-weight:700;line-height:1}
+.scoretot small{font-size:14px;font-weight:500;color:var(--muted)}
+.sparts{margin-top:6px;font-size:12px;color:var(--muted)}
+.spart{display:grid;grid-template-columns:64px 1fr 44px;gap:6px;align-items:center;margin:2px 0}
+.spart .track{height:8px;border-radius:4px;background:#f0ece4;overflow:hidden}
+.spart .fill{height:100%;background:var(--gold);border-radius:4px}
 .busy{opacity:.55;transition:opacity .15s ease-out}
 .verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#8a8177;z-index:99;background:rgba(255,255,255,.8);border-radius:6px;padding:1px 7px}
 a.btn{text-decoration:none;display:inline-flex;align-items:center}
@@ -188,11 +211,11 @@ const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&": "&amp
 const LUCK = {"吉": ["ji", "auspicious"], "凶/平": ["amber", "weak or neutral"], "中": ["ping", "neutral"], "凶": ["xiong", "adverse"]};
 const luckChip = (v, compact) => { const [c, en] = LUCK[v] || ["ping", ""]; return `<span class="luck ${c}">${v}${compact ? "" : ` <small style="font-weight:500">${en}</small>`}</span>`; };
 const S = {q: null, chart: null, mode: 2, slots: [null, null], info: {}, active: 0, els: new Set(), strokes: new Set(), py: "",
-           page: 1, trad: {}, shortlist: [], data: null, tiles: [], card: null};
-let ctl = null;
-async function api(path, params) {
-  if (ctl) ctl.abort();
-  ctl = new AbortController();
+           page: 1, trad: {}, shortlist: [], data: null, tiles: [], card: null, opt: null};
+const ctls = {};                       // one in-flight request per channel, so tiles and optimise never cancel each other
+async function api(path, params, key = "main") {
+  if (ctls[key]) ctls[key].abort();
+  const ctl = ctls[key] = new AbortController();
   const r = await fetch(path + "?" + new URLSearchParams(params), {signal: ctl.signal});
   if (!r.ok) throw new Error((await r.json().catch(() => ({}))).detail || ("HTTP " + r.status));
   return r.json();
@@ -263,8 +286,47 @@ function panelHtml() {
 function builderBlock() {
   return `<div class="sec" id="builder"><h2>${L("起名", "Build the name")}</h2>
     <div class="boxes">${boxesHtml()}
-      <div class="seg" role="group" aria-label="name length"><button data-mode="1" aria-pressed="${S.mode === 1}">单名 1</button><button data-mode="2" aria-pressed="${S.mode === 2}">双名 2</button></div></div>
+      <div class="bctl"><div class="seg" role="group" aria-label="name length"><button data-mode="1" aria-pressed="${S.mode === 1}">单名 1</button><button data-mode="2" aria-pressed="${S.mode === 2}">双名 2</button></div>
+      <button class="btn primary optbtn" data-optimise="1" title="rank the best characters for the empty boxes, or better alternatives when the name is complete">优化 Optimise</button></div></div>
+    <div id="opt">${optHtml()}</div>
     ${panelHtml()}</div>`;
+}
+
+function scoreParts(sc) {
+  const row = (zh, k) => `<div class="spart"><span>${zh}</span><div class="track"><div class="fill" style="width:${sc.parts[k] / sc.max[k] * 100}%"></div></div><span>${sc.parts[k]}/${sc.max[k]}</span></div>`;
+  return `<div class="sparts" title="${esc(sc.basis)}">${row("五格", "wuge")}${row("三才", "sancai")}${row("用神", "yongshen")}</div>`;
+}
+function optRow(r, cur) {
+  const chips = `<span class="luck ${r.ji === 5 ? "ji" : "amber"}">${r.ji}/5 吉</span> ${luckChip(r.sancai, true).replace(">", ">三才 ")} ${luckChip(r.zong, true).replace(">", ">總格 ")}`;
+  return `<button class="optrow ${cur ? "cur" : ""}" ${cur ? "disabled" : `data-optpick="${r.given}"`} aria-label="${r.name}, score ${r.score.total}">
+    <span class="nm">${esc(S.chart.surname)}${r.chars.map((c, i) => `<span class="el-${c.el || ""} ${r.changed.includes(i) ? "newch" : ""}">${c.ch}</span>`).join("")}
+      <small>${r.chars.map(c => esc(c.py)).join(" ")}${cur ? " · 当前 current" : ""}</small></span>
+    <span class="meta">${chips} ${r.chars.map(c => `<span class="chip"><b class="el-${c.el}">${c.el}</b> ${c.role}</span>`).join("")}</span>
+    <span class="tot">${r.score.total}<small>/100</small></span></button>`;
+}
+function optHtml() {
+  const o = S.opt;
+  if (!o) return "";
+  if (o.loading) return `<div class="opt"><div class="empty-msg">${L("优化中…", "optimising…")}</div></div>`;
+  const head = o.mode === "improve"
+    ? L("更优的替换", "Better alternatives — one character changed, the other kept")
+    : L("最佳补全", "Best characters for the empty box" + (S.mode === 2 && !S.slots[0] && !S.slots[1] ? "es" : ""));
+  return `<div class="opt"><div class="opthead"><b>${head}</b>
+      <span class="count">${L("按总分排序", "ranked by score: 五格 50 + 三才 25 + 用神 25")} · ${Li("元素", "elements")} ${o.els.join("·")}</span>
+      <button class="fchip" data-optclose="1">关闭 close</button></div>
+    ${o.baseline ? optRow(o.baseline, true) : ""}
+    ${o.results.length ? o.results.map(r => optRow(r, false)).join("")
+      : `<div class="empty-msg">${o.mode === "improve" ? L("已是最佳", "No single-character change scores higher with these elements") : L("没有符合条件的字", "No character matches — widen the element filter")}</div>`}
+    <div class="note">Gold outline = the character the optimiser chose. The score ranks stroke numerology and element fit only — read the meaning and say the name aloud before choosing.</div></div>`;
+}
+async function loadOpt() {
+  S.opt = {loading: true}; $("#opt").innerHTML = optHtml();
+  try {
+    S.opt = await api("/api/pub/name/optimise", {...S.q, given: givenParam(), el: S.els.size ? [...S.els].join(",") : "all", trad: tradParam()}, "opt");
+    let fresh = false;                         // the rows also tell us pinyin/element of boxes filled by a deep link
+    for (const r of [S.opt.baseline, ...S.opt.results].filter(Boolean)) for (const c of r.chars) if (!S.info[c.ch]) { S.info[c.ch] = {py: c.py, el: c.el}; fresh = true; }
+    if (fresh && S.slots.some(ch => ch && S.info[ch])) render(); else $("#opt").innerHTML = optHtml();
+  } catch (e) { if (e.name !== "AbortError") { S.opt = null; $("#opt").innerHTML = ""; $("#err").textContent = e.message; } }
 }
 
 /* ---------- C · name card ---------- */
@@ -290,8 +352,9 @@ function cardBlock() {
   return `<div class="sec" id="card"><h2>${L("名字评析", "Name card")}</h2>
     <div class="namebig">${c.chars.map(x => `<div class="nb"><div class="py">${esc(x.py)}</div><div class="ch ${x.surname ? "" : "el-" + (x.el || "")}">${x.ch}</div>
         <span class="role ${!x.surname && x.el ? "bg-" + x.el + " el-" + x.el : ""}">${Li(!x.surname && x.el ? x.el + " · " + x.role : x.role, x.role_en)}</span></div>`).join("")}
-      <div style="margin-left:auto;text-align:right"><div style="font-size:34px;font-weight:700">${c.ji}<small style="font-size:14px;font-weight:500">/5 吉</small></div>
-        ${luckChip(c.sancai.verdict, true).replace(">", ">三才 ")}</div></div>
+      <div class="scorebox"><div class="scoretot">${c.score.total}<small>/100 ${Li("评分", "score")}</small></div>
+        <span class="luck ${c.ji === 5 ? "ji" : "amber"}">${c.ji}/5 吉</span> ${luckChip(c.sancai.verdict, true).replace(">", ">三才 ")}
+        ${scoreParts(c.score)}</div></div>
     <div class="tradline">${Li("繁體", "traditional")} <b>${c.trad}</b>
       <span class="count">${c.strokes.join(" + ")} 画 (康熙)</span>
       ${amb.map(x => `<span class="tsw" role="group" aria-label="traditional form of ${x.ch}">${Object.entries(x.trad_alts).map(([f, k]) => `<button data-trad="${x.ch}:${f}" aria-pressed="${x.trad === f}">${f} <small>${k}画</small></button>`).join("")}</span>`).join("")}</div>
@@ -301,8 +364,8 @@ function cardBlock() {
     ${ct.length ? `<div class="note">⚑ ${ct.map(x => `${x.ch}: ${x.el}${x.el_alt ? " / " + esc(x.el_alt) : ""}`).join("；")} — element disputed between dictionary schools.</div>` : ""}
     <div class="actions"><a class="btn primary" href="${certUrl(c)}" target="_blank" rel="noopener">命名证书 certificate →</a>
       <button class="btn" data-short="1">加入候选 add to shortlist</button><button class="btn" data-again="1">重新选字 start over</button></div>
-    ${S.shortlist.length ? `<table class="sl"><tr><th>${L("候选", "shortlist")}</th><th>${L("五格吉", "吉 of 5")}</th><th>${L("三才", "three powers")}</th><th>${L("繁體", "traditional")}</th><th></th></tr>
-      ${S.shortlist.map(s => `<tr><td><b>${s.name}</b></td><td>${s.ji}/5</td><td>${luckChip(s.sv, true)}</td><td>${s.trad}</td><td><a href="${s.url}" target="_blank" rel="noopener">证书 →</a></td></tr>`).join("")}</table>` : ""}
+    ${S.shortlist.length ? `<table class="sl"><tr><th>${L("候选", "shortlist")}</th><th>${L("评分", "score")}</th><th>${L("五格吉", "吉 of 5")}</th><th>${L("三才", "three powers")}</th><th>${L("繁體", "traditional")}</th><th></th></tr>
+      ${S.shortlist.map(s => `<tr><td><b>${s.name}</b></td><td><b>${s.score}</b></td><td>${s.ji}/5</td><td>${luckChip(s.sv, true)}</td><td>${s.trad}</td><td><a href="${s.url}" target="_blank" rel="noopener">证书 →</a></td></tr>`).join("")}</table>` : ""}
     <div class="note">Candidates for your choice, not a verdict. 五格 uses 康熙 strokes of the traditional form and the 81數理 table; 凶/平 = not in the auspicious set.</div>
   </div>`;
 }
@@ -335,7 +398,7 @@ async function loadCard() {
     render(); $("#card").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest"});
   } catch (e) { if (e.name !== "AbortError") $("#err").textContent = e.message; }
 }
-function refresh() { S.card = null; S.data = null; S.tiles = []; render(); complete() ? loadCard() : loadTiles(); }
+function refresh() { S.card = null; S.data = null; S.tiles = []; S.opt = null; render(); complete() ? loadCard() : loadTiles(); }
 
 document.addEventListener("click", e => {
   const t = e.target.closest("button"); if (!t || !S.chart) return;
@@ -346,10 +409,15 @@ document.addEventListener("click", e => {
   else if (d.ks) { const k = +d.ks; S.strokes.has(k) ? S.strokes.delete(k) : S.strokes.add(k); S.page = 1; }
   else if (d.mode) { S.mode = +d.mode; S.slots = [S.slots[0], S.mode === 2 ? S.slots[1] : null]; const n = S.slots.slice(0, S.mode).findIndex(x => !x); S.active = n < 0 ? 0 : n; }
   else if (d.more) { S.page++; loadTiles(true); return; }
+  else if (d.optimise) { loadOpt(); return; }
+  else if (d.optclose) { S.opt = null; $("#opt").innerHTML = ""; return; }
+  else if (d.optpick) { const g = [...d.optpick]; const row = (S.opt.results || []).find(r => r.given === d.optpick);
+    if (row) row.chars.forEach(c => { S.info[c.ch] = {py: c.py, el: c.el}; });
+    S.slots = [g[0] || null, S.mode === 2 ? (g[1] || null) : null]; S.trad = {}; S.opt = null; }
   else if (d.clearpy) { S.py = ""; S.page = 1; }
   else if (d.reset) { S.els = new Set(S.chart.fav); S.strokes.clear(); S.py = ""; S.page = 1; }
   else if (d.trad) { const [ch, f] = d.trad.split(":"); S.trad[ch] = f; }
-  else if (d.short) { const c = S.card; if (c && !S.shortlist.find(s => s.name === c.name) && S.shortlist.length < 5) S.shortlist.push({name: c.name, ji: c.ji, sv: c.sancai.verdict, trad: c.trad, url: certUrl(c)}); render(); return; }
+  else if (d.short) { const c = S.card; if (c && !S.shortlist.find(s => s.name === c.name) && S.shortlist.length < 5) S.shortlist.push({name: c.name, score: c.score.total, ji: c.ji, sv: c.sancai.verdict, trad: c.trad, url: certUrl(c)}); S.shortlist.sort((a, b) => b.score - a.score); render(); return; }
   else if (d.again) { S.slots = [null, null]; S.trad = {}; S.active = 0; }
   else return;
   refresh();
@@ -374,8 +442,9 @@ $("#start").addEventListener("click", async () => {
     const chart = await api("/api/pub/name/chart", q);
     S.q = {...q, surname: chart.surname}; S.chart = chart; S.mode = 2; S.slots = [null, null]; S.info = {}; S.trad = {}; S.active = 0;
     S.els = new Set(chart.fav); S.strokes = new Set(); S.py = ""; S.page = 1; S.shortlist = [];
-    if (S.pending) { const g = [...S.pending].slice(0, 2); S.mode = g.length; S.slots = [g[0] || null, g[1] || null]; S.pending = ""; }
-    refresh(); $("#app").scrollIntoView({behavior: "smooth", block: "start"});
+    if (S.pending) { const g = [...S.pending].slice(0, 2); S.mode = g.length; S.slots = g.map(c => c === "_" ? null : c).concat([null]).slice(0, 2); S.pending = ""; }
+    refresh();
+    if (S.pendingOpt) { S.pendingOpt = false; loadOpt(); } $("#app").scrollIntoView({behavior: "smooth", block: "start"});
   } catch (e) { if (e.name !== "AbortError") $("#err").textContent = e.message; }
   $("#start").disabled = false;
 });
@@ -386,7 +455,7 @@ $("#start").addEventListener("click", async () => {
   const f = $("#f");
   f.surname.value = u.get("surname"); f.sex.value = u.get("sex") === "F" ? "F" : "M";
   f.dob.value = u.get("dob"); f.birth_time.value = u.get("time") || "12:00";
-  S.pending = u.get("given") || "";
+  S.pending = u.get("given") || ""; S.pendingOpt = u.get("opt") === "1";
   $("#start").click();
 })();
 </script>
