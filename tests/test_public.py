@@ -430,7 +430,8 @@ def test_name_api_meaning_and_five_part_score():
     assert o["results"] and all("zhi" in x["chars"][0]["tags"] and "mei" in x["chars"][1]["tags"] for x in o["results"])
     assert client.get(f"/api/pub/name/optimise?surname=王&{NAME_Q}&given=__&mean=nope,_").status_code == 400
     s = client.get(f"/api/pub/name/score?surname=王&given=禄婷&{NAME_Q}").json()
-    assert set(s["score"]["parts"]) == {"yongshen", "wuge", "sancai", "meaning", "gender", "confidence"}
+    assert set(s["score"]["parts"]) == {"yongshen", "wuge", "sancai", "meaning", "sound", "gender", "confidence"}
+    assert s["score"]["notes"]["sound"] == "tones 2-4-2, no clashes" and s["sound"]["score"] == 1.0
     assert s["interpretation"]["zh"] and s["score"]["grade"]["en"] and s["score"]["notes"]["gender"] == "both suit a girl"
     boy = NAME_Q.replace("sex=F", "sex=M")
     b = client.get(f"/api/pub/name/chars?surname=王&{boy}&given=__&slot=0").json()

@@ -1,0 +1,434 @@
+{
+"_note": "Sound layer data: surname readings that differ from the everyday reading, and unfortunate words a name can sound like (toneless pinyin, ü written v). Hand-written; edit the tables in scripts/naming_tags_build.py.",
+"surname_readings": {
+"单": "shàn",
+"解": "xiè",
+"仇": "qiú",
+"区": "ōu",
+"查": "zhā",
+"朴": "piáo",
+"曾": "zēng",
+"乐": "yuè",
+"华": "huà",
+"任": "rén",
+"盖": "gě",
+"翟": "zhái",
+"种": "chóng",
+"秘": "bì",
+"缪": "miào",
+"燕": "yān",
+"宁": "nìng",
+"应": "yīng",
+"召": "shào",
+"员": "yùn",
+"折": "shé",
+"重": "chóng",
+"哈": "hǎ",
+"尉迟": "yù chí",
+"万俟": "mò qí",
+"长孙": "zhǎng sūn",
+"令狐": "líng hú"
+},
+"homophones": [
+{
+"pattern": "du zi",
+"sounds_like": "肚子",
+"en": "belly"
+},
+{
+"pattern": "fei wu",
+"sounds_like": "废物",
+"en": "good-for-nothing"
+},
+{
+"pattern": "si wang",
+"sounds_like": "死亡",
+"en": "death"
+},
+{
+"pattern": "sha gua",
+"sounds_like": "傻瓜",
+"en": "fool"
+},
+{
+"pattern": "shi bai",
+"sounds_like": "失败",
+"en": "failure"
+},
+{
+"pattern": "ben dan",
+"sounds_like": "笨蛋",
+"en": "idiot"
+},
+{
+"pattern": "hun dan",
+"sounds_like": "混蛋",
+"en": "scoundrel"
+},
+{
+"pattern": "huai dan",
+"sounds_like": "坏蛋",
+"en": "bad egg"
+},
+{
+"pattern": "wang ba",
+"sounds_like": "王八",
+"en": "a common insult"
+},
+{
+"pattern": "bai chi",
+"sounds_like": "白痴",
+"en": "idiot"
+},
+{
+"pattern": "fei hua",
+"sounds_like": "废话",
+"en": "nonsense"
+},
+{
+"pattern": "la ji",
+"sounds_like": "垃圾",
+"en": "rubbish"
+},
+{
+"pattern": "gou shi",
+"sounds_like": "狗屎",
+"en": "dog mess"
+},
+{
+"pattern": "fen bian",
+"sounds_like": "粪便",
+"en": "excrement"
+},
+{
+"pattern": "pi gu",
+"sounds_like": "屁股",
+"en": "buttocks"
+},
+{
+"pattern": "tu fei",
+"sounds_like": "土匪",
+"en": "bandit"
+},
+{
+"pattern": "liu mang",
+"sounds_like": "流氓",
+"en": "hooligan"
+},
+{
+"pattern": "xiao tou",
+"sounds_like": "小偷",
+"en": "thief"
+},
+{
+"pattern": "qiang dao",
+"sounds_like": "强盗",
+"en": "robber"
+},
+{
+"pattern": "pian zi",
+"sounds_like": "骗子",
+"en": "swindler"
+},
+{
+"pattern": "sha zi",
+"sounds_like": "傻子",
+"en": "fool"
+},
+{
+"pattern": "feng zi",
+"sounds_like": "疯子",
+"en": "madman"
+},
+{
+"pattern": "long zi",
+"sounds_like": "聋子",
+"en": "deaf person"
+},
+{
+"pattern": "xia zi",
+"sounds_like": "瞎子",
+"en": "blind person"
+},
+{
+"pattern": "ya ba",
+"sounds_like": "哑巴",
+"en": "mute"
+},
+{
+"pattern": "ai zi",
+"sounds_like": "矮子",
+"en": "dwarf"
+},
+{
+"pattern": "pang zi",
+"sounds_like": "胖子",
+"en": "fatty"
+},
+{
+"pattern": "bing du",
+"sounds_like": "病毒",
+"en": "virus"
+},
+{
+"pattern": "ai zheng",
+"sounds_like": "癌症",
+"en": "cancer"
+},
+{
+"pattern": "si ren",
+"sounds_like": "死人",
+"en": "dead person"
+},
+{
+"pattern": "mo gui",
+"sounds_like": "魔鬼",
+"en": "devil"
+},
+{
+"pattern": "yao guai",
+"sounds_like": "妖怪",
+"en": "monster"
+},
+{
+"pattern": "e mo",
+"sounds_like": "恶魔",
+"en": "demon"
+},
+{
+"pattern": "wu gui",
+"sounds_like": "乌龟",
+"en": "tortoise (an insult)"
+},
+{
+"pattern": "zhu tou",
+"sounds_like": "猪头",
+"en": "pig head"
+},
+{
+"pattern": "zhang lang",
+"sounds_like": "蟑螂",
+"en": "cockroach"
+},
+{
+"pattern": "cang ying",
+"sounds_like": "苍蝇",
+"en": "housefly"
+},
+{
+"pattern": "chou chong",
+"sounds_like": "臭虫",
+"en": "bedbug"
+},
+{
+"pattern": "dao mei",
+"sounds_like": "倒霉",
+"en": "bad luck"
+},
+{
+"pattern": "pin qiong",
+"sounds_like": "贫穷",
+"en": "poverty"
+},
+{
+"pattern": "qiong ren",
+"sounds_like": "穷人",
+"en": "pauper"
+},
+{
+"pattern": "po chan",
+"sounds_like": "破产",
+"en": "bankruptcy"
+},
+{
+"pattern": "shi ye",
+"sounds_like": "失业",
+"en": "unemployment"
+},
+{
+"pattern": "li hun",
+"sounds_like": "离婚",
+"en": "divorce"
+},
+{
+"pattern": "zi sha",
+"sounds_like": "自杀",
+"en": "suicide"
+},
+{
+"pattern": "sha ren",
+"sounds_like": "杀人",
+"en": "murder"
+},
+{
+"pattern": "zang li",
+"sounds_like": "葬礼",
+"en": "funeral"
+},
+{
+"pattern": "guan cai",
+"sounds_like": "棺材",
+"en": "coffin"
+},
+{
+"pattern": "fen mu",
+"sounds_like": "坟墓",
+"en": "grave"
+},
+{
+"pattern": "di yu",
+"sounds_like": "地狱",
+"en": "hell"
+},
+{
+"pattern": "zai nan",
+"sounds_like": "灾难",
+"en": "disaster"
+},
+{
+"pattern": "che huo",
+"sounds_like": "车祸",
+"en": "car crash"
+},
+{
+"pattern": "jian yu",
+"sounds_like": "监狱",
+"en": "prison"
+},
+{
+"pattern": "fan ren",
+"sounds_like": "犯人",
+"en": "convict"
+},
+{
+"pattern": "zui fan",
+"sounds_like": "罪犯",
+"en": "criminal"
+},
+{
+"pattern": "xia liu",
+"sounds_like": "下流",
+"en": "obscene"
+},
+{
+"pattern": "wu chi",
+"sounds_like": "无耻",
+"en": "shameless"
+},
+{
+"pattern": "bian tai",
+"sounds_like": "变态",
+"en": "pervert"
+},
+{
+"pattern": "bai lei",
+"sounds_like": "败类",
+"en": "scum"
+},
+{
+"pattern": "pan tu",
+"sounds_like": "叛徒",
+"en": "traitor"
+},
+{
+"pattern": "nu cai",
+"sounds_like": "奴才",
+"en": "lackey"
+},
+{
+"pattern": "yang wei",
+"sounds_like": "阳痿",
+"en": "impotence"
+},
+{
+"pattern": "du yao",
+"sounds_like": "毒药",
+"en": "poison"
+},
+{
+"pattern": "du pin",
+"sounds_like": "毒品",
+"en": "narcotics"
+},
+{
+"pattern": "cao bao",
+"sounds_like": "草包",
+"en": "good-for-nothing"
+},
+{
+"pattern": "fan tong",
+"sounds_like": "饭桶",
+"en": "useless person"
+},
+{
+"pattern": "jian ren",
+"sounds_like": "贱人",
+"en": "a vulgar insult"
+},
+{
+"pattern": "si xing",
+"sounds_like": "死刑",
+"en": "death penalty"
+},
+{
+"pattern": "mie wang",
+"sounds_like": "灭亡",
+"en": "destruction"
+},
+{
+"pattern": "shi wang",
+"sounds_like": "失望",
+"en": "disappointment"
+},
+{
+"pattern": "jue wang",
+"sounds_like": "绝望",
+"en": "despair"
+},
+{
+"pattern": "diu ren",
+"sounds_like": "丢人",
+"en": "disgrace"
+},
+{
+"pattern": "diu lian",
+"sounds_like": "丢脸",
+"en": "loss of face"
+},
+{
+"pattern": "pei qian",
+"sounds_like": "赔钱",
+"en": "losing money"
+},
+{
+"pattern": "kui ben",
+"sounds_like": "亏本",
+"en": "making a loss"
+},
+{
+"pattern": "po lan",
+"sounds_like": "破烂",
+"en": "junk"
+},
+{
+"pattern": "tong ku",
+"sounds_like": "痛苦",
+"en": "suffering"
+},
+{
+"pattern": "ku nan",
+"sounds_like": "苦难",
+"en": "misery"
+},
+{
+"pattern": "wei sheng zhi",
+"sounds_like": "卫生纸",
+"en": "toilet paper"
+},
+{
+"pattern": "la du zi",
+"sounds_like": "拉肚子",
+"en": "diarrhoea"
+}
+]
+}

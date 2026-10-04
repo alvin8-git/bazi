@@ -360,20 +360,21 @@ def slot_candidates(ys: dict, surname: str, given: list[str | None], slot: int,
 #            单名: 人格 = 總格 (one number) 15 · 地格 10 · 外格 unscored (a fixed convention).
 #            A grid scores its weight when 吉, else 0 (one cited 吉 set; no 大吉/半吉 grades yet).
 #   三才 15 — the mean directional factor of the two relations (see SANCAI_FACTOR).
-#   字义 15 — mean over the given characters: 1.0 with at least one meaning category,
-#            0.5 allowed but uncategorised, 0 screened as adverse. Sound and tone are not
-#            judged yet, so meaning carries the whole 15.
+#   音韵 5 — how the full name sounds (see SOUND_PENALTY and sound_score).
+#   字义 10 — mean over the given characters: 1.0 with at least one meaning category,
+#            0.5 allowed but uncategorised, 0 screened as adverse.
 #   可信度 10 — how far each element assignment can be trusted: curated 1.0 · curated but
 #            disputed 0.6 · inferred from the radical only 0.5 · no element 0.
 GRID_WEIGHT = {"人格": 8, "地格": 7, "總格": 7, "外格": 3}
 GRID_WEIGHT_SINGLE = {"人格": 15, "地格": 10}
 ROLE_SCORE = {"用神": 1.0, "喜": 0.7, "闲": 0.3, "未定": 0.3, "忌": 0.0}
 CONF_CURATED, CONF_CONTESTED, CONF_RADICAL = 1.0, 0.6, 0.5
-SCORE_MAX = {"yongshen": 30, "wuge": 25, "sancai": 15, "meaning": 15, "gender": 5, "confidence": 10}
+SCORE_MAX = {"yongshen": 30, "wuge": 25, "sancai": 15, "meaning": 10, "sound": 5, "gender": 5, "confidence": 10}
 # 性别 5 — mean over the given characters: neutral or matching the child's sex 1.0, a character
 #          that reads as the other gender 0 (data/naming/gender_tags.json; no sex given → 1.0).
 PART_LABEL = {"yongshen": {"zh": "用神", "en": "useful element"}, "wuge": {"zh": "五格", "en": "five grids (strokes)"},
               "sancai": {"zh": "三才", "en": "heaven · person · earth"}, "meaning": {"zh": "字义", "en": "meaning"},
+              "sound": {"zh": "音韵", "en": "sound"},
               "gender": {"zh": "性别", "en": "gender fit"}, "confidence": {"zh": "可信度", "en": "element confidence"}}
 GRADES = ((90, "上佳", "excellent"), (80, "佳", "good"), (65, "可", "fair"), (0, "待斟酌", "reconsider"))
 
@@ -390,6 +391,103 @@ def gender_tags() -> dict:
 def gender_mismatch(ch: str, sex: str | None) -> bool:
     g = gender_tags().get(ch)
     return bool(g and sex in ("M", "F") and g != sex)
+
+
+# 音韵 penalties, subtracted from 1.0 (floor 0). A house convention for a readable name,
+# not a classical rule: the tradition gives preferences, not numbers.
+SOUND_PENALTY = {"same_tone": 0.4,        # every syllable on one tone
+                 "third_third": 0.2,      # the last two syllables both third tone
+                 "neutral_end": 0.2,      # the name ends on a neutral tone
+                 "same_syllable": 0.4,    # adjacent identical syllables (toneless) …
+                 "reduplication": 0.1,    # … unless the given name repeats one character on purpose
+                 "same_initial": 0.2, "same_final": 0.2, "repeat_cap": 0.4,
+                 "homophone": 1.0, "near_homophone": 0.5}
+_INITIALS = ("zh", "ch", "sh", "b", "p", "m", "f", "d", "t", "n", "l", "g", "k", "h", "j", "q", "x", "r",
+             "z", "c", "s", "y", "w")
+_TONE_MARKS = {c: t for t, cs in enumerate(("āēīōūǖ", "áéíóúǘ", "ǎěǐǒǔǚ", "àèìòùǜ"), 1) for c in cs}
+
+
+@lru_cache(maxsize=1)
+def sound_rules() -> dict:
+    path = ROOT / "data/naming/sound_rules.json"
+    return json.loads(path.read_text("utf8")) if path.exists() else {"surname_readings": {}, "homophones": []}
+
+
+def _syllable(py: str) -> tuple[str, str, str, int]:
+    """(toneless, initial, final, tone 1–5) of one tone-marked pinyin syllable (ü → v)."""
+    tone = next((_TONE_MARKS[c] for c in py.lower() if c in _TONE_MARKS), 5)
+    base = strip_pinyin(py)
+    ini = next((i for i in _INITIALS if base.startswith(i)), "")
+    return base, ini, base[len(ini):], tone
+
+
+def _near(syl: str) -> str:
+    """Fold the pairs speakers commonly merge: z/zh, c/ch, s/sh, n/l, -n/-ng."""
+    for a, b in (("zh", "z"), ("ch", "c"), ("sh", "s")):
+        if syl.startswith(a):
+            syl = b + syl[2:]
+    if syl.startswith("l"):
+        syl = "n" + syl[1:]
+    return syl[:-1] if syl.endswith("ng") else syl
+
+
+def name_syllables(surname: str, given: str) -> list[tuple]:
+    sr = sound_rules()["surname_readings"]
+    pys = sr[surname].split() if surname in sr else [sr.get(ch) or (char_info(ch) or {}).get("py") or "" for ch in surname]
+    pys += [(char_info(ch) or {}).get("py") or "" for ch in given]
+    return [_syllable(py) for py in pys]
+
+
+def sound_score(surname: str, given: str) -> dict:
+    """音韵 of the full name: {score 0–1, tones, findings[{kind, zh, en, penalty}]}."""
+    P = SOUND_PENALTY
+    syl = name_syllables(surname, given)
+    chars = surname + given
+    tones = [t for *_, t in syl]
+    out = []
+
+    def add(kind: str, zh: str, en: str, pen: float | None = None):
+        out.append({"kind": kind, "zh": zh, "en": en, "penalty": P[kind] if pen is None else pen})
+
+    if len(set(tones)) == 1:
+        add("same_tone", "声调全同", f"every syllable on tone {tones[0]}")
+    elif tones[-2:] == [3, 3]:
+        add("third_third", "末两字皆上声", "the last two syllables are both third tone")
+    if tones[-1] == 5:
+        add("neutral_end", "末字轻声", "the name ends on a neutral tone")
+    rep, n_s = [], len(surname)
+    for i in range(len(syl) - 1):
+        a, b, pair = syl[i], syl[i + 1], f"{chars[i]}·{chars[i + 1]}"
+        if a[0] == b[0]:
+            if i >= n_s and chars[i] == chars[i + 1]:
+                rep.append(("reduplication", "叠字", f"{pair} repeated on purpose"))
+            else:
+                rep.append(("same_syllable", "同音相连", f"{pair} are the same syllable"))
+            continue
+        if a[1] and a[1] == b[1]:
+            rep.append(("same_initial", "声母相同", f"{pair} share the initial {a[1]}-"))
+        if a[2] == b[2]:
+            rep.append(("same_final", "韵母相同", f"{pair} share the final -{a[2]}"))
+    left = P["repeat_cap"]
+    for kind, zh, en in rep:
+        pen = min(P[kind], left)
+        left = round(left - pen, 2)
+        add(kind, zh, en, pen)
+    base = [x[0] for x in syl]
+    hit = {}
+    for h in sound_rules()["homophones"]:
+        pat = h["pattern"].split()
+        for i in range(len(base) - len(pat) + 1):
+            run = base[i:i + len(pat)]
+            kind = ("homophone" if run == pat else
+                    "near_homophone" if [_near(x) for x in run] == [_near(x) for x in pat] else None)
+            if kind and (h["sounds_like"] not in hit or kind == "homophone"):
+                hit[h["sounds_like"]] = (kind, h, chars[i:i + len(pat)])
+    for kind, h, run in hit.values():
+        add(kind, f"{run} 音同「{h['sounds_like']}」" if kind == "homophone" else f"{run} 音近「{h['sounds_like']}」",
+            f"{run} sounds {'like' if kind == 'homophone' else 'close to'} {h['sounds_like']} ({h['en']})")
+    return {"score": round(max(0.0, 1.0 - sum(f["penalty"] for f in out)), 2), "tones": tones, "findings": out,
+            "pinyin": [x[0] for x in syl]}
 
 
 def interpret_name(given: str) -> dict:
@@ -457,7 +555,8 @@ def stroke_score(grids: dict, sc: dict, n_given: int = 2) -> tuple[float, float]
 
 
 def score_name(grids: dict, sc: dict, roles: list[str], confs: list[float] | None = None,
-               meanings: list[float] | None = None, genders: list[float] | None = None) -> dict:
+               meanings: list[float] | None = None, genders: list[float] | None = None,
+               sound: float = 1.0) -> dict:
     n = max(1, len(roles))
     confs = confs if confs is not None else [1.0] * len(roles)
     meanings = meanings if meanings is not None else [1.0] * len(roles)
@@ -466,6 +565,7 @@ def score_name(grids: dict, sc: dict, roles: list[str], confs: list[float] | Non
     parts = {"yongshen": round(SCORE_MAX["yongshen"] * sum(ROLE_SCORE[r] for r in roles) / n, 1),
              "wuge": wuge, "sancai": san,
              "meaning": round(SCORE_MAX["meaning"] * sum(meanings) / n, 1),
+             "sound": round(SCORE_MAX["sound"] * sound, 1),
              "gender": round(SCORE_MAX["gender"] * sum(genders) / n, 1),
              "confidence": round(SCORE_MAX["confidence"] * sum(confs) / n, 1)}
     gw = ("人/總 15 · 地 10 (单名; 外格 unscored)" if len(roles) == 1 else "人8 地7 總7 外3")
@@ -474,8 +574,8 @@ def score_name(grids: dict, sc: dict, roles: list[str], confs: list[float] | Non
     return {"total": total, "parts": parts, "max": dict(SCORE_MAX), "labels": PART_LABEL,
             "grade": {"zh": gzh, "en": gen},
             "basis": f"用神 30 (用神 1.0 · 喜 0.7 · 闲 0.3 · 未定 0.3 · 忌 0) + 五格 25 ({gw}, 吉 only) + "
-                     "三才 15 (生 1.0 · 比 0.8 · 洩 0.4 · 人剋 0.2 · 被剋 0) + 字义 15 (categorised 1.0 · "
-                     "plain 0.5 · adverse 0; sound not judged yet) + 性别 5 (neutral or matching 1.0 · "
+                     "三才 15 (生 1.0 · 比 0.8 · 洩 0.4 · 人剋 0.2 · 被剋 0) + 字义 10 (categorised 1.0 · "
+                     "plain 0.5 · adverse 0) + 音韵 5 (tone pattern, repeated sounds, unlucky homophones) + 性别 5 (neutral or matching 1.0 · "
                      "other gender 0) + 五行可信度 10 (curated 1.0 · disputed 0.6 · radical-inferred 0.5)"}
 
 
@@ -559,7 +659,9 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
                           for (ch, e, ip), ro, cf in zip(chars, roles, confs)],
                 "ji": sum(1 for v in grids.values() if v["luck"] == "吉"),
                 "sancai": sc["verdict"], "zong": grids["總格"]["luck"],
-                "score": score_name(grids, sc, roles, confs, means, gens), "changed": changed,
+                "score": score_name(grids, sc, roles, confs, means, gens,
+                                    sound_score(surname, "".join(ch for ch, _, _ in chars))["score"]),
+                "changed": changed,
                 "_k": (not all(ip for _, _, ip in chars), max(e["lvl"] for _, e, _ in chars),
                        sum(e["ks"] for _, e, _ in chars))}
 
@@ -607,7 +709,7 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
     if baseline:
         baseline.pop("_k")
     return {"mode": mode, "baseline": baseline, "results": out, "els": sorted(want), "meaning": meaning,
-            "criteria": ["total score (用神 30 + 五格 25 + 三才 15 + 字义 15 + 性别 5 + 可信度 10), highest first",
+            "criteria": ["total score (用神 30 + 五格 25 + 三才 15 + 字义 10 + 音韵 5 + 性别 5 + 可信度 10), highest first",
                          "then curated name characters, common level 1 before 2, fewer strokes",
                          "empty boxes filled only from: " + "·".join(sorted(want))]}
 
@@ -615,7 +717,7 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
 _SANCAI_VERB = {"生": "supports", "比": "matches", "洩": "drains", "人剋": "strains", "被剋": "harms"}
 
 
-def _score_notes(gv: list[dict], grids: dict, sc: dict, sex: str | None) -> dict:
+def _score_notes(gv: list[dict], grids: dict, sc: dict, sex: str | None, snd: dict) -> dict:
     """One plain line per score part, generated from the facts of this name."""
     cat_en = {c["id"]: c["en"].split(" · ")[0] for c in meaning_categories()}
     blocked = meaning_exclude()
@@ -630,6 +732,8 @@ def _score_notes(gv: list[dict], grids: dict, sc: dict, sex: str | None) -> dict
         "sancai": ", ".join(f"{d['text']} {_SANCAI_VERB[d['kind']]}" for d in sc["detail"]),
         "meaning": ", ".join(f"{c['ch']} " + ("adverse meaning" if c["ch"] in blocked else
                                               cat_en[c["tags"][0]] if c["tags"] else "plain meaning") for c in gv),
+        "sound": "tones " + "-".join(str(t) for t in snd["tones"]) + ", "
+                 + ("; ".join(f["en"] for f in snd["findings"]) or "no clashes"),
         "gender": ("sex not given" if not who else
                    ", ".join(f"{c['ch']} reads as {'feminine' if c['gender'] == 'F' else 'masculine'}" for c in mism)
                    if mism else f"{'both suit' if len(gv) == 2 else 'suits'} {who}"),
@@ -665,16 +769,19 @@ def name_card(ys: dict, surname: str, given: str, trad: dict | None = None, sex:
     sc = sancai(grids)
     gv = chars[len(surname):]
     score = score_name(grids, sc, [c["role"] for c in gv], [c["conf"] for c in gv],
-                       [meaning_value(c["ch"]) for c in gv], [0.0 if c["mismatch"] else 1.0 for c in gv])
-    score["notes"] = _score_notes(gv, grids, sc, sex)
+                       [meaning_value(c["ch"]) for c in gv], [0.0 if c["mismatch"] else 1.0 for c in gv],
+                       (snd := sound_score(surname, given))["score"])
+    score["notes"] = _score_notes(gv, grids, sc, sex, snd)
     blocked = meaning_exclude()
     warnings = [{"ch": c["ch"], "why": blocked[c["ch"]]["why"], "class": blocked[c["ch"]]["class"]}
                 for c in gv if c["ch"] in blocked]
     warnings += [{"ch": c["ch"], "class": "gender",
                   "why": ("女性字 usually a girl's name character" if c["gender"] == "F"
                           else "男性字 usually a boy's name character")} for c in gv if c["mismatch"]]
+    warnings += [{"ch": surname + given, "class": "sound", "why": f"{f['zh']} — {f['en']}"}
+                 for f in snd["findings"] if f["kind"] == "homophone"]
     return {"name": surname + given, "surname": surname, "given": given, "chars": chars, "score": score,
-            "interpretation": interpret_name(given),
+            "sound": snd, "interpretation": interpret_name(given),
             "warnings": warnings,
             "grids": [{"grid": k, **grids[k]} for k in GRID_ORDER],
             "ji": sum(1 for v in grids.values() if v["luck"] == "吉"),
