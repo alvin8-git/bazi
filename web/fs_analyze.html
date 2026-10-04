@@ -239,6 +239,17 @@ td.b-poor{background:#fdecea;color:#b03a2e}
 .tgrid div{padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:#fff}
 .tgrid .th{background:#faf7f2;font-weight:700;font-size:11px;color:#666}
 .tgrid .clean{background:#f2faf4;color:#155d24}.tgrid .bad{background:#fdf3f2;color:#a12a20}
+.bl small{display:block;font-size:10px;font-weight:500;color:var(--muted);line-height:1.15}
+.bl.inl small{display:inline;margin-left:4px;opacity:.8}
+.whychip .bl small,.dirchip .bl small,.sev .bl small,.swlab .bl small,.verdict .bl small,button .bl small,.hint .bl small{display:inline;margin-left:4px;opacity:.75}
+.seg .bl small{display:block;font-size:9px;opacity:.8}
+.rc-lab .bl small{display:inline;margin-left:4px}
+h2 .bl small{display:block;font-size:11px;font-weight:500}
+.sg-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:6px 0;border-top:1px solid var(--line);font-size:13.5px}
+.sg-row:first-of-type{border-top:0}
+.sg-name{min-width:90px;font-weight:700}
+.sg-row button.ghost{padding:3px 12px;font-size:12.5px}
+@media print{.sg-row button{display:none}}
 details.full{margin-top:10px}
 details.full summary{cursor:pointer;font-size:12.5px;color:var(--muted);user-select:none;list-style:none}
 details.full summary::-webkit-details-marker{display:none}
@@ -1197,6 +1208,15 @@ const EL_SW = {
   "水":[["蓝 navy","#1A2F52"],["黑 charcoal","#3A3D42"]]};
 const WORD_EL = [["绿/青","木"],["红/橙/紫","火"],["黄/米/棕","土"],["白/灰/金属色","金"],["蓝/黑","水"],
   ["绿","木"],["红","火"],["金属","金"],["綠","木"],["青","木"],["紅","火"],["紫","火"],["黃","土"],["棕","土"],["黑","水"],["藍","水"],["白","金"],["金","金"]];
+const BAZHAI_EN = {"生氣":"Vitality","天醫":"Heavenly Doctor","延年":"Longevity","伏位":"Stability",
+  "禍害":"Mishap","六煞":"Six Killings","五鬼":"Five Ghosts","絕命":"Severed Fate"};
+const FLAG_EN = {"入門線":"entry line","門沖床":"door onto bed","床在門後":"bed behind door","門同牆":"door on head wall",
+  "頭靠飄窗":"head on bay","床頭靠窗":"head under window","書桌近枕":"desk near pillow","座上壓頂":"overhead at seat"};
+const AFF_EN = {"三煞":"Three Killings","岁破":"Year Breaker","歲破":"Year Breaker","太岁":"Grand Duke","太歲":"Grand Duke",
+  "五黄":"Five Yellow","五黃":"Five Yellow","二五不動":"no works"};
+const GATE_EN = {"正城門":"main gate","副城門":"side gate"};
+const L = (zh, en) => `<span class="bl">${zh}${en ? `<small>${en}</small>` : ""}</span>`;
+const Li = (zh, en) => `<span class="bl inl">${zh}${en ? `<small>${en}</small>` : ""}</span>`;
 function swFor(text) {
   const out = [], seen = new Set();
   const add = (n, h) => { if (!seen.has(h)) { seen.add(h); out.push([n, h]); } };
@@ -1210,51 +1230,78 @@ function swFor(text) {
 }
 const SW = (list, why) => list.map(([n, h]) =>
   `<span class="sw" style="background:${h}" title="${n}${why ? " · " + why : ""}"></span>`).join("");
+const SCOPE = (s) => s === "textiles" ? L("布艺", "textiles") : L("墙面", "planes");
 const swRow = (items) => items.length
   ? items.map(i => { const s = swFor(i.what); return s.length
-      ? `<span title="${i.why}">${SW(s)}<span class="swlab">${i.scope === "textiles" ? "布艺" : "墙面"}</span></span>`
+      ? `<span title="${i.why}">${SW(s)}<span class="swlab">${SCOPE(i.scope)}</span></span>`
       : `<span class="whychip" title="${i.why}">${i.what}</span>`; }).join(" ")
   : `<span class="hint">—</span>`;
 const lightSw = (k) => !k ? "" : /4000/.test(k) ? SW([["4000K neutral", "#F4F6F8"]]) :
   /2700/.test(k) && !/3000/.test(k) ? SW([["2700K warm", "#F2C98A"]]) : SW([["3000K warm-neutral", "#F7E3B5"]]);
 const SEV = (b) => b.severity ? `<span class="sev sev${b.severity}" title="二五 severity ${b.severity} (運星 ${b.run_star_element || "—"})">${
-  [2, 5].every(n => n === b.mountain || n === b.water) ? "二五 pair" : "二/五"}${b.worst ? " 首要" : ""}</span>` : `<span class="sev sev0">清</span>`;
-const FLAGC = (f) => `<span class="whychip neg" title="${(f.remedy || "")} · ${(f.doctrine || "")}">${f.zh}</span>`;
+  [2, 5].every(n => n === b.mountain || n === b.water) ? L("二五", "2-5 pair") : L("二/五", "2 or 5")}${b.worst ? L(" 首要", "first priority") : ""}</span>`
+  : `<span class="sev sev0">${L("清", "clear")}</span>`;
+const FLAGC = (f) => `<span class="whychip neg" title="${(f.remedy || "")} · ${(f.doctrine || "")}">${L(f.zh, FLAG_EN[f.zh] || "")}</span>`;
+const STARC = (star, good) => `<span class="dirchip ${good ? "good" : "bad"}">${L(star, BAZHAI_EN[star] || "")}</span>`;
 const bandCls = (b) => ({strong:"band-strong",good:"band-good",fair:"band-fair",weak:"band-weak",poor:"band-poor"})[b] || "band-fair";
 
-function assignedRoom(res, p) {
-  const a = res.suggestion ? res.suggestion.assignment : {};
-  const lab = Object.keys(a).find(k => a[k].includes(p.name));
-  return (p.rooms.find(r => r.label === lab) || p.rooms[0]) || null;
+/* ---- selection state: the dropdowns are the single source of truth ---- */
+let SEL = {};
+function labelToId(p, lab) { const r = p.rooms.find(x => x.label === lab); return r ? r.id : null; }
+function selFrom(res, assignment) {
+  const out = {};
+  for (const p of res.people) {
+    const lab = Object.keys(assignment || {}).find(k => assignment[k].includes(p.name));
+    out[p.name] = (lab && labelToId(p, lab)) || (p.rooms[0] && p.rooms[0].id) || null;
+  }
+  return out;
+}
+function initSel(res) {
+  const s = res.suggestion || {};
+  SEL = selFrom(res, (s.default || s).assignment || {});
+}
+function selRoom(p) { return p.rooms.find(r => r.id === SEL[p.name]) || p.rooms[0] || null; }
+function selMatches(res, assignment) {
+  const t = selFrom(res, assignment);
+  return res.people.every(p => t[p.name] === SEL[p.name]);
+}
+function selSummary(res) {
+  const total = res.people.reduce((a, p) => a + ((selRoom(p) || {}).total || 0), 0);
+  const count = {};
+  for (const p of res.people) if (SEL[p.name]) count[SEL[p.name]] = (count[SEL[p.name]] || 0) + 1;
+  const over = Object.entries(count).filter(([rid, n]) => { const r = rooms.find(x => x.id === rid); return r && r.capacity && n > r.capacity; })
+    .map(([rid]) => (res.room_briefs[rid] || {}).label || rid);
+  return { total, over };
 }
 function verdictOf(total) {
-  return total >= 0.5 ? ["适合 suitable", "v-good"] : total >= 0 ? ["可行 workable", "v-ok"] : ["不宜 unsuitable", "v-bad"];
+  return total >= 0.5 ? [L("适合", "suitable"), "v-good"] : total >= 0 ? [L("可行", "workable"), "v-ok"] : [L("不宜", "unsuitable"), "v-bad"];
 }
 
 /* ---- 1 · House compatibility ---- */
+function compatRow(res, p) {
+  const by = Object.fromEntries((res.aspects[p.name] || []).map(a => [a.aspect, a]));
+  const room = selRoom(p);
+  const [vt, vc] = verdictOf(room ? room.total : -1);
+  const top = room ? room.why.filter(w => typeof w !== "string").sort((a, b) => Math.abs(b.v) - Math.abs(a.v))[0] : null;
+  const role = p.role === "parent" ? L("父母", "parent") : p.role === "child" ? L("子女", "child") : L("成人", "adult");
+  return `<div class="cp-name"><b>${p.name}</b> <span class="hint">${role}</span><br><span class="dirchip ${p.match ? "good" : "bad"}">${Li(p.gua + "命 " + (p.group.includes("East") ? "東四" : "西四") + (p.match ? " ✓" : " ✗"), p.match ? "match" : "opposite")}</span></div>
+    <div class="cp-bar">${ASP_KEYS.map(k => { const a = by[k]; return a
+      ? `<div class="seg ${bandCls(a.band)}" title="${a.driver}"><span>${L(a.zh, (ASP_HEAD[k] || "").split(" ")[1] || k)}</span><b>${a.score}</b></div>`
+      : `<div class="seg band-fair">—</div>`; }).join("")}</div>
+    <div class="cp-verdict"><span class="verdict ${vc}">${vt}</span><br><small class="hint">${room ? `${room.label} · ${room.total.toFixed(2)}` : "no bedroom traced"}</small></div>
+    ${top ? `<div class="cp-reason">${top.v >= 0 ? "▲" : "▼"} ${top.t} <b>${top.v >= 0 ? "+" : ""}${top.v.toFixed(2)}</b></div>` : ""}`;
+}
 function compatBlock(res) {
   const h = res.house, m = res.main;
   const hz = h.group.includes("East") ? "東四宅" : "西四宅";
   const worst = Object.values(res.room_briefs || {}).filter(b => b.severity > 0)
     .sort((a, b) => b.severity - a.severity)[0];
-  let html = `<div class="sec"><h2>House compatibility 宅命相配</h2>
+  let html = `<div class="sec"><h2>${L("宅命相配", "House compatibility")}</h2>
     <div class="house-line">${res.period}運 ${m.sitting}山${m.facing}向 · <b>${m.structure}</b> · 坐${h.sitting_gua} ${hz}
-      ${worst ? ` · 二五 首要 <b>${worst.label}</b> (${worst.palace}宫 山${worst.mountain}向${worst.water})` : " · no 二五 palace on a traced room"}</div>`;
-  for (const p of res.people) {
-    const by = Object.fromEntries((res.aspects[p.name] || []).map(a => [a.aspect, a]));
-    const room = assignedRoom(res, p);
-    const [vt, vc] = verdictOf(room ? room.total : -1);
-    const top = room ? room.why.filter(w => typeof w !== "string").sort((a, b) => Math.abs(b.v) - Math.abs(a.v))[0] : null;
-    html += `<div class="cp-row">
-      <div class="cp-name"><b>${p.name}</b><br><span class="dirchip ${p.match ? "good" : "bad"}">${p.gua}命 ${p.group.includes("East") ? "東四" : "西四"} ${p.match ? "✓" : "✗"}</span></div>
-      <div class="cp-bar">${ASP_KEYS.map(k => { const a = by[k]; return a
-        ? `<div class="seg ${bandCls(a.band)}" title="${a.driver}"><span>${a.zh}</span><b>${a.score}</b></div>`
-        : `<div class="seg band-fair">—</div>`; }).join("")}</div>
-      <div class="cp-verdict"><span class="verdict ${vc}">${vt}</span><br><small class="hint">${room ? `${room.label} · ${room.total.toFixed(2)}` : "no bedroom traced"}</small></div>
-      ${top ? `<div class="cp-reason">${top.v >= 0 ? "▲" : "▼"} ${top.t} <b>${top.v >= 0 ? "+" : ""}${top.v.toFixed(2)}</b></div>` : ""}
-    </div>`;
-  }
-  html += `<details class="full"><summary>Full detail 详情 — 六项评分 scorecard, 宅命 doctrine note</summary>
+      ${worst ? ` · 二五 首要 <b>${worst.label}</b> (${worst.palace}宫 山${worst.mountain}向${worst.water})` : " · no 二五 palace on a traced room"}</div>
+    <div id="compat-rows">${res.people.map(p => `<div class="cp-row" data-cp="${p.name}">${compatRow(res, p)}</div>`).join("")}</div>
+    <div class="hint" style="margin-top:6px">${Li("按已选房间评定", "verdict follows the room selected for each person below")}</div>
+    <details class="full"><summary>Full detail 详情 — 六项评分 scorecard, 宅命 doctrine note</summary>
     ${houseNote(res)}${scorecardBlock(res)}</details></div>`;
   return html;
 }
@@ -1263,63 +1310,97 @@ function compatBlock(res) {
 function roomPane(res, p, room) {
   const rid = room.id, brief = res.room_briefs[rid] || {};
   const row = (res.placement && res.placement.rows || []).find(r => r.room_id === rid && r.person === p.name);
-  const occ = (brief.occupants || []).find(o => o.name === p.name);
+  const occ = (brief.occupant_options || {})[p.name] || (brief.occupants || []).find(o => o.name === p.name);
   let bed = "", desk = "";
   if (row && row.beds.length) {
     const t = row.beds[0];
-    bed = `headboard <b>${t.dir}</b> wall <span class="dirchip ${t.score >= 0 ? "good" : "bad"}">${t.star}</span>
-      ${t.flags.length ? t.flags.map(FLAGC).join(" ") : `<span class="whychip pos">no door-line flag</span>`}
+    bed = `${Li("床头靠", "headboard")} <b>${t.dir}</b> ${STARC(t.star, t.score >= 0)}
+      ${t.flags.length ? t.flags.map(FLAGC).join(" ") : `<span class="whychip pos">${L("无门线冲", "no door-line flag")}</span>`}
       ${row.warnings.filter(w => !w.site_check).map(FLAGC).join(" ")}`;
-    desk = row.desk ? `facing <b>${row.desk.dir}</b> <span class="dirchip good">${row.desk.star}</span> · door ${row.desk.door_side}
+    desk = row.desk ? `${Li("朝", "facing")} <b>${row.desk.dir}</b> ${STARC(row.desk.star, true)} · ${Li("门", "door")} ${row.desk.door_side}
       <div class="hint">${row.desk.remedy || ""}</div>` : `<span class="hint">no auspicious wall free</span>`;
   } else {
-    bed = `${p.dirs_good.slice(0, 2).map(d => `<span class="dirchip good">${d.dir} ${d.star}</span>`).join(" ")}
-      <span class="hint">by 命卦 — assign this room to get the door-line audit</span>`;
+    bed = `${p.dirs_good.slice(0, 2).map(d => STARC(d.dir + " " + d.star, true)).join(" ")}
+      <span class="hint">by 命卦 — no door-line audit for this room</span>`;
     desk = p.wenchang ? `文昌 <span class="dirchip good">${p.wenchang.dir}</span> ${p.wenchang.face ? `chair facing <b>${p.wenchang.face.dir} ${p.wenchang.face.star}</b>` : ""}` : "";
   }
   const why = room.why.map(w => typeof w === "string" ? `<span class="whychip">${w}</span>`
     : `<span class="whychip ${w.v >= 0 ? "pos" : "neg"}">${w.t} <b>${w.v >= 0 ? "+" : ""}${w.v.toFixed(2)}</b></span>`).join(" ");
-  const pal = occ ? `<div class="cell"><div class="rc-lab">Personal 用神 (${occ.palette_scope === "textiles" ? "布艺 textiles" : "墙面 planes"})</div>
-      ${SW(occ.palette_personal.flatMap(w => swFor(w)), "用神")} <span class="swlab">use</span>
-      ${SW(occ.palette_avoid.flatMap(w => swFor(w)), "忌神")} <span class="swlab">avoid</span>
+  const pal = occ ? `<div class="cell"><div class="rc-lab">${L("个人用神", "Personal palette")} <span class="swlab">${SCOPE(occ.palette_scope)}</span></div>
+      ${SW(occ.palette_personal.flatMap(w => swFor(w)), "用神")} <span class="swlab">${L("宜", "use")}</span>
+      ${SW(occ.palette_avoid.flatMap(w => swFor(w)), "忌神")} <span class="swlab">${L("忌", "avoid")}</span>
       ${occ.cost ? `<div class="hint">${occ.cost}</div>` : ""}</div>` : "";
   return `<div class="rp-grid">
-    <div class="cell"><div class="rc-lab">Score 评分</div><span class="rp-score ${room.total >= 0 ? "b-good" : "b-weak"}">${room.total.toFixed(2)}</span>
+    <div class="cell"><div class="rc-lab">${L("评分", "Score")}</div><span class="rp-score ${room.total >= 0 ? "b-good" : "b-weak"}">${room.total.toFixed(2)}</span>
       <span class="hint">${brief.palace}宫 山${brief.mountain}向${brief.water}</span> ${SEV(brief)}<div>${why}</div></div>
-    <div class="cell"><div class="rc-lab">🛏 Bed 床头</div>${bed}<div class="rc-lab" style="margin-top:8px">📚 Desk 书桌</div>${desk}</div>
-    <div class="cell"><div class="rc-lab">Room colours 房间用色</div>
-      <div>${swRow(brief.colours_use || [])} <span class="swlab">use</span></div>
-      <div style="margin-top:4px">${swRow(brief.colours_avoid || [])} <span class="swlab">avoid</span></div>
+    <div class="cell"><div class="rc-lab">🛏 ${L("床头", "Bed head")}</div>${bed}<div class="rc-lab" style="margin-top:8px">📚 ${L("书桌", "Desk")}</div>${desk}</div>
+    <div class="cell"><div class="rc-lab">${L("房间用色", "Room colours")}</div>
+      <div>${swRow(brief.colours_use || [])} <span class="swlab">${L("宜", "use")}</span></div>
+      <div style="margin-top:4px">${swRow(brief.colours_avoid || [])} <span class="swlab">${L("忌", "avoid")}</span></div>
       ${brief.override_note ? `<div class="hint">${brief.override_note}</div>` : ""}</div>
     ${pal}
   </div>`;
+}
+function suggestionInner(res) {
+  const s = res.suggestion;
+  if (!s) return "";
+  const line = (key, zh, en, o) => o ? `<div class="sg-row" data-sg="${key}">
+      <span class="sg-name">${L(zh, en)}</span>
+      <span>${Object.entries(o.assignment).map(([room, ns]) => `<b>${room}</b> ← ${ns.join(", ")}`).join(" · ")}
+        · ${Li("合计", "household")} <b>${o.household_total.toFixed(2)}</b>${o.rule ? ` <span class="hint">(${o.rule})</span>` : ""}</span>
+      ${selMatches(res, o.assignment) ? `<span class="dirchip good">✓ ${L("已选", "selected")}</span>` : `<button class="ghost" data-apply="${key}">${L("采用", "apply")}</button>`}
+    </div>` : "";
+  const sum = selSummary(res);
+  return `<h2>${L("配房方案", "Assignment options")}</h2>
+    ${line("default", "默认", "parents → master", s.default)}${line("optimal", "最优", "optimiser's best", s.optimal)}
+    <div class="assign-line">${Li("已选", "selected")}: ${res.people.map(p => { const r = selRoom(p); return `<b>${p.name}</b> → ${r ? r.label : "—"}`; }).join(" · ")}
+      · ${Li("合计", "household")} <b>${sum.total.toFixed(2)}</b>${sum.over.length ? ` <span class="whychip neg">⚠ ${L("超员", "over capacity")}: ${sum.over.join(", ")}</span>` : ""}</div>`;
 }
 function roomsPeopleBlock(res) {
   if (!res.people || !res.people.length) return "";
   let html = "";
   for (const p of res.people) {
-    const def = assignedRoom(res, p);
+    const def = selRoom(p);
     if (!def) { html += `<div class="sec rp"><h2>${p.name}</h2><div class="hint">mark bedrooms to rank rooms</div></div>`; continue; }
     html += `<div class="sec rp" data-person="${p.name}"><div class="rp-head"><h2 style="margin:0">${p.name} · ${p.gua}命</h2>
-      <label class="hint">Room 房间 <select data-room-for="${p.name}">${p.rooms.map((r, i) =>
+      <label class="hint">${L("房间", "room")} <select data-room-for="${p.name}">${p.rooms.map((r, i) =>
         `<option value="${r.id}" ${r.id === def.id ? "selected" : ""}>${i === 0 ? "★ " : ""}${r.label} · ${r.total.toFixed(2)}</option>`).join("")}</select></label>
       <span class="print-only">${def.label}</span></div>
       <div class="rp-body" data-body-for="${p.name}">${roomPane(res, p, def)}</div></div>`;
   }
-  if (res.suggestion) html += `<div class="sec"><div class="assign-line" style="border-top:0;margin:0;padding:0">🛏 Suggested 最佳配房:
-    ${Object.entries(res.suggestion.assignment).map(([room, ns]) => `<b>${room}</b> ← ${ns.join(", ")}`).join(" · ")}
-    · household <b>${res.suggestion.household_total.toFixed(2)}</b></div>
+  html += `<div class="sec" id="sugg-sec"><div id="sugg">${suggestionInner(res)}</div>
     <details class="full"><summary>Full detail 详情 — directions & rooms tables, person-room score breakdown, bed alternatives, floor-plan overlay</summary>
     ${personRoomScores(res.scores)}${peopleBlock(res)}${placementBlock(res)}${colorsBlock(res)}</details></div>`;
   return html;
 }
+function refreshClinical(res) {
+  for (const p of res.people) {
+    const room = selRoom(p);
+    if (!room) continue;
+    const body = document.querySelector(`[data-body-for="${p.name}"]`);
+    if (body) body.innerHTML = roomPane(res, p, room);
+    const sel = document.querySelector(`select[data-room-for="${p.name}"]`);
+    if (sel) { sel.value = room.id; sel.closest(".rp-head").querySelector(".print-only").textContent = room.label; }
+    const cp = document.querySelector(`[data-cp="${p.name}"]`);
+    if (cp) cp.innerHTML = compatRow(res, p);
+  }
+  const sg = document.getElementById("sugg");
+  if (sg) { sg.innerHTML = suggestionInner(res); bindApply(res); }
+}
+function bindApply(res) {
+  document.querySelectorAll("button[data-apply]").forEach(b => b.onclick = () => {
+    const o = res.suggestion[b.dataset.apply];
+    if (!o) return;
+    SEL = selFrom(res, o.assignment);
+    refreshClinical(res);
+  });
+}
 function bindRoomSelects(res) {
   document.querySelectorAll("select[data-room-for]").forEach(sel => sel.onchange = () => {
-    const p = res.people.find(x => x.name === sel.dataset.roomFor);
-    const room = p.rooms.find(r => r.id === sel.value);
-    document.querySelector(`[data-body-for="${p.name}"]`).innerHTML = roomPane(res, p, room);
-    sel.closest(".rp-head").querySelector(".print-only").textContent = room.label;
+    SEL[sel.dataset.roomFor] = sel.value;
+    refreshClinical(res);
   });
+  bindApply(res);
 }
 
 /* ---- 3 · Renovation ---- */
@@ -1329,29 +1410,28 @@ function renovationBlock(res) {
   const mats = (b) => { const u = (b.materials_use || [])[0], a = (b.materials_avoid || [])[0];
     return `${u ? `<span title="${u.why}">✓ ${u.what.split(/[;,]/)[0]}</span>` : ""}${a ? `<br><span class="b-weak" title="${a.why}">✗ ${a.what.split(/[;,]/)[0]}</span>` : ""}` || "—"; };
   const rows = Object.entries(briefs).map(([rid, b]) => {
-    const t = b.timing || {}, L = b.lighting || {};
+    const t = b.timing || {}, L_ = b.lighting || {};
     return `<tr><td><b>${b.label || rid}</b></td><td>${b.palace || "—"}${b.mountain != null ? `<br><small>山${b.mountain}向${b.water}</small>` : ""}</td>
       <td>${b.palace === "中" ? "—" : SEV(b)}</td>
       <td>${swRow(b.colours_use || [])}</td><td>${swRow(b.colours_avoid || [])}</td>
       <td>${mats(b)}</td>
-      <td>${lightSw(L.fixed_k)}${L.fixed_k || "—"}<br><small class="hint">${L.lamps_k || ""}</small></td>
-      <td>${t.structure_ok === false ? `<span class="whychip neg" title="${(t.now || []).join(" ")}">structure ✗ ${t.next && t.next.length ? "both years" : "until 立春 " + (wt.next)}</span>`
-          : `<span class="whychip pos">structure ✓</span>`} <span class="whychip pos" title="platform, panel, overlay, cabinet run">finish ✓</span>
-          ${(b.timing_rules || []).filter(r => r.code === "F3").map(r => `<br><span class="whychip neg" title="${r.text}">${r.zh}</span>`).join("")}</td>
-      <td>${b.gate ? `<span class="whychip ${b.gate.valid ? "pos" : "neg"}" title="${b.gate.text}">${b.gate.rank}${b.gate.guarded ? " 向星5" : ""}</span>` : ""}</td></tr>`;
+      <td>${lightSw(L_.fixed_k)}${L_.fixed_k || "—"}<br><small class="hint">${L_.lamps_k || ""}</small></td>
+      <td>${t.structure_ok === false ? `<span class="whychip neg" title="${(t.now || []).join(" ")}">${L("动土 ✗", t.next && t.next.length ? "structure: both years" : "structure: until 立春 " + wt.next)}</span>`
+          : `<span class="whychip pos">${L("动土 ✓", "structure ok")}</span>`} <span class="whychip pos" title="platform, panel, overlay, cabinet run">${L("装饰 ✓", "finish-fit ok")}</span>
+          ${(b.timing_rules || []).filter(r => r.code === "F3").map(r => `<br><span class="whychip neg" title="${r.text}">${L(r.zh, AFF_EN[r.zh] || "")}</span>`).join("")}</td>
+      <td>${b.gate ? `<span class="whychip ${b.gate.valid ? "pos" : "neg"}" title="${b.gate.text}">${L(b.gate.rank + (b.gate.guarded ? " 向星5" : ""), (GATE_EN[b.gate.rank] || "") + (b.gate.guarded ? " · blocked" : ""))}</span>` : ""}</td></tr>`;
   }).join("");
+  const AF = (h) => L(h, AFF_EN[h] || "");
   const grid = Object.entries(briefs).map(([rid, b]) => { const r = wrow[rid];
-    const cell = (hits) => hits && hits.length ? `<div class="bad">${hits.join(" ")}</div>` : `<div class="clean">clean</div>`;
+    const cell = (hits) => hits && hits.length ? `<div class="bad">${hits.map(AF).join(" ")}</div>` : `<div class="clean">${L("清", "clean")}</div>`;
     return `<div>${b.label || rid}</div>${cell(r && r.now)}${cell(r && r.next)}`; }).join("");
-  return `<div class="sec"><h2>Renovation 装修 <span class="hint">per room: colours · materials · lighting · works timing · hover any cell for its rule</span></h2>
-    <div style="overflow-x:auto"><table class="rtable"><tr><th>Room</th><th>宫 山/向</th><th>二五</th><th>USE 宜</th><th>AVOID 忌</th><th>Materials</th><th>Lighting</th><th>Works ${wt.year}</th><th>城门</th></tr>${rows}</table></div>
-    <div class="tgrid"><div class="th">动工 works</div><div class="th">${wt.year}</div><div class="th">${wt.next}</div>${grid}</div>
+  return `<div class="sec"><h2>${L("装修", "Renovation")} <span class="hint">per room: colours · materials · lighting · works timing · hover any cell for its rule</span></h2>
+    <div style="overflow-x:auto"><table class="rtable"><tr><th>${L("房间", "Room")}</th><th>${L("宫 山/向", "palace · stars")}</th><th>${L("二五", "2-5")}</th><th>${L("宜", "USE")}</th><th>${L("忌", "AVOID")}</th><th>${L("材料", "Materials")}</th><th>${L("灯光", "Lighting")}</th><th>${L("动工 " + wt.year, "works")}</th><th>${L("城门", "Gate")}</th></tr>${rows}</table></div>
+    <div class="tgrid"><div class="th">${L("动工", "works")}</div><div class="th">${wt.year}</div><div class="th">${wt.next}</div>${grid}</div>
     <div class="hint" style="margin-top:6px">太岁/岁破/三煞/五黄 sectors: no 动土 (hacking, drilling, wet works) while afflicted; finish-fit proceeds. 立春 ≈ 4 Feb.</div>
     <details class="full"><summary>Full detail 详情 — room brief cards (colours, objects, bed & desk, lighting & timing), renovation timing table</summary>
-    ${worksBlock(res)}${roomCardsBlock(res)}</details>
-    </div>${moveinBlock()}`;
+    ${worksBlock(res)}${roomCardsBlock(res)}</details></div>${moveinBlock()}`;
 }
-
 
 function houseNote(res) {
   const h = res.house, hz = h.group.includes("East") ? "東四宅 (East house)" : "西四宅 (West house)";
@@ -1376,6 +1456,7 @@ function renderResults(res) {
       facing on site (2–3 readings away from metal) to settle which one applies.</div>`;
     html += chartBlock("Alternate chart 兼盘", res.alternate, res.alternate_scores);
   }
+  initSel(res);
   html += compatBlock(res);
   html += roomsPeopleBlock(res);
   html += renovationBlock(res);

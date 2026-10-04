@@ -140,6 +140,14 @@ def test_analyze_fengshui():
     for rid in ("master", "living"):
         assert "placements" in d["room_briefs"][rid] and "afflictions" in d["room_briefs"][rid]
         assert d["room_briefs"][rid]["afflictions"]["year"] == d["year"]
+    # selection-driven report: roles, two assignment options, rows for every pair, palettes for all
+    assert all(p["role"] in ("parent", "adult", "child") and "age" in p for p in d["people"])
+    assert d["suggestion"]["default"]["assignment"] and d["suggestion"]["optimal"]["assignment"]
+    assert d["suggestion"]["assignment"] == d["suggestion"]["default"]["assignment"]
+    assert len(d["placement"]["rows"]) == len(d["people"]) * 1      # one sleeping room in this fixture
+    for b in d["room_briefs"].values():
+        if b.get("palace") != "中":
+            assert set(b["occupant_options"]) == {p["name"] for p in d["people"]}
     # P3: lighting on every brief, F2 + timing on afflicted rooms, two gate candidates
     assert all("fixed_k" in b["lighting"] for b in d["room_briefs"].values())
     assert len(d["chengmen"]) == 2 and all("guarded" in g for g in d["chengmen"])

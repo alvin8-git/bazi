@@ -38,6 +38,7 @@ from engine.extras import compass_afflictions, harmony_matrix
 from engine.extras import placements as person_placements
 from engine.interpret import STRUCTURE_TEXT
 from engine.htmlreport import _tosimp
+from engine.household import assign_roles, default_assignment
 from engine.jianchu import movein_dates, sitting_branches
 from engine.liunian import BRANCH_PALACE, annual_afflictions, dayun_detail
 from engine.optimizer import optimize, score_assignment
@@ -618,7 +619,7 @@ def _people_analysis(req, charts: dict, ys_map: dict, rooms: list[dict],
         # spot, auspicious facing).
         wc_pal = BRANCH_PALACE[WENCHANG[c.day_master]]
         wc_rooms = [r["label"] for r in rooms if r["palace_pie"] == wc_pal]
-        people.append({"name": name, "gua": g, "group": grp,
+        people.append({"name": name, "gua": g, "group": grp, "age": YEAR - c.lichun_year,
                        "match": grp == house_group,
                        "dirs_good": good_dirs,
                        "dirs_bad": [d for d in dirs
@@ -629,17 +630,35 @@ def _people_analysis(req, charts: dict, ys_map: dict, rooms: list[dict],
                                     "face": good_dirs[0] if good_dirs else None,
                                     "fallback": not wc_rooms},
                        "rooms": ranking})
+    roles = assign_roles([{"name": p["name"], "age": p["age"]} for p in people])
+    for p in people:
+        p["role"] = roles[p["name"]]
     suggestion = None
     # optimize() enumerates rooms^people — only run when the space is small
     if sleeping and charts and len(sleeping) ** len(charts) <= 100_000:
+        labelled = lambda a: {rooms_by_id[rid]["label"]: ns for rid, ns in a.items() if ns}
         try:
             best = optimize(charts, ys_map, rooms, natal, annual, top=1)["best"][0]
-            suggestion = {
-                "assignment": {rooms_by_id[rid]["label"]: ns
-                               for rid, ns in best["assignment"].items()},
-                "household_total": best["household_total"]}
+            optimal = {"assignment": labelled(best["assignment"]),
+                       "household_total": best["household_total"]}
         except (ValueError, KeyError):
-            pass                    # capacity infeasible → no suggestion
+            optimal = None          # capacity infeasible → no suggestion
+        if optimal:
+            def _opt_rest(names, rest_rooms):
+                sub = optimize({n: charts[n] for n in names}, {n: ys_map[n] for n in names},
+                               rest_rooms, natal, annual, top=1)["best"][0]
+                return sub["assignment"]
+            dflt = default_assignment(roles, rooms, {p["name"]: [r["id"] for r in p["rooms"]]
+                                                    for p in people}, _opt_rest)
+            if dflt:
+                tot = score_assignment(dflt, charts, ys_map, rooms_by_id, natal, annual)["household_total"]
+                default = {"assignment": labelled(dflt), "household_total": tot,
+                           "rule": "parents → master; others optimised"}
+            else:
+                default = dict(optimal, rule="no parents identified — optimal used")
+            suggestion = {"assignment": default["assignment"],
+                          "household_total": default["household_total"],
+                          "default": default, "optimal": optimal}
     return {"house": {"sitting_gua": house_gua, "dir": _PALACE_DIR[house_gua],
                       "group": house_group},
             "people": people, "suggestion": suggestion}
@@ -716,13 +735,15 @@ def _placement(assignment: dict, rooms: list[dict], rooms_by_id: dict,
     # no metre scale on a traced plan: assume the median short side is ~3.0 m (approx)
     m_per_unit = (3.0 / dims[len(dims) // 2]) if dims and dims[len(dims) // 2] else 0.0
     rows = []
-    for rid, names in assignment.items():
-        room = rooms_by_id[rid]
+    # every (sleeping room, person) pair, so the report can switch rooms client-side
+    for room in rooms:
+        if not room.get("sleeping"):
+            continue
+        rid = room["id"]
         rect = _bbox(room["poly"])
         doors = room.get("doors", [])
         windows = room.get("windows", [])
-        for n in names:
-            c = charts.get(_tosimp(n))
+        for n, c in charts.items():
             if c is None:
                 continue
             stars = youxing_stars(ming_gua(c.lichun_year, c.sex))
@@ -988,6 +1009,10 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
                                       "qualifies as 城門 but shares the palace with 向星5 — do not "
                                       "activate; keep the opening quiet" if g["guarded"] else
                                       "gate candidate that does not open in this period")}
+    every = room_briefs([r for r in rooms if r["id"] != "entrance"], natal,
+                        {r["id"]: list(charts) for r in rooms}, ys_map, req.period)
+    for rid, b in result["room_briefs"].items():
+        b["occupant_options"] = {o["name"]: o for o in every.get(rid, {}).get("occupants", [])}
     result["room_placements"] = _room_placements(rooms, charts)
     for rid, rp in result["room_placements"].items():
         if rid in result["room_briefs"]:
