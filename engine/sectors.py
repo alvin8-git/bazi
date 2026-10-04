@@ -141,10 +141,44 @@ def trace_checks(rooms: list[dict], image_up_bearing: float,
                     "text": "balconies are counting toward the centre — this is not the usual "
                             "doctrine; the 太極點 belongs to the enclosed home",
                     "rooms": [lab(r) for r in outdoor]})
+    # overlap / nested: each patch of floor belongs to exactly one shape
+    def bbox(r):
+        xs = [x for x, _ in r["poly"]]; ys = [y for _, y in r["poly"]]
+        return min(xs), min(ys), max(xs), max(ys)
+    def inter(a, b):
+        w = min(a[2], b[2]) - max(a[0], b[0]); h = min(a[3], b[3]) - max(a[1], b[1])
+        return w * h if w > 0 and h > 0 else 0.0
+    area = lambda bb: max(0.0, (bb[2] - bb[0]) * (bb[3] - bb[1]))
+    overlaps, nested = [], []
+    for i, a in enumerate(enclosed):
+        for b in enclosed[i + 1:]:
+            ba, bb_ = bbox(a), bbox(b)
+            ov = inter(ba, bb_)
+            if not ov:
+                continue
+            small, big = (a, b) if area(ba) <= area(bb_) else (b, a)
+            frac = ov / max(1e-9, min(area(ba), area(bb_)))
+            if frac >= 0.9:
+                nested.append((lab(small), lab(big)))
+            elif frac > 0.15:
+                overlaps.append((lab(a), lab(b), round(frac * 100)))
+    if overlaps:
+        out.append({"code": "overlap", "zh": "形状重叠", "severity": "warn",
+                    "text": "; ".join(f"{a} and {b} overlap by {p}% of the smaller" for a, b, p in overlaps)
+                            + " — each patch of floor belongs to exactly one shape; resize so the "
+                              "edges meet (walls are nothing)",
+                    "rooms": sorted({n for a, b, _ in overlaps for n in (a, b)})})
+    if nested:
+        out.append({"code": "nested", "zh": "房中有房", "severity": "info",
+                    "text": "; ".join(f"{s} lies inside {b}" for s, b in nested)
+                            + " — a furniture-sized shape inside a room counts twice; remove it "
+                              "unless it is a walk-in wardrobe or ensuite with its own walls and door",
+                    "rooms": [s for s, _ in nested]})
     if len(enclosed) < 6:
         out.append({"code": "few-rooms", "zh": "描图不全", "severity": "info",
                     "text": "corridors, lobby, wardrobes and the yard move the centre — trace "
-                            "every enclosed area, not only the rooms you care about", "rooms": []})
+                            "every enclosed area, not only the rooms you care about (see How to trace)",
+                    "rooms": []})
     return out
 
 

@@ -101,6 +101,8 @@ button:disabled{opacity:.45;cursor:default}
 .rect.outdoor{border-style:dashed;background:rgba(46,125,50,.07)}
 .rect .odtag{position:absolute;right:3px;bottom:2px;font-size:10px;font-style:normal;color:#2e7d32;
   background:rgba(255,255,255,.8);border-radius:3px;padding:0 4px}
+ol.guide{margin:4px 0 0;padding-left:20px;font-size:12.5px;color:var(--ink)}
+ol.guide li{margin:3px 0}ol.guide em{font-style:normal;color:var(--muted)}
 .tc-box{background:#fff6df;border:1px solid #eedc9a;border-radius:8px;padding:8px 12px;margin:0 0 10px}
 .tc-box .whychip{margin:2px 4px 2px 0}.tc-box div{font-size:13px;margin:3px 0}
 .rect.ns span{background:var(--good)}
@@ -358,9 +360,21 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
         style="display:inline-flex;align-items:center;gap:4px;margin-right:8px"><input type="checkbox" id="f-outdoor"> 阳台计入太极点 <small>balconies count toward the centre</small></label>
       <button class="dark" id="btn-analyze">Analyze Plan →</button>
     </div>
-    <div class="hint" style="margin:8px 2px">Measure the facing with a phone compass at
-      the main window/balcony, away from metal. Drag on the plan to draw each room;
-      tap 🚪 then click the main door position.
+    <div class="hint" style="margin:8px 2px"><b>描全围合面积 Trace every enclosed area once</b> — rooms and the
+      spaces between them; balconies stay out of the centre. Measure the facing with a phone compass at
+      the main window/balcony, away from metal. Drag on the plan to draw each room; tap 🚪 then click the main door position.
+      <details id="guide" style="margin:6px 0"><summary style="cursor:pointer;color:var(--accent)">描图须知 How to trace</summary>
+        <ol class="guide">
+          <li><b>全部围合面积</b> <em>Trace all enclosed floor area</em> — corridors, lobby, yard, WC, shelter, walk-in wardrobe.
+            The centre (太极点) is the balance point of the whole home, so a missing area shifts every palace.</li>
+          <li><b>不重叠不留缝</b> <em>No overlaps, no gaps</em> — each patch of floor belongs to exactly one shape; walls are nothing.</li>
+          <li><b>阳台不计</b> <em>Balconies and patios are drawn but excluded from the centre</em> (dashed) — open to the sky and
+            outside the envelope you live in; they still get a palace reading for the 向星 and the gate check.</li>
+          <li><b>房内家具不画</b> <em>Furniture inside a room is not a room</em> — a wardrobe, bay platform or bed stays inside its
+            bedroom's shape; only a walk-in with its own walls and door is traced as Wardrobe.</li>
+          <li><b>卧室床位</b> <em>One child per bedroom, parents in the master</em> — set Beds on each bedroom; the optimiser never exceeds it.</li>
+        </ol>
+      </details>
       <details style="display:inline"><summary style="display:inline;cursor:pointer;color:var(--accent)">advanced</summary>
         image-top bearing (if the image top is not the facing side):
         <input type="number" id="f-upb" min="0" max="359.9" step="0.5"
@@ -385,10 +399,10 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
         <select id="p-type">
           <option>Living 客厅</option><option>Dining 餐厅</option>
           <option>Master Bedroom 主卧</option><option>Bedroom 卧室</option>
-          <option>Balcony 阳台</option><option>Patio 露台</option><option>Kitchen 厨房</option>
+          <option title="outdoor — excluded from the centre">Balcony 阳台</option><option title="outdoor — excluded from the centre">Patio 露台</option><option>Kitchen 厨房</option>
           <option>Bathroom 卫浴</option><option>Study 书房</option>
-          <option>Store 储藏</option><option>Corridor 走廊</option><option>Lobby 玄关</option>
-          <option>Wardrobe 衣帽间</option><option>Yard 后院</option><option>Other 其他</option>
+          <option>Store 储藏</option><option title="enclosed, counts toward the centre">Corridor 走廊</option><option title="enclosed, counts toward the centre">Lobby 玄关</option>
+          <option title="walk-in with its own door only">Wardrobe 衣帽间</option><option title="enclosed, counts toward the centre">Yard 后院</option><option>Other 其他</option>
         </select>
         <label>Custom Name</label>
         <input id="p-name" maxlength="40" placeholder="optional — e.g. Kai Lin's room">
@@ -682,6 +696,7 @@ $("#plan").addEventListener("load", () => {
   imgNatural = [$("#plan").naturalWidth, $("#plan").naturalHeight];
   $("#go-err").textContent = "";
   if (pendingRestore) { rebuildFromSaved(pendingRestore); pendingRestore = null; }
+  if (!rooms.length) $("#guide").open = true;
 });
 $("#plan").addEventListener("error", () => {
   if (!cur) return;
