@@ -62,3 +62,59 @@ def test_curated_layer(data):
     # dictionary-disputed chars carry the contested flag for human sign-off
     for ch in ("玉", "心", "杰", "龙"):
         assert data[ch].get("el_contested") is True
+
+
+# ---- traditional forms and 康熙 strokes (2026-10-04 fix) --------------------
+# Unihan lists the character itself first when it also exists as a traditional
+# character; the builder used to take that and count the SIMPLIFIED strokes.
+TRAD_FIXED = {"优": ("優", 17), "宝": ("寶", 20), "乐": ("樂", 15), "涛": ("濤", 18),
+              "凤": ("鳳", 14), "体": ("體", 23), "万": ("萬", 15), "丰": ("豐", 18),
+              "岁": ("歲", 13), "画": ("畫", 12), "云": ("雲", 12), "历": ("歷", 16)}
+TRAD_STABLE = {"国": ("國", 11), "华": ("華", 14), "东": ("東", 8), "龙": ("龍", 16),
+               "伟": ("偉", 11), "杰": ("傑", 12), "泽": ("澤", 17), "轩": ("軒", 10),
+               "婷": ("婷", 12), "禄": ("祿", 13)}
+KEPT_SELF = {"志": 7, "松": 8, "冬": 5, "秋": 9, "才": 3}      # traditional in their own right
+
+
+def test_traditional_forms_and_kangxi_strokes(data):
+    for ch, (trad, ks) in {**TRAD_FIXED, **TRAD_STABLE}.items():
+        assert (data[ch]["trad"], data[ch]["ks"]) == (trad, ks), f"{ch}: {data[ch]['trad']} {data[ch]['ks']}"
+    for ch, ks in KEPT_SELF.items():
+        assert data[ch]["trad"] == ch and data[ch]["ks"] == ks, ch
+        assert len(data[ch]["trad_alts"]) >= 2                     # the other form stays switchable
+
+
+def test_pool_characters_use_a_listed_traditional_form(data):
+    from engine.naming import POOL
+    for ch in dict.fromkeys(POOL):
+        e = data[ch]
+        alts = e.get("trad_alts")
+        if alts:
+            assert e["trad"] in alts and alts[e["trad"]] == e["ks"], ch
+
+
+def test_common_level_one_list(data):
+    l1 = (DATA.parent / "common_l1.txt").read_text("utf8").splitlines()
+    assert l1[0].startswith("#") and len(l1[1]) == 3500 and len(set(l1[1])) == 3500
+    assert sum(1 for v in data.values() if v.get("common")) == 3500
+    assert data["明"]["common"] and not data["婷"].get("common")      # 婷 is level 2
+    assert data["明"]["lvl"] == 1 and data["婷"]["lvl"] == 2 and "lvl" not in data["龘"]
+    assert 2900 <= sum(1 for v in data.values() if v.get("lvl") == 2) <= 3000   # a few level-2 chars sit outside the URO block
+
+
+def test_trad_overrides_are_valid_forms(data):
+    ov = json.loads((DATA.parent / "trad_overrides.json").read_text("utf8"))
+    for ch, ent in ov.items():
+        if ch.startswith("_"):
+            continue
+        assert data[ch]["trad"] == ent["default"], ch
+        for form in [ent["default"], *ent.get("alts", [])]:
+            assert form in data[ch]["trad_alts"], f"{ch}: {form}"
+
+
+def test_char_info_selects_a_traditional_form():
+    from engine.naming import char_info
+    assert char_info("云")["ks"] == 12 and char_info("云", "云")["ks"] == 4
+    assert char_info("历", "曆")["trad"] == "曆"
+    with pytest.raises(ValueError):
+        char_info("云", "雨")

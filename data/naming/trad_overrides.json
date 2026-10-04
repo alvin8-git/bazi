@@ -1,0 +1,246 @@
+{
+ "_note": "Simplified → traditional form used in GIVEN NAMES when Unihan lists several. 'default' wins over the builder rule; 'alts' are offered as a switch in the UI. Every form must be one of Unihan's kTraditionalVariant values for the character (or the character itself).",
+ "云": {
+  "default": "雲",
+  "alts": [
+   "云"
+  ],
+  "note": "云 in names is 雲 (cloud); 云 alone means 'say'"
+ },
+ "历": {
+  "default": "歷",
+  "alts": [
+   "曆"
+  ],
+  "note": "歷 experience/history; 曆 calendar"
+ },
+ "复": {
+  "default": "復",
+  "alts": [
+   "複",
+   "覆"
+  ],
+  "note": "復 return/restore is the name sense"
+ },
+ "台": {
+  "default": "臺",
+  "alts": [
+   "台",
+   "檯",
+   "颱"
+  ],
+  "note": "臺 terrace; 台 is also used as-is"
+ },
+ "钟": {
+  "default": "鍾",
+  "alts": [
+   "鐘"
+  ],
+  "note": "鍾 (surname, 鍾愛); 鐘 bell/clock"
+ },
+ "发": {
+  "default": "發",
+  "alts": [
+   "髮"
+  ],
+  "note": "發 prosper; 髮 hair"
+ },
+ "丰": {
+  "default": "豐",
+  "alts": [
+   "丰"
+  ],
+  "note": "豐 abundant; 丰 graceful (丰采)"
+ },
+ "愿": {
+  "default": "願",
+  "alts": [
+   "愿"
+  ],
+  "note": "願 wish"
+ },
+ "朴": {
+  "default": "樸",
+  "alts": [
+   "朴"
+  ],
+  "note": "樸 plain/simple; 朴 is the surname (Piáo/Pǔ) and a tree"
+ },
+ "准": {
+  "default": "準",
+  "alts": [
+   "准"
+  ],
+  "note": "準 standard/accurate; 准 permit"
+ },
+ "听": {
+  "default": "聽",
+  "alts": [
+   "听"
+  ],
+  "note": "聽 listen"
+ },
+ "筑": {
+  "default": "築",
+  "alts": [
+   "筑"
+  ],
+  "note": "築 build; 筑 the instrument"
+ },
+ "儿": {
+  "default": "兒",
+  "alts": [
+   "儿"
+  ],
+  "note": "兒 child"
+ },
+ "几": {
+  "default": "幾",
+  "alts": [
+   "几"
+  ],
+  "note": "幾 how many; 几 small table"
+ },
+ "荐": {
+  "default": "薦",
+  "alts": [
+   "荐"
+  ],
+  "note": "薦 recommend"
+ },
+ "干": {
+  "default": "幹",
+  "alts": [
+   "乾",
+   "干"
+  ],
+  "note": "幹 capable/trunk is the name sense; 乾 dry, 干 shield/stem"
+ },
+ "后": {
+  "default": "后",
+  "alts": [
+   "後"
+  ],
+  "note": "后 queen/sovereign in names; 後 behind"
+ },
+ "里": {
+  "default": "里",
+  "alts": [
+   "裏",
+   "裡"
+  ],
+  "note": "里 village/mile in names"
+ },
+ "志": {
+  "default": "志",
+  "alts": [
+   "誌"
+  ],
+  "note": "志 aspiration; 誌 record"
+ },
+ "松": {
+  "default": "松",
+  "alts": [
+   "鬆"
+  ],
+  "note": "松 pine; 鬆 loose"
+ },
+ "冬": {
+  "default": "冬",
+  "alts": [
+   "鼕"
+  ],
+  "note": "冬 winter"
+ },
+ "秋": {
+  "default": "秋",
+  "alts": [
+   "鞦"
+  ],
+  "note": "秋 autumn"
+ },
+ "才": {
+  "default": "才",
+  "alts": [
+   "纔"
+  ],
+  "note": "才 talent"
+ },
+ "征": {
+  "default": "征",
+  "alts": [
+   "徵"
+  ],
+  "note": "征 expedition; 徵 summon/sign"
+ },
+ "谷": {
+  "default": "谷",
+  "alts": [
+   "穀"
+  ],
+  "note": "谷 valley; 穀 grain"
+ },
+ "叶": {
+  "default": "葉",
+  "alts": [
+   "叶"
+  ],
+  "note": "葉 leaf (and the surname)"
+ },
+ "沈": {
+  "default": "沈",
+  "alts": [
+   "瀋"
+  ],
+  "note": "沈 surname"
+ },
+ "范": {
+  "default": "范",
+  "alts": [
+   "範"
+  ],
+  "note": "范 surname; 範 model"
+ },
+ "余": {
+  "default": "余",
+  "alts": [
+   "餘"
+  ],
+  "note": "余 surname/I; 餘 surplus"
+ },
+ "于": {
+  "default": "于",
+  "alts": [
+   "於"
+  ],
+  "note": "于 surname"
+ },
+ "姜": {
+  "default": "姜",
+  "alts": [
+   "薑"
+  ],
+  "note": "姜 surname; 薑 ginger"
+ },
+ "郁": {
+  "default": "郁",
+  "alts": [
+   "鬱"
+  ],
+  "note": "郁 fragrant/surname; 鬱 dense/gloomy"
+ },
+ "梁": {
+  "default": "梁",
+  "alts": [
+   "樑"
+  ],
+  "note": "梁 surname/beam"
+ },
+ "游": {
+  "default": "游",
+  "alts": [
+   "遊"
+  ],
+  "note": "游 swim/surname; 遊 travel"
+ }
+}

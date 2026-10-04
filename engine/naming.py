@@ -17,6 +17,7 @@ before real-world use.
 from __future__ import annotations
 
 import json
+import unicodedata
 from functools import lru_cache
 from itertools import product
 from pathlib import Path
@@ -48,8 +49,16 @@ def _chardata() -> dict:
     return json.loads(DATA.read_text("utf8"))
 
 
-def char_info(ch: str) -> dict | None:
-    return _chardata().get(ch)
+def char_info(ch: str, trad: str | None = None) -> dict | None:
+    """Dataset entry for one character. `trad` selects one of its traditional forms
+    (data `trad_alts`); the returned `ks` is the 康熙 stroke count of that form."""
+    e = _chardata().get(ch)
+    if e is None or not trad or trad == e.get("trad"):
+        return e
+    alts = e.get("trad_alts") or {}
+    if trad not in alts:
+        raise ValueError(f"{trad} is not a traditional form of {ch}")
+    return dict(e, trad=trad, ks=alts[trad])
 
 
 def _grid_luck(n: int) -> str:
@@ -178,3 +187,160 @@ def suggest_names(ys: dict, surname: str, top: int = 20,
                           "五行生剋) — v1, human choice + correctness gate "
                           "required before real-world use",
             "candidates": results[:top]}
+
+
+# ---------------------------------------------------------------- name builder
+# Picker universe: 通用规范汉字表 levels 1–2 (data `lvl`), curated POOL first.
+GRID_ORDER = ("天格", "人格", "地格", "外格", "總格")
+ROLE_EN = {"用神": "useful element", "喜": "favourable", "忌": "unfavourable",
+           "闲": "neutral", "未定": "element not set", "姓": "surname"}
+
+
+def strip_pinyin(py: str | None) -> str:
+    """Tone-free lowercase pinyin (ü → v) for prefix search."""
+    s = (py or "").lower()
+    for c in "üǖǘǚǜ":
+        s = s.replace(c, "v")
+    s = unicodedata.normalize("NFD", s)
+    return "".join(c for c in s if not unicodedata.combining(c))
+
+
+def _surname_ks(surname: str) -> list[int]:
+    out = []
+    for ch in surname:
+        e = char_info(ch)
+        if not e:
+            raise ValueError(f"surname character {ch} not in dataset")
+        out.append(e["ks"])
+    if not 1 <= len(out) <= 2:
+        raise ValueError("surname must be 1-2 characters")
+    return out
+
+
+def _ji_count(s_ks: list[int], g_ks: list[int]) -> int:
+    """吉 among 人/地/外/總 — 天格 is fixed by the surname and not counted."""
+    grids = five_grids(s_ks, g_ks)
+    return sum(1 for k, v in grids.items() if k != "天格" and v["luck"] == "吉")
+
+
+def projected_ji(s_ks: list[int], g_ks: list[int | None], slot: int, ks: int) -> int:
+    """吉 count (of 4) if `slot` takes a character of `ks` strokes. With the partner slot
+    still empty, the best reachable over partner stroke counts 1–30."""
+    g = list(g_ks)
+    g[slot] = ks
+    if all(v is not None for v in g):
+        return _ji_count(s_ks, g)
+    other = next(i for i, v in enumerate(g) if v is None)
+    best = 0
+    for k in range(1, 31):
+        t = list(g)
+        t[other] = k
+        best = max(best, _ji_count(s_ks, t))
+    return best
+
+
+def _role(el: str | None, ys: dict) -> str:
+    fav, unf = ys["favourable"], ys["unfavourable"]
+    if not el:
+        return "未定"
+    if fav and el == fav[0]:
+        return "用神"
+    if el in fav:
+        return "喜"
+    if el in unf:
+        return "忌"
+    return "闲"
+
+
+@lru_cache(maxsize=1)
+def _universe() -> tuple:
+    pool = set(POOL)
+    out = []
+    for ch, e in _chardata().items():
+        if e.get("lvl"):
+            out.append((ch, e, strip_pinyin(e.get("py")), ch in pool))
+    return tuple(out)
+
+
+def slot_candidates(ys: dict, surname: str, given: list[str | None], slot: int,
+                    els: list[str] | None = None, strokes: list[int] | None = None,
+                    py: str = "", page: int = 1, per: int = 48,
+                    trad: dict | None = None) -> dict:
+    """Characters offered for one empty box of the name.
+
+    `given` holds the chosen characters (None for an empty box); its length is the name
+    length (1 or 2). Filters combine: `els` (default: the 用神 elements), `strokes`
+    (康熙 counts) and `py` (tone-free prefix). Without a pinyin query only element-tagged
+    characters are listed; with one, untagged characters appear as 未定.
+    Returns {total, tiles[], chips[] (top six stroke counts by reachable 吉), fav, slot}."""
+    if not 1 <= len(given) <= 2 or not 0 <= slot < len(given):
+        raise ValueError("given must have 1-2 boxes and slot must index one of them")
+    trad = trad or {}
+    s_ks = _surname_ks(surname)
+    g_ks = [None if ch is None else char_info(ch, trad.get(ch))["ks"] for ch in given]
+    g_ks[slot] = None
+    taken = set(surname) | {ch for ch in given if ch}
+    want = set(els) if els is not None else set(ys["favourable"])
+    q = strip_pinyin(py.strip())
+    base = []
+    for ch, e, pyn, in_pool in _universe():
+        if ch in taken:
+            continue
+        el = e.get("el")
+        if q:
+            if not pyn.startswith(q):
+                continue
+            if el and want and el not in want:
+                continue
+        else:
+            if not el or (want and el not in want):
+                continue
+        base.append((ch, e, in_pool))
+    cache: dict[int, int] = {}
+
+    def ji(ks: int) -> int:
+        if ks not in cache:
+            cache[ks] = projected_ji(s_ks, g_ks, slot, ks)
+        return cache[ks]
+
+    chips = sorted({e["ks"] for _, e, _ in base}, key=lambda k: (-ji(k), k))[:6]
+    rows = [r for r in base if not strokes or r[1]["ks"] in set(strokes)]
+    rows.sort(key=lambda r: (not r[2], -ji(r[1]["ks"]), r[1]["lvl"], r[1]["ks"], r[0]))
+    start = max(0, (page - 1) * per)
+    tiles = [{"ch": ch, "py": e.get("py") or "", "ks": e["ks"], "el": e.get("el"),
+              "pool": in_pool, "lvl": e["lvl"], "ji": ji(e["ks"]),
+              "contested": bool(e.get("el_contested"))}
+             for ch, e, in_pool in rows[start:start + per]]
+    return {"slot": slot, "total": len(rows), "page": page, "per": per, "tiles": tiles,
+            "chips": [{"ks": k, "ji": ji(k)} for k in chips],
+            "fav": ys["favourable"], "els": sorted(want)}
+
+
+def name_card(ys: dict, surname: str, given: str, trad: dict | None = None) -> dict:
+    """Everything the name card and certificate show for one complete name."""
+    trad = trad or {}
+    if not 1 <= len(given) <= 2:
+        raise ValueError("given name must be 1-2 characters")
+    s_ks = _surname_ks(surname)
+    chars = []
+    for i, ch in enumerate(surname + given):
+        is_given = i >= len(surname)
+        e = char_info(ch, trad.get(ch) if is_given else None)
+        if not e:
+            raise ValueError(f"character {ch} not in dataset")
+        role = _role(e.get("el"), ys) if is_given else "姓"
+        chars.append({"ch": ch, "py": e.get("py") or "", "el": e.get("el"), "ks": e["ks"],
+                      "trad": e["trad"], "trad_alts": (char_info(ch) or {}).get("trad_alts") if is_given else None,
+                      "role": role, "role_en": ROLE_EN[role],
+                      "contested": bool(e.get("el_contested")), "el_alt": e.get("el_alt"),
+                      "surname": not is_given})
+    grids = five_grids(s_ks, [c["ks"] for c in chars[len(surname):]])
+    for k, v in grids.items():
+        v["el"] = GRID_EL[v["num"] % 10]
+    sc = sancai(grids)
+    return {"name": surname + given, "surname": surname, "given": given, "chars": chars,
+            "grids": [{"grid": k, **grids[k]} for k in GRID_ORDER],
+            "ji": sum(1 for v in grids.values() if v["luck"] == "吉"),
+            "sancai": sc, "trad": "".join(c["trad"] for c in chars),
+            "strokes": [c["ks"] for c in chars],
+            "fav": ys["favourable"], "unfav": ys["unfavourable"]}

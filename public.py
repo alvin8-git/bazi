@@ -1213,10 +1213,92 @@ stored by this page.</div>
     return HTMLResponse(html)
 
 
+# ---------------------------------------------------------------- name builder
+_EL_HEX = {"木": "#1e8e3e", "火": "#c5221f", "土": "#8a6d1f", "金": "#8a6500", "水": "#1a56b0"}
+
+
+def _name_chart(sex: str, dob: str, birth_time: str):
+    if sex not in ("M", "F"):
+        raise HTTPException(400, "sex must be M or F")
+    try:
+        _, c = _chart_of({"name": "宝宝", "sex": sex, "dob": dob, "birth_time": birth_time})
+    except (ValueError, KeyError) as e:
+        raise HTTPException(400, f"bad birth data: {e}")
+    return c, yong_shen(c)
+
+
+def _parse_trad(trad: str) -> dict:
+    """'云:云,历:曆' → {'云': '云', '历': '曆'} (chosen traditional forms)."""
+    out = {}
+    for part in (trad or "").split(","):
+        if ":" in part:
+            k, v = part.split(":", 1)
+            if len(k) == 1 and len(v) == 1:
+                out[k] = v
+    return out
+
+
+@router.get("/api/pub/name/chart")
+def name_chart(sex: str, dob: str, birth_time: str = "12:00", surname: str = ""):
+    """Four pillars with elements + 用神 for the name builder strip."""
+    from engine.naming import char_info
+    from engine.wuxing import BRANCH_ELEMENT, STEM_ELEMENT
+    c, ys = _name_chart(sex, dob, birth_time)
+    total = sum(c.element_weights.values()) or 1
+    out = {"pillars": [{"k": k, "zh": zh, "en": en, "stem": c.pillars[k].stem,
+                        "branch": c.pillars[k].branch,
+                        "sel": STEM_ELEMENT[c.pillars[k].stem],
+                        "bel": BRANCH_ELEMENT[c.pillars[k].branch]}
+                       for k, zh, en in (("year", "年柱", "Year"), ("month", "月柱", "Month"),
+                                         ("day", "日柱", "Day"), ("hour", "时柱", "Hour"))],
+           "day_master": c.day_master, "strength": c.strength["verdict"],
+           "weights": {el: round(w / total * 100) for el, w in c.element_weights.items()},
+           "fav": ys["favourable"], "unfav": ys["unfavourable"]}
+    surname = _tosimp(surname.strip())
+    if surname:
+        infos = [char_info(ch) for ch in surname]
+        if not 1 <= len(surname) <= 2 or not all(infos):
+            raise HTTPException(400, "surname must be 1-2 characters from the dataset")
+        out.update({"surname": surname, "surname_ks": [e["ks"] for e in infos],
+                    "surname_trad": "".join(e["trad"] for e in infos),
+                    "surname_py": " ".join(e.get("py") or "" for e in infos)})
+    return out
+
+
+@router.get("/api/pub/name/chars")
+def name_chars(surname: str, sex: str, dob: str, birth_time: str = "12:00",
+               given: str = "__", slot: int = 0, el: str | None = None,
+               strokes: str = "", py: str = "", page: int = 1, trad: str = ""):
+    """Candidate tiles for one empty box. `given` uses '_' for an empty box ('禄_');
+    `el` = comma list, omitted = the 用神 elements, 'all' = no element filter."""
+    from engine.naming import slot_candidates
+    _, ys = _name_chart(sex, dob, birth_time)
+    boxes = [None if ch == "_" else ch for ch in given][:2]
+    els = None if el is None else [] if el == "all" else [e for e in el.split(",") if e]
+    try:
+        ks = [int(x) for x in strokes.split(",") if x.strip()]
+        return slot_candidates(ys, _tosimp(surname.strip()), boxes, slot, els=els, strokes=ks,
+                               py=py[:12], page=max(1, min(page, 200)), trad=_parse_trad(trad))
+    except (ValueError, TypeError) as e:
+        raise HTTPException(400, str(e))
+
+
+@router.get("/api/pub/name/score")
+def name_score(surname: str, given: str, sex: str, dob: str,
+               birth_time: str = "12:00", trad: str = ""):
+    """Name-card payload for one complete name: characters, 五格, 三才."""
+    from engine.naming import name_card
+    _, ys = _name_chart(sex, dob, birth_time)
+    try:
+        return name_card(ys, _tosimp(surname.strip()), given, _parse_trad(trad))
+    except (ValueError, TypeError) as e:
+        raise HTTPException(400, str(e))
+
+
 # ---------------------------------------------------------------- certificate
 @router.get("/api/pub/certificate", response_class=HTMLResponse)
 def certificate(surname: str, given: str, sex: str, dob: str,
-                birth_time: str = "12:00"):
+                birth_time: str = "12:00", trad: str = ""):
     """命名證書 — certificate-grade printable for one chosen name.
 
     Stateless: recomputes the full working from birth data + the name.
@@ -1229,8 +1311,12 @@ def certificate(surname: str, given: str, sex: str, dob: str,
     if not (1 <= len(surname) <= 2 and 1 <= len(given) <= 2):
         raise HTTPException(400, "surname 1-2 chars, given name 1-2 chars")
     infos = []
-    for ch in surname + given:
-        e = char_info(ch)
+    chosen = _parse_trad(trad)
+    for i, ch in enumerate(surname + given):
+        try:
+            e = char_info(ch, chosen.get(ch) if i >= len(surname) else None)
+        except ValueError as err:
+            raise HTTPException(400, str(err))
         if not e:
             raise HTTPException(400, f"character {ch} not in the dataset")
         infos.append((ch, e))
@@ -1245,13 +1331,16 @@ def certificate(surname: str, given: str, sex: str, dob: str,
     fav = ys["favourable"]
     full = surname + given
     trad = "".join(e.get("trad") or ch for ch, e in infos)
+    from engine.wuxing import BRANCH_ELEMENT, STEM_ELEMENT
     pillars = "".join(
-        f'<div class="pil"><b>{c.pillars[k]}</b><span>{lab}</span></div>'
+        f'<div class="pil"><b><i style="color:{_EL_HEX[STEM_ELEMENT[c.pillars[k].stem]]}">{c.pillars[k].stem}</i>'
+        f'<i style="color:{_EL_HEX[BRANCH_ELEMENT[c.pillars[k].branch]]}">{c.pillars[k].branch}</i></b>'
+        f'<span>{lab}</span></div>'
         for k, lab in (("year", "年柱"), ("month", "月柱"),
                        ("day", "日柱"), ("hour", "時柱")))
     charrows = "".join(f"""<tr><td class="bigch">{ch}</td>
         <td>{e.get('py') or ''}</td><td>{e['ks']} 畫 (康熙)</td>
-        <td>五行屬 <b>{e['el'] or '—'}</b></td>
+        <td>五行屬 <b style="color:{_EL_HEX.get(e['el'], '#2b2620')}">{e['el'] or '—'}</b></td>
         <td class="sm">{'契合用神 ✓' if e['el'] in fav else '姓氏' if ch in surname else ''}</td></tr>"""
         for ch, e in infos)
     gridcells = "".join(
@@ -1270,7 +1359,7 @@ def certificate(surname: str, given: str, sex: str, dob: str,
 @page{{size:A4;margin:14mm}}
 body{{font-family:"Songti SC","Noto Serif SC","SimSun",serif;background:#f4efe6;
   color:#2b2620;margin:0;display:flex;justify-content:center;padding:24px 8px}}
-.cert{{background:#fffdf7;width:min(760px,100%);border:3px double #9e2b25;
+.cert{{background:#fffdf7;width:min(760px,100%);box-sizing:border-box;border:3px double #9e2b25;
   outline:1px solid #c8a959;outline-offset:-10px;padding:46px 52px;position:relative}}
 h1{{text-align:center;font-size:34px;letter-spacing:14px;color:#9e2b25;
   margin:0 0 2px;font-weight:600}}
@@ -1284,7 +1373,7 @@ h2{{font-size:15px;color:#9e2b25;letter-spacing:4px;margin:20px 0 8px;
   text-align:center}}
 .pils{{display:flex;justify-content:center;gap:14px}}
 .pil{{border:1px solid #c8a959;padding:8px 14px;text-align:center;background:#fff}}
-.pil b{{font-size:22px;display:block}}
+.pil b{{font-size:22px;display:block}}.pil b i{{font-style:normal}}
 .pil span{{font-size:10px;color:#8a7a5a;letter-spacing:2px}}
 .meta{{text-align:center;font-size:13px;color:#4d463c;margin:10px 0;line-height:1.9}}
 table{{margin:0 auto;border-collapse:collapse;font-size:13px}}
@@ -1296,9 +1385,9 @@ td{{border:1px solid #e0d3b8;padding:5px 12px;text-align:center}}
 .gr span{{display:block;font-size:10px;color:#8a7a5a}}
 .gr b{{font-size:20px}}
 .gr em{{display:block;font-style:normal;font-size:11px}}
-.ji{{color:#1e7d32}}.pg{{color:#8a7a5a}}
+.ji{{color:#1e7d32}}.pg{{color:#a35a00}}
 .sancai{{text-align:center;font-size:13.5px;color:#4d463c}}
-.foot{{margin-top:26px;text-align:center;font-size:11px;color:#8a7a5a;
+.foot{{margin:26px 84px 0;text-align:center;font-size:11px;color:#8a7a5a;
   line-height:1.8}}
 .stamp{{position:absolute;right:44px;bottom:60px;width:74px;height:74px;
   border:3px solid #b03a2e;color:#b03a2e;display:flex;align-items:center;

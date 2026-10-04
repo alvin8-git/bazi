@@ -363,3 +363,34 @@ def test_put_person_edits_birth_and_name():
     assert after != before
     assert client.put(f"/api/pub/w/{tok}/person/7", json={"name": "x", "sex": "M", "dob": "1990-01-01"}).status_code == 404
 
+
+# ---- name builder API ---------------------------------------------------------
+NAME_Q = "sex=F&dob=2026-03-15&birth_time=09:30"
+
+
+def test_name_chart_and_candidates():
+    r = client.get(f"/api/pub/name/chart?{NAME_Q}&surname=王")
+    assert r.status_code == 200
+    d = r.json()
+    assert len(d["pillars"]) == 4 and all(p["sel"] and p["bel"] for p in d["pillars"])
+    assert d["surname_ks"] == [4] and d["fav"] and sum(d["weights"].values()) in range(98, 103)
+    r = client.get(f"/api/pub/name/chars?surname=王&{NAME_Q}&given=__&slot=0")
+    c = r.json()
+    assert r.status_code == 200 and len(c["tiles"]) == 48 and len(c["chips"]) == 6
+    assert all(t["el"] in d["fav"] for t in c["tiles"])
+    r = client.get(f"/api/pub/name/chars?surname=王&{NAME_Q}&given=禄_&slot=1&py=ting&el=all")
+    assert "婷" in [t["ch"] for t in r.json()["tiles"]]
+    assert client.get(f"/api/pub/name/chars?surname=王&sex=X&dob=2026-03-15").status_code == 400
+    assert client.get(f"/api/pub/name/chart?{NAME_Q}&surname=王王王").status_code == 400
+
+
+def test_name_score_trad_switch_and_certificate():
+    a = client.get(f"/api/pub/name/score?surname=王&given=禄云&{NAME_Q}").json()
+    b = client.get(f"/api/pub/name/score?surname=王&given=禄云&trad=云:云&{NAME_Q}").json()
+    assert a["trad"] == "王祿雲" and b["trad"] == "王祿云" and a["strokes"] != b["strokes"]
+    assert [g["grid"] for g in a["grids"]] == ["天格", "人格", "地格", "外格", "總格"]
+    assert client.get(f"/api/pub/name/score?surname=王&given=禄云&trad=云:雨&{NAME_Q}").status_code == 400
+    r = client.get(f"/api/pub/certificate?surname=王&given=优云&{NAME_Q}")
+    assert r.status_code == 200 and "繁體 王優雲" in r.text and "color:#" in r.text
+    r = client.get(f"/api/pub/certificate?surname=王&given=优云&trad=云:云&{NAME_Q}")
+    assert "繁體 王優云" in r.text

@@ -1,62 +1,369 @@
 <!doctype html>
-<html lang="en"><head>
+<html lang="zh-Hans"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>bazifor.me — baby BaZi 宝宝八字</title>
+<title>bazifor.me — baby name builder 宝宝起名</title>
 <style>
-body{margin:0;background:#faf7f2;color:#2b2620;
-  font:15.5px/1.55 system-ui,"Noto Sans SC",sans-serif}
-header{background:#fff;border-bottom:1px solid #e5ded2;padding:16px 22px}
-h1{margin:0;font-size:20px;color:#b03a2e}
-header .sub{color:#8a8177;font-size:13px}
-header a{color:#b03a2e;font-size:13px}
-main{max-width:720px;margin:0 auto;padding:18px 22px 80px}
-.sec{background:#fff;border:1px solid #e5ded2;border-radius:12px;padding:16px 18px;margin:14px 0}
-label{display:block;font-size:13px;color:#8a8177;margin:8px 0 2px}
-input,select{padding:7px 9px;border:1px solid #e5ded2;border-radius:8px;font-size:15px;width:100%}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-button{background:#b03a2e;color:#fff;border:0;border-radius:8px;padding:10px 20px;
-  font-size:15px;cursor:pointer;margin-top:12px}
-.hint{color:#8a8177;font-size:12.5px}
-.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#b9b0a4;
-  z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
+:root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6f675d;--accent:#b03a2e;--gold:#8a6d1f;--line:#e5ded2;
+  --wood:#1e8e3e;--wood-bg:#e9f7ee;--fire:#c5221f;--fire-bg:#fdecea;--earth:#8a6d1f;--earth-bg:#f6efdc;
+  --metal:#8a6500;--metal-bg:#faf3dd;--water:#1a56b0;--water-bg:#e8f0fe;--ji:#1e7d32;--ji-bg:#e3f4e7;
+  --xiong:#b3261e;--xiong-bg:#fde8e6;--ping:#6f675d;--ping-bg:#f1ede6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,"Noto Sans SC",sans-serif}
+main{max-width:980px;margin:0 auto;padding:16px 16px 80px}
+header{background:#fff;border-bottom:1px solid var(--line);padding:14px 16px}
+header .sub a{color:var(--accent)}
+h1{font-size:20px;color:var(--accent);margin:8px 0 2px}
+.sub{color:var(--muted);font-size:13px;margin-bottom:12px}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+h2{font-size:16px;color:var(--gold);margin:0 0 10px}
+.bl small{display:block;font-size:11px;font-weight:500;color:var(--muted);line-height:1.2}
+.bl.inl small{display:inline;margin-left:4px}
+.el-木{color:var(--wood)}.el-火{color:var(--fire)}.el-土{color:var(--earth)}.el-金{color:var(--metal)}.el-水{color:var(--water)}
+.bg-木{background:var(--wood-bg);border-color:var(--wood)}.bg-火{background:var(--fire-bg);border-color:var(--fire)}
+.bg-土{background:var(--earth-bg);border-color:var(--earth)}.bg-金{background:var(--metal-bg);border-color:var(--metal)}
+.bg-水{background:var(--water-bg);border-color:var(--water)}
+/* A · pillars */
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:520px}
+.pil{border:1px solid var(--line);border-radius:10px;text-align:center;padding:6px 4px;background:#fffdf9}
+.pil.dm{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+.pil .lab{font-size:12px;color:var(--muted)}
+.pil .gz{font-size:30px;font-weight:700;line-height:1.15}
+.pil .gz span{display:block}
+.pil .elx{font-size:11px;color:var(--muted)}
+.bars{margin-top:12px;max-width:520px}
+.bar{display:grid;grid-template-columns:28px 1fr 40px;gap:8px;align-items:center;font-size:13px;margin:3px 0}
+.bar .track{height:10px;border-radius:5px;background:#f0ece4;overflow:hidden}
+.bar .fill{height:100%;border-radius:5px}
+.fill.f-木{background:var(--wood)}.fill.f-火{background:var(--fire)}.fill.f-土{background:var(--earth)}.fill.f-金{background:var(--metal)}.fill.f-水{background:var(--water)}
+.chip{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:13px;background:#fff;margin:2px 4px 2px 0}
+.ysline{margin-top:10px;font-size:14px}
+/* B · builder */
+.boxes{display:flex;gap:12px;align-items:flex-end;flex-wrap:nowrap}
+.box{width:76px;height:88px;border:2px solid var(--line);border-radius:12px;background:#fffdf9;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;font-size:40px;font-weight:700;position:relative;cursor:pointer;padding:0;color:var(--ink);font-family:inherit}
+.box small{font-size:11px;font-weight:500;color:var(--muted);white-space:nowrap}
+.box.fixed{background:#f6f1e8;cursor:default}
+.box.empty{border-style:dashed;color:#b9b0a4;font-size:24px}
+.box.active{border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,58,46,.18)}
+.box:focus-visible,.tile:focus-visible,.fchip:focus-visible,.seg button:focus-visible,.btn:focus-visible,input:focus-visible{outline:3px solid #1a56b0;outline-offset:2px}
+.box .x{position:absolute;top:2px;right:6px;font-size:12px;color:var(--muted);font-weight:400}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-left:auto}
+.seg button{border:0;background:#fff;padding:10px 14px;font:inherit;font-size:14px;cursor:pointer;min-height:44px;color:var(--ink)}
+.seg button[aria-pressed=true]{background:var(--accent);color:#fff;font-weight:600}
+.panel{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.frow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0}
+.flab{min-width:92px;font-size:13px;font-weight:700}
+.fchip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font:inherit;font-size:14px;cursor:pointer;min-height:44px;color:var(--ink)}
+.fchip[aria-pressed=true]{border-width:2px;font-weight:700}
+.fchip.st[aria-pressed=true]{border-color:var(--accent);background:#fdf3ee;color:var(--accent)}
+.fchip .n{font-size:11px;color:var(--ji);font-weight:700;margin-left:4px}
+.pyin{font:inherit;font-size:16px;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;width:180px;min-height:44px}
+.count{font-size:13px;color:var(--muted);margin:6px 0}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px}
+.tile{border:1.5px solid var(--line);border-radius:10px;background:#fff;padding:6px 2px 5px;text-align:center;cursor:pointer;font:inherit;
+  min-height:84px;position:relative;transition:transform .15s ease-out,box-shadow .15s ease-out;color:var(--ink)}
+.tile:hover{box-shadow:0 2px 8px rgba(0,0,0,.12)}.tile:active{transform:scale(.96)}
+.tile .ch{font-size:28px;font-weight:700;line-height:1.1;display:block}
+.tile .py{font-size:12px;color:var(--muted);display:block}
+.tile .ks{font-size:11px;color:var(--muted);display:block}
+.tile .pm{position:absolute;top:3px;left:5px;font-size:10px;color:#fff;background:var(--gold);border-radius:4px;padding:0 4px}
+.tile .jn{position:absolute;top:3px;right:5px;font-size:10px;font-weight:700;color:var(--ji)}
+.tile.noel .ch{color:#8a8177}
+.more{margin-top:10px}
+.btn{border:1.5px solid var(--accent);background:#fff;color:var(--accent);border-radius:10px;padding:10px 18px;font:inherit;font-size:14px;cursor:pointer;min-height:44px}
+.btn.primary{background:var(--accent);color:#fff;font-weight:600}
+.empty-msg{padding:18px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:10px}
+/* C · name card */
+.namebig{display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap}
+.nb{text-align:center}.nb .py{font-size:14px;color:var(--muted)}.nb .ch{font-size:56px;font-weight:700;line-height:1.05}
+.nb .role{display:inline-block;font-size:12px;border:1px solid;border-radius:999px;padding:1px 8px;margin-top:4px}
+.tradline{margin:12px 0 4px;font-size:15px}.tradline b{font-size:20px;letter-spacing:6px}
+.tsw{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-left:8px;vertical-align:middle}
+.tsw button{border:0;background:#fff;font:inherit;font-size:16px;padding:6px 12px;min-height:40px;cursor:pointer;color:var(--ink)}
+.tsw button[aria-pressed=true]{background:var(--gold);color:#fff}
+.grid2{display:grid;grid-template-columns:1.25fr 1fr;gap:16px;margin-top:12px}
+table.wg{border-collapse:collapse;width:100%;font-size:14px}
+table.wg th,table.wg td{border:1px solid var(--line);padding:8px 8px;text-align:center}
+table.wg th{background:#faf7f2;font-size:12px;color:var(--muted)}
+table.wg td.num{font-size:20px;font-weight:700}
+.luck{display:inline-block;border-radius:6px;padding:2px 10px;font-weight:700}
+.luck.ji{background:var(--ji-bg);color:var(--ji)}.luck.xiong{background:var(--xiong-bg);color:var(--xiong)}.luck.ping{background:var(--ping-bg);color:var(--ping)}
+.sancai{display:flex;align-items:center;gap:6px;justify-content:center;margin:6px 0}
+.disc{width:72px;height:72px;border-radius:50%;border-width:2px;border-style:solid;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:26px;line-height:1}
+.disc small{font-size:11px;font-weight:500;color:var(--muted)}
+.rel{font-size:13px;text-align:center;min-width:46px}.rel b{display:block;font-size:16px}
+.rel.good b{color:var(--ji)}.rel.bad b{color:var(--xiong)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+table.sl{border-collapse:collapse;width:100%;font-size:14px;margin-top:8px}
+table.sl th,table.sl td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left}
+/* D · certificate */
+.cert{border:3px double #b8860b;border-radius:6px;padding:22px;background:#fffdf7;max-width:720px;margin:0 auto}
+.cert h3{text-align:center;font-size:22px;letter-spacing:8px;color:#8a6d1f;margin:0 0 4px}
+.cert .cn{text-align:center;font-size:54px;font-weight:700;letter-spacing:10px}
+.cert .ct{text-align:center;color:var(--muted);letter-spacing:6px}
+.note{font-size:12.5px;color:var(--muted);margin-top:8px}
+@media (max-width:640px){
+  .grid2{grid-template-columns:1fr}.flab{min-width:100%}
+  .box{width:64px;height:78px;font-size:34px}.box small{font-size:10px}.boxes{gap:8px}
+  .tiles{grid-template-columns:repeat(5,1fr);gap:6px}.tile{min-height:80px}.tile .ch{font-size:24px}
+  .seg{margin-left:0}.nb .ch{font-size:46px}.cert .cn{font-size:42px}.pil .gz{font-size:26px}
+  table.wg th,table.wg td{padding:6px 3px}
+}
+@media (prefers-reduced-motion:reduce){.tile{transition:none}}
+@media print{.noprint,.sec:not(#cert-sec){display:none!important}body{background:#fff}main{padding:0}.sec{border:0;padding:0;margin:0}.cert{margin:0 auto;break-inside:avoid}}
+
+.form{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:end}
+.form label{display:block;font-size:13px;color:var(--muted);margin-bottom:2px}
+.form input,.form select{width:100%;padding:9px 10px;border:1.5px solid var(--line);border-radius:10px;font:inherit;font-size:16px;min-height:44px;background:#fff;color:var(--ink)}
+.formbtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.err{color:var(--xiong);font-size:14px;min-height:1.2em;margin-top:6px}
+.luck.amber{background:#fff1dc;color:#a35a00}
+.busy{opacity:.55;transition:opacity .15s ease-out}
+.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#8a8177;z-index:99;background:rgba(255,255,255,.8);border-radius:6px;padding:1px 7px}
+a.btn{text-decoration:none;display:inline-flex;align-items:center}
+@media (max-width:640px){.form{grid-template-columns:1fr 1fr}}
 </style></head><body>
 <span class="verbadge" id="ver"></span>
 <script>fetch("/api/pub/version").then(r=>r.json())
   .then(v=>{document.getElementById("ver").textContent="v "+v.version}).catch(()=>{});</script>
 <header>
-  <h1>👶 Baby BaZi 宝宝八字</h1>
-  <div class="sub">Newborn or expected — the chart, element balance, 用神 and the
-    naming direction that follows from it, every rule cited.
+  <h1>宝宝起名 · Baby name builder</h1>
+  <div class="sub">The chart, its 用神, and a name you build character by character — every rule cited.
     <a href="/start">← people workspace</a></div>
 </header>
 <main>
   <div class="sec">
-    <form method="post" action="/api/pub/baby">
-      <div class="row">
-        <div><label>Family surname 姓 (optional)</label>
-          <input name="surname" maxlength="4" placeholder="eg 王"></div>
-        <div><label>Given name if chosen 名 (optional)</label>
-          <input name="name" maxlength="20" placeholder="宝宝"></div>
-        <div><label>Sex 性别</label>
-          <select name="sex"><option value="M">M 男</option><option value="F">F 女</option></select></div>
-        <div><label>Birth (or due) date</label>
-          <input name="dob" type="date" required></div>
-        <div><label>Birth time (12:00 if unknown/unborn)</label>
-          <input name="birth_time" type="time" value="12:00"></div>
+    <form id="f" method="post" action="/api/pub/baby">
+      <div class="form">
+        <div><label for="i-surname">姓 Family surname</label>
+          <input id="i-surname" name="surname" maxlength="2" placeholder="王" autocomplete="off"></div>
+        <div><label for="i-sex">性别 Sex</label>
+          <select id="i-sex" name="sex"><option value="M">M 男</option><option value="F">F 女</option></select></div>
+        <div><label for="i-dob">出生日期 Birth or due date</label>
+          <input id="i-dob" name="dob" type="date" required></div>
+        <div><label for="i-time">时间 Time (12:00 if unknown)</label>
+          <input id="i-time" name="birth_time" type="time" value="12:00"></div>
       </div>
-      <button type="submit">Calculate 排盘</button>
-      <div class="hint" style="margin-top:8px">For a due date the chart is provisional —
-        recalculate after birth with the exact time. Singapore time assumed; true-solar
-        correction applied. Birth data is not stored by this page.</div>
+      <input type="hidden" name="name" value="">
+      <div class="formbtns">
+        <button type="button" class="btn primary" id="start">开始起名 Start naming</button>
+        <button type="submit" class="btn">完整八字报告 Full BaZi report</button>
+      </div>
+      <div class="err" id="err" role="alert"></div>
+      <div class="note">For a due date the chart is provisional — recalculate after birth with the exact time.
+        Singapore time assumed; true-solar correction applied. Birth data is not stored by this page.</div>
     </form>
   </div>
-  <div class="sec hint">
-    What you get: four pillars, day-master strength with its working, five-element
-    balance, 用神 favourable elements, 命宮/胎元/命星, first 大運 cycles — and the
-    起名 naming direction: which radical families supplement this chart. The full
-    ranked character candidates with 三才五格 stroke numerology and a printable
-    命名證書 are the next milestone.
-  </div>
+  <div id="app"></div>
 </main>
+<script>
+const $ = s => document.querySelector(s);
+const EL = ["木", "火", "土", "金", "水"];
+const EL_EN = {"木": "wood", "火": "fire", "土": "earth", "金": "metal", "水": "water"};
+const GRID_EN = {"天格": "heaven · ancestry", "人格": "person · core", "地格": "earth · youth", "外格": "outer · social", "總格": "total · later life"};
+const L = (zh, en) => `<span class="bl">${zh}<small>${en}</small></span>`;
+const Li = (zh, en) => `<span class="bl inl">${zh}<small>${en}</small></span>`;
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const LUCK = {"吉": ["ji", "auspicious"], "凶/平": ["amber", "weak or neutral"], "中": ["ping", "neutral"], "凶": ["xiong", "adverse"]};
+const luckChip = (v, compact) => { const [c, en] = LUCK[v] || ["ping", ""]; return `<span class="luck ${c}">${v}${compact ? "" : ` <small style="font-weight:500">${en}</small>`}</span>`; };
+const S = {q: null, chart: null, mode: 2, slots: [null, null], info: {}, active: 0, els: new Set(), strokes: new Set(), py: "",
+           page: 1, trad: {}, shortlist: [], data: null, tiles: [], card: null};
+let ctl = null;
+async function api(path, params) {
+  if (ctl) ctl.abort();
+  ctl = new AbortController();
+  const r = await fetch(path + "?" + new URLSearchParams(params), {signal: ctl.signal});
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).detail || ("HTTP " + r.status));
+  return r.json();
+}
+const tradParam = () => Object.entries(S.trad).map(([k, v]) => k + ":" + v).join(",");
+const givenParam = () => S.slots.slice(0, S.mode).map(c => c || "_").join("");
+const complete = () => S.slots.slice(0, S.mode).every(Boolean);
+
+/* ---------- A · pillars ---------- */
+function pillarsBlock() {
+  const P = S.chart;
+  return `<div class="sec"><h2>${L("四柱", "Four Pillars")}</h2>
+    <div class="pillars">${P.pillars.map(p => `<div class="pil ${p.k === "day" ? "dm" : ""}">
+      <div class="lab">${L(p.zh, p.en)}</div>
+      <div class="gz"><span class="el-${p.sel}" title="${p.sel}">${p.stem}</span><span class="el-${p.bel}" title="${p.bel}">${p.branch}</span></div>
+      <div class="elx">${p.sel} · ${p.bel}${p.k === "day" ? " · 日主" : ""}</div></div>`).join("")}</div>
+    <div class="bars">${EL.map(e => `<div class="bar"><b class="el-${e}">${e}</b><div class="track"><div class="fill f-${e}" style="width:${P.weights[e] || 0}%"></div></div><span>${P.weights[e] || 0}%</span></div>`).join("")}</div>
+    <div class="ysline">${Li("日主", "day master")} <b class="el-${P.pillars[2].sel}">${P.day_master}</b> · ${esc(P.strength)} ·
+      ${Li("用神", "useful")} ${P.fav.map((e, i) => `<span class="chip bg-${e}"><b class="el-${e}">${e}</b> ${i === 0 ? "用神" : "喜"}</span>`).join("")}
+      ${Li("忌", "avoid")} ${P.unfav.map(e => `<span class="chip"><b class="el-${e}">${e}</b></span>`).join("")}</div></div>`;
+}
+
+/* ---------- B · builder ---------- */
+function boxesHtml() {
+  const P = S.chart, done = complete();
+  let h = `<div class="box fixed" aria-label="surname ${esc(P.surname)}"><span>${esc(P.surname)}</span><small>姓 surname</small></div>`;
+  for (let i = 0; i < S.mode; i++) {
+    const ch = S.slots[i], c = S.info[ch] || {};
+    h += ch ? `<button class="box ${i === S.active && !done ? "active" : ""}" data-slot="${i}" aria-label="character ${i + 1}: ${ch}, press to clear"><span class="el-${c.el || ""}">${ch}</span><small>${esc(c.py || "")}</small><span class="x" aria-hidden="true">✕</span></button>`
+            : `<button class="box empty ${i === S.active ? "active" : ""}" data-slot="${i}" aria-label="character ${i + 1}, empty">${i + 1}<small>${i === S.active ? "选字 pick" : "空 empty"}</small></button>`;
+  }
+  return h;
+}
+function chipsHtml() {
+  const chips = (S.data && S.data.chips) || [];
+  return chips.map(c => `<button class="fchip st" data-ks="${c.ks}" aria-pressed="${S.strokes.has(c.ks)}">${c.ks}画<span class="n">${c.ji}/4吉</span></button>`).join("") || `<span class="count">—</span>`;
+}
+function tilesHtml() {
+  if (!S.data) return `<div class="empty-msg">${L("载入中…", "loading…")}</div>`;
+  if (!S.tiles.length) return `<div class="empty-msg">${L("没有符合条件的字", "No character matches these filters")}<div style="margin-top:8px"><button class="btn" data-reset="1">重置筛选 reset filters</button></div></div>`;
+  return `<div class="tiles">${S.tiles.map(c => `<button class="tile ${c.el ? "" : "noel"}" data-pick="${c.ch}" aria-label="${c.ch} ${esc(c.py)}, ${c.el || "element not set"}, ${c.ks} strokes">
+      ${c.pool ? `<span class="pm">名</span>` : ""}<span class="jn">${c.ji ? c.ji + "吉" : ""}</span>
+      <span class="ch el-${c.el || ""}">${c.ch}</span><span class="py">${esc(c.py)}</span><span class="ks">${c.ks}画 · ${c.el || "未定"}</span></button>`).join("")}</div>
+    ${S.data.total > S.tiles.length ? `<div class="more"><button class="btn" data-more="1">更多 more (${S.data.total - S.tiles.length})</button></div>` : ""}`;
+}
+function countHtml() {
+  return `${S.data ? S.data.total : "…"} ${Li("字", "characters")} · ★ = 用神 element · <span style="background:var(--gold);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">名</span> = 常用名字 common name character · 未定 = element not set (pinyin search only)`;
+}
+function panelHtml() {
+  if (complete()) return "";
+  const P = S.chart, partnerEmpty = S.mode === 2 && !S.slots[1 - S.active];
+  return `<div class="panel">
+    <div style="font-weight:700">${L(`为第 ${S.active + 1} 字选字`, `Pick character ${S.active + 1}`)}</div>
+    <div class="frow" role="group" aria-label="element filter"><span class="flab">${L("五行", "element")}</span>
+      ${EL.map(e => `<button class="fchip bg-${e}" data-el="${e}" aria-pressed="${S.els.has(e)}"><b class="el-${e}">${e}</b> ${EL_EN[e]}${P.fav.includes(e) ? " ★" : ""}</button>`).join("")}</div>
+    <div class="frow" role="group" aria-label="stroke filter"><span class="flab">${L("笔画 (康熙)", partnerEmpty ? "best reachable 吉 of 4" : "吉 of 4 with this stroke count")}</span>
+      <span id="chips" style="display:contents">${chipsHtml()}</span></div>
+    <div class="frow"><label class="flab" for="py">${L("拼音", "pinyin, no tones")}</label>
+      <input class="pyin" id="py" type="text" inputmode="latin" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="ting, xuan, yu…" value="${esc(S.py)}">
+      <button class="fchip" data-clearpy="1" id="pyclear" ${S.py ? "" : "hidden"}>清除 clear</button></div>
+    <div class="count" id="count" aria-live="polite">${countHtml()}</div>
+    <div id="tiles">${tilesHtml()}</div></div>`;
+}
+function builderBlock() {
+  return `<div class="sec" id="builder"><h2>${L("起名", "Build the name")}</h2>
+    <div class="boxes">${boxesHtml()}
+      <div class="seg" role="group" aria-label="name length"><button data-mode="1" aria-pressed="${S.mode === 1}">单名 1</button><button data-mode="2" aria-pressed="${S.mode === 2}">双名 2</button></div></div>
+    ${panelHtml()}</div>`;
+}
+
+/* ---------- C · name card ---------- */
+function gridTable(grids) {
+  return `<table class="wg"><tr><th>${L("五格", "grid")}</th><th>${L("数", "number")}</th><th>${L("五行", "element")}</th><th>${L("吉凶", "verdict")}</th></tr>
+    ${grids.map(g => `<tr><td>${L(g.grid, GRID_EN[g.grid])}</td><td class="num">${g.num}</td><td><b class="el-${g.el}">${g.el}</b></td><td>${luckChip(g.luck)}</td></tr>`).join("")}</table>`;
+}
+function sancaiPanel(sc) {
+  const lab = [["天", "heaven"], ["人", "person"], ["地", "earth"]];
+  const relc = r => (r === "生" || r === "比") ? "good" : (r === "剋" || r === "受剋") ? "bad" : "";
+  return `<div class="sancai">${sc.elements.map((e, i) => `<div class="disc bg-${e}"><span class="el-${e}">${e}</span><small>${lab[i][0]} ${lab[i][1]}</small></div>${i < 2 ? `<div class="rel ${relc(sc.relations[i])}"><b>${sc.relations[i]}</b>→</div>` : ""}`).join("")}</div>
+    <div style="text-align:center">${luckChip(sc.verdict)} <span class="count">${esc(sc.explanation)}</span></div>`;
+}
+function certUrl(c) {
+  return "/api/pub/certificate?" + new URLSearchParams({surname: c.surname, given: c.given, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, trad: tradParam()});
+}
+function cardBlock() {
+  if (!complete()) return "";
+  const c = S.card;
+  if (!c) return `<div class="sec" id="card"><div class="empty-msg">${L("评析中…", "scoring…")}</div></div>`;
+  const amb = c.chars.filter(x => !x.surname && x.trad_alts);
+  const ct = c.chars.filter(x => !x.surname && x.contested);
+  return `<div class="sec" id="card"><h2>${L("名字评析", "Name card")}</h2>
+    <div class="namebig">${c.chars.map(x => `<div class="nb"><div class="py">${esc(x.py)}</div><div class="ch ${x.surname ? "" : "el-" + (x.el || "")}">${x.ch}</div>
+        <span class="role ${!x.surname && x.el ? "bg-" + x.el + " el-" + x.el : ""}">${Li(!x.surname && x.el ? x.el + " · " + x.role : x.role, x.role_en)}</span></div>`).join("")}
+      <div style="margin-left:auto;text-align:right"><div style="font-size:34px;font-weight:700">${c.ji}<small style="font-size:14px;font-weight:500">/5 吉</small></div>
+        ${luckChip(c.sancai.verdict, true).replace(">", ">三才 ")}</div></div>
+    <div class="tradline">${Li("繁體", "traditional")} <b>${c.trad}</b>
+      <span class="count">${c.strokes.join(" + ")} 画 (康熙)</span>
+      ${amb.map(x => `<span class="tsw" role="group" aria-label="traditional form of ${x.ch}">${Object.entries(x.trad_alts).map(([f, k]) => `<button data-trad="${x.ch}:${f}" aria-pressed="${x.trad === f}">${f} <small>${k}画</small></button>`).join("")}</span>`).join("")}</div>
+    ${amb.length ? `<div class="note">${amb.map(x => x.ch).join("、")}: more than one traditional form — the name-usage form is preselected; switching recomputes the strokes and the grids.</div>` : ""}
+    <div class="grid2"><div>${gridTable(c.grids)}</div>
+      <div><div style="font-weight:700;text-align:center;margin-bottom:4px">${L("三才", "heaven · person · earth")}</div>${sancaiPanel(c.sancai)}</div></div>
+    ${ct.length ? `<div class="note">⚑ ${ct.map(x => `${x.ch}: ${x.el}${x.el_alt ? " / " + esc(x.el_alt) : ""}`).join("；")} — element disputed between dictionary schools.</div>` : ""}
+    <div class="actions"><a class="btn primary" href="${certUrl(c)}" target="_blank" rel="noopener">命名证书 certificate →</a>
+      <button class="btn" data-short="1">加入候选 add to shortlist</button><button class="btn" data-again="1">重新选字 start over</button></div>
+    ${S.shortlist.length ? `<table class="sl"><tr><th>${L("候选", "shortlist")}</th><th>${L("五格吉", "吉 of 5")}</th><th>${L("三才", "three powers")}</th><th>${L("繁體", "traditional")}</th><th></th></tr>
+      ${S.shortlist.map(s => `<tr><td><b>${s.name}</b></td><td>${s.ji}/5</td><td>${luckChip(s.sv, true)}</td><td>${s.trad}</td><td><a href="${s.url}" target="_blank" rel="noopener">证书 →</a></td></tr>`).join("")}</table>` : ""}
+    <div class="note">Candidates for your choice, not a verdict. 五格 uses 康熙 strokes of the traditional form and the 81數理 table; 凶/平 = not in the auspicious set.</div>
+  </div>`;
+}
+
+function render() {
+  $("#app").innerHTML = pillarsBlock() + builderBlock() + cardBlock();
+  const py = $("#py");
+  if (py) py.oninput = () => { S.py = py.value; S.page = 1; $("#pyclear").hidden = !S.py; clearTimeout(render.t); render.t = setTimeout(loadTiles, 220); };
+}
+function renderDynamic() {                  // tiles/chips/count only — keeps the pinyin input and its focus
+  const t = $("#tiles"); if (!t) return render();
+  t.innerHTML = tilesHtml(); t.classList.remove("busy");
+  $("#chips").innerHTML = chipsHtml(); $("#count").innerHTML = countHtml();
+}
+async function loadTiles(append) {
+  if (complete()) return;
+  const t = $("#tiles"); if (t) t.classList.add("busy");
+  try {
+    const d = await api("/api/pub/name/chars", {...S.q, given: givenParam(), slot: S.active, el: S.els.size ? [...S.els].join(",") : "all",
+      strokes: [...S.strokes].join(","), py: S.py, page: S.page, trad: tradParam()});
+    S.data = d; S.tiles = append ? S.tiles.concat(d.tiles) : d.tiles;
+    for (const c of d.tiles) S.info[c.ch] = c;
+    renderDynamic();
+  } catch (e) { if (e.name !== "AbortError") { $("#err").textContent = e.message; if (t) t.classList.remove("busy"); } }
+}
+async function loadCard() {
+  try {
+    S.card = await api("/api/pub/name/score", {surname: S.q.surname, given: S.slots.slice(0, S.mode).join(""), sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, trad: tradParam()});
+    for (const x of S.card.chars) if (!S.info[x.ch]) S.info[x.ch] = {py: x.py, el: x.el};
+    render(); $("#card").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest"});
+  } catch (e) { if (e.name !== "AbortError") $("#err").textContent = e.message; }
+}
+function refresh() { S.card = null; S.data = null; S.tiles = []; render(); complete() ? loadCard() : loadTiles(); }
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("button"); if (!t || !S.chart) return;
+  const d = t.dataset;
+  if (d.pick) { S.slots[S.active] = d.pick; const next = S.slots.slice(0, S.mode).findIndex(x => !x); S.active = next < 0 ? S.active : next; S.strokes.clear(); S.py = ""; S.page = 1; }
+  else if (d.slot != null) { const i = +d.slot; if (S.slots[i]) { delete S.trad[S.slots[i]]; S.slots[i] = null; } S.active = i; S.strokes.clear(); S.page = 1; }
+  else if (d.el) { S.els.has(d.el) ? S.els.delete(d.el) : S.els.add(d.el); S.page = 1; }
+  else if (d.ks) { const k = +d.ks; S.strokes.has(k) ? S.strokes.delete(k) : S.strokes.add(k); S.page = 1; }
+  else if (d.mode) { S.mode = +d.mode; S.slots = [S.slots[0], S.mode === 2 ? S.slots[1] : null]; const n = S.slots.slice(0, S.mode).findIndex(x => !x); S.active = n < 0 ? 0 : n; }
+  else if (d.more) { S.page++; loadTiles(true); return; }
+  else if (d.clearpy) { S.py = ""; S.page = 1; }
+  else if (d.reset) { S.els = new Set(S.chart.fav); S.strokes.clear(); S.py = ""; S.page = 1; }
+  else if (d.trad) { const [ch, f] = d.trad.split(":"); S.trad[ch] = f; }
+  else if (d.short) { const c = S.card; if (c && !S.shortlist.find(s => s.name === c.name) && S.shortlist.length < 5) S.shortlist.push({name: c.name, ji: c.ji, sv: c.sancai.verdict, trad: c.trad, url: certUrl(c)}); render(); return; }
+  else if (d.again) { S.slots = [null, null]; S.trad = {}; S.active = 0; }
+  else return;
+  refresh();
+});
+document.addEventListener("keydown", e => {
+  if (!S.chart || /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+  if (e.key === "Backspace") { const i = S.slots.slice(0, S.mode).map(Boolean).lastIndexOf(true); if (i >= 0) { delete S.trad[S.slots[i]]; S.slots[i] = null; S.active = i; refresh(); } return; }
+  const tiles = [...document.querySelectorAll(".tile")], idx = tiles.indexOf(document.activeElement);
+  if (idx >= 0 && ["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp"].includes(e.key)) {
+    const cols = Math.max(1, Math.round(tiles[0].parentElement.clientWidth / tiles[0].offsetWidth));
+    const n = idx + ({ArrowRight: 1, ArrowLeft: -1, ArrowDown: cols, ArrowUp: -cols})[e.key];
+    if (tiles[n]) { tiles[n].focus(); e.preventDefault(); }
+  }
+});
+$("#start").addEventListener("click", async () => {
+  const f = $("#f"), q = {surname: f.surname.value.trim(), sex: f.sex.value, dob: f.dob.value, birth_time: f.birth_time.value || "12:00"};
+  $("#err").textContent = "";
+  if (!q.surname) { $("#err").textContent = "请输入姓氏 — enter the family surname to build a name"; f.surname.focus(); return; }
+  if (!q.dob) { $("#err").textContent = "请输入出生日期 — enter the birth (or due) date"; f.dob.focus(); return; }
+  $("#start").disabled = true;
+  try {
+    const chart = await api("/api/pub/name/chart", q);
+    S.q = {...q, surname: chart.surname}; S.chart = chart; S.mode = 2; S.slots = [null, null]; S.info = {}; S.trad = {}; S.active = 0;
+    S.els = new Set(chart.fav); S.strokes = new Set(); S.py = ""; S.page = 1; S.shortlist = [];
+    if (S.pending) { const g = [...S.pending].slice(0, 2); S.mode = g.length; S.slots = [g[0] || null, g[1] || null]; S.pending = ""; }
+    refresh(); $("#app").scrollIntoView({behavior: "smooth", block: "start"});
+  } catch (e) { if (e.name !== "AbortError") $("#err").textContent = e.message; }
+  $("#start").disabled = false;
+});
+/* deep link: /baby?surname=王&sex=F&dob=2026-03-15&time=09:30[&given=禄婷] restores the builder */
+(() => {
+  const u = new URLSearchParams(location.search);
+  if (!u.get("surname") || !u.get("dob")) return;
+  const f = $("#f");
+  f.surname.value = u.get("surname"); f.sex.value = u.get("sex") === "F" ? "F" : "M";
+  f.dob.value = u.get("dob"); f.birth_time.value = u.get("time") || "12:00";
+  S.pending = u.get("given") || "";
+  $("#start").click();
+})();
+</script>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 </body></html>
