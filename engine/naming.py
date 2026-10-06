@@ -404,10 +404,11 @@ SOUND_PENALTY = {"same_tone": 0.4,        # every syllable on one tone
                  "same_initial": 0.2, "same_final": 0.2, "repeat_cap": 0.4,
                  "homophone": 1.0,          # sounds exactly like an unlucky word, tones included (strong)
                  "homophone_tone": 0.7,     # same syllables, different tones (优智 1-4 vs 幼稚 4-4)
+                 "homophone_severe": 1.0,   # … but a severe word (死亡 …) is strong whatever the tones
                  "near_homophone": 0.5,     # same after folding z/zh, c/ch, s/sh, n/l, -n/-ng
                  "english_profanity": 1.0,  # the pinyin spelling reads as an English profanity (strong)
                  "english_tease": 0.5}      # … or as an English schoolyard word
-STRONG_SOUND = {"homophone", "english_profanity"}   # a strong finding caps the grade at 待斟酌
+STRONG_SOUND = {"homophone", "homophone_severe", "english_profanity"}   # a strong finding caps the grade at 待斟酌
 _INITIALS = ("zh", "ch", "sh", "b", "p", "m", "f", "d", "t", "n", "l", "g", "k", "h", "j", "q", "x", "r",
              "z", "c", "s", "y", "w")
 _TONE_MARKS = {c: t for t, cs in enumerate(("āēīōūǖ", "áéíóúǘ", "ǎěǐǒǔǚ", "àèìòùǜ"), 1) for c in cs}
@@ -505,15 +506,20 @@ def sound_score(surname: str, given: str) -> dict:
         for i in range(len(base) - n + 1):
             run = tuple(base[i:i + n])
             cands = [(h, "homophone" if all(pt in ("5", str(t)) for pt, t in zip(h.get("tones", "").split("-"), tones[i:i + n]))
-                      else "homophone_tone") for h in exact.get(run, [])]   # a neutral tone in the word matches any tone
+                      else "homophone_severe" if h.get("severe") else "homophone_tone")
+                     for h in exact.get(run, [])]   # a neutral tone in the word matches any tone
             cands += [(h, "near_homophone") for h in folded.get(tuple(_near(x) for x in run), []) if h not in exact.get(run, [])]
             for h, kind in cands:
                 if h["sounds_like"] not in hit or P[kind] > P[hit[h["sounds_like"]][0]]:
                     hit[h["sounds_like"]] = (kind, h, chars[i:i + n])
-    verb = {"homophone": ("音同", "sounds like"), "homophone_tone": ("音近", "sounds like (tones differ)"),
-            "near_homophone": ("音似", "sounds close to")}
     for kind, h, run in hit.values():
-        add(kind, f"{run} {verb[kind][0]}「{h['sounds_like']}」", f"{run} {verb[kind][1]} {h['sounds_like']} ({h['en']})")
+        if kind == "homophone_severe":
+            add(kind, f"{run} 音近「{h['sounds_like']}」(声调不同)",
+                f"{run} sounds like {h['sounds_like']} ({h['en']}) despite different tones")
+            continue
+        verb = {"homophone": ("音同", "sounds like"), "homophone_tone": ("音近", "sounds like (tones differ)"),
+                "near_homophone": ("音似", "sounds close to")}[kind]
+        add(kind, f"{run} {verb[0]}「{h['sounds_like']}」", f"{run} {verb[1]} {h['sounds_like']} ({h['en']})")
     # English reading of the pinyin spelling: the given name as one word, and each adjacent pair;
     # one finding per span, the strongest.
     n_s = len(surname)
