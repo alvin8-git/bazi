@@ -1315,6 +1315,72 @@ def name_score(surname: str, given: str, sex: str, dob: str,
         raise HTTPException(400, str(e))
 
 
+# ---------------------------------------------------------------- baby shortlist (per workspace)
+MAX_BABY_LISTS = 8          # keys (babies) per workspace; the oldest is dropped
+MAX_BABY_NAMES = 8          # names per list
+_BABY_KEY = re.compile(r"^[^|]{1,2}\|[MF]\|\d{4}-\d{2}-\d{2}\|\d{2}:\d{2}$")
+
+
+class BabyNameIn(BaseModel):
+    given: str = Field(min_length=1, max_length=2)
+    trad: dict[str, str] = {}
+
+
+def _baby_lists(ws: dict) -> dict:
+    return ws.setdefault("baby_shortlists", {})
+
+
+def _baby_list_view(key: str, items: list) -> dict:
+    """Rescore the stored (given, trad) pairs so the list never shows scores from older weights."""
+    from engine.naming import name_card
+    surname, sex, dob, birth_time = key.split("|")
+    _, ys = _name_chart(sex, dob, birth_time)
+    out = []
+    for it in items:
+        try:
+            c = name_card(ys, _tosimp(surname), it["given"], it.get("trad") or {}, sex=sex)
+        except (ValueError, KeyError, TypeError):
+            continue
+        out.append({"name": c["name"], "given": c["given"], "trad": it.get("trad") or {}, "score": c["score"]["total"],
+                    "grade": c["score"]["grade"], "ji": c["ji"], "sv": c["sancai"]["verdict"], "tradStr": c["trad"]})
+    out.sort(key=lambda x: -x["score"])
+    return {"key": key, "items": out, "max": MAX_BABY_NAMES}
+
+
+def _baby_key(key: str) -> str:
+    if not _BABY_KEY.fullmatch(key or ""):
+        raise HTTPException(400, "key must be surname|sex|dob|time")
+    return key
+
+
+@router.get("/api/pub/w/{token}/baby/shortlist")
+def baby_shortlist(token: str, key: str):
+    ws = _load(token)
+    return _baby_list_view(_baby_key(key), _baby_lists(ws).get(key, []))
+
+
+@router.put("/api/pub/w/{token}/baby/shortlist")
+def put_baby_shortlist(token: str, key: str, items: list[BabyNameIn]):
+    """Replace the shortlist for one baby (key = surname|sex|dob|time). Stores only the given
+    name and the chosen traditional forms; everything else is recomputed on read."""
+    from engine.naming import char_info
+    key = _baby_key(key)
+    if len(items) > MAX_BABY_NAMES:
+        raise HTTPException(400, f"at most {MAX_BABY_NAMES} names per shortlist")
+    for it in items:
+        for ch in it.given:
+            if not char_info(ch):
+                raise HTTPException(400, f"character {ch} not in the dataset")
+    ws = _load(token)
+    lists = _baby_lists(ws)
+    lists.pop(key, None)                      # re-insert so this baby is the newest
+    lists[key] = [{"given": _tosimp(it.given), "trad": it.trad} for it in items]
+    while len(lists) > MAX_BABY_LISTS:
+        lists.pop(next(iter(lists)))
+    _save(token, ws)
+    return _baby_list_view(key, lists[key])
+
+
 # ---------------------------------------------------------------- certificate
 @router.get("/api/pub/certificate", response_class=HTMLResponse)
 def certificate(surname: str, given: str, sex: str, dob: str,

@@ -1,5 +1,6 @@
 {
-"_note": "Sound layer data: surname readings that differ from the everyday reading, and unfortunate words a name can sound like (toneless pinyin, ü written v). Hand-written; edit the tables in scripts/naming_tags_build.py.",
+"_note": "Sound layer data. surname_readings: readings that differ from the everyday reading of the character. homophones: words a name can sound like (toneless pinyin, ü written v, tones as digits), hand-reviewed from a keyword scan of CC-CEDICT plus a hand list. english: English words a pinyin spelling can read as. Edit the tables in scripts/naming_tags_build.py.",
+"_attribution": "Chinese word pinyin and glosses derived from CC-CEDICT (https://www.mdbg.net/chinese/dictionary?page=cedict), licensed under the Creative Commons Attribution-ShareAlike 4.0 International License (https://creativecommons.org/licenses/by-sa/4.0/). This derived list is shared under the same licence.",
 "surname_readings": {
 "单": "shàn",
 "解": "xiè",
@@ -32,403 +33,2408 @@
 "homophones": [
 {
 "pattern": "du zi",
+"tones": "4-5",
 "sounds_like": "肚子",
-"en": "belly"
+"en": "belly",
+"source": "cedict"
 },
 {
 "pattern": "fei wu",
+"tones": "4-4",
 "sounds_like": "废物",
-"en": "good-for-nothing"
+"en": "good-for-nothing",
+"source": "cedict"
 },
 {
 "pattern": "si wang",
+"tones": "3-2",
 "sounds_like": "死亡",
-"en": "death"
+"en": "death",
+"source": "cedict"
 },
 {
 "pattern": "sha gua",
+"tones": "3-1",
 "sounds_like": "傻瓜",
-"en": "fool"
+"en": "fool",
+"source": "cedict"
 },
 {
 "pattern": "shi bai",
+"tones": "1-4",
 "sounds_like": "失败",
-"en": "failure"
+"en": "failure",
+"source": "cedict"
 },
 {
 "pattern": "ben dan",
+"tones": "4-4",
 "sounds_like": "笨蛋",
-"en": "idiot"
+"en": "idiot",
+"source": "cedict"
 },
 {
 "pattern": "hun dan",
+"tones": "2-4",
 "sounds_like": "混蛋",
-"en": "scoundrel"
+"en": "scoundrel",
+"source": "cedict"
 },
 {
 "pattern": "huai dan",
+"tones": "4-4",
 "sounds_like": "坏蛋",
-"en": "bad egg"
+"en": "bad egg",
+"source": "cedict"
 },
 {
 "pattern": "wang ba",
+"tones": "2-5",
 "sounds_like": "王八",
-"en": "a common insult"
+"en": "a common insult",
+"source": "cedict"
 },
 {
 "pattern": "bai chi",
+"tones": "2-1",
 "sounds_like": "白痴",
-"en": "idiot"
+"en": "idiot",
+"source": "cedict"
 },
 {
 "pattern": "fei hua",
+"tones": "4-4",
 "sounds_like": "废话",
-"en": "nonsense"
+"en": "nonsense",
+"source": "cedict"
 },
 {
 "pattern": "la ji",
+"tones": "1-1",
 "sounds_like": "垃圾",
-"en": "rubbish"
+"en": "rubbish",
+"source": "cedict"
 },
 {
 "pattern": "gou shi",
+"tones": "3-3",
 "sounds_like": "狗屎",
-"en": "dog mess"
+"en": "dog mess",
+"source": "cedict"
 },
 {
 "pattern": "fen bian",
+"tones": "4-4",
 "sounds_like": "粪便",
-"en": "excrement"
+"en": "excrement",
+"source": "cedict"
 },
 {
 "pattern": "pi gu",
+"tones": "4-5",
 "sounds_like": "屁股",
-"en": "buttocks"
+"en": "buttocks",
+"source": "cedict"
 },
 {
 "pattern": "tu fei",
+"tones": "3-3",
 "sounds_like": "土匪",
-"en": "bandit"
+"en": "bandit",
+"source": "cedict"
 },
 {
 "pattern": "liu mang",
+"tones": "2-2",
 "sounds_like": "流氓",
-"en": "hooligan"
+"en": "hooligan",
+"source": "cedict"
 },
 {
 "pattern": "xiao tou",
+"tones": "3-1",
 "sounds_like": "小偷",
-"en": "thief"
+"en": "thief",
+"source": "cedict"
 },
 {
 "pattern": "qiang dao",
+"tones": "2-4",
 "sounds_like": "强盗",
-"en": "robber"
+"en": "robber",
+"source": "cedict"
 },
 {
 "pattern": "pian zi",
+"tones": "4-5",
 "sounds_like": "骗子",
-"en": "swindler"
+"en": "swindler",
+"source": "cedict"
 },
 {
 "pattern": "sha zi",
+"tones": "3-5",
 "sounds_like": "傻子",
-"en": "fool"
+"en": "fool",
+"source": "cedict"
 },
 {
 "pattern": "feng zi",
+"tones": "1-5",
 "sounds_like": "疯子",
-"en": "madman"
+"en": "madman",
+"source": "cedict"
 },
 {
 "pattern": "long zi",
+"tones": "2-5",
 "sounds_like": "聋子",
-"en": "deaf person"
+"en": "deaf person",
+"source": "cedict"
 },
 {
 "pattern": "xia zi",
+"tones": "1-5",
 "sounds_like": "瞎子",
-"en": "blind person"
+"en": "blind person",
+"source": "cedict"
 },
 {
 "pattern": "ya ba",
+"tones": "3-5",
 "sounds_like": "哑巴",
-"en": "mute"
+"en": "mute",
+"source": "cedict"
 },
 {
 "pattern": "ai zi",
+"tones": "3-5",
 "sounds_like": "矮子",
-"en": "dwarf"
+"en": "dwarf",
+"source": "cedict"
 },
 {
 "pattern": "pang zi",
+"tones": "4-5",
 "sounds_like": "胖子",
-"en": "fatty"
+"en": "fatty",
+"source": "cedict"
 },
 {
 "pattern": "bing du",
+"tones": "4-2",
 "sounds_like": "病毒",
-"en": "virus"
+"en": "virus",
+"source": "cedict"
 },
 {
 "pattern": "ai zheng",
+"tones": "2-4",
 "sounds_like": "癌症",
-"en": "cancer"
+"en": "cancer",
+"source": "cedict"
 },
 {
 "pattern": "si ren",
+"tones": "3-2",
 "sounds_like": "死人",
-"en": "dead person"
+"en": "dead person",
+"source": "cedict"
 },
 {
 "pattern": "mo gui",
+"tones": "2-3",
 "sounds_like": "魔鬼",
-"en": "devil"
+"en": "devil",
+"source": "cedict"
 },
 {
 "pattern": "yao guai",
+"tones": "1-4",
 "sounds_like": "妖怪",
-"en": "monster"
+"en": "monster",
+"source": "cedict"
 },
 {
 "pattern": "e mo",
+"tones": "4-2",
 "sounds_like": "恶魔",
-"en": "demon"
+"en": "demon",
+"source": "cedict"
 },
 {
 "pattern": "wu gui",
+"tones": "1-1",
 "sounds_like": "乌龟",
-"en": "tortoise (an insult)"
+"en": "tortoise (an insult)",
+"source": "cedict"
 },
 {
 "pattern": "zhu tou",
+"tones": "1-2",
 "sounds_like": "猪头",
-"en": "pig head"
+"en": "pig head",
+"source": "cedict"
 },
 {
 "pattern": "zhang lang",
+"tones": "1-2",
 "sounds_like": "蟑螂",
-"en": "cockroach"
+"en": "cockroach",
+"source": "cedict"
 },
 {
 "pattern": "cang ying",
+"tones": "1-5",
 "sounds_like": "苍蝇",
-"en": "housefly"
+"en": "housefly",
+"source": "cedict"
 },
 {
 "pattern": "chou chong",
+"tones": "4-2",
 "sounds_like": "臭虫",
-"en": "bedbug"
+"en": "bedbug",
+"source": "cedict"
 },
 {
 "pattern": "dao mei",
+"tones": "3-2",
 "sounds_like": "倒霉",
-"en": "bad luck"
+"en": "bad luck",
+"source": "cedict"
 },
 {
 "pattern": "pin qiong",
+"tones": "2-2",
 "sounds_like": "贫穷",
-"en": "poverty"
+"en": "poverty",
+"source": "cedict"
 },
 {
 "pattern": "qiong ren",
+"tones": "2-2",
 "sounds_like": "穷人",
-"en": "pauper"
+"en": "pauper",
+"source": "cedict"
 },
 {
 "pattern": "po chan",
+"tones": "4-3",
 "sounds_like": "破产",
-"en": "bankruptcy"
+"en": "bankruptcy",
+"source": "cedict"
 },
 {
 "pattern": "shi ye",
+"tones": "1-4",
 "sounds_like": "失业",
-"en": "unemployment"
+"en": "unemployment",
+"source": "cedict"
 },
 {
 "pattern": "li hun",
+"tones": "2-1",
 "sounds_like": "离婚",
-"en": "divorce"
+"en": "divorce",
+"source": "cedict"
 },
 {
 "pattern": "zi sha",
+"tones": "4-1",
 "sounds_like": "自杀",
-"en": "suicide"
+"en": "suicide",
+"source": "cedict"
 },
 {
 "pattern": "sha ren",
+"tones": "1-2",
 "sounds_like": "杀人",
-"en": "murder"
+"en": "murder",
+"source": "cedict"
 },
 {
 "pattern": "zang li",
+"tones": "4-3",
 "sounds_like": "葬礼",
-"en": "funeral"
+"en": "funeral",
+"source": "cedict"
 },
 {
 "pattern": "guan cai",
+"tones": "1-5",
 "sounds_like": "棺材",
-"en": "coffin"
+"en": "coffin",
+"source": "cedict"
 },
 {
 "pattern": "fen mu",
+"tones": "2-4",
 "sounds_like": "坟墓",
-"en": "grave"
+"en": "grave",
+"source": "cedict"
 },
 {
 "pattern": "di yu",
+"tones": "4-4",
 "sounds_like": "地狱",
-"en": "hell"
+"en": "hell",
+"source": "cedict"
 },
 {
 "pattern": "zai nan",
+"tones": "1-4",
 "sounds_like": "灾难",
-"en": "disaster"
+"en": "disaster",
+"source": "cedict"
 },
 {
 "pattern": "che huo",
+"tones": "1-4",
 "sounds_like": "车祸",
-"en": "car crash"
+"en": "car crash",
+"source": "cedict"
 },
 {
 "pattern": "jian yu",
+"tones": "1-4",
 "sounds_like": "监狱",
-"en": "prison"
+"en": "prison",
+"source": "cedict"
 },
 {
 "pattern": "fan ren",
+"tones": "4-2",
 "sounds_like": "犯人",
-"en": "convict"
+"en": "convict",
+"source": "cedict"
 },
 {
 "pattern": "zui fan",
+"tones": "4-4",
 "sounds_like": "罪犯",
-"en": "criminal"
+"en": "criminal",
+"source": "cedict"
 },
 {
 "pattern": "xia liu",
+"tones": "4-2",
 "sounds_like": "下流",
-"en": "obscene"
+"en": "obscene",
+"source": "cedict"
 },
 {
 "pattern": "wu chi",
+"tones": "2-3",
 "sounds_like": "无耻",
-"en": "shameless"
+"en": "shameless",
+"source": "cedict"
 },
 {
 "pattern": "bian tai",
+"tones": "4-4",
 "sounds_like": "变态",
-"en": "pervert"
+"en": "pervert",
+"source": "cedict"
 },
 {
 "pattern": "bai lei",
+"tones": "4-4",
 "sounds_like": "败类",
-"en": "scum"
+"en": "scum",
+"source": "cedict"
 },
 {
 "pattern": "pan tu",
+"tones": "4-2",
 "sounds_like": "叛徒",
-"en": "traitor"
+"en": "traitor",
+"source": "cedict"
 },
 {
 "pattern": "nu cai",
+"tones": "2-5",
 "sounds_like": "奴才",
-"en": "lackey"
+"en": "lackey",
+"source": "cedict"
 },
 {
 "pattern": "yang wei",
+"tones": "2-3",
 "sounds_like": "阳痿",
-"en": "impotence"
+"en": "impotence",
+"source": "cedict"
 },
 {
 "pattern": "du yao",
+"tones": "2-4",
 "sounds_like": "毒药",
-"en": "poison"
+"en": "poison",
+"source": "cedict"
 },
 {
 "pattern": "du pin",
+"tones": "2-3",
 "sounds_like": "毒品",
-"en": "narcotics"
+"en": "narcotics",
+"source": "cedict"
 },
 {
 "pattern": "cao bao",
+"tones": "3-1",
 "sounds_like": "草包",
-"en": "good-for-nothing"
+"en": "good-for-nothing",
+"source": "cedict"
 },
 {
 "pattern": "fan tong",
+"tones": "4-3",
 "sounds_like": "饭桶",
-"en": "useless person"
+"en": "useless person",
+"source": "cedict"
 },
 {
 "pattern": "jian ren",
+"tones": "4-2",
 "sounds_like": "贱人",
-"en": "a vulgar insult"
+"en": "a vulgar insult",
+"source": "cedict"
 },
 {
 "pattern": "si xing",
+"tones": "3-2",
 "sounds_like": "死刑",
-"en": "death penalty"
+"en": "death penalty",
+"source": "cedict"
 },
 {
 "pattern": "mie wang",
+"tones": "4-2",
 "sounds_like": "灭亡",
-"en": "destruction"
+"en": "destruction",
+"source": "cedict"
 },
 {
 "pattern": "shi wang",
+"tones": "1-4",
 "sounds_like": "失望",
-"en": "disappointment"
+"en": "disappointment",
+"source": "cedict"
 },
 {
 "pattern": "jue wang",
+"tones": "2-4",
 "sounds_like": "绝望",
-"en": "despair"
+"en": "despair",
+"source": "cedict"
 },
 {
 "pattern": "diu ren",
+"tones": "1-2",
 "sounds_like": "丢人",
-"en": "disgrace"
+"en": "disgrace",
+"source": "cedict"
 },
 {
 "pattern": "diu lian",
+"tones": "1-3",
 "sounds_like": "丢脸",
-"en": "loss of face"
+"en": "loss of face",
+"source": "cedict"
 },
 {
 "pattern": "pei qian",
+"tones": "2-2",
 "sounds_like": "赔钱",
-"en": "losing money"
+"en": "losing money",
+"source": "cedict"
 },
 {
 "pattern": "kui ben",
+"tones": "1-3",
 "sounds_like": "亏本",
-"en": "making a loss"
+"en": "making a loss",
+"source": "cedict"
 },
 {
 "pattern": "po lan",
+"tones": "4-4",
 "sounds_like": "破烂",
-"en": "junk"
+"en": "junk",
+"source": "cedict"
 },
 {
 "pattern": "tong ku",
+"tones": "4-3",
 "sounds_like": "痛苦",
-"en": "suffering"
+"en": "suffering",
+"source": "cedict"
 },
 {
 "pattern": "ku nan",
+"tones": "3-4",
 "sounds_like": "苦难",
-"en": "misery"
+"en": "misery",
+"source": "cedict"
 },
 {
 "pattern": "wei sheng zhi",
+"tones": "4-1-3",
 "sounds_like": "卫生纸",
-"en": "toilet paper"
+"en": "toilet paper",
+"source": "cedict"
 },
 {
 "pattern": "la du zi",
+"tones": "1-4-5",
 "sounds_like": "拉肚子",
-"en": "diarrhoea"
+"en": "diarrhoea",
+"source": "cedict"
+},
+{
+"pattern": "you zhi",
+"tones": "4-4",
+"sounds_like": "幼稚",
+"en": "childish",
+"source": "cedict"
+},
+{
+"pattern": "yu chun",
+"tones": "2-3",
+"sounds_like": "愚蠢",
+"en": "stupid",
+"source": "cedict"
+},
+{
+"pattern": "bu xing",
+"tones": "4-4",
+"sounds_like": "不幸",
+"en": "misfortune",
+"source": "cedict"
+},
+{
+"pattern": "qi gai",
+"tones": "3-4",
+"sounds_like": "乞丐",
+"en": "beggar",
+"source": "cedict"
+},
+{
+"pattern": "shi gu",
+"tones": "4-4",
+"sounds_like": "事故",
+"en": "accident",
+"source": "cedict"
+},
+{
+"pattern": "er nai",
+"tones": "4-3",
+"sounds_like": "二奶",
+"en": "mistress",
+"source": "cedict"
+},
+{
+"pattern": "er huo",
+"tones": "4-4",
+"sounds_like": "二货",
+"en": "fool",
+"source": "cedict"
+},
+{
+"pattern": "wang ling",
+"tones": "2-2",
+"sounds_like": "亡灵",
+"en": "spirit of the dead",
+"source": "cedict"
+},
+{
+"pattern": "di su",
+"tones": "1-2",
+"sounds_like": "低俗",
+"en": "vulgar",
+"source": "cedict"
+},
+{
+"pattern": "zuo si",
+"tones": "4-3",
+"sounds_like": "作死",
+"en": "courting disaster",
+"source": "cedict"
+},
+{
+"pattern": "wu ru",
+"tones": "3-3",
+"sounds_like": "侮辱",
+"en": "insult",
+"source": "cedict"
+},
+{
+"pattern": "bian mi",
+"tones": "4-4",
+"sounds_like": "便秘",
+"en": "constipation",
+"source": "cedict"
+},
+{
+"pattern": "dao bi",
+"tones": "3-4",
+"sounds_like": "倒闭",
+"en": "going bust",
+"source": "cedict"
+},
+{
+"pattern": "sha mao",
+"tones": "3-4",
+"sounds_like": "傻冒",
+"en": "idiot",
+"source": "cedict"
+},
+{
+"pattern": "sha mao",
+"tones": "3-4",
+"sounds_like": "傻帽",
+"en": "fool",
+"source": "cedict"
+},
+{
+"pattern": "sha dan",
+"tones": "3-4",
+"sounds_like": "傻蛋",
+"en": "fool",
+"source": "cedict"
+},
+{
+"pattern": "xiong sha",
+"tones": "1-1",
+"sounds_like": "凶杀",
+"en": "murder",
+"source": "cedict"
+},
+{
+"pattern": "ru yu",
+"tones": "4-4",
+"sounds_like": "入狱",
+"en": "going to jail",
+"source": "cedict"
+},
+{
+"pattern": "diao si",
+"tones": "4-3",
+"sounds_like": "吊死",
+"en": "hanging",
+"source": "cedict"
+},
+{
+"pattern": "dai zi",
+"tones": "1-5",
+"sounds_like": "呆子",
+"en": "fool",
+"source": "cedict"
+},
+{
+"pattern": "dai gua",
+"tones": "1-1",
+"sounds_like": "呆瓜",
+"en": "idiot",
+"source": "cedict"
+},
+{
+"pattern": "sang qi",
+"tones": "4-4",
+"sounds_like": "丧气",
+"en": "unlucky",
+"source": "cedict"
+},
+{
+"pattern": "sang sheng",
+"tones": "4-1",
+"sounds_like": "丧生",
+"en": "dying",
+"source": "cedict"
+},
+{
+"pattern": "ou tu",
+"tones": "3-4",
+"sounds_like": "呕吐",
+"en": "vomiting",
+"source": "cedict"
+},
+{
+"pattern": "di fu",
+"tones": "4-3",
+"sounds_like": "地府",
+"en": "the underworld",
+"source": "cedict"
+},
+{
+"pattern": "da fen",
+"tones": "4-4",
+"sounds_like": "大粪",
+"en": "excrement",
+"source": "cedict"
+},
+{
+"pattern": "tian zai",
+"tones": "1-1",
+"sounds_like": "天灾",
+"en": "natural disaster",
+"source": "cedict"
+},
+{
+"pattern": "yao zhe",
+"tones": "1-2",
+"sounds_like": "夭折",
+"en": "dying young",
+"source": "cedict"
+},
+{
+"pattern": "shi lian",
+"tones": "1-4",
+"sounds_like": "失恋",
+"en": "heartbreak",
+"source": "cedict"
+},
+{
+"pattern": "shi jin",
+"tones": "1-4",
+"sounds_like": "失禁",
+"en": "incontinence",
+"source": "cedict"
+},
+{
+"pattern": "shi ming",
+"tones": "1-2",
+"sounds_like": "失明",
+"en": "going blind",
+"source": "cedict"
+},
+{
+"pattern": "shi shen",
+"tones": "1-1",
+"sounds_like": "失身",
+"en": "lost chastity",
+"source": "cedict"
+},
+{
+"pattern": "nu li",
+"tones": "2-4",
+"sounds_like": "奴隶",
+"en": "slave",
+"source": "cedict"
+},
+{
+"pattern": "jian fu",
+"tones": "1-1",
+"sounds_like": "奸夫",
+"en": "adulterer",
+"source": "cedict"
+},
+{
+"pattern": "ji nv",
+"tones": "4-3",
+"sounds_like": "妓女",
+"en": "prostitute",
+"source": "cedict"
+},
+{
+"pattern": "ji yuan",
+"tones": "4-4",
+"sounds_like": "妓院",
+"en": "brothel",
+"source": "cedict"
+},
+{
+"pattern": "yao jing",
+"tones": "1-5",
+"sounds_like": "妖精",
+"en": "evil spirit",
+"source": "cedict"
+},
+{
+"pattern": "yao mo",
+"tones": "1-2",
+"sounds_like": "妖魔",
+"en": "demon",
+"source": "cedict"
+},
+{
+"pattern": "gu er",
+"tones": "1-2",
+"sounds_like": "孤儿",
+"en": "orphan",
+"source": "cedict"
+},
+{
+"pattern": "gua fu",
+"tones": "3-5",
+"sounds_like": "寡妇",
+"en": "widow",
+"source": "cedict"
+},
+{
+"pattern": "xiao bian",
+"tones": "3-4",
+"sounds_like": "小便",
+"en": "urine",
+"source": "cedict"
+},
+{
+"pattern": "xiao qi",
+"tones": "3-4",
+"sounds_like": "小气",
+"en": "stingy",
+"source": "cedict"
+},
+{
+"pattern": "shi ti",
+"tones": "1-3",
+"sounds_like": "尸体",
+"en": "corpse",
+"source": "cedict"
+},
+{
+"pattern": "shi shou",
+"tones": "1-5",
+"sounds_like": "尸首",
+"en": "corpse",
+"source": "cedict"
+},
+{
+"pattern": "yong su",
+"tones": "1-2",
+"sounds_like": "庸俗",
+"en": "vulgar",
+"source": "cedict"
+},
+{
+"pattern": "fei cai",
+"tones": "4-2",
+"sounds_like": "废材",
+"en": "useless person",
+"source": "cedict"
+},
+{
+"pattern": "qiang jian",
+"tones": "2-1",
+"sounds_like": "强奸",
+"en": "rape",
+"source": "cedict"
+},
+{
+"pattern": "tu xing",
+"tones": "2-2",
+"sounds_like": "徒刑",
+"en": "prison sentence",
+"source": "cedict"
+},
+{
+"pattern": "xing bing",
+"tones": "4-4",
+"sounds_like": "性病",
+"en": "venereal disease",
+"source": "cedict"
+},
+{
+"pattern": "chi ru",
+"tones": "3-3",
+"sounds_like": "耻辱",
+"en": "disgrace",
+"source": "cedict"
+},
+{
+"pattern": "huan ai",
+"tones": "4-2",
+"sounds_like": "患癌",
+"en": "getting cancer",
+"source": "cedict"
+},
+{
+"pattern": "bei can",
+"tones": "1-3",
+"sounds_like": "悲惨",
+"en": "miserable",
+"source": "cedict"
+},
+{
+"pattern": "qing fu",
+"tones": "2-4",
+"sounds_like": "情妇",
+"en": "mistress",
+"source": "cedict"
+},
+{
+"pattern": "e xin",
+"tones": "3-1",
+"sounds_like": "恶心",
+"en": "nausea · disgusting",
+"source": "cedict"
+},
+{
+"pattern": "e gun",
+"tones": "4-4",
+"sounds_like": "恶棍",
+"en": "scoundrel",
+"source": "cedict"
+},
+{
+"pattern": "e gui",
+"tones": "4-3",
+"sounds_like": "恶鬼",
+"en": "evil ghost",
+"source": "cedict"
+},
+{
+"pattern": "yu ben",
+"tones": "2-4",
+"sounds_like": "愚笨",
+"en": "stupid",
+"source": "cedict"
+},
+{
+"pattern": "can si",
+"tones": "3-3",
+"sounds_like": "惨死",
+"en": "tragic death",
+"source": "cedict"
+},
+{
+"pattern": "nuo fu",
+"tones": "4-1",
+"sounds_like": "懦夫",
+"en": "coward",
+"source": "cedict"
+},
+{
+"pattern": "lan ren",
+"tones": "3-2",
+"sounds_like": "懒人",
+"en": "lazybones",
+"source": "cedict"
+},
+{
+"pattern": "da si",
+"tones": "3-3",
+"sounds_like": "打死",
+"en": "beaten to death",
+"source": "cedict"
+},
+{
+"pattern": "la shi",
+"tones": "1-3",
+"sounds_like": "拉屎",
+"en": "defecating",
+"source": "cedict"
+},
+{
+"pattern": "fang pi",
+"tones": "4-4",
+"sounds_like": "放屁",
+"en": "farting",
+"source": "cedict"
+},
+{
+"pattern": "hui qi",
+"tones": "4-4",
+"sounds_like": "晦气",
+"en": "bad luck",
+"source": "cedict"
+},
+{
+"pattern": "bao bi",
+"tones": "4-4",
+"sounds_like": "暴毙",
+"en": "sudden death",
+"source": "cedict"
+},
+{
+"pattern": "fu xing",
+"tones": "2-2",
+"sounds_like": "服刑",
+"en": "serving a sentence",
+"source": "cedict"
+},
+{
+"pattern": "fu du",
+"tones": "2-2",
+"sounds_like": "服毒",
+"en": "taking poison",
+"source": "cedict"
+},
+{
+"pattern": "qiang sha",
+"tones": "1-1",
+"sounds_like": "枪杀",
+"en": "shot dead",
+"source": "cedict"
+},
+{
+"pattern": "qian zhai",
+"tones": "4-4",
+"sounds_like": "欠债",
+"en": "in debt",
+"source": "cedict"
+},
+{
+"pattern": "qian kuan",
+"tones": "4-3",
+"sounds_like": "欠款",
+"en": "money owed",
+"source": "cedict"
+},
+{
+"pattern": "qi fu",
+"tones": "1-5",
+"sounds_like": "欺负",
+"en": "bullying",
+"source": "cedict"
+},
+{
+"pattern": "qi pian",
+"tones": "1-4",
+"sounds_like": "欺骗",
+"en": "cheating",
+"source": "cedict"
+},
+{
+"pattern": "si gui",
+"tones": "3-3",
+"sounds_like": "死鬼",
+"en": "devil",
+"source": "cedict"
+},
+{
+"pattern": "si diao",
+"tones": "3-4",
+"sounds_like": "死掉",
+"en": "dying",
+"source": "cedict"
+},
+{
+"pattern": "can ren",
+"tones": "2-3",
+"sounds_like": "残忍",
+"en": "cruel",
+"source": "cedict"
+},
+{
+"pattern": "can ku",
+"tones": "2-4",
+"sounds_like": "残酷",
+"en": "cruel",
+"source": "cedict"
+},
+{
+"pattern": "sha hai",
+"tones": "1-4",
+"sounds_like": "杀害",
+"en": "murder",
+"source": "cedict"
+},
+{
+"pattern": "du liu",
+"tones": "2-2",
+"sounds_like": "毒瘤",
+"en": "malignant tumour",
+"source": "cedict"
+},
+{
+"pattern": "mei yong",
+"tones": "2-4",
+"sounds_like": "没用",
+"en": "useless",
+"source": "cedict"
+},
+{
+"pattern": "fu shi",
+"tones": "2-1",
+"sounds_like": "浮尸",
+"en": "floating corpse",
+"source": "cedict"
+},
+{
+"pattern": "yin hui",
+"tones": "2-4",
+"sounds_like": "淫秽",
+"en": "obscene",
+"source": "cedict"
+},
+{
+"pattern": "yin mo",
+"tones": "2-2",
+"sounds_like": "淫魔",
+"en": "lewd demon",
+"source": "cedict"
+},
+{
+"pattern": "hun qiu",
+"tones": "2-2",
+"sounds_like": "混球",
+"en": "bastard",
+"source": "cedict"
+},
+{
+"pattern": "han jian",
+"tones": "4-1",
+"sounds_like": "汉奸",
+"en": "traitor",
+"source": "cedict"
+},
+{
+"pattern": "po fu",
+"tones": "1-4",
+"sounds_like": "泼妇",
+"en": "shrew",
+"source": "cedict"
+},
+{
+"pattern": "po pi",
+"tones": "1-2",
+"sounds_like": "泼皮",
+"en": "ruffian",
+"source": "cedict"
+},
+{
+"pattern": "zai huo",
+"tones": "1-4",
+"sounds_like": "灾祸",
+"en": "disaster",
+"source": "cedict"
+},
+{
+"pattern": "wu ye",
+"tones": "2-4",
+"sounds_like": "无业",
+"en": "unemployed",
+"source": "cedict"
+},
+{
+"pattern": "wu yong",
+"tones": "2-4",
+"sounds_like": "无用",
+"en": "useless",
+"source": "cedict"
+},
+{
+"pattern": "shao si",
+"tones": "1-3",
+"sounds_like": "烧死",
+"en": "burned to death",
+"source": "cedict"
+},
+{
+"pattern": "lan zui",
+"tones": "4-4",
+"sounds_like": "烂醉",
+"en": "dead drunk",
+"source": "cedict"
+},
+{
+"pattern": "lao fang",
+"tones": "2-2",
+"sounds_like": "牢房",
+"en": "jail cell",
+"source": "cedict"
+},
+{
+"pattern": "lao yu",
+"tones": "2-4",
+"sounds_like": "牢狱",
+"en": "prison",
+"source": "cedict"
+},
+{
+"pattern": "fan sha",
+"tones": "4-3",
+"sounds_like": "犯傻",
+"en": "acting stupid",
+"source": "cedict"
+},
+{
+"pattern": "fan chun",
+"tones": "4-3",
+"sounds_like": "犯蠢",
+"en": "acting stupid",
+"source": "cedict"
+},
+{
+"pattern": "gou ri",
+"tones": "3-4",
+"sounds_like": "狗日",
+"en": "a vulgar curse",
+"source": "cedict"
+},
+{
+"pattern": "gou zei",
+"tones": "3-2",
+"sounds_like": "狗贼",
+"en": "brigand",
+"source": "cedict"
+},
+{
+"pattern": "feng gou",
+"tones": "1-3",
+"sounds_like": "疯狗",
+"en": "rabid dog",
+"source": "cedict"
+},
+{
+"pattern": "feng mo",
+"tones": "1-2",
+"sounds_like": "疯魔",
+"en": "insane",
+"source": "cedict"
+},
+{
+"pattern": "wen yi",
+"tones": "1-4",
+"sounds_like": "瘟疫",
+"en": "plague",
+"source": "cedict"
+},
+{
+"pattern": "wen shen",
+"tones": "1-2",
+"sounds_like": "瘟神",
+"en": "plague demon",
+"source": "cedict"
+},
+{
+"pattern": "liu zi",
+"tones": "2-5",
+"sounds_like": "瘤子",
+"en": "tumour",
+"source": "cedict"
+},
+{
+"pattern": "que tui",
+"tones": "2-3",
+"sounds_like": "瘸腿",
+"en": "crippled",
+"source": "cedict"
+},
+{
+"pattern": "chi sha",
+"tones": "1-3",
+"sounds_like": "痴傻",
+"en": "stupid",
+"source": "cedict"
+},
+{
+"pattern": "fa feng",
+"tones": "1-1",
+"sounds_like": "发疯",
+"en": "going mad",
+"source": "cedict"
+},
+{
+"pattern": "fa chou",
+"tones": "1-4",
+"sounds_like": "发臭",
+"en": "smelly",
+"source": "cedict"
+},
+{
+"pattern": "bai lan",
+"tones": "2-4",
+"sounds_like": "白烂",
+"en": "stupid",
+"source": "cedict"
+},
+{
+"pattern": "bai mu",
+"tones": "2-4",
+"sounds_like": "白目",
+"en": "stupid",
+"source": "cedict"
+},
+{
+"pattern": "bai gu",
+"tones": "2-3",
+"sounds_like": "白骨",
+"en": "bones of the dead",
+"source": "cedict"
+},
+{
+"pattern": "mang ren",
+"tones": "2-2",
+"sounds_like": "盲人",
+"en": "blind person",
+"source": "cedict"
+},
+{
+"pattern": "duan ming",
+"tones": "3-4",
+"sounds_like": "短命",
+"en": "short-lived",
+"source": "cedict"
+},
+{
+"pattern": "ai ren",
+"tones": "3-2",
+"sounds_like": "矮人",
+"en": "dwarf",
+"source": "cedict"
+},
+{
+"pattern": "po cai",
+"tones": "4-2",
+"sounds_like": "破财",
+"en": "losing money",
+"source": "cedict"
+},
+{
+"pattern": "po shen",
+"tones": "4-1",
+"sounds_like": "破身",
+"en": "lost virginity",
+"source": "cedict"
+},
+{
+"pattern": "she si",
+"tones": "4-3",
+"sounds_like": "社死",
+"en": "dying of embarrassment",
+"source": "cedict"
+},
+{
+"pattern": "huo hai",
+"tones": "4-4",
+"sounds_like": "祸害",
+"en": "scourge",
+"source": "cedict"
+},
+{
+"pattern": "huo shui",
+"tones": "4-3",
+"sounds_like": "祸水",
+"en": "source of calamity",
+"source": "cedict"
+},
+{
+"pattern": "qiong gui",
+"tones": "2-3",
+"sounds_like": "穷鬼",
+"en": "pauper",
+"source": "cedict"
+},
+{
+"pattern": "qie zei",
+"tones": "4-2",
+"sounds_like": "窃贼",
+"en": "thief",
+"source": "cedict"
+},
+{
+"pattern": "ben gua",
+"tones": "4-1",
+"sounds_like": "笨瓜",
+"en": "fool",
+"source": "cedict"
+},
+{
+"pattern": "ben huo",
+"tones": "4-4",
+"sounds_like": "笨货",
+"en": "idiot",
+"source": "cedict"
+},
+{
+"pattern": "ben zhuo",
+"tones": "4-1",
+"sounds_like": "笨拙",
+"en": "clumsy",
+"source": "cedict"
+},
+{
+"pattern": "cu su",
+"tones": "1-2",
+"sounds_like": "粗俗",
+"en": "vulgar",
+"source": "cedict"
+},
+{
+"pattern": "jue zheng",
+"tones": "2-4",
+"sounds_like": "绝症",
+"en": "incurable disease",
+"source": "cedict"
+},
+{
+"pattern": "ma ren",
+"tones": "4-2",
+"sounds_like": "骂人",
+"en": "cursing",
+"source": "cedict"
+},
+{
+"pattern": "xiu chi",
+"tones": "1-3",
+"sounds_like": "羞耻",
+"en": "shame",
+"source": "cedict"
+},
+{
+"pattern": "xiu ru",
+"tones": "1-3",
+"sounds_like": "羞辱",
+"en": "humiliation",
+"source": "cedict"
+},
+{
+"pattern": "lao shu",
+"tones": "3-3",
+"sounds_like": "老鼠",
+"en": "rat",
+"source": "cedict"
+},
+{
+"pattern": "hao zi",
+"tones": "4-5",
+"sounds_like": "耗子",
+"en": "rat",
+"source": "cedict"
+},
+{
+"pattern": "er long",
+"tones": "3-2",
+"sounds_like": "耳聋",
+"en": "deaf",
+"source": "cedict"
+},
+{
+"pattern": "fei pang",
+"tones": "2-4",
+"sounds_like": "肥胖",
+"en": "obese",
+"source": "cedict"
+},
+{
+"pattern": "zhi fang",
+"tones": "1-2",
+"sounds_like": "脂肪",
+"en": "fat",
+"source": "cedict"
+},
+{
+"pattern": "tuo fa",
+"tones": "1-4",
+"sounds_like": "脱发",
+"en": "hair loss",
+"source": "cedict"
+},
+{
+"pattern": "fu shi",
+"tones": "3-1",
+"sounds_like": "腐尸",
+"en": "rotting corpse",
+"source": "cedict"
+},
+{
+"pattern": "fu xiu",
+"tones": "3-3",
+"sounds_like": "腐朽",
+"en": "rotten",
+"source": "cedict"
+},
+{
+"pattern": "fu chou",
+"tones": "3-4",
+"sounds_like": "腐臭",
+"en": "rotten smell",
+"source": "cedict"
+},
+{
+"pattern": "zhong liu",
+"tones": "3-2",
+"sounds_like": "肿瘤",
+"en": "tumour",
+"source": "cedict"
+},
+{
+"pattern": "fu xie",
+"tones": "4-4",
+"sounds_like": "腹泻",
+"en": "diarrhoea",
+"source": "cedict"
+},
+{
+"pattern": "nong shui",
+"tones": "2-3",
+"sounds_like": "脓水",
+"en": "pus",
+"source": "cedict"
+},
+{
+"pattern": "zi jin",
+"tones": "4-4",
+"sounds_like": "自尽",
+"en": "suicide",
+"source": "cedict"
+},
+{
+"pattern": "se lang",
+"tones": "4-2",
+"sounds_like": "色狼",
+"en": "pervert",
+"source": "cedict"
+},
+{
+"pattern": "se mang",
+"tones": "4-2",
+"sounds_like": "色盲",
+"en": "colour-blind",
+"source": "cedict"
+},
+{
+"pattern": "se pei",
+"tones": "4-1",
+"sounds_like": "色胚",
+"en": "pervert",
+"source": "cedict"
+},
+{
+"pattern": "luo bang",
+"tones": "4-3",
+"sounds_like": "落榜",
+"en": "failing the exam",
+"source": "cedict"
+},
+{
+"pattern": "luo di",
+"tones": "4-4",
+"sounds_like": "落第",
+"en": "failing the exam",
+"source": "cedict"
+},
+{
+"pattern": "dang fu",
+"tones": "4-4",
+"sounds_like": "荡妇",
+"en": "slut",
+"source": "cedict"
+},
+{
+"pattern": "bo ming",
+"tones": "2-4",
+"sounds_like": "薄命",
+"en": "ill-fated",
+"source": "cedict"
+},
+{
+"pattern": "chun ren",
+"tones": "3-2",
+"sounds_like": "蠢人",
+"en": "fool",
+"source": "cedict"
+},
+{
+"pattern": "chun cai",
+"tones": "3-2",
+"sounds_like": "蠢材",
+"en": "idiot",
+"source": "cedict"
+},
+{
+"pattern": "chun dan",
+"tones": "3-4",
+"sounds_like": "蠢蛋",
+"en": "fool",
+"source": "cedict"
+},
+{
+"pattern": "chun zhu",
+"tones": "3-1",
+"sounds_like": "蠢猪",
+"en": "stupid swine",
+"source": "cedict"
+},
+{
+"pattern": "chun ben",
+"tones": "3-4",
+"sounds_like": "蠢笨",
+"en": "stupid",
+"source": "cedict"
+},
+{
+"pattern": "xue an",
+"tones": "4-4",
+"sounds_like": "血案",
+"en": "murder case",
+"source": "cedict"
+},
+{
+"pattern": "shuai ren",
+"tones": "1-2",
+"sounds_like": "衰人",
+"en": "loser",
+"source": "cedict"
+},
+{
+"pattern": "zhuang sha",
+"tones": "1-3",
+"sounds_like": "装傻",
+"en": "playing dumb",
+"source": "cedict"
+},
+{
+"pattern": "zhuang si",
+"tones": "1-3",
+"sounds_like": "装死",
+"en": "playing dead",
+"source": "cedict"
+},
+{
+"pattern": "yao ming",
+"tones": "4-4",
+"sounds_like": "要命",
+"en": "deadly",
+"source": "cedict"
+},
+{
+"pattern": "mou sha",
+"tones": "2-1",
+"sounds_like": "谋杀",
+"en": "murder",
+"source": "cedict"
+},
+{
+"pattern": "zhu gou",
+"tones": "1-3",
+"sounds_like": "猪狗",
+"en": "pig-dog",
+"source": "cedict"
+},
+{
+"pattern": "pin jian",
+"tones": "2-4",
+"sounds_like": "贫贱",
+"en": "poor and lowly",
+"source": "cedict"
+},
+{
+"pattern": "tan xin",
+"tones": "1-1",
+"sounds_like": "贪心",
+"en": "greedy",
+"source": "cedict"
+},
+{
+"pattern": "tan cai",
+"tones": "1-2",
+"sounds_like": "贪财",
+"en": "money-grubbing",
+"source": "cedict"
+},
+{
+"pattern": "tan se",
+"tones": "1-4",
+"sounds_like": "贪色",
+"en": "lecherous",
+"source": "cedict"
+},
+{
+"pattern": "mai yin",
+"tones": "4-2",
+"sounds_like": "卖淫",
+"en": "prostitution",
+"source": "cedict"
+},
+{
+"pattern": "mai shen",
+"tones": "4-1",
+"sounds_like": "卖身",
+"en": "selling oneself",
+"source": "cedict"
+},
+{
+"pattern": "jian huo",
+"tones": "4-4",
+"sounds_like": "贱货",
+"en": "slut",
+"source": "cedict"
+},
+{
+"pattern": "lai pi",
+"tones": "4-2",
+"sounds_like": "赖皮",
+"en": "shameless",
+"source": "cedict"
+},
+{
+"pattern": "lai zhang",
+"tones": "4-4",
+"sounds_like": "赖账",
+"en": "reneging on a debt",
+"source": "cedict"
+},
+{
+"pattern": "zou gou",
+"tones": "3-3",
+"sounds_like": "走狗",
+"en": "lackey",
+"source": "cedict"
+},
+{
+"pattern": "tiao lou",
+"tones": "4-2",
+"sounds_like": "跳楼",
+"en": "jumping off a building",
+"source": "cedict"
+},
+{
+"pattern": "shen wang",
+"tones": "1-2",
+"sounds_like": "身亡",
+"en": "dying",
+"source": "cedict"
+},
+{
+"pattern": "lun jian",
+"tones": "2-1",
+"sounds_like": "轮奸",
+"en": "gang rape",
+"source": "cedict"
+},
+{
+"pattern": "shu jia",
+"tones": "1-1",
+"sounds_like": "输家",
+"en": "loser",
+"source": "cedict"
+},
+{
+"pattern": "shu diao",
+"tones": "1-4",
+"sounds_like": "输掉",
+"en": "losing",
+"source": "cedict"
+},
+{
+"pattern": "ru ma",
+"tones": "3-4",
+"sounds_like": "辱骂",
+"en": "abuse",
+"source": "cedict"
+},
+{
+"pattern": "mi lu",
+"tones": "2-4",
+"sounds_like": "迷路",
+"en": "lost",
+"source": "cedict"
+},
+{
+"pattern": "song ming",
+"tones": "4-4",
+"sounds_like": "送命",
+"en": "losing one's life",
+"source": "cedict"
+},
+{
+"pattern": "tao fan",
+"tones": "2-4",
+"sounds_like": "逃犯",
+"en": "fugitive",
+"source": "cedict"
+},
+{
+"pattern": "tong jian",
+"tones": "1-1",
+"sounds_like": "通奸",
+"en": "adultery",
+"source": "cedict"
+},
+{
+"pattern": "guo shi",
+"tones": "4-4",
+"sounds_like": "过世",
+"en": "passing away",
+"source": "cedict"
+},
+{
+"pattern": "yi ti",
+"tones": "2-3",
+"sounds_like": "遗体",
+"en": "remains",
+"source": "cedict"
+},
+{
+"pattern": "xie e",
+"tones": "2-4",
+"sounds_like": "邪恶",
+"en": "sinister",
+"source": "cedict"
+},
+{
+"pattern": "xie jiao",
+"tones": "2-4",
+"sounds_like": "邪教",
+"en": "cult",
+"source": "cedict"
+},
+{
+"pattern": "xie mo",
+"tones": "2-2",
+"sounds_like": "邪魔",
+"en": "evil spirit",
+"source": "cedict"
+},
+{
+"pattern": "chou lou",
+"tones": "3-4",
+"sounds_like": "丑陋",
+"en": "ugly",
+"source": "cedict"
+},
+{
+"pattern": "chou e",
+"tones": "3-4",
+"sounds_like": "丑恶",
+"en": "ugly and evil",
+"source": "cedict"
+},
+{
+"pattern": "chuang huo",
+"tones": "3-4",
+"sounds_like": "闯祸",
+"en": "causing trouble",
+"source": "cedict"
+},
+{
+"pattern": "zhen wang",
+"tones": "4-2",
+"sounds_like": "阵亡",
+"en": "dying in battle",
+"source": "cedict"
+},
+{
+"pattern": "yin hun",
+"tones": "1-2",
+"sounds_like": "阴魂",
+"en": "ghost",
+"source": "cedict"
+},
+{
+"pattern": "yin du",
+"tones": "1-2",
+"sounds_like": "阴毒",
+"en": "sinister",
+"source": "cedict"
+},
+{
+"pattern": "nan kan",
+"tones": "2-4",
+"sounds_like": "难看",
+"en": "ugly",
+"source": "cedict"
+},
+{
+"pattern": "li yi",
+"tones": "2-4",
+"sounds_like": "离异",
+"en": "divorced",
+"source": "cedict"
+},
+{
+"pattern": "xiang pi",
+"tones": "3-4",
+"sounds_like": "响屁",
+"en": "loud fart",
+"source": "cedict"
+},
+{
+"pattern": "e si",
+"tones": "4-3",
+"sounds_like": "饿死",
+"en": "starving to death",
+"source": "cedict"
+},
+{
+"pattern": "chan gui",
+"tones": "2-3",
+"sounds_like": "馋鬼",
+"en": "glutton",
+"source": "cedict"
+},
+{
+"pattern": "pian ren",
+"tones": "4-2",
+"sounds_like": "骗人",
+"en": "cheating",
+"source": "cedict"
+},
+{
+"pattern": "gui hun",
+"tones": "3-2",
+"sounds_like": "鬼魂",
+"en": "ghost",
+"source": "cedict"
+},
+{
+"pattern": "gui mei",
+"tones": "3-4",
+"sounds_like": "鬼魅",
+"en": "demon",
+"source": "cedict"
+},
+{
+"pattern": "mo wang",
+"tones": "2-2",
+"sounds_like": "魔王",
+"en": "devil king",
+"source": "cedict"
+},
+{
+"pattern": "mo tou",
+"tones": "2-2",
+"sounds_like": "魔头",
+"en": "monster",
+"source": "cedict"
+},
+{
+"pattern": "lu dun",
+"tones": "3-4",
+"sounds_like": "鲁钝",
+"en": "stupid",
+"source": "cedict"
+},
+{
+"pattern": "diao ren",
+"tones": "3-2",
+"sounds_like": "鸟人",
+"en": "damned wretch",
+"source": "cedict"
+},
+{
+"pattern": "huang qiang",
+"tones": "2-1",
+"sounds_like": "黄腔",
+"en": "lewd joke",
+"source": "cedict"
+},
+{
+"pattern": "shu yi",
+"tones": "3-4",
+"sounds_like": "鼠疫",
+"en": "plague",
+"source": "cedict"
+},
+{
+"pattern": "shu bei",
+"tones": "3-4",
+"sounds_like": "鼠辈",
+"en": "scoundrel",
+"source": "cedict"
+},
+{
+"pattern": "bi ti",
+"tones": "2-4",
+"sounds_like": "鼻涕",
+"en": "snot",
+"source": "cedict"
+},
+{
+"pattern": "gui gong",
+"tones": "1-1",
+"sounds_like": "龟公",
+"en": "pimp",
+"source": "cedict"
+},
+{
+"pattern": "liu nong",
+"tones": "2-2",
+"sounds_like": "流脓",
+"en": "pus",
+"source": "cedict"
+},
+{
+"pattern": "yu ren",
+"tones": "2-2",
+"sounds_like": "愚人",
+"en": "fool",
+"source": "cedict"
+},
+{
+"pattern": "niao bu",
+"tones": "4-4",
+"sounds_like": "尿布",
+"en": "nappy",
+"source": "cedict"
+},
+{
+"pattern": "sha qi",
+"tones": "3-4",
+"sounds_like": "傻气",
+"en": "silly",
+"source": "cedict"
+},
+{
+"pattern": "ji bing",
+"tones": "2-4",
+"sounds_like": "疾病",
+"en": "disease",
+"source": "cedict"
+},
+{
+"pattern": "zuo lao",
+"tones": "4-2",
+"sounds_like": "坐牢",
+"en": "doing time",
+"source": "cedict"
+},
+{
+"pattern": "xia jian",
+"tones": "4-4",
+"sounds_like": "下贱",
+"en": "despicable",
+"source": "cedict"
+},
+{
+"pattern": "wu neng",
+"tones": "2-2",
+"sounds_like": "无能",
+"en": "incompetent",
+"source": "cedict"
+},
+{
+"pattern": "wo nang",
+"tones": "1-5",
+"sounds_like": "窝囊",
+"en": "useless",
+"source": "cedict"
+},
+{
+"pattern": "fei ren",
+"tones": "4-2",
+"sounds_like": "废人",
+"en": "invalid",
+"source": "cedict"
+},
+{
+"pattern": "chou ba guai",
+"tones": "3-1-4",
+"sounds_like": "丑八怪",
+"en": "ugly creature",
+"source": "cedict"
+},
+{
+"pattern": "shen jing bing",
+"tones": "2-1-4",
+"sounds_like": "神经病",
+"en": "crazy",
+"source": "cedict"
+},
+{
+"pattern": "dao mei dan",
+"tones": "3-2-4",
+"sounds_like": "倒霉蛋",
+"en": "unlucky wretch",
+"source": "cedict"
+},
+{
+"pattern": "ben si le",
+"tones": "4-3-5",
+"sounds_like": "笨死了",
+"en": "so stupid",
+"source": "hand"
+},
+{
+"pattern": "chou si le",
+"tones": "3-3-5",
+"sounds_like": "丑死了",
+"en": "so ugly",
+"source": "hand"
+}
+],
+"english": [
+{
+"word": "shit",
+"kind": "profanity"
+},
+{
+"word": "shitting",
+"kind": "profanity"
+},
+{
+"word": "shite",
+"kind": "profanity"
+},
+{
+"word": "fuck",
+"kind": "profanity"
+},
+{
+"word": "fuk",
+"kind": "profanity"
+},
+{
+"word": "dick",
+"kind": "profanity"
+},
+{
+"word": "cunt",
+"kind": "profanity"
+},
+{
+"word": "piss",
+"kind": "profanity"
+},
+{
+"word": "ass",
+"kind": "profanity"
+},
+{
+"word": "arse",
+"kind": "profanity"
+},
+{
+"word": "cock",
+"kind": "profanity"
+},
+{
+"word": "tit",
+"kind": "profanity"
+},
+{
+"word": "tits",
+"kind": "profanity"
+},
+{
+"word": "slut",
+"kind": "profanity"
+},
+{
+"word": "whore",
+"kind": "profanity"
+},
+{
+"word": "bitch",
+"kind": "profanity"
+},
+{
+"word": "bastard",
+"kind": "profanity"
+},
+{
+"word": "damn",
+"kind": "profanity"
+},
+{
+"word": "crap",
+"kind": "profanity"
+},
+{
+"word": "wank",
+"kind": "profanity"
+},
+{
+"word": "wanker",
+"kind": "profanity"
+},
+{
+"word": "pussy",
+"kind": "profanity"
+},
+{
+"word": "boob",
+"kind": "profanity"
+},
+{
+"word": "boobs",
+"kind": "profanity"
+},
+{
+"word": "fag",
+"kind": "profanity"
+},
+{
+"word": "prick",
+"kind": "profanity"
+},
+{
+"word": "twat",
+"kind": "profanity"
+},
+{
+"word": "bugger",
+"kind": "profanity"
+},
+{
+"word": "bollocks",
+"kind": "profanity"
+},
+{
+"word": "dildo",
+"kind": "profanity"
+},
+{
+"word": "nigga",
+"kind": "profanity"
+},
+{
+"word": "nigger",
+"kind": "profanity"
+},
+{
+"word": "suck",
+"kind": "profanity"
+},
+{
+"word": "sucker",
+"kind": "profanity"
+},
+{
+"word": "poo",
+"kind": "tease"
+},
+{
+"word": "poop",
+"kind": "tease"
+},
+{
+"word": "pee",
+"kind": "tease"
+},
+{
+"word": "wee",
+"kind": "tease"
+},
+{
+"word": "fat",
+"kind": "tease"
+},
+{
+"word": "fatty",
+"kind": "tease"
+},
+{
+"word": "dumb",
+"kind": "tease"
+},
+{
+"word": "dummy",
+"kind": "tease"
+},
+{
+"word": "die",
+"kind": "tease",
+"note": "also the pinyin of 迭"
+},
+{
+"word": "dead",
+"kind": "tease"
+},
+{
+"word": "sick",
+"kind": "tease"
+},
+{
+"word": "loser",
+"kind": "tease"
+},
+{
+"word": "pig",
+"kind": "tease"
+},
+{
+"word": "dog",
+"kind": "tease"
+},
+{
+"word": "rat",
+"kind": "tease"
+},
+{
+"word": "ugly",
+"kind": "tease"
+},
+{
+"word": "stupid",
+"kind": "tease"
+},
+{
+"word": "idiot",
+"kind": "tease"
+},
+{
+"word": "fool",
+"kind": "tease"
+},
+{
+"word": "nerd",
+"kind": "tease"
+},
+{
+"word": "dork",
+"kind": "tease"
+},
+{
+"word": "lame",
+"kind": "tease"
+},
+{
+"word": "puke",
+"kind": "tease"
+},
+{
+"word": "snot",
+"kind": "tease"
+},
+{
+"word": "fart",
+"kind": "tease"
+},
+{
+"word": "butt",
+"kind": "tease"
+},
+{
+"word": "bum",
+"kind": "tease"
+},
+{
+"word": "dung",
+"kind": "tease"
+},
+{
+"word": "scum",
+"kind": "tease"
+},
+{
+"word": "germ",
+"kind": "tease"
+},
+{
+"word": "moron",
+"kind": "tease"
+},
+{
+"word": "sissy",
+"kind": "tease"
+},
+{
+"word": "wimp",
+"kind": "tease"
+},
+{
+"word": "weirdo",
+"kind": "tease"
+},
+{
+"word": "dumbo",
+"kind": "tease"
+},
+{
+"word": "pong",
+"kind": "tease"
+},
+{
+"word": "stink",
+"kind": "tease"
+},
+{
+"word": "hag",
+"kind": "tease"
 }
 ]
 }

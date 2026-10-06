@@ -148,7 +148,7 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
     <a href="/">☰ Menu</a>
     <a href="/start">People 命盘</a>
     <a href="#" id="nav-fs">Home fengshui 宅运</a>
-    <a href="/baby">Baby 宝宝</a>
+    <a href="/baby" id="nav-baby">Baby 宝宝</a>
   </nav>
 </header>
 <main>
@@ -197,6 +197,7 @@ fetch("/api/pub/version").then(r => r.json())
 let token = null, ws = null;
 const m = location.pathname.match(/^\/w\/([A-Za-z0-9_-]{8,64})/);
 if (m) token = m[1];
+if (token) document.getElementById("nav-baby").href = "/baby?ws=" + token;   // the naming page keeps its shortlist in this workspace
 
 async function api(path, opts) {
   const r = await fetch(path, opts);

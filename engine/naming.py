@@ -17,6 +17,7 @@ before real-world use.
 from __future__ import annotations
 
 import json
+import re
 import unicodedata
 from functools import lru_cache
 from itertools import product
@@ -401,7 +402,12 @@ SOUND_PENALTY = {"same_tone": 0.4,        # every syllable on one tone
                  "same_syllable": 0.4,    # adjacent identical syllables (toneless) …
                  "reduplication": 0.1,    # … unless the given name repeats one character on purpose
                  "same_initial": 0.2, "same_final": 0.2, "repeat_cap": 0.4,
-                 "homophone": 1.0, "near_homophone": 0.5}
+                 "homophone": 1.0,          # sounds exactly like an unlucky word, tones included (strong)
+                 "homophone_tone": 0.7,     # same syllables, different tones (优智 1-4 vs 幼稚 4-4)
+                 "near_homophone": 0.5,     # same after folding z/zh, c/ch, s/sh, n/l, -n/-ng
+                 "english_profanity": 1.0,  # the pinyin spelling reads as an English profanity (strong)
+                 "english_tease": 0.5}      # … or as an English schoolyard word
+STRONG_SOUND = {"homophone", "english_profanity"}   # a strong finding caps the grade at 待斟酌
 _INITIALS = ("zh", "ch", "sh", "b", "p", "m", "f", "d", "t", "n", "l", "g", "k", "h", "j", "q", "x", "r",
              "z", "c", "s", "y", "w")
 _TONE_MARKS = {c: t for t, cs in enumerate(("āēīōūǖ", "áéíóúǘ", "ǎěǐǒǔǚ", "àèìòùǜ"), 1) for c in cs}
@@ -410,7 +416,19 @@ _TONE_MARKS = {c: t for t, cs in enumerate(("āēīōūǖ", "áéíóúǘ", "ǎ�
 @lru_cache(maxsize=1)
 def sound_rules() -> dict:
     path = ROOT / "data/naming/sound_rules.json"
-    return json.loads(path.read_text("utf8")) if path.exists() else {"surname_readings": {}, "homophones": []}
+    return json.loads(path.read_text("utf8")) if path.exists() else {"surname_readings": {}, "homophones": [], "english": []}
+
+
+@lru_cache(maxsize=1)
+def _sound_index() -> tuple[dict, dict, list]:
+    """(exact: syllables → [homophone], folded: folded syllables → [homophone], english: [(folded word, entry)])."""
+    exact: dict[tuple, list] = {}
+    folded: dict[tuple, list] = {}
+    for h in sound_rules()["homophones"]:
+        pat = tuple(h["pattern"].split())
+        exact.setdefault(pat, []).append(h)
+        folded.setdefault(tuple(_near(x) for x in pat), []).append(h)
+    return exact, folded, [(_english_fold(w["word"]), w) for w in sound_rules().get("english", [])]
 
 
 def _syllable(py: str) -> tuple[str, str, str, int]:
@@ -429,6 +447,13 @@ def _near(syl: str) -> str:
     if syl.startswith("l"):
         syl = "n" + syl[1:]
     return syl[:-1] if syl.endswith("ng") else syl
+
+
+def _english_fold(word: str) -> str:
+    """How a pinyin string looks to an English reader: lower-case, c→k, y→i, ee→i, ph→f, doubled
+    letters collapsed (shiting = shitting, pusi = pussy)."""
+    w = word.lower().replace("ph", "f").replace("ee", "i").replace("c", "k").replace("y", "i")
+    return re.sub(r"(.)\1+", r"\1", w)
 
 
 def name_syllables(surname: str, given: str) -> list[tuple]:
@@ -474,20 +499,44 @@ def sound_score(surname: str, given: str) -> dict:
         left = round(left - pen, 2)
         add(kind, zh, en, pen)
     base = [x[0] for x in syl]
-    hit = {}
-    for h in sound_rules()["homophones"]:
-        pat = h["pattern"].split()
-        for i in range(len(base) - len(pat) + 1):
-            run = base[i:i + len(pat)]
-            kind = ("homophone" if run == pat else
-                    "near_homophone" if [_near(x) for x in run] == [_near(x) for x in pat] else None)
-            if kind and (h["sounds_like"] not in hit or kind == "homophone"):
-                hit[h["sounds_like"]] = (kind, h, chars[i:i + len(pat)])
+    exact, folded, english = _sound_index()
+    hit: dict[str, tuple] = {}
+    for n in (2, 3):
+        for i in range(len(base) - n + 1):
+            run = tuple(base[i:i + n])
+            cands = [(h, "homophone" if all(pt in ("5", str(t)) for pt, t in zip(h.get("tones", "").split("-"), tones[i:i + n]))
+                      else "homophone_tone") for h in exact.get(run, [])]   # a neutral tone in the word matches any tone
+            cands += [(h, "near_homophone") for h in folded.get(tuple(_near(x) for x in run), []) if h not in exact.get(run, [])]
+            for h, kind in cands:
+                if h["sounds_like"] not in hit or P[kind] > P[hit[h["sounds_like"]][0]]:
+                    hit[h["sounds_like"]] = (kind, h, chars[i:i + n])
+    verb = {"homophone": ("音同", "sounds like"), "homophone_tone": ("音近", "sounds like (tones differ)"),
+            "near_homophone": ("音似", "sounds close to")}
     for kind, h, run in hit.values():
-        add(kind, f"{run} 音同「{h['sounds_like']}」" if kind == "homophone" else f"{run} 音近「{h['sounds_like']}」",
-            f"{run} sounds {'like' if kind == 'homophone' else 'close to'} {h['sounds_like']} ({h['en']})")
+        add(kind, f"{run} {verb[kind][0]}「{h['sounds_like']}」", f"{run} {verb[kind][1]} {h['sounds_like']} ({h['en']})")
+    # English reading of the pinyin spelling: the given name as one word, and each adjacent pair;
+    # one finding per span, the strongest.
+    n_s = len(surname)
+    spans = [(n_s, len(chars))] + [(i, i + 2) for i in range(len(chars) - 1) if (i, i + 2) != (n_s, len(chars))]
+    for a, b2 in spans:
+        spelled = "".join(base[a:b2])
+        fs = _english_fold(spelled)
+        best = None
+        for fw, w in english:
+            if fs == fw:
+                kind = "english_profanity" if w["kind"] == "profanity" else "english_tease"
+            elif w["kind"] == "profanity" and len(fw) >= 4 and fs.startswith(fw):
+                kind = "english_tease"
+            else:
+                continue
+            if best is None or P[kind] > P[best[0]]:
+                best = (kind, w)
+        if best:
+            kind, w = best
+            add(kind, f"{chars[a:b2]} 英文读似「{w['word']}」",
+                f"{chars[a:b2]} spelt {spelled} reads like the English word {w['word']!r}")
     return {"score": round(max(0.0, 1.0 - sum(f["penalty"] for f in out)), 2), "tones": tones, "findings": out,
-            "pinyin": [x[0] for x in syl]}
+            "pinyin": [x[0] for x in syl], "strong": any(f["kind"] in STRONG_SOUND for f in out)}
 
 
 def interpret_name(given: str) -> dict:
@@ -556,7 +605,7 @@ def stroke_score(grids: dict, sc: dict, n_given: int = 2) -> tuple[float, float]
 
 def score_name(grids: dict, sc: dict, roles: list[str], confs: list[float] | None = None,
                meanings: list[float] | None = None, genders: list[float] | None = None,
-               sound: float = 1.0) -> dict:
+               sound: float = 1.0, strong_sound: bool = False) -> dict:
     n = max(1, len(roles))
     confs = confs if confs is not None else [1.0] * len(roles)
     meanings = meanings if meanings is not None else [1.0] * len(roles)
@@ -571,8 +620,12 @@ def score_name(grids: dict, sc: dict, roles: list[str], confs: list[float] | Non
     gw = ("人/總 15 · 地 10 (单名; 外格 unscored)" if len(roles) == 1 else "人8 地7 總7 外3")
     total = round(sum(parts.values()), 1)
     _, gzh, gen = next(g for g in GRADES if total >= g[0])
+    grade = {"zh": gzh, "en": gen}
+    if strong_sound:                         # an unlucky homophone or English profanity overrides the total
+        grade = {"zh": GRADES[-1][1], "en": GRADES[-1][2], "capped": True,
+                 "reason": "谐音不雅 — the name sounds like an unlucky or rude word"}
     return {"total": total, "parts": parts, "max": dict(SCORE_MAX), "labels": PART_LABEL,
-            "grade": {"zh": gzh, "en": gen},
+            "grade": grade,
             "basis": f"用神 30 (用神 1.0 · 喜 0.7 · 闲 0.3 · 未定 0.3 · 忌 0) + 五格 25 ({gw}, 吉 only) + "
                      "三才 15 (生 1.0 · 比 0.8 · 洩 0.4 · 人剋 0.2 · 被剋 0) + 字义 10 (categorised 1.0 · "
                      "plain 0.5 · adverse 0) + 音韵 5 (tone pattern, repeated sounds, unlucky homophones) + 性别 5 (neutral or matching 1.0 · "
@@ -652,6 +705,7 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
         confs = [confidence(e) for _, e, _ in chars]
         means = [meaning_value(ch) for ch, _, _ in chars]
         gens = [0.0 if gender_mismatch(ch, sex) else 1.0 for ch, _, _ in chars]
+        snd = sound_score(surname, "".join(ch for ch, _, _ in chars))
         return {"given": "".join(ch for ch, _, _ in chars),
                 "name": surname + "".join(ch for ch, _, _ in chars),
                 "chars": [{"ch": ch, "py": e.get("py") or "", "el": e.get("el"), "role": ro,
@@ -659,9 +713,8 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
                           for (ch, e, ip), ro, cf in zip(chars, roles, confs)],
                 "ji": sum(1 for v in grids.values() if v["luck"] == "吉"),
                 "sancai": sc["verdict"], "zong": grids["總格"]["luck"],
-                "score": score_name(grids, sc, roles, confs, means, gens,
-                                    sound_score(surname, "".join(ch for ch, _, _ in chars))["score"]),
-                "changed": changed,
+                "score": score_name(grids, sc, roles, confs, means, gens, snd["score"], snd["strong"]),
+                "strong_sound": snd["strong"], "changed": changed,
                 "_k": (not all(ip for _, _, ip in chars), max(e["lvl"] for _, e, _ in chars),
                        sum(e["ks"] for _, e, _ in chars))}
 
@@ -692,6 +745,8 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
                 for rb in g1[b][:4]:
                     if ra[0] != rb[0]:
                         rows.append(row([ra, rb], [0, 1]))
+    dropped = sum(1 for r in rows if r["strong_sound"])
+    rows = [r for r in rows if not r["strong_sound"]]     # never offer a name that sounds like a rude word
     rows.sort(key=lambda r: (-r["score"]["total"], r["_k"], r["given"]))
     out, per_first = [], {}
     for r in rows:
@@ -709,6 +764,7 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
     if baseline:
         baseline.pop("_k")
     return {"mode": mode, "baseline": baseline, "results": out, "els": sorted(want), "meaning": meaning,
+            "dropped_sound": dropped,
             "criteria": ["total score (用神 30 + 五格 25 + 三才 15 + 字义 10 + 音韵 5 + 性别 5 + 可信度 10), highest first",
                          "then curated name characters, common level 1 before 2, fewer strokes",
                          "empty boxes filled only from: " + "·".join(sorted(want))]}
@@ -770,7 +826,7 @@ def name_card(ys: dict, surname: str, given: str, trad: dict | None = None, sex:
     gv = chars[len(surname):]
     score = score_name(grids, sc, [c["role"] for c in gv], [c["conf"] for c in gv],
                        [meaning_value(c["ch"]) for c in gv], [0.0 if c["mismatch"] else 1.0 for c in gv],
-                       (snd := sound_score(surname, given))["score"])
+                       (snd := sound_score(surname, given))["score"], snd["strong"])
     score["notes"] = _score_notes(gv, grids, sc, sex, snd)
     blocked = meaning_exclude()
     warnings = [{"ch": c["ch"], "why": blocked[c["ch"]]["why"], "class": blocked[c["ch"]]["class"]}
@@ -779,7 +835,7 @@ def name_card(ys: dict, surname: str, given: str, trad: dict | None = None, sex:
                   "why": ("女性字 usually a girl's name character" if c["gender"] == "F"
                           else "男性字 usually a boy's name character")} for c in gv if c["mismatch"]]
     warnings += [{"ch": surname + given, "class": "sound", "why": f"{f['zh']} — {f['en']}"}
-                 for f in snd["findings"] if f["kind"] == "homophone"]
+                 for f in snd["findings"] if f["kind"] in STRONG_SOUND]
     return {"name": surname + given, "surname": surname, "given": given, "chars": chars, "score": score,
             "sound": snd, "interpretation": interpret_name(given),
             "warnings": warnings,

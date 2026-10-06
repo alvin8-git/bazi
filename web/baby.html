@@ -113,6 +113,8 @@ h2{font-size:16px;color:var(--gold);margin:0 0 10px}
 .scoreband{display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin-top:14px;padding:14px 16px;border:1px solid var(--line,#e6e0d4);border-radius:12px;background:#fffdf8}
 .sbtot{min-width:150px}.grade{font-size:22px;font-weight:700;color:var(--gold);margin:4px 0}.grade small{font-size:14px;font-weight:500;margin-left:6px;color:var(--muted)}
 .grade.g-reconsider{color:var(--xiong)}
+.grade .capped{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:var(--xiong);border-radius:999px;padding:1px 8px;margin-left:8px;vertical-align:middle}
+.capnote{max-width:170px;margin-top:2px}
 .bk.gmk{background:#b7791f}
 .tradline{margin:12px 0 4px;font-size:15px}.tradline b{font-size:20px;letter-spacing:6px}
 .tsw{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-left:8px;vertical-align:middle}
@@ -211,6 +213,8 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
           <input id="i-dob" name="dob" type="date" required></div>
         <div><label for="i-time">时间 Time (12:00 if unknown)</label>
           <input id="i-time" name="birth_time" type="time" value="12:00"></div>
+        <div><label for="i-given">名字 Given name (optional, 1–2 characters)</label>
+          <input id="i-given" name="given" maxlength="2" placeholder="已有名字可直接评析 evaluate a chosen name" autocomplete="off"></div>
       </div>
       <input type="hidden" name="name" value="">
       <div class="formbtns">
@@ -340,13 +344,13 @@ function optHtml() {
     ? L("更优的替换", "Better alternatives — one character changed, the other kept")
     : L("最佳补全", "Best characters for the empty box" + (S.mode === 2 && !S.slots[0] && !S.slots[1] ? "es" : ""));
   return `<div class="opt"><div class="opthead"><b>${head}</b>
-      <span class="count">${L("按总分排序", "ranked by score: 用神 30 + 五格 25 + 三才 15 + 字义 10 + 音韵 5 + 性别 5 + 可信度 10")} · ${Li("元素", "elements")} ${o.els.join("·")}${(o.meaning || []).some(Boolean) ? ` · ${Li("字义", "meaning")} ${o.meaning.map((m, i) => m ? `${i + 1}:${catOf(m).zh}` : "").filter(Boolean).join(" ")}` : ""}</span>
+      <span class="count">${L("按总分排序", "ranked by score: 用神 30 + 五格 25 + 三才 15 + 字义 10 + 音韵 5 + 性别 5 + 可信度 10")} · ${Li("元素", "elements")} ${o.els.join("·")}${(o.meaning || []).some(Boolean) ? ` · ${Li("字义", "meaning")} ${o.meaning.map((m, i) => m ? `${i + 1}:${catOf(m).zh}` : "").filter(Boolean).join(" ")}` : ""}${o.dropped_sound ? ` · ${o.dropped_sound} ${Li("个谐音不雅已剔除", "dropped for sounding like a rude or unlucky word")}` : ""}</span>
       <button class="fchip" data-optclose="1">关闭 close</button></div>
     ${o.baseline ? optRow(o.baseline, true) : ""}
     ${o.results.length ? o.results.map(r => optRow(r, false)).join("")
       : `<div class="empty-msg">${o.mode === "improve" ? L("已是最佳", "No single-character change scores higher with these filters") : L("没有符合条件的字", "No character matches — widen the element filter or clear a meaning choice")}</div>`}
     <div class="note">Gold outline = the character the optimiser chose.</div>
-    <div class="limits"><b>本工具只是初筛，不是定论。</b> This tool ranks names by the 八字 用神 elements, the 五格 and 三才 stroke methods, and a partly curated character list. 五格 is a modern school, not a classical rule, and element assignments and stroke counts differ between dictionaries and practitioners. Sound is checked only by simple house rules (tone pattern, repeated sounds, a short list of unlucky homophones); it does not judge dialect readings, 生肖 or family naming rules; meaning is screened only for clearly adverse characters. Treat the ranking as a shortlist for the family (and a practitioner) to review, not a verdict.</div></div>`;
+    <div class="limits"><b>本工具只是初筛，不是定论。</b> This tool ranks names by the 八字 用神 elements, the 五格 and 三才 stroke methods, and a partly curated character list. 五格 is a modern school, not a classical rule, and element assignments and stroke counts differ between dictionaries and practitioners. Sound is checked by simple house rules: tone pattern, repeated sounds, Chinese words the name sounds like (three strengths: same tones, different tones, merged consonants; word list hand-reviewed from <a href="https://www.mdbg.net/chinese/dictionary?page=cedict" rel="noopener" target="_blank">CC-CEDICT</a>, CC BY-SA 4.0) and English words the pinyin spelling reads as. It does not judge dialect readings, 生肖 or family naming rules; meaning is screened only for clearly adverse characters. Treat the ranking as a shortlist for the family (and a practitioner) to review, not a verdict.</div></div>`;
 }
 async function loadOpt() {
   S.opt = {loading: true}; $("#opt").innerHTML = optHtml();
@@ -390,10 +394,11 @@ function cardBlock() {
         ${c.interpretation.partial ? `<div class="count">部分字无固定寓意 — one character has no stock name sense; its dictionary gloss is shown.</div>` : ""}</div></div>
     <div class="scoreband" title="${esc(c.score.basis)}">
       <div class="sbtot"><div class="scoretot">${c.score.total}<small>/100 ${Li("评分", "score")}</small></div>
-        <div class="grade g-${c.score.grade.en}">${c.score.grade.zh}<small>${c.score.grade.en}</small></div>
+        <div class="grade g-${c.score.grade.en}">${c.score.grade.zh}<small>${c.score.grade.en}</small>${c.score.grade.capped ? `<span class="capped" title="${esc(c.score.grade.reason)}">已封顶 capped</span>` : ""}</div>
+        ${c.score.grade.capped ? `<div class="count capnote">${esc(c.score.grade.reason)}</div>` : ""}
         <div><span class="luck ${c.ji === 5 ? "ji" : "amber"}">${c.ji}/5 吉</span> ${luckChip(c.sancai.verdict, true).replace(">", ">三才 ")}</div></div>
       ${scoreParts(c.score)}</div>
-    ${(c.warnings || []).map(w => `<div class="warn" role="alert"><b>${w.ch}</b> ${w.class === "gender" ? Li("性别不符", "gender mismatch — lowers the 性别 score") : w.class === "sound" ? Li("谐音不雅", "unlucky homophone — 音韵 scores 0") : Li("字义不宜取名", "adverse meaning — not recommended in a name")}: ${esc(w.why)}</div>`).join("")}
+    ${(c.warnings || []).map(w => `<div class="warn" role="alert"><b>${w.ch}</b> ${w.class === "gender" ? Li("性别不符", "gender mismatch — lowers the 性别 score") : w.class === "sound" ? Li("谐音不雅", "sounds like a rude or unlucky word — grade capped at 待斟酌") : Li("字义不宜取名", "adverse meaning — not recommended in a name")}: ${esc(w.why)}</div>`).join("")}
     <div class="tradline">${Li("繁體", "traditional")} <b>${c.trad}</b>
       <span class="count">${c.strokes.join(" + ")} 画 (康熙)</span>
       ${amb.map(x => `<span class="tsw" role="group" aria-label="traditional form of ${x.ch}">${Object.entries(x.trad_alts).map(([f, k]) => `<button data-trad="${x.ch}:${f}" aria-pressed="${x.trad === f}">${f} <small>${k}画</small></button>`).join("")}</span>`).join("")}</div>
@@ -405,32 +410,54 @@ function cardBlock() {
       ${S.shortlist.find(x => x.name === c.name) ? `<button class="btn" disabled>已在候选 in the shortlist</button>`
         : S.shortlist.length >= SL_MAX ? `<button class="btn" disabled>候选已满 ${SL_MAX}/${SL_MAX} — delete one to add another</button>`
         : `<button class="btn" data-short="1">加入候选 add to shortlist (${S.shortlist.length}/${SL_MAX})</button>`}<button class="btn" data-again="1">重新选字 start over</button></div>
-    <div class="limits"><b>本工具只是初筛，不是定论。</b> This tool ranks names by the 八字 用神 elements, the 五格 and 三才 stroke methods, and a partly curated character list. 五格 is a modern school, not a classical rule, and element assignments and stroke counts differ between dictionaries and practitioners. Sound is checked only by simple house rules (tone pattern, repeated sounds, a short list of unlucky homophones); it does not judge dialect readings, 生肖 or family naming rules; meaning is screened only for clearly adverse characters. Treat the ranking as a shortlist for the family (and a practitioner) to review, not a verdict.</div>
+    <div class="limits"><b>本工具只是初筛，不是定论。</b> This tool ranks names by the 八字 用神 elements, the 五格 and 三才 stroke methods, and a partly curated character list. 五格 is a modern school, not a classical rule, and element assignments and stroke counts differ between dictionaries and practitioners. Sound is checked by simple house rules: tone pattern, repeated sounds, Chinese words the name sounds like (three strengths: same tones, different tones, merged consonants; word list hand-reviewed from <a href="https://www.mdbg.net/chinese/dictionary?page=cedict" rel="noopener" target="_blank">CC-CEDICT</a>, CC BY-SA 4.0) and English words the pinyin spelling reads as. It does not judge dialect readings, 生肖 or family naming rules; meaning is screened only for clearly adverse characters. Treat the ranking as a shortlist for the family (and a practitioner) to review, not a verdict.</div>
   </div>`;
 }
 
-/* ---------- shortlist: kept in this browser, one list per baby (surname + sex + birth date + time) ---------- */
+/* ---------- shortlist: one list per baby (surname + sex + birth date + time). Saved to the workspace when
+   the page was opened from one (?ws=token), otherwise kept in this browser. ---------- */
 const SL_MAX = 8;
-const slKey = () => "baby.shortlist.v1:" + [S.q.surname, S.q.sex, S.q.dob, S.q.birth_time].join("|");
-function slSave() { try { localStorage.setItem(slKey(), JSON.stringify(S.shortlist)); } catch (e) { /* private mode: memory only */ } }
+S.ws = (m => m && /^[A-Za-z0-9_-]{8,64}$/.test(m) ? m : null)(new URLSearchParams(location.search).get("ws"));
+const slKeyRaw = () => [S.q.surname, S.q.sex, S.q.dob, S.q.birth_time].join("|");
+const slKey = () => "baby.shortlist.v1:" + slKeyRaw();
+const slWsUrl = () => `/api/pub/w/${S.ws}/baby/shortlist?key=${encodeURIComponent(slKeyRaw())}`;
+function slLocalSave() { try { localStorage.setItem(slKey(), JSON.stringify(S.shortlist)); } catch (e) { /* private mode: memory only */ } }
+function slSave() {
+  if (!S.ws) return slLocalSave();
+  const body = JSON.stringify(S.shortlist.map(x => ({given: x.given, trad: x.trad || {}})));
+  fetch(slWsUrl(), {method: "PUT", headers: {"Content-Type": "application/json"}, body})
+    .then(r => { if (!r.ok) throw new Error("save failed"); S.wsSaved = true; })
+    .catch(() => { S.wsSaved = false; slLocalSave(); const el = $("#shortlist"); if (el) el.outerHTML = shortlistBlock(); });
+}
 function slEntry(c, trad) {
   return {name: c.name, given: c.given, trad, score: c.score.total, grade: c.score.grade, ji: c.ji, sv: c.sancai.verdict, tradStr: c.trad,
-    url: "/api/pub/certificate?" + new URLSearchParams({surname: c.surname, given: c.given, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, trad: Object.entries(trad).map(([k, v]) => k + ":" + v).join(",")})};
+    url: slCertUrl(c.given, trad)};
 }
 async function slLoad() {
   let saved = [];
+  if (S.ws) {                                 // the workspace copy is rescored by the server
+    const key = slKey();
+    try {
+      const r = await fetch(slWsUrl()); if (!r.ok) throw new Error("load failed");
+      const d = await r.json(); if (key !== slKey()) return;
+      S.shortlist = d.items.map(x => ({...x, url: slCertUrl(x.given, x.trad)})); S.wsSaved = true;
+      const el = $("#shortlist"); if (el) el.outerHTML = shortlistBlock();
+      return;
+    } catch (e) { S.wsSaved = false; }
+  }
   try { saved = JSON.parse(localStorage.getItem(slKey()) || "[]"); } catch (e) { saved = []; }
   S.shortlist = (Array.isArray(saved) ? saved : []).filter(x => x && x.name && x.given).slice(0, SL_MAX);
   const key = slKey();                       // rescore, so a stored list never shows scores from older weights
   const fresh = await Promise.all(S.shortlist.map((x, i) => api("/api/pub/name/score", {surname: S.q.surname, given: x.given, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time,
     trad: Object.entries(x.trad || {}).map(([k, v]) => k + ":" + v).join(",")}, "sl" + i).then(c => slEntry(c, x.trad || {})).catch(() => null)));
   if (key !== slKey()) return;
-  S.shortlist = fresh.filter(Boolean).sort((a, b) => b.score - a.score); slSave();
+  S.shortlist = fresh.filter(Boolean).sort((a, b) => b.score - a.score); slLocalSave();
   const el = $("#shortlist"); if (el) el.outerHTML = shortlistBlock();
 }
+const slCertUrl = (given, trad) => "/api/pub/certificate?" + new URLSearchParams({surname: S.q.surname, given, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, trad: Object.entries(trad || {}).map(([k, v]) => k + ":" + v).join(",")});
 function shortlistBlock() {
   if (!S.shortlist.length) return `<div id="shortlist"></div>`;
-  return `<div class="sec" id="shortlist"><h2>${L("候选名单", "Shortlist")} <span class="count">${S.shortlist.length}/${SL_MAX} · ${Li("保存在本机浏览器", "kept in this browser for this baby")}</span></h2>
+  return `<div class="sec" id="shortlist"><h2>${L("候选名单", "Shortlist")} <span class="count">${S.shortlist.length}/${SL_MAX} · ${S.ws && S.wsSaved !== false ? Li("已保存到工作区", "saved to your workspace") : S.ws ? Li("工作区暂不可用，暂存本机", "workspace unreachable — kept in this browser for now") : Li("保存在本机浏览器", "kept in this browser for this baby")}</span></h2>
     <table class="sl"><tr><th>${L("名字", "name")}</th><th>${L("评分", "score")}</th><th>${L("五格吉", "吉 of 5")}</th><th>${L("三才", "three powers")}</th><th>${L("繁體", "traditional")}</th><th></th><th></th></tr>
       ${S.shortlist.map((x, i) => `<tr><td><button class="slname" data-slopen="${i}" title="open in the builder">${x.name}</button></td><td><b>${x.score}</b> <small>${x.grade ? x.grade.zh : ""}</small></td><td>${x.ji}/5</td><td>${luckChip(x.sv, true)}</td><td>${x.tradStr}</td>
         <td><a href="${x.url}" target="_blank" rel="noopener">证书 →</a></td><td><button class="sldel" data-sldel="${i}" aria-label="remove ${x.name}">删除 ✕</button></td></tr>`).join("")}</table>
@@ -510,6 +537,8 @@ $("#start").addEventListener("click", async () => {
   $("#start").disabled = true;
   try {
     const chart = await api("/api/pub/name/chart", q);
+    const typed = (f.given.value || "").trim().replace(/[^\p{Script=Han}]/gu, "").slice(0, 2);
+    if (typed) S.pending = typed;             // a name typed in the form is evaluated straight away
     S.q = {...q, surname: chart.surname}; S.chart = chart; S.mode = 2; S.slots = [null, null]; S.info = {}; S.trad = {}; S.active = 0;
     S.els = new Set(chart.fav); S.strokes = new Set(); S.py = S.pendingPy || ""; S.pendingPy = ""; S.page = 1; S.shortlist = []; slLoad();
     S.meaning = (S.pendingMean || "").split(",").map(m => (chart.categories || []).some(c => c.id === m) ? m : null).concat([null, null]).slice(0, 2); S.pendingMean = "";

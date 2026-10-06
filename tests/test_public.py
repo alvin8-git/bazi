@@ -440,3 +440,24 @@ def test_name_api_meaning_and_five_part_score():
     cert = client.get(f"/api/pub/certificate?surname=王&given=禄婷&{NAME_Q}").text
     assert "既福禄双全，又亭亭玉立" in cert
     assert s["sancai"]["detail"][0]["text"] and s["chars"][1]["gloss"]
+
+
+def test_workspace_baby_shortlist_routes():
+    tok = _new_ws(P1)
+    key = "王|F|2026-03-15|09:30"
+    assert client.get(f"/api/pub/w/{tok}/baby/shortlist?key={key}").json() == {"key": key, "items": [], "max": 8}
+    items = [{"given": g, "trad": {}} for g in ("禄婷", "禄璇", "明华")]
+    r = client.put(f"/api/pub/w/{tok}/baby/shortlist?key={key}", json=items).json()
+    assert [x["name"] for x in r["items"]] == ["王禄璇", "王禄婷", "王明华"] and r["items"][0]["score"] == 100
+    assert client.get(f"/api/pub/w/{tok}/baby/shortlist?key={key}").json()["items"][2]["grade"]["zh"] == "待斟酌"
+    assert client.put(f"/api/pub/w/{tok}/baby/shortlist?key={key}", json=[{"given": "禄婷", "trad": {}}] * 9).status_code == 400
+    assert client.put(f"/api/pub/w/{tok}/baby/shortlist?key={key}", json=[{"given": "禄〇", "trad": {}}]).status_code == 400
+    assert client.put(f"/api/pub/w/{tok}/baby/shortlist?key=bad", json=[]).status_code == 400
+    assert client.get(f"/api/pub/w/nosuchtoken00/baby/shortlist?key={key}").status_code == 404
+    for i in range(9):                                        # a ninth baby drops the oldest list
+        client.put(f"/api/pub/w/{tok}/baby/shortlist?key=赵|M|2026-01-0{i % 9 + 1}|12:00", json=[{"given": "丹", "trad": {}}])
+    assert client.get(f"/api/pub/w/{tok}/baby/shortlist?key={key}").json()["items"] == []
+    assert client.get(f"/api/pub/w/{tok}/baby/shortlist?key=赵|M|2026-01-09|12:00").json()["items"][0]["name"] == "赵丹"
+    cap = client.get(f"/api/pub/name/score?surname=侍&given=婷&{NAME_Q}").json()
+    assert cap["score"]["grade"]["capped"] and cap["warnings"][0]["class"] == "sound"
+    assert client.get(f"/api/pub/name/optimise?surname=王&{NAME_Q}&given=_婷").json()["dropped_sound"] >= 1
