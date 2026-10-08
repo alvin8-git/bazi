@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 485" role="img" aria-label="The ten Heavenly Stems 甲乙丙丁戊己庚辛壬癸 in five pairs: 甲乙 wood, 丙丁 fire, 戊己 earth, 庚辛 metal, 壬癸 water. Solid ring = yang, dashed ring = yin." font-family="system-ui, 'Noto Sans SC', sans-serif">
+<title>The ten Heavenly Stems as five element pairs</title>
+<rect width="720" height="485" fill="#faf7f2"/>
+<circle cx="313.6" cy="87.3" r="30" fill="#fff" stroke="#2b2620" stroke-width="3"/>
+<text x="313.6" y="96.3" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold">甲</text>
+<circle cx="406.4" cy="87.3" r="30" fill="#fff" stroke="#2b2620" stroke-width="3" stroke-dasharray="6 4"/>
+<text x="406.4" y="96.3" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold">乙</text>
+<circle cx="481.4" cy="141.8" r="30" fill="#fff" stroke="#2b2620" stroke-width="3"/>
+<text x="481.4" y="150.8" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold">丙</text>
+<circle cx="510.0" cy="230.0" r="30" fill="#fff" stroke="#2b2620" stroke-width="3" stroke-dasharray="6 4"/>
+<text x="510.0" y="239.0" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold">丁</text>
+<circle cx="481.4" cy="318.2" r="30" fill="#fff" stroke="#2b2620" stroke-width="3"/>
+<text x="481.4" y="327.2" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold">戊</text>
+<circle cx="406.4" cy="372.7" r="30" fill="#fff" stroke="#2b2620" stroke-width="3" stroke-dasharray="6 4"/>
+<text x="406.4" y="381.7" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold">己</text>
+<circle cx="313.6" cy="372.7" r="30" fill="#fff" stroke="#2b2620" stroke-width="3"/>
+<text x="313.6" y="381.7" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold">庚</text>
+<circle cx="238.6" cy="318.2" r="30" fill="#fff" stroke="#2b2620" stroke-width="3" stroke-dasharray="6 4"/>
+<text x="238.6" y="327.2" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold">辛</text>
+<circle cx="210.0" cy="230.0" r="30" fill="#fff" stroke="#2b2620" stroke-width="3"/>
+<text x="210.0" y="239.0" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold">壬</text>
+<circle cx="238.6" cy="141.8" r="30" fill="#fff" stroke="#2b2620" stroke-width="3" stroke-dasharray="6 4"/>
+<text x="238.6" y="150.8" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold">癸</text>
+<text x="360.0" y="27.1" font-size="20" fill="#2b2620" text-anchor="middle" font-weight="bold">木 Wood</text>
+<text x="360.0" y="47.1" font-size="14" fill="#8a6d1f" text-anchor="middle" font-weight="normal">甲 yang · 乙 yin</text>
+<text x="603.7" y="165.9" font-size="20" fill="#2b2620" text-anchor="middle" font-weight="bold">火 Fire</text>
+<text x="603.7" y="185.9" font-size="14" fill="#8a6d1f" text-anchor="middle" font-weight="normal">丙 yang · 丁 yin</text>
+<text x="510.6" y="390.5" font-size="20" fill="#2b2620" text-anchor="middle" font-weight="bold">土 Earth</text>
+<text x="510.6" y="410.5" font-size="14" fill="#8a6d1f" text-anchor="middle" font-weight="normal">戊 yang · 己 yin</text>
+<text x="209.4" y="390.5" font-size="20" fill="#2b2620" text-anchor="middle" font-weight="bold">金 Metal</text>
+<text x="209.4" y="410.5" font-size="14" fill="#8a6d1f" text-anchor="middle" font-weight="normal">庚 yang · 辛 yin</text>
+<text x="116.3" y="165.9" font-size="20" fill="#2b2620" text-anchor="middle" font-weight="bold">水 Water</text>
+<text x="116.3" y="185.9" font-size="14" fill="#8a6d1f" text-anchor="middle" font-weight="normal">壬 yang · 癸 yin</text>
+<text x="360.0" y="228.0" font-size="20" fill="#2b2620" text-anchor="middle" font-weight="bold">十天干</text>
+<text x="360.0" y="250.0" font-size="14" fill="#2b2620" text-anchor="middle" font-weight="normal">Ten Heavenly Stems</text>
+<circle cx="150" cy="464" r="9" fill="#fff" stroke="#2b2620" stroke-width="3"/>
+<text x="166.0" y="469.0" font-size="14" fill="#2b2620" text-anchor="start" font-weight="normal">solid = yang 阳</text>
+<circle cx="340" cy="464" r="9" fill="#fff" stroke="#2b2620" stroke-width="3" stroke-dasharray="4 3"/>
+<text x="356.0" y="469.0" font-size="14" fill="#2b2620" text-anchor="start" font-weight="normal">dashed = yin 阴</text>
+<text x="520.0" y="469.0" font-size="14" fill="#2b2620" text-anchor="start" font-weight="normal">one pair per element</text>
+</svg>

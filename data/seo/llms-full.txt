@@ -177,145 +177,309 @@ Find your own kua and directions with the free reading at /start, or trace your 
 
 ---
 
-# The Ten Day Masters (日主): Which One Are You?
+# Day Master (日主) Explained: The Ten Stems and Your Chart Strength
 
 Source: https://bazifor.me/learn/day-masters-explained
-Updated: 2026-09-16
+Updated: 2026-10-08
 
 BaZi Basics
 
-By BaziMaster 2026-09-16 Updated 2026-09-16
-In a BaZi chart, one character stands for you: the Heavenly Stem of your day pillar, called the Day Master (日主 or 日元). Everything else in the chart — the other seven characters, the luck cycles, the annual years — is read in relation to it. There are exactly ten possibilities, one for each stem, and each is one of the Five Elements in either yang (阳) or yin (阴) polarity.
+By BaziMaster 2026-09-16 Updated 2026-10-08
+A Day Master (日主, also 日元) is the Heavenly Stem of your day pillar, the single character that stands for you in a BaZi chart. Every other stem, branch, luck cycle and year is read in relation to it. There are exactly ten possible Day Masters: five elements, each in a yang and a yin form.
 
-## The ten, in one pass
+## What does the Day Master actually decide?
 
-- 甲 (jiǎ) — yang wood. The tall tree: upright, principled, slow to bend, grows in one direction. Thrives with room to grow; struggles when boxed in.
+A BaZi chart has eight characters, and seven of them are defined by their relationship to the eighth. That relationship is what the Ten Gods (十神) record, and it is also what decides whether the chart is strong or weak, which elements help you, and which colours and directions the home layer later recommends.
 
-- 乙 (yǐ) — yin wood. The vine or flowering grass: flexible, adaptive, finds a way around obstacles rather than through them.
+The Day Master is computed, not chosen. It comes from the 60-day 甲子 cycle, so the same stem returns on a fixed rhythm every 10 days.
 
-- 丙 (bǐng) — yang fire. The sun: warm, visible, generous with energy, at its best in the open. Dislikes being ignored more than being opposed.
+Key facts
 
-- 丁 (dīng) — yin fire. The lamp flame: focused, penetrating, quietly persistent. Reads people well; burns steadily rather than brightly.
+- There are 10 Day Masters: 5 elements, each in a yang and a yin form, drawn from the 10 Heavenly Stems.
+- The sample chart 戊辰 乙卯 己巳 戊辰 has Day Master 己, yin earth.
+- The sample birth time of 09:30 on the Singapore clock becomes 08:16 true solar time (UTC+8, longitude 103.8517°E, equation of time -9.4 minutes).
+- The engine rates the sample chart 身弱 (weak) with a score of -0.97, a season state of 死 and roots 辰巳辰.
+- The sample's favourable elements are 火 and 土, from 扶抑法 (technique 1 of 4) and 調候法 (technique 2 of 4).
+- The year in a chart turns at 立春, which falls on 2027-02-04 in 2027.
 
-- 戊 (wù) — yang earth. The mountain: stable, protective, hard to move — a reliability that can shade into stubbornness.
+Wheel of the ten Heavenly Stems grouped by element, with each stem marked yang or yin
 
-- 己 (jǐ) — yin earth. The field soil: nurturing, absorbent, cultivating. Works on people and projects patiently, from below.
+## Which of the ten stems is yours?
 
-- 庚 (gēng) — yang metal. The axe or raw ore: decisive, dutiful, cuts through. Justice-minded; blunt when unpolished.
+Read your day pillar from a chart calculator, then find its upper character here. The table pairs each stem with its element and polarity, and adds one short clause for temperament. The engine holds trait text per element, not per stem, so each clause is the element's trait plus a polarity label (method note).
 
-- 辛 (xīn) — yin metal. The jewel: refined, precise, image-aware. Small, hard, and sharper than it looks.
+Stem | Element | Polarity | Trait clause (method note) | 
 
-- 壬 (rén) — yang water. The river or sea: expansive, resourceful, always moving, hard to contain.
+甲 (jiǎ) | 木 wood | yang (陽) | outward-facing form of: pioneering, growth-driven, initiating | 
 
-- 癸 (guǐ) — yin water. The rain or dew: subtle, perceptive, seeps in everywhere; the quiet strategist of the ten.
+乙 (yǐ) | 木 wood | yin (陰) | inward-facing form of: pioneering, growth-driven, initiating | 
 
-These portraits are a doorway, not a verdict. Two 丙 fire people can live very different lives, because the Day Master is only the subject of the sentence — the rest of the chart supplies the verbs.
+丙 (bǐng) | 火 fire | yang (陽) | outward-facing form of: expressive, social, leadership-leaning | 
 
-## Strength changes everything
+丁 (dīng) | 火 fire | yin (陰) | inward-facing form of: expressive, social, leadership-leaning | 
 
-Classical technique first asks whether your Day Master is strong (身强) or weak (身弱): does the season of your birth month feed it, and do the other characters support or drain it? The answer flips the whole reading. A strong Day Master welcomes challenge and output (the elements that drain it become productive); a weak one needs support first (the elements that feed it become the medicine). This strength assessment is a rule-based computation — month-season weighting plus rooted support — not an intuition, and it is the foundation the next article builds on: your favourable elements, or 用神.
+戊 (wù) | 土 earth | yang (陽) | outward-facing form of: steady, reliable, grounding | 
 
-## Find yours precisely
+己 (jǐ) | 土 earth | yin (陰) | inward-facing form of: steady, reliable, grounding | 
 
-Because the day pillar runs on an unbroken 60-day cycle, you cannot guess your Day Master from your birthday — it has to be computed, with the day boundary handled correctly (the traditional day starts at 子时, 11 pm). The free reading below computes it exactly and tells you not just which Day Master you are, but whether it is strong or weak and what follows from that.
+庚 (gēng) | 金 metal | yang (陽) | outward-facing form of: structured, precise, disciplined | 
+
+辛 (xīn) | 金 metal | yin (陰) | inward-facing form of: structured, precise, disciplined | 
+
+壬 (rén) | 水 water | yang (陽) | outward-facing form of: reflective, adaptive, communicative | 
+
+癸 (guǐ) | 水 water | yin (陰) | inward-facing form of: reflective, adaptive, communicative | 
+
+The stems run in element pairs: 甲乙 wood, 丙丁 fire, 戊己 earth, 庚辛 metal and 壬癸 water, yang first and yin second. If you know your element, only the polarity is left to pin down, and the pair shares its trait text in the engine.
+
+Two cautions apply. A stem is one character of eight, so the Day Master describes a starting temperament and not a verdict. And two people with the same Day Master can read very differently, because strength and favourable elements depend on the other seven characters.
+
+## How is Day Master strength judged?
+
+Strength asks whether the Day Master has enough support, or too much to carry. The engine follows the 旺相休囚死 framework from the 三命通會 tradition together with 通根 (rooting).
+
+- Season. The month branch gives the Day Master one of five states, 旺 (prosperous), 相 (assisting), 休 (resting), 囚 (confined) or 死 (dead).
+
+- Roots. A stem is rooted (通根) when branches in the chart carry its own element. Roots keep a seasonally weak Day Master from collapsing.
+
+- Support against drain. Characters of the same element or the element that produces it count as support. Characters that exhaust, control or consume it count as drain.
+
+- A numeric score. The engine combines these into one signed score (method note). Negative means weak (身弱), positive means strong (身強).
+
+The strength verdict then drives the 用神, the favourable elements. The engine uses four techniques, 扶抑 (support and restrain), 調候 (climate), 通關 (bridging) and 病藥 (disease and remedy), and cites which one fired.
+
+## What does a worked chart look like?
+
+The sample person is 王大明, male, born 1988-03-15 at 09:30 in Singapore. His pillars are 戊辰 (year), 乙卯 (month), 己巳 (day) and 戊辰 (hour). The day stem is 己, so his Day Master is yin earth, the soft, absorbing form of earth. The engine's trait text for earth reads steady, reliable, grounding.
+
+The engine rates him 身弱 (weak) with a score of -0.97. The season state is 死, because earth is dead in a wood month, and the chart has roots 辰巳辰. The support total is 6.33 against a drain of 3.67, and the engine's score of -0.97 is its weighted result (method note).
+
+For a weak Day Master, the favourable elements are 火 and 土, and the unfavourable ones are 木, 水 and 金. The matching colours are 紅, 紫, 黃 and 棕. The citations on that conclusion are 扶抑法 (technique 1 of 4) and 調候法 (technique 2 of 4). The same weak verdict feeds the Ten Gods reading in the ten gods guide.
+
+## What changes for Singapore and Malaysia births?
+
+Three practical details decide which stem you end up with.
+
+- Clock time is not solar time. For 王大明 the correction is 74 minutes, from 09:30 to 08:16. The engine works from the corrected time, so always enter the clock time that was on the wall, plus the place.
+
+- Pre-1982 births. Singapore ran on UTC+7:30 before 1982-01-01 and on UTC+8 after it. Malaysia has used MYT, UTC+8, since 1982-01-01. Use the clock that applied on the birth date.
+
+- Year boundary. The year pillar turns at 立春, not at Chinese New Year. In 2027 that is 2027-02-04, so a late-January or early-February birth may belong to the earlier year.
+
+If you are unsure of the hour, a good reading says which of its findings depend on it. The hour pillar contributes to the strength score and to the Ten Gods distribution, so those are the findings to treat with care when the birth time is a guess.
+
+## Sources and method
+
+- Ten stems, polarity and elements: the stem table in the engine, ten stems in five element pairs.
+
+- Trait clauses: the engine's per-element trait text plus a polarity label (method note), not a classical per-stem table.
+
+- Strength: the 旺相休囚死 and 通根 framework, with a numeric score (method note).
+
+- Favourable elements: the four 用神 techniques 扶抑, 調候, 通關 and 病藥, with 三命通會 as the classical source for stem relationships.
+
+- Time: the 子平 true-solar-time convention, with the UTC+7:30 and UTC+8 Singapore offsets.
+
+Find your own Day Master, strength and favourable elements with the free reading at /start.
 
 ---
 
-# Eight House (八宅) Basics: Your Four Good and Four Bad Directions
+# Eight House (八宅) Directions: Your Kua and All Eight Direction Scores
 
 Source: https://bazifor.me/learn/eight-house-directions
-Updated: 2026-09-16
+Updated: 2026-10-08
 
 Fengshui
 
-By BaziMaster 2026-09-16 Updated 2026-09-16
-Of all the classical fengshui schools, Eight House (八宅) is the most personal: it starts not from the building but from you. From your birth year and sex it derives a life gua (命卦) — one of eight trigrams — and from that, every compass direction becomes one of eight qualities, four auspicious and four inauspicious. It is the system behind "sleep with your head pointing this way" and "face this direction at your desk."
+By BaziMaster 2026-09-16 Updated 2026-10-08
+Eight House (八宅) is a feng shui method that starts from the person, not the building. Your birth year and sex give a life gua (命卦, "kua"), one of eight trigrams, and the 八宅大遊年 table turns that kua into a quality for each of the eight compass directions: four auspicious, four inauspicious, each with an engine score.
 
-## Your life gua and your group
+## What is a kua, and which group are you in?
 
-The 命卦 is computed from the birth year (with the 立春 boundary, as always) by a digital-root method, with separate formulas for men and women. The eight guas split into two families:
+The kua comes from the birth year, using the 立春 boundary and separate formulas for men and women. The eight kua then fall into two families. East group (東四命) is 坎, 離, 震 and 巽. West group (西四命) is 乾, 坤, 艮 and 兌. People in the same group share the same four good directions, though not the same ranking of them.
 
-- East group (东四命): 坎 (water), 离 (fire), 震 (wood), 巽 (wood)
+The ranking is pure lookup: Table 1 below is the full 八宅大遊年 grid as the engine holds it.
 
-- West group (西四命): 乾 (metal), 坤 (earth), 艮 (earth), 兑 (metal)
+Key facts
 
-East-group people share the same four good directions (N, S, E, SE); West-group people share the other four (W, NW, SW, NE). Which of the four is which quality differs by gua — that mapping is the 大游年 table, and it is pure lookup, no judgment involved.
+- The 8 kua split into an East group (坎, 離, 震, 巽) and a West group (乾, 坤, 艮, 兌).
+- The engine scores the 8 qualities from 生氣 at +3.0 down to 絕命 at -3.0.
+- The sample person, 王大明 (born 1988-03-15), has kua 震, East group.
+- For kua 震 the best direction is 離 (south) at 生氣, and the worst is 兌 (west) at 絕命.
+- In 2027 the annual 五黃 star sits in 坎, the north, and 立春 2027-02-04 starts that year.
+- The engine cites the grid to 八宅大遊年, the 八宅明鏡 tradition.
 
-## The eight qualities
+The eight trigrams around a compass, coloured in East group and West group, showing which four directions each group favours
 
-The four auspicious:
+## What are the eight directions worth?
 
-- 生气 (Sheng Qi) — vitality; the strongest. Best for the headboard, the desk facing, the front door.
+The engine scores the qualities as 生氣 +3.0, 天醫 +2.5, 延年 +2.0, 伏位 +1.0, 禍害 -1.0, 六煞 -1.5, 五鬼 -2.0 and 絕命 -3.0 (method note: these are the engine's weights, not a classical table). 生氣 is vitality, the strongest choice for a headboard, desk or main door. 天醫 is health, 延年 is steady support, and 伏位 is the calm home position.
 
-- 天医 (Tian Yi) — the heavenly doctor; health and recovery.
+## Which direction is which for each kua?
 
-- 延年 (Yan Nian) — longevity and relationships; steady support.
+Read across the row for your kua. The column head names the trigram and its compass direction, and each cell gives the quality and its score.
 
-- 伏位 (Fu Wei) — the home position; calm and stability.
+Table 1: quality and score of each direction, by life gua
 
-The four inauspicious, in worsening order: 祸害 (mishaps) → 六煞 (six killings) → 五鬼 (five ghosts) → 绝命 (severed fate). The practical rule is not fear but allocation: put activity in your good directions (sleeping, studying, facing) and storage or utility in the bad ones.
+Life gua | 坎 N | 離 S | 震 E | 巽 SE | 乾 NW | 坤 SW | 艮 NE | 兌 W | 
 
-## Using it in a real home
+坎 (東四) | 伏位 +1.0 | 延年 +2.0 | 天醫 +2.5 | 生氣 +3.0 | 六煞 -1.5 | 絕命 -3.0 | 五鬼 -2.0 | 禍害 -1.0 | 
 
-- Headboard direction first. Sleeping is a third of your life; pointing the head toward 生气, 天医 or 延年 is the highest-leverage move the school offers.
+離 (東四) | 延年 +2.0 | 伏位 +1.0 | 生氣 +3.0 | 天醫 +2.5 | 絕命 -3.0 | 六煞 -1.5 | 禍害 -1.0 | 五鬼 -2.0 | 
 
-- Desk facing second. You face a direction for hours; make it an auspicious one.
+震 (東四) | 天醫 +2.5 | 生氣 +3.0 | 伏位 +1.0 | 延年 +2.0 | 五鬼 -2.0 | 禍害 -1.0 | 六煞 -1.5 | 絕命 -3.0 | 
 
-- Couples with opposite groups are normal. One east, one west is common — the classical resolution is to favour the person carrying the heavier load in that room, and to compensate the other elsewhere (their side of the bed, their study corner).
+巽 (東四) | 生氣 +3.0 | 天醫 +2.5 | 延年 +2.0 | 伏位 +1.0 | 禍害 -1.0 | 五鬼 -2.0 | 絕命 -3.0 | 六煞 -1.5 | 
 
-- The house has a gua too. A dwelling's sitting direction makes it an east or west house; matching person to house is a bonus, not a requirement — room allocation does the real work.
+乾 (西四) | 六煞 -1.5 | 絕命 -3.0 | 五鬼 -2.0 | 禍害 -1.0 | 伏位 +1.0 | 延年 +2.0 | 天醫 +2.5 | 生氣 +3.0 | 
 
-## Where 八宅 sits among the schools
+坤 (西四) | 絕命 -3.0 | 六煞 -1.5 | 禍害 -1.0 | 五鬼 -2.0 | 延年 +2.0 | 伏位 +1.0 | 生氣 +3.0 | 天醫 +2.5 | 
 
-Eight House answers "which directions suit this person"; Flying Stars (玄空飞星) answers "what energy occupies this sector of this building in this period"; form-school doctrine answers "what does the physical layout do" (doors, beds, sightlines). Serious practice layers all three, with form first (形势为先) when they conflict. A reading that shows you the layer and the rule behind each recommendation lets you check the work — which is exactly how the engine behind this site is built. The free reading computes your 命卦, your full eight-direction map, and the bed and desk directions that follow.
+艮 (西四) | 五鬼 -2.0 | 禍害 -1.0 | 六煞 -1.5 | 絕命 -3.0 | 天醫 +2.5 | 生氣 +3.0 | 伏位 +1.0 | 延年 +2.0 | 
+
+兌 (西四) | 禍害 -1.0 | 五鬼 -2.0 | 絕命 -3.0 | 六煞 -1.5 | 生氣 +3.0 | 天醫 +2.5 | 延年 +2.0 | 伏位 +1.0 | 
+
+Every kua has 伏位 in the direction of its own trigram, and the four auspicious cells in a row all lie in that kua's own group.
+
+## What is your kua by birth year?
+
+Find your birth year and read across. The pattern repeats every 9 years. People born in January or early February before 立春 use the previous year's row.
+
+Table 2: life gua by birth year, male and female
+
+Year | Male | Female | Year | Male | Female | 
+
+1960 | 巽 | 坤 | 1996 | 巽 | 坤 | 
+
+1961 | 震 | 震 | 1997 | 震 | 震 | 
+
+1962 | 坤 | 巽 | 1998 | 坤 | 巽 | 
+
+1963 | 坎 | 艮 | 1999 | 坎 | 艮 | 
+
+1964 | 離 | 乾 | 2000 | 離 | 乾 | 
+
+1965 | 艮 | 兌 | 2001 | 艮 | 兌 | 
+
+1966 | 兌 | 艮 | 2002 | 兌 | 艮 | 
+
+1967 | 乾 | 離 | 2003 | 乾 | 離 | 
+
+1968 | 坤 | 坎 | 2004 | 坤 | 坎 | 
+
+1969 | 巽 | 坤 | 2005 | 巽 | 坤 | 
+
+1970 | 震 | 震 | 2006 | 震 | 震 | 
+
+1971 | 坤 | 巽 | 2007 | 坤 | 巽 | 
+
+1972 | 坎 | 艮 | 2008 | 坎 | 艮 | 
+
+1973 | 離 | 乾 | 2009 | 離 | 乾 | 
+
+1974 | 艮 | 兌 | 2010 | 艮 | 兌 | 
+
+1975 | 兌 | 艮 | 2011 | 兌 | 艮 | 
+
+1976 | 乾 | 離 | 2012 | 乾 | 離 | 
+
+1977 | 坤 | 坎 | 2013 | 坤 | 坎 | 
+
+1978 | 巽 | 坤 | 2014 | 巽 | 坤 | 
+
+1979 | 震 | 震 | 2015 | 震 | 震 | 
+
+1980 | 坤 | 巽 | 2016 | 坤 | 巽 | 
+
+1981 | 坎 | 艮 | 2017 | 坎 | 艮 | 
+
+1982 | 離 | 乾 | 2018 | 離 | 乾 | 
+
+1983 | 艮 | 兌 | 2019 | 艮 | 兌 | 
+
+1984 | 兌 | 艮 | 2020 | 兌 | 艮 | 
+
+1985 | 乾 | 離 | 2021 | 乾 | 離 | 
+
+1986 | 坤 | 坎 | 2022 | 坤 | 坎 | 
+
+1987 | 巽 | 坤 | 2023 | 巽 | 坤 | 
+
+1988 | 震 | 震 | 2024 | 震 | 震 | 
+
+1989 | 坤 | 巽 | 2025 | 坤 | 巽 | 
+
+1990 | 坎 | 艮 | 2026 | 坎 | 艮 | 
+
+1991 | 離 | 乾 | 2027 | 離 | 乾 | 
+
+1992 | 艮 | 兌 | 2028 | 艮 | 兌 | 
+
+1993 | 兌 | 艮 | 2029 | 兌 | 艮 | 
+
+1994 | 乾 | 離 | 2030 | 乾 | 離 | 
+
+1995 | 坤 | 坎 | | | | 
+
+## What does a worked example show?
+
+王大明 was born 1988-03-15 as a man, and the table gives him kua 震, East group (東四命). Row 震 in Table 1 reads: 離 (south) 生氣 +3.0, 坎 (north) 天醫 +2.5, 巽 (southeast) 延年 +2.0 and 震 (east) 伏位 +1.0. His bad directions are 坤 (southwest) 禍害 -1.0, 艮 (northeast) 六煞 -1.5, 乾 (northwest) 五鬼 -2.0 and 兌 (west) 絕命 -3.0.
+
+In 2027 the annual flying star 5 (五黃) sits in 坎, the north. For 王大明 that is his 天醫 direction at +2.5, so a bedroom or desk in the north would sit under an annual affliction in a good direction. The two are separate layers (see Flying Stars 2027). The 2027 年神 positions are 太歲 at 未 (SW1, 202.5-217.5 degrees), 歲破 at 丑 (NE1, 22.5-37.5 degrees) and 三煞 in the west, 232.5-307.5 degrees.
+
+## How do you apply it in an HDB flat or condo in Singapore or Malaysia?
+
+Eight House is applied to rooms and to the entrance, so the first step is a bearing, not a mood.
+
+- Take the main door as the facing. In an HDB flat or condominium unit the facing is conventionally taken from the unit's main door, outward. Measure the bearing in degrees.
+
+- Set the bed head and the desk. Point the head of the bed toward a good direction for the sleeper, and seat the desk so the sitter faces one. A couple whose kua lie in different groups share no good direction, because the two groups use four different directions each.
+
+- Check the annual layer. The 2027 year starts at 立春, 2027-02-04, so the 五黃 north sector counts from that date.
+
+- Enter the birth year correctly. A birth in January or early February can belong to the earlier year.
+
+## Sources and method
+
+- Kua by birth year and sex: the engine's year table with the 立春 year boundary of the 子平 calendar.
+
+- East and West groups: the engine's grouping of the eight kua, 坎離震巽 and 乾坤艮兌 (method note).
+
+- Direction qualities: the 八宅大遊年 trigram line transformation, 八宅明鏡 tradition.
+
+- Scores for each quality: the engine's own weights (method note).
+
+- 2027 annual star and 年神: the engine's annual chart and the 協紀辨方書 年神 position rules.
+
+Find your kua, your bed and desk directions and a score for every room in the free home tool at /fengshui, or start with the personal reading at /start.
 
 ---
 
 # The Five Elements in a BaZi Chart: Balance, the 生克 Cycles, and What Excess Means
 
 Source: https://bazifor.me/learn/five-elements-cycles
-Updated: 2026-09-19
+Updated: 2026-10-08
 
-BaZi treats a chart as a five-element ecosystem: 木 wood, 火 fire, 土 earth, 金 metal, 水
-water. Every stem and branch — including the hidden stems — carries an element, and a weighted
-count of all of them gives the chart's element balance. The single most important habit
-when reading the bar chart: balance beats abundance. The tallest bar is the heaviest
-influence, not the best one; the shortest bar is where the ecosystem is thin.
+BaZi Basics
+
+By BaziMaster 2026-09-19 Updated 2026-10-08
+BaZi treats a chart as a five-element ecosystem: 木 wood, 火 fire, 土 earth, 金 metal, 水 water. Every stem and branch — including the hidden stems — carries an element, and a weighted count of all of them gives the chart's element balance. The single most important habit when reading the bar chart: balance beats abundance. The tallest bar is the heaviest influence, not the best one; the shortest bar is where the ecosystem is thin.
 
 ## The two cycles
 
-The elements interact along two fixed cycles. The feeding cycle 相生 runs wood→fire→
-earth→metal→water→wood: each element generates the next. The controlling cycle 相克 runs
-wood→earth→water→fire→metal→wood: each element checks another, the way a dam checks a river. Both
-cycles are neutral machinery — control is not bad, it is structure. Trouble appears when weights
-are lopsided: a very heavy element crushes the one it controls (a friction), and a very weak
-element cannot feed the one downstream of it (a gap).
+The elements interact along two fixed cycles. The feeding cycle 相生 runs wood→fire→ earth→metal→water→wood: each element generates the next. The controlling cycle 相克 runs wood→earth→water→fire→metal→wood: each element checks another, the way a dam checks a river. Both cycles are neutral machinery — control is not bad, it is structure. Trouble appears when weights are lopsided: a very heavy element crushes the one it controls (a friction), and a very weak element cannot feed the one downstream of it (a gap).
 
 ## The five roles around your Day Master
 
-Relative to YOUR Day Master's element, the other four take fixed roles: the element that
-feeds you is your resource (印); the one you produce is your output (食傷); the one
-you control is your wealth (財); the one that controls you is your authority /
-pressure (官殺); your own element is your peers (比劫). These five roles are exactly
-what the ten gods refine one level further — the element wheel
-and the ten-god chart are the same picture at two zoom levels.
+Relative to YOUR Day Master's element, the other four take fixed roles: the element that feeds you is your resource (印); the one you produce is your output (食傷); the one you control is your wealth (財); the one that controls you is your authority / pressure (官殺); your own element is your peers (比劫). These five roles are exactly what the ten gods refine one level further — the element wheel and the ten-god chart are the same picture at two zoom levels.
 
 ## What the frictions mean in life
 
-A reading names each live friction in one sentence — "growth overruns stability: plans trample
-routines" for heavy wood against earth, or "stability dams flow: communication gets blocked" for
-heavy earth against water. These are recurring THEMES, not events: once named, each is manageable —
-usually by strengthening the buffer element that drains the aggressor and feeds the victim.
+A reading names each live friction in one sentence — "growth overruns stability: plans trample routines" for heavy wood against earth, or "stability dams flow: communication gets blocked" for heavy earth against water. These are recurring THEMES, not events: once named, each is manageable — usually by strengthening the buffer element that drains the aggressor and feeds the victim.
 
 ## Health correspondences and daily levers
 
-Traditional five-element medicine maps each element to organ systems — wood to liver and eyes,
-fire to heart, earth to digestion, metal to lungs and skin, water to kidneys and bones. A very
-weak or very excessive element marks the systems worth caring for; it is a reference layer, never
-medical advice. The practical levers are gentler: your
-favourable elements (用神) translate into colours to wear,
-sectors of the home to use, and industries where effort converts efficiently — the everyday
-interface to a chart's element balance.
+Traditional five-element medicine maps each element to organ systems — wood to liver and eyes, fire to heart, earth to digestion, metal to lungs and skin, water to kidneys and bones. A very weak or very excessive element marks the systems worth caring for; it is a reference layer, never medical advice. The practical levers are gentler: your favourable elements (用神) translate into colours to wear, sectors of the home to use, and industries where effort converts efficiently — the everyday interface to a chart's element balance.
 
 ---
 
@@ -430,61 +594,40 @@ Trace your own floor plan in the home tool at /fengshui, or begin with the free 
 # How to Read a Four Pillars Chart: Stems, Branches, Hidden Stems and the Four Palaces
 
 Source: https://bazifor.me/learn/four-pillars-explained
-Updated: 2026-09-19
+Updated: 2026-10-08
 
-A BaZi chart is eight characters arranged in four columns — the four pillars (四柱) of
-the year, month, day and hour of birth. Each pillar is written as two characters: a heavenly
-stem (天干) on top and an earthly branch (地支) below. The stem is the visible, declared
-energy of that pillar; the branch is its foundation, and the year branch carries the zodiac animal
-most people know their birth year by.
+BaZi Basics
+
+By BaziMaster 2026-09-19 Updated 2026-10-08
+A BaZi chart is eight characters arranged in four columns — the four pillars (四柱) of the year, month, day and hour of birth. Each pillar is written as two characters: a heavenly stem (天干) on top and an earthly branch (地支) below. The stem is the visible, declared energy of that pillar; the branch is its foundation, and the year branch carries the zodiac animal most people know their birth year by.
 
 ## The Day Master — the character that is you
 
-The stem of the day pillar is the 日主 Day Master: the character the whole chart is read
-against. Every other character is classified by its relationship to it — those relationships are
-the ten gods. The day pillar is usually drawn outlined in a
-chart for this reason: its stem is you, and its branch is the spouse palace (配偶宮), the
-seat of marriage and domestic life.
+The stem of the day pillar is the 日主 Day Master: the character the whole chart is read against. Every other character is classified by its relationship to it — those relationships are the ten gods. The day pillar is usually drawn outlined in a chart for this reason: its stem is you, and its branch is the spouse palace (配偶宮), the seat of marriage and domestic life.
 
 ## Hidden stems — the ingredients inside each branch
 
-Every branch stores one to three hidden stems (藏干): extra elements sealed inside the
-pillar like ingredients in a pantry. 亥 hides 壬 water and 甲 wood; 辰 hides 戊 earth, 乙 wood and
-癸 water. A chart that looks light in some element on the surface may carry it hidden in the
-branches — which is why serious element counts always weigh hidden stems, and why a Day Master
-with no visible support can still be "rooted" (通根) if its element hides in a branch below.
+Every branch stores one to three hidden stems (藏干): extra elements sealed inside the pillar like ingredients in a pantry. 亥 hides 壬 water and 甲 wood; 辰 hides 戊 earth, 乙 wood and 癸 water. A chart that looks light in some element on the surface may carry it hidden in the branches — which is why serious element counts always weigh hidden stems, and why a Day Master with no visible support can still be "rooted" (通根) if its element hides in a branch below.
 
 ## The four pillars are also the four palaces
 
-Classical doctrine reads the same four columns a second way, as the 宮位 four palaces —
-a timeline and a map of relationships at once:
+Classical doctrine reads the same four columns a second way, as the 宮位 four palaces — a timeline and a map of relationships at once:
 
 - Year pillar 年柱 — ages 0–15 · ancestry, childhood environment, first impressions.
 
-- Month pillar 月柱 — ages 16–32 · parents, early adulthood, and the career
-headquarters: the month is the strongest single influence on the chart's climate.
+- Month pillar 月柱 — ages 16–32 · parents, early adulthood, and the career headquarters: the month is the strongest single influence on the chart's climate.
 
 - Day pillar 日柱 — ages 33–48 · the self (stem) and the spouse (branch).
 
 - Hour pillar 時柱 — ages 49+ · children, students, works, late-life luck.
 
-So the ten gods say WHAT an energy is; the palace it sits in says WHEN it peaks and WHERE it
-plays out. A wealth god in the month palace colours the career; the same god in the hour palace
-colours the later years and the children. Whenever a luck decade or a passing year clashes or
-combines with a pillar, it is that palace's life-area that feels it.
+So the ten gods say WHAT an energy is; the palace it sits in says WHEN it peaks and WHERE it plays out. A wealth god in the month palace colours the career; the same god in the hour palace colours the later years and the children. Whenever a luck decade or a passing year clashes or combines with a pillar, it is that palace's life-area that feels it.
 
 ## What else a pillar carries
 
-Each pillar also has a 納音 melodic element — the poetic sixty-cycle name like 屋上土
-"earth on the roof" — and a 長生 life-stage, the Day Master's phase in that pillar
-(birth → peak → decline). These are flavour and vitality readings layered over the structure, not
-verdicts. Symbolic stars (神煞) such as 天乙貴人 the
-Nobleman or 文昌 the scholar star also attach to specific pillars, and are read in the palace they
-land in: a Nobleman in the year palace means helpful elders early in life.
+Each pillar also has a 納音 melodic element — the poetic sixty-cycle name like 屋上土 "earth on the roof" — and a 長生 life-stage, the Day Master's phase in that pillar (birth → peak → decline). These are flavour and vitality readings layered over the structure, not verdicts. Symbolic stars (神煞) such as 天乙貴人 the Nobleman or 文昌 the scholar star also attach to specific pillars, and are read in the palace they land in: a Nobleman in the year palace means helpful elders early in life.
 
-Read in this order — Day Master first, then the month for climate, then each palace — a four
-pillars chart stops being eight mysterious characters and becomes a structured record: who, in
-what season, supported or drained by what, and when each theme takes the stage.
+Read in this order — Day Master first, then the month for climate, then each palace — a four pillars chart stops being eight mysterious characters and becomes a structured record: who, in what season, supported or drained by what, and when each theme takes the stage.
 
 ---
 
@@ -712,228 +855,333 @@ Every reading on this site is generated by that rule engine — no LLM in the lo
 # Luck Cycles (大運) and Annual Windows: The Climate and Weather of a BaZi Chart
 
 Source: https://bazifor.me/learn/luck-cycles-and-windows
-Updated: 2026-09-19
+Updated: 2026-10-08
 
-A birth chart is fixed; life is not. BaZi models time with two moving layers. The luck
-cycles 大運 are ten-year pillars, derived from the month pillar and stepped forward or
-backward by sex and year polarity — each decade overlays one stem and one branch on the natal
-chart. The annual pillar 流年 changes every 立春 (around February 4th) and overlays one
-more. The decade is the climate; the year is the weather inside that climate.
+BaZi Basics
+
+By BaziMaster 2026-09-19 Updated 2026-10-08
+A birth chart is fixed; life is not. BaZi models time with two moving layers. The luck cycles 大運 are ten-year pillars, derived from the month pillar and stepped forward or backward by sex and year polarity — each decade overlays one stem and one branch on the natal chart. The annual pillar 流年 changes every 立春 (around February 4th) and overlays one more. The decade is the climate; the year is the weather inside that climate.
 
 ## Grading a decade
 
-Each decade's two characters are read against the chart's favourable and unfavourable
-elements, plus the interactions they form with the natal pillars (combinations, clashes,
-punishments). The result is a phase label: a growth decade (both characters helpful), a corrective
-one (both against the grain — a decade for maintenance, learning and pruning rather than big
-bets), or consolidation and transition phases in between. Two habits keep this honest. First, a
-corrective decade is not a bad life — it is a season with different work. Second, the decade
-brings its own ten gods: a chart missing an authority star can
-borrow one from a 官殺 decade for ten years, and behave accordingly.
+Each decade's two characters are read against the chart's favourable and unfavourable elements, plus the interactions they form with the natal pillars (combinations, clashes, punishments). The result is a phase label: a growth decade (both characters helpful), a corrective one (both against the grain — a decade for maintenance, learning and pruning rather than big bets), or consolidation and transition phases in between. Two habits keep this honest. First, a corrective decade is not a bad life — it is a season with different work. Second, the decade brings its own ten gods: a chart missing an authority star can borrow one from a 官殺 decade for ten years, and behave accordingly.
 
 ## Annual windows — four dimensions
 
-Within a decade, each year is checked per life dimension rather than given one verdict:
-career (does the year activate or clash the month pillar; do authority stars arrive),
-wealth (do wealth stars arrive — and can the chart hold them; is it a 財庫 vault-opening
-year), relationship (桃花 peach-blossom years and activations of the spouse palace, the
-day branch), and health (years that feed an excess or replenish a weak element). A window
-is a tailwind, a caution is a navigation note; neither is a prediction.
+Within a decade, each year is checked per life dimension rather than given one verdict: career (does the year activate or clash the month pillar; do authority stars arrive), wealth (do wealth stars arrive — and can the chart hold them; is it a 財庫 vault-opening year), relationship (桃花 peach-blossom years and activations of the spouse palace, the day branch), and health (years that feed an excess or replenish a weak element). A window is a tailwind, a caution is a navigation note; neither is a prediction.
 
 ## The vault, the peach blossom, and other timed stars
 
-Some chart features exist only as timing: the wealth vault 財庫 is the storage branch of
-your wealth element (one of 辰戌丑未) — present-but-sealed vaults open in their clash years, which
-are classic accumulation windows. The peach blossom 桃花 branch governs attraction years;
-the scholar star 文昌 favours exam and publication years. This is why two people with similar
-charts diverge: their calendars strike different pillars at different ages.
+Some chart features exist only as timing: the wealth vault 財庫 is the storage branch of your wealth element (one of 辰戌丑未) — present-but-sealed vaults open in their clash years, which are classic accumulation windows. The peach blossom 桃花 branch governs attraction years; the scholar star 文昌 favours exam and publication years. This is why two people with similar charts diverge: their calendars strike different pillars at different ages.
 
-Read the decade band first (where am I in the arc), then the current year's four flags,
-then plan against the next green column — that is the whole method, and every flag in our readings
-cites the rule that raised it.
+Read the decade band first (where am I in the arc), then the current year's four flags, then plan against the next green column — that is the whole method, and every flag in our readings cites the rule that raised it.
 
 ---
 
-# Choosing a Move-In Date (入宅择日): The Classical Method, Step by Step
+# Move-In Date (入宅) Selection: Day Officers, Clashes and 2027 Dates
 
 Source: https://bazifor.me/learn/move-in-date-selection
-Updated: 2026-09-16
+Updated: 2026-10-08
 
 Dates
 
-By BaziMaster 2026-09-16 Updated 2026-09-16
-Date selection (择日) is the most immediately practical branch of the classical toolkit, and moving into a home (入宅) is its most requested application. It is also fully computable — a filter pipeline over the calendar, applied in a fixed order. Here is the method, exactly as an engine (or a careful almanac reader) runs it.
+By BaziMaster 2026-09-16 Updated 2026-10-08
+Move-in date selection (入宅擇日) is a filter over the calendar. It keeps days whose 建除 officer is 成, 定 or 開, then removes days whose branch clashes with the occupants or the house. Because the filters are fixed rules, a computer can run them exactly and a careful almanac reader gets the same days.
 
-## Step 1: the twelve day officers (建除十二神)
+## How does the day-officer rule work?
 
-Every day carries one of twelve officers, determined by the relationship between the day's branch and the month's branch. For moving in, three officers are the classic keepers:
+Every day carries one of twelve officers (建除十二神). The officer is the offset of the day's branch from the month's branch: the day whose branch equals the month branch is 建, the next branch is 除, and so on round the cycle of twelve. This is the 十二建除 rule of the 協紀辨方書 tradition.
 
-- 成 (Completion) — the strongest choice: things established endure.
+For moving in, the engine keeps three officers: 成 (completion), 定 (settling) and 開 (opening). Everything else is passed over. A day whose branch clashes the month branch is 破 (月破), the hard avoid.
 
-- 定 (Settling) — stability; excellent for taking residence.
+Key facts
 
-- 开 (Opening) — beginnings; good, slightly behind the other two.
+- The 12 day officers run from 建 to 閉, and the engine keeps 3 of them for 入宅: 成, 定 and 開.
+- Officer = (day branch minus month branch) modulo 12, counted from 建.
+- A move-in day is also dropped if its branch clashes an occupant's year branch, clashes the sitting branch or equals the year's 太歲 branch.
+- In 2027 the 太歲 branch is 未 (SW1, 202.5-217.5 degrees) and the year starts at 立春, 2027-02-04.
+- For the sample household, facing 14.0 degrees, the engine returns 9 auspicious days between 2027-03-01 and 2027-04-30.
+- The first of those is 2027-03-04, a 壬午 day with officer 定.
 
-Days carrying 破 (Destruction), 闭 (Closing) and most others are simply passed over for this purpose. This first filter alone removes about three-quarters of the calendar.
+Flow chart of move-in date selection: twelve day officers, keep 成 定 開, remove branch clashes, then choose an entry hour
 
-## Step 2: strike the clash days (六冲)
+## What are the twelve officers worth?
 
-Each Earthly Branch clashes with the branch opposite it (子↔午, 丑↔未, 寅↔申, 卯↔酉, 辰↔戌, 巳↔亥). Three clash checks apply:
+The engine's 擇日 layer rates each officer with a score (method note: these are the engine's weights, not a classical table). The move-in filter itself is simpler: it keeps 成, 定 and 開 and orders them 成 first, then 定, then 開.
 
-- Every occupant's year branch. A day whose branch clashes any family member's birth-year branch is out — the move should not collide with anyone who will live there.
+Cycle position | Officer | Engine score | Move-in use | 
 
-- The house's sitting (冲坐山). A day clashing the branch of the direction your home sits toward disturbs the foundation of the very thing you are establishing. (A sitting on a stem or trigram mountain borrows its palace's branch.)
+0 | 建 | +0.5 | passed over | 
 
-- The year's 太岁 (值太岁). A day whose branch matches the year branch confronts the Grand Duke — also out.
+1 | 除 | +0.5 | passed over | 
 
-## Step 3: the customs that complete it
+2 | 滿 | +0.5 | passed over | 
 
-With candidate dates in hand, tradition adds the finishing conventions: move in during the morning — the 巳时 block (9–11 am) is the customary favourite — carry something of value in first, and light the stove the same day: boil water, cook something simple. In the classical view the burning stove, not the furniture, is what declares occupancy. And if renovation preceded the move, the annual affliction sectors (太岁 / 岁破 / 三煞 / 五黄) should already have dictated when each room's work happened — date selection and renovation timing are two halves of one calendar discipline.
+3 | 平 | -0.5 | passed over | 
 
-## Why weekends thin out
+4 | 定 | +1.0 | kept for 入宅 | 
 
-Run the full pipeline over a three-month window and you will typically keep six to twelve days — and only a couple land on weekends, which is why families who need a Saturday should scan a generous window early. The filters are unforgiving in a specific, checkable way: a large family protects more branches, so their calendar is thinner. That is not superstition compounding; it is set intersection.
+5 | 執 | +0.0 | passed over | 
 
-Our engine runs exactly this pipeline for your household: it reads every family member's year branch from their charts, derives the sitting branch from your home's facing, and returns the clean 成/定/开 days in any window you choose — each exclusion explainable by the rule above. It is built into the home-fengshui workspace; start with the free reading below.
+6 | 破 | -2.0 | passed over | 
+
+7 | 危 | -1.0 | passed over | 
+
+8 | 成 | +2.0 | kept for 入宅 | 
+
+9 | 收 | +0.0 | passed over | 
+
+10 | 開 | +1.5 | kept for 入宅 | 
+
+11 | 閉 | -1.0 | passed over | 
+
+Cycle position 0 is the day whose branch equals the month branch. The scores are used when a day is rated for a household, where 破 at -2.0 is the worst and 成 at +2.0 the best.
+
+## Which days are struck out by clashes?
+
+Each branch clashes with the one opposite it: 子 and 午, 丑 and 未, 寅 and 申, 卯 and 酉, 辰 and 戌, 巳 and 亥. After the officer filter the engine drops a day when its branch:
+
+- Clashes any occupant's year branch (六沖), so the move does not collide with anyone who will live there.
+
+- Clashes the sitting branch (沖坐山), the branch of the direction the house sits toward, derived from the facing bearing.
+
+- Equals the year's 太歲 branch (值太歲). In 2027 that branch is 未.
+
+The engine can also rate a day for each household member, using a clash with their year branch (沖生肖), a clash with their day-pillar branch, and a 六合 bonus. Those are softer, personal layers on top of the move-in filter.
+
+Last, the engine can return entry hours for a chosen day, computed from the day branch, the occupants' branches and the facing.
+
+## What does a worked example look like?
+
+The sample inputs are the occupant branches 辰 and 巳 (the sample person's year and day branches, passed to the engine as a two-branch household). The facing is 14.0 degrees, and the window is 2027-03-01 to 2027-04-30. A 辰 occupant removes 戌 days and a 巳 occupant removes 亥 days, and 未 days are removed as 太歲.
+
+The engine returns 9 days. The first four listed are:
+
+Date | Weekday | Day pillar | Officer | 
+
+2027-03-04 | Thu | 壬午 | 定 | 
+
+2027-04-11 | Sun | 庚申 | 定 | 
+
+2027-04-23 | Fri | 壬申 | 定 | 
+
+2027-03-11 | Thu | 己丑 | 開 | 
+
+You can check the officers by hand with the offset rule. On 2027-03-11 the month branch is 卯 and the day branch is 丑, which sits 10 places on from 卯 in the cycle of twelve, and position 10 is 開. On 2027-04-11 the month branch is 辰 and the day branch is 申, 4 places on, which is 定. Other days in the engine's output show why most are passed over: 2027-03-06 (甲申) is 執, 2027-03-15 (癸巳) is 滿 and 2027-04-08 (丁巳) is 除.
+
+Nine days out of a 61-day window is a short list, which is why the window should be generous. The filter knows nothing about your leave days, lift bookings or key-collection date, so choose the window first, take the engine's list, then fit practical constraints to it. If none of the nine works, widen the window rather than relaxing a clash rule.
+
+## What changes for Singapore and Malaysia homes?
+
+- Facing. For an HDB flat or condominium unit, take the facing from the unit's main door, outward, as a bearing in degrees. The sitting branch follows from it, so a different bearing can change which days survive.
+
+- Year boundary. The 2027 year begins at 立春 on 2027-02-04. The positions below apply to the 丁未 year that opens on that date.
+
+- 2027 year positions. 太歲 is at 未, SW1. 歲破 is at 丑, NE1, 22.5-37.5 degrees. 三煞 covers the west, 232.5-307.5 degrees. A door facing 14.0 degrees lies outside all three bands. These are rule-derived positions from the 年神 rules of the 協紀辨方書.
+
+- Time. Dates here follow the calendar as set by the solar terms, which the engine takes from an astronomical library. Singapore and Malaysia both use UTC+8 today.
+
+## Sources and method
+
+- Day officers: the 十二建除 rule, with the officer set by the day branch's offset from the month branch.
+
+- Kept officers: 成, 定 and 開 for 入宅, the engine's convention (method note).
+
+- Month breaker: 月破, the day whose branch clashes the month branch, treated as a hard avoid.
+
+- Clash filters: the 六沖 pairs applied to occupants' year branches, the sitting branch and the 太歲 branch.
+
+- 2027 positions: the 年神 position rules of 協紀辨方書, applied to the 丁未 year.
+
+- Scope: the engine does not run the full almanac layers (twenty-eight mansions, individual stars), so its verdict may differ from a printed almanac (method note).
+
+Run the same filter for your own household with the free home tool at /fengshui, which reads every occupant's year branch and your facing.
 
 ---
 
 # Symbolic Stars (神煞) in BaZi: Noblemen, 文昌, 桃花 and What They Actually Add
 
 Source: https://bazifor.me/learn/shensha-symbolic-stars
-Updated: 2026-09-19
+Updated: 2026-10-08
 
-神煞 symbolic stars are classical pattern-matches: fixed lookup tables that attach a
-named star to a chart when particular stem-branch combinations occur. They are flavour ON TOP of
-the structural reading — the element balance, ten gods and palaces do the heavy lifting; the
-stars annotate it. A serious reading lists them with their pillar, because the pillar decides the
-life-area and era the star colours (see
-the four palaces).
+BaZi Basics
+
+By BaziMaster 2026-09-19 Updated 2026-10-08
+神煞 symbolic stars are classical pattern-matches: fixed lookup tables that attach a named star to a chart when particular stem-branch combinations occur. They are flavour ON TOP of the structural reading — the element balance, ten gods and palaces do the heavy lifting; the stars annotate it. A serious reading lists them with their pillar, because the pillar decides the life-area and era the star colours (see the four palaces).
 
 ## The stars worth knowing
 
-- 天乙貴人 Heavenly Nobleman — the most valued: helpful people appear at critical
-moments. Doubled Noblemen (two pillars) mark a chart that attracts rescuers.
+- 天乙貴人 Heavenly Nobleman — the most valued: helpful people appear at critical moments. Doubled Noblemen (two pillars) mark a chart that attracts rescuers.
 
-- 文昌貴人 Scholar star — study, writing, exams; in the year pillar it colours early
-schooling, in the hour pillar late-life scholarship. Its direction also gives the
-study corner.
+- 文昌貴人 Scholar star — study, writing, exams; in the year pillar it colours early schooling, in the hour pillar late-life scholarship. Its direction also gives the study corner.
 
 - 太極貴人 Tai Chi Nobleman — affinity for metaphysics, research, depth subjects.
 
 - 將星 General star — command presence; leadership in the palace it occupies.
 
-- 華蓋 Canopy — solitude, art, spiritual interests; gifted alone-time rather than
-loneliness when the chart supports it.
+- 華蓋 Canopy — solitude, art, spiritual interests; gifted alone-time rather than loneliness when the chart supports it.
 
-- 桃花 Peach Blossom — attraction and social magnetism, mostly read through its YEARS
-(see timing) when not in the natal chart.
+- 桃花 Peach Blossom — attraction and social magnetism, mostly read through its YEARS (see timing) when not in the natal chart.
 
-- 劫煞 Robbery sha · 空亡 Void — the cautions: leak-prone moments, and a hollow pillar
-whose promises need double-checking. Noted, not feared.
+- 劫煞 Robbery sha · 空亡 Void — the cautions: leak-prone moments, and a hollow pillar whose promises need double-checking. Noted, not feared.
 
 ## How much weight to give them
 
-Less than the structure, always. A Nobleman does not rescue a chart whose useful element is
-buried, and a Void does not sink one whose structure is sound. The honest use of 神煞 is
-descriptive precision: they give a name to textures people recognise in themselves — the friend
-who always finds a helper, the student who tests as brilliant but studies alone. When a star and
-the structure agree, say it once with confidence; when they disagree, the structure wins. That
-ranking — structure first, stars as annotation — is itself classical doctrine, and it is how our
-engine orders every reading it computes.
+Less than the structure, always. A Nobleman does not rescue a chart whose useful element is buried, and a Void does not sink one whose structure is sound. The honest use of 神煞 is descriptive precision: they give a name to textures people recognise in themselves — the friend who always finds a helper, the student who tests as brilliant but studies alone. When a star and the structure agree, say it once with confidence; when they disagree, the structure wins. That ranking — structure first, stars as annotation — is itself classical doctrine, and it is how our engine orders every reading it computes.
 
 ---
 
-# The Ten Gods (十神) Explained: What You Have, What You Lack, and Why It Matters
+# Ten Gods (十神) Explained: Meanings, Groups and Luck Cycles for 己
 
 Source: https://bazifor.me/learn/ten-gods-guide
-Updated: 2026-09-26
+Updated: 2026-10-08
 
-Once the Day Master is fixed, every other character in a BaZi chart — visible or hidden — falls
-into one of ten relationships with it: the 十神 ten gods. They come in five pairs, one pair
-for each of the five elemental roles, split by yin-yang polarity:
+BaZi Basics
 
-- 比肩 Friend · 劫財 Rob Wealth (peers 比劫) — self-identity, willpower, siblings,
-competition.
+By BaziMaster 2026-09-19 Updated 2026-10-08
+The Ten Gods (十神) are the ten relationships any stem can have to your Day Master. Each is a pair of one element role split by yin and yang polarity: peers, output, wealth, authority and resource. Every visible or hidden stem, and every luck pillar, falls into one of the ten.
 
-- 食神 Eating God · 傷官 Hurting Officer (output 食傷) — expression, creativity,
-critique; your life's output.
+## What are the ten gods, and how are they grouped?
 
-- 正財 Direct Wealth · 偏財 Indirect Wealth (wealth 財) — salary and savings;
-opportunity and business flair.
+They come in five pairs, one pair per elemental role. The engine names the groups 比劫 (peers and independence), 食傷 (output and expression), 財 (wealth), 官殺 (authority) and 印 (resource). The 正 god of a pair is the conventional, steady flavour; its partner is the intense, unconventional one, powerful when channelled and costly when not.
 
-- 正官 Direct Officer · 七殺 Seven Killings (authority 官殺) — rules, status, career,
-discipline, pressure.
+Which god a stem is depends on your Day Master. Table 1 is the full list for Day Master 己, with the group and the engine's meaning for each god.
 
-- 正印 Direct Resource · 偏印 Indirect Resource (resource 印) — learning, protection,
-credentials, intuition.
+Key facts
 
-The 正 gods are the conventional, steady flavour of each domain; their counterparts are the
-intense, unconventional flavour — powerful when channelled, costly when not. The classical "four
-benign" are 正官·正印·正財·食神; the "four fierce" are 七殺·傷官·偏印·劫財.
+- There are 10 gods in 5 groups: 比劫, 食傷, 財, 官殺 and 印.
+- For Day Master 己, the stem 甲 is 正官 and the stem 乙 is 七殺.
+- The sample chart's distribution is 劫財 48.1 %, 七殺 29.6 %, 正印 11.1 %, 偏財 7.4 % and 傷官 3.7 %.
+- The sample's current luck pillar is 己未 for ages 37-47, with 比肩 on both stem and branch.
+- The luck sequence runs forward from the month pillar 乙卯 and starts at age 6.7, by the rule 陽男陰女順行 with 起運 = distance to the 節 divided by 3.
+- The 2027 year pillar is 丁未 from 立春, 2027-02-04, and 丁 is 偏印 for a 己 Day Master.
 
-## Reading a distribution chart
+Wheel of the ten gods in five paired groups, showing peers, output, wealth, authority and resource around the Day Master
+Table 1: the ten gods for Day Master 己
 
-A ten-god distribution chart weighs every visible and hidden stem and shows how the chart's
-energy divides among the ten. Three habits make it useful. First, read the heavy bars as both
-engine and watch-list: a god's shadow side activates when it is excessive or unsupported —
-26% of 正官 is real authority and real self-imposed pressure. Second, read the empty bars:
-a missing god is a life-domain that does not run on autopilot. No 比劫 means self-drive must be
-deliberate; no 官殺 means structure has to be chosen, not imposed. Missing is not doomed — it is
-unautomated. Third, percentages start the reading, structure finishes it: whether the
-heavy god sits on a favourable element for you, whether it is rooted in a branch, and what the
-gods form together (patterns like 傷官見官, talent chafing against authority) decide how the
-weight actually behaves.
+Stem | God | Group | Engine meaning | 
 
-## The cycle as a tree
+甲 | 正官 | 官殺 | proper authority: rules, status, responsibility (spouse star in a woman's chart) | 
 
-A memorable way to hold the five groups at once: 比劫 are the roots absorbing nutrients,
-食傷 the branches and leaves that grow from them, 財 the flowers that set fruit, 官殺 the
-pickers who arrive for the harvest, and 印 the soil that rests and recovers — feeding new
-roots. Creation → accumulation → constraint → nourishment, around forever; every chart
-simply weights the stations of this cycle differently.
+乙 | 七殺 | 官殺 | raw pressure: ambition, decisiveness, discipline imposed from outside | 
 
-## The gods as people
+丙 | 正印 | 印 | nurturing support: study, protection, elders, credentials | 
 
-Each god also stands for people (六親): wealth gods for the father — and in a man's chart
-the wife; authority gods in a woman's chart for the husband; resource for the mother and
-mentors; output for students and, in a woman's chart, children; peers for siblings and rivals.
-That is why the same distribution chart doubles as a relationship map, and why the spouse star's
-strength and the spouse palace (the day branch) are read together.
+丁 | 偏印 | 印 | unconventional learning: intuition, niche skills, solitary study | 
 
-## Gods arrive with time
+戊 | 劫財 | 比劫 | rivals & boldness: shared resources, competition, risk appetite | 
 
-The chart is the cast; the calendar is the schedule. Every stem maps to a god for your Day
-Master, so each ten-year luck pillar and each passing year brings specific gods on stage. A decade
-that carries your missing god supplies it for ten years; a year that doubles an already-heavy god
-tests its shadow side. This is how a static birth chart produces a moving story — see
-luck cycles and windows.
+己 | 比肩 | 比劫 | peers & self-reliance: siblings, equals, standing your ground | 
 
-## Two sides of each god 双面性
+庚 | 傷官 | 食傷 | sharp output: brilliance, critique, rebellion against rules | 
 
-Every god has a bright side and a shadow side. The shadow activates when the god is excessive or unsupported in a chart — read your prominent gods as both your engine and your watch-list.
+辛 | 食神 | 食傷 | gentle output: enjoyment, nurture, easy creativity | 
 
-God | Bright side 优 | Shadow side 忌 | 
+壬 | 正財 | 財 | steady wealth: salary, prudence, savings (spouse star in a man's chart) | 
 
-正印 | broad learning, kindness, quiet support 学识渊博·仁慈包容·精神支持 | over-reliance, idealism, indecision 过度依赖·理想主义·缺决断 | 
+癸 | 偏財 | 財 | windfall wealth: opportunity, generosity, business flair | 
 
-偏印 | deep insight in niche fields, original self-taught skill 小众洞察·深度创新 | solitary, suspicious, keeps people at arm's length 孤僻多疑·疏离人际 | 
+Wealth and authority carry a second meaning in the classics: 財 is the spouse star in a man's chart and 官殺 is the spouse star in a woman's chart. The gods also stand for people (六親): wealth for the father, resource for the mother and mentors, peers for siblings.
 
-正官 | responsibility, order, stable social standing 责任感强·守序重诺·地位稳 | conservatism, rule-bound pressure and anxiety 循规保守·压力焦虑 | 
+## What are the bright and shadow sides of each god?
 
-七殺 | leadership in adversity, execution, pioneering 逆境显领袖·执行力强 | impulsiveness; health and legal risks 冲动暴力·易招风险 | 
+Every god has a bright side and a shadow side. The shadow shows when the god is excessive or unsupported, so a prominent god is both your engine and your watch-list.
 
-比肩 | confident, loyal, natural team player 自信独立·重义善团队 | stubborn over spoils, self-centred splits 固执争利·自我中心 | 
+Table 2: bright and shadow sides
 
-劫財 | strong social drive, dares to take risks 社交力强·敢于冒险 | impulsive losses, easily talked into traps 冲动失财·轻信陷骗局 | 
+God | Bright side | Shadow side | 
 
-食神 | overflowing talent, easy-going, deep bond with children 才华横溢·豁达乐天 | comfort-seeking, weak follow-through, indulgence 贪图安逸·行动力弱 | 
+正印 | broad learning, kindness, quiet support | over-reliance, idealism, indecision | 
 
-傷官 | innovation, eloquence, artistic force 创新突破·口才卓越 | rebellious, attracts resentment, marriage friction 叛逆招怨·个性冲突 | 
+偏印 | deep insight in niche fields, original self-taught skill | solitary, suspicious, keeps people at arm's length | 
 
-正財 | diligence, steady income, loyalty 勤俭持家·收入稳定·婚姻忠诚 | stingy, conservative, material over spirit 吝啬保守·重物轻神 | 
+正官 | responsibility, order, stable social standing | conservatism, rule-bound pressure and anxiety | 
 
-偏財 | keen money sense, generosity, seizes windfalls 财运敏锐·慷慨善机遇 | extravagance, tangled romantic affairs 挥霍无度·情感纠纷 |
+七殺 | leadership in adversity, execution, pioneering | impulsiveness; health and legal risks | 
+
+比肩 | confident, loyal, natural team player | stubborn over spoils, self-centred splits | 
+
+劫財 | strong social drive, dares to take risks | impulsive losses, easily talked into traps | 
+
+食神 | overflowing talent, easy-going, deep bond with children | comfort-seeking, weak follow-through, indulgence | 
+
+傷官 | innovation, eloquence, artistic force | rebellious, attracts resentment, marriage friction | 
+
+正財 | diligence, steady income, loyalty | stingy, conservative, material over spirit | 
+
+偏財 | keen money sense, generosity, seizes windfalls | extravagance, tangled romantic affairs | 
+
+The classical "four benign" gods are 正官, 正印, 正財 and 食神. The "four fierce" are 七殺, 傷官, 偏印 and 劫財.
+
+## How do you read a distribution chart?
+
+A distribution chart weighs every visible and hidden stem and shows how the chart's energy divides among the ten. Three habits make it useful.
+
+- Heavy bars are engine and watch-list. A god with a large share is real strength and real pressure at once.
+
+- Empty bars are not doom. A missing god is a domain that does not run on autopilot, not a curse. No 比劫 means self-drive must be deliberate, and no 官殺 means structure has to be chosen.
+
+- Percentages start the reading, structure finishes it. Whether the heavy god sits on a favourable element, whether it is rooted in a branch, and what the gods form together decide how the weight behaves.
+
+## What does the sample chart show?
+
+The sample person is 王大明, male, born 1988-03-15 at 09:30 in Singapore, with pillars 戊辰 乙卯 己巳 戊辰 and Day Master 己. The engine's distribution is 劫財 48.1 %, 七殺 29.6 %, 正印 11.1 %, 偏財 7.4 % and 傷官 3.7 %. The other five gods do not appear in the engine's list.
+
+By group, peers (比劫) carry 48.1 %, authority (官殺) 29.6 %, resource (印) 11.1 %, wealth (財) 7.4 % and output (食傷) 3.7 %. The engine's personality axes read from these shares:
+
+- Expression: reserved output, because 食傷 is 4 % (the engine calls 5 % or less reserved).
+
+- Action: decisive and acts under pressure, because 七殺 plus 劫財 is 78 %.
+
+- Authority stance: works within structure, with 官殺 at 30 % and 傷官 at 4 %.
+
+- Thinking style: no strong tendency, with 印 at 11 % against 財 at 7 %.
+
+- Emotional display: direct and open, with 比劫 at 48 %.
+
+These thresholds are the engine's own (method note). The chart's weak Day Master (身弱, score -0.97) is the context for reading the heavy 劫財 and 七殺 shares.
+
+## How do the gods arrive with time?
+
+The chart is the cast and the calendar is the schedule. Each ten-year luck pillar (大運) carries a stem god and a branch god for your Day Master. The sample runs forward because the rule is 陽男陰女順行 (yang man, yin woman forward), and it starts at age 6.7, counted as the distance to the next 節 divided by 3.
+
+Table 3: the sample's luck pillars
+
+Pillar | Ages | Stem god | Branch god | Keywords | 
+
+丙辰 | 7-17 | 正印 | 劫財 | learning & support | 
+
+丁巳 | 17-27 | 偏印 | 正印 | intuition & niche skills | 
+
+戊午 | 27-37 | 劫財 | 偏印 | competition & bold moves | 
+
+己未 | 37-47 | 比肩 | 比肩 | self-drive & peers (current) | 
+
+庚申 | 47-57 | 傷官 | 傷官 | expression & disruption | 
+
+辛酉 | 57-67 | 食神 | 食神 | enjoyment & easy output | 
+
+The current pillar 己未 puts 比肩 on both stem and branch, which the engine reads as self-drive and peers. The next, 庚申 from age 47, brings 傷官 twice, the god that is nearly absent in the natal chart.
+
+## What changes for Singapore and Malaysia readers?
+
+Annual years bring their own god. The 2027 year pillar is 丁未, and 丁 is 偏印 for a 己 Day Master, so the year carries unconventional learning and niche skills. The year turns at 立春, 2027-02-04, so a Singapore or Malaysia birth in late January or early February may sit in the earlier year and change every god. Clock time matters too: Singapore ran on UTC+7:30 before 1982-01-01 and UTC+8 after it, and Malaysia has used UTC+8 since 1982-01-01. A shifted hour pillar changes the distribution.
+
+## Sources and method
+
+- Ten gods and their groups: the 子平 convention of relating each stem to the Day Master by element and polarity, as listed in Table 1; the group names are the engine's.
+
+- Meanings: the engine's own wording for each god (method note).
+
+- Bright and shadow sides: the bazifor.me guide text (method note).
+
+- Distribution and personality axes: the engine's weighted percentages and thresholds (method note).
+
+- Luck pillars: 陽男陰女順行, 陰男陽女逆行, with 起運 = 距節日數/3.
+
+- Stem relationships: 三命通會, in the chapters the engine cites.
+
+See the gods in your own chart in the free reading at /start, and how luck pillars unfold in luck cycles and windows.
 
 ---
 

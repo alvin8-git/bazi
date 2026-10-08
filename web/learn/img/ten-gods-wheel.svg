@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 485" role="img" aria-label="The ten gods for day master 己 in five groups: 比劫 (己 比肩, 戊 劫財), 食傷 (辛 食神, 庚 傷官), 財 (癸 偏財, 壬 正財), 官殺 (乙 七殺, 甲 正官), 印 (丁 偏印, 丙 正印). Sample chart shares: 劫財 48.1, 七殺 29.6, 正印 11.1, 偏財 7.4, 傷官 3.7 percent. Fictional example." font-family="system-ui, 'Noto Sans SC', sans-serif">
+<title>Ten Gods around the Day Master 己</title>
+<rect width="720" height="485" fill="#faf7f2"/>
+<ellipse cx="360" cy="238" rx="235" ry="158" fill="none" stroke="#e5ded2" stroke-width="2"/>
+<rect x="228.4" y="62.7" width="118" height="50" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2"/>
+<text x="287.4" y="92.7" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="bold">己 比肩</text>
+<rect x="373.6" y="62.7" width="118" height="50" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2"/>
+<text x="432.6" y="84.7" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="bold">戊 劫財</text>
+<text x="432.6" y="104.7" font-size="14" fill="#8a6d1f" text-anchor="middle" font-weight="bold">48.1%</text>
+<text x="360.0" y="45.0" font-size="18" fill="#8a6d1f" text-anchor="middle" font-weight="bold">比劫</text>
+<rect x="491.1" y="120.1" width="118" height="50" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2"/>
+<text x="550.1" y="150.1" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="bold">辛 食神</text>
+<rect x="536.0" y="213.0" width="118" height="50" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2"/>
+<text x="595.0" y="235.0" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="bold">庚 傷官</text>
+<text x="595.0" y="255.0" font-size="14" fill="#8a6d1f" text-anchor="middle" font-weight="bold">3.7%</text>
+<text x="662.0" y="195.0" font-size="18" fill="#8a6d1f" text-anchor="start" font-weight="bold">食傷</text>
+<rect x="491.1" y="305.9" width="118" height="50" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2"/>
+<text x="550.1" y="327.9" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="bold">癸 偏財</text>
+<text x="550.1" y="347.9" font-size="14" fill="#8a6d1f" text-anchor="middle" font-weight="bold">7.4%</text>
+<rect x="373.6" y="363.3" width="118" height="50" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2"/>
+<text x="432.6" y="393.3" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="bold">壬 正財</text>
+<text x="617.0" y="337.0" font-size="18" fill="#8a6d1f" text-anchor="start" font-weight="bold">財</text>
+<rect x="228.4" y="363.3" width="118" height="50" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2"/>
+<text x="287.4" y="385.3" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="bold">乙 七殺</text>
+<text x="287.4" y="405.3" font-size="14" fill="#8a6d1f" text-anchor="middle" font-weight="bold">29.6%</text>
+<rect x="110.9" y="305.9" width="118" height="50" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2"/>
+<text x="169.9" y="335.9" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="bold">甲 正官</text>
+<text x="103.0" y="337.0" font-size="18" fill="#8a6d1f" text-anchor="end" font-weight="bold">官殺</text>
+<rect x="66.0" y="213.0" width="118" height="50" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2"/>
+<text x="125.0" y="243.0" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="bold">丁 偏印</text>
+<rect x="110.9" y="120.1" width="118" height="50" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2"/>
+<text x="169.9" y="142.1" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="bold">丙 正印</text>
+<text x="169.9" y="162.1" font-size="14" fill="#8a6d1f" text-anchor="middle" font-weight="bold">11.1%</text>
+<text x="58.0" y="195.0" font-size="18" fill="#8a6d1f" text-anchor="end" font-weight="bold">印</text>
+<circle cx="360" cy="238" r="52" fill="#f1e6c4" stroke="#2b2620" stroke-width="3" stroke-dasharray="6 4"/>
+<text x="360.0" y="250.0" font-size="40" fill="#2b2620" text-anchor="middle" font-weight="bold">己</text>
+<text x="360.0" y="176.0" font-size="14" fill="#2b2620" text-anchor="middle" font-weight="normal"></text>
+<text x="360.0" y="310.0" font-size="14" fill="#2b2620" text-anchor="middle" font-weight="normal">Day Master (yin Earth)</text>
+<text x="360.0" y="452.0" font-size="14" fill="#2b2620" text-anchor="middle" font-weight="normal">example: day master 己, fictional sample chart</text>
+<text x="360.0" y="472.0" font-size="14" fill="#8a6d1f" text-anchor="middle" font-weight="normal">gold % = share of that ten god in the sample chart</text>
+</svg>

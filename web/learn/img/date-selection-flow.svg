@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 310" role="img" aria-label="A four-step flow for choosing a date: month and 立春 boundary, then day officer 建除 keeping 成 定 開, then branch clashes 沖 with the occupants and the house, then the entry hour 時辰. Below, the twelve officers in order with 成 定 開 highlighted and 破 marked as avoid." font-family="system-ui, 'Noto Sans SC', sans-serif">
+<title>Date selection flow: month, day officer, clashes, hour</title>
+<rect width="720" height="310" fill="#faf7f2"/>
+<rect x="10" y="60" width="148" height="120" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2"/>
+<text x="84.0" y="115.0" font-size="15" fill="#2b2620" text-anchor="middle" font-weight="bold">Month and</text>
+<text x="84.0" y="135.0" font-size="15" fill="#2b2620" text-anchor="middle" font-weight="normal">立春 boundary</text>
+<path d="M162 120.0 h24" stroke="#b03a2e" stroke-width="2.5"/><path d="M186 114.0 l8 6 l-8 6z" fill="#b03a2e"/>
+<rect x="194" y="60" width="148" height="120" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2"/>
+<text x="268.0" y="105.0" font-size="15" fill="#2b2620" text-anchor="middle" font-weight="bold">Day officer</text>
+<text x="268.0" y="125.0" font-size="15" fill="#2b2620" text-anchor="middle" font-weight="normal">建除</text>
+<text x="268.0" y="145.0" font-size="15" fill="#2b2620" text-anchor="middle" font-weight="normal">(keep 成 定 開)</text>
+<path d="M346 120.0 h24" stroke="#b03a2e" stroke-width="2.5"/><path d="M370 114.0 l8 6 l-8 6z" fill="#b03a2e"/>
+<rect x="378" y="60" width="148" height="120" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2"/>
+<text x="452.0" y="105.0" font-size="15" fill="#2b2620" text-anchor="middle" font-weight="bold">Branch clashes</text>
+<text x="452.0" y="125.0" font-size="15" fill="#2b2620" text-anchor="middle" font-weight="normal">with the occupants</text>
+<text x="452.0" y="145.0" font-size="15" fill="#2b2620" text-anchor="middle" font-weight="normal">and the house (沖)</text>
+<path d="M530 120.0 h24" stroke="#b03a2e" stroke-width="2.5"/><path d="M554 114.0 l8 6 l-8 6z" fill="#b03a2e"/>
+<rect x="562" y="60" width="148" height="120" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2"/>
+<text x="636.0" y="115.0" font-size="15" fill="#2b2620" text-anchor="middle" font-weight="bold">Entry hour</text>
+<text x="636.0" y="135.0" font-size="15" fill="#2b2620" text-anchor="middle" font-weight="normal">時辰</text>
+<path d="M268.0 180 V200" stroke="#e5ded2" stroke-width="2"/>
+<text x="268.0" y="216.0" font-size="14" fill="#2b2620" text-anchor="middle" font-weight="normal">the twelve officers in order</text>
+<rect x="88.0" y="230" width="30" height="36" fill="#fff" stroke="#2b2620" stroke-width="1.5"/>
+<text x="103.0" y="254.0" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="normal">建</text>
+<rect x="118.0" y="230" width="30" height="36" fill="#fff" stroke="#2b2620" stroke-width="1.5"/>
+<text x="133.0" y="254.0" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="normal">除</text>
+<rect x="148.0" y="230" width="30" height="36" fill="#fff" stroke="#2b2620" stroke-width="1.5"/>
+<text x="163.0" y="254.0" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="normal">滿</text>
+<rect x="178.0" y="230" width="30" height="36" fill="#fff" stroke="#2b2620" stroke-width="1.5"/>
+<text x="193.0" y="254.0" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="normal">平</text>
+<rect x="208.0" y="230" width="30" height="36" fill="#f1e6c4" stroke="#2b2620" stroke-width="1.5"/>
+<text x="223.0" y="254.0" font-size="16" fill="#8a6d1f" text-anchor="middle" font-weight="bold">定</text>
+<rect x="238.0" y="230" width="30" height="36" fill="#fff" stroke="#2b2620" stroke-width="1.5"/>
+<text x="253.0" y="254.0" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="normal">執</text>
+<rect x="268.0" y="230" width="30" height="36" fill="#f3d9d5" stroke="#2b2620" stroke-width="1.5"/>
+<text x="283.0" y="254.0" font-size="16" fill="#b03a2e" text-anchor="middle" font-weight="bold">破</text>
+<rect x="298.0" y="230" width="30" height="36" fill="#fff" stroke="#2b2620" stroke-width="1.5"/>
+<text x="313.0" y="254.0" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="normal">危</text>
+<rect x="328.0" y="230" width="30" height="36" fill="#f1e6c4" stroke="#2b2620" stroke-width="1.5"/>
+<text x="343.0" y="254.0" font-size="16" fill="#8a6d1f" text-anchor="middle" font-weight="bold">成</text>
+<rect x="358.0" y="230" width="30" height="36" fill="#fff" stroke="#2b2620" stroke-width="1.5"/>
+<text x="373.0" y="254.0" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="normal">收</text>
+<rect x="388.0" y="230" width="30" height="36" fill="#f1e6c4" stroke="#2b2620" stroke-width="1.5"/>
+<text x="403.0" y="254.0" font-size="16" fill="#8a6d1f" text-anchor="middle" font-weight="bold">開</text>
+<rect x="418.0" y="230" width="30" height="36" fill="#fff" stroke="#2b2620" stroke-width="1.5"/>
+<text x="433.0" y="254.0" font-size="16" fill="#2b2620" text-anchor="middle" font-weight="normal">閉</text>
+<text x="268.0" y="296.0" font-size="14" fill="#2b2620" text-anchor="middle" font-weight="normal">gold = keep, red = avoid 破</text>
+<text x="360.0" y="28.0" font-size="18" fill="#2b2620" text-anchor="middle" font-weight="bold">How a date is chosen, step by step</text>
+</svg>
