@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 445" role="img" aria-label="A four-column grid of year, month, day and hour pillars with stem and branch rows: 戊辰, 乙卯, 己巳, 戊辰. The day stem 己 is highlighted as the Day Master." font-family="system-ui, 'Noto Sans SC', sans-serif">
+<title>Four Pillars grid: year, month, day and hour</title>
+<rect width="720" height="445" fill="#faf7f2"/>
+<text x="360.0" y="34.0" font-size="18" fill="#2b2620" text-anchor="middle" font-weight="bold">Four Pillars of the sample chart (1988-03-15, 09:30)</text>
+<rect x="170" y="56" width="130" height="58" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="235.0" y="82.0" font-size="17" fill="#2b2620" text-anchor="middle" font-weight="bold">年 Year</text>
+<rect x="300" y="56" width="130" height="58" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="365.0" y="82.0" font-size="17" fill="#2b2620" text-anchor="middle" font-weight="bold">月 Month</text>
+<rect x="430" y="56" width="130" height="58" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="495.0" y="82.0" font-size="17" fill="#2b2620" text-anchor="middle" font-weight="bold">日 Day</text>
+<text x="495.0" y="104.0" font-size="14" fill="#b03a2e" text-anchor="middle" font-weight="bold">日主 Day Master</text>
+<rect x="560" y="56" width="130" height="58" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="625.0" y="82.0" font-size="17" fill="#2b2620" text-anchor="middle" font-weight="bold">时 Hour</text>
+<text x="156.0" y="190.0" font-size="20" fill="#8a6d1f" text-anchor="end" font-weight="bold">天干</text>
+<text x="156.0" y="210.0" font-size="14" fill="#2b2620" text-anchor="end" font-weight="normal">stem</text>
+<rect x="170" y="150" width="130" height="80" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="235.0" y="204.0" font-size="40" fill="#2b2620" text-anchor="middle" font-weight="bold">戊</text>
+<rect x="300" y="150" width="130" height="80" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="365.0" y="204.0" font-size="40" fill="#2b2620" text-anchor="middle" font-weight="bold">乙</text>
+<rect x="430" y="150" width="130" height="80" fill="#b03a2e" stroke="#b03a2e" stroke-width="2"/>
+<text x="495.0" y="204.0" font-size="40" fill="#fff" text-anchor="middle" font-weight="bold">己</text>
+<rect x="560" y="150" width="130" height="80" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="625.0" y="204.0" font-size="40" fill="#2b2620" text-anchor="middle" font-weight="bold">戊</text>
+<text x="156.0" y="270.0" font-size="20" fill="#8a6d1f" text-anchor="end" font-weight="bold">地支</text>
+<text x="156.0" y="290.0" font-size="14" fill="#2b2620" text-anchor="end" font-weight="normal">branch</text>
+<rect x="170" y="230" width="130" height="80" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="235.0" y="284.0" font-size="40" fill="#2b2620" text-anchor="middle" font-weight="bold">辰</text>
+<rect x="300" y="230" width="130" height="80" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="365.0" y="284.0" font-size="40" fill="#2b2620" text-anchor="middle" font-weight="bold">卯</text>
+<rect x="430" y="230" width="130" height="80" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="495.0" y="284.0" font-size="40" fill="#2b2620" text-anchor="middle" font-weight="bold">巳</text>
+<rect x="560" y="230" width="130" height="80" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="625.0" y="284.0" font-size="40" fill="#2b2620" text-anchor="middle" font-weight="bold">辰</text>
+<text x="156.0" y="350.0" font-size="20" fill="#8a6d1f" text-anchor="end" font-weight="bold">藏干</text>
+<text x="156.0" y="370.0" font-size="14" fill="#2b2620" text-anchor="end" font-weight="normal">hidden stems</text>
+<rect x="170" y="310" width="130" height="80" fill="#fff" stroke="#e5ded2" stroke-width="2" stroke-dasharray="6 4"/>
+<rect x="300" y="310" width="130" height="80" fill="#fff" stroke="#e5ded2" stroke-width="2" stroke-dasharray="6 4"/>
+<rect x="430" y="310" width="130" height="80" fill="#fff" stroke="#e5ded2" stroke-width="2" stroke-dasharray="6 4"/>
+<rect x="560" y="310" width="130" height="80" fill="#fff" stroke="#e5ded2" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="360.0" y="424.0" font-size="14" fill="#2b2620" text-anchor="middle" font-weight="normal">日主 = the day stem (己, yin Earth): the chart is read from this point.</text>
+</svg>

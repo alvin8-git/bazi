@@ -1544,7 +1544,7 @@ def gsc_verification():
 # welcome — a new site needs reach. Private workspaces and the API stay out of every group.
 _ROBOTS_ALLOW = ("Allow: /$\nAllow: /start\nAllow: /fengshui\nAllow: /baby\nAllow: /learn\n"
                  "Allow: /zh/learn\nAllow: /how-it-works\nAllow: /about\nAllow: /faq\n"
-                 "Allow: /author\nAllow: /llms.txt\nAllow: /llms-full.txt\n"
+                 "Allow: /author\nAllow: /method\nAllow: /llms.txt\nAllow: /llms-full.txt\n"
                  "Disallow: /w/\nDisallow: /api/\n"
                  "Content-Signal: search=yes, ai-input=yes, ai-train=yes\n")
 _ROBOTS_BOTS = ("Googlebot", "Bingbot", "OAI-SearchBot", "Claude-SearchBot", "PerplexityBot",
@@ -1581,7 +1581,8 @@ def llms_txt():
         lines.append(f"- [{title}](https://bazifor.me/zh/learn/{slug})")
     lines += ["", "## About", "",
               "- [How it works](https://bazifor.me/how-it-works): the engine, its sources and its limits",
-              "- [About](https://bazifor.me/about)", "- [Author](https://bazifor.me/author)",
+              "- [About](https://bazifor.me/about)", "- [Method](https://bazifor.me/method): ten claims about what the engine does and does not do",
+              "- [Author](https://bazifor.me/author)",
               "- [FAQ](https://bazifor.me/faq): method, accuracy, privacy",
               "- [Full text of the English guides](https://bazifor.me/llms-full.txt)", ""]
     return "\n".join(lines)
@@ -1629,6 +1630,11 @@ def indexnow_key_file(key: str):
     return k
 
 
+@router.get("/method")
+def method_page():
+    return FileResponse(ROOT / "web/method.html")
+
+
 @router.get("/author")
 def author_page():
     return FileResponse(ROOT / "web/author.html")
@@ -1649,7 +1655,7 @@ def _lastmod() -> dict:
 @router.get("/sitemap.xml")
 def sitemap():
     pages = ["/", "/start", "/fengshui", "/baby",
-             "/how-it-works", "/about", "/faq", "/author", "/learn"]
+             "/how-it-works", "/about", "/faq", "/author", "/method", "/learn"]
     pages += [f"/learn/{s}" for s in _learn_slugs()]
     pages += ["/zh/learn"]
     pages += [f"/zh/learn/{s}" for s in _learn_slugs("web/learn-zh")]

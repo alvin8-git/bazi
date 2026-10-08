@@ -6,6 +6,10 @@
 <link rel="canonical" href="https://bazifor.me/how-it-works">
 <meta property="og:title" content="How It Works — Deterministic BaZi &amp; Fengshui">
 <meta property="og:description" content="Exact calendar math, three classical layers, every line rule-cited. No AI guesswork.">
+<meta property="og:image" content="https://bazifor.me/static/og/how-it-works.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;
 --gold:#8a6d1f;--line:#e5ded2}
@@ -57,6 +61,9 @@ Each section shows three things: the computed data, a plain-language 解读 narr
 a strategy — and <b>every line names the classical rule that produced it</b>. You can
 disagree with a rule; you can never be left wondering where a claim came from.</div>
 
+<p>Clock time in, true solar time out. The engine assumes Singapore/Malaysia clock time (UTC+8, and UTC+7:30 before 1982), then converts it to true solar time using your longitude and the equation of time: 09:30 on the clock becomes 08:16 true solar time at 103.85°E. The BaZi year changes at 立春, not on 1 January; 立春 2027 falls on 2027-02-04.</p>
+<p class="zh">引擎按新加坡/马来西亚钟表时间（UTC+8，1982年前为UTC+7:30）换算为真太阳时；八字的年柱以立春为界，而非1月1日。</p>
+
 <h2>The home fengshui pipeline<span class="zh">宅运分析</span></h2>
 <div class="step"><b class="n">1</b><b>Upload a floor plan and set the facing.</b>
 Any photo or PDF page of your plan; enter the compass facing you measured at the main
@@ -73,6 +80,16 @@ placement wall by wall, generates room colour guidance, a renovation-timing tabl
 against this year's and next year's afflictions, and an 入宅 move-in date finder for
 your household. Add up to six homes and compare them side by side.</div>
 
+<h2>What a reading looks like<span class="zh">解读长什么样</span></h2>
+<style>.gallery{display:grid;grid-template-columns:1fr;gap:16px;margin:16px 0}@media(min-width:640px){.gallery{grid-template-columns:1fr 1fr}}.gallery figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}.gallery img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;object-position:top;border-radius:8px;border:1px solid var(--line)}.gallery figcaption{font-size:13.5px;color:var(--muted);margin-top:8px;line-height:1.5}</style>
+<div class="gallery">
+<figure><img src="/static/img/shots/reading-desktop.jpg" alt="Example reading page for the fictional person 王大明: four-pillar grid and day master" width="1280" height="900"><figcaption>The reading: four pillars, day master and 用神, every number citing its rule.<br>解读：四柱、日主与用神，每个数字都标明依据。</figcaption></figure>
+<figure><img src="/static/img/shots/pair-desktop.jpg" alt="Example pair compatibility report for two fictional people with a component score table" loading="lazy" width="740" height="940"><figcaption>The pair report: a scored, printable compatibility sheet.<br>合婚报告：逐项计分、可打印的配对分析。</figcaption></figure>
+<figure><img src="/static/img/shots/fengshui-desktop.jpg" alt="Example home fengshui result for a sample condo with room and aspect scores" loading="lazy" width="1280" height="700"><figcaption>The home view: room and aspect scores for a sample condo.<br>宅运视图：样例住宅的房间与面向评分。</figcaption></figure>
+<figure><img src="/static/img/shots/certificate-desktop.jpg" alt="Example naming certificate for the fictional baby name 王禄婷" loading="lazy" width="900" height="1040"><figcaption>The naming certificate: pillars, five grids and the name's elements.<br>命名证书：八字四柱、五格与名字五行。</figcaption></figure>
+</div>
+<p class="note">Example screens use fictional data. / 示例使用虚构数据。</p>
+
 <h2>Why you can trust the numbers<span class="zh">为什么可信</span></h2>
 <div class="note">The engine reproduced a professionally produced, paid fengshui audit
 <b>to the digit</b> — 27/27 flying-star palaces and 32/32 directional assignments — and
@@ -88,6 +105,6 @@ Free, no account, under a minute.<br>
 <a class="btn" href="/start?utm_source=how-it-works">Get your reading →</a></div>
 </main>
 <footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
-<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/author">Author</a></span></footer>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 </body></html>

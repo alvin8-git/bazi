@@ -7,6 +7,9 @@ Deterministic BaZi, home feng shui and Chinese naming guides. Each guide cites t
 Source: https://bazifor.me/learn/bazi-vs-personality-tests
 Updated: 2026-09-16
 
+BaZi Basics
+
+By BaziMaster 2026-09-16 Updated 2026-09-16
 Sooner or later everyone curious about BaZi asks the modern question: how does it compare to MBTI, Big Five, DISC, or whatever assessment their workplace administered last year? The comparison is genuinely interesting — not because one "wins," but because the two families answer different questions with different failure modes.
 
 ## The method difference is the whole story
@@ -35,42 +38,142 @@ Your chart — Day Master, strength, favourable elements, and the ten-year cycle
 
 ---
 
-# Bed Placement and Direction: The Classical Rules That Actually Bind
+# Bed Direction in Feng Shui: Eight House Rules for HDB and Condo Beds
 
 Source: https://bazifor.me/learn/bed-direction-guide
-Updated: 2026-09-16
+Updated: 2026-10-08
 
-No fengshui topic generates more contradictory advice than bed placement. The confusion dissolves once you separate the two rule systems at work: compass rules (which direction should the head point, from your Eight House map) and form rules (what the door, windows, and walls physically do to the bed). Classical doctrine is explicit about precedence: 形势为先 — form first. A perfect compass direction does not redeem a bed the door slams into.
+Feng Shui Basics
 
-## The form rules, in order of severity
+By BaziMaster 2026-09-16 Updated 2026-10-08
+Bed direction in feng shui is the compass direction your head points to when you lie on the bed. It is chosen from the auspicious directions of your Eight House (八宅) kua, after the form rules about the wall, the door and the window have been satisfied. Form decides which walls are allowed; the compass ranks the survivors.
 
-- Solid wall behind the headboard. The head needs backing (靠). A headboard against glass — a window, and yes, a bay window — fails this rule; if a window wall is unavoidable, a tall solid headboard and heavy curtains are the mitigation, and a platform build should keep the pillow on solid wall with the glass along the bed's flank.
+## How do I find which direction is best for my head?
 
-- Stay out of the door's entry line (门冲床). The strip of space the doorway projects into the room should not run onto the bed — worst of all onto the pillow. Remedy when the room forces it: a wardrobe, tall shelf, or desk stationed between door and bed to intercept the line.
+Two sets of rules sit side by side, and they are easy to confuse: compass rules (which of the eight directions suits you, from your kua) and form rules (what the door, windows and walls physically do to the bed). Classical doctrine puts form first, so a perfect compass direction does not redeem a bed that the door slams into.
 
-- Feet not pointing squarely at the door. The classical 棺材位 aversion; a foot bench or low cabinet at the bed's foot settles mild cases.
+The compass part is mechanical. Your birth year and sex give a kua (命卦), one of eight trigrams, and the kua puts you in one of two groups. The 八宅大遊年 line transformation (the 八宅明鏡 tradition) then labels every direction with one of eight stars. The engine scores them as follows.
 
-- Commanding position (命令位). From the pillow you should see the door, ideally diagonally. A door hidden behind your head is the pattern to avoid; a door in view is safety the body actually registers.
+Star | Meaning in the engine | Score | 
 
-- 床在门后 — bed crowded behind the door leaf. When the opened door stands beside the pillow, use a soft-close hinge or doorstop plus a bedside table as buffer.
+生氣 | vitality | +3.0 | 
 
-- No mirror facing the bed, nothing heavy overhead (beams, shelves over the pillow), and no toilet sharing the headboard wall.
+天醫 | health | +2.5 | 
 
-## Then the compass rule
+延年 | relationships and longevity | +2.0 | 
 
-With the form constraints satisfied, point the headboard toward one of your four auspicious Eight House directions — 生气 (vitality) is the classic first choice, 天医 (health) and 延年 (relationships) close behind. Note the convention: the direction is where the top of your head points while lying down, not where your feet point. Couples with opposite east/west groups pick the wall that serves the partner under more strain, and compensate the other with their side of the bed and bedside arrangements.
+伏位 | stable seat | +1.0 | 
 
-## A worked method you can apply tonight
+禍害 | mishaps | -1.0 | 
 
-- List the walls that give solid backing.
+六煞 | six killings | -1.5 | 
 
-- Strike out walls in the door's entry line or swing.
+五鬼 | five ghosts | -2.0 | 
 
-- Of what remains, choose the wall whose direction scores best on your Eight House map.
+絕命 | life-severing | -3.0 | 
 
-- If no wall survives steps 1–3 cleanly, take the best compass wall and apply the named remedy for its specific defect — every defect above has one.
+The four positive stars are the "auspicious" directions and the four negative ones are the ones to keep your head away from.
 
-That is exactly the algorithm our home-fengshui tool runs when you trace your bedroom and mark its door and windows: it scores all four walls, applies the form penalties, and shows each flag with its remedy — so you can check its work against this article. The free reading computes your personal directions to start.
+Key facts
+
+- The 八宅 system has 8 directions, each labelled with 1 of 8 stars scored from +3.0 (生氣) to -3.0 (絕命).
+- There are 2 kua groups: 東四命 (坎 離 震 巽) and 西四命 (乾 坤 艮 兌).
+- A man born in 1988 and a woman born in 1988 both have kua 震; a man born in 1990 has kua 坎 and a woman born in 1990 has kua 艮.
+- The headboard direction is where the top of the head points while lying down, not where the feet point.
+- A kua 坎 person's best head direction is southeast (巽, 生氣, +3.0), followed by east (震, 天醫, +2.5).
+- The engine cites the rule behind each score, for example "命卦 坎 → 離宮 (S) is 延年", from 八宅大遊年.
+
+The eight positions for kua 坎: southeast 生氣, east 天醫, south 延年, north 伏位, west 禍害, northwest 六煞, northeast 五鬼, southwest 絕命
+
+## Which directions suit kua 坎?
+
+The figure above and the table below show the eight positions for kua 坎. Here the 巽 (southeast) wall is the best head position, then 震 (east), 離 (south) and 坎 (north). The remaining four walls are the ones to avoid for the head.
+
+Direction | Trigram | Star | Score | 
+
+SE | 巽 | 生氣 | +3.0 | 
+
+E | 震 | 天醫 | +2.5 | 
+
+S | 離 | 延年 | +2.0 | 
+
+N | 坎 | 伏位 | +1.0 | 
+
+W | 兌 | 禍害 | -1.0 | 
+
+NW | 乾 | 六煞 | -1.5 | 
+
+NE | 艮 | 五鬼 | -2.0 | 
+
+SW | 坤 | 絕命 | -3.0 | 
+
+Each kua gets its own table, which is why a copy-and-paste "best direction" list from the internet is wrong for most readers. The same wall that is 生氣 for kua 坎 is 禍害 for kua 乾.
+
+## What are the form rules for a bed, in order of severity?
+
+These are conventions of the classical form school, applied as penalties by the engine (method note: the penalty sizes are the engine's, the rules are traditional).
+
+- Solid wall behind the headboard. The head needs backing (靠). A headboard against glass, including a bay window, fails this rule. If a window wall is unavoidable, use a tall solid headboard and heavy curtains, or keep the pillow on a solid wall with the glass on the bed's flank.
+
+- Stay out of the door's entry line (門沖床). The strip of space the doorway projects into the room should not run onto the bed, least of all onto the pillow. A wardrobe, tall shelf or desk placed between door and bed intercepts the line.
+
+- Feet not pointing squarely at the door. A foot bench or low cabinet settles mild cases.
+
+- Commanding position. From the pillow you should see the door, ideally diagonally. A door hidden behind your head is the pattern to avoid.
+
+- Bed crowded behind the door leaf. When the opened door stands beside the pillow, add a doorstop and a bedside table as buffer.
+
+- No mirror facing the bed, nothing heavy overhead, such as a beam or shelf over the pillow, and no toilet on the headboard wall.
+
+## How does this work in an HDB flat or condo?
+
+The room you are in decides what is possible, so measure it before you decide anything.
+
+- Facing and compass. Stand inside the unit at the main door and look out; that is the unit's facing. For the bed, what matters is the compass direction of the headboard wall, which you read with a phone compass held flat in the room. Read the plan of your unit, not the block, because a flat's bedrooms point in different directions.
+
+- Which walls are candidates. List the walls that can take a bed head, strike out the ones that fail the form rules, then rank what remains by score. A wall shared with a toilet fails rule 6; if it is the only solid wall, the tool flags the defect and gives its remedy instead of hiding it.
+
+- Condo glass. Floor-to-ceiling glazing on a bedroom wall fails rule 1 for that wall, however good its direction scores.
+
+Two partners often belong to opposite groups. A man born in 1990 has kua 坎 (East group) and a woman born in 1990 has kua 艮 (West group). Their good directions do not overlap, so the couple picks the wall that serves the partner under more strain and compensates the other with their side of the bed.
+
+## What does a worked example look like?
+
+Take the fictional 王大明, born 1988-03-15, whose kua is 震 (東四命). His eight directions from 八宅大遊年 are:
+
+- South (離) is 生氣, +3.0.
+
+- North (坎) is 天醫, +2.5.
+
+- Southeast (巽) is 延年, +2.0.
+
+- East (震) is 伏位, +1.0.
+
+- Southwest (坤) is 禍害, -1.0.
+
+- Northeast (艮) is 六煞, -1.5.
+
+- Northwest (乾) is 五鬼, -2.0.
+
+- West (兌) is 絕命, -3.0.
+
+Suppose his bedroom has three possible headboard walls: south (solid), west (a window wall) and north (door on the same side). He strikes out the west wall twice: it is the 絕命 direction and it is glass. The north wall has the second-best score but runs into the door's entry line, so it needs a wardrobe screen. The south wall scores +3.0 and has solid backing, so the pillow goes south, and the commanding-position check decides which end of the wall the bed sits at.
+
+If he preferred north, the annual layer also matters: in 2027 the 五黃 star sits in the north palace, and the flying stars guide explains how to weigh that overlay.
+
+## Sources and method
+
+- Kua and eight-star labelling: 八宅大遊年 (trigram line transformation), in the 八宅明鏡 tradition.
+
+- Star scores (+3.0 to -3.0): the engine's weights for the eight stars (method note).
+
+- Form rules (solid backing, 門沖床, commanding position): classical form-school conventions, applied by the engine as penalties (method note).
+
+- Annual overlay: the 五黃 and the 太歲 and 歲破 positions follow 協紀辨方書 and the annual flying-star order.
+
+- Year boundary for charts: the 立春 convention of the 子平 calendar.
+
+Find your own kua and directions with the free reading at /start, or trace your bedroom, mark the door and windows, and see all four walls scored in the home tool at /fengshui.
 
 ---
 
@@ -79,6 +182,9 @@ That is exactly the algorithm our home-fengshui tool runs when you trace your be
 Source: https://bazifor.me/learn/day-masters-explained
 Updated: 2026-09-16
 
+BaZi Basics
+
+By BaziMaster 2026-09-16 Updated 2026-09-16
 In a BaZi chart, one character stands for you: the Heavenly Stem of your day pillar, called the Day Master (日主 or 日元). Everything else in the chart — the other seven characters, the luck cycles, the annual years — is read in relation to it. There are exactly ten possibilities, one for each stem, and each is one of the Five Elements in either yang (阳) or yin (阴) polarity.
 
 ## The ten, in one pass
@@ -120,6 +226,9 @@ Because the day pillar runs on an unbroken 60-day cycle, you cannot guess your D
 Source: https://bazifor.me/learn/eight-house-directions
 Updated: 2026-09-16
 
+Fengshui
+
+By BaziMaster 2026-09-16 Updated 2026-09-16
 Of all the classical fengshui schools, Eight House (八宅) is the most personal: it starts not from the building but from you. From your birth year and sex it derives a life gua (命卦) — one of eight trigrams — and from that, every compass direction becomes one of eight qualities, four auspicious and four inauspicious. It is the system behind "sleep with your head pointing this way" and "face this direction at your desk."
 
 ## Your life gua and your group
@@ -210,58 +319,111 @@ interface to a chart's element balance.
 
 ---
 
-# Flying Stars 2027 (丁未年): The Annual Map and Where Not to Renovate
+# Flying Stars 2027 (丁未年): Annual Chart, 太歲 and 五黃 for SG and MY Homes
 
 Source: https://bazifor.me/learn/flying-stars-2027
-Updated: 2026-09-16
+Updated: 2026-10-08
 
-Every solar year (立春 to 立春 — 2027's begins on 4 February 2027), the nine flying stars re-deal themselves across the eight compass sectors, and three calendar afflictions rotate with the year branch. 2027 is a 丁未 year — yin fire over the 未 (goat) branch. Here is the annual map, computed by the same engine that powers our home-fengshui readings, and what it means in practice.
+Flying Stars
 
-## The 2027 annual chart
+By BaziMaster 2026-09-16 Updated 2026-10-08
+Flying stars (玄空飛星) are a feng shui method that places nine numbered stars across the centre and eight compass sectors of a building, and re-deals the annual stars every year at 立春. In 2027, a 丁未 year, star 9 enters the centre and the 五黃 star 5 sits in the north.
 
-The annual star entering the centre in 2027 is 9. The full palace distribution:
+## What does the 2027 annual chart look like?
 
-- Centre 中 — 9
+The annual chart is the same for every building on earth: it depends only on the year, not on your address. What differs is which of your rooms falls in which sector. The engine that powers our home readings gives this distribution for 2027.
 
-- Northwest 乾 — 1
+The 2027 annual flying-star grid: 9 in the centre, 1 northwest, 2 west, 3 northeast, 4 south, 5 north, 6 southwest, 7 east, 8 southeast
+Palace | Direction | Star | Element | Quality in the engine (period 9) | 
 
-- West 兑 — 2 (illness star 病符)
+中 | centre | 9 | 火 | 當運旺星, score +2.0 | 
 
-- Northeast 艮 — 3 (quarrel star)
+乾 | NW | 1 | 水 | 生氣星 (next period), +1.5 | 
 
-- South 离 — 4 (academic 文昌 star)
+兌 | W | 2 | 土 | 二黑 病符, illness star, -1.5 | 
 
-- North 坎 — 5 (五黄, the yellow calamity star)
+艮 | NE | 3 | 木 | 三碧 是非, conflict star, -1.0 | 
 
-- Southwest 坤 — 6
+離 | S | 4 | 木 | 平星, 0.0 | 
 
-- East 震 — 7
+坎 | N | 5 | 土 | 五黃 廉貞, most afflictive, -2.0 | 
 
-- Southeast 巽 — 8
+坤 | SW | 6 | 金 | 吉白星, +0.5 | 
 
-## The three calendar afflictions
+震 | E | 7 | 金 | 平星, 0.0 | 
 
-- 太岁 (Grand Duke) — southwest, on the 未 branch. Classical rule: 可坐不可向 — sitting with your back to it is fine; avoid facing it for long stretches, and never break ground in its sector this year.
+巽 | SE | 8 | 土 | 退氣星, -0.5 | 
 
-- 岁破 (Year Breaker) — northeast, opposite the 太岁. The strictest sector for ground-breaking and demolition.
+Key facts
 
-- 三煞 (Three Killings) — the western arc (乾/兑/坤 palaces). Rule: 可向不可坐 — facing it is acceptable; avoid prolonged sitting toward it and avoid renovation there.
+- The 2027 annual chart starts at 立春 on 2027-02-04 and runs to 立春 on 2028-02-04.
+- Star 9 is in the centre and star 5 (五黃) is in the north palace 坎.
+- The 太歲 sits at 未, southwest, in the 202.5° to 217.5° arc.
+- The 歲破 sits at 丑, northeast, in the 22.5° to 37.5° arc.
+- The 三煞 occupy the west frame 申酉戌, the arc from 232.5° to 307.5°.
+- The 五黃 scores -2.0 in the engine, the lowest of the nine stars.
 
-## What to actually do
+## When does the flying-star year change?
 
-- Do not hack, drill, or dig (动土) in the SW, NE, W arc, or N this year. That is the combined 太岁 + 岁破 + 三煞 + 五黄 exclusion map for 2027. Screw-together furniture assembly is not 动土; structural work is.
+At 立春, 2027-02-04, not on 1 January and not at Chinese New Year. A condo owner who finishes a renovation on 2 February 2027 is still working in the 丙午 year, with a different chart. The year pillar shows the switch: a date of 2027-01-20 carries 丙午, and 2027-02-10 carries 丁未.
 
-- Planning renovations across the boundary? Sequence them: a sector clean in 2026 but afflicted in 2027 should be done before 4 February 2027; the reverse waits until after. This one scheduling habit costs nothing and respects every school.
+The centre star moves one step each year. In 2026 the centre star is 1, in 2027 it is 9 and in 2028 it is 8. The 五黃 therefore travels: south (離) in 2026, north (坎) in 2027 and southwest (坤) in 2028. Anything you plan across the 4 February boundary should be checked against both charts.
 
-- The north (坎) hosts 五黄 — the year's heaviest annual star. Keep that sector quiet: no renovation, no loud constant activity; the traditional remedy is still metal (a six-coin or brass object), which drains the star's earth.
+## Which annual afflictions apply in 2027?
 
-- The south (离) hosts the 4 star — the annual academic star. A student's desk or reading corner in the south sector gets a free tailwind this year.
+Three year-spirits (年神) rotate with the year branch, and they are separate from the numbered stars. These positions are derived from the 年神 rules in 協紀辨方書 (method note: the engine's public output is the star chart, and these three are derived from the rules for the 丁未 year).
 
-- West (兑) carries the 2 illness star — worth the same metal-drain treatment if a bedroom sits there.
+- 太歲 (Grand Duke) sits on the year branch. For 未 that is southwest, the arc SW1.
 
-## Annual stars are a layer, not the whole story
+- 歲破 (Year Breaker) sits on the branch opposite the year branch. Opposite 未 is 丑, northeast, the arc NE1.
 
-The annual chart sits on top of your building's natal chart (set by its facing and construction period) and your personal Eight House directions. A sector can be natal-strong and annually afflicted, or vice versa; the reading that matters is the overlay. Our home-fengshui tool computes all three layers for your actual floor plan — trace your rooms once, and the renovation-timing table for 2026–2027 is generated for your home specifically, with each rule cited.
+- 三煞 (Three Killings) for a 亥卯未 year sit on the opposite frame: the west, 申酉戌. That is SW3, W2 and NW1 in the 24-mountain ring.
+
+Together with the north 五黃, the sectors to treat carefully in 2027 are southwest, northeast, the western arc and north. For the 五黃 sector itself the engine's remedy table gives the traditional answer: place metal there (brass, a six-coin string or a metal pendulum clock) to drain the earth star, and keep it quiet (method note: engine remedy table). The practical rule is the traditional one: avoid structural work that breaks the ground or the wall (動土) in those sectors during the year. Assembling flat-pack furniture is not 動土; hacking tiles, hacking walls and drilling for new points is.
+
+## How do I read the chart for an HDB flat or condo?
+
+Use the unit plan, not the block. Stand inside the unit at the main door looking out; that direction is the facing. Then overlay the nine-palace grid on the floor plan of your own unit, with north at the real compass north, and see which rooms fall in which palace. Neighbouring units in the same block face the same way but have different room layouts, so their palace map differs.
+
+Two Singapore and Malaysia points matter in practice. First, a single flat can put its rooms in three or four different palaces, so the annual chart is read room by room and not for the flat as a whole. Second, a condo unit with a glass balcony wall has a clear facing but a looser boundary, so the room outline you trace in the tool decides which palace the balcony belongs to.
+
+## What does a worked example show?
+
+Take the fictional 王大明, born 1988-03-15, kua 震, East group. His Eight House map says his 生氣 direction is south (離), his 天醫 is north (坎), his 延年 is southeast (巽), and east (震) is 伏位, the stable seat.
+
+Now overlay 2027:
+
+- South, his best direction, carries the annual 4, a neutral 平星 at 0.0. The sector stays usable and loses nothing; it just gains no annual boost.
+
+- North, his 天醫 direction, carries 五黃 at -2.0. A study or bed that relies on that wall is working against the annual star for this year. The natal and personal layers still count, but the year layer is the heaviest single annual penalty.
+
+- East, his 伏位 seat, carries the neutral 7.
+
+- Southwest holds both the 太歲 and the annual 6, a favourable 吉白星 at +0.5. The 太歲 is the more specific warning for ground-breaking, so the rule is to keep it free of structural work even though the star is kind.
+
+The conclusion is not "move out" or "avoid north". It is the overlay: in 2027, keep construction away from north, northeast, southwest and the west frame, and check the sleeping direction against the form rules in the bed direction guide.
+
+## Why are annual stars a layer and not the whole story?
+
+The annual chart sits on top of the building's natal chart, which comes from its facing and construction period under 沈氏玄空學, including the 替卦 replacement stars used for 兼向 facings. It also sits above your personal Eight House directions from 八宅. A sector can be natal-strong and annually afflicted, or the reverse. The reading that matters is the overlay of all three, and each layer should show the rule that produced it.
+
+The home tool computes all three layers for a plan you trace and produces a renovation-timing table with each rule cited. Use it to see which of your rooms fall in the 2027 afflicted sectors.
+
+## Sources and method
+
+- Annual star chart: the nine-star flying order with the centre star set at each 立春; the engine's output, listed in the table above.
+
+- Star qualities in period 9: the engine's own scoring of each star (method note), not a classical table.
+
+- 太歲, 歲破 and 三煞 positions: the 年神 position rules of 協紀辨方書, applied to the 丁未 year branch.
+
+- Natal chart and 替卦: 沈氏玄空學, on the 兼向 replacement stars.
+
+- Personal directions in the worked example: 八宅大遊年, the 八宅明鏡 tradition.
+
+- Year boundary: 立春 as the solar term that opens the year in the 子平 calendar.
+
+Trace your own floor plan in the home tool at /fengshui, or begin with the free personal reading at /start.
 
 ---
 
@@ -326,11 +488,193 @@ what season, supported or drained by what, and when each theme takes the stage.
 
 ---
 
+# How Chinese Baby Names Are Scored: 用神, 五格, 三才, Meaning, Sound and Gender
+
+Source: https://bazifor.me/learn/how-chinese-baby-names-are-scored
+Updated: 2026-10-08
+
+Naming
+
+By BaziMaster 2026-10-08 Updated 2026-10-08
+A Chinese baby name score is a 100-point total built from seven checked parts: the child's favourable element (用神), the five grids (五格), the three talents (三才), meaning, sound, gender fit and data confidence. Each part has a fixed weight, so the final grade can be traced back to the rule behind every point.
+
+## How is a name scored out of 100?
+
+A name is rarely good or bad on one test. A character can carry the right element, have an excellent stroke count and still sound like something embarrassing. The builder at bazifor.me therefore scores seven parts, weights them, and adds them up. Nothing is hidden: the weights below are the ones the engine uses.
+
+Part | Weight | What it checks | 
+
+用神 | 30 | Does each character carry an element the child's chart needs? | 
+
+五格 | 25 | Are the five stroke-count grids lucky or unlucky? | 
+
+三才 | 15 | Do the elements of the heaven, person and earth grids support each other? | 
+
+字义 | 10 | What do the characters mean, in 16 meaning categories? | 
+
+音韵 | 5 | Do the tones and sounds read well, and do they collide with a bad word? | 
+
+性别 | 5 | Does the name fit the child's gender, using character tags? | 
+
+可信度 | 10 | How far can the engine trust the data behind the other parts? | 
+
+The seven weights add up to 100. The sum of the weights is the highest total a name can reach.
+
+Key facts
+
+- The seven weights are 用神 30, 五格 25, 三才 15, 字义 10, 音韵 5, 性别 5 and 可信度 10.
+- The grade bands are 90 and above 上佳, 80 and above 佳, 65 and above 可, and below 65 待斟酌.
+- A strong sound hit (an English profanity, a homophone or a severe homophone) caps the grade at 待斟酌 whatever the total.
+- The sound layer is backed by 303 sound-alike entries, of which 79 are severe, and 72 English reading checks.
+- 478 characters carry meaning tags, in 16 meaning categories, and 171 characters carry gender tags.
+- Strokes follow the 康熙字典 count, which uses the traditional form of each character.
+
+## Why does 用神 carry the most weight?
+
+Because it is the part that comes from the child, not from the name. The 用神 is the element the child's BaZi chart needs most, chosen by 扶抑, 調候, 通關 and 病藥. See what a useful god is for how it is found. A character carries an element, and the engine gives each character a role score against the child's chart:
+
+- 用神 (the useful god): 1.0
+
+- 喜 (favourable): 0.7
+
+- 闲 (neutral) or 未定 (undetermined): 0.3
+
+- 忌 (unfavourable): 0.0
+
+The 30 points scale with these role scores (method note: the exact blending across characters is the engine's). That is why the child's birth moment matters for naming. The chart behind the 用神 depends on true solar time. For a birth in Singapore or Malaysia the clock is UTC+8 (UTC+7:30 in Singapore before 1982), and a birth near a two-hour boundary can change the hour pillar and with it the 用神. The year changes at 立春, so a late January or early February birth may belong to the previous year.
+
+## How do the five grids (五格) work?
+
+The 五格 are five numbers derived from the stroke counts of the surname and given name: the 天格 (heaven), 人格 (person), 地格 (earth), 外格 (outer) and 總格 (total) grids. Each number is looked up in the 81-number system (81數理), which marks it 吉 or 凶. This is a modern naming-school convention, not a classical rule, and the engine uses only the two-state 吉/凶 reading (method note).
+
+Stroke counts come from the 康熙字典. This matters because the dictionary uses the traditional form: 祿 has more strokes than the simplified 禄, so a name typed in simplified Chinese must be counted in its traditional form.
+
+The 25 points are split across the grids by name length:
+
+Name type | 人格 | 地格 | 總格 | 外格 | Total | 
+
+双名 (two-character given name) | 8 | 7 | 7 | 3 | 25 | 
+
+单名 (one-character given name) | 15 | 10 | not scored | not scored | 25 | 
+
+The 天格 is not scored in either layout: it comes from the surname alone, so no choice of given name changes it (method note).
+
+## Which element relations count in the 三才?
+
+The 三才 (three talents) are the elements of the 天格, 人格 and 地格. The engine reads the relation between the elements and gives each relation a factor:
+
+Relation | Factor | 
+
+生 (one generates the next) | 1.0 | 
+
+比 (same element) | 0.8 | 
+
+洩 (drain) | 0.4 | 
+
+人剋 (the person element restrains) | 0.2 | 
+
+被剋 (the person element is restrained) | 0.0 | 
+
+The 15 points scale with these factors. The relations follow the five-element generating and restraining cycles shown below.
+
+The five-element generating and restraining cycles used to read the 三才 relations: wood feeds fire, fire feeds earth, earth feeds metal, metal feeds water, water feeds wood
+
+## How does the sound layer work?
+
+The sound part is worth 5 points and starts from a full score. It subtracts penalties for patterns that make a name awkward to say, and for collisions with other words. The penalties are the engine's own (method note):
+
+Pattern | Penalty | 
+
+Same tone repeated | 0.4 | 
+
+Two third tones together | 0.2 | 
+
+Ending on a neutral tone | 0.2 | 
+
+Same syllable repeated | 0.4 | 
+
+Reduplication | 0.1 | 
+
+Same initial | 0.2 | 
+
+Same final | 0.2 | 
+
+Cap on all repeat penalties together | 0.4 | 
+
+Near-homophone of a bad word | 0.5 | 
+
+Tone-different homophone | 0.7 | 
+
+Homophone | 1.0 | 
+
+Severe homophone | 1.0 | 
+
+English tease | 0.5 | 
+
+English profanity | 1.0 | 
+
+Sound-alike checks run against 303 dictionary entries (79 of them severe) and 72 English reading checks. Three kinds of hit are strong: an English profanity, a homophone, and a severe homophone. A strong hit does more than lose points. It caps the grade at 待斟酌 whatever the total, because a name that sounds like a swear word is not rescued by lucky strokes. Weaker hits, such as a near-homophone or an English tease, only cost points.
+
+## What does the meaning and gender layer add?
+
+The 字义 part (10 points) looks up each character in a table of 478 tagged characters across 16 meaning categories. The result also produces a short interpretation of the name, written from those tags. The 性别 part (5 points) uses 171 gender tags, which check the name against the child's gender.
+
+## What does a worked example look like?
+
+Take the fictional girl's name 王禄婷 (traditional 王祿婷), for a child born on 2026-03-15 at 09:30.
+
+- Strokes (康熙字典): 王 4, 祿 13, 婷 12.
+
+- Five grids: 天格 5 (土), 人格 17 (金), 地格 25 (土), 外格 13 (火), 總格 29 (水). All five read 吉, so 五格 earns the full 25.
+
+- 三才: 土 金 土. The engine's detail lines read 天土生人金 ×1.0 and 地土生人金 ×0.4, the verdict is 中, and the part earns 10.5 of 15.
+
+- Sound: tones 2, 4, 2 (wang, lu, ting). There are no findings, so the part earns the full 5.0.
+
+- The other parts: 用神 30.0, 字义 10.0, 性别 5.0 and 可信度 10.0.
+
+The total is 30 + 25 + 10.5 + 10 + 5 + 5 + 10 = 95.5, which lands in the 上佳 (excellent) band. The only points lost are the 4.5 in the 三才 part. The engine's reading of the name is: 既福禄双全，又亭亭玉立, or "a name suggesting blessing and prosperity; graceful and poised."
+
+A name scoring 89.9 would read 佳, one scoring 79 would read 可, and anything under 65 reads 待斟酌.
+
+## How are the grades set?
+
+Total | Grade | English | 
+
+90 and above | 上佳 | excellent | 
+
+80 to under 90 | 佳 | good | 
+
+65 to under 80 | 可 | fair | 
+
+under 65 | 待斟酌 | reconsider | 
+
+"Reconsider" does not say the name is wrong for your family. It says the rules have found a reason to look again.
+
+## Sources and method
+
+- Stroke counts: the 康熙字典, in traditional character forms.
+
+- 五格 grids and the 81 numbers: a modern naming-school convention (method note), with only the two-state 吉/凶 reading used.
+
+- 三才 relations: the five-element generating and restraining cycles, with the factors above (method note).
+
+- 用神: the four methods 扶抑, 調候, 通關 and 病藥, applied to the child's chart under the 子平 true-solar-time convention.
+
+- Sound, meaning, gender and confidence parts, and the grade cap: the engine's own rules and data tables (method note), not classical sources.
+
+Score a name for your own child in the baby name builder at /baby, with the full breakdown and the rule behind every part.
+
+---
+
 # Is BaZi Deterministic? Why We Compute Readings Instead of Chatting Them
 
 Source: https://bazifor.me/learn/is-bazi-deterministic
 Updated: 2026-09-16
 
+BaZi Basics
+
+By BaziMaster 2026-09-16 Updated 2026-09-16
 "AI fortune telling" is everywhere now: paste your birthday into a chatbot and receive a confident, fluent, unrepeatable reading. Ask twice, get two different answers. This article draws the line that industry blurs: which parts of BaZi are deterministic, which parts are interpretive, and why the difference should decide what tool you trust.
 
 ## Layer 1: the computation (fully deterministic)
@@ -415,6 +759,9 @@ cites the rule that raised it.
 Source: https://bazifor.me/learn/move-in-date-selection
 Updated: 2026-09-16
 
+Dates
+
+By BaziMaster 2026-09-16 Updated 2026-09-16
 Date selection (择日) is the most immediately practical branch of the classical toolkit, and moving into a home (入宅) is its most requested application. It is also fully computable — a filter pipeline over the calendar, applied in a fixed order. Here is the method, exactly as an engine (or a careful almanac reader) runs it.
 
 ## Step 1: the twelve day officers (建除十二神)
@@ -590,52 +937,110 @@ God | Bright side 优 | Shadow side 忌 |
 
 ---
 
-# 用神: Your Favourable Elements — and the Colours That Carry Them
+# Useful God (用神) in BaZi: Find Your Favourable Elements and Colours
 
 Source: https://bazifor.me/learn/useful-god-colors
-Updated: 2026-09-16
+Updated: 2026-10-08
 
-After the Four Pillars are cast and your Day Master's strength is assessed, classical BaZi asks the most practical question in the whole system: which element does this chart need? That element is the 用神 — usually translated "useful god," though "operative element" is closer to the sense. Everything actionable in a reading — colours, directions, timing, even room choices in home fengshui — flows from it.
+BaZi Basics
 
-## How the 用神 is actually chosen
+By BaziMaster 2026-09-16 Updated 2026-10-08
+A useful god (用神) is the element a BaZi chart needs most, chosen by rule from the balance of the Day Master and the season. Four classical methods find it: 扶抑, 調候, 通關 and 病藥. Once it is known, it turns into practical choices such as colours, directions and room use.
 
-The classical toolkit has four techniques, applied in order:
+## How is the 用神 chosen?
 
-- 扶抑 (support–restrain) — the workhorse. A weak Day Master is supported by the element that generates it (印, the resource) and the element that matches it (比劫, peers); a strong one is drained or disciplined by output (食伤), wealth (财), or authority (官杀).
+After the Four Pillars are cast and the Day Master's strength is assessed, classical BaZi asks the most practical question in the system: which element does this chart need? The usual English, "useful god", is a little grand. "Operative element" is closer to the sense. Colours, directions, timing and even room choices in home feng shui flow from it.
 
-- 调候 (climate adjustment) — a chart born in deep winter may need fire regardless of strength; a blazing summer chart may need water. Season overrides arithmetic when the imbalance is extreme.
+The classical toolkit has four techniques, and the engine cites which one it used:
 
-- 病药 (illness and medicine) — when one element dominates and distorts the chart, the element that checks it is the cure.
+- 扶抑 (support and restrain) is the workhorse. A weak Day Master is supported by the element that generates it (印, the resource) and the element that matches it (比劫, peers). A strong one is drained or disciplined by output (食傷), wealth (財) or authority (官殺).
 
-- 通关 (bridging) — when two camps deadlock, the element that mediates between them unlocks the chart.
+- 調候 (climate adjustment) looks at the season. A chart born in deep winter may need fire regardless of strength, and a blazing summer chart may need water. Season can override arithmetic when the imbalance is extreme.
 
-These are written rules with a defined order of precedence. Two practitioners applying them honestly reach the same answer — which is why a deterministic engine can compute your 用神 and cite the technique it used.
+- 通關 (bridging) applies when two camps of elements deadlock. The element that mediates between them unlocks the chart.
 
-## From elements to colours
+- 病藥 (illness and medicine) applies when one element dominates and distorts the chart. The element that checks it is the cure.
 
-Each element carries a colour family, and this is the oldest lifestyle application of BaZi:
+These are written rules, and two practitioners applying them honestly reach the same answer. That is why a deterministic engine can compute the 用神 and name the technique behind it. The strength framework underneath is 旺相休囚死 (how strong each element is in the birth month) together with 通根 (whether the Day Master has roots in the branches).
 
-- Wood (木) — greens and teals
+Key facts
 
-- Fire (火) — reds, oranges, purples
+- The 用神 is found by 4 techniques: 扶抑, 調候, 通關 and 病藥.
+- The five elements each have 2 colour families in the engine: wood 綠 青, fire 紅 紫, earth 黃 棕, metal 白 金, water 黑 藍.
+- In the engine's naming score, a name character that matches the 用神 earns 1.0, a 喜 element 0.7, a neutral one 0.3 and a 忌 element 0.0.
+- The sample chart 戊辰 乙卯 己巳 戊辰 has a weak Day Master 己 (score -0.97), and its 用神 are fire and earth.
+- The five-element cycles are fixed: wood feeds fire, fire feeds earth, earth feeds metal, metal feeds water, and water feeds wood.
+- The 三命通會 is the classical source for the 扶抑 reasoning the engine cites.
 
-- Earth (土) — yellows, beige, browns, terracotta
+The five-element generating and restraining cycles: wood feeds fire, fire feeds earth, earth feeds metal, metal feeds water, water feeds wood
 
-- Metal (金) — white, silver, grey, metallics, gold tones
+## What does a worked example look like?
 
-- Water (水) — blues and black
+Take the fictional 王大明, a man born on 1988-03-15 at 09:30 Singapore clock time. True solar time for Singapore (UTC+8, longitude 103.8517°E, equation of time -9.4 minutes) is 08:16, so the hour pillar is counted in the 辰 block. The pillars are 戊辰, 乙卯, 己巳, 戊辰, and the Day Master is 己, yin Earth.
 
-Your favourable elements' colours are worth favouring where you spend sustained time — wardrobe staples, bedding, a study corner, a phone case you see two hundred times a day. Your unfavourable elements' colours (忌神) are not poison; they are simply not doing you any favours in bulk. The classical advice is dosage, not prohibition: an unfavourable colour as an accent is background noise; as the whole bedroom wall, it is a standing weight.
+Strength. The month branch is 卯, wood, which restrains earth, so the Day Master is in the 死 phase. Support totals 6.33 against a drain of 3.67, and the roots (通根) are 辰, 巳 and 辰. The net score is -0.97: 身弱, weak.
 
-## Where people go wrong
+Technique. Technique 1 of 4, 扶抑法, applies directly. A weak Day Master favours the resource element (印, Fire) and the peer element (比劫, Earth). Technique 2 of 4, 調候法, is also cited in the result. The 用神 come out as Fire and Earth. The unfavourable elements are Wood, Water and Metal.
 
-- Guessing from the Day Master alone. A water Day Master does not automatically "need" water — a strong 壬 usually needs the opposite.
+Colours. The favourable families are 紅 and 紫 for fire, and 黃 and 棕 for earth.
+
+Element | Role for 王大明 | Colour families | 
+
+火 Fire | favourable (印) | 紅 紫 | 
+
+土 Earth | favourable (比劫) | 黃 棕 | 
+
+木 Wood | unfavourable | 綠 青 | 
+
+水 Water | unfavourable | 黑 藍 | 
+
+金 Metal | unfavourable | 白 金 | 
+
+The roles are reproduced from the engine, so a different chart gives a different table. A strong Day Master is drained or disciplined instead of supported, so the favourable elements for such a chart come from a different group.
+
+## Which colours should I actually use?
+
+Your favourable elements' colours are worth favouring where you spend sustained time: wardrobe staples, bedding, a study corner, a phone case you see two hundred times a day. Your unfavourable elements' colours are not poison; they are simply not doing you any favours in bulk. The classical advice is dosage, not prohibition. An unfavourable colour as an accent is background noise; as the whole bedroom wall it is a standing weight.
+
+In a Singapore or Malaysian home, three practical limits apply.
+
+- Rented and HDB walls. A rented unit often cannot be repainted. Move the personal palette to what you can change: bedsheets, curtains, a rug, a lampshade and desk accessories.
+
+- Large surfaces versus small ones. Paint a feature wall or a cabinet front in a favourable colour before changing a whole room, and keep unfavourable colours to accents.
+
+- Room context. In home feng shui, a room's flying-star overlay can outrank the personal palette on walls and large surfaces, with the personal colours moving to textiles. Rules interact, and a good reading shows the precedence.
+
+The same element logic reaches the bed direction guide, which uses your kua rather than your 用神 for direction, and the flying stars guide, which adds the annual overlay.
+
+## Why do people get the 用神 wrong?
+
+- Guessing from the Day Master alone. A water Day Master does not automatically "need" water. A strong 壬 usually needs the opposite, because strength decides the direction of the remedy.
 
 - Treating the zodiac animal as the answer. The year branch is one-eighth of the chart.
 
-- Applying colours without the room's own context. In home fengshui, a room's flying-star overlay can override the personal palette on walls and large surfaces, with the personal colours moving to textiles. Rules interact; a good reading shows the precedence.
+- Using the wrong hour. The hour pillar comes from true solar time. In 王大明's case the clock reads 09:30 but the sun reads 08:16, which changes the hour from 巳 to 辰 and therefore the roots and the strength score.
 
-The free reading below computes your favourable and unfavourable elements with the technique cited, and lists the exact colour families for each.
+- Using the wrong year for early February births. The year pillar changes at 立春, which is 2027-02-04 in 2027, and not at Chinese New Year.
+
+- Pre-1982 births. Singapore ran on UTC+7:30 before 1982-01-01 and UTC+8 after; Peninsular Malaysia is UTC+8 from 1982-01-01. The conversion must be applied before any pillar is cast.
+
+## Where else does the 用神 show up?
+
+The same labels carry across the site. In the baby name builder, each character in a name is scored against the 用神 using the weights above (method note), and the 用神 is the largest single part of the score. See How Chinese baby names are scored for that.
+
+## Sources and method
+
+- Choosing the 用神: 扶抑, 調候, 通關 and 病藥 (the 用神 四法), cited by number in the engine's result.
+
+- Weak or strong Day Master: the 旺相休囚死 and 通根 framework, scored numerically (method note).
+
+- The 扶抑 reasoning (weak Day Master favours resource and peers): 三命通會, in its discussion of 用神 and 扶抑.
+
+- Hour pillar conversion: the 子平 true-solar-time convention, with the UTC+7:30 and UTC+8 offsets applied first (method note).
+
+- Colour families: the engine's table of two colour words per element (method note), not a classical list.
+
+Compute your own favourable elements, with the technique cited, in the free reading at /start. To see the colours in a room plan, use the home tool at /fengshui.
 
 ---
 
@@ -644,6 +1049,9 @@ The free reading below computes your favourable and unfavourable elements with t
 Source: https://bazifor.me/learn/wenchang-study-corner
 Updated: 2026-09-16
 
+Fengshui
+
+By BaziMaster 2026-09-16 Updated 2026-09-16
 Classical practice reserves a special direction for study and scholarship: 文昌, the scholar star. Unlike generic "study tips," 文昌 is personal and computable — it derives from your BaZi Day Master, so two children in the same family usually have different study corners. This is one of the most useful and least-known applications of a BaZi chart.
 
 ## How your 文昌 position is derived
@@ -676,45 +1084,111 @@ Because 文昌 follows the Day Master, a family of five can have five different 
 
 ---
 
-# What Is BaZi? The Four Pillars, Explained Without Mystery
+# BaZi (八字) Explained: Four Pillars, Day Master and True Solar Time
 
 Source: https://bazifor.me/learn/what-is-bazi
-Updated: 2026-09-16
+Updated: 2026-10-08
 
-BaZi (八字, "eight characters") is often described as Chinese astrology, but that framing hides what it actually is: a calendar computation. Your birth moment is converted into four pairs of characters — the Four Pillars (四柱) — using the traditional Chinese solar calendar. There is no interpretation involved in this first step at all. Two people born in the same place at the same minute get the same eight characters, every time, from every competent practitioner.
+BaZi Basics
 
-## The four pillars
+By BaziMaster 2026-09-16 Updated 2026-10-08
+BaZi (八字, "eight characters") is a Chinese calendar system that converts a birth moment into four pillars, each a Heavenly Stem over an Earthly Branch, using solar terms and true solar time. The day stem is the Day Master, the character that stands for you. The pillars are computed exactly; only the reading that follows needs interpretation rules.
+
+## What are the four pillars?
+
+BaZi is often called Chinese astrology, but its first step is a calendar computation. Your birth moment becomes four pairs of characters, the Four Pillars (四柱). Two people born at the same place and minute get the same eight characters, from every competent practitioner, every time.
 
 Each pillar is one Heavenly Stem (天干) sitting on one Earthly Branch (地支):
 
-- Year pillar (年柱) — the stem and branch of your birth year, switching at 立春 (the "start of spring" solar term, around 4 February), not at Chinese New Year. This is the most common mistake in casual zodiac readings.
+- Year pillar (年柱) changes at 立春, the "start of spring" solar term, not at Chinese New Year and not on 1 January.
 
-- Month pillar (月柱) — set by solar terms, so each "month" begins at an astronomical moment, not a calendar date.
+- Month pillar (月柱) is set by solar terms, so each "month" begins at an astronomical moment rather than a calendar date.
 
-- Day pillar (日柱) — the 60-day 甲子 cycle that has run unbroken for millennia. The day stem is your Day Master (日主) — the character that represents you in the chart.
+- Day pillar (日柱) comes from the 60-day 甲子 cycle. Its stem is the Day Master (日主).
 
-- Hour pillar (时柱) — one of twelve two-hour blocks (时辰), corrected to true solar time for your birthplace, because the sky does not care about time zones.
+- Hour pillar (時柱) is one of twelve two-hour blocks (時辰), counted on true solar time.
 
-Ten stems and twelve branches combine into a 60-unit cycle (六十甲子), so the same day pillar recurs every 60 days and the same year pillar every 60 years.
+Ten stems and twelve branches combine into a 60-unit cycle (六十甲子), so the same day pillar returns every 60 days and the same year pillar every 60 years.
 
-## What the characters carry
+Key facts
 
-Every stem and branch maps to one of the Five Elements (五行 — wood, fire, earth, metal, water) and a yin or yang polarity. Branches additionally contain hidden stems (藏干), which is why two charts with similar surfaces can behave very differently. From these mappings, classical technique derives everything else: the strength of your Day Master, your favourable elements (用神), the Ten Gods (十神) that describe how the other characters relate to you, and the ten-year luck cycles (大运) that sequence a life.
+- The year pillar changes at 立春, which falls on 2027-02-04 in 2027 (and on 2026-02-04 and 2028-02-04 in the neighbouring years).
+- A chart has 4 pillars and 8 characters: 4 stems and 4 branches.
+- Singapore clocks ran on UTC+7:30 before 1982-01-01 and on UTC+8 after it.
+- Peninsular Malaysia has used UTC+8 since 1982-01-01, so the same correction applies to births there.
+- The engine converts clock time to true solar time from longitude and the equation of time, following the 子平 convention.
+- Day Master strength is judged with the 旺相休囚死 and 通根 framework.
 
-## Why "deterministic" matters
+Sample chart 戊辰 乙卯 己巳 戊辰 laid out as four pillars, with the day stem 己 marked as the Day Master
 
-Here is the honest part most sites skip: the computation is exact, and the interpretation follows written rules from classical texts. When a reading tells you "your Day Master is weak, so metal and water support you," that conclusion comes from a rule you can look up — not from a mood, a template, or a chatbot. At bazifor.me every line of a reading cites the rule that produced it, because a claim you cannot check is not knowledge; it is marketing.
+## How is a BaZi chart calculated?
 
-## Common corrections worth knowing
+The computation has three steps, and none of them involves judgement.
 
-- The year boundary is 立春, not January 1st and not Chinese New Year.
+- Fix the moment on the sun's clock. A wall-clock time is a political convention. BaZi uses true solar time, which depends on how far your birthplace sits from the time-zone meridian and on the equation of time (the seasonal drift between sundial and clock). This is the 子平 time convention.
 
-- The hour pillar needs true solar time — in some cities the clock is more than half an hour away from the sun, enough to shift a 时辰.
+- Find the solar terms. The year turns at 立春 and each month turns at a 節 (a "joint" solar term). A person born on 2027-01-20 has the year pillar 丙午 and the month pillar 辛丑. A person born on 2027-02-10, after 立春, has the year pillar 丁未 and the month pillar 壬寅. Same Gregorian year, different pillars.
 
-- Historical clock changes matter. Singapore, for example, ran on UTC+7:30 before 1982 — a birth time from that era must be corrected before the pillars are cast.
+- Read the pillars off the 60-cycle. Each pillar is a stem-branch pair from the 甲子 cycle. For example, the day of 2027-01-20 is 己亥, and the day of 2027-02-10 is 庚申.
 
-- A chart is a starting point, not a verdict. The same pillars read differently once luck cycles and annual years (流年) are layered on.
+Branches also contain hidden stems (藏干), which is why two charts with similar surfaces can behave differently. From these mappings, classical technique derives the strength of the Day Master, the favourable elements (用神), the Ten Gods (十神) and the ten-year luck cycles (大運).
 
-If you want to see your own four pillars computed — with the 立春 boundary, solar-term months, and true-solar-time correction all handled — the free reading below takes under a minute.
+## What does a worked example look like?
+
+Take the fictional person 王大明, a man born on 1988-03-15 at 09:30 Singapore clock time.
+
+Step 1, true solar time. Singapore sits at longitude 103.8517°E, well west of the UTC+8 meridian, and on 15 March the equation of time is -9.4 minutes. The engine converts 09:30 on the clock to 08:16 true solar time. That matters: 09:30 falls in the 巳 block, but 08:16 falls in the 辰 block. Skip the correction and the hour pillar is wrong.
+
+Step 2, the pillars. The engine returns 戊辰 (year), 乙卯 (month), 己巳 (day) and 戊辰 (hour). The Day Master is 己, yin Earth.
+
+Step 3, strength. The month branch 卯 is wood, and wood restrains earth, so the Day Master is in the 死 phase of 旺相休囚死 (method note: the engine scores the phases numerically). Support totals 6.33 against a drain of 3.67, and the roots (通根) are 辰, 巳 and 辰. The net score is -0.97, so the chart is 身弱 (weak).
+
+Step 4, what follows. A weak Day Master calls for support, so the 用神 are Fire and Earth, and the colour families that carry them are 紅 紫 黃 棕. His kua is 震, in the East group (東四命). The luck cycles run forward (順行) from 乙卯 and start at age 6.7, counted to the 清明 term. Each of these lines is one rule applied once, which is why the reading can cite it.
+
+The five elements in this chart relate through two cycles, and the table below is the lookup the engine uses for both.
+
+Element | Generates (生) | Restrains (剋) | Colour families | 
+
+木 Wood | 火 | 土 | 綠 青 | 
+
+火 Fire | 土 | 金 | 紅 紫 | 
+
+土 Earth | 金 | 水 | 黃 棕 | 
+
+金 Metal | 水 | 木 | 白 金 | 
+
+水 Water | 木 | 火 | 黑 藍 | 
+
+## Why does "deterministic" matter?
+
+The computation is exact, and the interpretation follows written rules. When a reading says your Day Master is weak and fire and earth support you, that conclusion comes from a rule you can look up, not from a mood, a template or a chatbot. At bazifor.me every line of a reading cites the rule that produced it, because a claim you cannot check is marketing, not knowledge.
+
+Deterministic does not mean fatalistic. A chart is a starting point. The same pillars read differently once luck cycles and annual years (流年) are layered on, and a person's choices are not in the chart at all.
+
+## Which mistakes change the pillars in Singapore and Malaysia?
+
+- Using Chinese New Year as the year boundary. The boundary is 立春, so someone born in late January or early February may belong to the previous year.
+
+- Using the clock instead of the sun. In 王大明's case the correction is 74 minutes and moves the hour from 巳 to 辰.
+
+- Ignoring the pre-1982 clock. A Singapore birth before 1982-01-01 was recorded on UTC+7:30. The engine applies that offset before it computes true solar time.
+
+- Taking a birth time from memory. A time of "around 9" can sit in two different 時辰. If the hour is unknown, a reading should say which findings depend on it.
+
+Flats and condominiums do not enter a BaZi chart; they enter the home layer of feng shui, where your Day Master's favourable elements and your kua become colours and directions for each room. See the favourable-elements guide and the bed direction guide for those steps.
+
+## Sources and method
+
+- Solar-term months and the 立春 year boundary: the 子平 calendar convention, with annual and monthly turns at the solar terms.
+
+- Hour pillar: the 子平 true-solar-time convention, with the Singapore (UTC+7:30 before 1982, UTC+8 after) and Malaysian (UTC+8 from 1982) clock offsets applied before conversion (method note).
+
+- Day Master strength: the 旺相休囚死 and 通根 framework, with a numeric score (method note).
+
+- Favourable elements: the 用神 four methods 扶抑, 調候, 通關 and 病藥, numbered 1 to 4 in the engine's citations (扶抑 is technique 1, 調候 technique 2).
+
+- Ten stems, branches and their combinations: 三命通會, in the chapters the engine cites on stem pairing, clashes and combinations.
+
+To see your own four pillars with these conversions applied, run the free reading at /start.
 
 ---

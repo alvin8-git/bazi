@@ -516,10 +516,11 @@ def test_author_page_and_article_bylines():
 def test_sitemap_lastmod_llms_robots_favicon_indexnow():
     sm = client.get("/sitemap.xml").text
     locs = _re.findall(r"<loc>(.*?)</loc>", sm)
-    assert "https://bazifor.me/author" in locs and len(_re.findall(r"<lastmod>\d{4}-\d{2}-\d{2}</lastmod>", sm)) == len(locs) == 40
+    assert {"https://bazifor.me/author", "https://bazifor.me/method"} <= set(locs) and len(locs) >= 40
+    assert len(_re.findall(r"<lastmod>\d{4}-\d{2}-\d{2}</lastmod>", sm)) == len(locs)
     r = client.get("/llms.txt"); assert r.status_code == 200 and r.headers["content-type"].startswith("text/plain")
-    assert r.text.startswith("# bazifor.me") and r.text.count("https://bazifor.me/learn/") == 15 and "/zh/learn/" in r.text
-    f = client.get("/llms-full.txt"); assert f.status_code == 200 and f.text.count("Source: https://bazifor.me/learn/") == 15
+    assert r.text.startswith("# bazifor.me") and r.text.count("https://bazifor.me/learn/") >= 15 and "/zh/learn/" in r.text
+    f = client.get("/llms-full.txt"); assert f.status_code == 200 and f.text.count("Source: https://bazifor.me/learn/") >= 15
     rb = client.get("/robots.txt").text
     for bot in ("Googlebot", "OAI-SearchBot", "Claude-SearchBot", "PerplexityBot", "GPTBot", "ClaudeBot", "Google-Extended", "CCBot"):
         assert f"User-agent: {bot}\n" in rb

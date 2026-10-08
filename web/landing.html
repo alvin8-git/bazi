@@ -9,8 +9,11 @@
 <meta property="og:description" content="Free BaZi (八字) chart, home feng shui from your floor plan and Chinese baby names, each citing its classical rule. Made for Singapore and Malaysia birth times.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bazifor.me/">
-<meta name="twitter:card" content="summary">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me", "logo": "https://bazifor.me/favicon.svg", "sameAs": []}</script>
+<meta property="og:image" content="https://bazifor.me/static/og/home.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "image": "https://bazifor.me/static/og/home.png", "name": "bazifor.me", "url": "https://bazifor.me", "logo": "https://bazifor.me/favicon.svg", "sameAs": []}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "bazifor.me", "url": "https://bazifor.me", "inLanguage": ["en", "zh-Hans"]}</script>
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;
@@ -24,22 +27,27 @@ h1{margin:0 auto;font-size:28px;line-height:1.25;max-width:720px;color:var(--acc
 .brand{font-size:15px;color:var(--gold);letter-spacing:2px;margin-top:8px;font-weight:700}
 .sub{color:var(--muted);font-size:15px;margin-top:6px}
 main{flex:1;max-width:900px;margin:0 auto;padding:24px 22px 60px;width:100%}
-.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.menu{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:760px){.menu{grid-template-columns:1fr 1fr}}
 a.tile{display:block;background:var(--card);border:1px solid var(--line);
-  border-radius:16px;padding:26px 22px;text-decoration:none;color:var(--ink);
-  transition:box-shadow .15s,transform .15s}
-a.tile:hover{box-shadow:0 6px 22px rgba(0,0,0,.10);transform:translateY(-2px)}
-.tile .icon{font-size:40px}
-.tile h2{margin:10px 0 6px;font-size:20px;color:var(--accent)}
-.tile p{margin:0;font-size:13.5px;color:var(--muted)}
+  border-radius:12px;padding:20px;min-height:44px;text-decoration:none;color:var(--ink);
+  transition:box-shadow .15s,border-color .15s}
+a.tile:hover{border-color:var(--gold);box-shadow:0 4px 16px rgba(43,38,32,.10)}
+a.tile:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.tile .icon{width:44px;height:44px;border-radius:12px;background:#f3ecdd;color:var(--gold);
+  display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700}
+.tile h2{margin:12px 0 6px;font-size:20px;color:var(--accent)}
+.tile .shot{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border-radius:8px;border:1px solid var(--line);margin-bottom:12px}
+.tile p{margin:0;font-size:14.5px;line-height:1.6;color:var(--muted)}
 .tile .zh{color:var(--gold);font-size:14px;margin-left:6px}
 footer{padding:16px 22px 28px;text-align:center;color:var(--muted);font-size:13px}.sitefoot .fnav{display:inline-block;margin-top:6px}
 footer a{color:var(--accent)}
+footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 6px}
 .verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#6b6359;
   z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
 .trust{max-width:760px;margin:26px auto 0;background:var(--card);
   border:1px solid var(--line);border-left:4px solid var(--gold);
-  border-radius:10px;padding:12px 16px;font-size:13.5px;color:#5a5348}
+  border-radius:12px;padding:16px 20px;font-size:14.5px;line-height:1.6;color:#5a5348}
 </style></head><body>
 <span class="verbadge" id="ver"></span>
 <script>fetch("/api/pub/version").then(r=>r.json())
@@ -53,26 +61,29 @@ footer a{color:var(--accent)}
 <main>
   <div class="menu">
     <a class="tile" href="/start">
-      <div class="icon">🧬</div>
+      <img class="shot" src="/static/img/shots/reading-desktop.jpg" alt="Example reading page for a fictional person: four pillars, day master and useful elements" width="1280" height="900">
+      <div class="icon" aria-hidden="true">命</div>
       <h2>Personal<span class="zh">个人命理</span></h2>
       <p>Enter a birth date and time — get the full reading: four pillars, element
         balance, 用神, careers, health, timing windows. Add up to 8 people for
         harmony and cross-comparison.</p>
     </a>
     <a class="tile" href="/fengshui">
-      <div class="icon">🏠</div>
+      <img class="shot" src="/static/img/shots/fengshui-desktop.jpg" alt="Example home fengshui result: room and aspect scores for a sample condo" loading="lazy" width="1280" height="700">
+      <div class="icon" aria-hidden="true">宅</div>
       <h2>House<span class="zh">宅运风水</span></h2>
       <p>Upload your floorplan, give the compass facing, draw the rooms — flying-star
         chart and person-by-person room scores, every star cited.</p>
     </a>
     <a class="tile" href="/baby">
-      <div class="icon">👶</div>
+      <img class="shot" src="/static/img/shots/baby-card-desktop.jpg" alt="Example baby name card for a fictional name with seven-part score bars" loading="lazy" width="955" height="650">
+      <div class="icon" aria-hidden="true">名</div>
       <h2>Name<span class="zh">宝宝起名</span></h2>
       <p>A newborn's chart and the naming direction that follows from it — which
         elements and radical families the name should carry.</p>
     </a>
     <a class="tile" href="/learn">
-      <div class="icon">📚</div>
+      <div class="icon" aria-hidden="true">学</div>
       <h2>Learn<span class="zh">知识库</span></h2>
       <p>Plain-language guides to BaZi and fengshui — day masters, 用神 colours,
         八宅 directions, flying stars, date selection. The same rules the engine
@@ -88,6 +99,6 @@ footer a{color:var(--accent)}
   </div>
 </main>
 <footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
-<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/author">Author</a></span> · <a href="/app">demo app (sample data)</a></footer>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span> · <a href="/app">demo app (sample data)</a></footer>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 </body></html>

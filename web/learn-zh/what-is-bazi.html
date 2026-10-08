@@ -1,76 +1,169 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>八字是什么？四柱排盘的真实原理 | bazifor.me</title>
-<meta name="description" content="八字把出生时刻换算成四柱干支。这篇讲清楚到底算了什么、每一柱代表什么，以及为什么排盘是完全确定性的计算。">
-<meta property="og:title" content="八字是什么？四柱排盘的真实原理">
-<meta property="og:description" content="八字把出生时刻换算成四柱干支。这篇讲清楚到底算了什么、每一柱代表什么，以及为什么排盘是完全确定性的计算。">
+<title>八字排盘原理：四柱、日主与真太阳时 | bazifor.me</title>
+<meta name="description" content="八字把出生时刻换算成四柱干支。本文讲新加坡、马来西亚出生者如何排盘，附1988年示例命盘，并说明立春分界和真太阳时校正。">
+<meta property="og:title" content="八字排盘原理：四柱、日主与真太阳时">
+<meta property="og:description" content="八字把出生时刻换算成四柱干支。本文讲新加坡、马来西亚出生者如何排盘，附1988年示例命盘，并说明立春分界和真太阳时校正。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://bazifor.me/zh/learn/what-is-bazi">
+<meta property="og:image" content="https://bazifor.me/static/og/zh-learn-what-is-bazi.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://bazifor.me/zh/learn/what-is-bazi">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="alternate" hreflang="en" href="https://bazifor.me/learn/what-is-bazi">
 <link rel="alternate" hreflang="zh-CN" href="https://bazifor.me/zh/learn/what-is-bazi">
 <link rel="alternate" hreflang="x-default" href="https://bazifor.me/learn/what-is-bazi">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "八字是什么？四柱排盘的真实原理", "description": "八字把出生时刻换算成四柱干支。这篇讲清楚到底算了什么、每一柱代表什么，以及为什么排盘是完全确定性的计算。", "datePublished": "2026-09-16", "dateModified": "2026-09-16", "inLanguage": "zh-CN", "author": {"@type": "Person", "name": "BaziMaster", "url": "https://bazifor.me/author"}, "publisher": {"@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me"}, "mainEntityOfPage": "https://bazifor.me/zh/learn/what-is-bazi"}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "知识库", "item": "https://bazifor.me/zh/learn"}, {"@type": "ListItem", "position": 2, "name": "八字是什么？四柱排盘的真实原理", "item": "https://bazifor.me/zh/learn/what-is-bazi"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "八字排盘原理：四柱、日主与真太阳时", "description": "八字把出生时刻换算成四柱干支。本文讲新加坡、马来西亚出生者如何排盘，附1988年示例命盘，并说明立春分界和真太阳时校正。", "datePublished": "2026-09-16", "dateModified": "2026-10-08", "inLanguage": "zh-CN", "author": {"@type": "Person", "name": "BaziMaster", "url": "https://bazifor.me/author"}, "publisher": {"@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me"}, "mainEntityOfPage": "https://bazifor.me/zh/learn/what-is-bazi", "wordCount": 1403, "image": ["https://bazifor.me/static/learn/img/hero/what-is-bazi.jpg", "https://bazifor.me/static/learn/img/four-pillars-grid.svg"]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "知识库", "item": "https://bazifor.me/zh/learn"}, {"@type": "ListItem", "position": 2, "name": "八字排盘原理：四柱、日主与真太阳时", "item": "https://bazifor.me/zh/learn/what-is-bazi"}]}</script>
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;
---gold:#8a6d1f;--line:#e5ded2}
+--gold:#8a6d1f;--line:#e5ded2;--tint:#f3ecdd;--r:12px}
+*{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);
-font-family:system-ui,'Noto Sans SC',sans-serif;line-height:1.65}
-nav{background:var(--card);border-bottom:1px solid var(--line);padding:12px 18px;
-font-size:14px}
-nav a{color:var(--accent);text-decoration:none;font-weight:600;margin-right:14px}
-nav a.lang{float:right;color:var(--gold);margin-right:0}
-main{max-width:760px;margin:0 auto;padding:24px 18px 60px}
-h1{font-size:26px;line-height:1.3;color:var(--accent)}
-h2{font-size:20px;margin-top:34px;border-bottom:1px solid var(--line);padding-bottom:4px}
-h3{font-size:16.5px;margin-top:24px}
-a{color:var(--accent)}
-footer .fnav{display:inline-block;margin-top:6px;font-size:13px}footer .fnav a{margin:0 2px}
-blockquote{border-left:3px solid var(--gold);margin:14px 0;padding:6px 14px;
-background:var(--card);color:var(--muted)}
-.meta{color:var(--muted);font-size:13px;margin-bottom:22px}
+font-family:system-ui,'Noto Sans SC',sans-serif;font-size:16px;line-height:1.7;
+-webkit-text-size-adjust:100%}
+@media(min-width:760px){body{font-size:17px}}
+a{color:var(--accent);text-underline-offset:3px}
+a:hover{text-decoration:underline;text-decoration-thickness:2px}
+a:focus-visible,.btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:4px}
+nav{background:var(--card);border-bottom:1px solid var(--line);padding:4px 16px;font-size:15px;
+display:flex;flex-wrap:wrap;align-items:center;column-gap:4px}
+nav a{color:var(--accent);text-decoration:none;font-weight:600;display:inline-flex;
+align-items:center;min-height:44px;padding:0 8px}
+nav a:hover{text-decoration:underline}
+nav a.brand{color:var(--ink);gap:8px;padding-left:0;margin-right:6px}
+nav a.brand svg{width:26px;height:26px;flex:none}
+nav a.lang{margin-left:auto;color:var(--gold);padding-right:0}
+main{max-width:720px;margin:0 auto;padding:20px 18px 56px}
+h1{font-size:30px;line-height:1.25;color:var(--accent);margin:12px 0 10px;letter-spacing:-.01em}
+h2{font-size:22px;line-height:1.3;margin:40px 0 12px;border-bottom:1px solid var(--line);padding-bottom:6px}
+h3{font-size:18px;line-height:1.35;margin:28px 0 8px}
+p,ul,ol{margin:0 0 1.05em}
+li{margin-bottom:.35em}
+.hero{margin:0 0 14px}
+.hero img{display:block;width:100%;height:auto;max-height:160px;border-radius:var(--r)}.hero img.photo{aspect-ratio:3/2;max-height:420px;object-fit:cover;object-position:center}.card .thumb{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:8px;margin:0 0 10px}
+.chip{display:inline-block;background:var(--tint);color:#6e5516;border:1px solid var(--line);
+border-radius:999px;padding:2px 12px;font-size:13px;font-weight:600;line-height:1.6;white-space:nowrap}
+.meta{color:var(--muted);font-size:14px;line-height:1.5;margin:0 0 24px}
+.metacard{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;background:var(--card);
+border:1px solid var(--line);border-radius:var(--r);padding:10px 16px;margin:0 0 26px;
+color:var(--muted);font-size:14px;line-height:1.5}
+.metacard a{font-weight:600}
+blockquote{border-left:3px solid var(--gold);margin:18px 0;padding:8px 16px;
+background:var(--card);color:var(--muted);border-radius:0 var(--r) var(--r) 0}
+blockquote p:last-child{margin-bottom:0}
+blockquote.keyfacts{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);
+border-radius:var(--r);color:var(--ink);padding:16px 20px;margin:22px 0}
+blockquote.keyfacts>p:first-child{margin:0 0 8px}
+blockquote.keyfacts>p:first-child strong{display:block;font-size:13px;letter-spacing:.08em;
+text-transform:uppercase;color:#6e5516}
+blockquote.keyfacts>p:first-child strong::after{content:" / 要点";font-weight:500}
+html[lang^=zh] blockquote.keyfacts>p:first-child strong::after{content:" / Key facts"}
+blockquote.keyfacts ul{margin:0;padding-left:20px}
+figure{margin:26px 0;text-align:center;background:var(--card);border:1px solid var(--line);
+border-radius:var(--r);padding:16px}
+figure img{max-width:100%;height:auto}
+figcaption{font-size:14px;color:var(--muted);margin-top:10px;text-align:center;line-height:1.5}
+.tablewrap{overflow-x:auto;margin:20px 0;background:var(--card);border:1px solid var(--line);
+border-radius:var(--r);-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:15px;line-height:1.5}
+th,td{border-bottom:1px solid var(--line);padding:10px 14px;text-align:left;vertical-align:top}
+th{background:var(--tint);font-weight:700;white-space:nowrap}
+tbody tr:nth-child(even) td{background:#fbf8f2}
+tr:last-child td{border-bottom:0}
+.related{margin-top:36px;font-size:15px}
+.related a{display:inline-block;padding:10px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+padding:16px 18px;margin:0;position:relative;display:flex;flex-direction:column;gap:6px;
+transition:border-color .15s,box-shadow .15s}
+.card:hover,.card:focus-within{border-color:var(--gold);box-shadow:0 4px 16px rgba(43,38,32,.10)}
+.card a{font-weight:700;font-size:17px;line-height:1.35;text-decoration:none;order:2}
+.card a::after{content:"";position:absolute;inset:0;border-radius:var(--r)}
+.card a:focus-visible{outline:none}
+.card:focus-within{outline:3px solid var(--gold);outline-offset:2px}
+.card p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.55;order:3}
+.card .cmeta{order:1;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;
+font-size:13px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr;gap:14px;margin:0 0 8px}
+@media(min-width:760px){.grid{grid-template-columns:1fr 1fr}main.hubmain{max-width:880px}}
+.grid .card{height:100%}
+h2.grp{font-size:18px;border:0;margin:34px 0 12px;padding:0;color:var(--ink);display:flex;
+align-items:center;gap:10px}
+h2.grp::before{content:"";width:22px;height:4px;border-radius:2px;background:var(--gold)}
 .cta{margin-top:44px;background:var(--card);border:1px solid var(--line);
-border-radius:12px;padding:20px;text-align:center}
-.cta a.btn{display:inline-block;background:var(--accent);color:#fff;padding:10px 22px;
-border-radius:8px;text-decoration:none;font-weight:700;margin-top:8px}
-.related{margin-top:34px;font-size:14.5px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:10px;
-padding:14px 16px;margin:10px 0}
-.card a{font-weight:700;text-decoration:none}
-.card p{margin:6px 0 0;color:var(--muted);font-size:13.5px}
-footer{border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;
-text-align:center;padding:18px}
+border-radius:var(--r);padding:22px 20px;text-align:center}
+.cta b{font-size:19px;line-height:1.35;display:block;margin-bottom:6px}
+.cta p{margin:0 0 6px;color:var(--muted);font-size:15px;line-height:1.6}
+.cta a.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;
+background:var(--accent);color:#fff;padding:0 26px;border-radius:10px;text-decoration:none;
+font-weight:700;margin-top:10px;transition:background .15s}
+.cta a.btn:hover{background:#8f2e24;text-decoration:none}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:14px;text-align:center;
+padding:18px 16px 28px;background:var(--card)}
+footer .fnav{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;margin-top:6px}
+footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 10px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@media(max-width:480px){nav{padding:0 12px;font-size:14px}nav a{padding:0 6px}nav a.brand{margin-right:0}h1{font-size:26px}h2{font-size:21px}}
 </style></head><body>
-<nav><a href="/">bazifor.me</a> <a href="/start">个人命盘</a> <a href="/fengshui">宅运风水</a> <a href="/baby">宝宝起名</a> <a href="/zh/learn">知识库</a> <a class="lang" href="/learn/what-is-bazi" rel="alternate">English</a></nav>
+<nav aria-label="Site"><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect width="64" height="64" rx="12" fill="#faf7f2" stroke="#e5ded2"/><g fill="#8a6d1f"><rect x="12" y="16" width="40" height="7" rx="2"/><rect x="12" y="28.5" width="40" height="7" rx="2"/><rect x="12" y="41" width="40" height="7" rx="2"/></g></svg><span>bazifor.me</span></a><a href="/start">个人命盘</a><a href="/fengshui">宅运风水</a><a href="/baby">宝宝起名</a><a href="/zh/learn">知识库</a><a class="lang" href="/learn/what-is-bazi" rel="alternate">English</a></nav>
 <main>
-<h1>八字是什么？四柱排盘的真实原理</h1>
-<div class="meta">作者 <a href="/author" rel="author">BaziMaster</a> · 2026-09-16 · 更新 <time datetime="2026-09-16">2026-09-16</time> · 八字基础</div>
-<p>八字常被笼统地称作"算命"，但这个说法掩盖了它的本质：<b>历法计算</b>。你的出生时刻按传统干支历换算成四组干支 — 四柱（年、月、日、时）。这第一步不含任何"解释"成分：同一时刻、同一地点出生的两个人，任何一位合格的排盘者都会排出一模一样的八个字，永远如此。</p>
-<h2>四柱各是什么</h2>
-<p>每一柱由一个天干配一个地支：</p>
+<div class="hero"><img class="photo" src="/static/learn/img/hero/what-is-bazi.jpg" srcset="/static/learn/img/hero/what-is-bazi-600.jpg 600w, /static/learn/img/hero/what-is-bazi.jpg 1200w" sizes="(max-width:760px) 100vw, 720px" alt="" aria-hidden="true" width="1200" height="800" fetchpriority="high"></div>
+<span class="chip">八字基础</span>
+<h1>八字排盘原理：四柱、日主与真太阳时</h1>
+<div class="metacard meta">作者 <a href="/author" rel="author">BaziMaster</a> <span>2026-09-16</span> <span>更新 <time datetime="2026-10-08">2026-10-08</time></span></div>
+<p>八字是一套中国历法体系，用节气和真太阳时把出生时刻换算成四柱，每柱由一个天干和一个地支组成。日柱的天干叫日主，代表命主本人。</p>
+<h2>四柱各由什么组成？</h2>
+<p>八字常被称作中国占星，但它的第一步是<b>历法计算</b>，只有之后的解读才需要解释规则。同一地点、同一分钟出生的两人，任何合格的排盘者都排出相同的八字。</p>
+<p>每一柱都是一个天干坐在一个地支上：</p>
 <ul>
-<li><b>年柱</b> — 以<b>立春</b>为界（约每年2月4日），而不是农历新年。这是民间生肖说法里最常见的错误。</li>
-<li><b>月柱</b> — 以节气为界，每个"月"从一个天文时刻开始，而非日历日期。</li>
-<li><b>日柱</b> — 六十甲子逐日循环，千年未断。日柱的天干就是<b>日主（日元）</b>— 命盘里代表"你"的那个字。</li>
-<li><b>时柱</b> — 十二时辰之一，须按出生地换算<b>真太阳时</b>，因为天象不理会时区。</li>
+<li><b>年柱</b>在立春换年，不在农历春节，也不在1月1日。</li>
+<li><b>月柱</b>由节气决定，每个“月”始于天文时刻，不是日历日期。</li>
+<li><b>日柱</b>来自六十日一轮的甲子周期，日柱的天干就是<b>日主</b>。</li>
+<li><b>时柱</b>是十二个两小时时辰之一，按真太阳时计算。</li>
 </ul>
-<p>十天干配十二地支，构成六十甲子：同一日柱每60天重现一次，同一年柱每60年重现一次。</p>
-<h2>干支承载什么</h2>
-<p>每个干支对应五行（木火土金水）之一与阴阳属性；地支还藏有<b>藏干</b>，这正是表面相似的两个命盘可能大不相同的原因。由这些对应关系，古典技法推导出其余一切：日主强弱、用神、十神、大运。</p>
-<h2>为什么"确定性"重要</h2>
-<p>多数网站略过的诚实部分在这里：<b>排盘是精确计算，解读则遵循古籍里写明的规则</b>。当一份解读说"日主偏弱，宜金水相扶"，这个结论出自一条可以查到的规则 — 不是情绪，不是模板，更不是聊天机器人的即兴发挥。在 bazifor.me，每一条解读都注明它引用的规则，因为无法核对的断言不是知识，是营销。</p>
-<h2>几个值得记住的纠正</h2>
+<p>十天干与十二地支组成六十甲子，同一个日柱每60天重现，同一个年柱每60年重现。</p>
+<blockquote class="keyfacts"><p><strong>要点</strong></p><ul><li>年柱在立春换年，2027年的立春是2027-02-04（相邻两年分别是2026-02-04和2028-02-04）。</li><li>一张命盘有4柱8个字，即4个天干和4个地支。</li><li>新加坡在1982-01-01以前使用UTC+7:30，之后使用UTC+8。</li><li>马来西亚半岛自1982-01-01起使用UTC+8，同样的校正适用于当地出生者。</li><li>引擎依子平惯例，用经度和均时差把钟表时间换算成真太阳时。</li><li>日主强弱用旺相休囚死与通根的框架判断。</li></ul></blockquote>
+<figure><img src="/static/learn/img/four-pillars-grid.svg" alt="示例命盘戊辰 乙卯 己巳 戊辰按四柱排列，日干己标为日主" loading="lazy" width="720"><figcaption>示例命盘戊辰 乙卯 己巳 戊辰按四柱排列，日干己标为日主</figcaption></figure>
+<h2>八字命盘怎么计算？</h2>
+<p>计算分三步，都不涉及主观判断。</p>
 <ol>
-<li><b>年界在立春</b>，不在元旦，也不在春节。</li>
-<li><b>时柱要用真太阳时</b> — 有些城市钟表时间与太阳时相差超过半小时，足以换一个时辰。</li>
-<li><b>历史时制也要算</b> — 例如新加坡1982年以前用 UTC+7:30，那个年代的出生时间必须先修正再排盘。</li>
-<li><b>命盘是起点，不是判决</b> — 同一副四柱，叠加大运与流年后读法随之变化。</li>
+<li><b>先定太阳的时刻。</b>钟表时间是政治约定。八字用真太阳时，取决于出生地与时区子午线的距离，以及均时差（日晷与钟表的季节偏差）。</li>
+<li><b>再找节气。</b>年在立春换，月在每个节（交节的节气）换。2027-01-20出生的人，年柱丙午，月柱辛丑；2027-02-10出生的人已过立春，年柱丁未，月柱壬寅。公历年份相同，四柱不同。</li>
+<li><b>最后从六十甲子读出干支。</b>每一柱都是甲子周期里的一对干支。例如2027-01-20日柱是己亥，2027-02-10日柱是庚申。</li>
 </ol>
-<p>想看看自己的四柱如何被精确排出 — 立春分界、节气月、真太阳时全部处理到位 — 下面的免费排盘一分钟内完成。</p>
-<div class="related"><b>继续阅读：</b> <a href="/zh/learn/day-masters-explained">十天干日主：你是哪一种？</a> · <a href="/zh/learn/useful-god-colors">用神与幸运色：你的命盘最需要哪个五行</a> · <a href="/zh/learn/eight-house-directions">八宅风水入门：你的四吉方与四凶方</a></div>
-<div class="cta"><b>看看你自己的命盘 — 计算出来的，不是猜的。</b><br>bazifor.me 的每一条解读都注明它所依据的古典规则。确定性引擎，无需注册，工作区链接私密。<br><a class="btn" href="/start?utm_source=learn-article&utm_medium=content&utm_campaign=article_footer_zh">免费排盘 →</a></div>
+<p>地支里还藏有<b>藏干</b>，所以表面相近的两张命盘可以表现不同。</p>
+<h2>王大明的命盘怎么排？</h2>
+<p>以虚构人物王大明为例，男，1988-03-15 09:30（新加坡钟表时间）出生。</p>
+<p><b>第一步，真太阳时。</b>新加坡位于东经103.8517°，远在UTC+8子午线以西，3月15日的均时差是-9.4分钟。引擎把钟表09:30换算成<b>真太阳时08:16</b>。09:30属于巳时，08:16却属于辰时，不校正，时柱就错。</p>
+<p><b>第二步，四柱。</b>引擎给出戊辰（年）、乙卯（月）、己巳（日）、戊辰（时）。日主是<b>己</b>，阴土。</p>
+<p><b>第三步，强弱。</b>月支卯属木，木克土，日主在旺相休囚死中处于死位（方法说明：引擎对这些状态做数值评分）。扶助合计6.33，消耗合计3.67，通根是辰、巳、辰，净分-0.97，是<b>身弱</b>。</p>
+<p><b>第四步，结论。</b>身弱需要扶助，所以用神是<b>火与土</b>，对应的颜色是红 紫 黄 棕。他的命卦是震，属东四命。大运顺行，从乙卯起，起运年龄6.7岁，按清明节气推算。每行结论都是一条规则用一次，因此可逐条引用。</p>
+<p>五行的生克对照如下。</p>
+<div class="tablewrap" tabindex="0" role="region" aria-label="表格"><table><thead><tr><th>五行</th><th>生</th><th>克</th><th>颜色系</th></tr></thead><tbody><tr><td>木</td><td>火</td><td>土</td><td>绿 青</td></tr><tr><td>火</td><td>土</td><td>金</td><td>红 紫</td></tr><tr><td>土</td><td>金</td><td>水</td><td>黄 棕</td></tr><tr><td>金</td><td>水</td><td>木</td><td>白 金</td></tr><tr><td>水</td><td>木</td><td>火</td><td>黑 蓝</td></tr></tbody></table></div>
+<h2>为什么说排盘是确定性的？</h2>
+<p><i>计算</i>是精确的，<i>解读</i>依照成文的规则。解读说你日主偏弱、火和土扶助你，结论来自一条可以查到的规则，而非情绪或模板。在 bazifor.me，每一行解读都引用产生它的规则，因为无法核对的说法只是营销，不是知识。</p>
+<p>确定性不等于宿命。命盘只是起点，叠加大运和流年后，同样的四柱会读出不同结果，而选择不在命盘里。</p>
+<h2>新加坡和马来西亚哪些错误会改变四柱？</h2>
+<ol>
+<li><b>用农历春节作年界。</b>年界是立春，1月下旬或2月初出生的人可能属于上一年。</li>
+<li><b>用钟表而不用太阳。</b>以王大明为例，校正量是74分钟，时辰从巳变成了辰。</li>
+<li><b>忽略1982年以前的钟表时间。</b>新加坡1982-01-01以前出生的记录按UTC+7:30计，引擎先套用这个偏移，再算真太阳时。</li>
+<li><b>凭记忆填出生时间。</b>“大约9点”可能落在两个时辰。时间不确定时，解读应说明哪些结论依赖它。</li>
+</ol>
+<p>组屋和公寓不进入命盘，而属于风水的居家层，喜用五行和命卦在那里变成各房间的颜色与方位。详见<a href="/learn/useful-god-colors">用神与颜色指南</a>和<a href="/learn/bed-direction-guide">床头朝向指南</a>。</p>
+<h2>资料来源与方法</h2>
+<ul>
+<li><b>节气月与立春年界：</b>子平历法惯例，年和月都在节气交接处更替。</li>
+<li><b>时柱：</b>子平真太阳时惯例，先套用新加坡（1982年以前UTC+7:30，之后UTC+8）和马来西亚（自1982年起UTC+8）的钟表偏移（方法说明）。</li>
+<li><b>日主强弱：</b>旺相休囚死与通根框架，附数值评分（方法说明）。</li>
+<li><b>喜用五行：</b>用神四法扶抑、調候、通關、病藥，按此先后顺序取用。</li>
+<li><b>十天干、十二地支及其组合：</b>三命通會，引擎引用其中论干支配合、冲、合的章节。</li>
+</ul>
+<p>查看自己的四柱，请用免费解读<a href="/start">/start</a>。</p>
+<div class="related"><b>继续阅读：</b> <a href="/zh/learn/day-masters-explained">十天干日主：你是哪一种？</a> · <a href="/zh/learn/useful-god-colors">用神是什么：八字喜用五行与颜色选法</a> · <a href="/zh/learn/eight-house-directions">八宅风水入门：你的四吉方与四凶方</a></div>
+<div class="cta"><b>看看你自己的命盘 — 计算出来的，不是猜的。</b><p>bazifor.me 的每一条解读都注明它所依据的古典规则。确定性引擎，无需注册，工作区链接私密。</p><a class="btn" href="/start?utm_source=learn-article&utm_medium=content&utm_campaign=article_footer_zh">免费排盘 →</a></div>
 </main>
-<footer>© bazifor.me — 确定性八字与风水解读。<br><span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/author">Author</a></span></footer>
+<footer>© bazifor.me — 确定性八字与风水解读。<br><span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
 </body></html>
