@@ -58,6 +58,17 @@ app = FastAPI(title="FengShui Family Compass")
 
 
 @app.middleware("http")
+async def _apex_host(request, call_next):
+    """www.bazifor.me serves the same site — 308 to the apex so every page has one URL."""
+    host = request.headers.get("host", "")
+    if host.lower().startswith("www."):
+        from fastapi.responses import RedirectResponse
+        url = request.url.replace(netloc=host[4:])
+        return RedirectResponse(str(url), status_code=308)
+    return await call_next(request)
+
+
+@app.middleware("http")
 async def _no_stale_ui(request, call_next):
     """HTML pages and /static JS/CSS must revalidate — a cached old app.js
     silently renders stale layouts after a deploy (ETag still gives 304s)."""

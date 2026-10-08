@@ -1,7 +1,17 @@
 <!doctype html>
-<html lang="zh-Hans"><head>
+<html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>bazifor.me — baby name builder 宝宝起名</title>
+<title>Chinese Baby Name Generator by Birth Date (BaZi 八字, 五格) | bazifor.me</title>
+<meta name="description" content="Build a Chinese baby name from the birth chart: 用神 elements, 五格 strokes, 三才, meaning, sound and gender fit scored, plus a printable certificate. Free to use.">
+<link rel="canonical" href="https://bazifor.me/baby">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Chinese Baby Name Generator by Birth Date (BaZi 八字, 五格) | bazifor.me">
+<meta property="og:description" content="Build a Chinese baby name from the birth chart: 用神 elements, 五格 strokes, 三才, meaning, sound and gender fit scored, plus a printable certificate. Free to use.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bazifor.me/baby">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "bazifor.me Chinese baby name builder", "url": "https://bazifor.me/baby", "description": "Build a Chinese baby name from the birth chart: 用神 elements, 五格 strokes, 三才, meaning, sound and gender fit scored, plus a printable certificate. Free to use.", "applicationCategory": "LifestyleApplication", "operatingSystem": "Web", "inLanguage": ["en", "zh-Hans"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SGD"}, "featureList": ["Birth chart and useful element (用神)", "Character picker by element, strokes, pinyin and meaning", "五格 and 三才 stroke scoring", "Sound-alike and gender checks", "Name card and printable certificate"], "publisher": {"@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "bazifor.me", "item": "https://bazifor.me"}, {"@type": "ListItem", "position": 2, "name": "Baby name builder", "item": "https://bazifor.me/baby"}]}</script>
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6f675d;--accent:#b03a2e;--gold:#8a6d1f;--line:#e5ded2;
   --wood:#1e8e3e;--wood-bg:#e9f7ee;--fire:#c5221f;--fire-bg:#fdecea;--earth:#8a6d1f;--earth-bg:#f6efdc;
@@ -187,17 +197,17 @@ table.sl th,table.sl td{border-bottom:1px solid var(--line);padding:8px 6px;text
 .spart .track{height:12px;border-radius:6px;background:#f0ece4;overflow:hidden;min-width:60px}
 .spart .fill{height:100%;background:var(--gold);border-radius:4px}
 .busy{opacity:.55;transition:opacity .15s ease-out}
-.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#8a8177;z-index:99;background:rgba(255,255,255,.8);border-radius:6px;padding:1px 7px}
+.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#6b6359;z-index:99;background:rgba(255,255,255,.8);border-radius:6px;padding:1px 7px}
 a.btn{text-decoration:none;display:inline-flex;align-items:center}
 @media (max-width:640px){.form{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){.spart{grid-template-columns:86px 1fr 56px}.spart .sl small{display:block;margin-left:0;font-size:10px}.spart .sn{grid-column:1/-1!important}table.sl{font-size:13px}table.sl th:nth-child(3),table.sl td:nth-child(3),table.sl th:nth-child(5),table.sl td:nth-child(5){display:none}.interp{flex-basis:100%;border-left:0;border-top:3px solid var(--gold);padding:10px 0 0}
   .scoreband{padding:12px}.namegrid .mk{min-height:30px}}
-</style></head><body>
+<style>.sitefoot{padding:18px 22px 28px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:30px}.sitefoot a{color:var(--accent)}.sitefoot .fnav{display:inline-block;margin-top:6px}.learnstrip{max-width:980px;margin:18px auto 0;padding:0 22px;font-size:14px;color:var(--muted)}.learnstrip a{color:var(--accent);margin-right:12px;white-space:nowrap}</style></head><body>
 <span class="verbadge" id="ver"></span>
 <script>fetch("/api/pub/version").then(r=>r.json())
   .then(v=>{document.getElementById("ver").textContent="v "+v.version}).catch(()=>{});</script>
 <header>
-  <h1>宝宝起名 · Baby name builder</h1>
+  <h1>Baby name builder · <span lang="zh-Hans">宝宝起名</span></h1>
   <div class="sub">The chart, its 用神, and a name you build character by character — every rule cited.
     <a href="/start">← people workspace</a></div>
 </header>
@@ -560,4 +570,7 @@ $("#start").addEventListener("click", async () => {
 })();
 </script>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
+<div class="learnstrip"><b>Learn 知识库:</b> <a href="/learn/what-is-bazi">What is BaZi?</a> <a href="/learn/useful-god-colors">Useful element colours</a> <a href="/learn/five-elements-cycles">The five elements</a></div>
+<footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/author">Author</a></span></footer>
 </body></html>

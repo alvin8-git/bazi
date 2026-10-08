@@ -461,3 +461,72 @@ def test_workspace_baby_shortlist_routes():
     cap = client.get(f"/api/pub/name/score?surname=侍&given=婷&{NAME_Q}").json()
     assert cap["score"]["grade"]["capped"] and cap["warnings"][0]["class"] == "sound"
     assert client.get(f"/api/pub/name/optimise?surname=王&{NAME_Q}&given=_婷").json()["dropped_sound"] >= 1
+
+
+# ---- SEO sprint 1 (2026-10-08) --------------------------------------------------------
+import re as _re
+import json as _json
+from pathlib import Path as _P
+ROOT_DIR = _P(__file__).resolve().parent.parent
+
+
+def _head(path):
+    t = client.get(path).text
+    g = lambda rx: (_re.search(rx, t, _re.S).group(1) if _re.search(rx, t, _re.S) else "")
+    return {"title": g(r"<title>(.*?)</title>"), "desc": g(r'<meta name="description" content="(.*?)"'),
+            "canonical": g(r'<link rel="canonical" href="(.*?)"'), "og": len(_re.findall(r'property="og:', t)),
+            "ld": _re.findall(r'"@type": "([A-Za-z]+)"', t), "lang": g(r'<html[^>]*lang="([^"]*)"'),
+            "footer_links": len(_re.findall(r'<footer[^>]*>.*?</footer>', t, _re.S) and _re.findall(r'href="/', _re.search(r'<footer[^>]*>.*?</footer>', t, _re.S).group(0))),
+            "icon": 'rel="icon"' in t, "text": t}
+
+
+def test_www_redirects_to_apex_with_path_and_query():
+    r = client.get("/learn/what-is-bazi?x=1", headers={"host": "www.bazifor.me"}, follow_redirects=False)
+    assert r.status_code == 308 and r.headers["location"] == "http://bazifor.me/learn/what-is-bazi?x=1"
+    assert client.get("/", headers={"host": "bazifor.me"}).status_code == 200
+
+
+def test_tool_pages_have_canonical_description_og_schema_and_footer():
+    for path, types in (("/", {"Organization", "WebSite"}), ("/start", {"WebApplication", "BreadcrumbList"}),
+                        ("/fengshui", {"WebApplication", "BreadcrumbList"}), ("/baby", {"WebApplication", "BreadcrumbList"})):
+        h = _head(path)
+        assert h["canonical"] == "https://bazifor.me" + path, path
+        assert 150 <= len(h["desc"]) <= 160, (path, len(h["desc"]))
+        assert h["og"] >= 4 and types <= set(h["ld"]) and h["icon"], path
+        assert h["lang"] == "en" and h["footer_links"] >= 9, path
+        assert len(_re.sub(r" \| bazifor\.me$", "", h["title"])) <= 90
+    assert "/w/${token}/fengshui" not in client.get("/start").text.split("<script")[0]
+    for path in ("/start", "/fengshui", "/baby"):
+        assert client.get(path).text.count('class="learnstrip"') == 1 and "/learn/" in client.get(path).text
+
+
+def test_author_page_and_article_bylines():
+    h = _head("/author")
+    assert client.get("/author").status_code == 200 and "Person" in h["ld"] and "BaziMaster" in h["text"]
+    assert h["canonical"] == "https://bazifor.me/author"
+    for sub in ("learn", "zh/learn"):
+        t = client.get(f"/{sub}/what-is-bazi").text
+        ld = [_json.loads(m) for m in _re.findall(r'<script type="application/ld\+json">(.*?)</script>', t, _re.S)]
+        art = next(x for x in ld if x["@type"] == "Article")
+        assert art["author"] == {"@type": "Person", "name": "BaziMaster", "url": "https://bazifor.me/author"}
+        assert _re.fullmatch(r"\d{4}-\d{2}-\d{2}", art["dateModified"]) and art["dateModified"] >= art["datePublished"]
+        assert 'rel="author"' in t and "<time datetime=" in t and "/author" in t
+
+
+def test_sitemap_lastmod_llms_robots_favicon_indexnow():
+    sm = client.get("/sitemap.xml").text
+    locs = _re.findall(r"<loc>(.*?)</loc>", sm)
+    assert "https://bazifor.me/author" in locs and len(_re.findall(r"<lastmod>\d{4}-\d{2}-\d{2}</lastmod>", sm)) == len(locs) == 40
+    r = client.get("/llms.txt"); assert r.status_code == 200 and r.headers["content-type"].startswith("text/plain")
+    assert r.text.startswith("# bazifor.me") and r.text.count("https://bazifor.me/learn/") == 15 and "/zh/learn/" in r.text
+    f = client.get("/llms-full.txt"); assert f.status_code == 200 and f.text.count("Source: https://bazifor.me/learn/") == 15
+    rb = client.get("/robots.txt").text
+    for bot in ("Googlebot", "OAI-SearchBot", "Claude-SearchBot", "PerplexityBot", "GPTBot", "ClaudeBot", "Google-Extended", "CCBot"):
+        assert f"User-agent: {bot}\n" in rb
+    assert rb.count("Content-Signal: search=yes, ai-input=yes, ai-train=yes") == 10 and rb.count("Disallow: /w/") == 10
+    assert "Sitemap: https://bazifor.me/sitemap.xml" in rb
+    for ico in ("/favicon.ico", "/favicon.svg"):
+        assert client.get(ico).status_code == 200 and "svg" in client.get(ico).headers["content-type"]
+    key = (ROOT_DIR / "data/seo/indexnow.key").read_text().strip()
+    assert _re.fullmatch(r"[0-9a-f]{32}", key) and client.get(f"/{key}.txt").text == key
+    assert client.get("/0123456789abcdef0123456789abcdef.txt").status_code == 404

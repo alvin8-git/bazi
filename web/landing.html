@@ -1,19 +1,27 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="bazifor.me — deterministic BaZi 八字 readings, home
-fengshui analysis and baby-naming guidance that cite every classical rule they use.
-No AI guesswork, no account required.">
-<title>bazifor.me — BaZi & FengShui, with the working shown</title>
+<title>BaZi Calculator, Home Feng Shui and Baby Names — with the working shown | bazifor.me</title>
+<meta name="description" content="Free BaZi (八字) chart, home feng shui from your floor plan and Chinese baby names, each citing its classical rule. Made for Singapore and Malaysia birth times.">
+<link rel="canonical" href="https://bazifor.me/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="BaZi Calculator, Home Feng Shui and Baby Names — with the working shown | bazifor.me">
+<meta property="og:description" content="Free BaZi (八字) chart, home feng shui from your floor plan and Chinese baby names, each citing its classical rule. Made for Singapore and Malaysia birth times.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bazifor.me/">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me", "logo": "https://bazifor.me/favicon.svg", "sameAs": []}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "bazifor.me", "url": "https://bazifor.me", "inLanguage": ["en", "zh-Hans"]}</script>
 <style>
-:root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#8a8177;--accent:#b03a2e;
-  --gold:#b8860b;--line:#e5ded2}
+:root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;
+  --gold:#8a6d1f;--line:#e5ded2}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);
   font:16px/1.55 system-ui,"Noto Sans SC","PingFang SC",sans-serif;
   min-height:100vh;display:flex;flex-direction:column}
 header{padding:44px 22px 10px;text-align:center}
-h1{margin:0;font-size:34px;color:var(--accent);letter-spacing:1px}
+h1{margin:0 auto;font-size:28px;line-height:1.25;max-width:720px;color:var(--accent)}
+.brand{font-size:15px;color:var(--gold);letter-spacing:2px;margin-top:8px;font-weight:700}
 .sub{color:var(--muted);font-size:15px;margin-top:6px}
 main{flex:1;max-width:900px;margin:0 auto;padding:24px 22px 60px;width:100%}
 .menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
@@ -25,9 +33,9 @@ a.tile:hover{box-shadow:0 6px 22px rgba(0,0,0,.10);transform:translateY(-2px)}
 .tile h2{margin:10px 0 6px;font-size:20px;color:var(--accent)}
 .tile p{margin:0;font-size:13.5px;color:var(--muted)}
 .tile .zh{color:var(--gold);font-size:14px;margin-left:6px}
-footer{padding:16px 22px 28px;text-align:center;color:var(--muted);font-size:12.5px}
+footer{padding:16px 22px 28px;text-align:center;color:var(--muted);font-size:13px}.sitefoot .fnav{display:inline-block;margin-top:6px}
 footer a{color:var(--accent)}
-.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#b9b0a4;
+.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#6b6359;
   z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
 .trust{max-width:760px;margin:26px auto 0;background:var(--card);
   border:1px solid var(--line);border-left:4px solid var(--gold);
@@ -37,7 +45,8 @@ footer a{color:var(--accent)}
 <script>fetch("/api/pub/version").then(r=>r.json())
   .then(v=>{document.getElementById("ver").textContent="v "+v.version}).catch(()=>{});</script>
 <header>
-  <h1>bazifor.me</h1>
+  <h1>BaZi, home feng shui and baby names, computed and cited</h1>
+  <div class="brand">bazifor.me</div>
   <div class="sub">Classical BaZi 八字 and FengShui 风水 — deterministic, rule-cited,
     no AI guesswork. 计算透明 · 条条有据</div>
 </header>
@@ -78,12 +87,7 @@ footer a{color:var(--accent)}
     account, nothing shared.
   </div>
 </main>
-<footer>
-  <a href="/how-it-works">How It Works</a> ·
-  <a href="/about">About</a> ·
-  <a href="/faq">FAQ</a> ·
-  <a href="/learn">Learn: BaZi &amp; fengshui guides</a> ·
-  <a href="/app">demo: full family compass app (sample data) →</a>
-</footer>
+<footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/author">Author</a></span> · <a href="/app">demo app (sample data)</a></footer>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 </body></html>

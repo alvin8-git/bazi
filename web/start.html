@@ -1,10 +1,20 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>bazifor.me — your BaZi, with the working shown</title>
+<title>Free BaZi Calculator (八字) with Every Rule Cited | bazifor.me</title>
+<meta name="description" content="Enter a birth date and time: four pillars, day master, useful element and luck cycles, each citing its classical rule. Singapore and Malaysia times handled.">
+<link rel="canonical" href="https://bazifor.me/start">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Free BaZi Calculator (八字) with Every Rule Cited | bazifor.me">
+<meta property="og:description" content="Enter a birth date and time: four pillars, day master, useful element and luck cycles, each citing its classical rule. Singapore and Malaysia times handled.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bazifor.me/start">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "bazifor.me BaZi calculator", "url": "https://bazifor.me/start", "description": "Enter a birth date and time: four pillars, day master, useful element and luck cycles, each citing its classical rule. Singapore and Malaysia times handled.", "applicationCategory": "LifestyleApplication", "operatingSystem": "Web", "inLanguage": ["en", "zh-Hans"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SGD"}, "featureList": ["Four pillars with hidden stems", "Day master strength", "Useful element (用神) and colours", "Luck cycles and timing windows", "Up to 8 people with harmony comparison"], "publisher": {"@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "bazifor.me", "item": "https://bazifor.me"}, {"@type": "ListItem", "position": 2, "name": "BaZi calculator", "item": "https://bazifor.me/start"}]}</script>
 <style>
-:root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#8a8177;--accent:#b03a2e;
-  --gold:#b8860b;--line:#e5ded2}
+:root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;
+  --gold:#8a6d1f;--line:#e5ded2}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);
   font:15.5px/1.55 system-ui,"Noto Sans SC","PingFang SC",sans-serif}
@@ -95,7 +105,7 @@ button:disabled{opacity:.5;cursor:default}
 .elb{display:inline-block;width:24px;height:24px;border-radius:50%;font-weight:700;
   font-size:14px;border:2px solid;margin:0 2px;line-height:20px;text-align:center;
   vertical-align:middle;box-sizing:border-box;padding:0}
-.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#b9b0a4;
+.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#6b6359;
   z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
 .elb.el-木{color:#1e8e3e;border-color:#1e8e3e;background:#e9f7ee}
 .elb.el-火{color:#c5221f;border-color:#c5221f;background:#fdecea}
@@ -138,11 +148,11 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
   main{padding:14px 12px 60px}
 }
 [hidden]{display:none!important}
-</style></head><body>
+<style>.sitefoot{padding:18px 22px 28px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:30px}.sitefoot a{color:var(--accent)}.sitefoot .fnav{display:inline-block;margin-top:6px}.learnstrip{max-width:980px;margin:18px auto 0;padding:0 22px;font-size:14px;color:var(--muted)}.learnstrip a{color:var(--accent);margin-right:12px;white-space:nowrap}</style></head><body>
 <span class="verbadge" id="ver"></span>
 <header>
-  <h1>bazifor.me</h1>
-  <div class="sub">Deterministic BaZi 八字 readings that show every classical rule they
+  <h1>Free BaZi calculator <span lang="zh-Hans">八字排盘</span> — every rule cited</h1>
+  <div class="sub">bazifor.me · deterministic readings that show every classical rule they
     cite — no AI guesswork, no black box. 计算透明，条条有据。</div>
   <nav class="top">
     <a href="/">☰ Menu</a>
@@ -347,7 +357,7 @@ function render() {
       <button id="btn-copy">📋 Copy link</button></div>
     <div class="sub2">No account, no password: anyone with this link sees this
       workspace. Bookmark it or send it to yourself · kept 6 months from your
-      last change · <a href="/w/${token}/fengshui">analyze a home with these
+      last change · <a href="#" class="ws-fs">analyze a home with these
       people →</a></div>`;
   $("#btn-copy").addEventListener("click", async () => {
     try { await navigator.clipboard.writeText(url); }
@@ -361,6 +371,7 @@ function render() {
     setTimeout(() => { $("#btn-copy").textContent = "📋 Copy link"; }, 2000);
   });
   $("#nav-fs").href = `/w/${token}/fengshui`;
+  document.querySelectorAll("a.ws-fs").forEach(a => { a.href = `/w/${token}/fengshui`; });
   $("#harmony-sec").hidden = !ws.harmony;
   if (ws.harmony) $("#harmony").innerHTML = harmonyTable(ws.harmony);
   document.querySelectorAll(".del").forEach(b => b.addEventListener("click", async () => {
@@ -428,4 +439,7 @@ $("#btn-add").addEventListener("click", async () => {
 })();
 </script>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
+<div class="learnstrip"><b>Learn 知识库:</b> <a href="/learn/four-pillars-explained">How to read a four pillars chart</a> <a href="/learn/day-masters-explained">The ten day masters</a> <a href="/learn/useful-god-colors">Useful element colours</a></div>
+<footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/author">Author</a></span></footer>
 </body></html>

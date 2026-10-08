@@ -1540,13 +1540,98 @@ def gsc_verification():
     return "google-site-verification: google3ab49b3ef7e728f9.html"
 
 
+# Crawler policy (owner decision 2026-10-08): search, citation AND training bots are all
+# welcome — a new site needs reach. Private workspaces and the API stay out of every group.
+_ROBOTS_ALLOW = ("Allow: /$\nAllow: /start\nAllow: /fengshui\nAllow: /baby\nAllow: /learn\n"
+                 "Allow: /zh/learn\nAllow: /how-it-works\nAllow: /about\nAllow: /faq\n"
+                 "Allow: /author\nAllow: /llms.txt\nAllow: /llms-full.txt\n"
+                 "Disallow: /w/\nDisallow: /api/\n"
+                 "Content-Signal: search=yes, ai-input=yes, ai-train=yes\n")
+_ROBOTS_BOTS = ("Googlebot", "Bingbot", "OAI-SearchBot", "Claude-SearchBot", "PerplexityBot",
+                "GPTBot", "ClaudeBot", "Google-Extended", "CCBot")
+
+
 @router.get("/robots.txt", response_class=PlainTextResponse)
 def robots():
-    return ("User-agent: *\nAllow: /$\nAllow: /start\nAllow: /fengshui\n"
-            "Allow: /baby\nAllow: /learn\nAllow: /zh/learn\n"
-            "Allow: /how-it-works\nAllow: /about\nAllow: /faq\n"
-            "Disallow: /w/\nDisallow: /api/\n"
+    groups = "".join(f"User-agent: {b}\n{_ROBOTS_ALLOW}\n" for b in _ROBOTS_BOTS)
+    return (f"User-agent: *\n{_ROBOTS_ALLOW}\n{groups}"
             "Sitemap: https://bazifor.me/sitemap.xml\n")
+
+
+def _seo_file(name: str) -> Path:
+    return ROOT / "data/seo" / name
+
+
+@router.get("/llms.txt", response_class=PlainTextResponse)
+def llms_txt():
+    """Site guide for AI assistants (llmstxt.org); Google Search ignores it."""
+    lines = ["# bazifor.me", "",
+             "> Deterministic BaZi (八字) readings, home feng shui analysis (flying stars, Eight House) "
+             "and Chinese baby-name scoring that cite every classical rule they apply. Free, no account; "
+             "Singapore and Malaysia birth times handled with true-solar correction.", "",
+             "## Tools", "",
+             "- [BaZi calculator](https://bazifor.me/start): four pillars, day master, useful element, luck cycles — every line cites its rule",
+             "- [Home feng shui analyzer](https://bazifor.me/fengshui): trace a floor plan, get flying stars, Eight House directions and room assignments",
+             "- [Chinese baby name builder](https://bazifor.me/baby): names scored by 用神, 五格, 三才, meaning, sound and gender fit",
+             "", "## Guides (English)", ""]
+    for slug, title in _learn_titles("web/learn"):
+        lines.append(f"- [{title}](https://bazifor.me/learn/{slug})")
+    lines += ["", "## Guides (Chinese)", ""]
+    for slug, title in _learn_titles("web/learn-zh"):
+        lines.append(f"- [{title}](https://bazifor.me/zh/learn/{slug})")
+    lines += ["", "## About", "",
+              "- [How it works](https://bazifor.me/how-it-works): the engine, its sources and its limits",
+              "- [About](https://bazifor.me/about)", "- [Author](https://bazifor.me/author)",
+              "- [FAQ](https://bazifor.me/faq): method, accuracy, privacy",
+              "- [Full text of the English guides](https://bazifor.me/llms-full.txt)", ""]
+    return "\n".join(lines)
+
+
+@router.get("/llms-full.txt", response_class=PlainTextResponse)
+def llms_full_txt():
+    f = _seo_file("llms-full.txt")
+    if not f.is_file():
+        raise HTTPException(404)
+    return f.read_text("utf8")
+
+
+def _learn_titles(sub: str) -> list[tuple[str, str]]:
+    out = []
+    for slug in _learn_slugs(sub):
+        m = re.search(r"<title>(.*?)(?: \| bazifor\.me)?</title>", (ROOT / sub / f"{slug}.html").read_text("utf8"))
+        out.append((slug, _html_unescape(m.group(1)) if m else slug))
+    return out
+
+
+def _html_unescape(s: str) -> str:
+    import html as _h
+    return _h.unescape(s)
+
+
+@router.get("/favicon.ico")
+@router.get("/favicon.svg")
+def favicon():
+    return FileResponse(ROOT / "web/favicon.svg", media_type="image/svg+xml",
+                        headers={"Cache-Control": "public, max-age=604800"})
+
+
+def _indexnow_key() -> str:
+    f = _seo_file("indexnow.key")
+    return f.read_text("utf8").strip() if f.is_file() else ""
+
+
+@router.get("/{key}.txt", response_class=PlainTextResponse)
+def indexnow_key_file(key: str):
+    """IndexNow ownership proof: /<key>.txt returns the key (Bing, Yandex, Naver…)."""
+    k = _indexnow_key()
+    if not k or key != k:
+        raise HTTPException(404)
+    return k
+
+
+@router.get("/author")
+def author_page():
+    return FileResponse(ROOT / "web/author.html")
 
 
 def _learn_slugs(sub: str = "web/learn") -> list[str]:
@@ -1555,14 +1640,22 @@ def _learn_slugs(sub: str = "web/learn") -> list[str]:
                   if f.stem != "index") if d.is_dir() else []
 
 
+def _lastmod() -> dict:
+    """Per-path last-modified dates written by scripts/seo_build.py (data/seo/lastmod.json)."""
+    f = _seo_file("lastmod.json")
+    return json.loads(f.read_text("utf8")) if f.is_file() else {}
+
+
 @router.get("/sitemap.xml")
 def sitemap():
     pages = ["/", "/start", "/fengshui", "/baby",
-             "/how-it-works", "/about", "/faq", "/learn"]
+             "/how-it-works", "/about", "/faq", "/author", "/learn"]
     pages += [f"/learn/{s}" for s in _learn_slugs()]
     pages += ["/zh/learn"]
     pages += [f"/zh/learn/{s}" for s in _learn_slugs("web/learn-zh")]
-    urls = "".join(f"<url><loc>https://bazifor.me{p}</loc></url>" for p in pages)
+    lm = _lastmod()
+    urls = "".join(f"<url><loc>https://bazifor.me{p}</loc>"
+                   + (f"<lastmod>{lm[p]}</lastmod>" if p in lm else "") + "</url>" for p in pages)
     return Response(
         f'<?xml version="1.0" encoding="UTF-8"?><urlset '
         f'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>',
