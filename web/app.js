@@ -70,7 +70,7 @@ function splitNarr(i) {
 }
 const legendBlock = (pairs) => !pairs ? "" : `<div class="legend">
   <b>Legend</b>${pairs.map(([t, d]) => `<span><b>${t}</b> — ${d}</span>`).join("")}</div>`;
-const elb = (e) => `<span class="elb el-${e}">${e}</span>`;
+const elb = (e) => `<span class="elb el-${e} keepzh" title="${EL_EN[e] || e}">${e}</span>`;
 const elbs = (a) => (a || []).map(elb).join("");
 const sadv = (items, title = "Strategy") => !items || !items.length ? "" :
   `<div class="sadv"><b>${title}</b>${items.map((x) => `<div>· ${dnAll(x)}</div>`).join("")}</div>`;
@@ -587,6 +587,19 @@ function renderFamily() {
 /* ---------- Person tab (baziValidation.docx layout) ---------- */
 /* ---------- Chart Card 命卡 (JY-style dense one-glance summary) ----------- */
 const EL_COL = { 木: "#1e8e3e", 火: "#c5221f", 土: "#8a6d1f", 金: "#5f6b7a", 水: "#1a56b0" };
+/* chart FILLS use EL_COL; coloured TEXT uses EL_TXT, the darkened tokens that pass 4.5:1 */
+const EL_TXT = { 木: "#187a35", 火: "#c5221f", 土: "#8a6d1f", 金: "#8a6500", 水: "#1a56b0" };
+/* fit a label inside a node: widest the word may be is 2r - 6 units */
+const fitFont = (word, r, max) => Math.max(6.4, Math.min(max, (2 * r - 6) / (String(word).length * 0.58)));
+/* a node label, wrapped onto a second line when it is two words, centred and scaled to fit */
+function nodeLines(label, x, y, r, maxFs) {
+  const w = String(label).split(" ");
+  const lines = w.length > 1 ? [w[0], w.slice(1).join(" ")] : w;
+  const longest = lines.reduce((a, b) => (a.length >= b.length ? a : b));
+  const fs = fitFont(longest, r, maxFs), top = y - (lines.length - 1) * fs * 0.55 + fs * 0.35;
+  return lines.map((ln, k) => `<text x="${x}" y="${(top + k * fs * 1.1).toFixed(1)}" text-anchor="middle"
+    font-size="${fs.toFixed(1)}" font-weight="700" fill="#fff">${ln}</text>`).join("");
+}
 const STEM_EL = { 甲: "木", 乙: "木", 丙: "火", 丁: "火", 戊: "土", 己: "土",
                   庚: "金", 辛: "金", 壬: "水", 癸: "水" };
 const BR_EL = { 子: "水", 丑: "土", 寅: "木", 卯: "木", 辰: "土", 巳: "火",
@@ -599,13 +612,13 @@ const BR_ANIMAL = { 子: "鼠", 丑: "牛", 寅: "虎", 卯: "兔", 辰: "龙", 
    green arrows = generating cycle, red = controlling (solid when afflicted) */
 function elementWheel(er) {
   const ORDER = ["火", "土", "金", "水", "木"];
-  const cx = 130, cy = 130, R = 88;
+  const cx = 170, cy = 170, R = 115;
   const pos = {};
   ORDER.forEach((el, i) => {
     const a = (-90 + i * 72) * Math.PI / 180;
     pos[el] = [cx + R * Math.cos(a), cy + R * Math.sin(a)];
   });
-  const rOf = el => 13 + Math.min(er.share[el] || 0, 40) * 0.32;
+  const rOf = el => 17 + Math.min(er.share[el] || 0, 40) * 0.42;
   const seg = (a, b) => {
     const [x1, y1] = pos[a], [x2, y2] = pos[b];
     const d = Math.hypot(x2 - x1, y2 - y1), ux = (x2 - x1) / d, uy = (y2 - y1) / d;
@@ -615,7 +628,7 @@ function elementWheel(er) {
   const SHENG_P = [["木", "火"], ["火", "土"], ["土", "金"], ["金", "水"], ["水", "木"]];
   const KE_P = [["木", "土"], ["土", "水"], ["水", "火"], ["火", "金"], ["金", "木"]];
   const aff = new Set((er.afflictions || []).map(p => p.join()));
-  let s = `<svg viewBox="0 0 260 270" class="ewheel"><defs>
+  let s = `<svg viewBox="0 0 340 350" class="ewheel"><defs>
     <marker id="mS" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5"
       orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7aa87f"/></marker>
     <marker id="mK" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5"
@@ -639,10 +652,12 @@ function elementWheel(er) {
     s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${EL_COL[el]}" opacity=".92"/>`;
     if (el === er.dm) s += `<circle cx="${x}" cy="${y}" r="${r + 3.5}" fill="none"
       stroke="var(--gold)" stroke-width="2.5"/>`;
-    s += `<text x="${x}" y="${y + 5.5}" text-anchor="middle" font-size="15"
+    const fs = Math.max(11, Math.min(22, r * 0.62));
+    s += `<title>${EL_EN[el]} ${er.share[el]}%${el === er.dm ? ", your day master" : ""}</title>
+      <text x="${x}" y="${y + fs * 0.35}" text-anchor="middle" font-size="${fs.toFixed(1)}"
       font-weight="700" fill="#fff">${el}</text>
-      <text x="${x}" y="${y + r + 13}" text-anchor="middle" font-size="9.5"
-      fill="#6b6357">${er.share[el]}%${el === er.dm ? " 日主" : ""}</text>`;
+      <text x="${x}" y="${y + r + 13}" text-anchor="middle" font-size="10.5"
+      paint-order="stroke" stroke="#faf7f2" stroke-width="3" stroke-linejoin="round" fill="#6b6357">${er.share[el]}%${el === er.dm ? " 日主" : ""}</text>`;
   });
   return s + "</svg>";
 }
@@ -706,23 +721,23 @@ function tenGodsWheel(c, opts = {}) {
   const dmEl = STEM_EL[c.day_master];
   const S = WX_S, K = WX_K, invS = WX_IS, invK = WX_IK;
   const GROUPS = [
-    {zh:"官殺", el:invK[dmEl], gods:[["正官"],["七殺","七杀"]], lab:["正官","七殺"]},
-    {zh:"印星", el:invS[dmEl], gods:[["正印"],["偏印"]], lab:["正印","偏印"]},
-    {zh:"比劫", el:dmEl, gods:[["比肩"],["劫財","劫财"]], lab:["比肩","劫財"]},
-    {zh:"食傷", el:S[dmEl], gods:[["食神"],["傷官","伤官"]], lab:["食神","傷官"]},
-    {zh:"財星", el:K[dmEl], gods:[["正財","正财"],["偏財","偏财"]], lab:["正財","偏財"]},
+    {zh:"官殺", en:"Authority", el:invK[dmEl], gods:[["正官"],["七殺","七杀"]], lab:["正官","七殺"]},
+    {zh:"印星", en:"Resource", el:invS[dmEl], gods:[["正印"],["偏印"]], lab:["正印","偏印"]},
+    {zh:"比劫", en:"Peers", el:dmEl, gods:[["比肩"],["劫財","劫财"]], lab:["比肩","劫財"]},
+    {zh:"食傷", en:"Output", el:S[dmEl], gods:[["食神"],["傷官","伤官"]], lab:["食神","傷官"]},
+    {zh:"財星", en:"Wealth", el:K[dmEl], gods:[["正財","正财"],["偏財","偏财"]], lab:["正財","偏財"]},
   ];
-  const cx = 170, cy = 170, R1 = 86, R2 = 141;
+  const cx = 170, cy = 170, R1 = 86, R2 = 132;
   GROUPS.forEach((g, i) => {
     g.a = (-90 + i * 72) * Math.PI / 180;
     g.x = cx + R1 * Math.cos(g.a); g.y = cy + R1 * Math.sin(g.a);
     g.sum = Math.round((p(g.gods[0]) + p(g.gods[1])) * 10) / 10;
-    g.r = 15 + Math.min(g.sum, 45) * 0.3;
+    g.r = 22 + Math.min(g.sum, 45) * 0.26;
     g.sat = g.gods.map((keys, j) => {
       const a2 = g.a + (j ? 1 : -1) * 0.42;
       const v = p(keys);
       return {x: cx + R2 * Math.cos(a2), y: cy + R2 * Math.sin(a2),
-              v, r: 9.5 + Math.min(v, 35) * 0.27, lab: g.lab[j]};
+              v, r: 19 + Math.min(v, 35) * 0.18, lab: g.lab[j], en: godEn(c, g.lab[j])};
     });
   });
   const seg = (x1, y1, r1, x2, y2, r2) => {
@@ -758,18 +773,18 @@ function tenGodsWheel(c, opts = {}) {
       fill="#fff">${c.day_master}</text>
     <text x="${cx}" y="${cy + 13}" text-anchor="middle" font-size="8.5" fill="#fff">日元</text>`;
   GROUPS.forEach(g => {
-    s += `<circle cx="${g.x}" cy="${g.y}" r="${g.r}" fill="${EL_COL[g.el]}" opacity=".92"/>
-      <text x="${g.x}" y="${g.y + 4.5}" text-anchor="middle" font-size="12.5"
-        font-weight="700" fill="#fff">${g.zh}</text>
-      <text x="${g.x}" y="${g.y + g.r + 11}" text-anchor="middle" font-size="9"
-        fill="#6b6357">${g.sum}%</text>`;
+    s += `<g><title>${g.en} ${g.sum}% (${g.zh})</title>
+      <circle cx="${g.x}" cy="${g.y}" r="${g.r}" fill="${EL_COL[g.el]}" opacity=".92"/>
+      ${nodeLines(g.en, g.x, g.y, g.r, 10.5)}</g>
+      <text x="${g.x}" y="${g.y + g.r + 11}" text-anchor="middle" font-size="9.5"
+        paint-order="stroke" stroke="#faf7f2" stroke-width="3" stroke-linejoin="round" fill="#6b6357">${g.sum}%</text>`;
     if (!opts.groupsOnly) g.sat.forEach(t => {
-      s += `<circle cx="${t.x}" cy="${t.y}" r="${t.r}" fill="${EL_COL[g.el]}"
+      s += `<g><title>${t.en} ${t.v}% (${t.lab})</title>
+      <circle cx="${t.x}" cy="${t.y}" r="${t.r}" fill="${EL_COL[g.el]}"
         opacity="${t.v < 5 ? 0.35 : 0.68}"/>
-      <text x="${t.x}" y="${t.y + 3.5}" text-anchor="middle" font-size="9.5"
-        font-weight="700" fill="#fff">${t.lab}</text>
+      ${nodeLines(t.en, t.x, t.y, t.r, 8.5)}</g>
       <text x="${t.x}" y="${t.y + t.r + 10}" text-anchor="middle" font-size="8.5"
-        fill="#6b6357">${t.v}%</text>`;
+        paint-order="stroke" stroke="#faf7f2" stroke-width="3" stroke-linejoin="round" fill="#6b6357">${t.v}%</text>`;
     });
   });
   return s + "</svg>";
@@ -850,6 +865,8 @@ const LEGENDS = {
 /* ===== Reading rework 2026-09-19 (mockup data/out/readingMockup.html, decisions: A-tabs,
    inline SVG, card stats = medicine/dominant/missing/best/watch/decade) ===== */
 const ALLGODS = ["比肩", "劫財", "食神", "傷官", "正財", "偏財", "正官", "七殺", "正印", "偏印"];
+/* the chart carries its own legend; fall back to the table below when it does not */
+const godEn = (c, g) => ((c.tengods_legend || {})[g] || {}).en || TG_EN_FALLBACK[g] || g;
 const TG_EN_FALLBACK = { 比肩: "Friend", 劫財: "Rob Wealth", 食神: "Eating God",
   傷官: "Hurting Officer", 正財: "Direct Wealth", 偏財: "Indirect Wealth",
   正官: "Direct Officer", 七殺: "Seven Killings", 正印: "Direct Resource", 偏印: "Indirect Resource" };
@@ -1273,7 +1290,7 @@ function buildElements(c, R) {
   const heavy = Object.entries(share).sort((a, b) => b[1] - a[1])[0][0];
   const bars = `<div class="bars elbars">${Object.entries(c.element_weights).map(([en, v]) => { const zh = EL_ZH_OF_EN[en];
     const badge = zh === dmEl ? `<span class="elbadge dmb">${dm} 日主 YOU</span>` : fav[0] === zh ? `<span class="elbadge fvb">用神 MEDICINE</span>` : "";
-    return `<div class="bar-row el-${zh}"><span class="ellab" style="color:${EL_COL[zh]}"><b>${zh}</b><small>${en}</small></span>
+    return `<div class="bar-row el-${zh}"><span class="ellab" style="color:${EL_TXT[zh]}"><b class="keepzh">${zh}</b><small>${en}</small></span>
       <div class="bar"><i style="width:${(100 * v / wmax).toFixed(0)}%"></i></div>
       <b>${(100 * v / wtot).toFixed(0)}%</b><span class="dmcell">${badge}</span></div>`; }).join("")}</div>`;
   const e1 = rdFig({ tier: "hero", span: 7, label: "Element bars", learn: 1, chart: bars,
@@ -1334,7 +1351,7 @@ function buildGods(c, R) {
   const rows = ALLGODS.map((g) => [g, c.tengods_pct[g] || 0]), pmax = Math.max(...rows.map(([, v]) => v)) || 1;
   const [g1, p1] = topGod(c), absent = ALLGODS.filter((g) => !(c.tengods_pct[g] > 0));
   const bars = `<div class="bars tgbars">${rows.map(([g, p]) => `<div class="bar-row tg-row2${p ? "" : " tg-zero"}">
-      <span><b style="color:${EL_COL[godEl(dm, g)]}">${g}</b> <span class="sub">${en(g)}</span></span>
+      <span><b style="color:${EL_TXT[godEl(dm, g)]}">${en(g)}</b> <span class="sub keepzh">${g}</span></span>
       <div class="bar">${p ? `<i style="width:${(p / pmax * 100).toFixed(0)}%;background:${EL_COL[godEl(dm, g)]}"></i>` : ""}</div>
       <b>${p ? p + "%" : "0% (absent)"}</b></div>`).join("")}</div>`;
   const sex = c.sex, grp = (gods) => Math.round(gods.reduce((a, g) => a + (c.tengods_pct[g] || 0), 0) * 10) / 10;
@@ -1621,7 +1638,7 @@ function glossifyDom(root, fresh = true) {
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: (n) => n.parentElement
       && /[\u3400-\u9fff]/.test(n.nodeValue)
-      && !n.parentElement.closest("script,style,input,textarea,.keepzh,.zh,[lang='zh-Hans']")
+      && !n.parentElement.closest("script,style,svg,input,textarea,.keepzh,.zh,[lang='zh-Hans']")
       ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
   const nodes = []; let t; while ((t = w.nextNode())) nodes.push(t);
   for (const n of nodes) { const v = GL.text(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; }

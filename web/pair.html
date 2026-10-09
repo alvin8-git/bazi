@@ -215,7 +215,8 @@ document.getElementById("back").href = `/w/${token}`;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const bi = (o) => esc((o && (o.en || o.zh)) || "");
 const be = (o) => `<small class="be">${esc(o.en)}</small>`;
-const elb = (e) => e ? `<span class="elb el-${e}">${e}</span>` : "";
+const ELB_EN = {木:"Wood", 火:"Fire", 土:"Earth", 金:"Metal", 水:"Water"};
+const elb = (e) => e ? `<span class="elb el-${e} keepzh" title="${ELB_EN[e] || e}">${e}</span>` : "";
 const STEM_EL = { 甲: "木", 乙: "木", 丙: "火", 丁: "火", 戊: "土", 己: "土",
   庚: "金", 辛: "金", 壬: "水", 癸: "水" };
 const EL_COL = { 木: "#1e8e3e", 火: "#c5221f", 土: "#8a6d1f", 金: "#7d5c00", 水: "#1a56b0" };

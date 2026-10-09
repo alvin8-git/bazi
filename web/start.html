@@ -350,7 +350,7 @@ async function api(path, opts) {
   return r.json();
 }
 
-const elb = e => `<span class="elb el-${e}">${e}</span>`;
+const elb = e => `<span class="elb el-${e} keepzh" title="${EL_EN[e] || e}">${e}</span>`;
 const elbs = a => (a || []).map(elb).join("");
 
 const ZODIAC = { 鼠: ["🐭", "Rat"], 牛: ["🐮", "Ox"], 虎: ["🐯", "Tiger"], 兔: ["🐰", "Rabbit"],
