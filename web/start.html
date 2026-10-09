@@ -161,10 +161,20 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
 [hidden]{display:none!important}
 <style>.sitefoot{padding:18px 22px 28px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:30px}.sitefoot a{color:var(--accent)}.sitefoot .fnav{display:inline-block;margin-top:6px}.learnstrip{max-width:980px;margin:18px auto 0;padding:0 22px;font-size:14px;color:var(--muted)}.learnstrip a{color:var(--accent);margin-right:12px;white-space:nowrap}.pz .pzpy{font-size:9.5px;color:var(--muted);font-weight:500;letter-spacing:0}
 .fgrid{grid-template-columns:1fr}.fv{overflow:visible;white-space:normal}
-</style></head><body>
+
+/* shared header pass (design reference: home page) */
+header h1{font:700 26px/1.25 Georgia,"Noto Serif SC","Songti SC",serif;color:var(--ink);letter-spacing:-.01em}
+header .sub,header .hint{color:var(--muted);font-size:14px}
+header nav.top a,header a#back{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-size:14px;font-weight:600;margin:6px 6px 0 0}
+header nav.top a:hover,header a#back:hover{background:#f3ecdd;border-color:var(--gold)}
+header a#back{background:#fff;color:var(--ink)}
+@media(min-width:760px){header h1{font-size:30px}}
+</style><link rel="preload" as="image" href="/static/img/tools/start-intro-600.jpg" media="(max-width: 759px)">
+<link rel="preload" as="image" href="/static/img/tools/start-intro.jpg" media="(min-width: 760px)">
+</head><body>
 <span class="verbadge" id="ver"></span>
 <header>
-  <h1>Free BaZi calculator (<span lang="zh-Hans">八字排盘 bā zì pái pán</span>) — every rule cited</h1>
+  <h1>Free BaZi calculator (<span lang="zh-Hans">八字排盘 bā zì pái pán</span>)</h1>
   <div class="sub">bazifor.me · deterministic readings that show every classical rule they
     cite — no AI guesswork, no black box.</div>
   <nav class="top">
@@ -175,19 +185,104 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
   </nav>
 </header>
 <main>
-<style>.exshot{margin:0 0 18px;max-width:560px}.exshot img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line,#e5ded2)}.exshot figcaption{font-size:12.5px;color:var(--muted,#6b6359);margin-top:6px}</style>
-<figure class="exshot"><img src="/static/img/shots/reading-desktop.jpg" alt="Example BaZi reading page for the fictional demo person 王大明: four-pillar grid, day master and 用神" width="1280" height="900"><figcaption>Example with fictional data</figcaption></figure>
+<style>
+/* start-page orientation layer: tokens follow the home page */
+:root{--seal:#c7301d;--soft:#f3ecdd}
+body{font-size:16px}
+main{padding-top:24px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.serif,main h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif}
+.intro{display:grid;grid-template-columns:1.15fr 1fr;gap:24px;align-items:center;margin:0 0 20px}
+.intro ol{margin:0;padding:0;list-style:none;counter-reset:i}
+.intro li{counter-increment:i;font-size:18px;line-height:1.5;padding:0 0 10px 38px;position:relative}
+.intro li:before{content:counter(i);position:absolute;left:0;top:2px;width:26px;height:26px;border-radius:50%;background:var(--soft);border:1px solid var(--line);color:var(--gold);font:700 14px/24px system-ui,sans-serif;text-align:center}
+.intro img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line)}
+.intro figure{margin:0}
+.card-x{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:18px 0}
+#add-sec,#people-sec,#harmony-sec{border-radius:14px;padding:20px 22px}
+.stepl{font:700 22px/1.25 Georgia,"Noto Serif SC","Songti SC",serif;color:var(--ink);margin:0 0 2px}
+.stepl b{color:var(--gold)}
+#add-sec h2{font:400 16px/1.4 system-ui,sans-serif;color:var(--muted);margin:0 0 8px}
+#add-sec label{font-size:13px;font-weight:600;color:var(--ink)}
+#add-sec input,#add-sec select{min-height:44px;font-size:16px}
+#add-sec input[type=checkbox]{min-height:0;width:20px!important;height:20px}
+#add-sec .row{grid-template-columns:1.3fr .8fr 1.2fr 1.2fr;gap:12px 14px;align-items:start}
+.help{display:block;font-size:13px;line-height:1.4;color:var(--muted);margin-top:4px}
+.policy{font-size:13px;color:var(--muted);margin:12px 0 0;padding:8px 12px;background:var(--soft);border-radius:10px}
+.policy b{color:var(--ink)}
+#btn-add{background:var(--seal);color:#fff;font-weight:700;min-height:44px;padding:10px 26px;border-radius:10px}
+#btn-add:hover:not(:disabled){background:#a82716}
+.err{font-size:14px;color:#a82716;font-weight:600}
+#add-err:not(:empty){margin-top:10px;padding:8px 12px;border-left:4px solid var(--seal);background:#fdecea;border-radius:6px}
+#add-sec .row2{margin-top:14px}
+.empty-state{margin:18px 0}
+body.has-people .empty-state{display:none}
+.empty-state h2{margin:0 0 4px;font-size:22px;color:var(--ink)}
+.empty-state .sub{color:var(--muted);margin:0 0 14px}
+.es-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:18px;align-items:start}
+.es-grid img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line)}
+.es-grid .prev{aspect-ratio:16/9;object-fit:cover;object-position:top}
+.es-grid figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.45}
+.es-grid figure{margin:0}
+#people-sec>h2,#harmony-sec>h2{font-size:26px;color:var(--ink);margin:0 0 4px}
+#people-sec .hint,#harmony-sec .hint{font-size:14px}
+.subhead{color:var(--muted);font-size:16px;margin:0 0 14px}
+.howto{font-size:14px;color:var(--ink);background:var(--soft);border-radius:10px;padding:8px 12px;margin:10px 0 12px}
+.howto b{color:var(--gold)}
+.people{gap:16px}
+.pcard{border-radius:14px;padding:16px 18px}
+.pcard>.kv:last-child{display:flex;align-items:center;justify-content:center;min-height:44px;margin:12px 0 0!important;border:1.5px solid var(--accent);border-radius:10px;background:rgba(255,255,255,.92);color:var(--accent)!important;font-size:15px;font-weight:700}
+.pcard:hover>.kv:last-child{background:var(--accent);color:#fff!important}
+.ic{min-width:32px;min-height:32px}
+#share-sec{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:18px 22px}
+.keep{display:flex;gap:14px;align-items:center;margin-bottom:10px}
+.keep img{width:48px;height:48px;border-radius:10px;flex:none;object-fit:cover}
+.keep h2{margin:0 0 2px;font-size:22px;color:var(--ink)}
+.keep p{margin:0;color:var(--muted);font-size:15px}
+#share-sec .share{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:0}
+#share-sec .share .st{color:var(--ink);font-size:15px}
+#share-sec #btn-copy{background:#fff;color:var(--accent);border:1px solid var(--accent);min-height:44px;border-radius:10px;font-weight:600}
+.share-sec .url{font-size:13px}
+.nextstrip{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin:22px 0 0;display:flex;gap:16px;align-items:center}
+.nextstrip img{width:48px;height:48px;border-radius:10px;flex:none;object-fit:cover}
+.nextstrip h2{margin:0 0 6px;font-size:22px;color:var(--ink)}
+.nextstrip ul{list-style:none;margin:0;padding:0;display:flex;gap:8px 10px;flex-wrap:wrap}
+.nextstrip a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--accent);text-decoration:none;font-weight:600;font-size:15px}
+.nextstrip a:hover{border-color:var(--accent)}
+nav.top a{min-height:44px;display:inline-flex;align-items:center}
+@media(max-width:720px){
+  .intro{grid-template-columns:1fr;gap:14px}.intro figure{order:-1}
+  .es-grid{grid-template-columns:1fr}
+  #add-sec,#people-sec,#harmony-sec,#share-sec{padding:16px 14px}
+  #add-sec .row{grid-template-columns:1fr 1fr}
+  .nextstrip{flex-direction:column;align-items:flex-start}
+  .people{grid-template-columns:1fr}
+}
+</style>
+<section class="intro" aria-labelledby="intro-h">
+  <div>
+    <h2 id="intro-h" class="stepl" style="font-size:22px;margin-bottom:10px">How this works</h2>
+    <ol>
+      <li>A BaZi reading (<span lang="zh-Hans">八字 bā zì</span>) turns a birth date and time into a chart.</li>
+      <li>You need the date, the time, the sex and the time policy.</li>
+      <li>You get four pillars, Day Master, useful elements, luck cycles, every line with its rule.</li>
+    </ol>
+  </div>
+  <figure><img src="/static/img/tools/start-intro-600.jpg" srcset="/static/img/tools/start-intro-600.jpg 600w, /static/img/tools/start-intro.jpg 1200w" sizes="(max-width:720px) 100vw, 440px" width="1200" height="800" alt="Four pillars of a BaZi chart drawn as ink and brush columns" fetchpriority="high"></figure>
+</section>
   <div class="sec" id="add-sec">
+    <p class="stepl">Step 1 · Birth details</p>
     <h2 id="add-title">Start — enter a birth chart</h2>
     <div class="hint">Date + time of birth is all the engine needs. Singapore/Malaysia
       time assumed (pre-1982 UTC+7:30 handled); true-solar correction applied
       automatically. Nothing here requires an account.</div>
     <div class="row">
-      <div><label>Name</label><input id="f-name" maxlength="40" placeholder="name"></div>
-      <div><label>Sex</label><select id="f-sex"><option value="M">M (male)</option><option value="F">F (female)</option></select></div>
-      <div><label>Date of birth</label><input id="f-dob" type="date"></div>
-      <div><label>Time of birth</label><input id="f-time" type="time" value="12:00"></div>
+      <div><label for="f-name">Name</label><input id="f-name" maxlength="40" placeholder="name"></div>
+      <div><label for="f-sex">Sex</label><select id="f-sex"><option value="M">M (male)</option><option value="F">F (female)</option></select></div>
+      <div><label for="f-dob">Date of birth</label><input id="f-dob" type="date"><span class="help">The civil date on the birth certificate.</span></div>
+      <div><label for="f-time">Time of birth</label><input id="f-time" type="time" value="12:00"><span class="help">Clock time; true solar time is computed for you.</span></div>
     </div>
+    <p class="policy"><b>Time policy:</b> Singapore and Malaysia time is assumed. Keep the default unless born elsewhere.</p>
     <div class="row2">
       <label style="margin:0;display:flex;gap:6px;align-items:center;font-size:13px">
         <input type="checkbox" id="f-unknown" style="width:auto"> birth time unknown
@@ -195,25 +290,46 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
       <button id="btn-add">Calculate</button>
       <span class="hint" id="cap-hint"></span>
     </div>
-    <div class="err" id="add-err"></div>
+    <div class="err" id="add-err" role="alert"></div>
   </div>
 
+<section class="empty-state" id="empty-state" aria-labelledby="es-h">
+  <h2 id="es-h">What you will get</h2>
+  <p class="sub">Your chart appears here as a card, with a full reading one tap away.</p>
+  <div class="es-grid">
+    <figure><img src="/static/img/tools/start-empty-600.jpg" width="600" height="400" alt="An empty workspace waiting for the first person" loading="lazy"></figure>
+    <figure><img class="prev" src="/static/img/shots/reading-desktop.jpg" width="1280" height="900" alt="Example BaZi reading page for the fictional demo person 王大明: four-pillar grid, Day Master and useful elements" loading="lazy"><figcaption>Example reading, fictional data. Four pillars and Day Master first, then useful elements and luck cycles.</figcaption></figure>
+  </div>
+</section>
+
   <div class="sec share-sec" id="share-sec" hidden>
+    <div class="keep"><img src="/static/img/tools/motif-private-600.jpg" width="48" height="48" alt="" loading="lazy"><div><h2>Keep your link</h2><p>The link is unguessable, never listed, and used for nothing else.</p></div></div>
     <div class="share" id="share"></div>
   </div>
 
   <div class="sec" id="people-sec" hidden>
     <h2>People <span class="hint" id="pcount"></span></h2>
+    <p class="subhead">Open a card for the full reading. Add up to eight.</p>
     <div class="people" id="people"></div>
   </div>
 
   <div class="sec" id="harmony-sec" hidden>
     <h2>Harmony matrix <span class="badge">2+ people</span></h2>
+    <p class="subhead">Appears with two or more people.</p>
     <div class="hint">Day-pillar compatibility, scored 0–100 with the contributing
       rules. Full pair remedies and family-strategy timing are part of each
       person's report.</div>
+    <p class="howto"><b>How to read this.</b> Scores are engine output; higher is smoother.</p>
     <div id="harmony"></div>
   </div>
+
+  <nav class="nextstrip" aria-labelledby="next-h">
+    <img src="/static/img/tools/motif-next-600.jpg" width="48" height="48" alt="" loading="lazy">
+    <div><h2 id="next-h">Where next</h2>
+      <ul><li><a href="/learn/what-is-bazi">What is BaZi?</a></li>
+        <li><a href="/kua">Kua number</a></li>
+        <li><a href="/fengshui">Home fengshui</a></li></ul></div>
+  </nav>
 </main>
 <script src="/static/glossary.js"></script>
 <script>
@@ -374,6 +490,7 @@ window.addEventListener("load", () => {          // legacy deep-link: #pair-0-1
 
 function render() {
   if (!ws) return;
+  document.body.classList.add("has-people");
   $("#people-sec").hidden = false;
   $("#people").innerHTML = ws.people.map(personCard).join("");
   glossCards($("#people"));

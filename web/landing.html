@@ -68,7 +68,7 @@ h1{margin:0 0 14px;font:700 34px/1.15 Georgia,"Noto Serif SC","Songti SC",serif;
 .cta.ghost:hover{background:var(--soft)}
 .hero-img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);background:var(--card);display:block}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-.chips span{font-size:13px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+.chips a{display:inline-flex;align-items:center;min-height:44px;font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:0 13px;text-decoration:none;transition:background .15s,border-color .15s}.chips a:hover{background:var(--soft);border-color:var(--gold)}.card{scroll-margin-top:16px}
 /* sections */
 section{padding:34px 0}
 .sec-h{margin:0 0 6px;font:700 26px/1.2 Georgia,"Noto Serif SC","Songti SC",serif;color:var(--ink)}
@@ -137,7 +137,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
       <p class="lead">Enter a birth date and time, a floor plan, or a surname. The engine runs the traditional rules and shows which rule produced each line, so you can check it.</p>
       <a class="cta" href="/start">Start your free reading</a>
       <a class="cta ghost" href="#how">See how it works</a>
-      <div class="chips" aria-label="What is covered"><span>BaZi (八字 bā zì) reading</span><span>Home feng shui (風水 fēng shuǐ)</span><span>Kua number (命卦 mìng guà)</span><span>Baby names (起名 qǐ míng)</span></div>
+      <nav class="chips" aria-label="Jump to a tool"><a href="#card-bazi">BaZi (八字 bā zì) reading</a><a href="#card-fengshui">Home feng shui (風水 fēng shuǐ)</a><a href="#card-kua">Kua number (命卦 mìng guà)</a><a href="#card-baby">Baby names (起名 qǐ míng)</a></nav>
     </div>
     <img class="hero-img" src="/static/img/hero-landing.jpg" srcset="/static/img/hero-landing-600.jpg 600w, /static/img/hero-landing.jpg 1200w" sizes="(min-width: 760px) 480px, 100vw" width="1200" height="800" fetchpriority="high" alt="Ink-wash illustration of a compass, a folded floor plan, a red seal and a jade pendant on a scholar's desk">
   </div>
@@ -147,7 +147,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
     <h2 class="sec-h" id="h-tools">What you get</h2>
     <p class="sec-sub">Four tools, one engine. Each result shows its working, with the rule beside every line.</p>
     <div class="cards">
-      <article class="card">
+      <article class="card" id="card-bazi">
         <img class="shot" src="/static/img/shots/reading-desktop.jpg" alt="Example reading page for a fictional person: four pillars, day master and useful elements" width="1280" height="900" loading="lazy">
         <div class="body">
           <h3><small>Personal</small>BaZi reading</h3>
@@ -155,7 +155,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
           <div class="go"><a href="/start">Start a reading</a></div>
         </div>
       </article>
-      <article class="card">
+      <article class="card" id="card-fengshui">
         <img class="shot" src="/static/img/shots/fengshui-desktop.jpg" alt="Example home fengshui result: room and aspect scores for a sample condo" width="1280" height="700" loading="lazy">
         <div class="body">
           <h3><small>House</small>Home feng shui audit</h3>
@@ -163,7 +163,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
           <div class="go"><a href="/fengshui">Audit your home</a></div>
         </div>
       </article>
-      <article class="card">
+      <article class="card" id="card-kua">
         <img class="shot" src="/static/img/shots/kua-desktop.jpg" alt="Example Kua number result: the eight directions around a compass with the favourable ones marked" width="1280" height="900" loading="lazy">
         <div class="body">
           <h3><small>Directions</small>Kua number</h3>
@@ -171,7 +171,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
           <div class="go"><a href="/kua">Find your Kua number</a></div>
         </div>
       </article>
-      <article class="card">
+      <article class="card" id="card-baby">
         <img class="shot" src="/static/img/shots/baby-card-desktop.jpg" alt="Example baby name card for a fictional name with seven-part score bars" width="955" height="650" loading="lazy">
         <div class="body">
           <h3><small>Name</small>Baby name builder</h3>

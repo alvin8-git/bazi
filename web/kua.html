@@ -24,18 +24,20 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "image": "https://bazifor.me/static/og/kua.png", "name": "bazifor.me Kua number calculator", "url": "https://bazifor.me/kua", "description": "Free Kua number calculator for Singapore and Malaysia: enter your birth date and sex to get your 命卦, East or West group, and best bed and desk directions.", "applicationCategory": "LifestyleApplication", "operatingSystem": "Web", "inLanguage": ["en", "zh-Hans"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SGD"}, "featureList": ["Kua number (命卦) from the 立春-bounded birth year", "East or West group (東四命 / 西四命)", "Eight direction scores from 生氣 to 絕命", "Best headboard and desk directions"], "publisher": {"@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "bazifor.me", "item": "https://bazifor.me"}, {"@type": "ListItem", "position": 2, "name": "Kua number calculator", "item": "https://bazifor.me/kua"}]}</script>
 <style>
-:root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6f675d;--accent:#b03a2e;--gold:#8a6d1f;--line:#e5ded2;
+:root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--seal:#c7301d;--accent:#b03a2e;--gold:#8a6d1f;--line:#e5ded2;
   --ji:#1e7d32;--ji-bg:#e3f4e7;--xiong:#b3261e;--xiong-bg:#fde8e6}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,"Noto Sans SC",sans-serif}
-main{max-width:760px;margin:0 auto;padding:16px 16px 40px}
+main{max-width:880px;margin:0 auto;padding:16px 16px 40px}
 header{background:#fff;border-bottom:1px solid var(--line);padding:14px 16px}
-header .in{max-width:760px;margin:0 auto}
-h1{font-size:22px;color:var(--accent);margin:8px 0 6px}
+header .in{max-width:880px;margin:0 auto}
+h1{font:700 26px/1.25 Georgia,"Noto Serif SC",serif;color:var(--ink);margin:8px 0 6px}
 .sub{color:var(--muted);font-size:14px;margin:0}
 .sub a{color:var(--accent)}
-.sec{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
-h2{font-size:16px;color:var(--gold);margin:0 0 10px}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
+h2{font:700 22px/1.3 Georgia,"Noto Serif SC",serif;color:var(--ink);margin:0 0 6px}
+.hsub{color:var(--muted);font-size:14px;margin:0 0 12px}
+.lbl{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
 .intro{margin:0 0 4px}
 form{display:grid;gap:14px}
 label,legend{font-size:14px;font-weight:700;display:block;margin-bottom:4px;padding:0}
@@ -47,7 +49,8 @@ input[type=date]{font:inherit;padding:10px 12px;min-height:44px;border:1.5px sol
 .err{color:var(--xiong);font-size:13px;margin-top:4px;min-height:0}
 .err:empty{display:none}
 .btn{border:1.5px solid var(--accent);background:#fff;color:var(--accent);border-radius:10px;padding:10px 18px;font:inherit;font-size:15px;cursor:pointer;min-height:44px;text-decoration:none;display:inline-flex;align-items:center}
-.btn.primary{background:var(--accent);color:#fff;font-weight:600}
+.btn.primary{background:var(--seal);border-color:var(--seal);color:#fff;font-weight:600}
+.btn:disabled{opacity:.75;cursor:progress}
 .btn:focus-visible,input:focus-visible{outline:3px solid #1a56b0;outline-offset:2px}
 [hidden]{display:none!important}
 .big{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
@@ -67,22 +70,50 @@ input[type=date]{font:inherit;padding:10px 12px;min-height:44px;border:1.5px sol
 ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
 .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
 .sitefoot{padding:18px 16px 28px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:30px}.sitefoot a{color:var(--accent)}.sitefoot .fnav{display:inline-block;margin-top:6px}
-.learnstrip{max-width:760px;margin:18px auto 0;padding:0 16px;font-size:14px;color:var(--muted)}.learnstrip a{color:var(--accent);margin-right:12px;display:inline-block}
-@media (max-width:560px){.lists{grid-template-columns:1fr}.big .n{font-size:54px}}
+.learnstrip{max-width:880px;margin:18px auto 0;padding:0 16px;font-size:14px;color:var(--muted)}.learnstrip a{color:var(--accent);margin-right:12px;display:inline-block}
+/* redesign */
+.introblock{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;margin:8px 0 8px}
+.introblock img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);display:block;aspect-ratio:3/2;object-fit:cover}
+.introblock .lead{font-size:18px;margin:0 0 8px}
+.introblock .lead:last-child{margin-bottom:0}
+.helper{color:var(--muted);font-size:13px;margin:6px 0 0;max-width:460px}
+.empty{display:grid;grid-template-columns:200px 1fr;gap:18px;align-items:center}
+.empty img{width:100%;height:auto;border-radius:12px;display:block}
+.empty p{margin:0;color:var(--muted)}
+.empty p strong{color:var(--ink)}
+.howread{background:#fbf3e4;border-color:#e8d9b5}
+.howread p{margin:0}
+.nextstrip{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.nextstrip img{width:48px;height:48px;border-radius:10px;object-fit:cover;flex:none}
+.nextstrip ul{list-style:none;margin:0;padding:0;display:flex;gap:8px 18px;flex-wrap:wrap}
+.nextstrip a{color:var(--accent);display:inline-flex;align-items:center;min-height:44px;font-weight:600}
+@media (max-width:700px){.introblock{grid-template-columns:1fr}.introblock img{order:-1}}
+@media (max-width:560px){.empty{grid-template-columns:96px 1fr}.lists{grid-template-columns:1fr}.big .n{font-size:54px}}
 .grp{border-collapse:collapse;width:100%;font-size:14px;margin-top:8px}.grp th,.grp td{border:1px solid var(--line);padding:6px 8px;text-align:left}.grp th{color:var(--muted);font-weight:600}
 .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:8px}.tablewrap table{min-width:560px}
 </style>
+<link rel="preload" as="image" href="/static/img/tools/kua-intro-600.jpg" media="(max-width: 759px)">
+<link rel="preload" as="image" href="/static/img/tools/kua-intro.jpg" media="(min-width: 760px)">
 </head><body>
 <header><div class="in"><p class="sub"><a href="/">bazifor.me</a> · <a href="/fengshui">Home fengshui</a> · <a href="/start">BaZi</a></p></div></header>
 <main>
   <h1>Kua number calculator (<span lang="zh-Hans">命卦 mìng guà</span>)</h1>
-  <p class="intro">Your Kua number comes from your birth year and sex, and the year is counted from Start of Spring (<span lang="zh-Hans">立春 lì chūn</span>, Lichun, around 4 February), not from 1 January. Enter your full birth date so people born in January or early February land in the right year. Nothing is stored.</p>
+  <div class="introblock">
+    <div>
+      <p class="lead">This page works out your Kua number, the Eight Mansions label for you.</p>
+      <p class="lead">You need only your birth date and sex.</p>
+      <p class="lead">You get your number, East or West group and eight directions.</p>
+    </div>
+    <img src="/static/img/tools/kua-intro-600.jpg" srcset="/static/img/tools/kua-intro-600.jpg 600w, /static/img/tools/kua-intro.jpg 1200w" sizes="(max-width:700px) 100vw, 420px" width="1200" height="800" alt="Illustration of a bedroom with a compass showing the eight directions around a bed and desk" fetchpriority="high" decoding="async">
+  </div>
 
   <div class="sec">
+    <p class="lbl">Step 1 · Birth date and sex</p>
     <form id="f" novalidate>
       <div>
         <label for="dob">Birth date</label>
-        <input type="date" id="dob" name="dob" min="1900-01-01" max="2100-12-31" required aria-describedby="dob-e">
+        <input type="date" id="dob" name="dob" min="1900-01-01" max="2100-12-31" required aria-describedby="dob-h dob-e">
+        <p class="helper" id="dob-h">Counted from the start of spring (<span lang="zh-Hans">立春 lì chūn</span>), so a January birth may belong to the previous year.</p>
         <div class="err" id="dob-e" role="alert"></div>
       </div>
       <fieldset aria-describedby="sex-e">
@@ -98,7 +129,16 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
     </form>
   </div>
 
+  <div class="sec empty" id="empty">
+    <img src="/static/img/tools/kua-empty-600.jpg" width="600" height="400" alt="Sketch of a compass with eight sectors" loading="lazy" decoding="async">
+    <p><strong>What you will get:</strong> your Kua number, East or West group,<br>and the eight directions on a compass.</p>
+  </div>
+
   <section id="res" hidden aria-live="polite">
+    <div class="sec howread">
+      <p class="lbl">How to read this</p>
+      <p>Green sectors are favourable and red sectors are to avoid. The headboard direction is the direction the top of your head points when you lie in bed. The <a href="/fengshui">whole-home audit</a> also weighs the sector each room sits in.</p>
+    </div>
     <div class="sec">
       <h2>Your Kua number</h2>
       <div class="big"><span class="n" id="r-num"></span><span class="t"><span lang="zh-Hans" id="r-gua"></span> <small id="r-py"></small></span></div>
@@ -107,6 +147,7 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
     </div>
     <div class="sec">
       <h2>Your eight directions</h2>
+      <p class="hsub">North is at the top of the compass.</p>
       <svg id="compass" class="compass" viewBox="0 0 340 340" role="img" aria-label="Eight-sector compass with North at the top"></svg>
       <div class="legend"><span><i style="background:#cfe9d3;border:1px solid #1e7d32"></i>Good direction</span><span><i style="background:#f8d3cf;border:1px solid #b3261e"></i>Direction to avoid</span></div>
     </div>
@@ -125,6 +166,7 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
   </section>
   <div class="sec">
     <h2>What is a Kua number?</h2>
+    <p class="hsub">The idea behind the calculator, in two paragraphs and a table.</p>
     <p>The Kua number ("life trigram") is the Eight Mansions (八宅 bā zhái) label for a person. It is one of eight trigrams, numbered 1 to 9 with 5 skipped, taken from the birth year counted from Start of Spring and from the person's sex. Each trigram belongs to the East group (東四命 dōng sì mìng: 坎 (kǎn, north) 1, 震 (zhèn, east) 3, 巽 (xùn, south-east) 4, 離 (lí, south) 9) or the West group (西四命 xī sì mìng: 坤 (kūn, south-west) 2, 乾 (qián, north-west) 6, 兌 (duì, west) 7, 艮 (gèn, north-east) 8).</p>
     <p>The trigram fixes eight directions around you: four favourable (Vitality (生氣 shēng qì), Heavenly Doctor (天醫 tiān yī), Longevity (延年 yán nián), Stability (伏位 fú wèi)) and four to avoid (Mishap (禍害 huò hài), Six Killings (六煞 liù shà), Five Ghosts (五鬼 wǔ guǐ), Severed Fate (絕命 jué mìng)), by the Eight Mansions wandering-year line-change rule (八宅大遊年 bā zhái dà yóu nián). The calculator applies the same table the <a href="/fengshui">home audit</a> uses, so the two always agree.</p>
     <table class="grp"><thead><tr><th>Group</th><th>Trigrams</th><th>Favourable directions</th></tr></thead><tbody>
@@ -134,9 +176,18 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
 
   <div class="sec">
     <h2>Worked example and lookup table</h2>
+    <p class="hsub">Check the result by hand.</p>
     <p>A fictional man born 15 March 1988 in Singapore: the year 1988 counts in full because Start of Spring fell on 4 February 1988. Its digits add to 26, then to 8; for a man the number is 11 minus 8, so his Kua is 3, the trigram 震 (zhèn, east), East group. His best headboard directions are south (Vitality), north (Heavenly Doctor) and south-east (Longevity). The number 5 is never assigned: a man who computes 5 takes 2 (坤 kūn) and a woman takes 8 (艮 gèn).</p>
     <div class="tablewrap" tabindex="0" role="region" aria-label="Kua lookup table"><table class="grp"><thead><tr><th>Kua</th><th>Trigram</th><th>Group</th><th>Vitality</th><th>Heavenly Doctor</th><th>Longevity</th><th>Stability</th></tr></thead><tbody><tr><td>1</td><td>坎 Kan</td><td>East</td><td>SE</td><td>E</td><td>S</td><td>N</td></tr><tr><td>2</td><td>坤 Kun</td><td>West</td><td>NE</td><td>W</td><td>NW</td><td>SW</td></tr><tr><td>3</td><td>震 Zhen</td><td>East</td><td>S</td><td>N</td><td>SE</td><td>E</td></tr><tr><td>4</td><td>巽 Xun</td><td>East</td><td>N</td><td>S</td><td>E</td><td>SE</td></tr><tr><td>6</td><td>乾 Qian</td><td>West</td><td>W</td><td>NE</td><td>SW</td><td>NW</td></tr><tr><td>7</td><td>兌 Dui</td><td>West</td><td>NW</td><td>SW</td><td>NE</td><td>W</td></tr><tr><td>8</td><td>艮 Gen</td><td>West</td><td>SW</td><td>NW</td><td>W</td><td>NE</td></tr><tr><td>9</td><td>離 Li</td><td>East</td><td>E</td><td>SE</td><td>N</td><td>S</td></tr></tbody></table></div>
     <p class="note">The four directions not listed for your number are the ones to avoid: Mishap, Six Killings, Five Ghosts and Severed Fate. In Singapore and Malaysia an HDB flat or condominium bedroom usually offers only two solid walls, so pick the better of the two available directions rather than the best on paper.</p>
+  </div>
+  <div class="sec nextstrip">
+    <img src="/static/img/tools/motif-next-600.jpg" width="48" height="48" alt="" loading="lazy" decoding="async">
+    <ul>
+      <li><a href="/learn/bed-direction-guide">Bed direction guide</a></li>
+      <li><a href="/learn/eight-house-directions">Eight House directions</a></li>
+      <li><a href="/fengshui">Home fengshui audit</a></li>
+    </ul>
   </div>
   <div class="sec">
     <h2>Next steps</h2>
@@ -185,7 +236,7 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
     else if(dob<"1900-01-01"||dob>"2100-12-31"){$("dob-e").textContent="Use a date between 1900 and 2100.";bad=true}
     if(!sx){$("sex-e").textContent="Choose male or female.";bad=true}
     if(bad)return;
-    $("go").disabled=true;
+    $("go").disabled=true;$("go").textContent="Calculating…";
     fetch("/api/pub/kua?dob="+encodeURIComponent(dob)+"&sex="+sx.value).then(function(r){
       return r.json().then(function(j){if(!r.ok)throw new Error(typeof j.detail==="string"?j.detail:"Check the date and try again.");return j})
     }).then(function(d){
@@ -195,9 +246,9 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
       $("r-lichun").textContent="Counted as year "+d.lichun_year+": your year turned on Start of Spring (立春), "+d.lichun_date+".";
       if(window.GL)GL.reset();
       draw(d.stars);fill("bed",d.best_bed);fill("desk",d.best_desk);
-      $("res").hidden=false;$("res").scrollIntoView({behavior:"smooth",block:"start"});
+      $("empty").hidden=true;$("res").hidden=false;$("res").scrollIntoView({behavior:"smooth",block:"start"});
     }).catch(function(err){$("form-e").textContent=err.message||"Something went wrong. Try again.";$("res").hidden=true})
-    .then(function(){$("go").disabled=false});
+    .then(function(){$("go").disabled=false;$("go").textContent="Calculate"});
   });
 })();
 </script>

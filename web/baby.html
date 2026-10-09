@@ -220,7 +220,78 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 @media (max-width:640px){.spart{grid-template-columns:86px 1fr 56px}.spart .sl small{display:block;margin-left:0;font-size:10px}.spart .sn{grid-column:1/-1!important}table.sl{font-size:13px}table.sl th:nth-child(3),table.sl td:nth-child(3),table.sl th:nth-child(5),table.sl td:nth-child(5){display:none}.interp{flex-basis:100%;border-left:0;border-top:3px solid var(--gold);padding:10px 0 0}
   .scoreband{padding:12px}.namegrid .mk{min-height:30px}}
 <style>.sitefoot{padding:18px 22px 28px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:30px}.sitefoot a{color:var(--accent)}.sitefoot .fnav{display:inline-block;margin-top:6px}.learnstrip{max-width:980px;margin:18px auto 0;padding:0 22px;font-size:14px;color:var(--muted)}.learnstrip a{color:var(--accent);margin-right:12px;white-space:nowrap}.sancai .rel b{font-size:11px;font-weight:600}.sancai .disc small{font-size:10px;line-height:1.15}
-</style></head><body>
+
+/* redesign: orientation and guidance (CSS only) */
+:root{--seal:#c7301d;--serif:Georgia,"Noto Serif SC","Songti SC",serif}
+header{padding:18px 0 12px}
+header h1,main h1{font:700 26px/1.2 var(--serif);color:var(--ink);margin:4px auto 4px;max-width:980px}
+header .sub{max-width:980px;margin:0 auto 4px;font-size:14px;padding:0 16px}
+header h1{max-width:980px;padding:0 16px}
+main{display:flex;flex-direction:column;gap:16px}
+main>*{margin:0}
+.sec{border-radius:14px;padding:20px;margin:0}
+main>.intro{order:0}main>#formcard{order:1}main>#emptystate{order:2}main>#app{order:3}main>#explainer{order:4}main>#explainer2{order:5}main>#example{order:6}main>.nextstrip{order:7}
+#app{display:flex;flex-direction:column;gap:16px}#app:empty{display:none}
+.intro{display:grid;grid-template-columns:1fr 280px;gap:24px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.intro p{margin:0 0 8px;font-size:18px;line-height:1.5;color:var(--ink)}
+.intro p:last-child{margin-bottom:0}
+.intro img{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
+.sec>h2,#app .sec>h2{font:700 22px/1.25 var(--serif);color:var(--ink);margin:0 0 6px}
+.sec>h2 .bl.en small{font-family:system-ui,"Noto Sans SC",sans-serif}
+.subhead{margin:0 0 14px;color:var(--muted);font-size:14px}
+#explainer h2,#explainer2 h2,#example h2{font:700 22px/1.25 var(--serif);color:var(--ink);margin:0 0 4px}
+#explainer p,#explainer2 p,#example p{max-width:70ch}
+.help{display:block;margin-top:4px;font-size:13px;line-height:1.35;color:var(--muted)}
+.form{grid-template-columns:repeat(auto-fit,minmax(210px,1fr));align-items:start;gap:14px 16px}
+.form label{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.form>div:last-child{grid-column:1/-1}
+#start{background:var(--seal);border-color:var(--seal);color:#fff;font-size:16px;padding:10px 24px}
+#start:hover{background:#a9261a;border-color:#a9261a}
+.btn:focus-visible,.form input:focus-visible,.form select:focus-visible,.nextstrip a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.err:empty{display:none}
+.err{background:var(--xiong-bg);border:1px solid var(--xiong);border-radius:10px;padding:8px 12px;color:#8c1d18}
+#formcard .note{margin-top:10px}
+.emptystate{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.emptystate .eswrap{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:center}
+.emptystate img{display:block;width:100%;border-radius:10px;border:1px solid var(--line)}
+.emptystate .esill{height:auto}
+.emptystate .esprev{aspect-ratio:16/9;object-fit:cover;object-position:top left;height:auto}
+.emptystate figcaption,.emptystate .escap{margin:10px 0 0;font-size:15px;color:var(--ink)}
+.emptystate figure{margin:0}
+body.has-app .emptystate{display:none}
+/* how-to-read lines under each app heading */
+#app>.sec:first-child>h2::after,#builder>h2::after,#card>h2::after,#shortlist.sec>h2::after{display:block;font:400 14px/1.4 system-ui,"Noto Sans SC",sans-serif;color:var(--muted);margin-top:4px;margin-bottom:6px}
+#app>.sec:first-child>h2::after{content:"How to read this: the baby's chart decides which elements the name should add."}
+#builder>h2::after{content:"How to read this: pick characters; each shows its element and stroke count."}
+#card>h2::after{content:"How to read this: seven parts add to 100; excellent (\4E0A\4F73 shàng jiā) is 90 or more; a strong sound warning caps the grade."}
+#shortlist.sec>h2::after{content:"How to read this: up to eight names kept in this workspace."}
+#card::before{content:"";display:block;aspect-ratio:3/1;max-height:170px;width:calc(100% + 40px);margin:-20px -20px 16px;border-radius:14px 14px 0 0;background:#f3ece0 url(/static/img/tools/baby-card-header.jpg) center/cover no-repeat}
+@media (max-width:640px){#card::before{background-image:url(/static/img/tools/baby-card-header-600.jpg)}}
+.nextstrip{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 20px}
+.nextstrip img{width:48px;height:48px;border-radius:10px;flex:none}
+.nextstrip b{font:700 18px/1.2 var(--serif)}
+.nextstrip a{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;color:var(--accent);font-weight:600}
+@media (max-width:640px){
+  main{padding:12px 16px 60px;gap:14px}
+  header h1{font-size:22px}
+  .intro{grid-template-columns:1fr;padding:16px}.intro p{font-size:16px}
+  .sec{padding:16px}#card::before{margin:-16px -16px 14px}
+  .emptystate .eswrap{grid-template-columns:1fr}.emptystate .esill{max-width:320px}
+  .form{grid-template-columns:1fr}
+  .sec>h2,#app .sec>h2,#explainer h2,#explainer2 h2,#example h2{font-size:20px}
+  #start,.formbtns .btn{flex:1 1 100%}
+}
+
+/* shared header pass (design reference: home page) */
+header h1{font:700 26px/1.25 Georgia,"Noto Serif SC","Songti SC",serif;color:var(--ink);letter-spacing:-.01em}
+header .sub,header .hint{color:var(--muted);font-size:14px}
+header nav.top a,header a#back{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-size:14px;font-weight:600;margin:6px 6px 0 0}
+header nav.top a:hover,header a#back:hover{background:#f3ecdd;border-color:var(--gold)}
+header a#back{background:#fff;color:var(--ink)}
+@media(min-width:760px){header h1{font-size:30px}}
+</style><link rel="preload" as="image" href="/static/img/tools/baby-intro-600.jpg" media="(max-width: 759px)">
+<link rel="preload" as="image" href="/static/img/tools/baby-intro.jpg" media="(min-width: 760px)">
+</head><body>
 <span class="verbadge" id="ver"></span>
 <script>fetch("/api/pub/version").then(r=>r.json())
   .then(v=>{document.getElementById("ver").textContent="v "+v.version}).catch(()=>{});</script>
@@ -230,21 +301,29 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
     <a href="/start">← people workspace</a></div>
 </header>
 <main>
-<style>.exshot{margin:0 0 18px;max-width:560px}.exshot img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line,#e5ded2)}.exshot figcaption{font-size:12.5px;color:var(--muted,#6b6359);margin-top:6px}</style>
-<figure class="exshot"><img src="/static/img/shots/baby-card-desktop.jpg" alt="Example baby name card for the fictional name 王禄婷 with the seven-part score bars" width="955" height="650"><figcaption>Example with fictional data</figcaption></figure>
-  <div class="sec">
+<section class="intro" aria-label="About this tool">
+  <div>
+    <p>Get a scored Chinese name for your baby, built from the baby's own chart.</p>
+    <p>You need the surname character, sex, and the birth or due date and time.</p>
+    <p>You get useful elements, five grids, a ranked shortlist and a printable name card.</p>
+  </div>
+  <img src="/static/img/tools/baby-intro-600.jpg" srcset="/static/img/tools/baby-intro-600.jpg 600w, /static/img/tools/baby-intro.jpg 1200w" sizes="(max-width:640px) 100vw, 280px" width="600" height="400" alt="Illustration of a baby cot with a calligraphy brush and a Chinese name card" fetchpriority="high">
+</section>
+  <div class="sec" id="formcard">
+    <h2>Step 1 · The baby</h2>
+    <p class="subhead">Five details give the chart. Only the date is required.</p>
     <form id="f" method="post" action="/api/pub/baby">
       <div class="form">
         <div><label for="i-surname">Family surname</label>
-          <input id="i-surname" name="surname" maxlength="2" placeholder="王" autocomplete="off"></div>
+          <input id="i-surname" name="surname" maxlength="2" placeholder="王" autocomplete="off" aria-describedby="h-surname"><span class="help" id="h-surname">Enter the Chinese character. Tan, Lim, Lee, Ng and Wong are spellings of a character.</span></div>
         <div><label for="i-sex">Sex</label>
           <select id="i-sex" name="sex"><option value="M">M (male)</option><option value="F">F (female)</option></select></div>
         <div><label for="i-dob">Birth or due date</label>
-          <input id="i-dob" name="dob" type="date" required></div>
+          <input id="i-dob" name="dob" type="date" required aria-describedby="h-dob"><span class="help" id="h-dob">An expected date gives a provisional chart. Run it again after the birth.</span></div>
         <div><label for="i-time">Time (12:00 if unknown)</label>
-          <input id="i-time" name="birth_time" type="time" value="12:00"></div>
+          <input id="i-time" name="birth_time" type="time" value="12:00" aria-describedby="h-time"><span class="help" id="h-time">Singapore time. Use 12:00 if you do not know it.</span></div>
         <div><label for="i-given">Given name (optional, 1–2 characters)</label>
-          <input id="i-given" name="given" maxlength="2" placeholder="evaluate a chosen name" autocomplete="off"></div>
+          <input id="i-given" name="given" maxlength="2" placeholder="evaluate a chosen name" autocomplete="off" aria-describedby="h-given"><span class="help" id="h-given">Optional: score a name you already have in mind.</span></div>
       </div>
       <input type="hidden" name="name" value="">
       <div class="formbtns">
@@ -256,17 +335,31 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
         Singapore time assumed; true-solar correction applied. Birth data is not stored by this page.</div>
     </form>
   </div>
+  <section class="emptystate" id="emptystate" aria-label="What you will get">
+    <div class="eswrap">
+      <img class="esill" src="/static/img/tools/baby-empty-600.jpg" width="600" height="400" alt="Illustration of a blank name card waiting to be filled in" loading="lazy">
+      <figure>
+        <img class="esprev" src="/static/img/shots/baby-card-desktop.jpg" alt="Example baby name card for the fictional name 王禄婷 with the seven-part score bars" width="955" height="650" loading="lazy">
+        <figcaption>What you will get: the baby's useful elements, a ranked shortlist, and a name card you can print. The card shown is fictional.</figcaption>
+      </figure>
+    </div>
+  </section>
   <div class="sec" id="explainer">
     <h2>What the name builder returns</h2>
+    <p class="subhead">The seven scoring parts, the grades and the sound check.</p>
     <p>Every name you build is scored out of 100 in seven parts, and each part has a fixed weight: <b>Useful god</b> 30 (does each character carry an element your baby's BaZi chart needs), <b>Five Grids (五格 wǔ gé)</b> 25 (the five stroke-count grids), <b>Three Talents (三才 sān cái)</b> 15 (whether the elements of the heaven, person and earth grids support each other), <b>character meaning (字义 zì yì)</b> 10 (what the characters mean, in 16 meaning categories), <b>sound (音韵 yīn yùn)</b> 5 (tones, repeated sounds and unlucky homophones), <b>gender fit (性别 xìng bié)</b> 5 (whether the characters suit a boy or a girl) and <b>confidence (可信度 kě xìn dù)</b> 10 (how far the engine can trust the data behind the other parts). The weights add up to 100.</p>
     <p>The total maps to a grade: <b>excellent (上佳 shàng jiā)</b> at 90 and above, <b>good (佳 jiā)</b> at 80 and above, <b>fair (可 kě)</b> at 65 and above, and <b>needs a second look (待斟酌 dài zhēn zhuó)</b> below 65. A strong sound hit caps the grade at needs a second look whatever the total.</p>
     <p>The sound layer checks two things. It looks for Mandarin sound-alikes, characters that sound like an unlucky or rude word, and it checks the English reading of the pinyin, since many Singapore and Malaysia families raise children who will be addressed in English at school and at work. Beside the score you also get the Five Grids with their auspicious (吉 jí) or adverse (凶 xiōng) verdicts, the element of every character, its Kangxi (康熙 kāng xī) stroke count, a short reading of what the name suggests, and a shortlist of up to eight names you can compare.</p>
+  </div>
+  <div class="sec" id="explainer2">
     <h2>How Singapore and Malaysia names are handled</h2>
+    <p class="subhead">Romanised surnames, Kangxi strokes and Singapore time.</p>
     <p>Families in Singapore and Malaysia usually know their surname by a Hokkien, Teochew or Cantonese romanisation such as Tan, Lim, Lee, Ng or Wong, while the scoring needs the Chinese character. Enter the Chinese surname you choose in the surname box (for example 王 wáng, 林 lín, 李 lǐ or 吴 wú) and the builder uses that character for the stroke count and the grids. The romanised spelling on a passport is a spelling of the character, not a different surname, so pick the character your family writes.</p>
     <p>The Five Grids use the <b>Kangxi</b> stroke count from the Kangxi dictionary, which counts the traditional form of each character. 祿 (lù) has more strokes than the simplified 禄 (lù), so the builder counts the traditional form and shows you the strokes it used. The chart is calculated for Singapore time with a true-solar correction, and a due date gives a provisional chart that you can recalculate after birth. Read <a href="/learn/how-chinese-baby-names-are-scored">how Chinese baby names are scored</a> for the full method.</p>
   </div>
   <div class="sec" id="example">
     <h2>Example output</h2>
+    <p class="subhead">Three fictional names for one fictional chart.</p>
     <p><b>Fictional example, computed by the engine.</b> A fictional baby girl born 2026-03-15 09:30 Singapore time, surname 王 (wáng). The three names below are real engine output for that chart; each scores good or better.</p>
     <table class="exs" aria-label="Fictional example, computed by the engine">
       <tr><th>Name</th><th>Pinyin</th><th>Elements</th><th>Kangxi strokes</th><th>Meaning</th><th>Score</th><th>Grade</th></tr>
@@ -276,6 +369,7 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
     </table>
   </div>
   <div id="app"></div>
+  <nav class="nextstrip" aria-label="Next steps"><img src="/static/img/tools/motif-next-600.jpg" width="48" height="48" alt="" loading="lazy"><b>Next step</b><a href="/learn/how-chinese-baby-names-are-scored">How Chinese baby names are scored</a><a href="/start">Open the people workspace</a></nav>
 </main>
 <script src="/static/glossary.js"></script>
 <script>
@@ -538,7 +632,7 @@ function glossApp(root) {
 const py = s => window.GL ? GL.pinyin(s) : "";
 function render() {
   if (window.GL) { GL.reset(); PG.clear(); }
-  $("#app").innerHTML = pillarsBlock() + builderBlock() + cardBlock() + shortlistBlock();
+  $("#app").innerHTML = pillarsBlock() + builderBlock() + cardBlock() + shortlistBlock(); document.body.classList.add("has-app");
   glossApp($("#app"));
   const py = $("#py");
   if (py) py.oninput = () => { S.py = py.value; S.page = 1; $("#pyclear").hidden = !S.py; clearTimeout(render.t); render.t = setTimeout(loadTiles, 220); };

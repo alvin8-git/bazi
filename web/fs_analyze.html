@@ -304,7 +304,17 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
   .sec{break-inside:avoid;border:0;box-shadow:none;padding:0 0 10px}
   body{background:#fff}
 }
-<style>.sitefoot{padding:18px 22px 28px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:30px}.sitefoot a{color:var(--accent)}.sitefoot .fnav{display:inline-block;margin-top:6px}.learnstrip{max-width:980px;margin:18px auto 0;padding:0 22px;font-size:14px;color:var(--muted)}.learnstrip a{color:var(--accent);margin-right:12px;white-space:nowrap}</style></head><body>
+<style>.sitefoot{padding:18px 22px 28px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:30px}.sitefoot a{color:var(--accent)}.sitefoot .fnav{display:inline-block;margin-top:6px}.learnstrip{max-width:980px;margin:18px auto 0;padding:0 22px;font-size:14px;color:var(--muted)}.learnstrip a{color:var(--accent);margin-right:12px;white-space:nowrap}
+/* shared header pass (design reference: home page) */
+header h1{font:700 26px/1.25 Georgia,"Noto Serif SC","Songti SC",serif;color:var(--ink);letter-spacing:-.01em}
+header .sub,header .hint{color:var(--muted);font-size:14px}
+header nav.top a,header a#back{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-size:14px;font-weight:600;margin:6px 6px 0 0}
+header nav.top a:hover,header a#back:hover{background:#f3ecdd;border-color:var(--gold)}
+header a#back{background:#fff;color:var(--ink)}
+@media(min-width:760px){header h1{font-size:30px}}
+</style><link rel="preload" as="image" href="/static/img/tools/fengshui-intro-600.jpg" media="(max-width: 759px)">
+<link rel="preload" as="image" href="/static/img/tools/fengshui-intro.jpg" media="(min-width: 760px)">
+</head><body>
 <header>
   <div>
     <h1>Home feng shui analyzer (<span lang="zh-Hans">宅运分析 zhái yùn fēn xī</span>)</h1>
@@ -315,8 +325,63 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
   <span class="verbadge" id="ver"></span>
 </header>
 <main>
+<style>
+/* redesign: presentation only */
+.fs-intro{display:grid;gap:18px;align-items:center;margin:6px 0 18px}
+.fs-intro p{margin:0 0 8px;font-size:18px;line-height:1.55;color:#4a433a;max-width:34em}
+.fs-intro .eyebrow{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.fs-intro img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);background:var(--card);display:block}
+@media(min-width:760px){.fs-intro{grid-template-columns:1.2fr 1fr}}
+.stepper{list-style:none;margin:0 0 18px;padding:0;display:flex;gap:6px;flex-wrap:wrap}
+.stepper li{flex:1 1 0;min-width:96px;display:flex;align-items:center;gap:8px;min-height:44px;padding:6px 12px;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:13px;font-weight:600}
+.stepper li b{flex:none;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+  background:#efe8dc;color:#4a433a;font-size:13px}
+.stepper li.cur{border-color:#c7301d;color:var(--ink)}
+.stepper li.cur b{background:#c7301d;color:#fff}
+.stepper li.done b{background:var(--good);color:#fff}
+.stepper li.done{color:var(--ink)}
+@media(max-width:520px){.stepper li{flex:1 1 calc(50% - 6px)}}
+.fs-help{margin:6px auto 14px;max-width:760px;font-size:14px;line-height:1.5;color:var(--muted);text-align:left}
+#step-up .fs-help{text-align:center}
+#toolbar+.fs-help{margin:8px 2px 0;max-width:none}
+.fs-help b{color:var(--ink)}
+.fs-empty{display:grid;gap:16px;margin:22px 0;padding:18px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.fs-empty[hidden],.fs-empty.off{display:none}
+.fs-empty img.eimg{width:100%;max-width:300px;height:auto;border-radius:14px;display:block;margin:0 auto}
+.fs-empty .exshot{max-width:none;margin:0}
+.fs-empty .exshot img{aspect-ratio:16/9;object-fit:cover;object-position:top}
+.fs-empty .exshot figcaption{font-size:14px;margin-top:8px}
+@media(min-width:760px){.fs-empty{grid-template-columns:240px 1fr;align-items:center}}
+.readcard{display:none;margin:18px 0;padding:18px 20px;background:var(--card);border:1px solid var(--line);border-radius:14px;gap:16px;align-items:center}
+.readcard.on{display:grid}
+.readcard h2{margin:0 0 6px;font:700 22px/1.25 Georgia,"Noto Serif SC","Songti SC",serif}
+.readcard p{margin:0 0 8px;font-size:15.5px;color:#4a433a}
+.readcard ul{margin:0;padding-left:20px;font-size:15px;color:#4a433a}
+.readcard .spot{display:none}
+@media(min-width:760px){.readcard.on{grid-template-columns:1fr 220px}.readcard .spot{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line)}}
+main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size:22px;line-height:1.25}
+#btn-continue,#btn-analyze{background:#c7301d;min-height:44px}
+#btn-continue:hover:not(:disabled),#btn-analyze:hover{background:#a9281a}
+.fs-next{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:36px 0 0;padding:16px 18px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.fs-next img{width:48px;height:48px;border-radius:10px;flex:none}
+.fs-next h2{margin:0 12px 0 0;font:700 18px/1.2 Georgia,"Noto Serif SC","Songti SC",serif}
+.fs-next a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:999px;color:var(--accent);font-size:14px;text-decoration:none;background:var(--bg)}
+.fs-next a:hover{border-color:var(--accent)}
+</style>
+<section class="fs-intro" aria-label="About this tool">
+  <div>
+    <span class="eyebrow">Home audit</span>
+    <p>Audit your home from its floor plan, with Flying Stars (玄空飛星 xuán kōng fēi xīng) and Eight Mansions (八宅 bā zhái) per person.</p>
+    <p>You need a floor-plan photo, the facing bearing, and who sleeps where.</p>
+    <p>You get room-by-room scores and remedies.</p>
+  </div>
+  <img src="/static/img/tools/fengshui-intro-600.jpg" srcset="/static/img/tools/fengshui-intro-600.jpg 600w, /static/img/tools/fengshui-intro.jpg 1200w" sizes="(min-width:760px) 40vw, 100vw" width="600" height="400" alt="Illustration of a floor plan beside a compass, showing a home being read room by room" fetchpriority="high">
+</section>
+<ol class="stepper" id="fs-stepper" aria-label="Progress">
+  <li data-s="1"><b>1</b>Upload</li><li data-s="2"><b>2</b>Facing</li><li data-s="3"><b>3</b>Rooms</li><li data-s="4"><b>4</b>People</li><li data-s="5"><b>5</b>Results</li>
+</ol>
 <style>.exshot{margin:0 0 18px;max-width:560px}.exshot img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line,#e5ded2)}.exshot figcaption{font-size:12.5px;color:var(--muted,#6b6359);margin-top:6px}</style>
-<figure class="exshot"><img src="/static/img/shots/fengshui-desktop.jpg" alt="Example home fengshui result for a sample condo: family room and aspect scores" width="1280" height="700"><figcaption>Example with fictional data</figcaption></figure>
   <div class="sec" id="need-ws" hidden>
     <b>No workspace yet.</b> <span class="hint">Add at least one person on the
     <a href="/start">start page</a> first — room scores are person-specific
@@ -338,6 +403,7 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
     <div class="sub">A clear top-down view — the analysis maps every room to its
       compass palace.</div>
     <div class="hint">For an HDB flat or condo unit, the facing is the main-door direction measured from inside looking out, and the unit's own plan, not the block's, is what to upload.</div>
+    <p class="fs-help"><b>A photo of the developer's plan is enough.</b> A north arrow helps but is optional.</p>
     <div id="drop">
       <div class="ph" id="drop-ph"><b>⌂</b>Click or drag a floorplan image here<br>
         <span class="hint">jpg / png · up to 8 MB</span></div>
@@ -387,6 +453,7 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
         style="display:inline-flex;align-items:center;gap:4px;margin-right:8px"><input type="checkbox" id="f-outdoor"> Balconies count toward the centre point (太极点 tài jí diǎn)</label>
       <button class="dark" id="btn-analyze">Analyze Plan →</button>
     </div>
+    <p class="fs-help"><b>Facing bearing:</b> stand at the main door looking out and read the phone compass in degrees. <b>Rooms:</b> draw each room as a box, name it, and mark where beds are.</p>
     <div class="hint" style="margin:8px 2px"><b>Trace every enclosed area once</b> — rooms and the
       spaces between them; balconies stay out of the centre. Measure the facing with a phone compass at
       the main window/balcony, away from metal. Drag on the plan to draw each room; tap 🚪 then click the main door position.
@@ -454,7 +521,31 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
     <div class="err" id="go-err" style="margin-top:8px"></div>
   </div>
 
+  <div class="readcard" id="fs-read">
+    <div>
+      <h2>How to read this</h2>
+      <p>Scores run from 0 to 100 for each room and person.</p>
+      <ul>
+        <li>Mountain stars (山星 shān xīng) govern people and health. Water stars govern wealth and activity.</li>
+        <li>Favourable directions come from each person's Kua (卦 guà) number.</li>
+        <li>Every line names the rule it comes from.</li>
+      </ul>
+    </div>
+    <img class="spot" src="/static/img/tools/fengshui-rooms-600.jpg" width="600" height="400" alt="Illustration of rooms in a home with bed and desk positions marked" loading="lazy">
+  </div>
+  <div class="fs-empty" id="fs-empty">
+    <img class="eimg" src="/static/img/tools/fengshui-empty-600.jpg" width="600" height="400" alt="Illustration of an empty floor plan waiting for rooms to be traced" loading="lazy">
+    <figure class="exshot"><img src="/static/img/shots/fengshui-desktop.jpg" alt="Example home fengshui result for a sample condo: family room and aspect scores" width="1280" height="700" loading="lazy"><figcaption>What you will get: a Flying Stars chart, the Eight Mansions fit for each person, and a score per room. Example with fictional data.</figcaption></figure>
+  </div>
   <div id="results"></div>
+  <nav class="fs-next" aria-label="Next steps">
+    <img src="/static/img/tools/motif-next-600.jpg" width="48" height="48" alt="" loading="lazy">
+    <h2>Next steps</h2>
+    <a href="/learn/bed-direction-guide">Bed direction guide</a>
+    <a href="/learn/flying-stars-2027">Flying Stars for 2027</a>
+    <a href="/kua">Kua number</a>
+    <a href="/start">Your workspace</a>
+  </nav>
 </main>
 <script src="/static/glossary.js"></script>
 <script>
@@ -1801,6 +1892,32 @@ function chartBlock(tag, cb, scores) {
     <table><tr><th>Room</th><th>Palace</th><th>Stars</th></tr>${roomrows}</table></div>
     ${geo}${sc}</div>`;
 }
+</script>
+<script>
+/* presentation only: mirrors step/result visibility into the stepper and empty state */
+(function(){
+  var g=function(i){return document.getElementById(i)};
+  var up=g("step-up"),an=g("step-anno"),pn=g("panel"),rs=g("results"),
+      st=g("fs-stepper"),em=g("fs-empty"),rd=g("fs-read");
+  if(!st||!rs)return;
+  function sync(){
+    var has=rs.children.length>0, anno=an&&!an.hidden, panel=pn&&!pn.hidden, cur;
+    if(has)cur=[5];else if(anno)cur=panel?[3,4]:[2];else cur=[1];
+    var lo=Math.min.apply(null,cur);
+    [].forEach.call(st.querySelectorAll("li"),function(li){
+      var n=+li.getAttribute("data-s");
+      li.classList.toggle("cur",cur.indexOf(n)>-1);
+      li.classList.toggle("done",n<lo);
+      if(cur.indexOf(n)>-1)li.setAttribute("aria-current","step");else li.removeAttribute("aria-current");
+    });
+    if(em)em.classList.toggle("off",has||anno);
+    if(rd)rd.classList.toggle("on",has);
+  }
+  var mo=new MutationObserver(sync);
+  [up,an,pn].forEach(function(e){if(e)mo.observe(e,{attributes:true,attributeFilter:["hidden"]})});
+  mo.observe(rs,{childList:true});
+  sync();
+})();
 </script>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 <div class="learnstrip"><b>Learn:</b> <a href="/learn/bed-direction-guide">Bed placement and direction</a> <a href="/learn/flying-stars-2027">Flying stars 2027</a> <a href="/learn/eight-house-directions">Eight House basics</a></div>

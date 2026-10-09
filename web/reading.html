@@ -13,22 +13,101 @@
 <title>Reading 命书 — bazifor.me</title>
 <link rel="stylesheet" href="/static/style.css">
 <style>
-header.pub{padding:14px 22px;border-bottom:1px solid var(--line);background:var(--card)}
-header.pub h1{margin:0;font-size:19px;color:var(--accent)}
-header.pub a{color:var(--accent);font-size:13px;text-decoration:none}
-header.pub a#back{display:inline-block;background:var(--accent);color:#fff;
-  border-radius:8px;padding:7px 16px;font-size:13.5px;font-weight:600;margin:8px 0 2px}
-main{padding:18px 22px 60px;max-width:1180px;margin:0 auto}
-</style></head><body>
+:root{--seal:#c7301d;--gold2:#8a6d1f;--serif:Georgia,"Noto Serif SC","Songti SC",serif}
+body.reading-pub{background:#faf7f2;color:#2b2620;font-size:16px;line-height:1.55}
+body.reading-pub a:focus-visible,body.reading-pub button:focus-visible,body.reading-pub summary:focus-visible{outline:3px solid #8a6d1f;outline-offset:2px}
+.reading-pub .verbadge{z-index:20}
+/* header band */
+.reading-pub header.pub{position:relative;overflow:hidden;padding:0;border-bottom:1px solid var(--line);background:#f3ecdd}
+.reading-pub .pub-band{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right center;display:block}
+.reading-pub header.pub::before{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(90deg,rgba(250,247,242,.96) 0%,rgba(250,247,242,.9) 55%,rgba(250,247,242,.55) 100%)}
+.reading-pub .pub-in{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:22px 16px 20px}
+.reading-pub header.pub h1{margin:0 0 6px;font:700 32px/1.15 var(--serif);color:#2b2620;letter-spacing:-.01em}
+.reading-pub header.pub h1 small{font:500 16px/1 var(--serif);color:#8a6d1f;letter-spacing:0;white-space:nowrap}
+.reading-pub header.pub .hint{display:block;margin:0 0 14px;font-size:16px;color:#6b6359;max-width:46ch}
+.reading-pub header.pub a#back{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;margin:0;
+  background:#fff;color:#b03a2e;border:1px solid #e5ded2;border-radius:22px;font-size:15px;font-weight:600;text-decoration:none}
+.reading-pub header.pub a#back:hover{border-color:#b03a2e}
+.reading-pub main{padding:18px 16px 48px;max-width:1180px;margin:0 auto}
+/* how-to card */
+.reading-pub .howto-card{background:#fff;border:1px solid #e5ded2;border-radius:14px;padding:18px 20px;margin:0 0 18px}
+.reading-pub .howto-card h2{margin:0 0 4px;font:700 22px/1.25 var(--serif);color:#2b2620}
+.reading-pub .howto-card .lead{margin:0 0 12px;color:#6b6359;font-size:16px}
+.reading-pub .howto-card ul{list-style:none;margin:0;padding:0;display:grid;gap:8px 28px;grid-template-columns:1fr 1fr}
+.reading-pub .howto-card li{margin:0;font-size:16px;line-height:1.5}
+.reading-pub .howto-card li b{color:#2b2620}
+.reading-pub .howto-card .rule{margin:12px 0 0;padding-top:12px;border-top:1px solid #e5ded2;font-size:14px;color:#6b6359}
+@media(max-width:720px){.reading-pub .howto-card ul{grid-template-columns:1fr}.reading-pub header.pub h1{font-size:26px}
+  .reading-pub header.pub::before{background:rgba(250,247,242,.88)}}
+/* app-rendered reading, scoped */
+.reading-pub #tab-person{font-size:16px;line-height:1.55}
+.reading-pub #tab-person .ppane > section > header h2,
+.reading-pub #tab-person .ppane h2{font-family:var(--serif);font-weight:700;font-size:26px;line-height:1.2;color:#2b2620}
+.reading-pub #tab-person .ppane h4,
+.reading-pub #tab-person .rd-synth-body h4{color:#6b6359;font-size:13px;letter-spacing:.06em}
+.reading-pub #tab-person .rd-label{font-size:16px}
+.reading-pub #tab-person details.deep,
+.reading-pub #tab-person .explain,
+.reading-pub #tab-person .rd-synth-note{border-radius:14px}
+.reading-pub #tab-person .rd-synth-note{border-radius:0 14px 14px 0}
+.reading-pub #tab-person .howto-link{font-size:14px;display:inline-flex;align-items:center;min-height:44px}
+.reading-pub #tab-person .ptabs{border-bottom:1px solid #e5ded2;background:#faf7f2}
+.reading-pub #tab-person .ptabs button{font-size:16px;min-height:44px;padding:10px 4px;
+  border-bottom:3px solid transparent;margin-bottom:-1px;color:#6b6359;border-radius:0}
+.reading-pub #tab-person .ptabs button.on{color:#2b2620;border-bottom-color:#c7301d}
+.reading-pub #tab-person .ptabs button:focus-visible{outline:3px solid #8a6d1f;outline-offset:-3px}
+@media(max-width:560px){.reading-pub #tab-person .ptabs{overflow-x:auto}.reading-pub #tab-person .ptabs button{flex:1 0 auto;padding:10px 12px}
+  .reading-pub #tab-person .ppane h2{font-size:22px}}
+/* next steps */
+.reading-pub .next{margin:36px 0 0;background:#fff;border:1px solid #e5ded2;border-radius:14px;padding:18px 20px}
+.reading-pub .next-head{display:flex;align-items:center;gap:14px;margin:0 0 12px}
+.reading-pub .next-head img{width:48px;height:48px;border-radius:10px;object-fit:cover;flex:none}
+.reading-pub .next h2{margin:0;font:700 22px/1.25 var(--serif);color:#2b2620}
+.reading-pub .next ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.reading-pub .next a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid #e5ded2;border-radius:22px;
+  background:#faf7f2;color:#b03a2e;font-size:15px;font-weight:600;text-decoration:none}
+.reading-pub .next a:hover{border-color:#b03a2e}
+.reading-pub .next .lbl{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8a6d1f;margin:0 0 2px}
+</style></head><body class="reading-pub">
 <span class="verbadge" id="ver"></span>
 <header class="pub">
-  <h1>The Reading <small lang="zh-Hans" style="font-weight:500;color:var(--muted);font-size:13px">(命书 mìng shū)</small></h1>
-  <span class="hint" style="font-size:12px;color:var(--muted)">the full 13-section
-  classical reading with strategy advice in place — every number cites its rule</span>
-  <br><a id="back" href="/start">← Back to workspace</a>
+  <img class="pub-band" src="/static/img/tools/reading-header-600.jpg"
+    srcset="/static/img/tools/reading-header-600.jpg 600w, /static/img/tools/reading-header.jpg 1200w"
+    sizes="100vw" width="1200" height="400" alt="Ink-and-paper illustration of a four-pillar chart on a writing desk" fetchpriority="high">
+  <div class="pub-in">
+    <h1>Your reading <small lang="zh-Hans">(命书 mìng shū)</small></h1>
+    <span class="hint">Every number and label here is engine output, and the rule behind it is cited beside it.</span>
+    <a id="back" href="/start">&larr; Back to workspace</a>
+  </div>
 </header>
 <main>
+  <section class="howto-card" aria-labelledby="howto-h">
+    <h2 id="howto-h">How to read this</h2>
+    <p class="lead">Five tabs, five questions. Start at the top and move right.</p>
+    <ul>
+      <li><b>Pillars</b> (四柱 <span lang="zh-Hans">sì zhù</span>): what you are made of, from your birth moment, plus your Day Master (日主 rì zhǔ).</li>
+      <li><b>Elements</b> (五行 wǔ xíng): which element is heavy or thin, and which one balances the chart.</li>
+      <li><b>Gods</b> (十神 shí shén): the ten roles the other stems play toward you, and what drives you.</li>
+      <li><b>Timing</b> (大運 dà yùn): the luck cycles, this year, and the next few windows. Navigation notes, not predictions.</li>
+      <li><b>Compass</b> (命卦 mìng guà): your Kua number and the directions to face, sleep and work.</li>
+    </ul>
+    <p class="rule">Scores and labels are engine output. The classical rule behind each line is cited beside it.</p>
+  </section>
   <section id="tab-person" class="tabpane active"><p class="hint">computing…</p></section>
+  <aside class="next" aria-labelledby="next-h">
+    <div class="next-head">
+      <img src="/static/img/tools/motif-next-600.jpg" width="48" height="48" alt="" loading="lazy">
+      <div><p class="lbl">Next steps</p><h2 id="next-h">Keep going</h2></div>
+    </div>
+    <ul>
+      <li><a href="/learn/day-masters-explained">Day Masters explained</a></li>
+      <li><a href="/learn/ten-gods-guide">Ten Gods guide</a></li>
+      <li><a href="/learn/luck-cycles-and-windows">Luck cycles and windows</a></li>
+      <li><a href="/kua">Kua number calculator</a></li>
+      <li><a href="/baby">Baby name builder</a></li>
+    </ul>
+  </aside>
 </main>
 <script>
   fetch("/api/pub/version").then(r => r.json())
