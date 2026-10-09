@@ -67,7 +67,9 @@ h1{margin:0 0 14px;font:700 34px/1.15 Georgia,"Noto Serif SC","Songti SC",serif;
 .cta.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--line);margin-left:8px}
 .cta.ghost:hover{background:var(--soft)}
 .hero-img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);background:var(--card);display:block}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.free{margin:14px 0 0;color:var(--muted);font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+@media(min-width:760px){.cards .card:first-child{grid-column:1/-1;flex-direction:row}.cards .card:first-child .shot{width:54%;aspect-ratio:auto;border-bottom:0;border-right:1px solid var(--line)}.cards .card:first-child .body{justify-content:center}}
 .chips a{display:inline-flex;align-items:center;min-height:44px;font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:0 13px;text-decoration:none;transition:background .15s,border-color .15s}.chips a:hover{background:var(--soft);border-color:var(--gold)}.card{scroll-margin-top:16px}
 /* sections */
 section{padding:34px 0}
@@ -83,18 +85,17 @@ section{padding:34px 0}
 .card p{margin:0;color:#4a433a;font-size:15px;line-height:1.55}
 .card .go{margin-top:auto;padding-top:8px}
 .card .go a{display:inline-flex;align-items:center;min-height:44px;font-weight:700;text-decoration:none}
-.card .go a::after{content:" →";margin-left:4px}
 /* steps */
 .steps{display:grid;grid-template-columns:1fr;gap:14px;counter-reset:step}
 @media(min-width:760px){.steps{grid-template-columns:1fr 1fr 1fr}}
 .step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
-.step .n{width:36px;height:36px;border-radius:50%;background:var(--seal);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.step .n{font:700 30px/1 Georgia,"Noto Serif SC","Songti SC",serif;color:var(--gold);margin-bottom:8px}
 .step h3{margin:0 0 6px;font-size:17px}
 .step p{margin:0;font-size:15px;color:#4a433a;line-height:1.55}
 /* trust */
 .trust{display:grid;grid-template-columns:1fr;gap:12px}
 @media(min-width:760px){.trust{grid-template-columns:1fr 1fr}}
-.fact{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.55}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.55}
 .fact b{display:block;color:var(--ink);margin-bottom:2px}
 .proof{margin:14px 0 0;background:var(--soft);border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.55}
 /* who */
@@ -132,11 +133,11 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
   </div>
   <div class="hero">
     <div>
-      <span class="eyebrow">Free · no account · Singapore and Malaysia</span>
       <h1>Your BaZi chart, your home's feng shui and your baby's name, computed from the classical rules</h1>
       <p class="lead">Enter a birth date and time, a floor plan, or a surname. The engine runs the traditional rules and shows which rule produced each line, so you can check it.</p>
       <a class="cta" href="/start">Start your free reading</a>
       <a class="cta ghost" href="#how">See how it works</a>
+      <p class="free">Free, no account, built for Singapore and Malaysia.</p>
       <nav class="chips" aria-label="Jump to a tool"><a href="#card-bazi">BaZi (八字 bā zì) reading</a><a href="#card-fengshui">Home feng shui (風水 fēng shuǐ)</a><a href="#card-kua">Kua number (命卦 mìng guà)</a><a href="#card-baby">Baby names (起名 qǐ míng)</a></nav>
     </div>
     <img class="hero-img" src="/static/img/hero-landing.jpg" srcset="/static/img/hero-landing-600.jpg 600w, /static/img/hero-landing.jpg 1200w" sizes="(min-width: 760px) 480px, 100vw" width="1200" height="800" fetchpriority="high" alt="Ink-wash illustration of a compass, a folded floor plan, a red seal and a jade pendant on a scholar's desk">
@@ -248,7 +249,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
     </div>
   </section>
 </main>
-<footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
+<footer class="sitefoot">© bazifor.me, deterministic BaZi &amp; fengshui readings.<br>
 <span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (中文 zhōng wén)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span> · <a href="/app">demo app (sample data)</a></footer>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 </body></html>

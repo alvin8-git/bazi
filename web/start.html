@@ -142,7 +142,7 @@ th{background:#f6f1e8}
   word-break:break-all;user-select:all}
 .share button{white-space:nowrap}
 .share .sub2{color:var(--muted);font-size:12.5px}
-nav.top{display:flex;gap:14px;margin-top:8px;font-size:13.5px}
+nav.top{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px;font-size:13.5px}
 nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
   border-radius:7px;padding:3px 10px;background:#fff}
 .badge{font-size:11px;background:#fff6df;border:1px solid #eedc9a;color:#8a6d00;
@@ -175,10 +175,9 @@ header a#back{background:#fff;color:var(--ink)}
 <span class="verbadge" id="ver"></span>
 <header>
   <h1>Free BaZi calculator (<span lang="zh-Hans">八字排盘 bā zì pái pán</span>)</h1>
-  <div class="sub">bazifor.me · deterministic readings that show every classical rule they
-    cite — no AI guesswork, no black box.</div>
+  <div class="sub">Deterministic readings that show every classical rule they cite. No generative AI writes them.</div>
   <nav class="top">
-    <a href="/">☰ Menu</a>
+    <a href="/">Home</a>
     <a href="/start">People</a>
     <a href="#" id="nav-fs">Home fengshui</a>
     <a href="/baby" id="nav-baby">Baby</a>
@@ -272,7 +271,7 @@ nav.top a{min-height:44px;display:inline-flex;align-items:center}
 </section>
   <div class="sec" id="add-sec">
     <p class="stepl">Step 1 · Birth details</p>
-    <h2 id="add-title">Start — enter a birth chart</h2>
+    <h2 id="add-title">Start: enter a birth chart</h2>
     <div class="hint">Date + time of birth is all the engine needs. Singapore/Malaysia
       time assumed (pre-1982 UTC+7:30 handled); true-solar correction applied
       automatically. Nothing here requires an account.</div>
@@ -285,8 +284,7 @@ nav.top a{min-height:44px;display:inline-flex;align-items:center}
     <p class="policy"><b>Time policy:</b> Singapore and Malaysia time is assumed. Keep the default unless born elsewhere.</p>
     <div class="row2">
       <label style="margin:0;display:flex;gap:6px;align-items:center;font-size:13px">
-        <input type="checkbox" id="f-unknown" style="width:auto"> birth time unknown
-        (uses 12:00 — hour pillar approximate)</label>
+        <input type="checkbox" id="f-unknown" style="width:auto"> birth time unknown (uses 12:00, so the hour pillar is approximate)</label>
       <button id="btn-add">Calculate</button>
       <span class="hint" id="cap-hint"></span>
     </div>
@@ -590,6 +588,6 @@ $("#btn-add").addEventListener("click", async () => {
 </script>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 <div class="learnstrip"><b>Learn:</b> <a href="/learn/four-pillars-explained">How to read a four pillars chart</a> <a href="/learn/day-masters-explained">The ten day masters</a> <a href="/learn/useful-god-colors">Useful element colours</a></div>
-<footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
+<footer class="sitefoot">© bazifor.me, deterministic BaZi &amp; fengshui readings.<br>
 <span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (中文 zhōng wén)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
 </body></html>

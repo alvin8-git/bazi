@@ -186,7 +186,7 @@ th{background:#f6f1e8}
 .hchip i{font-style:normal;color:#bbb;font-size:12px}
 .hchip i:hover{color:var(--accent)}
 .bc-edge{color:var(--good);font-weight:700}
-.georead{background:#fbf6ea;border:1px solid #eadfc4;border-left:4px solid var(--gold);
+.georead{background:#fbf6ea;border:1px solid #eadfc4;
   border-radius:8px;padding:9px 13px;margin:10px 0;font-size:13.5px;line-height:1.6}
 .georead>b{color:#8a6d00}
 .georead div{margin:4px 0;color:#4d463c}
@@ -242,7 +242,7 @@ td.b-poor{background:#fdecea;color:#b03a2e}
 .verdict{display:inline-block;border-radius:6px;padding:2px 10px;font-weight:700;font-size:13px}
 .v-good{background:#cfe9d6;color:#155d24}.v-ok{background:#f7f4ec;color:#5a4d1e;border:1px solid #e5ded2}
 .v-bad{background:#fdecea;color:#b03a2e}
-.house-line{font-size:14px;margin:0 0 10px;padding:8px 12px;background:#fbf6ea;border-left:4px solid var(--gold);border-radius:6px}
+.house-line{font-size:14px;margin:0 0 10px;padding:8px 12px;background:#fbf6ea;border-radius:6px}
 .cp-row{display:grid;grid-template-columns:150px 1fr 150px;gap:14px;align-items:center;
   padding:10px 0;border-top:1px solid var(--line)}
 .cp-row:first-of-type{border-top:0}
@@ -371,7 +371,7 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
 </style>
 <section class="fs-intro" aria-label="About this tool">
   <div>
-    <span class="eyebrow">Home audit</span>
+    
     <p>Audit your home from its floor plan, with Flying Stars (玄空飛星 xuán kōng fēi xīng) and Eight Mansions (八宅 bā zhái) per person.</p>
     <p>You need a floor-plan photo, the facing bearing, and who sleeps where.</p>
     <p>You get room-by-room scores and remedies.</p>
@@ -384,7 +384,7 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
 <style>.exshot{margin:0 0 18px;max-width:560px}.exshot img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line,#e5ded2)}.exshot figcaption{font-size:12.5px;color:var(--muted,#6b6359);margin-top:6px}</style>
   <div class="sec" id="need-ws" hidden>
     <b>No workspace yet.</b> <span class="hint">Add at least one person on the
-    <a href="/start">start page</a> first — room scores are person-specific
+    <a href="/start">start page</a> first, room scores are person-specific
     (Eight House kua number + useful god + flying stars).</span>
   </div>
 
@@ -397,10 +397,10 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
     </div>
   </div>
 
-  <!-- ============ STEP 1 — upload ============ -->
+  <!-- ============ STEP 1, upload ============ -->
   <div id="step-up">
-    <h2>Upload Your Floor Plan</h2>
-    <div class="sub">A clear top-down view — the analysis maps every room to its
+    <h2>Upload your floor plan</h2>
+    <div class="sub">A clear top-down view, the analysis maps every room to its
       compass palace.</div>
     <div class="hint">For an HDB flat or condo unit, the facing is the main-door direction measured from inside looking out, and the unit's own plan, not the block's, is what to upload.</div>
     <p class="fs-help"><b>A photo of the developer's plan is enough.</b> A north arrow helps but is optional.</p>
@@ -419,14 +419,14 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
     </div>
     <div class="err" id="up-err"></div>
     <div id="up-actions">
-      <button class="dark" id="btn-continue" disabled>Continue →</button>
+      <button class="dark" id="btn-continue" disabled>Continue</button>
     </div>
   </div>
 
-  <!-- ============ STEP 2 — annotate ============ -->
+  <!-- ============ STEP 2, annotate ============ -->
   <div id="step-anno" hidden>
     <div id="anno-head">
-      <a href="#" id="btn-back2">← Back</a><h2>Annotate Plan</h2>
+      <a href="#" id="btn-back2">← Back</a><h2>Annotate plan</h2>
     </div>
     <div id="toolbar">
       <button class="ghost" id="btn-draw">⛶ Draw Room</button>
@@ -449,24 +449,24 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
         <option value="8">Period 8 (2004–24)</option>
         <option value="7">Period 7 (1984–04)</option>
       </select>
-      <label class="hint" id="outdoor-wrap" title="excluded by default — the centre point (太极点) belongs to the enclosed home; balconies still get their own palace reading"
+      <label class="hint" id="outdoor-wrap" title="excluded by default, the centre point (太极点) belongs to the enclosed home; balconies still get their own palace reading"
         style="display:inline-flex;align-items:center;gap:4px;margin-right:8px"><input type="checkbox" id="f-outdoor"> Balconies count toward the centre point (太极点 tài jí diǎn)</label>
-      <button class="dark" id="btn-analyze">Analyze Plan →</button>
+      <button class="dark" id="btn-analyze">Analyze plan</button>
     </div>
     <p class="fs-help"><b>Facing bearing:</b> stand at the main door looking out and read the phone compass in degrees. <b>Rooms:</b> draw each room as a box, name it, and mark where beds are.</p>
-    <div class="hint" style="margin:8px 2px"><b>Trace every enclosed area once</b> — rooms and the
+    <div class="hint" style="margin:8px 2px"><b>Trace every enclosed area once</b>, rooms and the
       spaces between them; balconies stay out of the centre. Measure the facing with a phone compass at
       the main window/balcony, away from metal. Drag on the plan to draw each room; tap 🚪 then click the main door position.
       <details id="guide" style="margin:6px 0"><summary style="cursor:pointer;color:var(--accent)">How to trace</summary>
         <ol class="guide">
-          <li><b>Trace all enclosed floor area</b> — corridors, lobby, yard, WC, shelter, walk-in wardrobe.
+          <li><b>Trace all enclosed floor area</b>, corridors, lobby, yard, WC, shelter, walk-in wardrobe.
             The centre point is the balance point of the whole home, so a missing area shifts every palace.</li>
-          <li><b>No overlaps, no gaps</b> — each patch of floor belongs to exactly one shape; walls are nothing.</li>
-          <li><b>Balconies and patios are drawn but excluded from the centre</b> (dashed) — open to the sky and
+          <li><b>No overlaps, no gaps</b>, each patch of floor belongs to exactly one shape; walls are nothing.</li>
+          <li><b>Balconies and patios are drawn but excluded from the centre</b> (dashed), open to the sky and
             outside the envelope you live in; they still get a palace reading for the water star (向星 xiàng xīng) and the gate check.</li>
-          <li><b>Furniture inside a room is not a room</b> — a wardrobe, bay platform or bed stays inside its
+          <li><b>Furniture inside a room is not a room</b>, a wardrobe, bay platform or bed stays inside its
             bedroom's shape; only a walk-in with its own walls and door is traced as Wardrobe.</li>
-          <li><b>One child per bedroom, parents in the master</b> — set Beds on each bedroom; the optimiser never exceeds it.</li>
+          <li><b>One child per bedroom, parents in the master</b>, set Beds on each bedroom; the optimiser never exceeds it.</li>
         </ol>
       </details>
       <details style="display:inline"><summary style="display:inline;cursor:pointer;color:var(--accent)">advanced</summary>
@@ -479,7 +479,7 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
         <button id="btn-undo" title="undo last room / door / window">↺</button>
         <button id="btn-zin" title="zoom in for detailed marking">＋</button>
         <button id="btn-zout" title="zoom out">－</button>
-        <button id="btn-pan" title="pan mode — drag to move around the plan">✋</button>
+        <button id="btn-pan" title="pan mode, drag to move around the plan">✋</button>
         <button id="btn-zfit" title="fit to screen" hidden>1:1</button>
       </div>
       <div id="canvas-col">
@@ -493,15 +493,15 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
         <select id="p-type">
           <option value="Living 客厅">Living</option><option value="Dining 餐厅">Dining</option>
           <option value="Master Bedroom 主卧">Master Bedroom</option><option value="Bedroom 卧室">Bedroom</option>
-          <option value="Balcony 阳台" title="outdoor — excluded from the centre">Balcony</option><option value="Patio 露台" title="outdoor — excluded from the centre">Patio</option><option value="Kitchen 厨房">Kitchen</option>
+          <option value="Balcony 阳台" title="outdoor, excluded from the centre">Balcony</option><option value="Patio 露台" title="outdoor, excluded from the centre">Patio</option><option value="Kitchen 厨房">Kitchen</option>
           <option value="Bathroom 卫浴">Bathroom</option><option value="Study 书房">Study</option>
           <option value="Store 储藏">Store</option><option value="Corridor 走廊" title="enclosed, counts toward the centre">Corridor</option><option value="Lobby 玄关" title="enclosed, counts toward the centre">Lobby</option>
           <option value="Wardrobe 衣帽间" title="walk-in with its own door only">Wardrobe</option><option value="Yard 后院" title="enclosed, counts toward the centre">Yard</option><option value="Other 其他">Other</option>
         </select>
         <label>Custom Name</label>
-        <input id="p-name" maxlength="40" placeholder="optional — e.g. Kai Lin's room">
+        <input id="p-name" maxlength="40" placeholder="optional, e.g. Kai Lin's room">
         <div id="p-size"></div>
-        <div id="cap-wrap"><label>Beds <small class="hint">one child per room — the optimiser never doubles up beyond this</small></label>
+        <div id="cap-wrap"><label>Beds <small class="hint">one child per room, the optimiser never doubles up beyond this</small></label>
           <input type="number" id="p-cap" min="1" max="4" style="width:70px"></div>
         <div id="occ-wrap"><label>Who sleeps here</label><div id="occ"></div></div>
         <div class="acts">
@@ -514,7 +514,7 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
         </div>
         <div class="hint" id="mark-hint">Optional: click a room edge to place it.
           Click a door to flip its hinge, again to remove. Click a window to mark
-          it a bay window (飘窗 piāo chuāng), again to remove. Doors unlock the bed-placement
+          it a bay window (飘窗 piāo chuāng), again to remove. Doors enable the bed-placement
           audit (door facing bed, 門沖床 mén chōng chuáng / commanding position / door facing door, 門對門 mén duì mén).</div>
       </div>
     </div>
@@ -1921,6 +1921,6 @@ function chartBlock(tag, cb, scores) {
 </script>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 <div class="learnstrip"><b>Learn:</b> <a href="/learn/bed-direction-guide">Bed placement and direction</a> <a href="/learn/flying-stars-2027">Flying stars 2027</a> <a href="/learn/eight-house-directions">Eight House basics</a></div>
-<footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
+<footer class="sitefoot">© bazifor.me, deterministic BaZi &amp; fengshui readings.<br>
 <span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (中文 zhōng wén)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
 </body></html>
