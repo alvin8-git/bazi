@@ -421,8 +421,8 @@ function pillarsBlock() {
     <div class="pillars">${P.pillars.map(p => `<div class="pil ${p.k === "day" ? "dm" : ""}">
       <div class="lab">${L(p.en, p.zh)}</div>
       <div class="gz"><span class="el-${p.sel}">${zs(p.stem)}</span><span class="el-${p.bel}">${zs(p.branch)}</span></div>
-      <div class="elx">${[pg(p.stem), pg(p.branch)].filter(Boolean).join(" · ") || cap(EL_EN[p.sel]) + " / " + cap(EL_EN[p.bel])}${p.k === "day" ? " · Day Master" : ""}</div></div>`).join("")}</div>
-    <div class="bars">${EL.map(e => `<div class="bar"><b class="el-${e}">${elw(e)}</b><div class="track"><div class="fill f-${e}" style="width:${P.weights[e] || 0}%"></div></div><span>${P.weights[e] || 0}%</span></div>`).join("")}</div>
+      <div class="elx">${[pg(p.stem), pg(p.branch)].filter(Boolean).join(" · ") || p.sel + " / " + p.bel}${p.k === "day" ? " · " + zs("日主") : ""}</div></div>`).join("")}</div>
+    <div class="bars">${EL.map(e => `<div class="bar"><b class="el-${e}">${zs(e)}</b><div class="track"><div class="fill f-${e}" style="width:${P.weights[e] || 0}%"></div></div><span>${P.weights[e] || 0}%</span></div>`).join("")}</div>
     <div class="ysline">${Li("Day Master", "日主")} <b class="el-${P.pillars[2].sel} keepzh">${zs(P.day_master)}</b> <small>${pg(P.day_master)}</small> · ${esc(gt(P.strength))}</div>
     <div class="ysbox">
       <div class="ysgrp use"><div class="ystitle">${L("Choose names with these elements", "用神")}</div>
@@ -450,14 +450,14 @@ function chipsHtml() {
 function tilesHtml() {
   if (!S.data) return `<div class="empty-msg">${L("loading…")}</div>`;
   if (!S.tiles.length) return `<div class="empty-msg">${L("No character matches these filters")}<div style="margin-top:8px">${S.meaning[S.active] ? `<button class="btn" data-mean="${S.meaning[S.active]}">clear the meaning filter</button> ` : ""}<button class="btn" data-reset="1">reset filters</button></div></div>`;
-  return `<div class="tiles" data-notip>${S.tiles.map(c => `<button class="tile ${c.el ? "" : "noel"} ${c.blocked ? "blk" : ""}" data-pick="${c.ch}" title="${c.blocked ? "not for names — " + esc(c.why) : c.mismatch ? (c.gender === "F" ? "feminine character — usually a girl's name character" : "masculine character — usually a boy's name character") : esc(c.sense ? c.sense.en : c.gloss || "")}" aria-label="${c.ch} ${esc(c.py)}, ${c.el || "element not set"}, ${c.ks} strokes${c.gloss ? ", " + esc(c.gloss) : ""}${c.blocked ? ", not recommended for names: " + esc(c.why) : ""}">
+  return `<div class="tiles" data-notip>${S.tiles.map(c => `<button class="tile ${c.el ? "" : "noel"} ${c.blocked ? "blk" : ""}" data-pick="${c.ch}" title="${c.blocked ? "not for names — " + esc(c.why) : c.mismatch ? (c.gender === "F" ? "feminine character — usually a girl's name character" : "masculine character — usually a boy's name character") : esc((c.el ? EL_EN[c.el] + " · " : "") + c.ks + " strokes" + ((c.sense || c.gloss) ? " · " : "") + (c.sense ? c.sense.en : c.gloss || ""))}" aria-label="${c.ch} ${esc(c.py)}, ${c.el || "element not set"}, ${c.ks} strokes${c.gloss ? ", " + esc(c.gloss) : ""}${c.blocked ? ", not recommended for names: " + esc(c.why) : ""}">
       ${c.blocked ? `<span class="bk">不宜</span>` : c.mismatch ? `<span class="bk gmk">${c.gender === "F" ? "feminine" : "masculine"}</span>` : c.pool ? `<span class="pm">名</span>` : ""}<span class="jn">${c.blocked ? "" : c.ji ? c.ji + "吉" : ""}</span>
-      <span class="ch el-${c.el || ""}">${c.ch}</span><span class="py">${esc(c.py)}</span><span class="ks">${c.ks} strokes · ${c.el ? EL_EN[c.el] : "unset"}${c.gender ? " · " + (c.gender === "F" ? "F" : "M") : ""}</span></button>`).join("")}</div>
+      <span class="ch el-${c.el || ""}">${c.ch}</span><span class="py">${esc(c.py)}</span><span class="ks">${c.ks} · ${c.el || "&ndash;"}${c.gender ? " · " + (c.gender === "F" ? "F" : "M") : ""}</span></button>`).join("")}</div>
     ${S.data.total > S.tiles.length ? `<div class="more"><button class="btn" data-more="1">more (${S.data.total - S.tiles.length})</button></div>` : ""}`;
 }
 /* the tile marks are the engine's own Chinese labels; one always-visible line explains them */
 function legendHtml() {
-  return `<p class="tlegend" id="tlegend">${zs("吉")} auspicious (3${zs("吉")}: three of the four grids are auspicious with that stroke count) · ${zs("名")} common in names · ${zs("不宜")} adverse meaning, not for names</p>`;
+  return `<p class="tlegend" id="tlegend">${zs("吉")} auspicious (3${zs("吉")}: three of the four grids are auspicious with that stroke count) · ${zs("名")} common in names · ${zs("不宜")} adverse meaning, not for names · under each character: its Kangxi stroke count, then its element</p>`;
 }
 function countHtml() {
   return `${S.data ? S.data.total : "…"} ${Li("characters")} · ★ = useful-god element · <span style="background:var(--gold);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">名</span> = common name character · unset = element not set · <span style="background:var(--xiong);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">不宜</span> = adverse meaning (pinyin search only) · feminine / masculine = usually the other gender (pinyin search only, lowers the score). unset characters also appear when a meaning is chosen`;
@@ -534,7 +534,7 @@ function gridTable(grids) {
 function sancaiPanel(sc) {
   const lab = [["", "heaven"], ["", "person"], ["", "earth"]];
   const relc = r => (r === "生" || r === "比") ? "good" : (r === "剋" || r === "受剋") ? "bad" : "";
-  return `<div class="sancai">${sc.elements.map((e, i) => `<div class="disc bg-${e}"><span class="el-${e} keepzh" lang="zh-Hans">${e}</span><small>${elw(e)} · ${lab[i][1]}</small></div>${i < 2 ? `<div class="rel ${relc(sc.relations[i])}"><b>${REL_EN[sc.relations[i]] || sc.relations[i]}</b>→</div>` : ""}`).join("")}</div>
+  return `<div class="sancai">${sc.elements.map((e, i) => `<div class="disc bg-${e}"><span class="el-${e} keepzh" lang="zh-Hans">${e}</span><small>${lab[i][1]}</small></div>${i < 2 ? `<div class="rel ${relc(sc.relations[i])}"><b>${REL_EN[sc.relations[i]] || sc.relations[i]}</b>→</div>` : ""}`).join("")}</div>
     <div style="text-align:center">${luckChip(sc.verdict)}</div>
     <div class="scd">${(sc.detail || []).map(d => `<div><b>${esc(String(d.pair || "").replace("天", "heaven ").replace("人", "person ").replace("地", "earth ").replace(/ →/, " →").trim())}</b> ${esc(d.text_en && window.GL ? GL.pair(d.text, d.text_en) : gt(d.text))} <span class="luck ${d.factor >= 0.8 ? "ji" : d.factor >= 0.4 ? "ping" : "xiong"}">×${d.factor}</span></div>`).join("")}</div>`;
 }
@@ -550,7 +550,7 @@ function cardBlock() {
   return `<div class="sec" id="card"><h2>${Lh("Name card")}</h2>
     <div class="nameband">
       <div class="namegrid" role="group" aria-label="${c.name}">${c.chars.map(x => `<div class="py">${esc(x.py)}</div><div class="ch ${x.surname ? "" : "el-" + (x.el || "")}">${x.ch}</div>
-        <div class="det"><span class="role ${!x.surname && x.el ? "bg-" + x.el + " el-" + x.el : ""}">${Li(!x.surname && x.el ? EL_EN[x.el] + " · " + x.role_en : x.role_en)}</span>
+        <div class="det"><span class="role ${!x.surname && x.el ? "bg-" + x.el + " el-" + x.el : ""}">${Li(!x.surname && x.el ? x.el + " · " + x.role_en : x.role_en)}</span>
           <span class="mk">${x.gender ? `<span class="${x.mismatch ? "gm bad" : "gm"}">${x.gender === "F" ? "feminine" : "masculine"}</span>` : ""}${x.radical_inferred ? `<span class="rinf" title="element taken from the radical only — weaker evidence, half credit on confidence">radical-inferred</span>` : ""}</span>
           ${!x.surname ? `<span class="gls">${catChips(x.tags)}${x.sense ? `<b>${esc(x.sense.en)}</b>` : x.gloss ? `<small>${esc(x.gloss)}</small>` : ""}</span>` : ""}</div>`).join("")}</div>
       <div class="interp"><div class="ilab">${L("A possible reading of the name")}</div>

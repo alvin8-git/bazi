@@ -886,7 +886,7 @@ function charCard(c, name) {
       <div><h2>${dn(name || c.name)}${c.life_palaces && ZODIAC[c.life_palaces.animal]
           ? ` <span class="zodemoji">${ZODIAC[c.life_palaces.animal][0]}</span>` : ""}</h2>
         <div class="csub"><div class="csub1">
-          <span class="dmchip" style="color:${EL_COL[STEM_EL[c.day_master]]}">${c.day_master} ${ELEMENT_ZH_OF_STEM(c.day_master)} ${EL_EN[STEM_EL[c.day_master]] || ""}</span>
+          <span class="dmchip" style="color:${EL_COL[STEM_EL[c.day_master]]}">${c.day_master} ${ELEMENT_ZH_OF_STEM(c.day_master)}</span>
           ${c.strength.verdict} <b>${c.strength.score}</b></div>
         ${c.life_palaces ? (() => { const a = c.life_palaces.animal, z = ZODIAC[a] || ["", a];
           return `<div class="csub2"><b class="gf">生肖</b> ${z[0]} ${z[1]} ·
@@ -925,6 +925,12 @@ function bazhaiCompass(c) {
 
 const READING_TABS = [["p1", "Pillars"], ["p2", "Elements"],
   ["p3", "Gods"], ["p4", "Timing"], ["p5", "Compass"]];
+/* Each pane ends by pointing at the next one; the last points at the other tools. */
+function paneNext(i) {
+  const nx = READING_TABS[i + 1];
+  if (nx) return `<div class="pane-next"><button type="button" class="nextsec" data-next="${nx[0]}">Next: ${nx[1]}</button></div>`;
+  return `<div class="pane-next"><span class="pn-lab">Next</span> <a href="/kua">Kua number</a> <a href="/baby">Baby names</a></div>`;
+}
 /* Site-wide term coloring (2026-09-20): element + ten-god mentions in running
    text get bold + their element color. Text-node walker, conservative regex —
    excludes 水平/火车/金额/土豆-style non-element words; skips svg/script. */
@@ -1302,7 +1308,7 @@ function buildElements(c, R) {
       ${c.tiaohou && c.tiaohou.line ? `<div class="cite">${c.tiaohou.line} <span class="tag">${c.tiaohou.source_ref}</span></div>` : ""}` });
   const H = c.health || [];
   const table = `<div class="scrollx"><table class="htable"><tr><th>Element</th><th>Organ systems</th><th>Watch aspects</th><th>Status</th></tr>
-    ${H.map((h) => `<tr><td>${elb(h.element)} ${elw(h.element)}</td><td class="sub">${h.organs}</td><td class="sub">${h.aspects}</td>
+    ${H.map((h) => `<tr><td>${elb(h.element)}</td><td class="sub">${h.organs}</td><td class="sub">${h.aspects}</td>
       <td class="${h.status.startsWith("balanced") ? "" : "bad"}">${h.status}</td></tr>`).join("")}</table></div>`;
   const excess = H.find((h) => /excess|過旺|过旺/i.test(h.status)), weakEl = H.find((h) => /weak|不足/i.test(h.status));
   const hline = excess ? `${elb(excess.element)} ${elw(excess.element)} excess (${excess.share}%) — watch ${excess.organs}; ${(excess.aspects.split(";").pop() || "").trim()} is the pattern to notice.`
@@ -1572,7 +1578,7 @@ function buildCompass(c, R) {
   const EL_ROOM = { 木: "east wall, plants and timber, green accents", 火: "south wall, warm light, red/orange accent",
     土: "centre or SW/NE, ceramics and stone, yellow/brown tones", 金: "west wall, metal frames and white/gold", 水: "north wall, glass or a water feature, blue/black" };
   const dirTable = `<div class="scrollx"><table class="htable eldir"><tr><th>Useful god</th><th>Direction</th><th>Palace</th><th>in the room</th></tr>
-    ${fav.map((e) => `<tr><td>${elb(e)} ${EL_EN[e]}</td><td><b>${EL_DIR[e][0]}</b></td><td>${EL_DIR[e][1]}</td><td class="sub">${EL_ROOM[e]}</td></tr>`).join("")}</table></div>`;
+    ${fav.map((e) => `<tr><td>${elb(e)}</td><td><b>${EL_DIR[e][0]}</b></td><td>${EL_DIR[e][1]}</td><td class="sub">${EL_ROOM[e]}</td></tr>`).join("")}</table></div>`;
   const chart2 = dirTable + chart;
   const c34 = rdFig({ tier: "hero", span: 7, extra: "rd-pair2", label: "Where the medicine sits", learn: 5, chart: chart2,
     line: `Add ${elw(fav[0])} ${elc(fav[0])}${colEn ? ` (${colEn})` : ""} through lighting or an accent wall; keep ${unf.map((e) => EL_EN[e]).join("/")} ${unf.map(elc).join("")} out of your main room.`,
@@ -1631,6 +1637,14 @@ function wireReadingTabs(root) {
   };
   nav.addEventListener("click", (ev) => { const b = ev.target.closest("button"); if (!b) return;
     activate(b.dataset.pane); nav.scrollIntoView({ block: "start", behavior: "instant" }); });
+  root.addEventListener("click", (ev) => {
+    const b = ev.target.closest("button.nextsec"); if (!b) return;
+    const id = b.dataset.next; activate(id);
+    const pane = panes[id]; if (!pane) return;
+    const h = pane.querySelector("h2, h3"); if (h) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    nav.scrollIntoView({ block: "start", behavior: still ? "instant" : "smooth" });
+  });
   const hm = (location.hash || "").match(/^#tab-(p[1-5])$/);
   if (hm) activate(hm[1]);
   const hl = root.querySelector("[data-howto]"), hd = root.querySelector("#howto");
@@ -1714,7 +1728,7 @@ async function renderPerson(name) {
     ${synthNote(c.synthesis)}
     <nav class="ptabs">${READING_TABS.map(([id, lbl], i) =>
       `<button class="${i === 0 ? "on" : ""}" data-pane="${id}">${lbl}</button>`).join("")}</nav>
-    ${READING_TABS.map(([id], i) => `<div class="ppane${i === 0 ? " on" : ""}" id="pane-${id}">${panes[id]}</div>`).join("")}
+    ${READING_TABS.map(([id], i) => `<div class="ppane${i === 0 ? " on" : ""}" id="pane-${id}">${panes[id]}${paneNext(i)}</div>`).join("")}
     <div class="rd-howto">${howto}</div>`);
   wireReadingTabs($("#tab-person"));
   colorizeTerms($("#tab-person"), c.day_master);
