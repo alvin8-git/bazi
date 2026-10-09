@@ -588,7 +588,7 @@ function renderFamily() {
 /* ---------- Chart Card 命卡 (JY-style dense one-glance summary) ----------- */
 const EL_COL = { 木: "#1e8e3e", 火: "#c5221f", 土: "#8a6d1f", 金: "#5f6b7a", 水: "#1a56b0" };
 /* chart FILLS use EL_COL; coloured TEXT uses EL_TXT, the darkened tokens that pass 4.5:1 */
-const EL_TXT = { 木: "#187a35", 火: "#c5221f", 土: "#8a6d1f", 金: "#8a6500", 水: "#1a56b0" };
+const EL_TXT = { 木: "#187a35", 火: "#c5221f", 土: "#7a601b", 金: "#8a6500", 水: "#1a56b0" };
 /* fit a label inside a node: widest the word may be is 2r - 6 units */
 const fitFont = (word, r, max) => Math.max(6.4, Math.min(max, (2 * r - 6) / (String(word).length * 0.58)));
 /* a node label, wrapped onto a second line when it is two words, centred and scaled to fit */
@@ -903,7 +903,7 @@ function charCard(c, name) {
       <div><h2>${dn(name || c.name)}${c.life_palaces && ZODIAC[c.life_palaces.animal]
           ? ` <span class="zodemoji">${ZODIAC[c.life_palaces.animal][0]}</span>` : ""}</h2>
         <div class="csub"><div class="csub1">
-          <span class="dmchip" style="color:${EL_COL[STEM_EL[c.day_master]]}">${c.day_master} ${ELEMENT_ZH_OF_STEM(c.day_master)}</span>
+          <span class="dmchip" style="color:${EL_TXT[STEM_EL[c.day_master]]}">${c.day_master} ${ELEMENT_ZH_OF_STEM(c.day_master)}</span>
           ${c.strength.verdict} <b>${c.strength.score}</b></div>
         ${c.life_palaces ? (() => { const a = c.life_palaces.animal, z = ZODIAC[a] || ["", a];
           return `<div class="csub2"><b class="gf">生肖</b> ${z[0]} ${z[1]} ·
@@ -936,7 +936,7 @@ function bazhaiCompass(c) {
     return `<div class="${good ? "g" : "b"}"><b>${dir} ${pal}</b>${s}</div>`; };
   return `<div class="cmpx">
     ${cell("乾", "NW")}${cell("坎", "N")}${cell("艮", "NE")}
-    ${cell("兌", "W")}<div class="c"><b class="dmark" style="color:${EL_COL[STEM_EL[c.day_master]]}">${c.day_master}</b>${dn(c.name)}</div>${cell("震", "E")}
+    ${cell("兌", "W")}<div class="c"><b class="dmark" style="color:${EL_TXT[STEM_EL[c.day_master]]}">${c.day_master}</b>${dn(c.name)}</div>${cell("震", "E")}
     ${cell("坤", "SW")}${cell("離", "S")}${cell("巽", "SE")}</div>`;
 }
 
@@ -987,7 +987,7 @@ function colorizeTerms(root, dm) {
       const el = m[1] ? godEl(dm, tgCanon(m[1])) : (EN2EL[m[0]] || m[0]);
       const b = document.createElement("b");
       b.className = "tcol";
-      b.style.color = EL_COL[el] || "";
+      b.style.color = EL_TXT[el] || "";
       b.textContent = m[0];
       frag.appendChild(b);
       last = m.index + m[0].length;
@@ -1042,8 +1042,8 @@ const ELEMENT_ZH_OF_STEM = (st) => ({ 木: "木", 火: "火", 土: "土", 金: "
 const EL_ZH_OF_EN = { Wood: "木", Fire: "火", Earth: "土", Metal: "金", Water: "水" };
 const elc = (ch) => { const e = EL_COL[ch] || EL_COL[STEM_EL[ch]] || EL_COL[BR_EL[ch]];
   return e ? `<b class="tcol" style="color:${e}">${ch}</b>` : ch; };
-const elw = (el) => `<b class="tcol" style="color:${EL_COL[el]}">${EL_EN[el]}</b>`;
-const godc = (dm, g) => `<b class="tcol" style="color:${EL_COL[godEl(dm, g)] || "inherit"}">${g}</b>`;
+const elw = (el) => `<b class="tcol" style="color:${EL_TXT[el]}">${EL_EN[el]}</b>`;
+const godc = (dm, g) => `<b class="tcol" style="color:${EL_TXT[godEl(dm, g)] || "inherit"}">${g}</b>`;
 const grpOfGod = (g) => { g = tgCanon(g);
   return ["比肩", "劫財"].includes(g) ? "比劫" : ["食神", "傷官"].includes(g) ? "食傷"
     : ["正財", "偏財"].includes(g) ? "財" : ["正官", "七殺"].includes(g) ? "官殺" : "印"; };
@@ -1097,8 +1097,8 @@ function pillarGrid(c) {
     return `<div class="ccol${p === "day" ? " dm" : ""}">
       <div class="cclab">${labels[p]}</div>
       <div class="ccgod">${c.ten_gods[p] === "日主" ? "Day Master" : c.ten_gods[p]}</div>
-      <div class="ccstem keepzh" style="color:${EL_COL[STEM_EL[st]]}">${zhs(st)}<span>${pgSmall(st)}</span></div>
-      <div class="ccbranch keepzh" style="color:${EL_COL[BR_EL[br]]}">${zhs(br)}<span>${pgSmall(br)}</span></div>
+      <div class="ccstem keepzh" style="color:${EL_TXT[STEM_EL[st]]}">${zhs(st)}<span>${pgSmall(st)}</span></div>
+      <div class="ccbranch keepzh" style="color:${EL_TXT[BR_EL[br]]}">${zhs(br)}<span>${pgSmall(br)}</span></div>
       <div class="ccstage">${c.pillar_extras[p].stage} · ${c.pillar_extras[p].nayin}</div>
       <div class="cchid">${c.hidden_gods[p].join("<br>")}</div>
     </div>`;
@@ -1107,7 +1107,7 @@ function pillarGrid(c) {
   const clock = (tp.explanation || "").match(/clock (\S+)/);
   return `<div class="cchead">
     <div class="ccbig"><div class="ccgua">${c.gua}</div>
-      <div>Kua number ${c.gua} (<b style="color:${EL_COL[GUA_EL[c.gua]] || "inherit"}">${c.group}</b>) · Natal star ${lp.life_star_zh} ${elc(lp.life_star_element)}</div></div>
+      <div>Kua number ${c.gua} (<b style="color:${EL_TXT[GUA_EL[c.gua]] || "inherit"}">${c.group}</b>) · Natal star ${lp.life_star_zh} ${elc(lp.life_star_element)}</div></div>
     <div class="ccfacts">
       <div><span>Zodiac</span><i class="zoi">${(ZODIAC[lp.animal] || [""])[0]}</i>${lp.animal}</div>
       <div><span>Day Master</span>${elc(c.day_master)} ${elc(STEM_EL[c.day_master])} · ${c.strength.verdict}</div>
@@ -1136,7 +1136,7 @@ function interactionsSvg(c) {
   let s = "", minY = NY - R - 10, maxY = NY + 48;
   its.forEach((it, i) => {
     const [a, b] = it.pillars; const [x1, x2] = [xs[a], xs[b]].sort((p, q) => p - q);
-    const h = 40 + 28 * (x2 - x1) / 160, good = it.kind.includes("合"), col = good ? "#0e7a6a" : "#b45309";
+    const h = 40 + 28 * (x2 - x1) / 160, good = it.kind.includes("合"), col = good ? "#0e7a6a" : "#99460a";
     const below = its.length >= 3 && i % 2 === 1;   // alternate sides once three arcs share the strip
     const y0 = below ? NY + R : NY - R, ctl = below ? y0 + h * 1.6 : y0 - h * 1.6;
     const text = many ? it.kind : `${it.kind} ${it.pair}`;
@@ -1151,8 +1151,8 @@ function interactionsSvg(c) {
   order.forEach((k) => { const br = c.pillars[k][1], col = EL_COL[BR_EL[br]], x = xs[k];
     s += `<circle cx="${x}" cy="${NY}" r="${R}" fill="#fff" stroke="${col}" stroke-width="2.5"/>
       <text x="${x}" y="${NY + 9}" text-anchor="middle" font-size="26" font-weight="700" fill="${col}">${br}</text>
-      <text x="${x}" y="${NY + 44}" text-anchor="middle" font-size="15" fill="#8a8177">${k}</text>`; });
-  const legend = many ? `<div class="ixlegend">${its.map((it) => `<span><b style="color:${it.kind.includes("合") ? "#0e7a6a" : "#b45309"}">${it.kind}</b> ${it.pair} · ${it.pillars.join("+")} pillars</span>`).join("")}</div>` : "";
+      <text x="${x}" y="${NY + 44}" text-anchor="middle" font-size="15" fill="#6b6359">${k}</text>`; });
+  const legend = many ? `<div class="ixlegend">${its.map((it) => `<span><b style="color:${it.kind.includes("合") ? "#0e7a6a" : "#99460a"}">${it.kind}</b> ${it.pair} · ${it.pillars.join("+")} pillars</span>`).join("")}</div>` : "";
   return `<svg class="ixsvg" viewBox="0 ${minY.toFixed(0)} 640 ${(maxY - minY).toFixed(0)}" role="img" aria-label="branch interactions">${s}</svg>${legend}`;
 }
 function interactionsLine(c) {
@@ -1241,7 +1241,7 @@ function buildPillars(c, R) {
     const god = (p) => p.stem_god && p.stem_god !== "日主" ? p.stem_god : (p.hidden || [])[0] || "";
     const cols = P.pillars.map((p) => `<div class="palcol${p.key === "day" ? " dm" : ""}">
       <div class="palages">${p.ages}</div><div class="palzh">${p.zh}</div><div class="palgz">${p.gz}</div>
-      <div class="palgod" style="color:${EL_COL[godEl(dm, god(p))] || "#8a8177"}">${god(p)}</div>
+      <div class="palgod" style="color:${EL_TXT[godEl(dm, god(p))] || "#6b6359"}">${god(p)}</div>
       <div class="palgov">${p.governs}</div></div>`).join("");
     const V = P.vault;
     const states = `<div class="palstates">
@@ -1363,15 +1363,15 @@ function buildGods(c, R) {
   const bystem0 = {};
   Object.keys(STEM_YANG).forEach((st) => { const g = godOfStem(dm, st); (bystem0[g] = bystem0[g] || []).push(st); });
   const keyRow = `<div class="tgkey"><span class="tgkey-l">key · what each stem is to a ${elc(dm)} day master</span><div class="tgmap">${ALLGODS.map((g) =>
-    `<span class="tgm"><b style="color:${EL_COL[godEl(dm, g)]}">${g}</b>${(bystem0[g] || []).map((st) =>
-      `<i class="stemchip" style="color:${EL_COL[STEM_EL[st]]};border-color:${EL_COL[STEM_EL[st]]}">${st}</i>`).join("")}</span>`).join("")}</div></div>`;
+    `<span class="tgm"><b style="color:${EL_TXT[godEl(dm, g)]}">${g}</b>${(bystem0[g] || []).map((st) =>
+      `<i class="stemchip" style="color:${EL_TXT[STEM_EL[st]]};border-color:${EL_TXT[STEM_EL[st]]}">${st}</i>`).join("")}</span>`).join("")}</div></div>`;
   const g1f = rdFig({ tier: "hero", span: 7, extra: "rd-pair2", label: "Ten-god bars", learn: 4, chart: bars,
     line: `Your chart runs on ${godc(dm, g1)} ${en(g1)} (${Math.round(p1)}%) — ${(c.tengods_legend[g1] || {}).meaning || GRP_THEME[grpOfGod(g1)]}.`,
     facts: [[g1, `${p1}%`], ["absent", `${absent.length} of 10 gods`]],
     legend: `<div><b>Bands</b> ≥20% prominent · ≥8% present · &lt;8% faint · 0% absent.</div>${keyRow}<div class="sub">Whenever one of these stems arrives in a luck pillar or year (时运 tab), it brings that god's themes with it. The full stem-by-stem classification is the Pillars grid.</div>
       <table class="tgsides"><tr><th>Term</th><th>Gods</th><th>This chart</th></tr>${starRows.map(([t, d, gods]) => { const p = grp(gods);
         return `<tr><td><b>${t}</b></td><td class="sub">${d}</td><td>${p}% — ${band(p)}</td></tr>`; }).join("")}</table>
-      ${Object.entries(c.tengods_pct).map(([g]) => `<div><b style="color:${EL_COL[godEl(dm, g)]}">●</b> <b>${g}</b> ${en(g)} — ${(c.tengods_legend[g] || {}).meaning || ""}</div>`).join("")}` });
+      ${Object.entries(c.tengods_pct).map(([g]) => `<div><b style="color:${EL_TXT[godEl(dm, g)]}">●</b> <b>${g}</b> ${en(g)} — ${(c.tengods_legend[g] || {}).meaning || ""}</div>`).join("")}` });
   const axes = c.personality || [];
   const pax = `<div class="paxchips">${axes.map((a) => { if (!a.zone) return `<div class="pax"><b>${a.axis}</b> ${a.verdict}<div class="sub">${a.basis}</div></div>`;
     const pos = a.zone === "left" ? 16 : a.zone === "right" ? 84 : 50;
@@ -1508,7 +1508,7 @@ function buildTiming(c, R) {
   const RH = ((c.strategy || {}).s5 || {}).rhythm; let t6 = "";
   if (RH && RH.length) {
     const nowBr = (c.daily || {}).now_month_branch;
-    const cells = RH.map((r) => `<div class="rcell ${r.cls}${r.br === nowBr ? " now" : ""}"><small>${r.mon}</small><b style="color:${EL_COL[r.el]}">${r.br}</b><span>${elc(r.el)}</span>${r.br === nowBr ? `<em class="rnow">▲ now</em>` : ""}</div>`).join("");
+    const cells = RH.map((r) => `<div class="rcell ${r.cls}${r.br === nowBr ? " now" : ""}"><small>${r.mon}</small><b style="color:${EL_TXT[r.el]}">${r.br}</b><span>${elc(r.el)}</span>${r.br === nowBr ? `<em class="rnow">▲ now</em>` : ""}</div>`).join("");
     const order = RH.map((r) => r.mon), ranges = (ms) => { const idx = ms.map((m) => order.indexOf(m)).sort((a, b) => a - b), out = []; let i = 0;
       while (i < idx.length) { let j = i; while (j + 1 < idx.length && idx[j + 1] === idx[j] + 1) j++;
         out.push(i === j ? order[idx[i]] : `${order[idx[i]]}–${order[idx[j]]}`); i = j + 1; } return out.join(", "); };

@@ -1,6 +1,6 @@
 :root {
-  --bg: #faf7f2; --card: #ffffff; --ink: #2b2620; --muted: #8a8177;
-  --accent: #b03a2e; --gold: #b8860b; --line: #e5ded2;
+  --bg: #faf7f2; --card: #ffffff; --ink: #2b2620; --muted: #6b6359;
+  --accent: #b03a2e; --gold: #7d5f08; --line: #e5ded2;
   --good: #2e7d32; --bad: #b03a2e;
 }
 * { box-sizing: border-box; }
@@ -325,7 +325,7 @@ button.small { font-size: 12px; padding: 3px 10px; }
 /* badges inside the facts grid must not inherit the 44px label min-width */
 .ccfacts .elb{min-width:24px;width:24px;height:24px;font-size:14px;
   letter-spacing:0}
-.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#b9b0a4;
+.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:var(--muted);
   z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
 .ccpillars{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}
 .ccol{border:1px solid var(--line);border-radius:8px;padding:6px 8px;text-align:center;
@@ -492,7 +492,7 @@ details.deep>.deepbody{padding:2px 11px 9px}
 .synth b{color:var(--accent)}
 .synth p{margin:5px 0 0}
 /* verdict colors decoupled from element hues (#14): emerald ok / amber warn */
-:root{--vok:#0e7a6a;--vwarn:#b45309}
+:root{--vok:#0e7a6a;--vwarn:#99460a}
 .good,.dirchip.good,td.good,.b-good{color:var(--vok)!important}
 .bad,.dirchip.bad,td.bad,.b-weak{color:var(--vwarn)!important}
 .gtag.f{background:#e4f2ef;color:var(--vok)}.gtag.u{background:#f8ecdd;color:var(--vwarn)}
