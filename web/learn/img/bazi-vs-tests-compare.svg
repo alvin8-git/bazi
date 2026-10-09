@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 678" role="img" aria-label="Two-column comparison, BaZi 八字 versus personality tests (MBTI-style), over five rows. Input: birth moment versus self-report. Stability: fixed chart versus test-retest drift. Output: elements and ten gods versus type letters. Claims: tendencies and timing versus preferences. Verification: recomputable versus questionnaire. Neutral comparison, no claim that either is validated science." font-family="system-ui, 'Noto Sans SC', sans-serif">
+<title>BaZi compared with personality tests</title>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b2620"/></marker>
+<marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8a6d1f"/></marker>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b03a2e"/></marker></defs>
+<rect width="1180" height="678" fill="#faf7f2"/>
+<text x="590" y="40" font-size="28" fill="#2b2620" text-anchor="middle" font-weight="bold" >BaZi vs personality tests: what each takes in and gives out</text>
+<rect x="230" y="70" width="460" height="60" rx="8" fill="#f1e6c4" stroke="#8a6d1f" stroke-width="3" />
+<text x="460.0" y="110" font-size="26" fill="#8a6d1f" text-anchor="middle" font-weight="bold" >BaZi 八字</text>
+<rect x="700" y="70" width="460" height="60" rx="8" fill="#e6edf8" stroke="#1a56b0" stroke-width="3" />
+<text x="930.0" y="110" font-size="24" fill="#1a56b0" text-anchor="middle" font-weight="bold" >Personality tests (MBTI-style)</text>
+<rect x="20" y="148" width="200" height="86" rx="8" fill="#fff" stroke="#e5ded2" stroke-width="2" />
+<text x="120" y="198.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="bold" >input 輸入</text>
+<rect x="230" y="148" width="460" height="86" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="460.0" y="198.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >Birth moment: date, time, place</text>
+<rect x="700" y="148" width="460" height="86" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="930.0" y="184.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >Self-report: your answers</text>
+<text x="930.0" y="212.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >to a questionnaire</text>
+<rect x="20" y="244" width="200" height="86" rx="8" fill="#fff" stroke="#e5ded2" stroke-width="2" />
+<text x="120" y="294.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="bold" >stability 穩定</text>
+<rect x="230" y="244" width="460" height="86" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="460.0" y="280.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >Fixed chart once the birth</text>
+<text x="460.0" y="308.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >moment is fixed</text>
+<rect x="700" y="244" width="460" height="86" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="930.0" y="280.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >Results can drift on retest</text>
+<text x="930.0" y="308.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >(test-retest)</text>
+<rect x="20" y="340" width="200" height="86" rx="8" fill="#fff" stroke="#e5ded2" stroke-width="2" />
+<text x="120" y="390.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="bold" >output 輸出</text>
+<rect x="230" y="340" width="460" height="86" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="460.0" y="390.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >Elements 五行 and ten gods 十神</text>
+<rect x="700" y="340" width="460" height="86" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="930.0" y="376.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >Type letters</text>
+<text x="930.0" y="404.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >(four-letter types)</text>
+<rect x="20" y="436" width="200" height="86" rx="8" fill="#fff" stroke="#e5ded2" stroke-width="2" />
+<text x="120" y="486.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="bold" >claims 主張</text>
+<rect x="230" y="436" width="460" height="86" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="460.0" y="486.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >Tendencies and timing 運</text>
+<rect x="700" y="436" width="460" height="86" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="930.0" y="486.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >Preferences and styles</text>
+<rect x="20" y="532" width="200" height="86" rx="8" fill="#fff" stroke="#e5ded2" stroke-width="2" />
+<text x="120" y="582.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="bold" >verification 驗證</text>
+<rect x="230" y="532" width="460" height="86" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="460.0" y="568.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >Recomputable from the</text>
+<text x="460.0" y="596.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >same inputs</text>
+<rect x="700" y="532" width="460" height="86" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="930.0" y="568.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >Questionnaire; scoring depends</text>
+<text x="930.0" y="596.0" font-size="21" fill="#2b2620" text-anchor="middle" font-weight="normal" >on the answers given</text>
+<text x="590" y="650" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >This card compares method and inputs only; it does not rate either as validated science.</text>
+</svg>

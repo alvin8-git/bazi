@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 625" role="img" aria-label="Timeline of the fictional sample person 王大明 ten-year luck pillars 大運, direction forward (陽男順行), starting at age 6.7. 丙辰 age 7–17 growth 成長 score 2; 丁巳 age 17–27 growth 成長 score 2; 戊午 age 27–37 growth 成長 score 2; 己未 age 37–47 growth 成長 score 2 (current); 庚申 age 47–57 consolidation 蓄勢 score -1; 辛酉 age 57–67 corrective 修整 score -3; 壬戌 age 67–77 consolidation 蓄勢 score 1; 癸亥 age 77–87 corrective 修整 score -3." font-family="system-ui, 'Noto Sans SC', sans-serif">
+<title>Ten-year luck pillars 大運 timeline</title>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b2620"/></marker>
+<marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8a6d1f"/></marker>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b03a2e"/></marker></defs>
+<rect width="1180" height="625" fill="#faf7f2"/>
+<text x="590" y="44" font-size="28" fill="#2b2620" text-anchor="middle" font-weight="bold" >Ten-year luck pillars 大運 — sample chart</text>
+<text x="590" y="80" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >王大明 (fictional) · male · 1988-03-15 09:30 Singapore · direction: forward (陽男順行)</text>
+<line x1="12" y1="128" x2="12" y2="490" stroke="#b03a2e" stroke-width="3" stroke-dasharray="6 5"/>
+<rect x="20" y="112" width="250" height="34" rx="6" fill="#fff" stroke="#b03a2e" stroke-width="2" />
+<text x="145" y="136" font-size="20" fill="#b03a2e" text-anchor="middle" font-weight="bold" >起運 start age 6.7</text>
+<rect x="12" y="170" width="138" height="290" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="81.0" y="220" font-size="34" fill="#2b2620" text-anchor="middle" font-weight="bold" >丙辰</text>
+<text x="81.0" y="258" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >age 7–17</text>
+<line x1="26" y1="276" x2="136" y2="276" stroke="#e5ded2" stroke-width="2" />
+<text x="81.0" y="310" font-size="20" fill="#1e7d32" text-anchor="middle" font-weight="normal" >growth</text>
+<text x="81.0" y="338" font-size="22" fill="#1e7d32" text-anchor="middle" font-weight="bold" >成長</text>
+<text x="81.0" y="395" font-size="40" fill="#1e7d32" text-anchor="middle" font-weight="bold" >+2</text>
+<text x="81.0" y="432" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >score</text>
+<rect x="156" y="170" width="138" height="290" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="225.0" y="220" font-size="34" fill="#2b2620" text-anchor="middle" font-weight="bold" >丁巳</text>
+<text x="225.0" y="258" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >age 17–27</text>
+<line x1="170" y1="276" x2="280" y2="276" stroke="#e5ded2" stroke-width="2" />
+<text x="225.0" y="310" font-size="20" fill="#1e7d32" text-anchor="middle" font-weight="normal" >growth</text>
+<text x="225.0" y="338" font-size="22" fill="#1e7d32" text-anchor="middle" font-weight="bold" >成長</text>
+<text x="225.0" y="395" font-size="40" fill="#1e7d32" text-anchor="middle" font-weight="bold" >+2</text>
+<text x="225.0" y="432" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >score</text>
+<rect x="300" y="170" width="138" height="290" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="369.0" y="220" font-size="34" fill="#2b2620" text-anchor="middle" font-weight="bold" >戊午</text>
+<text x="369.0" y="258" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >age 27–37</text>
+<line x1="314" y1="276" x2="424" y2="276" stroke="#e5ded2" stroke-width="2" />
+<text x="369.0" y="310" font-size="20" fill="#1e7d32" text-anchor="middle" font-weight="normal" >growth</text>
+<text x="369.0" y="338" font-size="22" fill="#1e7d32" text-anchor="middle" font-weight="bold" >成長</text>
+<text x="369.0" y="395" font-size="40" fill="#1e7d32" text-anchor="middle" font-weight="bold" >+2</text>
+<text x="369.0" y="432" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >score</text>
+<rect x="444" y="170" width="138" height="290" rx="8" fill="#fff3d6" stroke="#b03a2e" stroke-width="5" />
+<rect x="444" y="136" width="138" height="30" rx="6" fill="#b03a2e" stroke="#b03a2e" stroke-width="1" />
+<text x="513.0" y="158" font-size="20" fill="#fff" text-anchor="middle" font-weight="bold" >now 當前</text>
+<text x="513.0" y="220" font-size="34" fill="#2b2620" text-anchor="middle" font-weight="bold" >己未</text>
+<text x="513.0" y="258" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >age 37–47</text>
+<line x1="458" y1="276" x2="568" y2="276" stroke="#e5ded2" stroke-width="2" />
+<text x="513.0" y="310" font-size="20" fill="#1e7d32" text-anchor="middle" font-weight="normal" >growth</text>
+<text x="513.0" y="338" font-size="22" fill="#1e7d32" text-anchor="middle" font-weight="bold" >成長</text>
+<text x="513.0" y="395" font-size="40" fill="#1e7d32" text-anchor="middle" font-weight="bold" >+2</text>
+<text x="513.0" y="432" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >score</text>
+<rect x="588" y="170" width="138" height="290" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="657.0" y="220" font-size="34" fill="#2b2620" text-anchor="middle" font-weight="bold" >庚申</text>
+<text x="657.0" y="258" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >age 47–57</text>
+<line x1="602" y1="276" x2="712" y2="276" stroke="#e5ded2" stroke-width="2" />
+<text x="657.0" y="310" font-size="20" fill="#8a6d1f" text-anchor="middle" font-weight="normal" >consolidation</text>
+<text x="657.0" y="338" font-size="22" fill="#8a6d1f" text-anchor="middle" font-weight="bold" >蓄勢</text>
+<text x="657.0" y="395" font-size="40" fill="#b3261e" text-anchor="middle" font-weight="bold" >−1</text>
+<text x="657.0" y="432" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >score</text>
+<rect x="732" y="170" width="138" height="290" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="801.0" y="220" font-size="34" fill="#2b2620" text-anchor="middle" font-weight="bold" >辛酉</text>
+<text x="801.0" y="258" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >age 57–67</text>
+<line x1="746" y1="276" x2="856" y2="276" stroke="#e5ded2" stroke-width="2" />
+<text x="801.0" y="310" font-size="20" fill="#b3261e" text-anchor="middle" font-weight="normal" >corrective</text>
+<text x="801.0" y="338" font-size="22" fill="#b3261e" text-anchor="middle" font-weight="bold" >修整</text>
+<text x="801.0" y="395" font-size="40" fill="#b3261e" text-anchor="middle" font-weight="bold" >−3</text>
+<text x="801.0" y="432" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >score</text>
+<rect x="876" y="170" width="138" height="290" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="945.0" y="220" font-size="34" fill="#2b2620" text-anchor="middle" font-weight="bold" >壬戌</text>
+<text x="945.0" y="258" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >age 67–77</text>
+<line x1="890" y1="276" x2="1000" y2="276" stroke="#e5ded2" stroke-width="2" />
+<text x="945.0" y="310" font-size="20" fill="#8a6d1f" text-anchor="middle" font-weight="normal" >consolidation</text>
+<text x="945.0" y="338" font-size="22" fill="#8a6d1f" text-anchor="middle" font-weight="bold" >蓄勢</text>
+<text x="945.0" y="395" font-size="40" fill="#1e7d32" text-anchor="middle" font-weight="bold" >+1</text>
+<text x="945.0" y="432" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >score</text>
+<rect x="1020" y="170" width="138" height="290" rx="8" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="1089.0" y="220" font-size="34" fill="#2b2620" text-anchor="middle" font-weight="bold" >癸亥</text>
+<text x="1089.0" y="258" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >age 77–87</text>
+<line x1="1034" y1="276" x2="1144" y2="276" stroke="#e5ded2" stroke-width="2" />
+<text x="1089.0" y="310" font-size="20" fill="#b3261e" text-anchor="middle" font-weight="normal" >corrective</text>
+<text x="1089.0" y="338" font-size="22" fill="#b3261e" text-anchor="middle" font-weight="bold" >修整</text>
+<text x="1089.0" y="395" font-size="40" fill="#b3261e" text-anchor="middle" font-weight="bold" >−3</text>
+<text x="1089.0" y="432" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >score</text>
+<line x1="12" y1="490" x2="1160" y2="490" stroke="#2b2620" stroke-width="3" marker-end="url(#ah)"/>
+<text x="12" y="520" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >7</text>
+<text x="156" y="520" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >17</text>
+<text x="300" y="520" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >27</text>
+<text x="444" y="520" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >37</text>
+<text x="588" y="520" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >47</text>
+<text x="732" y="520" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >57</text>
+<text x="876" y="520" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >67</text>
+<text x="1020" y="520" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >77</text>
+<text x="1160" y="520" font-size="20" fill="#6f675d" text-anchor="end" font-weight="normal" >87 歲</text>
+<text x="590" y="570" font-size="20" fill="#2b2620" text-anchor="middle" font-weight="bold" >forward 順行 → each pillar is the next 干支 after the month pillar 乙卯</text>
+<text x="590" y="602" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >phase and score are engine outputs for each ten-year window; annual pillars not shown</text>
+</svg>

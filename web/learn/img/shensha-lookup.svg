@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 743" role="img" aria-label="Lookup diagram. Each day stem 日干 maps to one branch 地支 for 文昌貴人: 甲 to 巳, 乙 to 午, 丙 to 申, 丁 to 酉, 戊 to 申, 己 to 酉, 庚 to 亥, 辛 to 子, 壬 to 寅, 癸 to 卯. Right panel: the fictional sample chart 王大明 has 太極貴人 on year and hour pillars, 華蓋 on year and hour, 劫煞 on the day pillar. Caption: lookup = table, no judgement." font-family="system-ui, 'Noto Sans SC', sans-serif">
+<title>Symbolic-star lookup: 文昌貴人</title>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b2620"/></marker>
+<marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8a6d1f"/></marker>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b03a2e"/></marker></defs>
+<rect width="1180" height="743" fill="#faf7f2"/>
+<text x="590" y="40" font-size="28" fill="#2b2620" text-anchor="middle" font-weight="bold" >How a symbolic star is looked up: 文昌貴人</text>
+<text x="185" y="92" font-size="22" fill="#6f675d" text-anchor="middle" font-weight="bold" >day stem 日干</text>
+<text x="425" y="92" font-size="22" fill="#6f675d" text-anchor="middle" font-weight="bold" >branch 地支</text>
+<rect x="60" y="108" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="115" y="138" font-size="26" fill="#1e8e3e" text-anchor="middle" font-weight="bold" >甲</text>
+<line x1="176" y1="129" x2="300" y2="129" stroke="#2b2620" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="310" y="108" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="365" y="138" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold" >巳</text>
+<text x="500" y="138" font-size="20" fill="#8a6d1f" text-anchor="start" font-weight="bold" ></text>
+<rect x="60" y="158" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="115" y="188" font-size="26" fill="#1e8e3e" text-anchor="middle" font-weight="bold" >乙</text>
+<line x1="176" y1="179" x2="300" y2="179" stroke="#2b2620" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="310" y="158" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="365" y="188" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold" >午</text>
+<text x="500" y="188" font-size="20" fill="#8a6d1f" text-anchor="start" font-weight="bold" ></text>
+<rect x="60" y="208" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="115" y="238" font-size="26" fill="#c5221f" text-anchor="middle" font-weight="bold" >丙</text>
+<line x1="176" y1="229" x2="300" y2="229" stroke="#2b2620" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="310" y="208" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="365" y="238" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold" >申</text>
+<text x="500" y="238" font-size="20" fill="#8a6d1f" text-anchor="start" font-weight="bold" ></text>
+<rect x="60" y="258" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="115" y="288" font-size="26" fill="#c5221f" text-anchor="middle" font-weight="bold" >丁</text>
+<line x1="176" y1="279" x2="300" y2="279" stroke="#2b2620" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="310" y="258" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="365" y="288" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold" >酉</text>
+<text x="500" y="288" font-size="20" fill="#8a6d1f" text-anchor="start" font-weight="bold" ></text>
+<rect x="60" y="308" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="115" y="338" font-size="26" fill="#8a6d1f" text-anchor="middle" font-weight="bold" >戊</text>
+<line x1="176" y1="329" x2="300" y2="329" stroke="#2b2620" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="310" y="308" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="365" y="338" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold" >申</text>
+<text x="500" y="338" font-size="20" fill="#8a6d1f" text-anchor="start" font-weight="bold" ></text>
+<rect x="60" y="358" width="110" height="42" rx="6" fill="#f1e6c4" stroke="#8a6d1f" stroke-width="3" />
+<text x="115" y="388" font-size="26" fill="#8a6d1f" text-anchor="middle" font-weight="bold" >己</text>
+<line x1="176" y1="379" x2="300" y2="379" stroke="#8a6d1f" stroke-width="3" marker-end="url(#ag)"/>
+<rect x="310" y="358" width="110" height="42" rx="6" fill="#f1e6c4" stroke="#8a6d1f" stroke-width="3" />
+<text x="365" y="388" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold" >酉</text>
+<text x="500" y="388" font-size="20" fill="#8a6d1f" text-anchor="start" font-weight="bold" >→ 兌 W</text>
+<rect x="60" y="408" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="115" y="438" font-size="26" fill="#8a6500" text-anchor="middle" font-weight="bold" >庚</text>
+<line x1="176" y1="429" x2="300" y2="429" stroke="#2b2620" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="310" y="408" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="365" y="438" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold" >亥</text>
+<text x="500" y="438" font-size="20" fill="#8a6d1f" text-anchor="start" font-weight="bold" ></text>
+<rect x="60" y="458" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="115" y="488" font-size="26" fill="#8a6500" text-anchor="middle" font-weight="bold" >辛</text>
+<line x1="176" y1="479" x2="300" y2="479" stroke="#2b2620" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="310" y="458" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="365" y="488" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold" >子</text>
+<text x="500" y="488" font-size="20" fill="#8a6d1f" text-anchor="start" font-weight="bold" ></text>
+<rect x="60" y="508" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="115" y="538" font-size="26" fill="#1a56b0" text-anchor="middle" font-weight="bold" >壬</text>
+<line x1="176" y1="529" x2="300" y2="529" stroke="#2b2620" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="310" y="508" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="365" y="538" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold" >寅</text>
+<text x="500" y="538" font-size="20" fill="#8a6d1f" text-anchor="start" font-weight="bold" ></text>
+<rect x="60" y="558" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="115" y="588" font-size="26" fill="#1a56b0" text-anchor="middle" font-weight="bold" >癸</text>
+<line x1="176" y1="579" x2="300" y2="579" stroke="#2b2620" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="310" y="558" width="110" height="42" rx="6" fill="#fff" stroke="#2b2620" stroke-width="2" />
+<text x="365" y="588" font-size="26" fill="#2b2620" text-anchor="middle" font-weight="bold" >卯</text>
+<text x="500" y="588" font-size="20" fill="#8a6d1f" text-anchor="start" font-weight="bold" ></text>
+<text x="250" y="644" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >table row = one fixed pair</text>
+<rect x="640" y="80" width="520" height="530" rx="10" fill="#fff" stroke="#e5ded2" stroke-width="2" />
+<text x="900" y="116" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="bold" >sample chart: 3 stars found</text>
+<text x="900" y="144" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >王大明 (fictional)</text>
+<text x="890" y="184" font-size="22" fill="#6f675d" text-anchor="middle" font-weight="bold" >年</text>
+<text x="890" y="214" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="bold" >戊辰</text>
+<text x="958" y="184" font-size="22" fill="#6f675d" text-anchor="middle" font-weight="bold" >月</text>
+<text x="958" y="214" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="bold" >乙卯</text>
+<text x="1026" y="184" font-size="22" fill="#6f675d" text-anchor="middle" font-weight="bold" >日</text>
+<text x="1026" y="214" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="bold" >己巳</text>
+<text x="1094" y="184" font-size="22" fill="#6f675d" text-anchor="middle" font-weight="bold" >時</text>
+<text x="1094" y="214" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="bold" >戊辰</text>
+<line x1="660" y1="228" x2="1140" y2="228" stroke="#e5ded2" stroke-width="2" />
+<text x="664" y="270" font-size="24" fill="#b03a2e" text-anchor="start" font-weight="bold" >太極貴人</text>
+<text x="664" y="300" font-size="20" fill="#6f675d" text-anchor="start" font-weight="normal" >Tai Ji noble</text>
+<circle cx="890" cy="278" r="15" fill="#8a6d1f" stroke="#8a6d1f" stroke-width="2"/>
+<circle cx="958" cy="278" r="15" fill="none" stroke="#e5ded2" stroke-width="2"/>
+<circle cx="1026" cy="278" r="15" fill="none" stroke="#e5ded2" stroke-width="2"/>
+<circle cx="1094" cy="278" r="15" fill="#8a6d1f" stroke="#8a6d1f" stroke-width="2"/>
+<text x="664" y="356" font-size="24" fill="#b03a2e" text-anchor="start" font-weight="bold" >華蓋</text>
+<text x="664" y="386" font-size="20" fill="#6f675d" text-anchor="start" font-weight="normal" >Canopy</text>
+<circle cx="890" cy="364" r="15" fill="#8a6d1f" stroke="#8a6d1f" stroke-width="2"/>
+<circle cx="958" cy="364" r="15" fill="none" stroke="#e5ded2" stroke-width="2"/>
+<circle cx="1026" cy="364" r="15" fill="none" stroke="#e5ded2" stroke-width="2"/>
+<circle cx="1094" cy="364" r="15" fill="#8a6d1f" stroke="#8a6d1f" stroke-width="2"/>
+<text x="664" y="442" font-size="24" fill="#b03a2e" text-anchor="start" font-weight="bold" >劫煞</text>
+<text x="664" y="472" font-size="20" fill="#6f675d" text-anchor="start" font-weight="normal" >Robbery Sha</text>
+<circle cx="890" cy="450" r="15" fill="none" stroke="#e5ded2" stroke-width="2"/>
+<circle cx="958" cy="450" r="15" fill="none" stroke="#e5ded2" stroke-width="2"/>
+<circle cx="1026" cy="450" r="15" fill="#8a6d1f" stroke="#8a6d1f" stroke-width="2"/>
+<circle cx="1094" cy="450" r="15" fill="none" stroke="#e5ded2" stroke-width="2"/>
+<line x1="660" y1="520" x2="1140" y2="520" stroke="#e5ded2" stroke-width="2" />
+<text x="900" y="556" font-size="20" fill="#2b2620" text-anchor="middle" font-weight="normal" >己 → 酉, but no 酉 in this chart:</text>
+<text x="900" y="584" font-size="20" fill="#2b2620" text-anchor="middle" font-weight="normal" >文昌貴人 is not tagged here</text>
+<rect x="260" y="668" width="660" height="52" rx="26" fill="#f1e6c4" stroke="#8a6d1f" stroke-width="3" />
+<text x="590" y="703" font-size="26" fill="#8a6d1f" text-anchor="middle" font-weight="bold" >lookup = table, no judgement</text>
+</svg>

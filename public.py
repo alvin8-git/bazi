@@ -46,6 +46,7 @@ from engine.roombrief import room_briefs
 from engine.sectors import assign_pie, trace_checks
 from engine.shensha import WENCHANG, life_palaces
 from engine.windows import timing_windows
+from engine.wuxing import PALACES
 from engine.xuankong import annual_chart, chengmen, guard_chengmen, natal_chart_from_degrees
 from engine.yongshen import yong_shen
 from scripts.bazi_report import build_person, family_section
@@ -1315,6 +1316,50 @@ def name_score(surname: str, given: str, sex: str, dob: str,
         raise HTTPException(400, str(e))
 
 
+# ---------------------------------------------------------------- kua number (stateless)
+_STAR_PINYIN = {"生氣": "Sheng Qi", "天醫": "Tian Yi", "延年": "Yan Nian", "伏位": "Fu Wei",
+                "禍害": "Huo Hai", "六煞": "Liu Sha", "五鬼": "Wu Gui", "絕命": "Jue Ming"}
+_GUA_PINYIN = {"坎": "Kan", "坤": "Kun", "震": "Zhen", "巽": "Xun", "乾": "Qian",
+               "兌": "Dui", "艮": "Gen", "離": "Li"}
+_COMPASS8 = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+
+
+@router.get("/api/pub/kua")
+def kua(dob: str, sex: str):
+    """命卦 from the full birth date + sex (立春-bounded year). Stateless: nothing is stored."""
+    from engine import calendar as cal
+    if sex not in ("M", "F"):
+        raise HTTPException(422, "sex must be M or F")
+    try:
+        d = date.fromisoformat(dob)
+    except ValueError:
+        raise HTTPException(422, "dob must be a real date, YYYY-MM-DD")
+    if not (re.fullmatch(r"\d{4}-\d{2}-\d{2}", dob) and 1900 <= d.year <= 2100):
+        raise HTTPException(422, "dob must be YYYY-MM-DD between 1900 and 2100")
+    # same rule as Chart.lichun_year: the year pillar (sxtwl, switches at 立春) names the year
+    stem_idx = (d.year - 4) % 10
+    ly = d.year if cal.STEMS[stem_idx] == cal.pillars_for(datetime(d.year, d.month, d.day, 12))["year"].stem \
+        else d.year - 1
+    lichun_date, _ = cal._walk_to_jie(date(ly, 1, 31), True)
+    gua = ming_gua(ly, sex)
+    by_dir = {PALACES[pal]["dir"]: (pal, st) for pal, st in youxing_stars(gua).items()}
+    stars = []
+    for dr in _COMPASS8:
+        pal, st = by_dir[dr]
+        sc = STAR_SCORE[st]
+        stars.append({"dir": dr, "palace": pal, "star": st, "star_pinyin": _STAR_PINYIN[st],
+                      "score": sc, "good": sc > 0})
+    top = sorted(stars, key=lambda x: -x["score"])[:3]
+    best = [{"dir": x["dir"], "star": x["star"], "star_pinyin": x["star_pinyin"], "score": x["score"]}
+            for x in top]
+    grp = gua_group(gua)
+    return {"dob": dob, "sex": sex, "lichun_year": ly, "lichun_date": lichun_date.isoformat(),
+            "gua": gua, "gua_num": PALACES[gua]["num"], "gua_pinyin": _GUA_PINYIN[gua],
+            "group": "East" if "East" in grp else "West",
+            "group_zh": "東四命" if "East" in grp else "西四命",
+            "stars": stars, "best_bed": best, "best_desk": [dict(x) for x in best]}
+
+
 # ---------------------------------------------------------------- baby shortlist (per workspace)
 MAX_BABY_LISTS = 8          # keys (babies) per workspace; the oldest is dropped
 MAX_BABY_NAMES = 8          # names per list
@@ -1542,7 +1587,7 @@ def gsc_verification():
 
 # Crawler policy (owner decision 2026-10-08): search, citation AND training bots are all
 # welcome — a new site needs reach. Private workspaces and the API stay out of every group.
-_ROBOTS_ALLOW = ("Allow: /$\nAllow: /start\nAllow: /fengshui\nAllow: /baby\nAllow: /learn\n"
+_ROBOTS_ALLOW = ("Allow: /$\nAllow: /start\nAllow: /fengshui\nAllow: /baby\nAllow: /kua\nAllow: /learn\n"
                  "Allow: /zh/learn\nAllow: /how-it-works\nAllow: /about\nAllow: /faq\n"
                  "Allow: /author\nAllow: /method\nAllow: /llms.txt\nAllow: /llms-full.txt\n"
                  "Disallow: /w/\nDisallow: /api/\n"
@@ -1573,6 +1618,7 @@ def llms_txt():
              "- [BaZi calculator](https://bazifor.me/start): four pillars, day master, useful element, luck cycles — every line cites its rule",
              "- [Home feng shui analyzer](https://bazifor.me/fengshui): trace a floor plan, get flying stars, Eight House directions and room assignments",
              "- [Chinese baby name builder](https://bazifor.me/baby): names scored by 用神, 五格, 三才, meaning, sound and gender fit",
+             "- [Kua number calculator](https://bazifor.me/kua): 命卦 from birth date and sex (立春-correct), East/West group, best bed and desk directions",
              "", "## Guides (English)", ""]
     for slug, title in _learn_titles("web/learn"):
         lines.append(f"- [{title}](https://bazifor.me/learn/{slug})")
@@ -1654,7 +1700,7 @@ def _lastmod() -> dict:
 
 @router.get("/sitemap.xml")
 def sitemap():
-    pages = ["/", "/start", "/fengshui", "/baby",
+    pages = ["/", "/start", "/fengshui", "/baby", "/kua",
              "/how-it-works", "/about", "/faq", "/author", "/method", "/learn"]
     pages += [f"/learn/{s}" for s in _learn_slugs()]
     pages += ["/zh/learn"]
@@ -1738,3 +1784,8 @@ def fengshui_ws_page(token: str):
 @router.get("/baby")
 def baby_page():
     return FileResponse(ROOT / "web/baby.html")
+
+
+@router.get("/kua")
+def kua_page():
+    return FileResponse(ROOT / "web/kua.html")

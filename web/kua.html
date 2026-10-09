@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kua Number Calculator (八宅 Eight Mansions) | bazifor.me</title>
+<meta name="description" content="Free Kua number calculator for Singapore and Malaysia: enter your birth date and sex to get your 命卦, East or West group, and best bed and desk directions.">
+<link rel="canonical" href="https://bazifor.me/kua">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Kua Number Calculator (八宅 Eight Mansions) | bazifor.me">
+<meta property="og:description" content="Free Kua number calculator for Singapore and Malaysia: enter your birth date and sex to get your 命卦, East or West group, and best bed and desk directions.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bazifor.me/kua">
+<meta property="og:image" content="https://bazifor.me/static/og/kua.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "image": "https://bazifor.me/static/og/kua.png", "name": "bazifor.me Kua number calculator", "url": "https://bazifor.me/kua", "description": "Free Kua number calculator for Singapore and Malaysia: enter your birth date and sex to get your 命卦, East or West group, and best bed and desk directions.", "applicationCategory": "LifestyleApplication", "operatingSystem": "Web", "inLanguage": ["en", "zh-Hans"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SGD"}, "featureList": ["Kua number (命卦) from the 立春-bounded birth year", "East or West group (東四命 / 西四命)", "Eight direction scores from 生氣 to 絕命", "Best headboard and desk directions"], "publisher": {"@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "bazifor.me", "item": "https://bazifor.me"}, {"@type": "ListItem", "position": 2, "name": "Kua number calculator", "item": "https://bazifor.me/kua"}]}</script>
+<style>
+:root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6f675d;--accent:#b03a2e;--gold:#8a6d1f;--line:#e5ded2;
+  --ji:#1e7d32;--ji-bg:#e3f4e7;--xiong:#b3261e;--xiong-bg:#fde8e6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,"Noto Sans SC",sans-serif}
+main{max-width:760px;margin:0 auto;padding:16px 16px 40px}
+header{background:#fff;border-bottom:1px solid var(--line);padding:14px 16px}
+header .in{max-width:760px;margin:0 auto}
+h1{font-size:22px;color:var(--accent);margin:8px 0 6px}
+.sub{color:var(--muted);font-size:14px;margin:0}
+.sub a{color:var(--accent)}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+h2{font-size:16px;color:var(--gold);margin:0 0 10px}
+.intro{margin:0 0 4px}
+form{display:grid;gap:14px}
+label,legend{font-size:14px;font-weight:700;display:block;margin-bottom:4px;padding:0}
+fieldset{border:0;margin:0;padding:0}
+input[type=date]{font:inherit;padding:10px 12px;min-height:44px;border:1.5px solid var(--line);border-radius:10px;width:100%;max-width:240px;background:#fff;color:var(--ink)}
+.radios{display:flex;gap:10px;flex-wrap:wrap}
+.radios label{display:inline-flex;align-items:center;gap:8px;font-weight:500;min-height:44px;padding:0 14px;border:1.5px solid var(--line);border-radius:10px;margin:0;cursor:pointer;background:#fff}
+.radios input{width:18px;height:18px;accent-color:var(--accent)}
+.err{color:var(--xiong);font-size:13px;margin-top:4px;min-height:0}
+.err:empty{display:none}
+.btn{border:1.5px solid var(--accent);background:#fff;color:var(--accent);border-radius:10px;padding:10px 18px;font:inherit;font-size:15px;cursor:pointer;min-height:44px;text-decoration:none;display:inline-flex;align-items:center}
+.btn.primary{background:var(--accent);color:#fff;font-weight:600}
+.btn:focus-visible,input:focus-visible{outline:3px solid #1a56b0;outline-offset:2px}
+[hidden]{display:none!important}
+.big{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.big .n{font-size:64px;font-weight:700;line-height:1;color:var(--accent)}
+.big .t{font-size:24px;font-weight:700}
+.big .t small{font-size:15px;font-weight:500;color:var(--muted)}
+.grp{display:inline-block;margin:10px 0 0;padding:4px 12px;border-radius:999px;font-weight:700;font-size:14px}
+.grp.east{background:var(--ji-bg);color:var(--ji)}.grp.west{background:#f6efdc;color:#7a5f16}
+.note{color:var(--muted);font-size:14px;margin:10px 0 0}
+.compass{display:block;margin:6px auto 0;width:100%;max-width:360px;height:auto}
+.legend{display:flex;gap:16px;justify-content:center;font-size:13px;color:var(--muted);margin-top:6px;flex-wrap:wrap}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.lists{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lists ol{margin:0;padding-left:20px}
+.lists li{margin:4px 0}
+.lists small,.dirs{color:var(--muted)}
+ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.sitefoot{padding:18px 16px 28px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:30px}.sitefoot a{color:var(--accent)}.sitefoot .fnav{display:inline-block;margin-top:6px}
+.learnstrip{max-width:760px;margin:18px auto 0;padding:0 16px;font-size:14px;color:var(--muted)}.learnstrip a{color:var(--accent);margin-right:12px;display:inline-block}
+@media (max-width:560px){.lists{grid-template-columns:1fr}.big .n{font-size:54px}}
+.grp{border-collapse:collapse;width:100%;font-size:14px;margin-top:8px}.grp th,.grp td{border:1px solid var(--line);padding:6px 8px;text-align:left}.grp th{color:var(--muted);font-weight:600}
+</style>
+</head><body>
+<header><div class="in"><p class="sub"><a href="/">bazifor.me</a> · <a href="/fengshui">Home fengshui</a> · <a href="/start">BaZi</a></p></div></header>
+<main>
+  <h1>Kua number calculator (<span lang="zh-Hans">命卦</span>)</h1>
+  <p class="intro">Your Kua number comes from your birth year and sex, and the year is counted from <span lang="zh-Hans">立春</span> (Lichun, the start of spring, around 4 February), not from 1 January. Enter your full birth date so people born in January or early February land in the right year. Nothing is stored.</p>
+
+  <div class="sec">
+    <form id="f" novalidate>
+      <div>
+        <label for="dob">Birth date</label>
+        <input type="date" id="dob" name="dob" min="1900-01-01" max="2100-12-31" required aria-describedby="dob-e">
+        <div class="err" id="dob-e" role="alert"></div>
+      </div>
+      <fieldset aria-describedby="sex-e">
+        <legend>Sex</legend>
+        <div class="radios">
+          <label><input type="radio" name="sex" value="M"> Male</label>
+          <label><input type="radio" name="sex" value="F"> Female</label>
+        </div>
+        <div class="err" id="sex-e" role="alert"></div>
+      </fieldset>
+      <div><button class="btn primary" type="submit" id="go">Calculate</button></div>
+      <div class="err" id="form-e" role="alert"></div>
+    </form>
+  </div>
+
+  <section id="res" hidden aria-live="polite">
+    <div class="sec">
+      <h2>Your Kua number</h2>
+      <div class="big"><span class="n" id="r-num"></span><span class="t"><span lang="zh-Hans" id="r-gua"></span> <small id="r-py"></small></span></div>
+      <div class="grp" id="r-grp"></div>
+      <p class="note" id="r-lichun"></p>
+    </div>
+    <div class="sec">
+      <h2>Your eight directions</h2>
+      <svg id="compass" class="compass" viewBox="0 0 340 340" role="img" aria-label="Eight-sector compass with North at the top"></svg>
+      <div class="legend"><span><i style="background:#cfe9d3;border:1px solid #1e7d32"></i>Good direction</span><span><i style="background:#f8d3cf;border:1px solid #b3261e"></i>Direction to avoid</span></div>
+    </div>
+    <div class="sec lists">
+      <div><h2>Best headboard directions</h2><ol id="bed"></ol></div>
+      <div><h2>Best desk facing</h2><ol id="desk"></ol></div>
+    </div>
+    <div class="sec">
+      <h2>How to use it</h2>
+      <ul class="how">
+        <li>Put the head of the bed on one of your good directions, against a solid wall, not under a window or in line with the door.</li>
+        <li>Face a good direction when you sit at your desk, with a solid wall or support behind your chair.</li>
+        <li>Your Kua is one input. The <a href="/fengshui">whole-home audit</a> also weighs the sector each room falls in.</li>
+      </ul>
+    </div>
+  </section>
+  <div class="sec">
+    <h2>What is a Kua number?</h2>
+    <p>The Kua number (命卦, "life trigram") is the Eight Mansions (八宅) label for a person. It is one of eight trigrams, numbered 1 to 9 with 5 skipped, taken from the birth year counted from 立春 and from the person's sex. Each trigram belongs to the East group (東四命: 坎 1, 震 3, 巽 4, 離 9) or the West group (西四命: 坤 2, 乾 6, 兌 7, 艮 8).</p>
+    <p>The trigram fixes eight directions around you: four favourable (生氣 Sheng Qi, 天醫 Tian Yi, 延年 Yan Nian, 伏位 Fu Wei) and four to avoid (禍害 Huo Hai, 六煞 Liu Sha, 五鬼 Wu Gui, 絕命 Jue Ming), by the 八宅大遊年 line-change rule. The calculator applies the same table the <a href="/fengshui">home audit</a> uses, so the two always agree.</p>
+    <table class="grp"><thead><tr><th>Group</th><th>Trigrams</th><th>Favourable directions</th></tr></thead><tbody>
+    <tr><td>East 東四命</td><td>坎 1 · 震 3 · 巽 4 · 離 9</td><td>N, E, SE, S</td></tr>
+    <tr><td>West 西四命</td><td>坤 2 · 乾 6 · 兌 7 · 艮 8</td><td>NE, SW, W, NW</td></tr></tbody></table>
+  </div>
+
+  <div class="sec">
+    <h2>Next steps</h2>
+    <div class="cta"><a class="btn primary" href="/fengshui">Audit your whole home</a><a class="btn" href="/start">Full BaZi reading</a></div>
+  </div>
+</main>
+<div class="learnstrip">Learn more: <a href="/learn/bed-direction-guide">Bed direction guide</a><a href="/learn/eight-house-directions">Eight House directions</a><a href="/learn/what-is-bazi">What is BaZi?</a></div>
+<footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var NS="http://www.w3.org/2000/svg";
+  var ORDER=["N","NE","E","SE","S","SW","W","NW"];
+  function el(n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;return e}
+  function pt(cx,cy,r,deg){var a=(deg-90)*Math.PI/180;return[cx+r*Math.cos(a),cy+r*Math.sin(a)]}
+  function draw(stars){
+    var s=$("compass");while(s.firstChild)s.removeChild(s.firstChild);
+    var cx=170,cy=170,R=150,r=34,by={};stars.forEach(function(x){by[x.dir]=x});
+    ORDER.forEach(function(d,i){
+      var x=by[d],c=i*45,a0=c-22.5,a1=c+22.5,p1=pt(cx,cy,R,a0),p2=pt(cx,cy,R,a1),p3=pt(cx,cy,r,a1),p4=pt(cx,cy,r,a0);
+      var path="M"+p1+" A"+R+","+R+" 0 0 1 "+p2+" L"+p3+" A"+r+","+r+" 0 0 0 "+p4+" Z";
+      s.appendChild(el("path",{d:path,fill:x.good?"#cfe9d3":"#f8d3cf",stroke:x.good?"#1e7d32":"#b3261e","stroke-width":1.5}));
+      var l=pt(cx,cy,98,c);   // one anchor per sector, three stacked lines (no radial overlap on E/W)
+      s.appendChild(el("text",{x:l[0],y:l[1]-12,"text-anchor":"middle","font-size":15,"font-weight":700,fill:"#2b2620"},d));
+      s.appendChild(el("text",{x:l[0],y:l[1]+6,"text-anchor":"middle","font-size":15,"font-weight":700,fill:x.good?"#14551f":"#8f1d17"},x.star));
+      s.appendChild(el("text",{x:l[0],y:l[1]+20,"text-anchor":"middle","font-size":10.5,fill:"#4f483f"},x.star_pinyin));
+    });
+    s.appendChild(el("circle",{cx:cx,cy:cy,r:r-4,fill:"#fff",stroke:"#e5ded2"}));
+    s.appendChild(el("text",{x:cx,y:cy+5,"text-anchor":"middle","font-size":14,"font-weight":700,fill:"#8a6d1f"},"N ↑"));
+  }
+  function fill(id,items){
+    var o=$(id);o.textContent="";
+    items.forEach(function(x){var li=document.createElement("li");
+      li.appendChild(document.createTextNode(x.dir+" "));
+      var z=document.createElement("span");z.lang="zh-Hans";z.textContent=x.star;li.appendChild(z);
+      var sm=document.createElement("small");sm.textContent=" "+x.star_pinyin+" ("+(x.score>0?"+":"")+x.score.toFixed(1)+")";li.appendChild(sm);o.appendChild(li)});
+  }
+  function clear(){["dob-e","sex-e","form-e"].forEach(function(i){$(i).textContent=""})}
+  $("f").addEventListener("submit",function(e){
+    e.preventDefault();clear();
+    var dob=$("dob").value,sx=document.querySelector("input[name=sex]:checked"),bad=false;
+    if(!dob){$("dob-e").textContent="Enter your birth date.";bad=true}
+    else if(dob<"1900-01-01"||dob>"2100-12-31"){$("dob-e").textContent="Use a date between 1900 and 2100.";bad=true}
+    if(!sx){$("sex-e").textContent="Choose male or female.";bad=true}
+    if(bad)return;
+    $("go").disabled=true;
+    fetch("/api/pub/kua?dob="+encodeURIComponent(dob)+"&sex="+sx.value).then(function(r){
+      return r.json().then(function(j){if(!r.ok)throw new Error(typeof j.detail==="string"?j.detail:"Check the date and try again.");return j})
+    }).then(function(d){
+      $("r-num").textContent=d.gua_num;$("r-gua").textContent=d.gua;$("r-py").textContent=d.gua_pinyin;
+      var g=$("r-grp");g.className="grp "+(d.group==="East"?"east":"west");
+      g.textContent=d.group+" group · ";var z=document.createElement("span");z.lang="zh-Hans";z.textContent=d.group_zh;g.appendChild(z);
+      $("r-lichun").textContent="Counted as year "+d.lichun_year+": your year turned on 立春, "+d.lichun_date+".";
+      draw(d.stars);fill("bed",d.best_bed);fill("desk",d.best_desk);
+      $("res").hidden=false;$("res").scrollIntoView({behavior:"smooth",block:"start"});
+    }).catch(function(err){$("form-e").textContent=err.message||"Something went wrong. Try again.";$("res").hidden=true})
+    .then(function(){$("go").disabled=false});
+  });
+})();
+</script>
+</body></html>

@@ -500,7 +500,7 @@ function renderHomes() {
   }));
 }
 $("#btn-addhome").addEventListener("click", async () => {
-  const name = (prompt("Name this home (e.g. TowerB #02-19):",
+  const name = (prompt("Name this home (e.g. Sunrise Court #02-19):",
                        `Home ${homes.length + 1}`) || "").trim();
   if (!name) return;
   const r = await api(`/api/pub/w/${token}/homes`, {method: "POST",
@@ -528,7 +528,7 @@ function resetCanvas() {
 }
 async function ensureHome() {
   if (cur) return cur;
-  const name = (prompt("Name this home 房产名 (e.g. TowerB #02-19):",
+  const name = (prompt("Name this home 房产名 (e.g. Sunrise Court #02-19):",
                        "My home") || "My home").trim();
   const r = await api(`/api/pub/w/${token}/homes`, {method: "POST",
     headers: {"Content-Type": "application/json"},
@@ -1773,5 +1773,5 @@ function chartBlock(tag, cb, scores) {
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 <div class="learnstrip"><b>Learn 知识库:</b> <a href="/learn/bed-direction-guide">Bed placement and direction</a> <a href="/learn/flying-stars-2027">Flying stars 2027</a> <a href="/learn/eight-house-directions">Eight House basics</a></div>
 <footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
-<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
 </body></html>

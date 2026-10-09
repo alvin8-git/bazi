@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 745" role="img" aria-label="Room plan with eight compass sectors around a centre. For the fictional sample, day stem 己 gives 文昌 branch 酉, which is the West 兌 sector, shaded gold. A desk sits in the West sector with its back to the solid west wall, facing east (arrow). The door is on the opposite east wall, in view and not behind the desk. Legend: desk in the 文昌 sector, back to a solid wall, door in view, not behind." font-family="system-ui, 'Noto Sans SC', sans-serif">
+<title>Room plan: 文昌 desk corner</title>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b2620"/></marker>
+<marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8a6d1f"/></marker>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b03a2e"/></marker></defs>
+<rect width="1180" height="745" fill="#faf7f2"/>
+<text x="590" y="44" font-size="28" fill="#2b2620" text-anchor="middle" font-weight="bold" >The 文昌 corner for day stem 己</text>
+<text x="590" y="78" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >己 → 酉 (文昌 branch) → 兌 West sector · sample 王大明 (fictional)</text>
+<rect x="250" y="130" width="200" height="150" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="350.0" y="160" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="bold" >NW 乾</text>
+<rect x="450" y="130" width="200" height="150" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="550.0" y="160" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="bold" >N 坎</text>
+<rect x="650" y="130" width="200" height="150" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="750.0" y="160" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="bold" >NE 艮</text>
+<rect x="250" y="280" width="200" height="150" fill="#f1e6c4" stroke="#e5ded2" stroke-width="2"/>
+<text x="350.0" y="310" font-size="20" fill="#8a6d1f" text-anchor="middle" font-weight="bold" >W 兌</text>
+<rect x="450" y="280" width="200" height="150" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="550.0" y="310" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="bold" >中 centre</text>
+<rect x="650" y="280" width="200" height="150" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="750.0" y="310" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="bold" >E 震</text>
+<rect x="250" y="430" width="200" height="150" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="350.0" y="460" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="bold" >SW 坤</text>
+<rect x="450" y="430" width="200" height="150" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="550.0" y="460" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="bold" >S 離</text>
+<rect x="650" y="430" width="200" height="150" fill="#fff" stroke="#e5ded2" stroke-width="2"/>
+<text x="750.0" y="460" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="bold" >SE 巽</text>
+<rect x="250" y="130" width="600" height="450" fill="none" stroke="#2b2620" stroke-width="8"/>
+<rect x="844" y="315" width="12" height="80" fill="#faf7f2"/>
+<path d="M850,315 A80,80 0 0 0 930,395" fill="none" stroke="#2b2620" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="850" y1="315" x2="930" y2="395" stroke="#2b2620" stroke-width="3" />
+<text x="864" y="428" font-size="20" fill="#2b2620" text-anchor="start" font-weight="bold" >door 門</text>
+<text x="864" y="452" font-size="20" fill="#6f675d" text-anchor="start" font-weight="normal" >(east wall)</text>
+<circle cx="284" cy="375" r="16" fill="#fff" stroke="#2b2620" stroke-width="2"/>
+<rect x="310" y="348" width="70" height="56" rx="4" fill="#fff" stroke="#2b2620" stroke-width="3" />
+<text x="345" y="383" font-size="20" fill="#2b2620" text-anchor="middle" font-weight="bold" >desk</text>
+<line x1="392" y1="375" x2="550" y2="375" stroke="#b03a2e" stroke-width="4" marker-end="url(#ar)"/>
+<text x="595" y="408" font-size="20" fill="#b03a2e" text-anchor="middle" font-weight="bold" >facing 朝向 E</text>
+<text x="230" y="340" font-size="20" fill="#6f675d" text-anchor="end" font-weight="normal" >solid</text>
+<text x="230" y="364" font-size="20" fill="#6f675d" text-anchor="end" font-weight="normal" >wall</text>
+<text x="230" y="388" font-size="20" fill="#6f675d" text-anchor="end" font-weight="normal" >牆</text>
+<text x="350.0" y="426" font-size="20" fill="#8a6d1f" text-anchor="middle" font-weight="bold" >文昌 sector</text>
+<text x="350.0" y="314" font-size="20" fill="#2b2620" text-anchor="middle" font-weight="normal" ></text>
+<text x="80" y="152" font-size="22" fill="#2b2620" text-anchor="start" font-weight="bold" >N ↑</text>
+<rect x="150" y="620" width="880" height="70" rx="10" fill="#fff" stroke="#e5ded2" stroke-width="2" />
+<text x="590" y="650" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="bold" >desk in the 文昌 sector · back to a solid wall</text>
+<text x="590" y="678" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="bold" >door in view, not behind</text>
+<text x="590" y="725" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >gold = 文昌 sector (W 兌) · red arrow = facing · dashed arc = door swing</text>
+</svg>

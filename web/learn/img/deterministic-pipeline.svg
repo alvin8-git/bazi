@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 718" role="img" aria-label="Left-to-right pipeline. Inputs: date, time, place, sex. Fixed rules: solar terms 節氣, stems and branches 干支, ten gods 十神, useful god 用神, eight mansions 八宅, flying stars 玄空. Outputs: chart, scores, dates. A bracket marks same inputs give same outputs. A second lane, interpretation (method notes), is the only judgement layer." font-family="system-ui, 'Noto Sans SC', sans-serif">
+<title>Deterministic pipeline</title>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b2620"/></marker>
+<marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8a6d1f"/></marker>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b03a2e"/></marker></defs>
+<rect width="1180" height="718" fill="#faf7f2"/>
+<text x="590" y="40" font-size="28" fill="#2b2620" text-anchor="middle" font-weight="bold" >Deterministic pipeline: same inputs, same outputs</text>
+<rect x="20" y="96" width="260" height="378" rx="10" fill="#fff" stroke="#2b2620" stroke-width="3" />
+<text x="150.0" y="132" font-size="24" fill="#8a6d1f" text-anchor="middle" font-weight="bold" >inputs 輸入</text>
+<rect x="36" y="156" width="228" height="42" rx="6" fill="#faf7f2" stroke="#e5ded2" stroke-width="2" />
+<text x="150.0" y="185" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="normal" >date 日期</text>
+<rect x="36" y="208" width="228" height="42" rx="6" fill="#faf7f2" stroke="#e5ded2" stroke-width="2" />
+<text x="150.0" y="237" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="normal" >time 時辰</text>
+<rect x="36" y="260" width="228" height="42" rx="6" fill="#faf7f2" stroke="#e5ded2" stroke-width="2" />
+<text x="150.0" y="289" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="normal" >place 地點</text>
+<rect x="36" y="312" width="228" height="42" rx="6" fill="#faf7f2" stroke="#e5ded2" stroke-width="2" />
+<text x="150.0" y="341" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="normal" >sex 性別</text>
+<rect x="410" y="96" width="360" height="378" rx="10" fill="#fff" stroke="#2b2620" stroke-width="3" />
+<text x="590.0" y="132" font-size="24" fill="#8a6d1f" text-anchor="middle" font-weight="bold" >fixed rules 規則</text>
+<rect x="426" y="156" width="328" height="42" rx="6" fill="#faf7f2" stroke="#e5ded2" stroke-width="2" />
+<text x="590.0" y="185" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="normal" >solar terms 節氣</text>
+<rect x="426" y="208" width="328" height="42" rx="6" fill="#faf7f2" stroke="#e5ded2" stroke-width="2" />
+<text x="590.0" y="237" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="normal" >stems &amp; branches 干支</text>
+<rect x="426" y="260" width="328" height="42" rx="6" fill="#faf7f2" stroke="#e5ded2" stroke-width="2" />
+<text x="590.0" y="289" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="normal" >ten gods 十神</text>
+<rect x="426" y="312" width="328" height="42" rx="6" fill="#faf7f2" stroke="#e5ded2" stroke-width="2" />
+<text x="590.0" y="341" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="normal" >useful god 用神</text>
+<rect x="426" y="364" width="328" height="42" rx="6" fill="#faf7f2" stroke="#e5ded2" stroke-width="2" />
+<text x="590.0" y="393" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="normal" >eight mansions 八宅</text>
+<rect x="426" y="416" width="328" height="42" rx="6" fill="#faf7f2" stroke="#e5ded2" stroke-width="2" />
+<text x="590.0" y="445" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="normal" >flying stars 玄空</text>
+<rect x="900" y="96" width="260" height="378" rx="10" fill="#fff" stroke="#2b2620" stroke-width="3" />
+<text x="1030.0" y="132" font-size="24" fill="#8a6d1f" text-anchor="middle" font-weight="bold" >outputs 輸出</text>
+<rect x="916" y="156" width="228" height="42" rx="6" fill="#faf7f2" stroke="#e5ded2" stroke-width="2" />
+<text x="1030.0" y="185" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="normal" >chart 命盤</text>
+<rect x="916" y="208" width="228" height="42" rx="6" fill="#faf7f2" stroke="#e5ded2" stroke-width="2" />
+<text x="1030.0" y="237" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="normal" >scores 分數</text>
+<rect x="916" y="260" width="228" height="42" rx="6" fill="#faf7f2" stroke="#e5ded2" stroke-width="2" />
+<text x="1030.0" y="289" font-size="22" fill="#2b2620" text-anchor="middle" font-weight="normal" >dates 日期</text>
+<line x1="284" y1="285.0" x2="404" y2="285.0" stroke="#2b2620" stroke-width="4" marker-end="url(#ah)"/>
+<line x1="774" y1="285.0" x2="894" y2="285.0" stroke="#2b2620" stroke-width="4" marker-end="url(#ah)"/>
+<path d="M20,496 v14 h1140 v-14" fill="none" stroke="#8a6d1f" stroke-width="4"/>
+<text x="590" y="548" font-size="26" fill="#8a6d1f" text-anchor="middle" font-weight="bold" >same inputs → same outputs</text>
+<text x="590" y="578" font-size="20" fill="#6f675d" text-anchor="middle" font-weight="normal" >lane 1 · computed, recomputable, no opinion</text>
+<rect x="20" y="608" width="1140" height="84" rx="10" fill="#fbeeea" stroke="#b03a2e" stroke-width="3" stroke-dasharray="9 6"/>
+<text x="590" y="644" font-size="24" fill="#b03a2e" text-anchor="middle" font-weight="bold" >interpretation 解讀 (method notes)</text>
+<text x="590" y="676" font-size="24" fill="#b03a2e" text-anchor="middle" font-weight="bold" >= the only judgement layer</text>
+</svg>
