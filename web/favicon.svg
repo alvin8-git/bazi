@@ -1,1 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#faf7f2"/><g fill="#8a6d1f"><rect x="12" y="16" width="40" height="7" rx="2"/><rect x="12" y="28.5" width="40" height="7" rx="2"/><rect x="12" y="41" width="40" height="7" rx="2"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="bazifor.me: the character 八 in white on a red seal">
+<rect x="4" y="4" width="92" height="92" rx="10" fill="#c7301d"/>
+<path d="M43 24 C40 36 34 50 24 62 C21 66 17 70 14 73 L20 77 C27 71 33 63 38 54 C42 47 46 38 48 30 Z" fill="#faf7f2"/>
+<path d="M54 22 C56 32 60 44 66 55 C71 64 77 71 84 76 L88 71 C84 66 80 60 75 52 C70 43 65 32 62 21 Z" fill="#faf7f2"/>
+</svg>

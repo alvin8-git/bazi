@@ -526,8 +526,8 @@ def test_sitemap_lastmod_llms_robots_favicon_indexnow():
         assert f"User-agent: {bot}\n" in rb
     assert rb.count("Content-Signal: search=yes, ai-input=yes, ai-train=yes") == 10 and rb.count("Disallow: /w/") == 10
     assert "Sitemap: https://bazifor.me/sitemap.xml" in rb
-    for ico in ("/favicon.ico", "/favicon.svg"):
-        assert client.get(ico).status_code == 200 and "svg" in client.get(ico).headers["content-type"]
+    assert client.get("/favicon.svg").status_code == 200 and "svg" in client.get("/favicon.svg").headers["content-type"]
+    assert client.get("/favicon.ico").status_code == 200 and client.get("/favicon.ico").headers["content-type"] == "image/x-icon"
     key = (ROOT_DIR / "data/seo/indexnow.key").read_text().strip()
     assert _re.fullmatch(r"[0-9a-f]{32}", key) and client.get(f"/{key}.txt").text == key
     assert client.get("/0123456789abcdef0123456789abcdef.txt").status_code == 404

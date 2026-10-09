@@ -1655,10 +1655,22 @@ def _html_unescape(s: str) -> str:
     return _h.unescape(s)
 
 
-@router.get("/favicon.ico")
 @router.get("/favicon.svg")
 def favicon():
     return FileResponse(ROOT / "web/favicon.svg", media_type="image/svg+xml",
+                        headers={"Cache-Control": "public, max-age=604800"})
+
+
+@router.get("/favicon.ico")
+def favicon_ico():
+    return FileResponse(ROOT / "web/favicon.ico", media_type="image/x-icon",
+                        headers={"Cache-Control": "public, max-age=604800"})
+
+
+@router.get("/apple-touch-icon.png")
+@router.get("/apple-touch-icon-precomposed.png")
+def apple_touch_icon():
+    return FileResponse(ROOT / "web/apple-touch-icon.png", media_type="image/png",
                         headers={"Cache-Control": "public, max-age=604800"})
 
 
