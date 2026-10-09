@@ -1667,6 +1667,18 @@ def favicon_ico():
                         headers={"Cache-Control": "public, max-age=604800"})
 
 
+@router.get("/manifest.webmanifest")
+def web_manifest():
+    return FileResponse(ROOT / "web/manifest.webmanifest", media_type="application/manifest+json",
+                        headers={"Cache-Control": "public, max-age=604800"})
+
+
+@router.get("/browserconfig.xml")
+def browserconfig():
+    return FileResponse(ROOT / "web/browserconfig.xml", media_type="application/xml",
+                        headers={"Cache-Control": "public, max-age=604800"})
+
+
 @router.get("/apple-touch-icon.png")
 @router.get("/apple-touch-icon-precomposed.png")
 def apple_touch_icon():
