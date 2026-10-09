@@ -15,8 +15,9 @@
 <link rel="alternate" hreflang="en" href="https://bazifor.me/learn/what-is-bazi">
 <link rel="alternate" hreflang="zh-CN" href="https://bazifor.me/zh/learn/what-is-bazi">
 <link rel="alternate" hreflang="x-default" href="https://bazifor.me/learn/what-is-bazi">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "八字排盘原理：四柱、日主与真太阳时", "description": "八字把出生时刻换算成四柱干支。本文讲新加坡、马来西亚出生者如何排盘，附1988年示例命盘，并说明立春分界和真太阳时校正。", "datePublished": "2026-09-16", "dateModified": "2026-10-08", "inLanguage": "zh-CN", "author": {"@type": "Person", "name": "BaziMaster", "url": "https://bazifor.me/author"}, "publisher": {"@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me"}, "mainEntityOfPage": "https://bazifor.me/zh/learn/what-is-bazi", "wordCount": 1403, "image": ["https://bazifor.me/static/learn/img/hero/what-is-bazi.jpg", "https://bazifor.me/static/learn/img/four-pillars-grid.svg"]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "八字排盘原理：四柱、日主与真太阳时", "description": "八字把出生时刻换算成四柱干支。本文讲新加坡、马来西亚出生者如何排盘，附1988年示例命盘，并说明立春分界和真太阳时校正。", "datePublished": "2026-09-16", "dateModified": "2026-10-08", "inLanguage": "zh-CN", "author": {"@type": "Person", "name": "BaziMaster", "url": "https://bazifor.me/author"}, "publisher": {"@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me"}, "mainEntityOfPage": "https://bazifor.me/zh/learn/what-is-bazi", "wordCount": 1711, "image": ["https://bazifor.me/static/learn/img/hero/what-is-bazi.jpg", "https://bazifor.me/static/learn/img/four-pillars-grid.svg"]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "知识库", "item": "https://bazifor.me/zh/learn"}, {"@type": "ListItem", "position": 2, "name": "八字排盘原理：四柱、日主与真太阳时", "item": "https://bazifor.me/zh/learn/what-is-bazi"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "八字是什么？", "acceptedAnswer": {"@type": "Answer", "text": "八字由四柱八个字组成，即年柱、月柱、日柱和时柱，每柱是一个天干加一个地支。第一步是历法计算，之后的解读才需要解释规则。"}}, {"@type": "Question", "name": "八字的年从什么时候换？", "acceptedAnswer": {"@type": "Answer", "text": "年柱在立春换年，不在农历春节，也不在1月1日。2027年的立春是2027-02-04，所以1月下旬或2月初出生的人可能属于上一年。"}}, {"@type": "Question", "name": "新加坡和马来西亚出生的人，八字要怎么校正时间？", "acceptedAnswer": {"@type": "Answer", "text": "新加坡在1982-01-01以前使用UTC+7:30，之后使用UTC+8；马来西亚半岛自1982-01-01起使用UTC+8。引擎先套用这个偏移，再按经度和均时差算真太阳时。"}}, {"@type": "Question", "name": "为什么排八字要用真太阳时？", "acceptedAnswer": {"@type": "Answer", "text": "钟表时间是政治约定，八字用真太阳时，取决于出生地的经度和均时差。样例钟表09:30属于巳时，真太阳时08:16却属于辰时，不校正，时柱就错。"}}, {"@type": "Question", "name": "排八字是确定性的吗？", "acceptedAnswer": {"@type": "Answer", "text": "计算是精确的，解读依照成文的规则。同一地点、同一分钟出生的两人，任何合格的排盘者都排出相同的八字，但确定性不等于宿命。"}}]}</script>
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;
 --gold:#8a6d1f;--line:#e5ded2;--tint:#f3ecdd;--r:12px}
@@ -92,6 +93,7 @@ font-size:13px;color:var(--muted)}
 h2.grp{font-size:18px;border:0;margin:34px 0 12px;padding:0;color:var(--ink);display:flex;
 align-items:center;gap:10px}
 h2.grp::before{content:"";width:22px;height:4px;border-radius:2px;background:var(--gold)}
+.cta-inline{margin:18px 0;padding:10px 14px;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;background:var(--card)}.cta-inline a{color:var(--accent);font-weight:600;text-decoration:none}
 .cta{margin-top:44px;background:var(--card);border:1px solid var(--line);
 border-radius:var(--r);padding:22px 20px;text-align:center}
 .cta b{font-size:19px;line-height:1.35;display:block;margin-bottom:6px}
@@ -126,7 +128,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
 <p>十天干与十二地支组成六十甲子，同一个日柱每60天重现，同一个年柱每60年重现。</p>
 <blockquote class="keyfacts"><p><strong>要点</strong></p><ul><li>年柱在立春换年，2027年的立春是2027-02-04（相邻两年分别是2026-02-04和2028-02-04）。</li><li>一张命盘有4柱8个字，即4个天干和4个地支。</li><li>新加坡在1982-01-01以前使用UTC+7:30，之后使用UTC+8。</li><li>马来西亚半岛自1982-01-01起使用UTC+8，同样的校正适用于当地出生者。</li><li>引擎依子平惯例，用经度和均时差把钟表时间换算成真太阳时。</li><li>日主强弱用旺相休囚死与通根的框架判断。</li></ul></blockquote>
 <figure><img src="/static/learn/img/four-pillars-grid.svg" alt="示例命盘戊辰 乙卯 己巳 戊辰按四柱排列，日干己标为日主" loading="lazy" width="720"><figcaption>示例命盘戊辰 乙卯 己巳 戊辰按四柱排列，日干己标为日主</figcaption></figure>
-<h2>八字命盘怎么计算？</h2>
+<p class="cta-inline"><a href="/start">把这些规则用在你自己的命盘上：免费排盘 →</a></p><h2>八字命盘怎么计算？</h2>
 <p>计算分三步，都不涉及主观判断。</p>
 <ol>
 <li><b>先定太阳的时刻。</b>钟表时间是政治约定。八字用真太阳时，取决于出生地与时区子午线的距离，以及均时差（日晷与钟表的季节偏差）。</li>
@@ -142,7 +144,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
 <p><b>第四步，结论。</b>身弱需要扶助，所以用神是<b>火与土</b>，对应的颜色是红 紫 黄 棕。他的命卦是震，属东四命。大运顺行，从乙卯起，起运年龄6.7岁，按清明节气推算。每行结论都是一条规则用一次，因此可逐条引用。</p>
 <p>五行的生克对照如下。</p>
 <div class="tablewrap" tabindex="0" role="region" aria-label="表格"><table><thead><tr><th>五行</th><th>生</th><th>克</th><th>颜色系</th></tr></thead><tbody><tr><td>木</td><td>火</td><td>土</td><td>绿 青</td></tr><tr><td>火</td><td>土</td><td>金</td><td>红 紫</td></tr><tr><td>土</td><td>金</td><td>水</td><td>黄 棕</td></tr><tr><td>金</td><td>水</td><td>木</td><td>白 金</td></tr><tr><td>水</td><td>木</td><td>火</td><td>黑 蓝</td></tr></tbody></table></div>
-<h2>为什么说排盘是确定性的？</h2>
+<p class="cta-inline"><a href="/start">把这些规则用在你自己的命盘上：免费排盘 →</a></p><h2>为什么说排盘是确定性的？</h2>
 <p><i>计算</i>是精确的，<i>解读</i>依照成文的规则。解读说你日主偏弱、火和土扶助你，结论来自一条可以查到的规则，而非情绪或模板。在 bazifor.me，每一行解读都引用产生它的规则，因为无法核对的说法只是营销，不是知识。</p>
 <p>确定性不等于宿命。命盘只是起点，叠加大运和流年后，同样的四柱会读出不同结果，而选择不在命盘里。</p>
 <h2>新加坡和马来西亚哪些错误会改变四柱？</h2>
@@ -153,6 +155,17 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
 <li><b>凭记忆填出生时间。</b>“大约9点”可能落在两个时辰。时间不确定时，解读应说明哪些结论依赖它。</li>
 </ol>
 <p>组屋和公寓不进入命盘，而属于风水的居家层，喜用五行和命卦在那里变成各房间的颜色与方位。详见<a href="/zh/learn/useful-god-colors">用神与颜色指南</a>和<a href="/zh/learn/bed-direction-guide">床头朝向指南</a>。</p>
+<h2>常见问题</h2>
+<h3>八字是什么？</h3>
+<p>八字由四柱八个字组成，即年柱、月柱、日柱和时柱，每柱是一个天干加一个地支。第一步是历法计算，之后的解读才需要解释规则。</p>
+<h3>八字的年从什么时候换？</h3>
+<p>年柱在立春换年，不在农历春节，也不在1月1日。2027年的立春是2027-02-04，所以1月下旬或2月初出生的人可能属于上一年。</p>
+<h3>新加坡和马来西亚出生的人，八字要怎么校正时间？</h3>
+<p>新加坡在1982-01-01以前使用UTC+7:30，之后使用UTC+8；马来西亚半岛自1982-01-01起使用UTC+8。引擎先套用这个偏移，再按经度和均时差算真太阳时。</p>
+<h3>为什么排八字要用真太阳时？</h3>
+<p>钟表时间是政治约定，八字用真太阳时，取决于出生地的经度和均时差。样例钟表09:30属于巳时，真太阳时08:16却属于辰时，不校正，时柱就错。</p>
+<h3>排八字是确定性的吗？</h3>
+<p>计算是精确的，解读依照成文的规则。同一地点、同一分钟出生的两人，任何合格的排盘者都排出相同的八字，但确定性不等于宿命。</p>
 <h2>资料来源与方法</h2>
 <ul>
 <li><b>节气月与立春年界：</b>子平历法惯例，年和月都在节气交接处更替。</li>

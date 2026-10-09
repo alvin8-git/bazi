@@ -15,8 +15,9 @@
 <link rel="alternate" hreflang="en" href="https://bazifor.me/learn/is-bazi-deterministic">
 <link rel="alternate" hreflang="zh-CN" href="https://bazifor.me/zh/learn/is-bazi-deterministic">
 <link rel="alternate" hreflang="x-default" href="https://bazifor.me/learn/is-bazi-deterministic">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "八字是确定性的吗？为什么我们用计算而不是聊天机器人", "description": "八字的计算是确定性的，解读则受规则引导。本文说明哪些部分是精确计算、哪些是解读，为何条条引用规则的读法胜过聊天机器人，附1988年样例逐步演示，并提醒新加坡与马来西亚读者留意本地时间规则。", "datePublished": "2026-09-16", "dateModified": "2026-10-09", "inLanguage": "zh-CN", "author": {"@type": "Person", "name": "BaziMaster", "url": "https://bazifor.me/author"}, "publisher": {"@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me"}, "mainEntityOfPage": "https://bazifor.me/zh/learn/is-bazi-deterministic", "wordCount": 1827, "image": ["https://bazifor.me/static/learn/img/hero/is-bazi-deterministic.jpg", "https://bazifor.me/static/learn/img/deterministic-pipeline.svg"]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "八字是确定性的吗？为什么我们用计算而不是聊天机器人", "description": "八字的计算是确定性的，解读则受规则引导。本文说明哪些部分是精确计算、哪些是解读，为何条条引用规则的读法胜过聊天机器人，附1988年样例逐步演示，并提醒新加坡与马来西亚读者留意本地时间规则。", "datePublished": "2026-09-16", "dateModified": "2026-10-09", "inLanguage": "zh-CN", "author": {"@type": "Person", "name": "BaziMaster", "url": "https://bazifor.me/author"}, "publisher": {"@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me"}, "mainEntityOfPage": "https://bazifor.me/zh/learn/is-bazi-deterministic", "wordCount": 2139, "image": ["https://bazifor.me/static/learn/img/hero/is-bazi-deterministic.jpg", "https://bazifor.me/static/learn/img/deterministic-pipeline.svg"]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "知识库", "item": "https://bazifor.me/zh/learn"}, {"@type": "ListItem", "position": 2, "name": "八字是确定性的吗？为什么我们用计算而不是聊天机器人", "item": "https://bazifor.me/zh/learn/is-bazi-deterministic"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "八字是确定性的吗？", "acceptedAnswer": {"@type": "Answer", "text": "大部分结构是日历上的算术，在写明的惯例下每一步只有一个正确答案。同样的出生资料或平面图永远得出同样的结果。"}}, {"@type": "Question", "name": "确定性等于宿命论吗？", "acceptedAnswer": {"@type": "Answer", "text": "不等于。这个词描述的是计算，不是你的人生。引擎声明它不预测事件，命盘是起始条件和倾向的地图。"}}, {"@type": "Question", "name": "八字解读有用生成式AI来写吗？", "acceptedAnswer": {"@type": "Answer", "text": "没有。本站的方法声明说得很直白：没有任何生成式AI撰写解读，文字是规则输出加手写指南，每一行输出都注明所用的古典规则。"}}, {"@type": "Question", "name": "新加坡与马来西亚出生的人，哪些时间规则会改变八字？", "acceptedAnswer": {"@type": "Answer", "text": "立春年界、时区和真太阳时都会。新加坡在1982-01-01之前用UTC+7:30，之后用UTC+8，马来西亚自1982-01-01起用UTC+8。换算用经度和时差方程。"}}, {"@type": "Question", "name": "各派对八字有分歧时怎么办？", "acceptedAnswer": {"@type": "Answer", "text": "引擎在传统有分歧之处记录自己的选择，并标为有争议。例如强弱一步，引擎按地支本身的五行读月令，旺相休囚死一派按季节的五行读。"}}]}</script>
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;
 --gold:#8a6d1f;--line:#e5ded2;--tint:#f3ecdd;--r:12px}
@@ -92,6 +93,7 @@ font-size:13px;color:var(--muted)}
 h2.grp{font-size:18px;border:0;margin:34px 0 12px;padding:0;color:var(--ink);display:flex;
 align-items:center;gap:10px}
 h2.grp::before{content:"";width:22px;height:4px;border-radius:2px;background:var(--gold)}
+.cta-inline{margin:18px 0;padding:10px 14px;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;background:var(--card)}.cta-inline a{color:var(--accent);font-weight:600;text-decoration:none}
 .cta{margin-top:44px;background:var(--card);border:1px solid var(--line);
 border-radius:var(--r);padding:22px 20px;text-align:center}
 .cta b{font-size:19px;line-height:1.35;display:block;margin-bottom:6px}
@@ -121,7 +123,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
 <p><b>表1：样例命盘逐步演示</b></p>
 <div class="tablewrap" tabindex="0" role="region" aria-label="表格"><table><thead><tr><th>步骤</th><th>规则</th><th>样例结果</th></tr></thead><tbody><tr><td>真太阳时</td><td>按经度与时差方程换算钟表时间</td><td>09:30变成08:16</td></tr><tr><td>四柱</td><td>节气、立春年界、六十甲子周期</td><td>戊辰 乙卯 己巳 戊辰</td></tr><tr><td>强弱</td><td>月令、帮扶、耗泄、通根</td><td>身弱，分数-0.97</td></tr><tr><td>喜用五行</td><td>先扶抑法，再调候法</td><td>火和土</td></tr><tr><td>十神</td><td>每个天干与日主的关系</td><td>劫财48.1%，七杀29.6%</td></tr><tr><td>大运</td><td>阳男阴女顺行，起运＝距节日数/3</td><td>从乙卯顺行，起运6.7岁</td></tr></tbody></table></div>
 <p>用神一步按既定顺序使用四种古典方法（扶抑法、调候法、通关、病药）。样例的前两种得出火和土为喜用，木、水、金为忌神。顺序一换就是另一个体系，所以顺序是写明的。</p>
-<h2>强弱规则怎样体现这个思路？</h2>
+<p class="cta-inline"><a href="/start">把这些规则用在你自己的命盘上：免费排盘 →</a></p><h2>强弱规则怎样体现这个思路？</h2>
 <p>强弱规则是个好例子，因为它看起来像判断，其实是固定的四步。对样例日主己（土），引擎这样做。</p>
 <ol>
 <li><b>月令。</b> 月支卯属木，木克土，月令状态为死，得分-2.0。</li>
@@ -137,7 +139,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
 <h2>各派在哪里有分歧？</h2>
 <p>引擎在传统有分歧之处记录自己的选择，并标为有争议。强弱一步就是一例。引擎按地支本身的五行读月令，旺相休囚死一派按季节的五行读，两者在换季前后可能不同。引擎的步骤文字点出另一种读法并举了例子，所以分歧在输出里是看得见的。</p>
 <p>起名的笔画按康熙字典对繁体字的计数。八十一数的判语在采用更细、有出处的表之前，使用两档量表。这些是写明的选择，不是隐藏的选择。</p>
-<h2>选工具时，确定性为什么重要？</h2>
+<p class="cta-inline"><a href="/start">把这些规则用在你自己的命盘上：免费排盘 →</a></p><h2>选工具时，确定性为什么重要？</h2>
 <p>不依规则、只生成流畅文字的工具，有三种失败方式，规则引擎没有。这些是关于方法的逻辑论点，不是对任何具体产品的测试（方法说明）。</p>
 <ul>
 <li><b>历法边界情形。</b> 立春界线、真太阳时和1982年前的新加坡时钟，每一项都会改变一柱。规则引擎每次按同样顺序套用。</li>
@@ -156,6 +158,17 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
 <li><b>真太阳时。</b> 换算用经度和时差方程，所以新加坡09:30的出生按08:16排盘。</li>
 <li><b>住家。</b> 组屋或公寓单位的方位和日期层，以你的大门朝向为输入。同样的朝向得出同样的输出，所以很容易拿第二个工具来核对。</li>
 </ul>
+<h2>常见问题</h2>
+<h3>八字是确定性的吗？</h3>
+<p>大部分结构是日历上的算术，在写明的惯例下每一步只有一个正确答案。同样的出生资料或平面图永远得出同样的结果。</p>
+<h3>确定性等于宿命论吗？</h3>
+<p>不等于。这个词描述的是计算，不是你的人生。引擎声明它不预测事件，命盘是起始条件和倾向的地图。</p>
+<h3>八字解读有用生成式AI来写吗？</h3>
+<p>没有。本站的方法声明说得很直白：没有任何生成式AI撰写解读，文字是规则输出加手写指南，每一行输出都注明所用的古典规则。</p>
+<h3>新加坡与马来西亚出生的人，哪些时间规则会改变八字？</h3>
+<p>立春年界、时区和真太阳时都会。新加坡在1982-01-01之前用UTC+7:30，之后用UTC+8，马来西亚自1982-01-01起用UTC+8。换算用经度和时差方程。</p>
+<h3>各派对八字有分歧时怎么办？</h3>
+<p>引擎在传统有分歧之处记录自己的选择，并标为有争议。例如强弱一步，引擎按地支本身的五行读月令，旺相休囚死一派按季节的五行读。</p>
 <h2>资料来源与方法</h2>
 <ul>
 <li><b>方法声明：</b> /method 的十条声明，包括确定性、每行的规则编号、真太阳时和不用生成式AI（方法说明）。</li>

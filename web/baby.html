@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chinese Baby Name Generator by Birth Date (BaZi 八字, 五格) | bazifor.me</title>
+<title>Chinese Baby Name Generator by Birth Date | bazifor.me</title>
 <meta name="description" content="Build a Chinese baby name from the birth chart: 用神 elements, 五格 strokes, 三才, meaning, sound and gender fit scored, plus a printable certificate. Free to use.">
 <link rel="canonical" href="https://bazifor.me/baby">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<meta property="og:title" content="Chinese Baby Name Generator by Birth Date (BaZi 八字, 五格) | bazifor.me">
+<meta property="og:title" content="Chinese Baby Name Generator by Birth Date | bazifor.me">
 <meta property="og:description" content="Build a Chinese baby name from the birth chart: 用神 elements, 五格 strokes, 三才, meaning, sound and gender fit scored, plus a printable certificate. Free to use.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bazifor.me/baby">
@@ -147,6 +147,7 @@ table.wg td.num{font-size:20px;font-weight:700}
 .rel.good b{color:var(--ji)}.rel.bad b{color:var(--xiong)}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 table.sl{border-collapse:collapse;width:100%;font-size:14px;margin-top:8px}
+table.exs{border-collapse:collapse;width:100%;font-size:14px;margin-top:8px}table.exs th,table.exs td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left}#example{overflow-x:auto}
 table.sl th,table.sl td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left}
 /* D · certificate */
 .cert{border:3px double #b8860b;border-radius:6px;padding:22px;background:#fffdf7;max-width:720px;margin:0 auto}
@@ -211,7 +212,7 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
   .then(v=>{document.getElementById("ver").textContent="v "+v.version}).catch(()=>{});</script>
 <header>
   <h1>Baby name builder · <span lang="zh-Hans">宝宝起名</span></h1>
-  <div class="sub">The chart, its 用神, and a name you build character by character — every rule cited.
+  <div class="sub">The chart, its 用神, and a name you build character by character, every rule cited.
     <a href="/start">← people workspace</a></div>
 </header>
 <main>
@@ -237,9 +238,28 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
         <button type="submit" class="btn">完整八字报告 Full BaZi report</button>
       </div>
       <div class="err" id="err" role="alert"></div>
-      <div class="note">For a due date the chart is provisional — recalculate after birth with the exact time.
+      <div class="note">For a due date the chart is provisional, recalculate after birth with the exact time.
         Singapore time assumed; true-solar correction applied. Birth data is not stored by this page.</div>
     </form>
+  </div>
+  <div class="sec" id="explainer">
+    <h2>What the name builder returns</h2>
+    <p>Every name you build is scored out of 100 in seven parts, and each part has a fixed weight: <b>用神</b> 30 (does each character carry an element your baby's BaZi chart needs), <b>五格</b> 25 (the five stroke-count grids), <b>三才</b> 15 (whether the elements of the heaven, person and earth grids support each other), <b>字义</b> 10 (what the characters mean, in 16 meaning categories), <b>音韵</b> 5 (tones, repeated sounds and unlucky homophones), <b>性别</b> 5 (whether the characters suit a boy or a girl) and <b>可信度</b> 10 (how far the engine can trust the data behind the other parts). The weights add up to 100.</p>
+    <p>The total maps to a grade: <b>上佳</b> (excellent) at 90 and above, <b>佳</b> (good) at 80 and above, <b>可</b> (fair) at 65 and above, and <b>待斟酌</b> (reconsider) below 65. A strong sound hit caps the grade at 待斟酌 whatever the total.</p>
+    <p>The sound layer checks two things. It looks for Mandarin sound-alikes, characters that sound like an unlucky or rude word, and it checks the English reading of the pinyin, since many Singapore and Malaysia families raise children who will be addressed in English at school and at work. Beside the score you also get the five grids with their 吉 or 凶 verdicts, the element of every character, its 康熙 stroke count, a short reading of what the name suggests, and a shortlist of up to eight names you can compare.</p>
+    <h2>How Singapore and Malaysia names are handled</h2>
+    <p>Families in Singapore and Malaysia usually know their surname by a Hokkien, Teochew or Cantonese romanisation such as Tan, Lim, Lee, Ng or Wong, while the scoring needs the Chinese character. Enter the Chinese surname you choose in the surname box (for example 王, 林, 李 or 吴) and the builder uses that character for the stroke count and the grids. The romanised spelling on a passport is a spelling of the character, not a different surname, so pick the character your family writes.</p>
+    <p>The 五格 use the <b>康熙</b> stroke count from the Kangxi dictionary, which counts the traditional form of each character. 祿 has more strokes than the simplified 禄, so the builder counts the traditional form and shows you the strokes it used. The chart is calculated for Singapore time with a true-solar correction, and a due date gives a provisional chart that you can recalculate after birth. Read <a href="/learn/how-chinese-baby-names-are-scored">how Chinese baby names are scored</a> for the full method.</p>
+  </div>
+  <div class="sec" id="example">
+    <h2>Example output</h2>
+    <p><b>Fictional example, computed by the engine.</b> A fictional baby girl born 2026-03-15 09:30 Singapore time, surname 王. The three names below are real engine output for that chart; each scores 佳 or better.</p>
+    <table class="exs" aria-label="Fictional example, computed by the engine">
+      <tr><th>Name</th><th>Pinyin</th><th>Elements</th><th>康熙 strokes</th><th>Meaning</th><th>Score</th><th>Grade</th></tr>
+      <tr><td><b>王熙乐</b></td><td>wáng xī lè</td><td>熙 火 fire, 乐 火 fire</td><td>王 4, 熙 14, 乐 15</td><td>bright and harmonious; happy and content</td><td>97.5 / 100</td><td>上佳 excellent</td></tr>
+      <tr><td><b>王暖璇</b></td><td>wáng nuǎn xuán</td><td>暖 火 fire, 璇 火 fire</td><td>王 4, 暖 13, 璇 16</td><td>warm-hearted; fine jade, a guiding star</td><td>96.5 / 100</td><td>上佳 excellent</td></tr>
+      <tr><td><b>王晨光</b></td><td>wáng chén guāng</td><td>晨 火 fire, 光 火 fire</td><td>王 4, 晨 11, 光 6</td><td>the hope of dawn; bright and open</td><td>96.0 / 100</td><td>上佳 excellent</td></tr>
+    </table>
   </div>
   <div id="app"></div>
 </main>
@@ -249,6 +269,8 @@ const EL = ["木", "火", "土", "金", "水"];
 const EL_EN = {"木": "wood", "火": "fire", "土": "earth", "金": "metal", "水": "water"};
 const GRID_EN = {"天格": "heaven · ancestry", "人格": "person · core", "地格": "earth · youth", "外格": "outer · social", "總格": "total · later life"};
 const L = (zh, en) => `<span class="bl">${zh}<small>${en}</small></span>`;
+// Lh: same markup as L, used in headings; the static headings for crawlers are in the explainer sections above #app
+const Lh = (zh, en) => `<span class="bl">${zh}<small>${en}</small></span>`;
 const Li = (zh, en) => `<span class="bl inl">${zh}<small>${en}</small></span>`;
 const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 const LUCK = {"吉": ["ji", "auspicious"], "凶/平": ["amber", "weak or neutral"], "中": ["ping", "neutral"], "凶": ["xiong", "adverse"]};
@@ -273,7 +295,7 @@ const complete = () => S.slots.slice(0, S.mode).every(Boolean);
 /* ---------- A · pillars ---------- */
 function pillarsBlock() {
   const P = S.chart;
-  return `<div class="sec"><h2>${L("四柱", "Four Pillars")}</h2>
+  return `<div class="sec"><h2>${Lh("四柱", "Four Pillars")}</h2>
     <div class="pillars">${P.pillars.map(p => `<div class="pil ${p.k === "day" ? "dm" : ""}">
       <div class="lab">${L(p.zh, p.en)}</div>
       <div class="gz"><span class="el-${p.sel}" title="${p.sel}">${p.stem}</span><span class="el-${p.bel}" title="${p.bel}">${p.branch}</span></div>
@@ -284,7 +306,7 @@ function pillarsBlock() {
       <div class="ysgrp use"><div class="ystitle">${L("宜选 · 用神", "Choose names with these elements")}</div>
         <div class="ysdiscs">${P.fav.map((e, i) => `<div class="ysd off"><span class="el-${e}">${e}</span><small>${i === 0 ? "用神" : "喜"} · ${EL_EN[e]}</small></div>`).join("")}</div></div>
       <div class="ysgrp avoid"><div class="ystitle">${L("忌 · 少用", "Avoid these elements")}</div>
-        <div class="ysdiscs">${P.unfav.map(e => `<div class="ysd off"><span class="el-${e}">${e}</span><small>${EL_EN[e]}</small></div>`).join("") || `<span class="count">—</span>`}</div></div>
+        <div class="ysdiscs">${P.unfav.map(e => `<div class="ysd off"><span class="el-${e}">${e}</span><small>${EL_EN[e]}</small></div>`).join("") || `<span class="count">none</span>`}</div></div>
     </div></div>`;
 }
 
@@ -301,7 +323,7 @@ function boxesHtml() {
 }
 function chipsHtml() {
   const chips = (S.data && S.data.chips) || [];
-  return chips.map(c => `<button class="fchip st" data-ks="${c.ks}" aria-pressed="${S.strokes.has(c.ks)}">${c.ks}画<span class="n">${c.ji}/4吉</span></button>`).join("") || `<span class="count">—</span>`;
+  return chips.map(c => `<button class="fchip st" data-ks="${c.ks}" aria-pressed="${S.strokes.has(c.ks)}">${c.ks}画<span class="n">${c.ji}/4吉</span></button>`).join("") || `<span class="count">none</span>`;
 }
 function tilesHtml() {
   if (!S.data) return `<div class="empty-msg">${L("载入中…", "loading…")}</div>`;
@@ -332,7 +354,7 @@ function panelHtml() {
     <div id="tiles">${tilesHtml()}</div></div>`;
 }
 function builderBlock() {
-  return `<div class="sec" id="builder"><h2>${L("起名", "Build the name")}</h2>
+  return `<div class="sec" id="builder"><h2>${Lh("起名", "Build the name")}</h2>
     <div class="boxes">${boxesHtml()}
       <div class="bctl"><div class="seg" role="group" aria-label="name length"><button data-mode="1" aria-pressed="${S.mode === 1}">单名 1</button><button data-mode="2" aria-pressed="${S.mode === 2}">双名 2</button></div>
       <button class="btn primary optbtn" data-optimise="1" title="rank the best characters for the empty boxes, or better alternatives when the name is complete">优化 Optimise</button></div></div>
@@ -398,7 +420,7 @@ function cardBlock() {
   if (!c) return `<div class="sec" id="card"><div class="empty-msg">${L("评析中…", "scoring…")}</div></div>`;
   const amb = c.chars.filter(x => !x.surname && x.trad_alts);
   const ct = c.chars.filter(x => !x.surname && x.contested);
-  return `<div class="sec" id="card"><h2>${L("名字评析", "Name card")}</h2>
+  return `<div class="sec" id="card"><h2>${Lh("名字评析", "Name card")}</h2>
     <div class="nameband">
       <div class="namegrid" role="group" aria-label="${c.name}">${c.chars.map(x => `<div class="py">${esc(x.py)}</div><div class="ch ${x.surname ? "" : "el-" + (x.el || "")}">${x.ch}</div>
         <div class="det"><span class="role ${!x.surname && x.el ? "bg-" + x.el + " el-" + x.el : ""}">${Li(!x.surname && x.el ? x.el + " · " + x.role : x.role, x.role_en)}</span>
@@ -472,7 +494,7 @@ async function slLoad() {
 const slCertUrl = (given, trad) => "/api/pub/certificate?" + new URLSearchParams({surname: S.q.surname, given, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, trad: Object.entries(trad || {}).map(([k, v]) => k + ":" + v).join(",")});
 function shortlistBlock() {
   if (!S.shortlist.length) return `<div id="shortlist"></div>`;
-  return `<div class="sec" id="shortlist"><h2>${L("候选名单", "Shortlist")} <span class="count">${S.shortlist.length}/${SL_MAX} · ${S.ws && S.wsSaved !== false ? Li("已保存到工作区", "saved to your workspace") : S.ws ? Li("工作区暂不可用，暂存本机", "workspace unreachable — kept in this browser for now") : Li("保存在本机浏览器", "kept in this browser for this baby")}</span></h2>
+  return `<div class="sec" id="shortlist"><h2>${Lh("候选名单", "Shortlist")} <span class="count">${S.shortlist.length}/${SL_MAX} · ${S.ws && S.wsSaved !== false ? Li("已保存到工作区", "saved to your workspace") : S.ws ? Li("工作区暂不可用，暂存本机", "workspace unreachable — kept in this browser for now") : Li("保存在本机浏览器", "kept in this browser for this baby")}</span></h2>
     <table class="sl"><tr><th>${L("名字", "name")}</th><th>${L("评分", "score")}</th><th>${L("五格吉", "吉 of 5")}</th><th>${L("三才", "three powers")}</th><th>${L("繁體", "traditional")}</th><th></th><th></th></tr>
       ${S.shortlist.map((x, i) => `<tr><td><button class="slname" data-slopen="${i}" title="open in the builder">${x.name}</button></td><td><b>${x.score}</b> <small>${x.grade ? x.grade.zh : ""}</small></td><td>${x.ji}/5</td><td>${luckChip(x.sv, true)}</td><td>${x.tradStr}</td>
         <td><a href="${x.url}" target="_blank" rel="noopener">证书 →</a></td><td><button class="sldel" data-sldel="${i}" aria-label="remove ${x.name}">删除 ✕</button></td></tr>`).join("")}</table>

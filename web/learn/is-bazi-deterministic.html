@@ -15,8 +15,9 @@
 <link rel="alternate" hreflang="en" href="https://bazifor.me/learn/is-bazi-deterministic">
 <link rel="alternate" hreflang="zh-CN" href="https://bazifor.me/zh/learn/is-bazi-deterministic">
 <link rel="alternate" hreflang="x-default" href="https://bazifor.me/learn/is-bazi-deterministic">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Is BaZi Deterministic? Why We Compute Readings Instead of Chatting Them", "description": "Which parts of a BaZi reading are exact calculation and which are interpretation, and why readings that cite their rules suit Singapore and Malaysia births.", "datePublished": "2026-09-16", "dateModified": "2026-10-09", "inLanguage": "en", "author": {"@type": "Person", "name": "BaziMaster", "url": "https://bazifor.me/author"}, "publisher": {"@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me"}, "mainEntityOfPage": "https://bazifor.me/learn/is-bazi-deterministic", "wordCount": 1310, "image": ["https://bazifor.me/static/learn/img/hero/is-bazi-deterministic.jpg", "https://bazifor.me/static/learn/img/deterministic-pipeline.svg"]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Is BaZi Deterministic? Why We Compute Readings Instead of Chatting Them", "description": "Which parts of a BaZi reading are exact calculation and which are interpretation, and why readings that cite their rules suit Singapore and Malaysia births.", "datePublished": "2026-09-16", "dateModified": "2026-10-09", "inLanguage": "en", "author": {"@type": "Person", "name": "BaziMaster", "url": "https://bazifor.me/author"}, "publisher": {"@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me"}, "mainEntityOfPage": "https://bazifor.me/learn/is-bazi-deterministic", "wordCount": 1532, "image": ["https://bazifor.me/static/learn/img/hero/is-bazi-deterministic.jpg", "https://bazifor.me/static/learn/img/deterministic-pipeline.svg"]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Learn", "item": "https://bazifor.me/learn"}, {"@type": "ListItem", "position": 2, "name": "Is BaZi Deterministic? Why We Compute Readings Instead of Chatting Them", "item": "https://bazifor.me/learn/is-bazi-deterministic"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is BaZi deterministic?", "acceptedAnswer": {"@type": "Answer", "text": "BaZi is deterministic in its calculation and rule-guided in its interpretation. The pillars, strength score, favourable elements, ten gods and luck cycles all follow written rules. The same birth data therefore gives the same result every time."}}, {"@type": "Question", "name": "Does deterministic mean my fate is fixed?", "acceptedAnswer": {"@type": "Answer", "text": "No. The word describes the computation, not your life. The engine states that it does not predict events. A chart is a starting condition and a map of tendencies, and the readings are framed that way."}}, {"@type": "Question", "name": "Which parts of a BaZi reading are interpretation?", "acceptedAnswer": {"@type": "Answer", "text": "The meaning of a chart, such as what a weak Day Master with heavy authority stars means for a career, is interpretation. It is not freeform. The engine holds fixed sentence patterns for each palace and god, written by people in advance."}}, {"@type": "Question", "name": "Does an AI write my BaZi reading?", "acceptedAnswer": {"@type": "Answer", "text": "No generative AI writes any reading. The text is rule output plus hand-written guides. Every output line names the classical rule it applies, with a rule id a practitioner can check."}}, {"@type": "Question", "name": "Why might my chart differ between tools in Singapore or Malaysia?", "acceptedAnswer": {"@type": "Answer", "text": "Local time rules are where determinism is tested hardest. The BaZi year turns at 立春, Singapore ran on UTC+7:30 before 1982-01-01, and true solar time shifts the clock. A tool that skips these will cast different pillars."}}]}</script>
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;
 --gold:#8a6d1f;--line:#e5ded2;--tint:#f3ecdd;--r:12px}
@@ -92,6 +93,7 @@ font-size:13px;color:var(--muted)}
 h2.grp{font-size:18px;border:0;margin:34px 0 12px;padding:0;color:var(--ink);display:flex;
 align-items:center;gap:10px}
 h2.grp::before{content:"";width:22px;height:4px;border-radius:2px;background:var(--gold)}
+.cta-inline{margin:18px 0;padding:10px 14px;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;background:var(--card)}.cta-inline a{color:var(--accent);font-weight:600;text-decoration:none}
 .cta{margin-top:44px;background:var(--card);border:1px solid var(--line);
 border-radius:var(--r);padding:22px 20px;text-align:center}
 .cta b{font-size:19px;line-height:1.35;display:block;margin-bottom:6px}
@@ -121,7 +123,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
 <p><b>Table 1: the sample chart, step by step</b></p>
 <div class="tablewrap" tabindex="0" role="region" aria-label="Table"><table><thead><tr><th>Step</th><th>Rule</th><th>Sample result</th></tr></thead><tbody><tr><td>True solar time</td><td>clock converted by longitude and equation of time</td><td>09:30 becomes 08:16</td></tr><tr><td>Four pillars</td><td>solar terms, 立春 year boundary, sixty-day cycle</td><td>戊辰 乙卯 己巳 戊辰</td></tr><tr><td>Strength</td><td>season, support, drain, root</td><td>身弱, score -0.97</td></tr><tr><td>Favourable elements</td><td>扶抑法 then 調候法</td><td>火 and 土</td></tr><tr><td>Ten gods</td><td>each stem's relation to the Day Master</td><td>劫財 48.1 %, 七殺 29.6 %</td></tr><tr><td>Luck cycles</td><td>陽男陰女順行, 起運 = 距節日數 / 3</td><td>forward from 乙卯, start age 6.7</td></tr></tbody></table></div>
 <p>The 用神 step uses the four classical methods (扶抑法, 調候法, 通關, 病藥) in a defined order. For the sample, the first two produced 火 and 土 as favourable and 木, 水 and 金 as unfavourable. A different order would be a different system, which is why the order is written down.</p>
-<h2>How does the strength rule show the idea?</h2>
+<p class="cta-inline"><a href="/start">See these rules applied to your own chart: free BaZi reading →</a></p><h2>How does the strength rule show the idea?</h2>
 <p>The strength rule is a good test case, because it looks like judgement and is actually four fixed steps. For the sample Day Master 己 (Earth), the engine does the following.</p>
 <ol>
 <li><b>Season.</b> The month branch 卯 is Wood, and Wood controls Earth, so the season state is 死, scoring -2.0.</li>
@@ -137,7 +139,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
 <h2>Where do schools disagree?</h2>
 <p>The engine records its choices where traditions differ and marks the choice as disputed. The strength step shows one. The engine reads the month by the branch's own element. The 旺相休囚死 school reads it by the season's element, and the two can differ near a season change. The engine's step text names the alternative and gives an example, so the disagreement is visible in the output.</p>
 <p>Strokes for naming follow the 康熙字典 count on the traditional form. The 81-number verdicts use a two-state scale until a finer cited table is adopted. Those are stated choices, not hidden ones.</p>
-<h2>Why does determinism matter when choosing a tool?</h2>
+<p class="cta-inline"><a href="/start">See these rules applied to your own chart: free BaZi reading →</a></p><h2>Why does determinism matter when choosing a tool?</h2>
 <p>A tool that generates fluent text without rules fails in three ways that a rule engine does not. These are logical points about the method, not tests of any named product (method note).</p>
 <ul>
 <li><b>Calendar edge cases.</b> The 立春 boundary, true solar time and the pre-1982 Singapore clock each change a pillar. A rule engine applies them in the same order every time.</li>
@@ -156,6 +158,17 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
 <li><b>True solar time.</b> The conversion uses longitude and the equation of time, so a Singapore birth at 09:30 is cast as 08:16.</li>
 <li><b>Homes.</b> For an HDB flat or condominium unit, the direction and date layers take your door bearing as input. The same bearing gives the same output, which makes the result easy to check against a second tool.</li>
 </ul>
+<h2>FAQ</h2>
+<h3>Is BaZi deterministic?</h3>
+<p>BaZi is deterministic in its calculation and rule-guided in its interpretation. The pillars, strength score, favourable elements, ten gods and luck cycles all follow written rules. The same birth data therefore gives the same result every time.</p>
+<h3>Does deterministic mean my fate is fixed?</h3>
+<p>No. The word describes the computation, not your life. The engine states that it does not predict events. A chart is a starting condition and a map of tendencies, and the readings are framed that way.</p>
+<h3>Which parts of a BaZi reading are interpretation?</h3>
+<p>The meaning of a chart, such as what a weak Day Master with heavy authority stars means for a career, is interpretation. It is not freeform. The engine holds fixed sentence patterns for each palace and god, written by people in advance.</p>
+<h3>Does an AI write my BaZi reading?</h3>
+<p>No generative AI writes any reading. The text is rule output plus hand-written guides. Every output line names the classical rule it applies, with a rule id a practitioner can check.</p>
+<h3>Why might my chart differ between tools in Singapore or Malaysia?</h3>
+<p>Local time rules are where determinism is tested hardest. The BaZi year turns at 立春, Singapore ran on UTC+7:30 before 1982-01-01, and true solar time shifts the clock. A tool that skips these will cast different pillars.</p>
 <h2>Sources and method</h2>
 <ul>
 <li><b>Method claims:</b> the ten claims at /method, including determinism, rule ids per line, true solar time and no generative AI (method note).</li>

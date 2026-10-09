@@ -1,5 +1,7 @@
 # FengShui Family Compass
 
+Live site: **[bazifor.me](https://bazifor.me)** — free BaZi reading, home feng shui audit, Kua number calculator and Chinese baby-name builder.
+
 BaZi 八字 × 玄空飛星 home optimizer for one household — a personal, local-only
 tool. Design doc: `docs/designs/fengshui-family-compass.md` (eng-reviewed,
 ENG CLEARED 2026-08-31).
