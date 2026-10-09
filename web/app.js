@@ -870,18 +870,6 @@ const godEn = (c, g) => ((c.tengods_legend || {})[g] || {}).en || TG_EN_FALLBACK
 const TG_EN_FALLBACK = { 比肩: "Friend", 劫財: "Rob Wealth", 食神: "Eating God",
   傷官: "Hurting Officer", 正財: "Direct Wealth", 偏財: "Indirect Wealth",
   正官: "Direct Officer", 七殺: "Seven Killings", 正印: "Direct Resource", 偏印: "Indirect Resource" };
-const LEARN_OF = { chart: ["four-pillars-explained", "how to read a pillar"],
-  1: ["five-elements-cycles", "the five elements & 生克"],
-  2: ["day-masters-explained", "day masters & strength"],
-  3: ["ten-gods-guide", "the ten gods"], 4: ["ten-gods-guide", "the ten gods"],
-  5: ["useful-god-colors", "applying your 用神"],
-  6: ["luck-cycles-and-windows", "luck cycles"], 7: ["eight-house-directions", "八宅 directions"],
-  8: ["four-pillars-explained", "the four palaces"], 9: ["shensha-symbolic-stars", "神煞 stars"],
-  10: ["ten-gods-guide", "personality from ten gods"], 11: ["five-elements-cycles", "element health map"],
-  12: ["useful-god-colors", "elements & industries"], 13: ["luck-cycles-and-windows", "windows & annual overlays"],
-  palaces: ["four-pillars-explained", "the four palaces"] };
-const learnLink = (k) => { const t = LEARN_OF[k];
-  return t ? `<div class="learnlink"><a href="/learn/${t[0]}" target="_blank">Learn: ${t[1]} ▸</a></div>` : ""; };
 const deepWrap = (label, inner) => inner
   ? `<details class="deep"><summary>${label}</summary><div class="deepbody">${inner}</div></details>` : "";
 
@@ -890,28 +878,6 @@ const ZODIAC = { 鼠: ["🐭", "Rat"], 牛: ["🐮", "Ox"], 虎: ["🐯", "Tiger
   猴: ["🐵", "Monkey"], 鸡: ["🐔", "Rooster"], 狗: ["🐶", "Dog"], 猪: ["🐷", "Pig"],
   龍: ["🐲", "Dragon"], 馬: ["🐴", "Horse"], 雞: ["🐔", "Rooster"], 豬: ["🐷", "Pig"] };
 const EL_EN = { 木: "Wood", 火: "Fire", 土: "Earth", 金: "Metal", 水: "Water" };
-
-function charCard(c, name) {
-  const cols = c.yongshen.colours.join("·");
-  const fav = c.yongshen.favourable;
-  // card identity = DAY MASTER element ("who I am"); the 用神 keeps the accent ring
-  // and owns the badges/medicine advice ("what I need").
-  const dmEl = STEM_EL[c.day_master];
-  return `<div class="charcard elth-${dmEl || ""}${fav[0] ? " elth2-" + fav[0] : ""}"
-      data-elem="${dmEl}" data-fav="${fav.join("")}">
-    <div class="who"><div class="gua"><b>${c.gua}</b><span>${(c.group || "").replace(/[()]/g, "")}</span></div>
-      <div><h2>${dn(name || c.name)}${c.life_palaces && ZODIAC[c.life_palaces.animal]
-          ? ` <span class="zodemoji">${ZODIAC[c.life_palaces.animal][0]}</span>` : ""}</h2>
-        <div class="csub"><div class="csub1">
-          <span class="dmchip" style="color:${EL_TXT[STEM_EL[c.day_master]]}">${c.day_master} ${ELEMENT_ZH_OF_STEM(c.day_master)}</span>
-          ${c.strength.verdict} <b>${c.strength.score}</b></div>
-        ${c.life_palaces ? (() => { const a = c.life_palaces.animal, z = ZODIAC[a] || ["", a];
-          return `<div class="csub2"><b class="gf">生肖</b> ${z[0]} ${z[1]} ·
-            <b class="gf">命宮</b> ${c.life_palaces.ming_gong} life palace</div>`; })() : ""}</div></div></div>
-    <div class="cfav" data-go="p5|用神" role="button" tabindex="0"><span class="l">用神 medicine</span>
-      ${fav.map((e) => elb(e)).join(" ")} <small>${cols}</small> <span class="chev">›</span></div>
-  </div>`;
-}
 
 function strengthGauge(st) {
   const x = Math.max(-1, Math.min(1, st.score));       // score −1..+1
@@ -940,14 +906,144 @@ function bazhaiCompass(c) {
     ${cell("坤", "SW")}${cell("離", "S")}${cell("巽", "SE")}</div>`;
 }
 
-const READING_TABS = [["p1", "Pillars"], ["p2", "Elements"],
-  ["p3", "Gods"], ["p4", "Timing"], ["p5", "Compass"]];
-/* Each pane ends by pointing at the next one; the last points at the other tools. */
-function paneNext(i) {
-  const nx = READING_TABS[i + 1];
-  if (nx) return `<div class="pane-next"><button type="button" class="nextsec" data-next="${nx[0]}">Next: ${nx[1]}</button></div>`;
-  return `<div class="pane-next"><span class="pn-lab">Next</span> <a href="/kua">Kua number</a> <a href="/baby">Baby names</a></div>`;
+/* ---- Reading layout A (owner pick 2026-10-10) -------------------------------------------
+   A one-screen answer, then five chapters titled as questions on one scroll (no hidden tabs).
+   Each lead conclusion is a card: plain headline, what it means, what to do, signal strength,
+   and the proof behind "Why the chart says this". The plain view sits beside the classical
+   chart. All plain copy comes from c.plain (engine/plain.py, owner-approved templates). */
+const CHAPTERS = [
+  ["makeup", "Make-up", "What are you made of?", "Pillars", "what-is-bazi", "the four pillars"],
+  ["balance", "Balance", "What do you have too much or too little of?", "Elements", "five-elements-cycles", "the five elements"],
+  ["drives", "Drives", "What drives you?", "Ten gods", "ten-gods-guide", "the ten gods"],
+  ["timing", "Timing", "What is coming, and when?", "Luck cycles", "luck-cycles-and-windows", "luck cycles"],
+  ["space", "Space", "Where should you sit, sleep and work?", "Compass", "eight-house-directions", "eight-house directions"]];
+const EL_SLUG = { 木: "wood", 火: "fire", 土: "earth", 金: "metal", 水: "water" };
+const STEM_SLUG = { 甲: "jia", 乙: "yi", 丙: "bing", 丁: "ding", 戊: "wu", 己: "ji", 庚: "geng", 辛: "xin", 壬: "ren", 癸: "gui" };
+const SWATCH = { 火: ["#c5221f", "#7b2d8e", "#e07b1f"], 水: ["#1b1f2a", "#1a56b0"], 木: ["#187a35", "#6aa84f"],
+  土: ["#c9a227", "#d8c8a4", "#7a601b"], 金: ["#ffffff", "#c9a227", "#b8bec6"] };
+const SIG_N = { strong: 3, moderate: 2, faint: 1 };
+const GLYPH = {   // life-weather marks: one per engine decade phase
+  sun: '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="16" cy="16" r="6"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M6.8 6.8l2.8 2.8M22.4 22.4l2.8 2.8M6.8 25.2l2.8-2.8M22.4 9.6l2.8-2.8"/></svg>',
+  partsun: '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 3v2.5M3 12h2.5M5.6 5.6l1.8 1.8M18.4 5.6l-1.8 1.8"/><path d="M10 25h14a5 5 0 0 0-1-9.9 7 7 0 0 0-13 2.4A3.8 3.8 0 0 0 10 25z" fill="#fff"/></svg>',
+  wind: '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15a4 4 0 1 0-4-4M4 18h20a4 4 0 1 1-4 4M4 24h9"/></svg>',
+  rain: '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 19h15a5 5 0 0 0-1-9.9 7 7 0 0 0-13 2.4A3.8 3.8 0 0 0 9 19z"/><path d="M11 23l-1.5 4M17 23l-1.5 4M23 23l-1.5 4"/></svg>' };
+
+const pSignal = (s) => s ? `<span class="rp-sig"><span class="rp-bars" aria-hidden="true">${[0, 1, 2].map((k) =>
+  `<i${k < SIG_N[s] ? ' class="f"' : ""}></i>`).join("")}</span>${s} signal</span>` : "";
+const pWhy = (txt, html, label = "Why the chart says this") => txt || html
+  ? `<details class="rp-why"><summary>${label}</summary><div class="rp-whyb">${txt ? `<p>${txt}</p>` : ""}${html || ""}</div></details>` : "";
+function pCard(o) {
+  return `<article class="rp-card">${o.pre || ""}<h3>${o.head}</h3>${o.means ? `<p class="rp-means">${o.means}</p>` : ""}
+    ${o.todo ? `<p class="rp-todo"><b>Do this:</b> ${o.todo}</p>` : ""}${o.signal ? `<div class="rp-meta">${pSignal(o.signal)}</div>` : ""}
+    ${pWhy(o.why, o.whyHtml)}</article>`;
 }
+const PILLAR_KEYS = [["year", "year"], ["month", "month"], ["day", "you"], ["hour", "hour"]];
+function pSeal(c) {
+  const P = c.pillars;
+  return `<div class="rp-seal keepzh" data-notip role="img" aria-label="Your four pillars, year to hour: ${PILLAR_KEYS.map(([k]) => P[k]).join(" ")}">${PILLAR_KEYS.map(([k, lab]) =>
+    `<div${k === "day" ? ' class="me"' : ""}><span style="color:${EL_TXT[STEM_EL[P[k][0]]]}">${P[k][0]}</span><span style="color:${EL_TXT[BR_EL[P[k][1]]]}">${P[k][1]}</span><small>${lab}</small></div>`).join("")}</div>`;
+}
+function pIdentity(c, name) {
+  const I = c.plain.identity, slug = STEM_SLUG[c.day_master];
+  return `<section class="rp-ident"><div class="rp-idtext"><p class="rp-name">${dn(name || c.name)}</p>${pSeal(c)}
+      <h2 class="rp-h">${I.head}</h2><p class="rp-sub">${I.sub}</p>${pSignal(I.signal)}${pWhy(I.why)}</div>
+    ${slug ? `<img class="rp-idimg" src="/static/img/reading/dm-${slug}-600.jpg" alt="" width="600" height="400" fetchpriority="high" decoding="async">` : ""}</section>`;
+}
+function pBudget(c, compact) {
+  return `<div class="rp-bud">${c.plain.balance.map((r) => `${elb(r.el)}<span>${r.en}</span>
+    <span class="rp-tr"><i style="width:${Math.min(100, Math.max(2, r.share / 60 * 100)).toFixed(0)}%;background:${EL_COL[r.el]}"></i></span>
+    <span class="rp-bd${r.band === "about right" ? "" : " rp-strong"}">${r.band}</span>${r.medicine || (!compact && r.note)
+      ? `<span class="rp-note">${r.medicine ? '<span class="rp-tag">helps you most</span> ' : ""}${compact ? "" : r.note}</span>` : ""}`).join("")}</div>`;
+}
+function pAnswers(c) {
+  const P = c.plain, H = P.helps, Y = P.year;
+  const heavy = Object.entries(c.element_weights).sort((a, b) => b[1] - a[1])[0][0];
+  return `<div class="rp-answers">
+    <div class="rp-ans rp-bal"><p class="rp-k">Your balance</p><h3>${heavy} is heaviest; ${EL_EN[H.el]} is what you need.</h3>${pBudget(c, true)}</div>
+    <div class="rp-ans"><p class="rp-k">What helps you</p><h3>${H.head}</h3><div class="rp-sw" aria-hidden="true">${(SWATCH[H.el] || []).map((x) =>
+      `<i style="background:${x}"></i>`).join("")}</div><p>${H.means}</p></div>
+    ${Y ? `<div class="rp-ans"><p class="rp-k">This year</p><p class="rp-year"><span class="rp-ybig">${Y.y}</span> <span class="rp-gz keepzh" data-notip>${Y.gz}</span></p>
+      <h3>${Y.word}</h3><p>${Y.means}</p></div>` : ""}
+    <div class="rp-ans rp-wide"><p class="rp-k">Two things to do</p><ul class="rp-acts">${P.actions.map((a) => `<li>${a}</li>`).join("")}</ul></div></div>`;
+}
+function pWeather(c) {
+  return `<div class="rp-wx" role="list" aria-label="Your decades">${c.plain.decades.map((d) =>
+    `<div role="listitem"${d.current ? ' class="now" aria-current="true"' : ""}>${GLYPH[d.glyph]}<b>${d.word}</b><small>ages ${d.ages}</small><span class="keepzh" data-notip>${d.gz}</span></div>`).join("")}</div>`;
+}
+const pYears = (c) => `<div class="rp-yrs">${c.plain.years.map((y) => `<div class="${y.overall}"><b>${y.y}</b>${y.word.split(" ")[0]}</div>`).join("")}</div>`;
+const pDrives = (c) => `<div class="rp-drv">${c.plain.drives.groups.map((g) => `<b>${g.name}</b><span class="rp-tr"><i style="width:${Math.max(1, g.pct).toFixed(0)}%"></i></span>
+  <span>${Math.round(g.pct)}%</span><small>${g.gloss} (${g.zh})</small>`).join("")}</div>`;
+function pRoom(c) {
+  const S = c.plain.space; if (!S) return "";
+  const pos = { NW: [0, 0], N: [1, 0], NE: [2, 0], W: [0, 1], E: [2, 1], SW: [0, 2], S: [1, 2], SE: [2, 2] }, q = 93.3;
+  let s = `<svg class="rp-room" viewBox="0 0 300 312" role="img" aria-label="Room plan with north at the top: ${Object.entries(S.marks).map(([d, l]) => `${l.join(" and ")} in the ${d}`).join("; ")}">
+    <text x="150" y="11" text-anchor="middle" font-size="11" fill="#6b6359">north</text>
+    <rect x="10" y="22" width="280" height="280" fill="#fff" stroke="#2b2620" stroke-width="2"/>`;
+  [1, 2].forEach((k) => { s += `<line x1="${10 + k * q}" y1="22" x2="${10 + k * q}" y2="302" stroke="#e5ded2"/><line x1="10" y1="${22 + k * q}" x2="290" y2="${22 + k * q}" stroke="#e5ded2"/>`; });
+  Object.entries(pos).forEach(([dr, [cx, cy]]) => { const x = 10 + cx * q + q / 2, y = 22 + cy * q + q / 2;
+    s += `<text x="${x}" y="${y - 22}" text-anchor="middle" font-size="12" fill="#6b6359">${dr}</text>`;
+    (S.marks[dr] || []).forEach((lab, j) => { s += `<rect x="${x - 38}" y="${y - 10 + j * 24}" width="76" height="20" rx="10" fill="#c7301d"/>
+      <text x="${x}" y="${y + 4 + j * 24}" text-anchor="middle" font-size="12" fill="#fff" font-weight="600">${lab}</text>`; }); });
+  return s + "</svg>";
+}
+const pRelations = (c) => { const ps = c.plain.makeup.pairs;
+  return ps.length ? `<ul class="rp-list">${ps.map((x) => `<li><b>${x.a.charAt(0).toUpperCase() + x.a.slice(1)}</b> and <b>${x.b}</b>: ${x.note} (${x.kind})</li>`).join("")}</ul>`
+    : "<p>No strong pulls between your pillars.</p>"; };
+function pSlimGrid(c) {
+  const P = c.pillars, tg = c.ten_gods || {}, hid = c.hidden_gods || {};
+  return `<div class="rp-sg keepzh" data-notip>${PILLAR_KEYS.map(([k, lab]) => { const g = k === "day" ? "日主" : tg[k] || "";
+    return `<div${k === "day" ? ' class="me"' : ""}><small>${k === "day" ? "day (you)" : lab}</small><span class="rp-tg" title="${k === "day" ? "Day Master" : godEn(c, g)}">${g}</span>
+      <span class="rp-big" style="color:${EL_TXT[STEM_EL[P[k][0]]]}">${P[k][0]}</span><span class="rp-big" style="color:${EL_TXT[BR_EL[P[k][1]]]}">${P[k][1]}</span>
+      <span class="rp-hid">${(hid[k] || []).map((x) => `<span title="${godEn(c, x.slice(2, -1))}">${x[0]}</span>`).join(" ")}</span></div>`; }).join("")}</div>
+    <p class="rp-cap">Top: the role each stem plays for you. Bottom: the stems hidden in each branch.</p>`;
+}
+const pPair = (plain, cap1, classical, cap2) => plain || classical ? `<div class="rp-pair">
+  ${plain ? `<div class="rp-pane"><p class="rp-cap"><b>The plain view.</b> ${cap1}</p>${plain}</div>` : ""}
+  ${classical ? `<div class="rp-pane rp-classic"><p class="rp-cap"><b>The classical chart.</b> ${cap2}</p>${classical}</div>` : ""}</div>` : "";
+const pSupport = (figs) => { figs = figs.filter(Boolean); return figs.length ? `<div class="rp-support">${figs.join("")}</div>` : ""; };
+const pMore = (title, figs) => { figs = figs.filter(Boolean);
+  return figs.length ? `<details class="rp-more"><summary>More detail: ${title}</summary><div>${figs.join("")}</div></details>` : ""; };
+function pChapter([id, , q, tech, img, what], body, tail) {
+  tail = (tail || []).filter(Boolean);
+  return `<section class="rp-chap" id="ch-${id}" aria-labelledby="h-${id}"><div class="rp-chead"><div><h2 id="h-${id}">${q}</h2>
+      <p class="rp-tech">The classical name for this: ${tech}.</p></div>
+      <img src="/static/learn/img/hero/${img}-600.jpg" alt="" width="600" height="400" loading="lazy" decoding="async"></div>
+    ${body}${tail.length ? `<details class="rp-more rp-long"><summary>The long read: interpretation, strategy and sources</summary><div class="rd-tail">${tail.join("")}</div></details>` : ""}
+    <p class="rp-learn"><a href="/learn/${img}">Learn more about ${what}</a></p></section>`;
+}
+function readingChapters(c, R) {
+  const P = c.plain, H = P.helps;
+  const A = buildPillars(c, R), E = buildElements(c, R), G = buildGods(c, R), T = buildTiming(c, R), K = buildCompass(c, R);
+  const body = {
+    makeup: pCard(P.makeup)
+      + pPair(pRelations(c), "How the parts of your life pull on each other.", pSlimGrid(c), "Your eight characters.")
+      + pSupport([A.figs.interactions, A.figs.palaces])
+      + pMore("the full four-pillar grid and the symbolic stars", [A.figs.grid, A.figs.stars]),
+    balance: pCard({ ...P.strength, whyHtml: E.figs.gauge })
+      + pPair(pBudget(c) + pWhy("", E.units, "How these numbers are counted"), "How much of each element you carry.",
+        E.figs.pentagon, "The same five elements and how they feed and check each other.")
+      + pCard({ head: H.head, todo: H.todo, why: H.why,   // what it brings is said once, in the opening
+        pre: `<img class="rp-medimg" src="/static/img/reading/${EL_SLUG[H.el]}-600.jpg" alt="" width="600" height="400" loading="lazy" decoding="async">` })
+      + (P.flows ? pCard(P.flows) : "")
+      + pSupport([E.figs.health]),
+    drives: pCard({ head: P.drives.head, means: P.drives.means, why: P.drives.why, whyHtml: G.figs.structure })
+      + pPair(pDrives(c), "Where your attention goes, in five plain groups.", G.figs.wheel, "The ten classical roles, grouped.")
+      + pSupport([G.figs.bars, G.figs.domains, G.figs.industries])
+      + pMore("personality axes and roles today", [G.figs.axes, G.figs.roles]),
+    timing: (P.decade_now ? pCard(P.decade_now) : "")
+      + pPair(pWeather(c), "Your life in ten-year seasons.", T.figs.strip, "Your luck pillars, decade by decade.")
+      + (P.year ? pCard({ head: P.year.head, means: P.year.means, why: P.year.why, whyHtml: T.figs.thisyear }) : "")
+      + (P.years.length ? `<div class="rp-pane rp-solo"><p class="rp-cap"><b>The next ten years at a glance.</b></p>${pYears(c)}</div>` : "")
+      + pMore("month by month and the next 30 days", [T.figs.rhythm, T.figs.daily]),
+    space: (P.space ? pCard({ head: P.space.head, means: P.space.means, why: P.space.why }) : "")
+      + pPair(pRoom(c), "Where things go, north at the top.", K.figs.grid, "The eight directions for your Kua number.")
+      + pSupport([K.figs.afflictions])
+      + pMore("where the medicine sits, placements and which way to face", [K.figs.medicine, K.figs.placements, A.figs.face]) };
+  const tails = { makeup: A.tail, balance: E.tail, drives: G.tail, timing: T.tail, space: K.tail };
+  return CHAPTERS.map((ch) => pChapter(ch, body[ch[0]], tails[ch[0]])).join("");
+}
+const pChapBar = () => `<nav class="rp-bar" aria-label="Chapters"><div>${CHAPTERS.map(([id, lab]) =>
+  `<a href="#ch-${id}">${lab}</a>`).join("")}</div></nav>`;
 /* Site-wide term coloring (2026-09-20): element + ten-god mentions in running
    text get bold + their element color. Text-node walker, conservative regex —
    excludes 水平/火车/金额/土豆-style non-element words; skips svg/script. */
@@ -976,7 +1072,7 @@ function colorizeTerms(root, dm) {
   const nodes = [];
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: (n) => n.parentElement
-      && !n.parentElement.closest("script,style,svg,input,textarea,.nocolor")
+      && !n.parentElement.closest("script,style,svg,input,textarea,.nocolor,h1,h2,h3,a,button,summary")
       ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
   let t; while ((t = w.nextNode())) { re.lastIndex = 0; if (re.test(t.nodeValue)) nodes.push(t); }
   for (const node of nodes) {
@@ -1058,24 +1154,16 @@ const clip = (s, n) => { s = String(s || ""); return s.length > n ? s.slice(0, n
 
 /* --- the figure ------------------------------------------------------------ */
 function rdFig(o) {
-  const learn = o.learn && LEARN_OF[o.learn]
-    ? `<a class="rd-learn" href="/learn/${LEARN_OF[o.learn][0]}" target="_blank">learn ›</a>` : "";
   const legend = o.legend ? `<details class="rd-legend"><summary aria-label="how to read this">?</summary>
       <div class="rd-legend-body">${o.legend}</div></details>` : "";
   const facts = o.facts && o.facts.length ? `<div class="facts rd-facts">${o.facts
       .map(([k, v]) => `<span><span class="fk">${k}</span> ${v}</span>`).join("")}</div>` : "";
   return `<figure class="rd-fig rd-${o.tier}${o.extra ? " " + o.extra : ""}" style="grid-column: span ${o.span}">
-    <figcaption class="rd-label"><span>${o.label}</span>${learn}</figcaption>
+    <figcaption class="rd-label"><span>${o.label}</span></figcaption>
     <div class="rd-chart">${o.chart}</div>
     <div class="rd-line-row"><p class="rd-line">${o.line}</p>${legend}</div>
     ${o.line2 ? `<p class="rd-line rd-line2">${o.line2}</p>` : ""}${facts}</figure>`;
 }
-const rdGrid = (tier, figs) => { figs = figs.filter(Boolean);
-  return figs.length ? `<div class="rd-grid rd-tier-${tier}">${figs.join("")}</div>` : ""; };
-const rdSection = (id, title, q, grids, tail) =>
-  `<section id="sec-${id}" class="rd-section"><header class="rd-head"><h2>${title}</h2>
-    <span class="rd-q">${q}</span></header>${grids.join("")}
-    ${tail && tail.filter(Boolean).length ? `<div class="rd-tail">${tail.filter(Boolean).join("")}</div>` : ""}</section>`;
 
 /* --- shared pieces ----------------------------------------------------------- */
 /* chart-grid glyphs stay Chinese (the glyph IS the chart) with their pinyin in the tooltip
@@ -1274,32 +1362,20 @@ function buildPillars(c, R) {
       facts: [["stars", `${c.shensha.length} total`], ["flagged", `${c.shensha.filter((s) => NEG.includes(s.star)).length} ⚠`]],
       legend: legendList(9) });
   }
-  return rdSection("pillars", "Pillars", "What am I made of?",
-    [rdGrid("hero", [p1]), rdGrid("secondary", [p6, p4]), rdGrid("reference", [p3, p5])],
-    [R.nb.rest.length ? deepWrap("Interpretation — the numbers read out", R.nb.rest.map((t) => `<div class="ninline">${dnAll(t)}</div>`).join("")) : "",
+  return { figs: { grid: p1, interactions: p6, palaces: p4, face: p3, stars: p5 },
+    tail: [R.nb.rest.length ? deepWrap("Interpretation — the numbers read out", R.nb.rest.map((t) => `<div class="ninline">${dnAll(t)}</div>`).join("")) : "",
       R.narr(9), deepWrap("Every rule this reading cites",
-        c.citations.map((x) => `<div class="cite"><b>[${layerZh(x.layer)}] ${x.source_ref}:</b> ${x.explanation}</div>`).join(""))]);
+        c.citations.map((x) => `<div class="cite"><b>[${layerZh(x.layer)}] ${x.source_ref}:</b> ${x.explanation}</div>`).join(""))] };
 }
 
 /* --- 五行 Elements ------------------------------------------------------------ */
 function buildElements(c, R) {
   const dm = c.day_master, dmEl = STEM_EL[dm], fav = c.yongshen.favourable, unf = c.yongshen.unfavourable;
   const wtot = Object.values(c.element_weights).reduce((x, y) => x + y, 0) || 1;
-  const wmax = Math.max(...Object.values(c.element_weights)) || 1;
-  const share = {}; Object.entries(c.element_weights).forEach(([en, v]) => (share[EL_ZH_OF_EN[en]] = 100 * v / wtot));
-  const heavy = Object.entries(share).sort((a, b) => b[1] - a[1])[0][0];
-  const bars = `<div class="bars elbars">${Object.entries(c.element_weights).map(([en, v]) => { const zh = EL_ZH_OF_EN[en];
-    const badge = zh === dmEl ? `<span class="elbadge dmb">${dm} 日主 YOU</span>` : fav[0] === zh ? `<span class="elbadge fvb">用神 MEDICINE</span>` : "";
-    return `<div class="bar-row el-${zh}"><span class="ellab" style="color:${EL_TXT[zh]}"><b class="keepzh">${zh}</b><small>${en}</small></span>
-      <div class="bar"><i style="width:${(100 * v / wmax).toFixed(0)}%"></i></div>
-      <b>${(100 * v / wtot).toFixed(0)}%</b><span class="dmcell">${badge}</span></div>`; }).join("")}</div>`;
-  const e1 = rdFig({ tier: "hero", span: 7, label: "Element bars", learn: 1, chart: bars,
-    line: heavy === fav[0]
-      ? `${elw(heavy)} leads the chart and is your medicine — keep it fed.`
-      : `Too much ${elw(heavy)}, not enough ${elw(fav[0])} — ${elw(fav[0])} is your medicine.`,
-    facts: [[heavy, `${share[heavy].toFixed(0)}%`], [fav[0], `${share[fav[0]].toFixed(0)}%`], ["Useful god", elbs(fav)]],
-    legend: `<div class="cite">单位 = 字重，不是个数：天干各 1.0、地支本气 1.0、余气 1/3，全盘合计 ${wtot.toFixed(1)}。
-      Units are weighted character counts: each stem 1.0, each branch's main hidden stem 1.0, each minor hidden stem 1/3.</div>${legendList(1)}` });
+  // Element bars retired 2026-10-10 (owner cut: the energy budget and the pentagon carry the same numbers);
+  // its counting note now sits under the budget as "How these numbers are counted".
+  const units = `<div class="cite">单位 = 字重，不是个数：天干各 1.0、地支本气 1.0、余气 1/3，全盘合计 ${wtot.toFixed(1)}。
+      Units are weighted character counts: each stem 1.0, each branch's main hidden stem 1.0, each minor hidden stem 1/3.</div>`;
   const er = c.element_relations; let e2 = "";
   if (er) {
     const pr = er.flows.pressure, rs = er.flows.resource;
@@ -1335,9 +1411,8 @@ function buildElements(c, R) {
     facts: [["Excess", H.filter((h) => /excess|過旺|过旺/i.test(h.status)).map((h) => elc(h.element)).join("·") || "—"],
       ["Deficient", H.filter((h) => /weak|不足/i.test(h.status)).map((h) => elc(h.element)).join("·") || "—"]],
     legend: legendList(11) });
-  return rdSection("elements", "Elements", "What is out of balance — and which element is the medicine?",
-    [rdGrid("hero", [e1, e2]), rdGrid("secondary", [e45, h1])],
-    [R.narr(1), R.narr(2), R.stb(2), R.narr(11), R.stb(11)]);
+  return { figs: { pentagon: e2, gauge: e45, health: h1 }, units,
+    tail: [R.narr(1), R.narr(2), R.stb(2), R.narr(11), R.stb(11)] };
 }
 
 /* --- 十神 Gods -------------------------------------------------------------- */
@@ -1437,7 +1512,7 @@ function buildGods(c, R) {
         ${c.spouse_reading ? `<div class="cite"><b>Marriage:</b> ${c.spouse_reading.star_line} ${c.spouse_reading.palace_line}</div>` : ""}${legendList(8)}` });
   }
   // raw pillar data (G7) retired 2026-09-27: the Pillars grid carries every stem/hidden stem; its key lives in the bars' legend. Gods = 7 figures.
-  let k1 = "", k2 = "", k3 = "";
+  let k1 = "", k3 = "";
   if (c.industries) {
     const F = c.industries.favourable || [], A = c.industries.avoid || [];
     const chart = `<div class="klist-ind">${F.map((it) => `<div class="cite"><b>Favourable ${elb(it.element)} ${elw(it.element)} industries</b> — ${it.industries}</div>`).join("")}
@@ -1448,9 +1523,6 @@ function buildGods(c, R) {
       facts: [["宜", elbs(F.map((it) => it.element))], ["慎", elbs(A.map((it) => it.element))]], legend: legendList(12) });
   }
   if (c.careers) {
-    const top = c.careers.top || [], avoid = c.careers.avoid || [], mx = Math.max(...[...top, ...avoid].map((a) => Math.abs(a.score))) || 1;
-    const krow = (a, i, neg) => `<div class="krow${neg ? " neg" : ""}"><span class="klab">${neg ? "avoid · " : `#${i + 1} `}${a.zh} <small>${a.en}</small></span>
-      <div class="kbar"><i style="width:${(Math.abs(a.score) / mx * 100).toFixed(0)}%"></i></div><b>${a.score}</b></div>`;
     const R = (c.career_roles || {}).top || [], rmx = Math.max(...R.map((x) => Math.abs(x.score)), 1);
     const rolesChart = R.length ? `<div class="klist">${R.map((x, i) =>
       `<div class="krow"><span class="klab">#${i + 1} ${x.role} <small>${x.parent}${x.basis === "arguable" ? " · mapping arguable" : ""}</small></span>
@@ -1463,22 +1535,14 @@ function buildGods(c, R) {
         legend: `<div>Present-day roles scored on the archetype rules — the field's element against the 用神 lists and the ten-god working style. Each role carries its parent archetype; "mapping arguable" marks roles whose element assignment is a modern convention, not a classical one.</div>
           ${R.map((x) => `<div><b>${x.role}</b> (${x.score} pts) — ${x.reasons.join("; ")}</div>`).join("")}` });
     }
-    const chart = `<div class="klist">${top.map((a, i) => krow(a, i, false)).join("")}${avoid.map((a, i) => krow(a, i, true)).join("")}</div>`;
-    const a0 = top[0], short = (r) => clip(r.split(" — ")[0], 40);
-    k2 = rdFig({ tier: "reference", span: 6, label: "Career archetypes ranked", learn: 12, chart,
-      line: a0 ? `#1 fit: ${a0.en} (${a0.score} pts) — ${a0.reasons.slice(0, 2).map(short).join(", ")}.` : "No archetype is ranked for this chart.",
-      facts: [a0 ? ["#1", `${a0.score} pts`] : null, avoid.length ? ["avoid", avoid.map((a) => a.zh).join("、")] : null].filter(Boolean),
-      legend: `<div>Fifteen archetypes, each scored on the field's element against the 用神 lists, the ten-god working style (shares ≥8%) and 神煞 talents. ≥12 分 strong fit · 4–12 分 good fit · &lt;4 分 workable. Low-ranked fields are priced against the chart, never forbidden.</div>
-        ${[...top, ...avoid].map((a) => `<div><b>${a.en} <span class="zhs">(${a.zh})</span></b> (${a.score} pts) — ${a.reasons.join("; ")}</div>`).join("")}${legendList(12)}` });
   }
-  return rdSection("gods", "Ten Gods", "What drives me?",
-    [rdGrid("hero", [g2, g1f]), rdGrid("secondary", [g8, g5]), rdGrid("secondary", [ld]), rdGrid("reference", [k1]), rdGrid("reference", [k2, k3])],
-    [R.narr(4), R.narr(3), R.stb(10), R.narr(10), R.stb(8), R.narr(8), R.stb(12), R.narr(12)]);
+  return { figs: { wheel: g2, bars: g1f, axes: g8, structure: g5, domains: ld, industries: k1, roles: k3 },
+    tail: [R.narr(4), R.narr(3), R.stb(10), R.narr(10), R.stb(8), R.narr(8), R.stb(12), R.narr(12)] };
 }
 
 /* --- 时运 Timing ---------------------------------------------------------------- */
 function buildTiming(c, R) {
-  const W = c.windows; if (!W) return rdSection("timing", "Timing", "Where am I now?", [], [R.narr(6), R.narr(13)]);
+  const W = c.windows; if (!W) return { figs: {}, tail: [R.narr(6), R.narr(13)] };
   const dd = c.dayun_detail || [];
   const strip = `<div class="ccdayun">${W.decades.map((d) => { const x = dd.find((y) => y.gz === d.gz) || {};
     return `<div class="ccdy${d.current ? " now" : ""}" title="${(d.notes || []).join("; ")}">
@@ -1519,32 +1583,8 @@ function buildTiming(c, R) {
       facts: [["good", `${good.length}`], ["pace", `${bad.length}`]],
       legend: "Each solar month carries a branch and its element. Months whose element is your medicine are marked good; months carrying a 忌神 element are marked to pace. The rhythm is the same every year — the 流年 table says which years lift or lower it." });
   }
-  const short = (d) => d.flag === "quiet" ? "·" : d.note.split(" — ")[0].replace(/^年支./, "");
-  const cell = (d) => `<td class="wf-${d.flag}"><b>${d.flag === "window" ? "◉" : d.flag === "caution" ? "⚠" : ""}</b> <span class="wshort">${short(d)}</span></td>`;
-  const nowY = c.daily && c.daily.start ? +c.daily.start.slice(0, 4) : null;
-  const hasSM = W.years.length && W.years[0].study && W.years[0].movement;
-  const th2 = (en) => `<th><span class="th-en">${en}</span></th>`;
-  const table = `<div class="scrollx"><table class="wtable"><tr>${th2("Year")}${th2("Overall")}${th2("Career")}${th2("Wealth")}${th2("Relationship")}${th2("Health")}${hasSM ? th2("Study") + th2("Movement") : ""}</tr>
-    ${W.years.map((yr, yi) => { const full = [["Career", yr.career], ["Wealth", yr.wealth], ["Relationship", yr.relationship], ["Health", yr.health], ...(hasSM ? [["Study", yr.study], ["Travel", yr.movement]] : [])]
-        .filter(([, d]) => d && d.flag !== "quiet").map(([l, d]) => `<b>${l}:</b> ${d.note}`).join("<br>") || "quiet year";
-      return `<tr class="wrow${yr.y === nowY ? " now" : ""}" data-yi="${yi}"><th>${yr.y} ${yr.gz}${yr.y === nowY ? ' <em class="rnow">▲ now</em>' : ""}</th>
-        <td class="wf-${yr.overall === "peak" ? "window" : yr.overall === "careful" ? "caution" : "quiet"}"><b>${yr.overall_zh}</b></td>
-        ${cell(yr.career)}${cell(yr.wealth)}${cell(yr.relationship)}${cell(yr.health)}${hasSM ? cell(yr.study) + cell(yr.movement) : ""}</tr>
-        <tr class="wdetail" hidden><td colspan="${hasSM ? 8 : 6}">${full}</td></tr>`; }).join("")}</table></div>`;
-  const DIM = { career: "career", wealth: "wealth", relationship: "relationship", health: "health", ...(hasSM ? { study: "study", movement: "movement" } : {}) };
-  const score = (yr, flag) => Object.keys(DIM).filter((k) => yr[k] && yr[k].flag === flag);
-  const best = W.years.map((yr) => [yr, score(yr, "window")]).sort((a, b) => b[1].length - a[1].length)[0];
-  const worst = W.years.map((yr) => [yr, score(yr, "caution")]).sort((a, b) => b[1].length - a[1].length)[0];
-  const list = (ks) => ks.map((k) => DIM[k]).join(ks.length === 2 ? " & " : ", ");
-  const t2 = rdFig({ tier: "secondary", span: 12, label: "Next ten years", learn: 13, chart: table,
-    line: `${best && best[1].length ? `Act in ${best[0].y} ${best[0].gz} — ${list(best[1])} window${best[1].length > 1 ? "s align" : ""}.` : "No peak window in the next ten years — steady years, build quietly."}
-      ${worst && worst[1].length ? ` Be careful in ${worst[0].y} ${worst[0].gz} — ${worst[1].length} caution${worst[1].length > 1 ? "s" : ""}.` : ""}`,
-    facts: [best && best[1].length ? ["act", `${best[0].y} ${best[0].gz}`] : null, worst && worst[1].length ? ["careful", `${worst[0].y} ${worst[0].gz}`] : null].filter(Boolean),
-    legend: `<div>The decade is the climate, the year the weather. Each year is checked per dimension — career (month-pillar activation or clash, 官殺 arrival), wealth (財星 arrival with a can-the-chart-hold-it check, 財庫 vault years), relationship (桃花 and spouse-palace 日支 activation), health (years that feed an excess or replenish a weak element)${hasSM ? ", study (印 arrival, 文昌/學堂 years, month-pillar 合; 沖 month or 傷官 against a prominent 正官 as cautions) and movement (驛馬 years, 合 to the day branch; 沖 to the year or day branch as cautions)" : ""}. Tap a year row for the full notes.</div>${legendList(13)}` });
   const daily = dailyFig(c);
-  return rdSection("timing", "Timing", "Where am I now?",
-    [rdGrid("hero", [t1]), rdGrid("secondary", [daily]), rdGrid("secondary", [t6, p8]), rdGrid("secondary", [t2])],
-    [R.stb(13), R.narr(13), R.narr(6)]);
+  return { figs: { strip: t1, thisyear: p8, rhythm: t6, daily }, tail: [R.stb(13), R.narr(13), R.narr(6)] };
 }
 
 /* 流日 daily fortune — the next 30 days, six activities, from the engine's daily layer */
@@ -1624,8 +1664,7 @@ function buildCompass(c, R) {
     facts: [["Grand Duke", AF.taisui.dir], ["Year Breaker", AF.suipo.dir], ["Three Killings", AF.sansha.dirs.join("/")]],
     legend: `<div><b>Grand Duke</b> — ${AF.taisui.rule}</div><div><b>Year Breaker</b> — ${AF.suipo.rule}</div><div><b>Three Killings</b> — ${AF.sansha.rule}</div>
       ${AF.collisions.map((h) => `<div class="cite">${h.affliction} on your ${h.star} (${h.dir}): ${h.note.split(" — ")[1] || h.note}.</div>`).join("")}` }) : "";
-  return rdSection("compass", "Compass", "Which way do I face, sleep and work?", [rdGrid("hero", [c1, c34]), rdGrid("secondary", [c2, c5])],
-    [R.stb(5), R.narr(5), R.narr(7)]);
+  return { figs: { grid: c1, medicine: c34, placements: c2, afflictions: c5 }, tail: [R.stb(5), R.narr(5), R.narr(7)] };
 }
 
 /* English-first pass: rewrite every text node through the shared glossary
@@ -1645,66 +1684,40 @@ function glossifyDom(root, fresh = true) {
   GL.tipify(root);                     // Chinese runs -> tooltip spans (pinyin there only), element colours
 }
 
-function wireReadingTabs(root) {
-  const nav = root.querySelector("nav.ptabs"); if (!nav) return;
-  const panes = {}; READING_TABS.forEach(([id]) => (panes[id] = root.querySelector("#pane-" + id)));
-  const activate = (paneId) => {
-    nav.querySelectorAll("button").forEach((x) => x.classList.toggle("on", x.dataset.pane === paneId));
-    READING_TABS.forEach(([id]) => panes[id] && panes[id].classList.toggle("on", id === paneId));
-  };
-  nav.addEventListener("click", (ev) => { const b = ev.target.closest("button"); if (!b) return;
-    activate(b.dataset.pane); nav.scrollIntoView({ block: "start", behavior: "instant" }); });
-  root.addEventListener("click", (ev) => {
-    const b = ev.target.closest("button.nextsec"); if (!b) return;
-    const id = b.dataset.next; activate(id);
-    const pane = panes[id]; if (!pane) return;
-    const h = pane.querySelector("h2, h3"); if (h) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    nav.scrollIntoView({ block: "start", behavior: still ? "instant" : "smooth" });
-  });
-  const hm = (location.hash || "").match(/^#tab-(p[1-5])$/);
-  if (hm) activate(hm[1]);
-  const hl = root.querySelector("[data-howto]"), hd = root.querySelector("#howto");
-  if (hl && hd) hl.addEventListener("click", (ev) => { ev.preventDefault(); hd.open = true; hd.scrollIntoView({ block: "start", behavior: "smooth" }); });
-  // swipe hint only on tables that actually overflow their column (hidden panes measure 0 → re-check on activate)
+function wireReading(root) {
+  const links = Array.from(root.querySelectorAll(".rp-bar a")), byId = {};
+  links.forEach((a) => (byId[a.getAttribute("href").slice(1)] = a));
+  if (links.length && "IntersectionObserver" in window) {      // the chapter bar follows the reader
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (!e.isIntersecting) return;
+      links.forEach((a) => { a.classList.remove("on"); a.removeAttribute("aria-current"); });
+      const a = byId[e.target.id]; if (!a) return;
+      a.classList.add("on"); a.setAttribute("aria-current", "true");
+      a.parentElement.scrollTo({ left: a.offsetLeft - 16, behavior: "instant" }); }), { rootMargin: "-45% 0px -50% 0px" });
+    root.querySelectorAll(".rp-chap").forEach((s) => io.observe(s));
+  }
+  // links from before the redesign (#tab-p1 … #tab-p5) still land on the matching chapter
+  // chapters render after load, so the browser's own jump to #ch-… misses; links from before the
+  // redesign (#tab-p1 … #tab-p5) land on the matching chapter too
+  const hm = (location.hash || "").match(/^#(?:tab-p([1-5])|(ch-[a-z]+))$/);
+  if (hm) { const s = root.querySelector(`#${hm[2] || "ch-" + CHAPTERS[+hm[1] - 1][0]}`); if (s) s.scrollIntoView({ block: "start" }); }
+  // swipe hint only on tables that overflow; tables inside closed folds measure 0 until opened
   const markOverflow = () => root.querySelectorAll(".rd-fig .scrollx").forEach((w) =>
     w.classList.toggle("has-overflow", w.scrollWidth > w.clientWidth + 2));
   markOverflow(); window.addEventListener("resize", markOverflow);
-  nav.addEventListener("click", () => setTimeout(markOverflow, 0));
-  root.addEventListener("click", (ev) => { const tr = ev.target.closest("tr.wrow"); if (!tr) return;
-    const det = tr.nextElementSibling; if (det && det.classList.contains("wdetail")) det.hidden = !det.hidden; });
-  // character-card stats: data-go="paneId|figure label prefix"
-  const card = root.querySelector(".charcard");
-  if (card) card.addEventListener("click", (ev) => {
-    const t = ev.target.closest("[data-go]"); if (!t) return;
-    const [paneId, frag] = t.dataset.go.split("|");
-    activate(paneId);
-    const lab = Array.from(panes[paneId].querySelectorAll(".rd-label span")).find((x) => x.textContent.includes(frag));
-    ((lab && lab.closest(".rd-fig")) || panes[paneId]).scrollIntoView({ block: "start", behavior: "smooth" });
-  });
+  root.addEventListener("toggle", markOverflow, true);
 }
 
-/* 綜合論斷 as a note under the card: one-line summary always visible, the
-   geomancer's report (findings · assessment · plan · method note) behind one disclosure.
-   Accepts the structured report or the older list of sentences. */
+/* The geomancer's report (summary, findings, assessment, plan, method note) behind one fold under
+   the opening: the plain answers above carry its summary, this keeps every line of it one tap away. */
 function synthNote(sy) {
   if (!sy) return "";
-  if (Array.isArray(sy)) {
-    if (!sy.length) return "";
-    return `<div class="rd-synth-note"><span class="rd-synth-kicker">The Synthesis</span>
-      <p class="rd-synth-lede">${sy[0]}</p>
-      ${sy.length > 1 ? `<details class="rd-synth-more"><summary>read the synthesis ›</summary><p>${sy.slice(1).join(" ")}</p></details>` : ""}</div>`;
-  }
-  const F = (sy.findings || []).map((f) => `<p class="rd-synth-p"><b>${f.label}.</b> ${f.text}</p>`).join("");
-  return `<div class="rd-synth-note"><span class="rd-synth-kicker">The Synthesis — the geomancer's report</span>
-    <p class="rd-synth-lede">${sy.summary || ""}</p>
-    <details class="rd-synth-more"><summary>read the full report ›</summary>
-      <div class="rd-synth-body">
-        ${F ? `<h4>Findings</h4>${F}` : ""}
-        ${sy.assessment ? `<h4>Assessment</h4><p class="rd-synth-p">${sy.assessment}</p>` : ""}
-        ${(sy.plan || []).length ? `<h4>Plan</h4><ul class="rd-synth-plan">${sy.plan.map((x) => `<li>${x}</li>`).join("")}</ul>` : ""}
-        ${sy.confidence ? `<p class="rd-synth-conf">${sy.confidence}</p>` : ""}
-      </div></details></div>`;
+  const body = Array.isArray(sy) ? (sy.length ? `<p class="rd-synth-p">${sy.join(" ")}</p>` : "")
+    : `${sy.summary ? `<p class="rd-synth-lede">${sy.summary}</p>` : ""}
+      ${(sy.findings || []).length ? `<h4>Findings</h4>${sy.findings.map((f) => `<p class="rd-synth-p"><b>${f.label}.</b> ${f.text}</p>`).join("")}` : ""}
+      ${sy.assessment ? `<h4>Assessment</h4><p class="rd-synth-p">${sy.assessment}</p>` : ""}
+      ${(sy.plan || []).length ? `<h4>Plan</h4><ul class="rd-synth-plan">${sy.plan.map((x) => `<li>${x}</li>`).join("")}</ul>` : ""}
+      ${sy.confidence ? `<p class="rd-synth-conf">${sy.confidence}</p>` : ""}`;
+  return body ? `<details class="rp-more rp-report"><summary>The full report, in classical terms</summary><div class="rd-synth-body">${body}</div></details>` : "";
 }
 
 async function renderPerson(name) {
@@ -1720,34 +1733,22 @@ async function renderPerson(name) {
     narr: (n) => deepWrap(`Interpretation: ${SEC_ZH[n] || ""} — the numbers read out`,
       (nb.by[n] || []).map((t) => `<div class="ninline">${dnAll(t)}</div>`).join("")),
     stb: (n) => deepWrap(`Strategy: ${SEC_ZH[n] || ""} — what this asks of you`, stratBlock(n, c.strategy)) };
-  const panes = { p1: buildPillars(c, R), p2: buildElements(c, R), p3: buildGods(c, R),
-    p4: buildTiming(c, R), p5: buildCompass(c, R) };
   const howto = explain(
-    "<b>What this page is.</b> A full BaZi reading built from the birth moment (true solar time → four pillars), " +
-    "read in five dashboards. <b>The character card</b> is identity: name, zodiac, kua number, Day Master with its strength " +
-    "verdict, and the useful-god chips. <b>The geomancer's report</b> under it is the one-page synthesis — summary, findings, " +
-    "assessment, plan — every sentence a rule over the chart's own numbers.<br>" +
-    "<b>The five tabs, five questions.</b> Pillars — what am I made of? · Elements — what is out of balance, and which " +
-    "element is the useful god? · Gods — what drives me? · Timing — where am I now (decades, this year, the next ten " +
-    "years, the next 30 days)? · Compass — which way do I face, sleep and work?<br>" +
-    "<b>How to read a figure.</b> Bold header → the chart → the accented line beneath it is the interpretation (the one sentence " +
-    "to take away) → small facts → the <b>?</b> button opens the legend for that figure → <b>learn ›</b> opens the background article.<br>" +
-    "<b>Colour key.</b> <b style='color:#1e8e3e'>Wood</b> · <b style='color:#c5221f'>Fire</b> · <b style='color:#8a6d1f'>Earth</b> · " +
-    "<b style='color:#5f6b7a'>Metal</b> · <b style='color:#1a56b0'>Water</b> — every element, stem, branch and ten god is painted in its " +
-    "element for <i>this</i> day master, so the same god can be a different colour on another person's page.<br>" +
-    "<b>Timing is climate × weather, not prediction:</b> the decade sets the climate, the year the weather, the day the hour-to-hour; " +
-    "◉ marks a window, ⚠ a caution — navigation notes, never verdicts. The interpretation and strategy expanders at the foot " +
-    "of each tab hold the longer prose.",
-    "person").replace('<details class="explain">', '<details class="explain" id="howto">');
+    "<b>What this page is.</b> A BaZi reading built from the birth moment. The top answers four questions in plain words: " +
+    "who you are, what helps you, what this year holds and what to do.<br>" +
+    "<b>Five chapters follow</b>, each a question: what you are made of, what you have too much or too little of, what drives you, " +
+    "what is coming and when, and where to sit, sleep and work.<br>" +
+    "<b>Every answer</b> leads with a plain sentence. Open \"Why the chart says this\" for the pillars, the rule and the citation behind it. " +
+    "<b>The plain view and the classical chart</b> sit side by side; the <b>?</b> on a chart opens its legend.<br>" +
+    "<b>Colour key.</b> Wood, Fire, Earth, Metal and Water each keep one colour across the page.<br>" +
+    "<b>Timing is climate and weather, not prediction:</b> the decade sets the climate, the year the weather; ◉ marks a window, ⚠ a caution.",
+    "person");
   $("#tab-person").innerHTML = jt(`
-    <div class="rd-topline"><a href="#" class="howto-link" data-howto>ℹ️ How to read this page ›</a></div>
-    ${charCard(c, name)}
-    ${synthNote(c.synthesis)}
-    <nav class="ptabs">${READING_TABS.map(([id, lbl], i) =>
-      `<button class="${i === 0 ? "on" : ""}" data-pane="${id}">${lbl}</button>`).join("")}</nav>
-    ${READING_TABS.map(([id], i) => `<div class="ppane${i === 0 ? " on" : ""}" id="pane-${id}">${panes[id]}${paneNext(i)}</div>`).join("")}
+    <div class="rp-open">${pIdentity(c, name)}${pAnswers(c)}${synthNote(c.synthesis)}</div>
+    ${pChapBar()}
+    ${readingChapters(c, R)}
     <div class="rd-howto">${howto}</div>`);
-  wireReadingTabs($("#tab-person"));
+  wireReading($("#tab-person"));
   colorizeTerms($("#tab-person"), c.day_master);
   colorizeColours($("#tab-person"));
   glossifyDom($("#tab-person"));

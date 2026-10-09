@@ -11,6 +11,7 @@ import argparse
 import json
 from pathlib import Path
 
+from .plain import plain_reading
 from .bazi import CLOCK, TRUE_SOLAR, build_chart
 from .import_family import import_family, load_family
 from .interpret import interpret_house
@@ -94,6 +95,7 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
     p["career_roles"] = career_roles(c, ys)
     p["placements"] = placements(c)
     p["afflictions"] = compass_afflictions(c, year)
+    p["plain"] = plain_reading(p)              # plain-language layer, read from the assembled payload
     return p
 
 
