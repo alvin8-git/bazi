@@ -933,7 +933,7 @@ const pSignal = (s) => s ? `<span class="rp-sig"><span class="rp-bars" aria-hidd
 const pWhy = (txt, html, label = "Why the chart says this") => txt || html
   ? `<details class="rp-why"><summary>${label}</summary><div class="rp-whyb">${txt ? `<p>${txt}</p>` : ""}${html || ""}</div></details>` : "";
 function pCard(o) {
-  return `<article class="rp-card">${o.pre || ""}<h3>${o.head}</h3>${o.means ? `<p class="rp-means">${o.means}</p>` : ""}
+  return `<article class="rp-card">${o.pre || ""}<h3>${o.head}</h3>${o.means ? `<p class="rp-means">${o.means}</p>` : ""}${o.extra || ""}
     ${o.todo ? `<p class="rp-todo"><b>Do this:</b> ${o.todo}</p>` : ""}${o.signal ? `<div class="rp-meta">${pSignal(o.signal)}</div>` : ""}
     ${pWhy(o.why, o.whyHtml)}</article>`;
 }
@@ -944,10 +944,26 @@ function pSeal(c) {
     `<div${k === "day" ? ' class="me"' : ""}><span style="color:${EL_TXT[STEM_EL[P[k][0]]]}">${P[k][0]}</span><span style="color:${EL_TXT[BR_EL[P[k][1]]]}">${P[k][1]}</span><small>${lab}</small></div>`).join("")}</div>`;
 }
 function pIdentity(c, name) {
-  const I = c.plain.identity, slug = STEM_SLUG[c.day_master];
+  const I = c.plain.identity;
   return `<section class="rp-ident"><div class="rp-idtext"><p class="rp-name">${dn(name || c.name)}</p>${pSeal(c)}
       <h2 class="rp-h">${I.head}</h2><p class="rp-sub">${I.sub}</p>${pSignal(I.signal)}${pWhy(I.why)}</div>
-    ${slug ? `<img class="rp-idimg" src="/static/img/reading/dm-${slug}-600.jpg" alt="" width="600" height="400" fetchpriority="high" decoding="async">` : ""}</section>`;
+  </section>`;   // the Day Master image now lives on the "you at home" card in the four sides
+}
+/* the four pillars as four life characters (owner pick 2026-10-10); replaces the Four Palaces chart */
+function pSides(c) {
+  const S = c.plain.sides || []; if (!S.length) return "";
+  const kids = ((c.palaces || {}).children || {}).line;
+  return `<section class="rp-sides" aria-labelledby="h-sides"><h3 id="h-sides">Your four sides</h3><div class="rp-sidegrid">${S.map((s) =>
+    `<article class="rp-side${s.key === "day" ? " me" : ""}"><img src="/static/img/reading/dm-${STEM_SLUG[s.stem]}-600.jpg" alt="" width="600" height="400" loading="lazy" decoding="async">
+      <p class="rp-k">${s.area.charAt(0).toUpperCase() + s.area.slice(1)}${s.ages ? `, <span class="rp-nw">ages ${s.ages}</span>` : ""}</p><h4>${s.head}</h4><p>${s.role}</p></article>`).join("")}</div>
+    ${pWhy("", S.map((s) => `<p>${s.why}</p>`).join("") + (kids ? `<p><b>Children palace:</b> ${kids}</p>` : ""))}</section>`;
+}
+const DRIVE_IMG = { 比劫: "peers", 食傷: "expression", 財: "money", 官殺: "duty", 印: "support" };
+const pImg = (src) => `<img class="rp-medimg" src="/static/img/reading/${src}-600.jpg" alt="" width="600" height="400" loading="lazy" decoding="async">`;
+function pCareers(c) {
+  const C = c.careers || {}, row = (a) => `<li><b>${a.en}</b> (${a.score} pts): ${a.reasons.join("; ")}</li>`;
+  return (C.top || []).length ? `<p><b>Career archetypes, ranked.</b></p><ul class="rp-list">${C.top.map(row).join("")}${(C.avoid || []).map((a) =>
+    `<li>Harder going: <b>${a.en}</b> (${a.score} pts): ${a.reasons.join("; ")}</li>`).join("")}</ul>` : "";
 }
 function pBudget(c, compact) {
   return `<div class="rp-bud">${c.plain.balance.map((r) => `${elb(r.el)}<span>${r.en}</span>
@@ -1003,44 +1019,53 @@ const pPair = (plain, cap1, classical, cap2) => plain || classical ? `<div class
 const pSupport = (figs) => { figs = figs.filter(Boolean); return figs.length ? `<div class="rp-support">${figs.join("")}</div>` : ""; };
 const pMore = (title, figs) => { figs = figs.filter(Boolean);
   return figs.length ? `<details class="rp-more"><summary>More detail: ${title}</summary><div>${figs.join("")}</div></details>` : ""; };
-function pChapter([id, , q, tech, img, what], body, tail) {
-  tail = (tail || []).filter(Boolean);
+function pChapter([id, , q, tech, img, what], body, ownImage) {
   return `<section class="rp-chap" id="ch-${id}" aria-labelledby="h-${id}"><div class="rp-chead"><div><h2 id="h-${id}">${q}</h2>
       <p class="rp-tech">The classical name for this: ${tech}.</p></div>
-      <img src="/static/learn/img/hero/${img}-600.jpg" alt="" width="600" height="400" loading="lazy" decoding="async"></div>
-    ${body}${tail.length ? `<details class="rp-more rp-long"><summary>The long read: interpretation, strategy and sources</summary><div class="rd-tail">${tail.join("")}</div></details>` : ""}
+      ${ownImage ? "" : `<img src="/static/learn/img/hero/${img}-600.jpg" alt="" width="600" height="400" loading="lazy" decoding="async">`}</div>
+    ${body}
     <p class="rp-learn"><a href="/learn/${img}">Learn more about ${what}</a></p></section>`;
 }
 function readingChapters(c, R) {
-  const P = c.plain, H = P.helps;
+  const P = c.plain, H = P.helps, w = (...xs) => xs.filter(Boolean).join("");
   const A = buildPillars(c, R), E = buildElements(c, R), G = buildGods(c, R), T = buildTiming(c, R), K = buildCompass(c, R);
+  const cur = (P.decades || []).find((d) => d.current), top = (P.drives.groups || [])[0] || {};
+  const stars = (P.stars || []).map((s, k) => pCard({ ...s, whyHtml: k ? "" : w(A.figs.stars, R.narr(9)) })).join("")
+    || pWhy("", w(A.figs.stars, R.narr(9)), "The symbolic stars");
   const body = {
-    makeup: pCard(P.makeup)
+    makeup: pCard({ ...P.makeup, whyHtml: A.figs.interactions })
       + pPair(pRelations(c), "How the parts of your life pull on each other.", pSlimGrid(c), "Your eight characters.")
-      + pSupport([A.figs.interactions, A.figs.palaces])
-      + pMore("the full four-pillar grid and the symbolic stars", [A.figs.grid, A.figs.stars]),
-    balance: pCard({ ...P.strength, whyHtml: E.figs.gauge })
-      + pPair(pBudget(c) + pWhy("", E.units, "How these numbers are counted"), "How much of each element you carry.",
+      + stars
+      + pMore("the full four-pillar grid", [A.figs.grid]),
+    balance: pCard({ ...P.strength, whyHtml: w(E.figs.gauge, R.narr(2), R.stb(2)) })
+      + pPair(pBudget(c) + pWhy("", w(E.units, R.narr(1)), "How these numbers are counted"), "How much of each element you carry.",
         E.figs.pentagon, "The same five elements and how they feed and check each other.")
-      + pCard({ head: H.head, todo: H.todo, why: H.why,   // what it brings is said once, in the opening
-        pre: `<img class="rp-medimg" src="/static/img/reading/${EL_SLUG[H.el]}-600.jpg" alt="" width="600" height="400" loading="lazy" decoding="async">` })
+      + pCard({ head: H.head, todo: H.todo, why: H.why, pre: pImg(EL_SLUG[H.el]) })   // what it brings is said once, in the opening
       + (P.flows ? pCard(P.flows) : "")
-      + pSupport([E.figs.health]),
-    drives: pCard({ head: P.drives.head, means: P.drives.means, why: P.drives.why, whyHtml: G.figs.structure })
+      + pCard({ ...P.health, whyHtml: w(E.figs.health, R.narr(11), R.stb(11)) }),
+    drives: pCard({ head: P.drives.head, means: P.drives.means, why: P.drives.why, pre: DRIVE_IMG[top.zh] ? pImg("drive-" + DRIVE_IMG[top.zh]) : "",
+        whyHtml: w(G.figs.structure, G.figs.bars, R.narr(4), R.narr(3)) })
       + pPair(pDrives(c), "Where your attention goes, in five plain groups.", G.figs.wheel, "The ten classical roles, grouped.")
-      + pSupport([G.figs.bars, G.figs.domains, G.figs.industries])
-      + pMore("personality axes and roles today", [G.figs.axes, G.figs.roles]),
-    timing: (P.decade_now ? pCard(P.decade_now) : "")
+      + (P.personality ? pCard({ ...P.personality, whyHtml: w(G.figs.axes, R.stb(10), R.narr(10)) }) : G.figs.axes)
+      + (P.work ? pCard({ ...P.work, whyHtml: w(G.figs.industries, G.figs.roles, pCareers(c), R.stb(12), R.narr(12)) }) : "")
+      + (P.money ? pCard(P.money) : "")
+      + (P.love ? pCard({ ...P.love, whyHtml: w(G.figs.domains, R.stb(8), R.narr(8)) }) : G.figs.domains),
+    timing: (P.decade_now ? pCard({ ...P.decade_now, pre: cur ? pImg("phase-" + cur.phase) : "", whyHtml: R.narr(6) }) : "")
       + pPair(pWeather(c), "Your life in ten-year seasons.", T.figs.strip, "Your luck pillars, decade by decade.")
       + (P.year ? pCard({ head: P.year.head, means: P.year.means, why: P.year.why, whyHtml: T.figs.thisyear }) : "")
-      + (P.years.length ? `<div class="rp-pane rp-solo"><p class="rp-cap"><b>The next ten years at a glance.</b></p>${pYears(c)}</div>` : "")
-      + pMore("month by month and the next 30 days", [T.figs.rhythm, T.figs.daily]),
-    space: (P.space ? pCard({ head: P.space.head, means: P.space.means, why: P.space.why }) : "")
+      + (P.next_ten ? pCard({ ...P.next_ten, extra: pYears(c), whyHtml: w(R.stb(13), R.narr(13)) }) : "")
+      + (P.months ? pCard({ ...P.months, whyHtml: T.figs.rhythm }) : T.figs.rhythm)
+      + (P.days ? pCard({ ...P.days, whyHtml: T.figs.daily }) : T.figs.daily),
+    space: (P.space ? pCard({ head: P.space.head, means: P.space.means, why: P.space.why, whyHtml: w(K.figs.placements, R.narr(7)) }) : K.figs.placements)
       + pPair(pRoom(c), "Where things go, north at the top.", K.figs.grid, "The eight directions for your Kua number.")
-      + pSupport([K.figs.afflictions])
-      + pMore("where the medicine sits, placements and which way to face", [K.figs.medicine, K.figs.placements, A.figs.face]) };
-  const tails = { makeup: A.tail, balance: E.tail, drives: G.tail, timing: T.tail, space: K.tail };
-  return CHAPTERS.map((ch) => pChapter(ch, body[ch[0]], tails[ch[0]])).join("");
+      + pCard({ ...P.room, whyHtml: w(K.figs.medicine, R.stb(5), R.narr(5)) })
+      + (P.afflict ? pCard({ ...P.afflict, whyHtml: K.figs.afflictions }) : K.figs.afflictions) };
+  // Four Palaces is replaced by the four sides; Which Way to Face repeats the 3×3 grid. Both cut 2026-10-10 (no citations).
+  // What is left of the Pillars tail (the general interpretation and every rule cited) closes the page.
+  const rest = A.tail.filter((x) => x && x !== R.narr(9));
+  const ownImage = { drives: !!DRIVE_IMG[top.zh], timing: !!cur };
+  return CHAPTERS.map((ch) => pChapter(ch, body[ch[0]], ownImage[ch[0]])).join("")
+    + (rest.length ? `<details class="rp-more rp-sources"><summary>Sources and the full interpretation</summary><div class="rd-tail">${rest.join("")}</div></details>` : "");
 }
 const pChapBar = () => `<nav class="rp-bar" aria-label="Chapters"><div>${CHAPTERS.map(([id, lab]) =>
   `<a href="#ch-${id}">${lab}</a>`).join("")}</div></nav>`;
@@ -1145,7 +1170,6 @@ const grpOfGod = (g) => { g = tgCanon(g);
     : ["正財", "偏財"].includes(g) ? "財" : ["正官", "七殺"].includes(g) ? "官殺" : "印"; };
 const GRP_THEME = { 比劫: "peers and self-drive", 印: "learning and support", 食傷: "expression and output",
   財: "wealth and practical results", 官殺: "structure and pressure" };
-const GRP_WORD = { 比劫: "peers", 印: "support", 食傷: "expression", 財: "wealth", 官殺: "pressure" };
 const GRP_EN = { 官殺: "authority", 印星: "resource", 比劫: "peers", 食傷: "output", 財星: "wealth" };
 const COLOUR_ZH_EN = { 红: "red", 紅: "red", 紫: "purple", 黄: "yellow", 黃: "yellow", 棕: "brown",
   绿: "green", 綠: "green", 青: "green", 蓝: "blue", 藍: "blue", 黑: "black", 灰: "grey", 白: "white", 金: "gold" };
@@ -1204,13 +1228,6 @@ function pillarGrid(c) {
       <div><span>True solar time</span>${(c.effective_time || "").slice(11)}${clock ? ` <em>clock ${clock[1]}</em>` : ""}</div>
     </div></div>
     <div class="ccpillars">${pcols}</div>`;
-}
-function bazhaiPanel(c) {
-  const dirOf = {};
-  Object.entries(c.youxing).forEach(([pal, s]) => (dirOf[s] = PALACE_DIR[pal]));
-  const panel = (stars, cls) => `<div class="ccdirs ${cls}">${stars.map((s) =>
-    `<div><b>${dirOf[s]}</b> ${s} <span>${BAZHAI_EN[s][0]}</span></div>`).join("")}</div>`;
-  return { html: `<div class="ccdirwrap">${panel(["生氣", "天醫", "延年", "伏位"], "fav")}${panel(["禍害", "六煞", "五鬼", "絕命"], "bad")}</div>`, dirOf };
 }
 const GLOSS_IX = { 六害: "harms", 害: "harms", 冲: "clashes with", 六冲: "clashes with", 刑: "punishes",
   破: "breaks", 六合: "combines with", 三合: "combines with", 半合: "half-combines with" };
@@ -1324,30 +1341,8 @@ function buildPillars(c, R) {
     legend: `Arcs join the pillars whose branches interact. Dashed amber = 害·刑·冲 (friction, punishment, clash);
       solid green = 合 (combination). Read with the palaces: a tension between Year and Month touches ancestry
       and career; Day is the self and spouse.${its.length ? "<hr>" + its.map((i) => `<div><b>${i.pair} ${i.kind}</b> (${i.pillars.join("+")}) — ${i.note}</div>`).join("") : ""}` });
-  const P = c.palaces; let p4 = "";
-  if (P) {
-    const god = (p) => p.stem_god && p.stem_god !== "日主" ? p.stem_god : (p.hidden || [])[0] || "";
-    const cols = P.pillars.map((p) => `<div class="palcol${p.key === "day" ? " dm" : ""}">
-      <div class="palages">${p.ages}</div><div class="palzh">${p.zh}</div><div class="palgz">${p.gz}</div>
-      <div class="palgod" style="color:${EL_TXT[godEl(dm, god(p))] || "#6b6359"}">${god(p)}</div>
-      <div class="palgov">${p.governs}</div></div>`).join("");
-    const V = P.vault;
-    const states = `<div class="palstates">
-      <div><b>Spouse palace</b> day branch ${elc(P.spouse.branch)} · ${P.spouse.gods.join("/")} — ${P.spouse.state.split(" — ")[0]}</div>
-      <div><b>Children palace</b> ${[...new Set(P.children.gods)].join("/")} · output stars ${P.children.output_share}%</div>
-      <div><b>Wealth vault</b> ${V.present ? `${elc(V.branch)} ${elc(V.element)} · ${V.open ? "open" : "sealed"} — ${V.state.split(" (")[0]}` : `absent — ${V.state}`}</div></div>`;
-    const day = P.pillars.find((p) => p.key === "day"), mon = P.pillars.find((p) => p.key === "month");
-    p4 = rdFig({ tier: "secondary", span: 7, label: "Four Palaces", learn: "palaces",
-      chart: `<div class="palarc">${cols}</div>${states}`,
-      line: `Self &amp; spouse (${day.ages.replace(/^ages\s*/, "")}) run on ${godc(dm, god(day))} — ${GRP_WORD[grpOfGod(god(day))]}; career years (${mon.ages.replace(/^ages\s*/, "")}) run on ${godc(dm, god(mon))} ${GRP_WORD[grpOfGod(god(mon))]}.`,
-      facts: [["day palace", "(self) highlighted"], ["ages", `${P.pillars[0].ages.replace(/^ages\s*/, "").split(/[–-]/)[0]} → ${P.pillars[3].ages.replace(/^ages\s*/, "")} span a lifetime`]],
-      legend: P.pillars.map((p) => `<div><b>${p.zh.split(" ")[0]}:</b> ${p.line}</div>`).join("") + `<div class="sub">${P.source_ref || ""}</div>` });
-  }
-  const bz = bazhaiPanel(c), goodDirs = ["生氣", "天醫", "延年", "伏位"].map((s) => bz.dirOf[s]);
-  const p3 = rdFig({ tier: "reference", span: 5, label: "Which Way to Face", learn: 7,
-    chart: bz.html,
-    line: `You are <b>${c.group.split(" ")[0]}</b> (${c.gua}): your four good directions are ${goodDirs.join(", ")}.`,
-    facts: [["命卦", `${c.gua} · ${c.group}`], ["↔", "same data as the Compass grid"]], legend: legendList(7) });
+  // Four Palaces retired 2026-10-10: the four sides in the opening carry each palace (owner cut)
+  // Which Way to Face retired 2026-10-10: it repeated the Compass 3×3 grid (owner cut)
   let p5 = "";
   if ((c.shensha || []).length) {
     const NEG = ["劫煞", "空亡", "災煞", "亡神", "羊刃", "孤辰", "寡宿"];
@@ -1362,7 +1357,7 @@ function buildPillars(c, R) {
       facts: [["stars", `${c.shensha.length} total`], ["flagged", `${c.shensha.filter((s) => NEG.includes(s.star)).length} ⚠`]],
       legend: legendList(9) });
   }
-  return { figs: { grid: p1, interactions: p6, palaces: p4, face: p3, stars: p5 },
+  return { figs: { grid: p1, interactions: p6, stars: p5 },
     tail: [R.nb.rest.length ? deepWrap("Interpretation — the numbers read out", R.nb.rest.map((t) => `<div class="ninline">${dnAll(t)}</div>`).join("")) : "",
       R.narr(9), deepWrap("Every rule this reading cites",
         c.citations.map((x) => `<div class="cite"><b>[${layerZh(x.layer)}] ${x.source_ref}:</b> ${x.explanation}</div>`).join(""))] };
@@ -1744,11 +1739,17 @@ async function renderPerson(name) {
     "<b>Timing is climate and weather, not prediction:</b> the decade sets the climate, the year the weather; ◉ marks a window, ⚠ a caution.",
     "person");
   $("#tab-person").innerHTML = jt(`
-    <div class="rp-open">${pIdentity(c, name)}${pAnswers(c)}${synthNote(c.synthesis)}</div>
+    <div class="rp-open">${pIdentity(c, name)}${pSides(c)}${pAnswers(c)}${synthNote(c.synthesis)}</div>
     ${pChapBar()}
     ${readingChapters(c, R)}
     <div class="rd-howto">${howto}</div>`);
   wireReading($("#tab-person"));
+  const who = dn(name || c.name), h1 = document.querySelector(".pub-in h1");
+  if (h1 && who) {
+    h1.innerHTML = `${who} <small class="rp-sub1">Your reading (<span class="zh" lang="zh-Hans" tabindex="0" title="mìng shū · the reading">命书</span>)</small>`;
+    document.title = `${who}: your BaZi reading`;
+    const own = $("#tab-person .rp-name"); if (own) own.remove();
+  }
   colorizeTerms($("#tab-person"), c.day_master);
   colorizeColours($("#tab-person"));
   glossifyDom($("#tab-person"));

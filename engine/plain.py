@@ -238,4 +238,233 @@ def plain_reading(p: dict) -> dict:
             "decades": decades, "decade_now": decade_now,
             "years": [{"y": y["y"], "gz": y["gz"], "overall": y["overall"], "word": YEAR[y["overall"]]["word"]}
                       for y in (p.get("windows") or {}).get("years") or []],
-            "makeup": _makeup(p), "drives": _drives(p), "space": _space(p)}
+            "makeup": _makeup(p), "drives": _drives(p), "space": _space(p), **plain_round2(p)}
+
+
+# ---- round 2 (2026-10-10): four sides, and every engine conclusion as a plain card ---------------
+# Drafted for owner review before commit. Same rules: fixed templates, slots from payload fields only.
+SIDE = {"year": ("In your roots", "your roots"), "month": ("At work", "you at work"),
+        "day": ("At home", "you at home"), "hour": ("In your later years", "your later years")}
+GOD_ROLE = {
+    "比肩": "Peers and equals stand beside you here.",
+    "劫財": "Rivals and bold moves shape this part of life.",
+    "劫财": "Rivals and bold moves shape this part of life.",
+    "食神": "Ease, enjoyment and natural talent show here.",
+    "傷官": "Sharp expression and a will to challenge show here.",
+    "伤官": "Sharp expression and a will to challenge show here.",
+    "正財": "Steady earning and careful management show here.",
+    "正财": "Steady earning and careful management show here.",
+    "偏財": "Deals, windfalls and generosity show here.",
+    "偏财": "Deals, windfalls and generosity show here.",
+    "正官": "Rules, rank and responsibility shape this part of life.",
+    "七殺": "Pressure and hard challenges shape this part of life, and make you decisive.",
+    "七杀": "Pressure and hard challenges shape this part of life, and make you decisive.",
+    "正印": "Mentors, learning and protection support you here.",
+    "偏印": "Unusual knowledge and solitary study support you here.",
+}
+GOD_GIST = {"比肩": "companionship", "劫財": "competition", "劫财": "competition", "食神": "ease and enjoyment",
+            "傷官": "spark and challenge", "伤官": "spark and challenge", "正財": "steady provision", "正财": "steady provision",
+            "偏財": "generosity and deals", "偏财": "generosity and deals", "正官": "order and duty", "七殺": "pressure and drive",
+            "七杀": "pressure and drive", "正印": "support and care", "偏印": "unusual insight"}
+POLE = {  # personality axis pole → (one-word trait, plain sentence)
+    "reserved": ("reserved", "You keep your thoughts to yourself until they are ready."),
+    "expressive": ("expressive", "You say what you think and show what you make."),
+    "deliberate": ("deliberate", "You take your time before you act."),
+    "decisive": ("decisive", "You act fast, and best under pressure."),
+    "challenges rules": ("independent-minded", "You question rules and push against them."),
+    "works within structure": ("disciplined", "You work well inside rules and rank."),
+    "pragmatic": ("practical", "You think in practical terms."),
+    "reflective": ("reflective", "You think deeply and enjoy theory."),
+    "contained": ("private", "You keep your feelings close."),
+    "direct & open": ("open", "You show your feelings openly."),
+}
+NEG_STARS = {"劫煞", "空亡", "災煞", "亡神", "羊刃", "孤辰", "寡宿"}
+EL_ROOM = {"木": ("east", "plants, timber and green accents"), "火": ("south", "warm light and a red or orange accent"),
+           "土": ("centre", "ceramics, stone and yellow or brown tones"), "金": ("west", "metal frames and white or gold"),
+           "水": ("north", "glass, a water feature, or blue and black")}
+ANIMAL = dict(zip("子丑寅卯辰巳午未申酉戌亥", ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"]))
+BAND_KEY = lambda band: "strong" if band.startswith("prominent") else "weak" if band.startswith("needs") else "even"
+
+
+def _sides(p):
+    pal = {x["key"]: x for x in (p.get("palaces") or {}).get("pillars") or []}
+    out = []
+    for k in ("year", "month", "day", "hour"):
+        gz = p["pillars"][k]; stem, br = gz[0], gz[1]; P = pal.get(k, {})
+        img = STEM_IMAGE[stem][0]; prefix, area = SIDE[k]
+        if k == "day":   # the identity sentence owns the birth season; the home card is you, unqualified
+            role, head = "This is you, the Day Master, at the centre of the whole chart.", f"{img[0].upper() + img[1:]}, at your most yourself."
+            line = f"{prefix} you are {img}, at your most yourself."
+        else:
+            role = GOD_ROLE.get(P.get("stem_god") or (p.get("ten_gods") or {}).get(k, ""), "")
+            head = f"{img[0].upper() + img[1:]} in {SEASON[br]}."
+            line = f"{prefix} you are {img} in {SEASON[br]}."
+        out.append({"key": k, "area": area, "stem": stem, "head": head, "line": line,
+                    "role": role, "ages": (P.get("ages") or "").replace("ages ", ""),
+                    "why": f"{P.get('zh', k)} {gz}: stem {stem}, branch {br}. {P.get('line', '')}"})
+    return out
+
+
+def _stars(p):
+    S = p.get("shensha") or []
+    good = next((s for s in S if s["star"] not in NEG_STARS), None)
+    bad = next((s for s in S if s["star"] in NEG_STARS), None)
+    def parts(s):
+        name, _, gist = s["meaning"].partition(" — ")
+        return name, (gist or s["meaning"]).split(";")[0]
+    out = []
+    if good:
+        name, gist = parts(good)
+        out.append({"head": f"You carry a helpful star: {name}.", "means": f"{gist[0].upper() + gist[1:]}. It sits in {and_join([SIDE[x][1] for x in good['pillars']])}.",
+                    "why": f"{good['star']} in the {', '.join(good['pillars'])} pillar. {good['meaning']} ({good.get('source_ref', '')})."})
+    if bad:
+        name, gist = parts(bad)
+        out.append({"head": f"One star asks for care: {name}.", "means": f"{gist[0].upper() + gist[1:]}. It sits in {and_join([SIDE[x][1] for x in bad['pillars']])}.",
+                    "why": f"{bad['star']} in the {', '.join(bad['pillars'])} pillar. {bad['meaning']} ({bad.get('source_ref', '')})."})
+    return out
+
+
+def _health(p):
+    H = p.get("health") or []
+    hi = next((h for h in H if h["status"].startswith("excess")), None)
+    lo = [h for h in H if h["status"].startswith("weak")]
+    if not hi and not lo:
+        return {"head": "No organ system is flagged.", "means": "All five elements sit in range. This is a traditional pairing, not medical advice.", "why": ""}
+    main = hi or lo[0]
+    org = lambda h: and_join(h["organs"].split(", "))
+    body, _, mood = main["aspects"].partition("; ")
+    watch = and_join(body.split(", ")) + (f", and watch for {mood}" if mood else "")
+    head = f"Look after your {org(main)}."
+    means = (f"{main['en']} runs high in your chart, which traditionally strains the {org(main)}; notice {watch}. "
+             if hi else f"{main['en']} runs low in your chart; the {org(main)} want support, so notice {watch}. ")
+    means += "This is a traditional pairing, not medical advice."
+    rest = [h for h in lo if h is not main]
+    return {"head": head, "means": means,
+            "todo": (f"Support your {', and your '.join(org(h) for h in rest)} too; your chart is short of them." if rest else None),
+            "why": "; ".join(f"{h['en']} {h['share']}% ({h['status']}): {h['organs']}" for h in H)}
+
+
+def _personality(p):
+    axes = [a for a in p.get("personality") or [] if a.get("zone") in ("left", "right")]
+    traits = [POLE[a["poles"][a["zone"]]["en"]] for a in axes if a["poles"][a["zone"]]["en"] in POLE]
+    if not traits:
+        return None
+    words = [t[0] for t in traits]
+    return {"head": f"You are {and_join(words[:2])}.", "means": " ".join(t[1] for t in traits[:4]),
+            "why": "; ".join(f"{a['axis']}: {a['verdict']} ({a.get('basis', '')})" for a in axes)}
+
+
+def _work(p):
+    top = ((p.get("careers") or {}).get("top") or [None])[0]
+    lc = lambda r: r if r.split()[0].isupper() and len(r.split()[0]) > 1 else r[0].lower() + r[1:]
+    roles = [lc(r["role"]).replace(" & ", " and ") for r in ((p.get("career_roles") or {}).get("top") or [])[:3]]
+    ind = p.get("industries") or {}
+    fav = [x["industries"].split(",")[0].strip() for x in ind.get("favourable") or []]
+    avoid = [x["industries"].split(",")[0].strip() for x in ind.get("avoid") or []]
+    if not top:
+        return None
+    return {"head": f"You do best in {top['en'].lower().replace('&', 'and')}.",
+            "means": (f"Roles that suit you now: {and_join(roles)}. " if roles else "")
+                     + (f"Fields that recharge you: {and_join(fav)}." if fav else ""),
+            "todo": f"Treat {and_join(avoid)} as harder going, not off limits." if avoid else None,
+            "why": f"Top archetype {top['en']} ({top['score']} pts): " + "; ".join(top["reasons"])}
+
+
+def _money(p):
+    W = next((d for d in p.get("domains") or [] if d["key"] == "wealth"), None)
+    if not W:
+        return None
+    head = {"strong": "Money comes to you readily.", "even": "Money comes through steady effort.",
+            "weak": "Money needs deliberate building."}[BAND_KEY(W["band"])]
+    V = (p.get("palaces") or {}).get("vault") or {}
+    br = V.get("state", "").split(" opens in ")[-1][:1] if V.get("present") and not V.get("open") else ""
+    nxt = next((y for y in range(2026, 2040) if "子丑寅卯辰巳午未申酉戌亥"[(y - 4) % 12] == br), None) if br else None
+    means = (f"You have a store of wealth that opens in {ANIMAL.get(br, br)} years ({br}); the next is {nxt}. Those are your years to save and build." if br
+             else "Your wealth store is open, so money moves freely; keep a buffer." if V.get("present")
+             else "There is no fixed wealth store in your chart, so build one on purpose.")
+    return {"head": head, "means": means, "why": f"Wealth domain {W['score']} ({W['band']}). Vault: {V.get('state', 'absent')}."}
+
+
+def _love(p):
+    D = {d["key"]: d for d in p.get("domains") or []}
+    st, at = D.get("stability"), D.get("attraction")
+    if not st:
+        return None
+    head = {"strong": "Your relationships hold steady.", "even": "Your relationships stay steady when tended.",
+            "weak": "Lasting relationships need deliberate care."}[BAND_KEY(st["band"])]
+    pull = {"strong": "You draw people easily", "even": "You draw people at an even pace",
+            "weak": "Attraction builds slowly"}[BAND_KEY(at["band"])] if at else ""
+    sp = p.get("spouse_reading") or {}
+    day = next((x for x in (p.get("palaces") or {}).get("pillars") or [] if x["key"] == "day"), {})
+    gist = GOD_GIST.get((day.get("hidden") or [""])[0], "")
+    return {"head": head, "means": (pull + ". " if pull else "") + (f"Your partner tends to bring {gist}." if gist else ""),
+            "todo": "Keep shared routines and say the quiet things out loud." if BAND_KEY(st["band"]) == "weak" else None,
+            "why": " ".join(x for x in (sp.get("star_line"), sp.get("palace_line")) if x)}
+
+
+def _next_ten(p):
+    Y = (p.get("windows") or {}).get("years") or []
+    dims = [k for k in AREA if Y and k in Y[0]]
+    if not Y:
+        return None
+    best = max(Y, key=lambda y: sum((y.get(k) or {}).get("flag") == "window" for k in dims))
+    worst = max(Y, key=lambda y: sum((y.get(k) or {}).get("flag") == "caution" for k in dims))
+    win = [AREA[k] for k in dims if (best.get(k) or {}).get("flag") == "window"]
+    cau = [AREA[k] for k in dims if (worst.get(k) or {}).get("flag") == "caution"]
+    return {"head": f"Push in {best['y']}; protect {worst['y']}." if cau else f"Push in {best['y']}.",
+            "means": (f"{best['y']} opens windows for {and_join(win)}." if win else f"{best['y']} is your strongest year ahead.")
+                     + (f" {worst['y']} asks for care with {and_join(cau)}." if cau else ""),
+            "why": f"{best['y']} {best['gz']}: {best['overall']}; {worst['y']} {worst['gz']}: {worst['overall']}."}
+
+
+def _months(p):
+    RH = ((p.get("strategy") or {}).get("s5") or {}).get("rhythm") or []
+    good = [r for r in RH if r.get("cls") == "good"]
+    if not RH:
+        return None
+    order = [r["mon"] for r in RH]; idx = sorted(order.index(r["mon"]) for r in good); runs = []; i = 0
+    while i < len(idx):
+        j = i
+        while j + 1 < len(idx) and idx[j + 1] == idx[j] + 1:
+            j += 1
+        runs.append(order[idx[i]] if i == j else f"{order[idx[i]]}–{order[idx[j]]}"); i = j + 1
+    els = and_join(sorted({EN[r["el"]] for r in good}))
+    return {"head": f"Your best months: {and_join(runs)}." if runs else "No month carries your medicine.",
+            "means": f"They carry {els}, which {'helps' if len({r['el'] for r in good}) == 1 else 'help'} you. Keep the other months for steady work." if runs else "Pace the whole year evenly.",
+            "why": "Month by month: " + ", ".join(f"{r['mon']} {r['br']} {r['el']} {r['cls']}" for r in RH)}
+
+
+def _days(p):
+    D = p.get("daily") or {}; B, W = D.get("best"), D.get("worst")
+    if not B and not W:
+        return None
+    MON = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
+    day = lambda d: f"{int(d[8:10])} {MON[int(d[5:7]) - 1]}"
+    acts = lambda xs: "most things" if len(xs) >= 5 else and_join(list(xs)[:3])
+    return {"head": f"Your next good day: {day(B['date'])}." if B else "No clear good day this month.",
+            "means": (f"Good for {acts(B['for'])}. " if B else "") + ((f"Hold off on big decisions on {day(W['date'])}." if len(W["avoid"]) >= 5 else f"On {day(W['date'])}, avoid {acts(W['avoid'])}.") if W and W.get("avoid") else ""),
+            "why": (f"Best {B['date']} {B['gz']} ({B['officer']} day). " if B else "") + (f"Worst {W['date']} {W['gz']}: {W.get('why', '')}." if W else "")}
+
+
+def _room(p):
+    fav = p["yongshen"]["favourable"][0]; side, what = EL_ROOM[fav]
+    return {"head": f"Put {EN[fav]} on the {side} side of your main room.", "means": f"Use {what}.",
+            "why": f"Medicine {fav} ({EN[fav]}) placed by its direction."}
+
+
+def _afflictions(p):
+    A = p.get("afflictions") or {}
+    if not A:
+        return None
+    ts, sp, ss = A["taisui"]["dir"], A["suipo"]["dir"], A["sansha"]["dirs"]
+    hits = A.get("collisions") or []
+    return {"head": f"Leave the {DIR_WORD[ts]} and {DIR_WORD[sp]} undisturbed this year.",
+            "means": f"Do not renovate or dig there, do not face the {DIR_WORD[ts]} for long, and do not sit facing the {and_join([DIR_WORD[d] for d in ss])}.",
+            "todo": "This year's afflictions touch some of your good sectors, so move long sitting elsewhere for now." if hits else None,
+            "why": " ".join(h["note"] for h in hits) or "None of this year's afflictions sits on your four favourable sectors."}
+
+
+def plain_round2(p: dict) -> dict:
+    return {"sides": _sides(p), "stars": _stars(p), "health": _health(p), "personality": _personality(p),
+            "work": _work(p), "money": _money(p), "love": _love(p), "next_ten": _next_ten(p),
+            "months": _months(p), "days": _days(p), "room": _room(p), "afflict": _afflictions(p)}

@@ -802,3 +802,20 @@ details.zhver>div{margin-top:8px}
   #tab-person .rp-bud{grid-template-columns:auto 56px minmax(30px,1fr) 84px;gap:6px 8px}}
 /* five chapters on one scroll: let the browser skip layout and paint for the ones still off-screen */
 #tab-person .rp-chap{content-visibility:auto;contain-intrinsic-size:auto 1600px}
+/* reading round 2 (2026-10-10): the four sides, and the name as the page's heading */
+#tab-person .rp-name{font:700 clamp(26px,5vw,34px)/1.2 Georgia,"Noto Serif SC",serif;color:var(--ink);margin:0 0 12px}
+#tab-person .rp-sides{margin:18px 0 6px}
+#tab-person .rp-sides>h3{font:700 20px/1.3 Georgia,"Noto Serif SC",serif;color:var(--ink);margin:0 0 10px}
+#tab-person .rp-sidegrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+#tab-person .rp-side{background:#fff;border:1px solid var(--line);border-radius:14px;padding:0 0 12px;overflow:hidden;min-width:0}
+#tab-person .rp-side.me{border:2px solid #c7301d}
+#tab-person .rp-side img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+#tab-person .rp-side .rp-k,#tab-person .rp-side h4,#tab-person .rp-side>p{padding:0 12px}
+#tab-person .rp-side .rp-k{margin:10px 0 2px}
+#tab-person .rp-side h4{font:700 16px/1.3 Georgia,"Noto Serif SC",serif;color:var(--ink);margin:0}
+#tab-person .rp-side>p:last-child{font-size:14px;margin:6px 0 0;color:var(--muted)}
+#tab-person .rp-sources{margin-top:28px}
+@media (max-width:760px){#tab-person .rp-sidegrid{grid-template-columns:repeat(2,1fr);gap:10px}#tab-person .rp-side h4{font-size:15px}}
+#tab-person .rp-nw{white-space:nowrap}
+#tab-person .rp-chead:has(> div:only-child){grid-template-columns:1fr}
+#tab-person .rp-ident{grid-template-columns:1fr}
