@@ -747,3 +747,14 @@ tr.wdetail td{background:#fbf8ef;font-size:12px;line-height:1.5}
 .dtable-daily td .tag{white-space:nowrap}
 .klist-ind{font-size:13.5px}.klist-ind .cite{margin:4px 0}
 .rd-legend-body .tgkey{margin:6px 0}.rd-legend-body .tgmap{font-size:12px}
+
+/* English-first labels: English is the label, the Chinese is small, muted and shown once */
+.bl.en{display:inline;overflow-wrap:anywhere}
+.bl.en small,.bl.en small[lang]{display:inline;font-size:.78em;font-weight:500;color:var(--muted,#6b7280);margin-left:2px;line-height:1.2}
+.bl.en small[lang]::before{content:"("}
+.bl.en small[lang]::after{content:")"}
+.zhs{font-size:.82em;font-weight:500;color:var(--muted,#6b7280);margin-left:3px}
+details.zhver{margin:18px 0 6px;font-size:13.5px;color:var(--muted,#6b7280)}
+details.zhver summary{cursor:pointer}
+details.zhver>div{margin-top:8px}
+.wtable th .th-en{font-size:12px;font-weight:600;color:var(--ink)}

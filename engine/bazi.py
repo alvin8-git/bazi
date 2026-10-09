@@ -17,10 +17,9 @@ from .wuxing import (BRANCH_ELEMENT, ELEMENT_COLOURS, ELEMENT_EN, ELEMENTS,
 CLOCK, TRUE_SOLAR = "clock", "true_solar"
 
 TEN_GOD_ORDER = ["比肩", "劫財", "食神", "傷官", "偏財", "正財", "七殺", "正官", "偏印", "正印"]
-TEN_GOD_EN = {"比肩": "Friend", "劫財": "Rob Wealth", "食神": "Eating God",
-              "傷官": "Hurting Officer", "偏財": "Indirect Wealth", "正財": "Direct Wealth",
-              "七殺": "7 Killings", "正官": "Direct Officer", "偏印": "Indirect Resource",
-              "正印": "Direct Resource"}
+from .glossary import english as _english
+
+TEN_GOD_EN = {k: _english(k) for k in TEN_GOD_ORDER}
 
 
 def ten_god(day_stem: str, other_stem: str) -> str:

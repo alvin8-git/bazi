@@ -45,7 +45,7 @@ text-align:center;padding:18px}footer a{color:var(--accent)}
 <a href="/fengshui">Home Fengshui</a> <a href="/learn">Learn</a>
 <a href="/about">About</a> <a href="/faq">FAQ</a></nav>
 <main>
-<h1>How it works<span class="zh">运作原理</span></h1>
+<h1>How it works (<span lang="zh-Hans">运作原理 yùn zuò yuán lǐ</span>)</h1>
 <p>Most "AI fortune telling" sites feed your birthday to a chatbot and hope the prose
 sounds wise. bazifor.me does the opposite: <b>everything is computed by a rules
 engine</b> — the same classical procedures a careful practitioner runs by hand, encoded
@@ -58,61 +58,62 @@ workspace lives behind an unguessable private link that only you hold. Unsure of
 birth time? Mark it, and time-dependent sections are flagged rather than faked.</div>
 
 <div class="step"><b class="n">2</b><b>The engine casts the chart — exactly.</b>
-Four pillars with the 立春 year boundary, solar-term months, the unbroken 60-day 甲子
+Four pillars with the Start of Spring (立春 lì chūn) year boundary, solar-term months, the unbroken 60-day Jia Zi (甲子 jiǎ zǐ)
 cycle, and <b>true solar time</b> correction (including historical clock regimes — a
 pre-1982 Singapore birth is adjusted for the old UTC+7:30 standard). Then the derived
-layers: Day Master strength, 用神 favourable elements, Ten Gods, luck cycles 大运,
-Eight House 命卦 and direction maps, 文昌 study positions.</div>
+layers: Day Master (日主 rì zhǔ) strength, useful god (用神 yòng shén) favourable elements, Ten Gods (十神 shí shén), luck cycles (大运 dà yùn),
+Eight House kua number (命卦 mìng guà) and direction maps, Wenchang (文昌 wén chāng) study positions.</div>
 
 <div class="step"><b class="n">3</b><b>The reading assembles itself from cited rules.</b>
-Each section shows three things: the computed data, a plain-language 解读 narrative, and
+Each section shows three things: the computed data, a plain-language interpretation (解读 jiě dú) narrative, and
 a strategy — and <b>every line names the classical rule that produced it</b>. You can
 disagree with a rule; you can never be left wondering where a claim came from.</div>
 
-<p>Clock time in, true solar time out. The engine assumes Singapore/Malaysia clock time (UTC+8, and UTC+7:30 before 1982), then converts it to true solar time using your longitude and the equation of time: 09:30 on the clock becomes 08:16 true solar time at 103.85°E. The BaZi year changes at 立春, not on 1 January; 立春 2027 falls on 2027-02-04.</p>
-<p class="zh">引擎按新加坡/马来西亚钟表时间（UTC+8，1982年前为UTC+7:30）换算为真太阳时；八字的年柱以立春为界，而非1月1日。</p>
+<p>Clock time in, true solar time out. The engine assumes Singapore/Malaysia clock time (UTC+8, and UTC+7:30 before 1982), then converts it to true solar time using your longitude and the equation of time: 09:30 on the clock becomes 08:16 true solar time at 103.85°E. The BaZi year changes at Start of Spring, not on 1 January; Start of Spring 2027 falls on 2027-02-04.</p>
 
-<h2>The home fengshui pipeline<span class="zh">宅运分析</span></h2>
+<details class="zhver"><summary>This section in Chinese (<span lang="zh-Hans">中文 zhōng wén</span>)</summary><div lang="zh-Hans"><p>引擎按新加坡/马来西亚钟表时间（UTC+8，1982年前为UTC+7:30）换算为真太阳时；八字的年柱以立春为界，而非1月1日。</p></div></details>
+
+<h2>The home fengshui pipeline (<span lang="zh-Hans">宅运分析 zhái yùn fēn xī</span>)</h2>
 <div class="step"><b class="n">1</b><b>Upload a floor plan and set the facing.</b>
 Any photo or PDF page of your plan; enter the compass facing you measured at the main
-window. If your facing sits near a chart boundary (兼向/骑线), the engine computes
+window. If your facing sits near a chart boundary (mixed facing, 兼向 jiān xiàng / straddling a boundary, 骑线 qí xiàn), the engine computes
 <b>both</b> candidate charts and says so, instead of silently picking one.</div>
 <div class="step"><b class="n">2</b><b>Trace rooms — and optionally doors and windows.</b>
 Draw each room over the plan; zoom in to mark where doors and windows sit. Doors unlock
-the form-school audit: entry-line checks (门冲床), commanding position, door-facing-door
+the form-school audit: entry-line checks (door facing bed, 门冲床 mén chōng chuáng), commanding position, door-facing-door
 pairs.</div>
 <div class="step"><b class="n">3</b><b>Analyze.</b> One click computes the Flying Star
 chart for your building's period and facing, scores every person against every bedroom
-(three layers: 八宅 + 玄空 + 用神, each contribution cited), proposes bed and desk
+(three layers: Eight House + Flying Stars + useful god, each contribution cited), proposes bed and desk
 placement wall by wall, generates room colour guidance, a renovation-timing table
-against this year's and next year's afflictions, and an 入宅 move-in date finder for
+against this year's and next year's afflictions, and a move-in date finder (入宅 rù zhái) for
 your household. Add up to six homes and compare them side by side.</div>
 
-<h2>What a reading looks like<span class="zh">解读长什么样</span></h2>
+<h2>What a reading looks like (<span lang="zh-Hans">解读长什么样 jiě dú zhǎng shén me yàng</span>)</h2>
 <style>.gallery{display:grid;grid-template-columns:1fr;gap:16px;margin:16px 0}@media(min-width:640px){.gallery{grid-template-columns:1fr 1fr}}.gallery figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}.gallery img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;object-position:top;border-radius:8px;border:1px solid var(--line)}.gallery figcaption{font-size:13.5px;color:var(--muted);margin-top:8px;line-height:1.5}</style>
 <div class="gallery">
-<figure><img src="/static/img/shots/reading-desktop.jpg" alt="Example reading page for the fictional person 王大明: four-pillar grid and day master" width="1280" height="900"><figcaption>The reading: four pillars, day master and 用神, every number citing its rule.<br>解读：四柱、日主与用神，每个数字都标明依据。</figcaption></figure>
-<figure><img src="/static/img/shots/pair-desktop.jpg" alt="Example pair compatibility report for two fictional people with a component score table" loading="lazy" width="740" height="940"><figcaption>The pair report: a scored, printable compatibility sheet.<br>合婚报告：逐项计分、可打印的配对分析。</figcaption></figure>
-<figure><img src="/static/img/shots/fengshui-desktop.jpg" alt="Example home fengshui result for a sample condo with room and aspect scores" loading="lazy" width="1280" height="700"><figcaption>The home view: room and aspect scores for a sample condo.<br>宅运视图：样例住宅的房间与面向评分。</figcaption></figure>
-<figure><img src="/static/img/shots/certificate-desktop.jpg" alt="Example naming certificate for the fictional baby name 王禄婷" loading="lazy" width="900" height="1040"><figcaption>The naming certificate: pillars, five grids and the name's elements.<br>命名证书：八字四柱、五格与名字五行。</figcaption></figure>
+<figure><img src="/static/img/shots/reading-desktop.jpg" alt="Example reading page for the fictional person 王大明: four-pillar grid and day master" width="1280" height="900"><figcaption>The reading: four pillars, Day Master and useful god, every number citing its rule.</figcaption></figure>
+<figure><img src="/static/img/shots/pair-desktop.jpg" alt="Example pair compatibility report for two fictional people with a component score table" loading="lazy" width="740" height="940"><figcaption>The pair report: a scored, printable compatibility sheet.</figcaption></figure>
+<figure><img src="/static/img/shots/fengshui-desktop.jpg" alt="Example home fengshui result for a sample condo with room and aspect scores" loading="lazy" width="1280" height="700"><figcaption>The home view: room and aspect scores for a sample condo.</figcaption></figure>
+<figure><img src="/static/img/shots/certificate-desktop.jpg" alt="Example naming certificate for the fictional baby name 王禄婷" loading="lazy" width="900" height="1040"><figcaption>The naming certificate: pillars, Five Grids and the name's elements.</figcaption></figure>
 </div>
-<p class="note">Example screens use fictional data. / 示例使用虚构数据。</p>
+<p class="note">Example screens use fictional data.</p>
 
-<h2>Why you can trust the numbers<span class="zh">为什么可信</span></h2>
+<h2>Why you can trust the numbers (<span lang="zh-Hans">为什么可信 wèi shén me kě xìn</span>)</h2>
 <div class="note">The engine reproduced a professionally produced, paid fengshui audit
 <b>to the digit</b> — 27/27 flying-star palaces and 32/32 directional assignments — and
 matches commercial BaZi chart products character-for-character on the calendar layer.
 Determinism makes that test possible: run it twice, get the same answer, compare against
 a benchmark. A chatbot can pass no such test.</div>
 <p>Curious about the methods themselves? The <a href="/learn">Learn library</a> explains
-each layer — four pillars, 用神, Eight House, flying stars, date selection — in plain
-language, in <a href="/learn">English</a> and <a href="/zh/learn">中文</a>.</p>
+each layer — four pillars, useful god, Eight House, flying stars, date selection — in plain
+language, in <a href="/learn">English</a> and <a href="/zh/learn">Chinese (中文 zhōng wén)</a>.</p>
 
 <div class="cta"><b>See it on your own chart.</b><br>
 Free, no account, under a minute.<br>
 <a class="btn" href="/start?utm_source=how-it-works">Get your reading →</a></div>
 </main>
 <footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
-<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (中文 zhōng wén)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 </body></html>

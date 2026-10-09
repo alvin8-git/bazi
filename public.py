@@ -37,7 +37,8 @@ from engine.domains import industry_map, life_domains
 from engine.extras import compass_afflictions, harmony_matrix
 from engine.extras import placements as person_placements
 from engine.interpret import STRUCTURE_TEXT
-from engine.htmlreport import _tosimp
+from engine.glossary import english as _gl_english
+from engine.htmlreport import _tosimp, gloss_html
 from engine.household import assign_roles, default_assignment
 from engine.jianchu import movein_dates, sitting_branches
 from engine.liunian import BRANCH_PALACE, annual_afflictions, dayun_detail
@@ -386,7 +387,8 @@ def person_report(token: str, idx: int):
                    key=charts[m.name].element_weights.get)) for m in members]
     m = members[idx]
     html = build_person(m, charts[m.name], ys_map[m.name], fam, others)
-    return HTMLResponse(html)
+    return HTMLResponse(gloss_html(html, protect=[x.name for x in members] +
+                                    [p.get("name", "") for p in ws["people"]]))
 
 
 # ---------------------------------------------------------------- fengshui
@@ -924,6 +926,29 @@ def movein(token: str, hid: str, start: str = "", end: str = ""):
             "days": movein_dates(d0, d1, branches, facing)}
 
 
+# Display-only prose keys of the analyze response (the page prints them as tooltips / chips and
+# never parses them); DATA fields (what, palette_*, notes, structure, group …) are left alone.
+_PROSE_KEYS = frozenset({"why", "doctrine", "explanation", "rule", "driver", "override",
+                         "override_note", "advice", "t", "source_ref"})
+
+
+def _en_json(obj, keys=_PROSE_KEYS):
+    """One Gloss per response over the prose fields: English first, Chinese once with pinyin."""
+    from engine.glossary import Gloss
+    g = Gloss()
+
+    def walk(o, key=None):
+        if isinstance(o, str):
+            return g.text(re.sub(r"(?<=[A-Za-z])(?=[\u3400-\u9fff])", " ", o)) if key in keys else o
+        if isinstance(o, list):
+            return [walk(x, key) for x in o]
+        if isinstance(o, dict):
+            return {k: walk(v, k) for k, v in o.items()}
+        return o
+    return walk(obj)
+
+
+
 def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
     upb = req.image_up_bearing if req.image_up_bearing is not None else req.facing_deg
     rooms = [r.model_dump() for r in req.rooms]
@@ -1036,6 +1061,7 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
                 "person": row["person"], "top": row["beds"][0] if row["beds"] else None,
                 "desk": row["desk"], "warnings": row["warnings"],
                 "site_checks": row["site_checks"], "has_doors": row["has_doors"]})
+    result = _en_json(result)
     home = _home_of(ws, hid)
     home.update({"facing_deg": req.facing_deg, "image_up_bearing": upb,
                  "period": req.period, "include_outdoor": req.include_outdoor,
@@ -1348,9 +1374,10 @@ def kua(dob: str, sex: str):
         pal, st = by_dir[dr]
         sc = STAR_SCORE[st]
         stars.append({"dir": dr, "palace": pal, "star": st, "star_pinyin": _STAR_PINYIN[st],
-                      "score": sc, "good": sc > 0})
+                      "star_en": _gl_english(st), "score": sc, "good": sc > 0})
     top = sorted(stars, key=lambda x: -x["score"])[:3]
-    best = [{"dir": x["dir"], "star": x["star"], "star_pinyin": x["star_pinyin"], "score": x["score"]}
+    best = [{"dir": x["dir"], "star": x["star"], "star_pinyin": x["star_pinyin"],
+             "star_en": x["star_en"], "score": x["score"]}
             for x in top]
     grp = gua_group(gua)
     return {"dob": dob, "sex": sex, "lichun_year": ly, "lichun_date": lichun_date.isoformat(),
@@ -1465,37 +1492,49 @@ def certificate(surname: str, given: str, sex: str, dob: str,
     from engine.naming import interpret_name
     _interp = interpret_name(_tosimp(given))
     from engine.wuxing import BRANCH_ELEMENT, STEM_ELEMENT
+    from engine.glossary import Gloss, english as _en_only, lookup as _lk, pinyin as _py
+    g = Gloss()
+    for _t in ("三才", "五格", "八字", "四柱", "命名證書"):      # their Chinese sits in the headings
+        g.seen.add(_t)
+
+    _LUCK = {"半吉": "mostly auspicious", "凶/平": "adverse or neutral", "中": "mixed",
+             "平": "neutral", "大吉": "very auspicious", "大凶": "very adverse"}
+
+    def _luck(v):
+        if v in _LUCK:
+            return _LUCK[v]
+        return g.en(v) if _lk(v) else v
     pillars = "".join(
         f'<div class="pil"><b><i style="color:{_EL_HEX[STEM_ELEMENT[c.pillars[k].stem]]}">{c.pillars[k].stem}</i>'
         f'<i style="color:{_EL_HEX[BRANCH_ELEMENT[c.pillars[k].branch]]}">{c.pillars[k].branch}</i></b>'
-        f'<span>{lab}</span></div>'
-        for k, lab in (("year", "年柱"), ("month", "月柱"),
-                       ("day", "日柱"), ("hour", "時柱")))
+        f'<span>{lab} · {_py(c.pillars[k].stem + c.pillars[k].branch)}</span></div>'
+        for k, lab in (("year", "Year"), ("month", "Month"),
+                       ("day", "Day"), ("hour", "Hour")))
     charrows = "".join(f"""<tr><td class="bigch">{ch}</td>
-        <td>{e.get('py') or ''}</td><td>{e['ks']} 畫 (康熙)</td>
-        <td>五行屬 <b style="color:{_EL_HEX.get(e['el'], '#2b2620')}">{e['el'] or '—'}</b></td>
-        <td class="sm">{'契合用神 ✓' if e['el'] in fav else '姓氏' if ch in surname else ''}</td></tr>"""
-        for ch, e in infos)
+        <td>{e.get('py') or ''}</td><td>{e['ks']} strokes · {g.en('康熙')}</td>
+        <td>Element <b style="color:{_EL_HEX.get(e['el'], '#2b2620')}">{g.en(e['el']) if e['el'] else '—'}</b></td>
+        <td class="sm">{'matches the useful god ✓' if e['el'] in fav else 'surname' if ch in surname else ''}</td></tr>"""
+        for i, (ch, e) in enumerate(infos))
     gridcells = "".join(
-        f'<div class="gr"><span>{k}</span><b>{v["num"]}</b>'
-        f'<em class="{"ji" if v["luck"] == "吉" else "pg"}">{v["luck"]}</em></div>'
+        f'<div class="gr"><span>{g.en(k)}</span><b>{v["num"]}</b>'
+        f'<em class="{"ji" if v["luck"] == "吉" else "pg"}">{_luck(v["luck"])}</em></div>'
         for k, v in grids.items())
     contested = [(ch, e) for ch, e in g_infos if e.get("el_contested")]
     footnote = ("" if not contested else
-                "註：" + "；".join(f"「{ch}」五行本典判屬{e['el']}，他派或作"
-                                 f"{e.get('el_alt', '別解')}"
-                                 for ch, e in contested) + "。")
+                "Note: " + "; ".join(f"the source classifies {ch} as {_en_only(e['el'])}; other schools may read it as "
+                                     f"{_en_only(e.get('el_alt')) if e.get('el_alt') else 'another element'}"
+                                     for ch, e in contested) + ".")
     from datetime import date
-    today = date.today().strftime("%Y年%m月%d日")
-    html = f"""<!doctype html><html><head><meta charset="utf-8">
-<title>命名證書 · {full}</title><style>
+    today = date.today().strftime("%d %B %Y")
+    html = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Certificate of Naming · {full}</title><style>
 @page{{size:A4;margin:14mm}}
 body{{font-family:"Songti SC","Noto Serif SC","SimSun",serif;background:#f4efe6;
   color:#2b2620;margin:0;display:flex;justify-content:center;padding:24px 8px}}
 .cert{{background:#fffdf7;width:min(760px,100%);box-sizing:border-box;border:3px double #9e2b25;
   outline:1px solid #c8a959;outline-offset:-10px;padding:46px 52px;position:relative}}
-h1{{text-align:center;font-size:34px;letter-spacing:14px;color:#9e2b25;
-  margin:0 0 2px;font-weight:600}}
+h1{{text-align:center;font-size:30px;letter-spacing:4px;color:#9e2b25;
+  margin:0 0 2px;font-weight:600}}h1 small,h2 small{{font-size:.55em;letter-spacing:3px;color:#8a7a5a;font-weight:400}}
 .sub{{text-align:center;color:#8a7a5a;font-size:12px;letter-spacing:3px;
   margin-bottom:26px}}
 .name{{text-align:center;font-size:64px;letter-spacing:12px;color:#1c1712;
@@ -1536,33 +1575,33 @@ td{{border:1px solid #e0d3b8;padding:5px 12px;text-align:center}}
 <span class="noprint" style="position:fixed;top:8px;right:12px;font-size:11px;
   color:#b9b0a4">v {_VER}</span>
 <div class="cert">
-  <h1>命名證書</h1>
-  <div class="sub">CERTIFICATE OF NAMING · 依古法推演 · 條條有據</div>
+  <h1>Certificate of Naming <small lang="zh-Hant">命名證書 {_py("命名證書")}</small></h1>
+  <div class="sub">CERTIFICATE OF NAMING · derived by classical method · every step cited</div>
   <div class="name">{_tosimp(full)}</div>
-  {f'<div class="trad">繁體 {trad}</div>' if trad != full else ''}
-  <div class="interp">{_interp["zh"]}<small>{_interp["en"]}</small></div>
-  <div class="meta">{'男' if sex == 'M' else '女'}嬰 · 生於 {dob} {birth_time}
-    （新加坡時間，經真太陽時校正）<br>
-    生肖屬{lp['animal']} · 日主 <b>{c.day_master}</b> · {c.strength['verdict'].split(' ')[0]}
-    · 喜用神 <b>{'、'.join(fav)}</b></div>
+  {f'<div class="trad">Traditional form (繁體 {trad}, {_py("繁體")})</div>' if trad != full else ''}
+  <div class="interp">{_interp["en"]}<small lang="zh-Hans">{_interp["zh"]} · {_py(_interp["zh"])}</small></div>
+  <div class="meta">{'Boy' if sex == 'M' else 'Girl'} · born {dob} {birth_time}
+    (Singapore time, adjusted to true solar time)<br>
+    Zodiac animal: {g.en(lp['animal'])} · Day Master: <b>{g.en(c.day_master)}</b> · {g.en(c.strength['verdict'].split(' ')[0])}
+    · favourable useful gods (<span lang="zh-Hant">喜用神 {_py("喜用神")}</span>): <b>{', '.join(g.en(x) for x in fav)}</b></div>
   <hr class="line">
-  <h2>八 字 四 柱</h2>
+  <h2>Four Pillars <small lang="zh-Hant">八 字 四 柱 · {_py("八字四柱")}</small></h2>
   <div class="pils">{pillars}</div>
-  <h2>名 字 五 行</h2>
+  <h2>The characters and their elements</h2>
   <table>{charrows}</table>
-  <h2>三 才 五 格</h2>
+  <h2>Three Talents &amp; Five Grids <small lang="zh-Hant">三 才 五 格 · {_py("三才五格")}</small></h2>
   <div class="grs">{gridcells}</div>
-  <div class="sancai">三才 {'·'.join(sc['elements'])} —
-    {sc['explanation']} · 評 <b class="{'ji' if sc['verdict'] == '吉' else 'pg'}">{sc['verdict']}</b></div>
+  <div class="sancai">Three Talents: {' · '.join(g.en(x) for x in sc['elements'])} —
+    {sc['explanation_en']} · verdict <b class="{'ji' if sc['verdict'] == '吉' else 'pg'}">{_luck(sc['verdict'])}</b></div>
   <hr class="line">
   <div class="foot">
-    依據：喜用神扶抑法 · 康熙字典筆畫 · 八十一數理 · 五行生剋<br>
+    Basis: {g.en('扶抑法')} · {_en_only('康熙字典')} stroke counts · {g.en('八十一數理')} · {g.en('五行生剋')}<br>
     {footnote}{'<br>' if footnote else ''}
-    立於 {today} · bazifor.me · 名由家定，理由典出
+    Issued {today} · bazifor.me · the family chooses the name; the classics supply the reasons
   </div>
-  <div class="stamp">名正<br>言順</div>
+  <div class="stamp" title="A proper name makes proper speech">Name<br>sealed</div>
 </div>
-<div class="noprint"><button onclick="window.print()">🖨 列印 / 存為 PDF</button></div>
+<div class="noprint"><button onclick="window.print()">🖨 Print / save as PDF</button></div>
 </div></body></html>"""
     return HTMLResponse(html)
 

@@ -108,6 +108,22 @@ def sancai(grids: dict) -> dict:
     els = [GRID_EL[grids[k]["num"] % 10] for k in ("天格", "人格", "地格")]
     names = ("天", "人", "地")
 
+    from .wuxing import ELEMENT_EN
+    en_names = ("Heaven", "Person", "Earth")
+
+    def en_text(i: int, kind: str) -> str:
+        a, b = els[i], els[i + 1]
+        ua, ub = f"{en_names[i]} ({ELEMENT_EN[a]})", f"{en_names[i + 1]} ({ELEMENT_EN[b]})"
+        if kind == "生":
+            return f"{ua} generates {ub}"
+        if kind == "比":
+            return f"{ua} and {ub} are in harmony"
+        if kind == "洩":
+            return f"{ub} generates {ua}"
+        if kind == "剋":
+            return f"{ua} overcomes {ub}"
+        return f"{ub} overcomes {ua}"
+
     def rel(i: int) -> tuple[str, str, str]:
         a, b = els[i], els[i + 1]
         up, lo = names[i], names[i + 1]
@@ -132,8 +148,9 @@ def sancai(grids: dict) -> dict:
     return {"elements": els, "relations": [r[0] for r in rs], "score": round(score, 3),
             "verdict": verdict,
             "detail": [{"pair": f"{names[i]}→{names[i + 1]}", "text": rs[i][2], "kind": rs[i][1],
-                        "factor": factors[i]} for i in range(2)],
-            "explanation": "，".join(r[2] for r in rs)}
+                        "text_en": en_text(i, rs[i][0]), "factor": factors[i]} for i in range(2)],
+            "explanation": "，".join(r[2] for r in rs),
+            "explanation_en": "; ".join(en_text(i, rs[i][0]) for i in range(2))}
 
 
 def _candidates(ys: dict) -> list[dict]:
@@ -623,7 +640,8 @@ def score_name(grids: dict, sc: dict, roles: list[str], confs: list[float] | Non
              "sound": round(SCORE_MAX["sound"] * sound, 1),
              "gender": round(SCORE_MAX["gender"] * sum(genders) / n, 1),
              "confidence": round(SCORE_MAX["confidence"] * sum(confs) / n, 1)}
-    gw = ("人/總 15 · 地 10 (单名; 外格 unscored)" if len(roles) == 1 else "人8 地7 總7 外3")
+    gw = ("Person/Total 15 · Earth 10 (single-character given name 单名; Outer grid unscored)"
+          if len(roles) == 1 else "Person 8 · Earth 7 · Total 7 · Outer 3")
     total = round(sum(parts.values()), 1)
     _, gzh, gen = next(g for g in GRADES if total >= g[0])
     grade = {"zh": gzh, "en": gen}
@@ -632,10 +650,12 @@ def score_name(grids: dict, sc: dict, roles: list[str], confs: list[float] | Non
                  "reason": "谐音不雅 — the name sounds like an unlucky or rude word"}
     return {"total": total, "parts": parts, "max": dict(SCORE_MAX), "labels": PART_LABEL,
             "grade": grade,
-            "basis": f"用神 30 (用神 1.0 · 喜 0.7 · 闲 0.3 · 未定 0.3 · 忌 0) + 五格 25 ({gw}, 吉 only) + "
-                     "三才 15 (生 1.0 · 比 0.8 · 洩 0.4 · 人剋 0.2 · 被剋 0) + 字义 10 (categorised 1.0 · "
-                     "plain 0.5 · adverse 0) + 音韵 5 (tone pattern, repeated sounds, unlucky homophones) + 性别 5 (neutral or matching 1.0 · "
-                     "other gender 0) + 五行可信度 10 (curated 1.0 · disputed 0.6 · radical-inferred 0.5)"}
+            "basis": f"useful god (用神) 30 (useful 1.0 · favourable 0.7 · neutral 0.3 · undetermined 0.3 · unfavourable 0) + "
+                     f"Five Grids 25 ({gw}, auspicious only) + "
+                     "Three Talents 15 (supports 1.0 · matches 0.8 · drains 0.4 · strains 0.2 · harms 0) + "
+                     "meaning 10 (categorised 1.0 · plain 0.5 · adverse 0) + sound 5 (tone pattern, repeated sounds, "
+                     "unlucky homophones) + gender fit 5 (neutral or matching 1.0 · other gender 0) + element confidence 10 "
+                     "(curated 1.0 · disputed 0.6 · radical-inferred 0.5)"}
 
 
 def _check_category(cat: str | None) -> str | None:
@@ -771,7 +791,7 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
         baseline.pop("_k")
     return {"mode": mode, "baseline": baseline, "results": out, "els": sorted(want), "meaning": meaning,
             "dropped_sound": dropped,
-            "criteria": ["total score (用神 30 + 五格 25 + 三才 15 + 字义 10 + 音韵 5 + 性别 5 + 可信度 10), highest first",
+            "criteria": ["total score (useful god 30 + Five Grids 25 + Three Talents 15 + meaning 10 + sound 5 + gender fit 5 + element confidence 10), highest first",
                          "then curated name characters, common level 1 before 2, fewer strokes",
                          "empty boxes filled only from: " + "·".join(sorted(want))]}
 
@@ -781,6 +801,7 @@ _SANCAI_VERB = {"生": "supports", "比": "matches", "洩": "drains", "人剋": 
 
 def _score_notes(gv: list[dict], grids: dict, sc: dict, sex: str | None, snd: dict) -> dict:
     """One plain line per score part, generated from the facts of this name."""
+    from .wuxing import ELEMENT_EN
     cat_en = {c["id"]: c["en"].split(" · ")[0] for c in meaning_categories()}
     blocked = meaning_exclude()
     w = grid_weights(len(gv))
@@ -788,10 +809,11 @@ def _score_notes(gv: list[dict], grids: dict, sc: dict, sex: str | None, snd: di
     mism = [c for c in gv if c["mismatch"]]
     who = {"F": "a girl", "M": "a boy"}.get(sex)
     return {
-        "yongshen": ", ".join(f"{c['ch']} {c['el'] or '未定'} ({c['role_en']})" for c in gv),
+        "yongshen": ", ".join(f"{c['ch']} {ELEMENT_EN[c['el']] if c['el'] in ELEMENT_EN else 'element not set'} ({c['role_en']})"
+                              for c in gv),
         "wuge": f"{sum(1 for k in w if grids[k]['luck'] == '吉')} of {len(w)} scored grids auspicious"
-                + (" (人格 = 總格 for a single name)" if len(gv) == 1 else ""),
-        "sancai": ", ".join(f"{d['text']} {_SANCAI_VERB[d['kind']]}" for d in sc["detail"]),
+                + (" (Person grid = Total grid for a single-character name)" if len(gv) == 1 else ""),
+        "sancai": ", ".join(f"{d['text_en']}: {_SANCAI_VERB[d['kind']]}" for d in sc["detail"]),
         "meaning": ", ".join(f"{c['ch']} " + ("adverse meaning" if c["ch"] in blocked else
                                               cat_en[c["tags"][0]] if c["tags"] else "plain meaning") for c in gv),
         "sound": "tones " + "-".join(str(t) for t in snd["tones"]) + ", "

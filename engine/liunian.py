@@ -67,7 +67,7 @@ def year_element_read(chart: Chart, ys_fav: list[str], lichun_year: int) -> dict
     def verdict(el: str) -> str:
         return ("favourable 喜" if el in ys_fav else "unfavourable 忌")
     return {"rule_id": "year-element", "layer": "liunian",
-            "source_ref": f"流年 {stem}{branch} ({ELEMENT_EN[se]}{se}/{ELEMENT_EN[be]}{be}) vs 用神",
+            "source_ref": f"流年 {stem}{branch} ({ELEMENT_EN[se]} {se}/{ELEMENT_EN[be]} {be}) vs 用神",
             "explanation": f"year stem {stem} {ELEMENT_EN[se]} is {verdict(se)}; "
                            f"year branch {branch} {ELEMENT_EN[be]} is {verdict(be)}"}
 
@@ -191,7 +191,7 @@ def multi_year_outlook(chart: Chart, ys: dict, start_year: int, n: int = 5) -> l
         els = []
         for e in (STEM_ELEMENT[st], BRANCH_ELEMENT[yb]):
             flag = "喜" if e in ys["favourable"] else "忌" if e in ys["unfavourable"] else "·"
-            els.append(f"{ELEMENT_EN[e]}{e} {flag}")
+            els.append(f"{ELEMENT_EN[e]} {e} {flag}")
         rows.append({"year": y, "gz": st + yb, "verdict": verdict, "points": pts,
                      "events": events, "support": support, "elements": els,
                      "advice": _OUTLOOK_ADVICE[verdict]})

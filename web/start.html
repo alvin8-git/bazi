@@ -159,30 +159,32 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
   main{padding:14px 12px 60px}
 }
 [hidden]{display:none!important}
-<style>.sitefoot{padding:18px 22px 28px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:30px}.sitefoot a{color:var(--accent)}.sitefoot .fnav{display:inline-block;margin-top:6px}.learnstrip{max-width:980px;margin:18px auto 0;padding:0 22px;font-size:14px;color:var(--muted)}.learnstrip a{color:var(--accent);margin-right:12px;white-space:nowrap}</style></head><body>
+<style>.sitefoot{padding:18px 22px 28px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:30px}.sitefoot a{color:var(--accent)}.sitefoot .fnav{display:inline-block;margin-top:6px}.learnstrip{max-width:980px;margin:18px auto 0;padding:0 22px;font-size:14px;color:var(--muted)}.learnstrip a{color:var(--accent);margin-right:12px;white-space:nowrap}.pz .pzpy{font-size:9.5px;color:var(--muted);font-weight:500;letter-spacing:0}
+.fgrid{grid-template-columns:1fr}.fv{overflow:visible;white-space:normal}
+</style></head><body>
 <span class="verbadge" id="ver"></span>
 <header>
-  <h1>Free BaZi calculator <span lang="zh-Hans">八字排盘</span> — every rule cited</h1>
+  <h1>Free BaZi calculator (<span lang="zh-Hans">八字排盘 bā zì pái pán</span>) — every rule cited</h1>
   <div class="sub">bazifor.me · deterministic readings that show every classical rule they
-    cite — no AI guesswork, no black box. 计算透明，条条有据。</div>
+    cite — no AI guesswork, no black box.</div>
   <nav class="top">
     <a href="/">☰ Menu</a>
-    <a href="/start">People 命盘</a>
-    <a href="#" id="nav-fs">Home fengshui 宅运</a>
-    <a href="/baby" id="nav-baby">Baby 宝宝</a>
+    <a href="/start">People</a>
+    <a href="#" id="nav-fs">Home fengshui</a>
+    <a href="/baby" id="nav-baby">Baby</a>
   </nav>
 </header>
 <main>
 <style>.exshot{margin:0 0 18px;max-width:560px}.exshot img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line,#e5ded2)}.exshot figcaption{font-size:12.5px;color:var(--muted,#6b6359);margin-top:6px}</style>
-<figure class="exshot"><img src="/static/img/shots/reading-desktop.jpg" alt="Example BaZi reading page for the fictional demo person 王大明: four-pillar grid, day master and 用神" width="1280" height="900"><figcaption>Example with fictional data / 示例（虚构数据）</figcaption></figure>
+<figure class="exshot"><img src="/static/img/shots/reading-desktop.jpg" alt="Example BaZi reading page for the fictional demo person 王大明: four-pillar grid, day master and 用神" width="1280" height="900"><figcaption>Example with fictional data</figcaption></figure>
   <div class="sec" id="add-sec">
-    <h2 id="add-title">Start — enter a birth chart 输入生辰</h2>
+    <h2 id="add-title">Start — enter a birth chart</h2>
     <div class="hint">Date + time of birth is all the engine needs. Singapore/Malaysia
       time assumed (pre-1982 UTC+7:30 handled); true-solar correction applied
       automatically. Nothing here requires an account.</div>
     <div class="row">
-      <div><label>Name 姓名</label><input id="f-name" maxlength="40" placeholder="名字 / name"></div>
-      <div><label>Sex 性别</label><select id="f-sex"><option value="M">M 男</option><option value="F">F 女</option></select></div>
+      <div><label>Name</label><input id="f-name" maxlength="40" placeholder="name"></div>
+      <div><label>Sex</label><select id="f-sex"><option value="M">M (male)</option><option value="F">F (female)</option></select></div>
       <div><label>Date of birth</label><input id="f-dob" type="date"></div>
       <div><label>Time of birth</label><input id="f-time" type="time" value="12:00"></div>
     </div>
@@ -190,7 +192,7 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
       <label style="margin:0;display:flex;gap:6px;align-items:center;font-size:13px">
         <input type="checkbox" id="f-unknown" style="width:auto"> birth time unknown
         (uses 12:00 — hour pillar approximate)</label>
-      <button id="btn-add">Calculate 排盘</button>
+      <button id="btn-add">Calculate</button>
       <span class="hint" id="cap-hint"></span>
     </div>
     <div class="err" id="add-err"></div>
@@ -201,18 +203,19 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
   </div>
 
   <div class="sec" id="people-sec" hidden>
-    <h2>People 命盘 <span class="hint" id="pcount"></span></h2>
+    <h2>People <span class="hint" id="pcount"></span></h2>
     <div class="people" id="people"></div>
   </div>
 
   <div class="sec" id="harmony-sec" hidden>
-    <h2>Harmony matrix 合婚互动 <span class="badge">2+ people</span></h2>
+    <h2>Harmony matrix <span class="badge">2+ people</span></h2>
     <div class="hint">Day-pillar compatibility, scored 0–100 with the contributing
       rules. Full pair remedies and family-strategy timing are part of each
       person's report.</div>
     <div id="harmony"></div>
   </div>
 </main>
+<script src="/static/glossary.js"></script>
 <script>
 const $ = s => document.querySelector(s);
 fetch("/api/pub/version").then(r => r.json())
@@ -243,7 +246,7 @@ const ZODIAC = { 鼠: ["🐭", "Rat"], 牛: ["🐮", "Ox"], 虎: ["🐯", "Tiger
 const STEM_EL = { 甲: "木", 乙: "木", 丙: "火", 丁: "火", 戊: "土", 己: "土",
   庚: "金", 辛: "金", 壬: "水", 癸: "水" };
 const BR_EL = { 子: "水", 丑: "土", 寅: "木", 卯: "木", 辰: "土", 巳: "火", 午: "火", 未: "土", 申: "金", 酉: "金", 戌: "土", 亥: "水" };
-const PZ_LAB = { year: "年 year", month: "月 month", day: "日 day", hour: "时 hour" };
+const PZ_LAB = { year: "year", month: "month", day: "day", hour: "hour" };
 const EL_EN = { 木: "Wood", 火: "Fire", 土: "Earth", 金: "Metal", 水: "Water" };
 const EL_COL = { 木: "#1e8e3e", 火: "#c5221f", 土: "#8a6d1f", 金: "#a67c00", 水: "#1a56b0" };
 const STAR_EN = { 一白: "1 White", 二黑: "2 Black", 三碧: "3 Jade", 四绿: "4 Green",
@@ -254,34 +257,48 @@ const GUA_EL = { 坎: "水", 艮: "土", 震: "木", 巽: "木", 离: "火", 離
   坤: "土", 兑: "金", 兌: "金", 乾: "金" };
 const BAND_COL = (s) => s >= 70 ? ["#1e7d32", "#e9f7ee"] : s >= 55 ? ["#5f8a3e", "#eef3e3"]
   : s >= 45 ? ["#b8860b", "#faf3dd"] : ["#b03a2e", "#fdecea"];
-const vv = (zh, en) => `<span class="vz">${zh}</span><span class="ve">${en || ""}</span>`;
+const vv = (en, zh) => `<span class="vz">${en || ""}</span><span class="ve">${zh || ""}</span>`;
+
+/* English-first pass: each person card stands alone, so it gets its own glossary context
+   (Chinese once in parentheses at first use inside the card, English after) */
+function glossCards(root) {
+  if (!window.GL || !root) return;
+  const walk = (el, ctx) => {
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+      acceptNode: (n) => /[\u3400-\u9fff]/.test(n.nodeValue) && n.parentElement
+        && !n.parentElement.closest("input,textarea,.nm,.keepzh,[lang='zh-Hans']") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+    const ns = []; let t; while ((t = w.nextNode())) ns.push(t);
+    ns.forEach((n) => { const v = ctx.text(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; });
+  };
+  root.querySelectorAll(".pcard").forEach((c) => walk(c, new GL.Ctx()));
+}
 
 function personCard(p, i) {
   const doms = (p.domains || []).map((d) => { if (!Array.isArray(d)) return "";
     const cls = d[2] >= 70 ? "g" : d[2] < 45 ? "b" : "";
-    return `<div class="dr"><div class="dl"><span class="dz">${d[0]}</span><span class="den">${d[1]}</span></div>
+    return `<div class="dr"><div class="dl"><span class="dz">${d[1]}</span></div>
       <div class="db"><i class="${cls}" style="width:${d[2]}%"></i></div>
       <b class="dv ${cls}">${d[2]}</b></div>`; }).join("");
   const z = ZODIAC[p.animal] || ["", ""];
   const tk = p.time_known === false
     ? ' <span class="badge">hour approximate</span>' : "";
   return `<div class="pcard elth-${STEM_EL[p.day_master] || ""}${(p.favourable || [])[0]
-      ? " elth2-" + p.favourable[0] : ""}" data-i="${i}" title="open the full Reading 命书">
+      ? " elth2-" + p.favourable[0] : ""}" data-i="${i}" title="open the full Reading">
     <h3>${p.name}${tk}
       <span class="cardops">
         <button class="ic edit" data-i="${i}" title="edit name, sex, birth date and time">✏️</button>
         <button class="ic del" data-i="${i}" title="remove">🗑</button>
       </span></h3>
     <div class="pzrow">${["year","month","day","hour"].map(k => { const gz = p.pillars[k] || "", st = gz[0] || "", br = gz[1] || "";
-      return `<span class="pz"><span><b style="color:${EL_COL[STEM_EL[st]] || "inherit"}">${st}</b><b style="color:${EL_COL[BR_EL[br]] || "inherit"}">${br}</b></span><small>${PZ_LAB[k]}</small></span>`; }).join("")}</div>
+      return `<span class="pz keepzh"><span lang="zh-Hans"><b style="color:${EL_COL[STEM_EL[st]] || "inherit"}">${st}</b><b style="color:${EL_COL[BR_EL[br]] || "inherit"}">${br}</b></span><small class="pzpy">${window.GL ? GL.pinyin(gz) : ""}</small><small>${PZ_LAB[k]}</small></span>`; }).join("")}</div>
     <form class="editf" data-i="${i}" hidden>
       <div class="row">
-        <div><label>Name 姓名</label><input name="name" maxlength="40" value="${(p.name || "").replace(/"/g, "&quot;")}"></div>
-        <div><label>Sex 性别</label><select name="sex"><option value="M" ${p.sex === "M" ? "selected" : ""}>M 男</option><option value="F" ${p.sex === "F" ? "selected" : ""}>F 女</option></select></div>
+        <div><label>Name</label><input name="name" maxlength="40" value="${(p.name || "").replace(/"/g, "&quot;")}"></div>
+        <div><label>Sex</label><select name="sex"><option value="M" ${p.sex === "M" ? "selected" : ""}>M (male)</option><option value="F" ${p.sex === "F" ? "selected" : ""}>F (female)</option></select></div>
         <div><label>Date of birth</label><input name="dob" type="date" value="${p.dob || ""}"></div>
         <div><label>Time of birth</label><input name="birth_time" type="time" value="${p.birth_time || "12:00"}"></div>
       </div>
-      <div class="row2"><button type="submit">Save 保存</button><button type="button" class="ghost cancel">Cancel</button><span class="err"></span></div>
+      <div class="row2"><button type="submit">Save</button><button type="button" class="ghost cancel">Cancel</button><span class="err"></span></div>
     </form>
     <div class="fgrid">
       ${(() => {
@@ -292,33 +309,35 @@ function personCard(p, i) {
         const grpEn = (grp.match(/[A-Za-z]+/) || [""])[0];
         const dom = p.dominant || ["—", "", ""];
         const star2 = (p.life_star || "").slice(0, 2);
+        const elZh = (a) => `<span class="keepzh">${(a || []).map((e) =>
+          `<span lang="zh-Hans">${e}</span> ${window.GL ? GL.pinyin(e) : ""}`).join(" · ")}</span>`;
         const elEn = (a) => (a || []).map((e) =>
           `<b style="color:${EL_COL[e]}">${EL_EN[e]}</b>`).join(" · ");
         return [
-          ["日主", "Day Master", vv(`<b style="color:${EL_COL[stEl] || "inherit"}">${p.day_master} ${stEl}</b>`, EL_EN[stEl])],
-          ["生肖", "Zodiac", vv(z[0] || p.animal, z[1])],
-          ["强弱", "Strength", vv(sZh, sEn)],
-          ["主导", "Dominant God", vv(`<b style="color:${EL_COL[dom[2]] || "inherit"}">${dom[0]}</b>`,
-            dom[1] + (dom[2] ? ` · ${EL_EN[dom[2]]}` : ""))],
-          ["命卦", "Life Gua", vv(`<b style="color:${EL_COL[GUA_EL[p.gua]] || "inherit"}">${p.gua}</b> ${grp.replace(/[A-Za-z ]+/g, "").trim()}`,
-            grpEn ? grpEn + "-group gua" : "")],
-          ["命星", "Life Star", vv(`<b style="color:${EL_COL[STAR_EL[star2]] || "inherit"}">${p.life_star}</b>`,
-            STAR_EN[star2] || "")],
-          ["用神", "Medicine", vv(elbs(p.favourable), elEn(p.favourable))],
-          ["避", "Avoid", vv(elbs(p.unfavourable), elEn(p.unfavourable))],
+          ["日主", "Day Master", vv(EL_EN[stEl], `<b style="color:${EL_COL[stEl] || "inherit"}">${p.day_master} ${stEl}</b>`)],
+          ["生肖", "Zodiac", vv(z[1], z[0] || p.animal)],
+          ["强弱", "Strength", vv(sEn, sZh)],
+          ["主导", "Dominant God", vv(dom[1] + (dom[2] ? ` · ${EL_EN[dom[2]]}` : ""),
+            `<b style="color:${EL_COL[dom[2]] || "inherit"}">${dom[0]}</b>`)],
+          ["命卦", "Kua number", vv(grpEn ? grpEn + " group" : "",
+            `<b style="color:${EL_COL[GUA_EL[p.gua]] || "inherit"}">${p.gua}</b> ${grp.replace(/[A-Za-z ]+/g, "").trim()}`)],
+          ["命星", "Natal star", vv(STAR_EN[star2] || "",
+            `<b style="color:${EL_COL[STAR_EL[star2]] || "inherit"}">${p.life_star}</b>`)],
+          ["用神", "Useful god", vv(elEn(p.favourable), elZh(p.favourable))],
+          ["避", "Avoid", vv(elEn(p.unfavourable), elZh(p.unfavourable))],
         ];
       })().map(([zh, en, v]) => `
-        <div class="fcell"><div class="fl"><span class="dz">${zh}</span><span class="den">${en}</span></div>
+        <div class="fcell"><div class="fl"><span class="dz">${en}</span></div>
           <div class="fv">${v}</div></div>`).join("")}
     </div>
-    <div class="fcareer"><div class="fl"><span class="dz">行业五行</span><span class="den">Industries</span></div>
+    <div class="fcareer"><div class="fl"><span class="dz">Industries</span></div>
       <div class="fv find">${(() => { const I = p.industries || [], k = Math.ceil(6 / Math.max(I.length, 1));
         return I.map((it) => `<b style="color:${EL_COL[it.element] || "inherit"}">${it.industries.split(",").slice(0, k).map((x) => x.trim()).join(", ")}</b>`).join(" · ") || "<span class='sub'>—</span>"; })()}</div></div>
-    ${p.sharpest_axis ? `<div class="fcareer"><div class="fl"><span class="dz">性格</span><span class="den">Personality</span></div>
+    ${p.sharpest_axis ? `<div class="fcareer"><div class="fl"><span class="dz">Personality</span></div>
       <div class="fv fpers"><b>${p.sharpest_axis.verdict}</b> — <b style="color:${EL_COL[p.sharpest_axis.element] || "inherit"}">${p.sharpest_axis.label}</b><small>${p.sharpest_axis.axis}</small></div></div>` : ""}
-    <div class="dhead">人生领域 Life domains</div>
+    <div class="dhead">Life domains</div>
     <div class="doms2">${doms}</div>
-    <div class="kv" style="margin-top:7px;color:var(--accent);font-weight:700">Open the full Reading 命书 →</div>
+    <div class="kv" style="margin-top:7px;color:var(--accent);font-weight:700">Open the full Reading →</div>
     </div>`;
 }
 
@@ -334,13 +353,13 @@ function harmonyTable(h) {
       const [bc, bg] = BAND_COL(p.score);
       return `<td class="hcell" role="button" tabindex="0" data-a="${i}" data-b="${j + 1}"
         style="background:${bg};border-left:3px solid ${bc}"
-        title="查看配对详解 tap for the pair breakdown">
+        title="Tap for the pair breakdown">
         <b style="color:${bc};font-size:15px">${p.score}</b>
-        <span class="hband" style="color:${bc}">${p.band}</span>
-        <span class="hgo">详解 tap ▸</span></td>`;
+        <span class="hband" style="color:${bc}">${String(p.band).replace(/\s*[\u3400-\u9fff]+\s*$/, "")}</span>
+        <span class="hgo">tap ▸</span></td>`;
     }).join("")}</tr>`).join("");
   return `<div class="hwrap"><table>${head}${rows}</table></div>
-    <div class="kv" style="color:var(--muted)">点击任一分数查看两人配对报告 · tap any score to open the pair-wise report</div>`;
+    <div class="kv" style="color:var(--muted)">Tap any score to open the pair-wise report</div>`;
 }
 
 const openPair = (a, b) => { location.href = `/w/${token}/pair/${a}/${b}`; };
@@ -357,11 +376,12 @@ function render() {
   if (!ws) return;
   $("#people-sec").hidden = false;
   $("#people").innerHTML = ws.people.map(personCard).join("");
+  glossCards($("#people"));
   $("#pcount").textContent = `${ws.people.length}/${ws.max_people}`;
   $("#cap-hint").textContent = ws.people.length >= ws.max_people
     ? "workspace full (8 people max)" : "";
   $("#btn-add").disabled = ws.people.length >= ws.max_people;
-  $("#add-title").textContent = "Add another person 再加一人";
+  $("#add-title").textContent = "Add another person";
   const url = `${location.origin}/w/${token}`;
   $("#share-sec").hidden = false;
   $("#share").innerHTML = `<div class="st">🔗 Your private workspace link — save it,
@@ -452,7 +472,7 @@ $("#btn-add").addEventListener("click", async () => {
 })();
 </script>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
-<div class="learnstrip"><b>Learn 知识库:</b> <a href="/learn/four-pillars-explained">How to read a four pillars chart</a> <a href="/learn/day-masters-explained">The ten day masters</a> <a href="/learn/useful-god-colors">Useful element colours</a></div>
+<div class="learnstrip"><b>Learn:</b> <a href="/learn/four-pillars-explained">How to read a four pillars chart</a> <a href="/learn/day-masters-explained">The ten day masters</a> <a href="/learn/useful-god-colors">Useful element colours</a></div>
 <footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
-<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (中文 zhōng wén)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
 </body></html>

@@ -19,15 +19,15 @@
 </head>
 <body>
 <header>
-  <h1>罗盘 FengShui Family Compass</h1>
+  <h1>FengShui Family Compass (罗盘 luó pán)</h1>
   <div id="house-line"></div>
   <div class="controls">
     <label>Year <input id="year" type="number" value="2026" min="1990" max="2060"></label>
     <label>Period
-      <select id="period"><option value="8" selected>八运 (P8)</option><option value="9">九运 (P9)</option></select>
+      <select id="period"><option value="8" selected>Period 8 (八运 bā yùn)</option><option value="9">Period 9 (九运 jiǔ yùn)</option></select>
     </label>
     <label>Sectors
-      <select id="method"><option value="pie" selected>米字 pie</option><option value="grid">九宫 grid</option></select>
+      <select id="method"><option value="pie" selected>pie (米字 mǐ zì)</option><option value="grid">grid (九宫 jiǔ gōng)</option></select>
     </label>
     <label>Time
       <select id="policy"><option value="true_solar" selected>true solar</option><option value="clock">clock</option></select>
@@ -37,22 +37,22 @@
     <a id="trace-link" href="/trace" target="_blank">✏️ Trace floorplan</a>
   </div>
   <nav>
-    <button class="tab active" data-tab="forme">For Me 为我</button>
-    <button class="tab" data-tab="ourhome">Home 我们的家</button>
-    <button class="tab" data-tab="assign">Rooms 配房</button>
-    <button class="tab" data-tab="planner">Planner 择时</button>
-    <button class="tab" id="working-toggle">The Working 审计 ▾</button>
+    <button class="tab active" data-tab="forme">For Me</button>
+    <button class="tab" data-tab="ourhome">Home</button>
+    <button class="tab" data-tab="assign">Rooms</button>
+    <button class="tab" data-tab="planner">Planner</button>
+    <button class="tab" id="working-toggle">The Working ▾</button>
   </nav>
   <nav id="working-nav" hidden>
-    <button class="tab" data-tab="family">Family 全家</button>
-    <button class="tab" data-tab="person">Reading 命书</button>
-    <button class="tab" data-tab="house">House 宅盘</button>
-    <button class="tab" data-tab="compare">Compare 对比</button>
-    <button class="tab" data-tab="forecast">Forecast 流年</button>
-    <button class="tab" data-tab="dates">Dates 择日</button>
-    <button class="tab" data-tab="pair">Pair 合婚</button>
-    <button class="tab" data-tab="names">Names 姓名</button>
-    <button class="tab" data-tab="unit">Unit 评宅</button>
+    <button class="tab" data-tab="family">Family</button>
+    <button class="tab" data-tab="person">Reading</button>
+    <button class="tab" data-tab="house">House</button>
+    <button class="tab" data-tab="compare">Compare</button>
+    <button class="tab" data-tab="forecast">Forecast</button>
+    <button class="tab" data-tab="dates">Dates</button>
+    <button class="tab" data-tab="pair">Pair</button>
+    <button class="tab" data-tab="names">Names</button>
+    <button class="tab" data-tab="unit">Unit</button>
   </nav>
   <div id="warnings"></div>
 </header>
@@ -71,6 +71,7 @@
   <section id="tab-names" class="tabpane"></section>
   <section id="tab-unit" class="tabpane"></section>
 </main>
+<script src="/static/glossary.js"></script>
 <script src="/static/app.js"></script>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 </body>

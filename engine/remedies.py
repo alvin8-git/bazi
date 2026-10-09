@@ -67,7 +67,7 @@ def element_remedies(chart, ys) -> list[dict]:
             drain = SHENG[e]
             out.append(_act(
                 f"{e} excess {share:.0%} — element_weights",
-                f"favour {ELEMENT_EN[drain]}{drain} to drain the excess: colours "
+                f"favour {ELEMENT_EN[drain]} {drain} to drain the excess: colours "
                 f"{'·'.join(ELEMENT_COLOURS[drain])}, {MATERIALS[drain]} "
                 f"(洩 drain preferred; controlling it with "
                 f"{ELEMENT_EN[_ke_of(e)]}{_ke_of(e)} is harsher — secondary)",
@@ -76,9 +76,9 @@ def element_remedies(chart, ys) -> list[dict]:
             mother = SHENG_REV[e]
             out.append(_act(
                 f"{e} deficient {share:.0%} — element_weights",
-                f"supplement {ELEMENT_EN[e]}{e} directly (colours "
+                f"supplement {ELEMENT_EN[e]} {e} directly (colours "
                 f"{'·'.join(ELEMENT_COLOURS[e])}, {MATERIALS[e]}) plus its mother "
-                f"{ELEMENT_EN[mother]}{mother} ({MATERIALS[mother]}) — {mother}生{e}",
+                f"{ELEMENT_EN[mother]} {mother} ({MATERIALS[mother]}) — {mother}生{e}",
                 "colour", 3, "五行相生 — supplement + mother", "wardrobe"))
     return out
 

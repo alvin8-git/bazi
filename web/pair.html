@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -134,17 +134,20 @@ h2 .scorechip{float:right;margin-top:-2px}
   .foot{margin-top:5px;padding-top:3px}
   @page{size:A4;margin:9mm}
 }
+@media screen and (max-width:600px){.dtable,.ctable,.swtable{display:block;max-width:100%;overflow-x:auto}}
 </style></head><body>
 <div class="page">
-  <div class="toolbar"><a id="back" href="#">← 返回 workspace</a>
-    <button onclick="print()">🖨 打印 Print</button></div>
+  <div class="toolbar"><a id="back" href="#">← Back to workspace</a>
+    <button onclick="print()">🖨 Print</button></div>
   <div class="report" id="rep">loading…</div>
 </div>
+<script src="/static/glossary.js"></script>
 <script>
 const m = location.pathname.match(/^\/w\/([^/]+)\/pair\/(\d+)\/(\d+)/);
 const token = m && m[1], A = m && m[2], B = m && m[3];
 document.getElementById("back").href = `/w/${token}`;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const bi = (o) => esc((o && (o.en || o.zh)) || "");
 const be = (o) => `<small class="be">${esc(o.en)}</small>`;
 const elb = (e) => e ? `<span class="elb el-${e}">${e}</span>` : "";
 const STEM_EL = { 甲: "木", 乙: "木", 丙: "火", 丁: "火", 戊: "土", 己: "土",
@@ -234,15 +237,26 @@ function colorizeRep(root) {                    // element, stem, branch and ten
   }
 }
 
+/* English-first pass through the shared glossary (first use carries the Chinese once) */
+function glossifyRep(root) {
+  if (!window.GL) return;
+  GL.reset();
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) => n.parentElement && /[\u3400-\u9fff]/.test(n.nodeValue)
+      && !n.parentElement.closest("script,style,.keepzh,[lang='zh-Hans']")
+      ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+  const nodes = []; let t; while ((t = w.nextNode())) nodes.push(t);
+  for (const n of nodes) { const v = GL.text(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; }
+}
 function gauge(score) {                       // band zones + marker, inline SVG
   const x = 20 + (score / 100) * 320;
   const zone = (a, b, c) => `<rect x="${20 + a * 3.2}" y="22" width="${(b - a) * 3.2}" height="10" fill="${c}"/>`;
   return `<svg viewBox="0 0 360 52" class="gauge" role="img" aria-label="score ${score} of 100">
     ${zone(0, 45, "#f3d8cf")}${zone(45, 55, "#efe6cf")}${zone(55, 70, "#e3e8cf")}${zone(70, 100, "#cfe3cf")}
-    <text x="21" y="18" font-size="8" fill="#8b8f9a">0 需磨合</text>
-    <text x="164" y="18" font-size="8" fill="#8b8f9a">45 中</text>
-    <text x="196" y="46" font-size="8" fill="#8b8f9a">55 中上</text>
-    <text x="244" y="18" font-size="8" fill="#8b8f9a">70 上等</text>
+    <text x="21" y="18" font-size="8" fill="#8b8f9a">0 needs work</text>
+    <text x="164" y="18" font-size="8" fill="#8b8f9a">45 fair</text>
+    <text x="196" y="46" font-size="8" fill="#8b8f9a">55 good</text>
+    <text x="244" y="18" font-size="8" fill="#8b8f9a">70 strong</text>
     <text x="340" y="18" font-size="8" fill="#8b8f9a" text-anchor="end">100</text>
     <line x1="${x}" y1="18" x2="${x}" y2="36" stroke="#a63d2f" stroke-width="2"/>
     <circle cx="${x}" cy="27" r="6" fill="#a63d2f"/>
@@ -270,113 +284,112 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
     const idc = (p, n, idx) => { const fav = STEM_EL[p.day_master];
       const z = ZODIAC[p.animal] || ["", p.animal || "—"];
       return `<a class="idchip" href="/w/${token}/person/${idx}/reading"
-        title="打开命书 open this reading" style="${elthBg(fav)}"><b>${esc(n)}</b><span class="idgo">›</span>
-      <div class="sub"><span class="gf">日主</span> ${p.day_master || "—"}${elb(STEM_EL[p.day_master])} ·
-        <span class="gf">生肖</span> ${z[0]} ${z[1]} ·
-        <span class="gf">强弱</span> ${esc(p.strength || "")}</div></a>`; };
+        title="Open this reading" style="${elthBg(fav)}"><b>${esc(n)}</b><span class="idgo">›</span>
+      <div class="sub"><span class="gf">Day Master</span> ${p.day_master || "—"}${elb(STEM_EL[p.day_master])} ·
+        <span class="gf">Zodiac</span> ${z[0]} ${z[1]} ·
+        <span class="gf">Strength</span> ${esc(p.strength || "")}</div></a>`; };
     const cls = (dl) => dl > 0 ? "pos" : dl < 0 ? "neg" : "neu";
     const rows = d.arithmetic.map((r) => `<tr>
-      <td>${esc(r.label.zh)}${be(r.label)}</td>
+      <td>${bi(r.label)}</td>
       <td>${rangeBar(r.delta)}</td>
       <td class="pts ${cls(r.delta)}">${r.delta > 0 ? "+" : ""}${r.delta}</td></tr>`).join("");
-    // 相互看对方 as a 2-row table
+    // mutual view as a 2-row table
     const seeTable = `<table class="dtable seetable">
-      <tr><th>视角 view</th><th>十神 god</th><th>经典 classical</th><th>家 at home</th><th>职 at work</th></tr>
+      <tr><th>View</th><th>Ten God</th><th>Classical</th><th>At home</th><th>At work</th></tr>
       ${[[`${d.a} → ${d.b}`, d.relation.a_sees_b], [`${d.b} → ${d.a}`, d.relation.b_sees_a]]
         .map(([who, r]) => `<tr><td class="nb">${esc(who)}</td>
           <td class="nb"><b style="color:${EL_COL[r.element] || "inherit"}">${r.god}</b>${elb(r.element)}</td>
-          <td>${esc(r.zh)}${be(r)}</td>
-          <td>${r.modern_home ? esc(r.modern_home.zh) + be(r.modern_home) : "—"}</td>
-          <td>${r.modern_work ? esc(r.modern_work.zh) + be(r.modern_work) : "—"}</td></tr>`).join("")}</table>
-      <div class="cite2">经典一栏为十神互看（子平法）；家/职两栏为现代读法（MODERN SYNTHESIS）· classical column = the ten-god relation; home/work = modern readings</div>`;
+          <td>${bi(r)}</td>
+          <td>${r.modern_home ? bi(r.modern_home) : "—"}</td>
+          <td>${r.modern_work ? bi(r.modern_work) : "—"}</td></tr>`).join("")}</table>
+      <div class="cite2">Classical column = the ten-god relation; home/work = modern readings</div>`;
     // strengths + frictions merged: one factor-detail table in component order
     const lmap = {};                            // ledger label → element (for badges)
     d.arithmetic.forEach((r) => { if (r.element) lmap[r.label.zh] = r.element; });
     const fbadge = (lbl) => elb(lmap[lbl.zh]);
     const rowsS = d.strengths.map((s) => ({
       cite: s.source_ref,
-      f: `<b class="pos">+${s.delta}</b> ${fbadge(s.chip_label)}${esc(s.chip_label.zh)}${be(s.chip_label)}`,
-      why: `${esc(s.explanation.zh)}${be(s.explanation)}`,
-      how: s.action ? `✓ ${esc(s.action.zh)}<small class="be">${esc(s.action.en)}</small>`
+      f: `<b class="pos">+${s.delta}</b> ${fbadge(s.chip_label)}${bi(s.chip_label)}`,
+      why: `${bi(s.explanation)}`,
+      how: s.action ? `✓ ${bi(s.action)}`
                     : `✓ ${esc(s.explanation.zh.split("——").pop())}`,
     }));
     const rowsF = d.frictions.map((f) => ({
       cite: f.source_ref,
-      f: `<b class="neg">${f.delta}</b> ${fbadge(f.chip_label)}${esc(f.chip_label.zh)}${be(f.chip_label)}`,
-      why: `${esc(f.element.why.zh)}（${esc(f.mechanism)}）${be(f.element.why)}`,
-      how: `<div>五行: ${elb(f.element.zh.length === 1 ? f.element.zh : "")}<b>${esc(f.element.zh)}</b>${f.element.colour_material ? " — " + esc(f.element.colour_material) : ""}${f.element.direction ? " · " + esc(f.element.direction) : ""}
+      f: `<b class="neg">${f.delta}</b> ${fbadge(f.chip_label)}${bi(f.chip_label)}`,
+      why: `${bi(f.element.why)} (${esc(f.mechanism)})`,
+      how: `<div>Element: ${elb(f.element.zh.length === 1 ? f.element.zh : "")}<b>${esc(f.element.zh)}</b>${f.element.colour_material ? " — " + esc(f.element.colour_material) : ""}${f.element.direction ? " · " + esc(f.element.direction) : ""}
               <small class="be">${esc(f.element.why.en)}</small></div>
-            <div>策略: ${esc(f.behaviour.zh)}<small class="be">${esc(f.behaviour.en)}</small></div>
-            <div>时机: ${esc(f.timing.zh)}<small class="be">${esc(f.timing.en)}</small></div>`,
+            <div>Approach: ${bi(f.behaviour)}</div>
+            <div>Timing: ${bi(f.timing)}</div>`,
     }));
     const factorRows = [...rowsS, ...rowsF];
     const factorTable = factorRows.length ? `<table class="dtable">
-      <tr><th style="width:26%">因素 factor</th><th style="width:34%">原因 reason</th><th>对策 action</th></tr>
+      <tr><th style="width:26%">Factor</th><th style="width:34%">Reason</th><th>Action</th></tr>
       ${factorRows.map((r) => `<tr><td class="nb">${r.f}</td><td>${r.why}</td><td>${r.how}</td></tr>
         <tr class="citer"><td colspan="3">${esc(r.cite)}</td></tr>`).join("")}</table>`
-      : `<div class="pitem">此配对无已计分的相合或摩擦项——参考四柱互动与十神互看。
-         <small class="be">no scored bonds or frictions — see the pillar sweep and mutual reading</small></div>`;
-    const PZ = { year: ["年柱", "elders & roots"], month: ["月柱", "career & parents"], day: ["日柱", "self & spouse"], hour: ["时柱", "children & later"] };
+      : `<div class="pitem">No scored bonds or frictions — see the pillar sweep and mutual reading.</div>`;
+    const PZ = { year: ["Year", "elders & roots"], month: ["Month", "career & parents"], day: ["Day", "self & spouse"], hour: ["Hour", "children & later"] };
     const bcol = (e) => EL_COL[e] || "inherit";
     const sweep = d.sweep_matrix ? `<table class="swtable">
       <tr><th class="corner"><small>${esc(d.a)} ↓ · ${esc(d.b)} →</small></th>${d.sweep_matrix[0].map((c) =>
         `<th><b style="color:${bcol(c.element_b)}">${c.branch_b}</b><small>${PZ[c.pillar_b][0]}<br>${PZ[c.pillar_b][1]}</small></th>`).join("")}</tr>
       ${d.sweep_matrix.map((row) => `<tr><th><b style="color:${bcol(row[0].element_a)}">${row[0].branch_a}</b><small>${PZ[row[0].pillar_a][0]}<br>${PZ[row[0].pillar_a][1]}</small></th>
-        ${row.map((c) => `<td class="${c.relation ? (c.bond ? "sw-bond" : "sw-fric") : "sw-none"}${c.scored ? " sw-scored" : ""}">${c.relation ? `<b>${c.relation}</b>${c.scored ? `<i>已计分</i>` : ""}` : "·"}</td>`).join("")}</tr>`).join("")}</table>
-      <div class="swlegend"><span class="sw-bond">六合 · 半三合 bond</span><span class="sw-fric">六沖 · 刑 · 六害 friction</span><span class="sw-none">· none</span><span>已计分 = counted in the score (day-day, year-year)</span></div>
-      ${d.sweep_reading ? `<div class="pitem">${esc(d.sweep_reading.zh)}<small class="be">${esc(d.sweep_reading.en)}</small></div>` : ""}` : "";
+        ${row.map((c) => `<td class="${c.relation ? (c.bond ? "sw-bond" : "sw-fric") : "sw-none"}${c.scored ? " sw-scored" : ""}">${c.relation ? `<b>${c.relation}</b>${c.scored ? `<i>scored</i>` : ""}` : "·"}</td>`).join("")}</tr>`).join("")}</table>
+      <div class="swlegend"><span class="sw-bond">Six Combination · Half Three Combination: bond</span><span class="sw-fric">Clash · Punishment · Harm: friction</span><span class="sw-none">· none</span><span>scored = counted in the score (day-day, year-year)</span></div>
+      ${d.sweep_reading ? `<div class="pitem">${bi(d.sweep_reading)}</div>` : ""}` : "";
     rep.innerHTML = `
-      <div class="rhead"><h1>合婚配对报告<small>Pair Compatibility Report · bazifor.me</small></h1>
+      <div class="rhead"><h1>Pair Compatibility Report<small>bazifor.me</small></h1>
         <div class="rmeta">${new Date().toISOString().slice(0, 10)}<span id="verline"></span><br>deterministic · every number cites its rule</div></div>
       <div class="idrow">${idc(pa, d.a, A)}<div class="vs">✕</div>${idc(pb, d.b, B)}</div>
       ${d.report ? (() => { const [fb] = BAND_COL(d.score);
         const lede = esc(d.report.summary).replace(/^(\d+\/100\s*—\s*[^.]+\.)/, (m0) => `<span style="color:${fb}">${m0}</span>`);
-        return `<div class="prep"><div class="prep-k">綜合論斷 <span class="be-in">The Synthesis — the geomancer's pair report</span></div>
+        return `<div class="prep"><div class="prep-k"><span class="be-in">The Synthesis — the geomancer's pair report</span></div>
         <p class="prep-lede">${lede}</p>
         <details class="prep-more printable"><summary>read the full report ›</summary>
         <div class="prep-body"><h4>Findings</h4>${d.report.findings.map((f) => `<p><b>${esc(f.label)}.</b> ${esc(f.text)}</p>`).join("")}
           <h4>Assessment</h4><p>${esc(d.report.assessment)}</p>
           <h4>Plan</h4><ul>${d.report.plan.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
           <p class="prep-conf">${esc(d.report.confidence)}</p></div></details></div>`; })() : ""}
-      <h2>总评 <small>overall reading</small></h2>
+      <h2>Overall reading</h2>
       ${gauge(d.score)}
       ${(() => { const [fb] = BAND_COL(d.score);
-        return `<div style="font-size:12.5px"><b style="color:${fb}">${d.score}/100 · ${esc(d.band.zh)}</b>
-          <small class="be" style="color:${fb}">${esc(d.band.en)}</small></div>`; })()}
-      <h2>成分明细 <small>component table — each factor against its reference range</small></h2>
-      <table class="ctable"><tr><th>因素 factor</th><th>范围 range (−15 ⟵ 0 ⟶ +15)</th><th>分 pts</th></tr>
-        <tr><td>基础分 <small class="be">baseline</small></td><td>${rangeBar(0)}</td><td class="pts neu">50</td></tr>
+        return `<div style="font-size:12.5px"><b style="color:${fb}">${d.score}/100 · ${esc(d.band.en)}</b></div>`; })()}
+      <h2>Component table <small>each factor against its reference range</small></h2>
+      <table class="ctable"><tr><th>Factor</th><th>Range (−15 ⟵ 0 ⟶ +15)</th><th>Pts</th></tr>
+        <tr><td>Baseline</td><td>${rangeBar(0)}</td><td class="pts neu">50</td></tr>
         ${rows}
-        <tr class="tot"><td>总分（5–95 区间）<small class="be">total, clamped</small></td><td></td>
+        <tr class="tot"><td>Total (clamped to 5–95)</td><td></td>
           <td class="pts">${d.score}</td></tr></table>
-      ${d.modern && d.modern.rows && d.modern.rows.length ? `<h2>现代解读 <small>modern reading — classical principles on the two readings, own ledger</small></h2>
-      <table class="ctable"><tr><th>层 layer</th><th>依据 basis</th><th>分 pts</th></tr>
-        ${d.modern.rows.map((r) => `<tr><td>${esc(r.label.zh)}${be(r.label)}${r.note ? `<small class="be">${esc(r.note)}</small>` : ""}</td>
-          <td><span class="basis ${r.basis}">${r.basis === "classical" ? "classical 经典" : "modern 现代"}</span></td>
+      ${d.modern && d.modern.rows && d.modern.rows.length ? `<h2>Modern reading <small>classical principles on the two readings, own ledger</small></h2>
+      <table class="ctable"><tr><th>Layer</th><th>Basis</th><th>Pts</th></tr>
+        ${d.modern.rows.map((r) => `<tr><td>${bi(r.label)}${r.note ? `<small class="be">${esc(r.note)}</small>` : ""}</td>
+          <td><span class="basis ${r.basis}">${r.basis === "classical" ? "classical" : "modern"}</span></td>
           <td class="pts ${cls(r.delta)}">${r.delta > 0 ? "+" : ""}${r.delta}</td></tr>`).join("")}
-        <tr class="tot"><td>含现代层的读数（不改动经典总分）<small class="be">reading with the modern layers — the classical score above is unchanged</small></td><td></td>
+        <tr class="tot"><td>Reading with the modern layers <small class="be">the classical score above is unchanged</small></td><td></td>
           <td class="pts">${d.modern.score_with_modern}</td></tr></table>
       <div class="cite2">${esc(d.modern.source_ref)}</div>` : ""}
-      <h2>相互看对方 <small>how they see each other</small></h2>
+      <h2>How they see each other</h2>
       ${seeTable}
-      <details class="printable"><summary>因素详解 factor detail — reason &amp; action per scored factor ›</summary>${factorTable}</details>
-      <h2>四柱互动 <small>pillar interactions — every branch of one chart against every branch of the other</small></h2>
+      <details class="printable"><summary>Factor detail — reason &amp; action per scored factor ›</summary>${factorTable}</details>
+      <h2>Pillar interactions <small>every branch of one chart against every branch of the other</small></h2>
       ${sweep}
-      <h2>三种关系视角 <small>the same pair, three framings</small>
-        ${(() => { const [fb] = BAND_COL(d.score); return `<span class="scorechip" style="--fb:${fb}">${d.score} · ${esc(d.band.zh)} ${esc(d.band.en)}</span>`; })()}</h2>
+      <h2>Three relationship framings <small>the same pair, three views</small>
+        ${(() => { const [fb] = BAND_COL(d.score); return `<span class="scorechip" style="--fb:${fb}">${d.score} · ${esc(d.band.en)}</span>`; })()}</h2>
       ${(() => {
         const F = d.framings_table; if (!F) return "";
-        const cellf = (o) => `${esc(o.zh)}${be(o)}`;
+        const cellf = (o) => `${bi(o)}`;
         return `<table class="dtable frtable">
-          <tr><th></th><th>家人 Family</th><th>夫妻 Couple</th><th>同事 Colleagues</th></tr>
-          ${[["含义 meaning", "meaning"], ["可倚 lean on", "lean_on"], ["留意 watch", "watch"]].map(([lab, k]) =>
+          <tr><th></th><th>Family</th><th>Couple</th><th>Colleagues</th></tr>
+          ${[["Meaning", "meaning"], ["Lean on", "lean_on"], ["Watch", "watch"]].map(([lab, k]) =>
             `<tr><td class="nb">${lab}</td><td>${cellf(F.family[k])}</td><td>${cellf(F.couple[k])}</td><td>${cellf(F.colleagues[k])}</td></tr>`).join("")}</table>
-        <div class="cite2">三个视角共用同一总分；可倚/留意各取该情境下最相关的已计分或现代层因素 · one frozen score; lean-on / watch pick the factor most relevant to each context</div>`;
+        <div class="cite2">One frozen score; lean-on / watch pick the factor most relevant to each context</div>`;
       })()}
-      <div class="foot">${esc(d.source_ref)} · 明细相加与主表分数完全一致 the component table sums exactly to
+      <div class="foot">${esc(d.source_ref)} · the component table sums exactly to
         the harmony-matrix score · bazifor.me/w/${esc(token).slice(0, 3)}····</div>`;
     colorizeRep(rep);
     colorizeColoursRep(rep);
+    glossifyRep(rep);
     const pd = () => Array.from(rep.querySelectorAll("details.printable"));
     let wasOpen = [];
     window.addEventListener("beforeprint", () => { wasOpen = pd().map((x) => x.open); pd().forEach((x) => (x.open = true)); });

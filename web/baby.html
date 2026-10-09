@@ -39,6 +39,11 @@ h1{font-size:20px;color:var(--accent);margin:8px 0 2px}
 h2{font-size:16px;color:var(--gold);margin:0 0 10px}
 .bl small{display:block;font-size:11px;font-weight:500;color:var(--muted);line-height:1.2}
 .bl.inl small{display:inline;margin-left:4px}
+.bl.en{display:inline;overflow-wrap:anywhere}
+.bl.en small,.bl.en small[lang]{display:inline;font-size:.78em;font-weight:500;color:var(--muted);margin-left:3px;line-height:1.2;opacity:1}
+.bl.en small[lang]::before{content:"("}.bl.en small[lang]::after{content:")"}
+table.exs{display:block;max-width:100%;overflow-x:auto}
+table.wg{display:block;max-width:100%;overflow-x:auto}.grid2>div{min-width:0}
 .el-木{color:var(--wood)}.el-火{color:var(--fire)}.el-土{color:var(--earth)}.el-金{color:var(--metal)}.el-水{color:var(--water)}
 .bg-木{background:var(--wood-bg);border-color:var(--wood)}.bg-火{background:var(--fire-bg);border-color:var(--fire)}
 .bg-土{background:var(--earth-bg);border-color:var(--earth)}.bg-金{background:var(--metal-bg);border-color:var(--metal)}
@@ -52,7 +57,7 @@ h2{font-size:16px;color:var(--gold);margin:0 0 10px}
 .pil .gz span{display:block}
 .pil .elx{font-size:11px;color:var(--muted)}
 .bars{margin-top:12px;max-width:520px}
-.bar{display:grid;grid-template-columns:28px 1fr 40px;gap:8px;align-items:center;font-size:13px;margin:3px 0}
+.bar{display:grid;grid-template-columns:54px 1fr 40px;gap:8px;align-items:center;font-size:13px;margin:3px 0}
 .bar .track{height:10px;border-radius:5px;background:#f0ece4;overflow:hidden}
 .bar .fill{height:100%;border-radius:5px}
 .fill.f-木{background:var(--wood)}.fill.f-火{background:var(--fire)}.fill.f-土{background:var(--earth)}.fill.f-金{background:var(--metal)}.fill.f-水{background:var(--water)}
@@ -65,8 +70,8 @@ h2{font-size:16px;color:var(--gold);margin:0 0 10px}
 .ystitle{font-weight:700;font-size:15px;margin-bottom:8px}
 .ysgrp.use .ystitle{color:var(--ji)}.ysgrp.avoid .ystitle{color:var(--xiong)}
 .ysdiscs{display:flex;gap:12px;flex-wrap:wrap}
-.ysd{width:64px;border-radius:12px;padding:8px 4px;text-align:center;color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
-.ysd span{display:block;font-size:26px;font-weight:700;line-height:1.1}
+.ysd{min-width:72px;border-radius:12px;padding:8px 4px;text-align:center;color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.ysd span{display:block;font-size:20px;font-weight:700;line-height:1.1}
 .ysd small{display:block;font-size:11.5px;font-weight:500}
 .ysd-木{background:#176b33}.ysd-火{background:#b3261e}.ysd-土{background:#7a5f16}.ysd-金{background:#7a5a00}.ysd-水{background:#174ea6}
 .ysd.off{background:#fff;border:1.5px solid var(--line);box-shadow:none;color:var(--muted)}
@@ -214,36 +219,37 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 @media (max-width:640px){.form{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){.spart{grid-template-columns:86px 1fr 56px}.spart .sl small{display:block;margin-left:0;font-size:10px}.spart .sn{grid-column:1/-1!important}table.sl{font-size:13px}table.sl th:nth-child(3),table.sl td:nth-child(3),table.sl th:nth-child(5),table.sl td:nth-child(5){display:none}.interp{flex-basis:100%;border-left:0;border-top:3px solid var(--gold);padding:10px 0 0}
   .scoreband{padding:12px}.namegrid .mk{min-height:30px}}
-<style>.sitefoot{padding:18px 22px 28px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:30px}.sitefoot a{color:var(--accent)}.sitefoot .fnav{display:inline-block;margin-top:6px}.learnstrip{max-width:980px;margin:18px auto 0;padding:0 22px;font-size:14px;color:var(--muted)}.learnstrip a{color:var(--accent);margin-right:12px;white-space:nowrap}</style></head><body>
+<style>.sitefoot{padding:18px 22px 28px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:30px}.sitefoot a{color:var(--accent)}.sitefoot .fnav{display:inline-block;margin-top:6px}.learnstrip{max-width:980px;margin:18px auto 0;padding:0 22px;font-size:14px;color:var(--muted)}.learnstrip a{color:var(--accent);margin-right:12px;white-space:nowrap}.sancai .rel b{font-size:11px;font-weight:600}.sancai .disc small{font-size:10px;line-height:1.15}
+</style></head><body>
 <span class="verbadge" id="ver"></span>
 <script>fetch("/api/pub/version").then(r=>r.json())
   .then(v=>{document.getElementById("ver").textContent="v "+v.version}).catch(()=>{});</script>
 <header>
-  <h1>Baby name builder · <span lang="zh-Hans">宝宝起名</span></h1>
-  <div class="sub">The chart, its 用神, and a name you build character by character, every rule cited.
+  <h1>Baby name builder (<span lang="zh-Hans">宝宝起名 bǎo bǎo qǐ míng</span>)</h1>
+  <div class="sub">The chart, its useful god (用神 yòng shén), and a name you build character by character, every rule cited.
     <a href="/start">← people workspace</a></div>
 </header>
 <main>
 <style>.exshot{margin:0 0 18px;max-width:560px}.exshot img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line,#e5ded2)}.exshot figcaption{font-size:12.5px;color:var(--muted,#6b6359);margin-top:6px}</style>
-<figure class="exshot"><img src="/static/img/shots/baby-card-desktop.jpg" alt="Example baby name card for the fictional name 王禄婷 with the seven-part score bars" width="955" height="650"><figcaption>Example with fictional data / 示例（虚构数据）</figcaption></figure>
+<figure class="exshot"><img src="/static/img/shots/baby-card-desktop.jpg" alt="Example baby name card for the fictional name 王禄婷 with the seven-part score bars" width="955" height="650"><figcaption>Example with fictional data</figcaption></figure>
   <div class="sec">
     <form id="f" method="post" action="/api/pub/baby">
       <div class="form">
-        <div><label for="i-surname">姓 Family surname</label>
+        <div><label for="i-surname">Family surname</label>
           <input id="i-surname" name="surname" maxlength="2" placeholder="王" autocomplete="off"></div>
-        <div><label for="i-sex">性别 Sex</label>
-          <select id="i-sex" name="sex"><option value="M">M 男</option><option value="F">F 女</option></select></div>
-        <div><label for="i-dob">出生日期 Birth or due date</label>
+        <div><label for="i-sex">Sex</label>
+          <select id="i-sex" name="sex"><option value="M">M (male)</option><option value="F">F (female)</option></select></div>
+        <div><label for="i-dob">Birth or due date</label>
           <input id="i-dob" name="dob" type="date" required></div>
-        <div><label for="i-time">时间 Time (12:00 if unknown)</label>
+        <div><label for="i-time">Time (12:00 if unknown)</label>
           <input id="i-time" name="birth_time" type="time" value="12:00"></div>
-        <div><label for="i-given">名字 Given name (optional, 1–2 characters)</label>
-          <input id="i-given" name="given" maxlength="2" placeholder="已有名字可直接评析 evaluate a chosen name" autocomplete="off"></div>
+        <div><label for="i-given">Given name (optional, 1–2 characters)</label>
+          <input id="i-given" name="given" maxlength="2" placeholder="evaluate a chosen name" autocomplete="off"></div>
       </div>
       <input type="hidden" name="name" value="">
       <div class="formbtns">
-        <button type="button" class="btn primary" id="start">开始起名 Start naming</button>
-        <button type="submit" class="btn">完整八字报告 Full BaZi report</button>
+        <button type="button" class="btn primary" id="start">Start naming</button>
+        <button type="submit" class="btn">Full BaZi report</button>
       </div>
       <div class="err" id="err" role="alert"></div>
       <div class="note">For a due date the chart is provisional, recalculate after birth with the exact time.
@@ -252,41 +258,51 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
   </div>
   <div class="sec" id="explainer">
     <h2>What the name builder returns</h2>
-    <p>Every name you build is scored out of 100 in seven parts, and each part has a fixed weight: <b>用神</b> 30 (does each character carry an element your baby's BaZi chart needs), <b>五格</b> 25 (the five stroke-count grids), <b>三才</b> 15 (whether the elements of the heaven, person and earth grids support each other), <b>字义</b> 10 (what the characters mean, in 16 meaning categories), <b>音韵</b> 5 (tones, repeated sounds and unlucky homophones), <b>性别</b> 5 (whether the characters suit a boy or a girl) and <b>可信度</b> 10 (how far the engine can trust the data behind the other parts). The weights add up to 100.</p>
-    <p>The total maps to a grade: <b>上佳</b> (excellent) at 90 and above, <b>佳</b> (good) at 80 and above, <b>可</b> (fair) at 65 and above, and <b>待斟酌</b> (reconsider) below 65. A strong sound hit caps the grade at 待斟酌 whatever the total.</p>
-    <p>The sound layer checks two things. It looks for Mandarin sound-alikes, characters that sound like an unlucky or rude word, and it checks the English reading of the pinyin, since many Singapore and Malaysia families raise children who will be addressed in English at school and at work. Beside the score you also get the five grids with their 吉 or 凶 verdicts, the element of every character, its 康熙 stroke count, a short reading of what the name suggests, and a shortlist of up to eight names you can compare.</p>
+    <p>Every name you build is scored out of 100 in seven parts, and each part has a fixed weight: <b>Useful god</b> 30 (does each character carry an element your baby's BaZi chart needs), <b>Five Grids (五格 wǔ gé)</b> 25 (the five stroke-count grids), <b>Three Talents (三才 sān cái)</b> 15 (whether the elements of the heaven, person and earth grids support each other), <b>character meaning (字义 zì yì)</b> 10 (what the characters mean, in 16 meaning categories), <b>sound (音韵 yīn yùn)</b> 5 (tones, repeated sounds and unlucky homophones), <b>gender fit (性别 xìng bié)</b> 5 (whether the characters suit a boy or a girl) and <b>confidence (可信度 kě xìn dù)</b> 10 (how far the engine can trust the data behind the other parts). The weights add up to 100.</p>
+    <p>The total maps to a grade: <b>excellent (上佳 shàng jiā)</b> at 90 and above, <b>good (佳 jiā)</b> at 80 and above, <b>fair (可 kě)</b> at 65 and above, and <b>needs a second look (待斟酌 dài zhēn zhuó)</b> below 65. A strong sound hit caps the grade at needs a second look whatever the total.</p>
+    <p>The sound layer checks two things. It looks for Mandarin sound-alikes, characters that sound like an unlucky or rude word, and it checks the English reading of the pinyin, since many Singapore and Malaysia families raise children who will be addressed in English at school and at work. Beside the score you also get the Five Grids with their auspicious (吉 jí) or adverse (凶 xiōng) verdicts, the element of every character, its Kangxi (康熙 kāng xī) stroke count, a short reading of what the name suggests, and a shortlist of up to eight names you can compare.</p>
     <h2>How Singapore and Malaysia names are handled</h2>
-    <p>Families in Singapore and Malaysia usually know their surname by a Hokkien, Teochew or Cantonese romanisation such as Tan, Lim, Lee, Ng or Wong, while the scoring needs the Chinese character. Enter the Chinese surname you choose in the surname box (for example 王, 林, 李 or 吴) and the builder uses that character for the stroke count and the grids. The romanised spelling on a passport is a spelling of the character, not a different surname, so pick the character your family writes.</p>
-    <p>The 五格 use the <b>康熙</b> stroke count from the Kangxi dictionary, which counts the traditional form of each character. 祿 has more strokes than the simplified 禄, so the builder counts the traditional form and shows you the strokes it used. The chart is calculated for Singapore time with a true-solar correction, and a due date gives a provisional chart that you can recalculate after birth. Read <a href="/learn/how-chinese-baby-names-are-scored">how Chinese baby names are scored</a> for the full method.</p>
+    <p>Families in Singapore and Malaysia usually know their surname by a Hokkien, Teochew or Cantonese romanisation such as Tan, Lim, Lee, Ng or Wong, while the scoring needs the Chinese character. Enter the Chinese surname you choose in the surname box (for example 王 wáng, 林 lín, 李 lǐ or 吴 wú) and the builder uses that character for the stroke count and the grids. The romanised spelling on a passport is a spelling of the character, not a different surname, so pick the character your family writes.</p>
+    <p>The Five Grids use the <b>Kangxi</b> stroke count from the Kangxi dictionary, which counts the traditional form of each character. 祿 (lù) has more strokes than the simplified 禄 (lù), so the builder counts the traditional form and shows you the strokes it used. The chart is calculated for Singapore time with a true-solar correction, and a due date gives a provisional chart that you can recalculate after birth. Read <a href="/learn/how-chinese-baby-names-are-scored">how Chinese baby names are scored</a> for the full method.</p>
   </div>
   <div class="sec" id="example">
     <h2>Example output</h2>
-    <p><b>Fictional example, computed by the engine.</b> A fictional baby girl born 2026-03-15 09:30 Singapore time, surname 王. The three names below are real engine output for that chart; each scores 佳 or better.</p>
+    <p><b>Fictional example, computed by the engine.</b> A fictional baby girl born 2026-03-15 09:30 Singapore time, surname 王 (wáng). The three names below are real engine output for that chart; each scores good or better.</p>
     <table class="exs" aria-label="Fictional example, computed by the engine">
-      <tr><th>Name</th><th>Pinyin</th><th>Elements</th><th>康熙 strokes</th><th>Meaning</th><th>Score</th><th>Grade</th></tr>
-      <tr><td><b>王熙乐</b></td><td>wáng xī lè</td><td>熙 火 fire, 乐 火 fire</td><td>王 4, 熙 14, 乐 15</td><td>bright and harmonious; happy and content</td><td>97.5 / 100</td><td>上佳 excellent</td></tr>
-      <tr><td><b>王暖璇</b></td><td>wáng nuǎn xuán</td><td>暖 火 fire, 璇 火 fire</td><td>王 4, 暖 13, 璇 16</td><td>warm-hearted; fine jade, a guiding star</td><td>96.5 / 100</td><td>上佳 excellent</td></tr>
-      <tr><td><b>王晨光</b></td><td>wáng chén guāng</td><td>晨 火 fire, 光 火 fire</td><td>王 4, 晨 11, 光 6</td><td>the hope of dawn; bright and open</td><td>96.0 / 100</td><td>上佳 excellent</td></tr>
+      <tr><th>Name</th><th>Pinyin</th><th>Elements</th><th>Kangxi strokes</th><th>Meaning</th><th>Score</th><th>Grade</th></tr>
+      <tr><td><b>王熙乐</b> (wáng xī lè, example name)</td><td>wáng xī lè</td><td>熙 xī fire, 乐 lè fire</td><td>王 wáng 4, 熙 xī 14, 乐 lè 15</td><td>bright and harmonious; happy and content</td><td>97.5 / 100</td><td>excellent</td></tr>
+      <tr><td><b>王暖璇</b> (wáng nuǎn xuán, example name)</td><td>wáng nuǎn xuán</td><td>暖 nuǎn fire, 璇 xuán fire</td><td>王 wáng 4, 暖 nuǎn 13, 璇 xuán 16</td><td>warm-hearted; fine jade, a guiding star</td><td>96.5 / 100</td><td>excellent</td></tr>
+      <tr><td><b>王晨光</b> (wáng chén guāng, example name)</td><td>wáng chén guāng</td><td>晨 chén fire, 光 guāng fire</td><td>王 wáng 4, 晨 chén 11, 光 guāng 6</td><td>the hope of dawn; bright and open</td><td>96.0 / 100</td><td>excellent</td></tr>
     </table>
   </div>
   <div id="app"></div>
 </main>
+<script src="/static/glossary.js"></script>
 <script>
 const $ = s => document.querySelector(s);
 const EL = ["木", "火", "土", "金", "水"];
 const EL_EN = {"木": "wood", "火": "fire", "土": "earth", "金": "metal", "水": "water"};
 const GRID_EN = {"天格": "heaven · ancestry", "人格": "person · core", "地格": "earth · youth", "外格": "outer · social", "總格": "total · later life"};
-const L = (zh, en) => `<span class="bl">${zh}<small>${en}</small></span>`;
+// English-first labels: L(english, chinese?) -> English label, the Chinese small and once (via the shared glossary)
+const L = (en, zh) => window.GL && zh ? GL.label(zh, en) : `<span class="bl en">${en}</span>`;
 // Lh: same markup as L, used in headings; the static headings for crawlers are in the explainer sections above #app
-const Lh = (zh, en) => `<span class="bl">${zh}<small>${en}</small></span>`;
-const Li = (zh, en) => `<span class="bl inl">${zh}<small>${en}</small></span>`;
+const Lh = (en, zh) => L(en, zh);
+const Li = (en, zh) => L(en, zh);
+const cap = w => w ? w[0].toUpperCase() + w.slice(1) : "";
+const elw = e => cap(EL_EN[e] || "");
+const REL_EN = {"生": "generates", "比": "same", "剋": "controls", "受剋": "controlled by", "克": "controls"};
+const gt = x => window.GL ? GL.text(x) : x;
+/* chart-grid glyphs stay Chinese; pinyin + gloss on first sight, pinyin afterwards */
+const PG = new Set();
+const pg = g => { if (!window.GL) return ""; const py = GL.pinyin(g), gl = GL.gloss(g); if (PG.has(g)) return py; PG.add(g); return gl ? py + " · " + gl : py; };
+const gp = (zh, en) => window.GL ? GL.pair(zh, en) : en;
 const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 const LUCK = {"吉": ["ji", "auspicious"], "凶/平": ["amber", "weak or neutral"], "中": ["ping", "neutral"], "凶": ["xiong", "adverse"]};
-const luckChip = (v, compact) => { const [c, en] = LUCK[v] || ["ping", ""]; return `<span class="luck ${c}">${v}${compact ? "" : ` <small style="font-weight:500">${en}</small>`}</span>`; };
+const luckChip = (v, compact) => { const [c, en] = LUCK[v] || ["ping", ""]; return `<span class="luck ${c}">${en ? gp(v, en) : v}</span>`; };
 const S = {q: null, chart: null, mode: 2, slots: [null, null], info: {}, active: 0, els: new Set(), strokes: new Set(), py: "",
            page: 1, trad: {}, shortlist: [], data: null, tiles: [], card: null, opt: null, meaning: [null, null]};
 const catOf = id => (S.chart.categories || []).find(c => c.id === id);
-const catChips = tags => (tags || []).map(t => catOf(t)).filter(Boolean).map(c => `<span class="chip mcat">${c.zh}<small>${c.en.split(" · ")[0]}</small></span>`).join("");
+const catChips = tags => (tags || []).map(t => catOf(t)).filter(Boolean).map(c => `<span class="chip mcat">${c.en.split(" · ")[0]}</span>`).join("");
 const meanParam = () => S.meaning.slice(0, S.mode).map(m => m || "_").join(",");
 const ctls = {};                       // one in-flight request per channel, so tiles and optimise never cancel each other
 async function api(path, params, key = "main") {
@@ -303,99 +319,99 @@ const complete = () => S.slots.slice(0, S.mode).every(Boolean);
 /* ---------- A · pillars ---------- */
 function pillarsBlock() {
   const P = S.chart;
-  return `<div class="sec"><h2>${Lh("四柱", "Four Pillars")}</h2>
+  return `<div class="sec"><h2>${Lh("Four Pillars", "四柱")}</h2>
     <div class="pillars">${P.pillars.map(p => `<div class="pil ${p.k === "day" ? "dm" : ""}">
-      <div class="lab">${L(p.zh, p.en)}</div>
+      <div class="lab">${L(p.en, p.zh)}</div>
       <div class="gz"><span class="el-${p.sel}" title="${p.sel}">${p.stem}</span><span class="el-${p.bel}" title="${p.bel}">${p.branch}</span></div>
-      <div class="elx">${p.sel} · ${p.bel}${p.k === "day" ? " · 日主" : ""}</div></div>`).join("")}</div>
-    <div class="bars">${EL.map(e => `<div class="bar"><b class="el-${e}">${e}</b><div class="track"><div class="fill f-${e}" style="width:${P.weights[e] || 0}%"></div></div><span>${P.weights[e] || 0}%</span></div>`).join("")}</div>
-    <div class="ysline">${Li("日主", "day master")} <b class="el-${P.pillars[2].sel}">${P.day_master}</b> · ${esc(P.strength)}</div>
+      <div class="elx">${pg(p.stem)} · ${pg(p.branch)} · ${EL_EN[p.sel]} / ${EL_EN[p.bel]}${p.k === "day" ? " · Day Master" : ""}</div></div>`).join("")}</div>
+    <div class="bars">${EL.map(e => `<div class="bar"><b class="el-${e}">${elw(e)}</b><div class="track"><div class="fill f-${e}" style="width:${P.weights[e] || 0}%"></div></div><span>${P.weights[e] || 0}%</span></div>`).join("")}</div>
+    <div class="ysline">${Li("Day Master", "日主")} <b class="el-${P.pillars[2].sel} keepzh">${P.day_master}</b> <small>${pg(P.day_master)}</small> · ${esc(gt(P.strength))}</div>
     <div class="ysbox">
-      <div class="ysgrp use"><div class="ystitle">${L("宜选 · 用神", "Choose names with these elements")}</div>
-        <div class="ysdiscs">${P.fav.map((e, i) => `<div class="ysd off"><span class="el-${e}">${e}</span><small>${i === 0 ? "用神" : "喜"} · ${EL_EN[e]}</small></div>`).join("")}</div></div>
-      <div class="ysgrp avoid"><div class="ystitle">${L("忌 · 少用", "Avoid these elements")}</div>
-        <div class="ysdiscs">${P.unfav.map(e => `<div class="ysd off"><span class="el-${e}">${e}</span><small>${EL_EN[e]}</small></div>`).join("") || `<span class="count">none</span>`}</div></div>
+      <div class="ysgrp use"><div class="ystitle">${L("Choose names with these elements", "用神")}</div>
+        <div class="ysdiscs">${P.fav.map((e, i) => `<div class="ysd off"><span class="el-${e}">${elw(e)}</span><small><span lang="zh-Hans">${e}</span> ${pg(e)} · ${i === 0 ? "useful god" : "favourable"}</small></div>`).join("")}</div></div>
+      <div class="ysgrp avoid"><div class="ystitle">${L("Avoid these elements")}</div>
+        <div class="ysdiscs">${P.unfav.map(e => `<div class="ysd off"><span class="el-${e}">${elw(e)}</span><small><span lang="zh-Hans">${e}</span> ${pg(e)}</small></div>`).join("") || `<span class="count">none</span>`}</div></div>
     </div></div>`;
 }
 
 /* ---------- B · builder ---------- */
 function boxesHtml() {
   const P = S.chart, done = complete();
-  let h = `<div class="box fixed" aria-label="surname ${esc(P.surname)}"><span>${esc(P.surname)}</span><small>姓 surname</small></div>`;
+  let h = `<div class="box fixed" aria-label="surname ${esc(P.surname)}"><span>${esc(P.surname)}</span><small>surname</small></div>`;
   for (let i = 0; i < S.mode; i++) {
     const ch = S.slots[i], c = S.info[ch] || {};
     h += ch ? `<button class="box ${i === S.active && !done ? "active" : ""}" data-slot="${i}" aria-label="character ${i + 1}: ${ch}, press to clear"><span class="el-${c.el || ""}">${ch}</span><small>${esc(c.py || "")}</small><span class="x" aria-hidden="true">✕</span></button>`
-            : `<button class="box empty ${i === S.active ? "active" : ""}" data-slot="${i}" aria-label="character ${i + 1}, empty${S.meaning[i] ? ", meaning " + catOf(S.meaning[i]).en : ""}">${i + 1}<small>${S.meaning[i] ? "字义 " + catOf(S.meaning[i]).zh : i === S.active ? "选字 pick" : "空 empty"}</small></button>`;
+            : `<button class="box empty ${i === S.active ? "active" : ""}" data-slot="${i}" aria-label="character ${i + 1}, empty${S.meaning[i] ? ", meaning " + catOf(S.meaning[i]).en : ""}">${i + 1}<small>${S.meaning[i] ? "meaning " + catOf(S.meaning[i]).en.split(" · ")[0] : i === S.active ? "pick" : "empty"}</small></button>`;
   }
   return h;
 }
 function chipsHtml() {
   const chips = (S.data && S.data.chips) || [];
-  return chips.map(c => `<button class="fchip st" data-ks="${c.ks}" aria-pressed="${S.strokes.has(c.ks)}">${c.ks}画<span class="n">${c.ji}/4吉</span></button>`).join("") || `<span class="count">none</span>`;
+  return chips.map(c => `<button class="fchip st" data-ks="${c.ks}" aria-pressed="${S.strokes.has(c.ks)}">${c.ks} strokes<span class="n">${c.ji}/4 auspicious</span></button>`).join("") || `<span class="count">none</span>`;
 }
 function tilesHtml() {
-  if (!S.data) return `<div class="empty-msg">${L("载入中…", "loading…")}</div>`;
-  if (!S.tiles.length) return `<div class="empty-msg">${L("没有符合条件的字", "No character matches these filters")}<div style="margin-top:8px">${S.meaning[S.active] ? `<button class="btn" data-mean="${S.meaning[S.active]}">取消字义 clear the meaning filter</button> ` : ""}<button class="btn" data-reset="1">重置筛选 reset filters</button></div></div>`;
-  return `<div class="tiles">${S.tiles.map(c => `<button class="tile ${c.el ? "" : "noel"} ${c.blocked ? "blk" : ""}" data-pick="${c.ch}" title="${c.blocked ? "不宜取名 not for names — " + esc(c.why) : c.mismatch ? (c.gender === "F" ? "女性字 — usually a girl's name character" : "男性字 — usually a boy's name character") : esc(c.sense ? c.sense.zh + " · " + c.sense.en : c.gloss || "")}" aria-label="${c.ch} ${esc(c.py)}, ${c.el || "element not set"}, ${c.ks} strokes${c.gloss ? ", " + esc(c.gloss) : ""}${c.blocked ? ", not recommended for names: " + esc(c.why) : ""}">
-      ${c.blocked ? `<span class="bk">不宜</span>` : c.mismatch ? `<span class="bk gmk">${c.gender === "F" ? "女性字" : "男性字"}</span>` : c.pool ? `<span class="pm">名</span>` : ""}<span class="jn">${c.blocked ? "" : c.ji ? c.ji + "吉" : ""}</span>
-      <span class="ch el-${c.el || ""}">${c.ch}</span><span class="py">${esc(c.py)}</span><span class="ks">${c.ks}画 · ${c.el || "未定"}${c.gender ? " · " + (c.gender === "F" ? "女" : "男") : ""}</span></button>`).join("")}</div>
-    ${S.data.total > S.tiles.length ? `<div class="more"><button class="btn" data-more="1">更多 more (${S.data.total - S.tiles.length})</button></div>` : ""}`;
+  if (!S.data) return `<div class="empty-msg">${L("loading…")}</div>`;
+  if (!S.tiles.length) return `<div class="empty-msg">${L("No character matches these filters")}<div style="margin-top:8px">${S.meaning[S.active] ? `<button class="btn" data-mean="${S.meaning[S.active]}">clear the meaning filter</button> ` : ""}<button class="btn" data-reset="1">reset filters</button></div></div>`;
+  return `<div class="tiles">${S.tiles.map(c => `<button class="tile ${c.el ? "" : "noel"} ${c.blocked ? "blk" : ""}" data-pick="${c.ch}" title="${c.blocked ? "not for names — " + esc(c.why) : c.mismatch ? (c.gender === "F" ? "feminine character — usually a girl's name character" : "masculine character — usually a boy's name character") : esc(c.sense ? c.sense.en : c.gloss || "")}" aria-label="${c.ch} ${esc(c.py)}, ${c.el || "element not set"}, ${c.ks} strokes${c.gloss ? ", " + esc(c.gloss) : ""}${c.blocked ? ", not recommended for names: " + esc(c.why) : ""}">
+      ${c.blocked ? `<span class="bk">avoid</span>` : c.mismatch ? `<span class="bk gmk">${c.gender === "F" ? "feminine" : "masculine"}</span>` : c.pool ? `<span class="pm">name</span>` : ""}<span class="jn">${c.blocked ? "" : c.ji ? c.ji + " ji" : ""}</span>
+      <span class="ch el-${c.el || ""}">${c.ch}</span><span class="py">${esc(c.py)}</span><span class="ks">${c.ks} strokes · ${c.el ? EL_EN[c.el] : "unset"}${c.gender ? " · " + (c.gender === "F" ? "F" : "M") : ""}</span></button>`).join("")}</div>
+    ${S.data.total > S.tiles.length ? `<div class="more"><button class="btn" data-more="1">more (${S.data.total - S.tiles.length})</button></div>` : ""}`;
 }
 function countHtml() {
-  return `${S.data ? S.data.total : "…"} ${Li("字", "characters")} · ★ = 用神 element · <span style="background:var(--gold);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">名</span> = 常用名字 common name character · 未定 = element not set · <span style="background:var(--xiong);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">不宜</span> = adverse meaning (pinyin search only) · 女性字 / 男性字 = usually the other gender (pinyin search only, lowers the score). 未定 characters also appear when a 字义 meaning is chosen`;
+  return `${S.data ? S.data.total : "…"} ${Li("characters")} · ★ = useful-god element · <span style="background:var(--gold);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">name</span> = common name character · unset = element not set · <span style="background:var(--xiong);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">avoid</span> = adverse meaning (pinyin search only) · feminine / masculine = usually the other gender (pinyin search only, lowers the score). unset characters also appear when a meaning is chosen`;
 }
 function panelHtml() {
   if (complete()) return "";
   const P = S.chart, partnerEmpty = S.mode === 2 && !S.slots[1 - S.active];
   return `<div class="panel">
-    <div style="font-weight:700">${L(`为第 ${S.active + 1} 字选字`, `Pick character ${S.active + 1}`)}</div>
-    <div class="frow" role="group" aria-label="meaning filter, choose one"><span class="flab">${L("字义", "meaning — choose one")}</span>
-      ${(P.categories || []).map(c => `<button class="fchip mc" data-mean="${c.id}" aria-pressed="${S.meaning[S.active] === c.id}" title="${c.en}"><span class="bl inl">${c.zh}<small>${c.en.split(" · ")[0]}</small></span></button>`).join("")}</div>
-    <div class="frow" role="group" aria-label="element filter"><span class="flab">${L("五行", "element")}</span>
-      ${EL.map(e => `<button class="fchip elc-${e}" data-el="${e}" aria-pressed="${S.els.has(e)}"><b class="el-${e}">${e}</b> ${EL_EN[e]}${P.fav.includes(e) ? " ★" : ""}</button>`).join("")}</div>
-    <div class="frow" role="group" aria-label="stroke filter"><span class="flab">${L("笔画 (康熙)", partnerEmpty ? "best reachable 吉 of 4" : "吉 of 4 with this stroke count")}</span>
+    <div style="font-weight:700">${L(`Pick character ${S.active + 1}`)}</div>
+    <div class="frow" role="group" aria-label="meaning filter, choose one"><span class="flab">${L("Meaning — choose one", "字義")}</span>
+      ${(P.categories || []).map(c => `<button class="fchip mc" data-mean="${c.id}" aria-pressed="${S.meaning[S.active] === c.id}" title="${c.en}"><span class="bl en">${c.en.split(" · ")[0]}</span></button>`).join("")}</div>
+    <div class="frow" role="group" aria-label="element filter"><span class="flab">${L("Element", "五行")}</span>
+      ${EL.map(e => `<button class="fchip elc-${e}" data-el="${e}" aria-pressed="${S.els.has(e)}"><b class="el-${e}">${elw(e)}</b>${P.fav.includes(e) ? " ★" : ""}</button>`).join("")}</div>
+    <div class="frow" role="group" aria-label="stroke filter"><span class="flab">${L(partnerEmpty ? "Strokes (Kangxi): best reachable auspicious of 4" : "Strokes (Kangxi): auspicious of 4 with this stroke count", "康熙")}</span>
       <span id="chips" style="display:contents">${chipsHtml()}</span></div>
-    <div class="frow"><label class="flab" for="py">${L("拼音", "pinyin, no tones")}</label>
+    <div class="frow"><label class="flab" for="py">${L("Pinyin, no tones")}</label>
       <input class="pyin" id="py" type="text" inputmode="latin" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="ting, xuan, yu…" value="${esc(S.py)}">
-      <button class="fchip" data-clearpy="1" id="pyclear" ${S.py ? "" : "hidden"}>清除 clear</button></div>
+      <button class="fchip" data-clearpy="1" id="pyclear" ${S.py ? "" : "hidden"}>clear</button></div>
     <div class="count" id="count" aria-live="polite">${countHtml()}</div>
     <div id="tiles">${tilesHtml()}</div></div>`;
 }
 function builderBlock() {
-  return `<div class="sec" id="builder"><h2>${Lh("起名", "Build the name")}</h2>
+  return `<div class="sec" id="builder"><h2>${Lh("Build the name", "起名")}</h2>
     <div class="boxes">${boxesHtml()}
-      <div class="bctl"><div class="seg" role="group" aria-label="name length"><button data-mode="1" aria-pressed="${S.mode === 1}">单名 1</button><button data-mode="2" aria-pressed="${S.mode === 2}">双名 2</button></div>
-      <button class="btn primary optbtn" data-optimise="1" title="rank the best characters for the empty boxes, or better alternatives when the name is complete">优化 Optimise</button></div></div>
+      <div class="bctl"><div class="seg" role="group" aria-label="name length"><button data-mode="1" aria-pressed="${S.mode === 1}">1 char</button><button data-mode="2" aria-pressed="${S.mode === 2}">2 chars</button></div>
+      <button class="btn primary optbtn" data-optimise="1" title="rank the best characters for the empty boxes, or better alternatives when the name is complete">Optimise</button></div></div>
     <div id="opt">${optHtml()}</div>
     ${panelHtml()}</div>`;
 }
 
 function scoreParts(sc) {
-  return `<div class="sparts">${Object.keys(sc.max).map(k => `<div class="spart"><span class="sl">${sc.labels[k].zh}<small>${sc.labels[k].en}</small></span><div class="track"><div class="fill" style="width:${sc.parts[k] / sc.max[k] * 100}%"></div></div><span class="sv">${sc.parts[k]}/${sc.max[k]}</span>${sc.notes ? `<span class="sn">${esc(sc.notes[k])}</span>` : ""}</div>`).join("")}</div>`;
+  return `<div class="sparts">${Object.keys(sc.max).map(k => `<div class="spart"><span class="sl">${L(sc.labels[k].en, sc.labels[k].zh)}</span><div class="track"><div class="fill" style="width:${sc.parts[k] / sc.max[k] * 100}%"></div></div><span class="sv">${sc.parts[k]}/${sc.max[k]}</span>${sc.notes ? `<span class="sn">${esc(sc.notes[k])}</span>` : ""}</div>`).join("")}</div>`;
 }
 function optRow(r, cur) {
-  const chips = `<span class="luck ${r.ji === 5 ? "ji" : "amber"}">${r.ji}/5 吉</span> ${luckChip(r.sancai, true).replace(">", ">三才 ")} ${luckChip(r.zong, true).replace(">", ">總格 ")}`;
+  const chips = `<span class="luck ${r.ji === 5 ? "ji" : "amber"}">${r.ji}/5 auspicious</span> ${luckChip(r.sancai, true).replace(">", ">Three Talents: ")} ${luckChip(r.zong, true).replace(">", ">Total grid: ")}`;
   return `<button class="optrow ${cur ? "cur" : ""}" ${cur ? "disabled" : `data-optpick="${r.given}"`} aria-label="${r.name}, score ${r.score.total}">
     <span class="nm">${esc(S.chart.surname)}${r.chars.map((c, i) => `<span class="el-${c.el || ""} ${r.changed.includes(i) ? "newch" : ""}">${c.ch}</span>`).join("")}
-      <small>${r.chars.map(c => esc(c.py)).join(" ")}${cur ? " · 当前 current" : ""}</small></span>
-    <span class="meta">${chips} ${r.chars.map(c => `<span class="chip" title="${esc(c.gloss || "")}"><b class="el-${c.el}">${c.el}</b> ${c.role}</span>${catChips(c.tags)}`).join("")}</span>
+      <small>${r.chars.map(c => esc(c.py)).join(" ")}${cur ? " · current" : ""}</small></span>
+    <span class="meta">${chips} ${r.chars.map(c => `<span class="chip" title="${esc(c.gloss || "")}"><b class="el-${c.el}">${elw(c.el)}</b> ${window.GL ? GL.english(c.role) : c.role}</span>${catChips(c.tags)}`).join("")}</span>
     <span class="tot">${r.score.total}<small>/100</small></span></button>`;
 }
 function optHtml() {
   const o = S.opt;
   if (!o) return "";
-  if (o.loading) return `<div class="opt"><div class="empty-msg">${L("优化中…", "optimising…")}</div></div>`;
+  if (o.loading) return `<div class="opt"><div class="empty-msg">${L("optimising…")}</div></div>`;
   const head = o.mode === "improve"
-    ? L("更优的替换", "Better alternatives — one character changed, the other kept")
-    : L("最佳补全", "Best characters for the empty box" + (S.mode === 2 && !S.slots[0] && !S.slots[1] ? "es" : ""));
+    ? L("Better alternatives — one character changed, the other kept")
+    : L("Best characters for the empty box" + (S.mode === 2 && !S.slots[0] && !S.slots[1] ? "es" : ""));
   return `<div class="opt"><div class="opthead"><b>${head}</b>
-      <span class="count">${L("按总分排序", "ranked by score: 用神 30 + 五格 25 + 三才 15 + 字义 10 + 音韵 5 + 性别 5 + 可信度 10")} · ${Li("元素", "elements")} ${o.els.join("·")}${(o.meaning || []).some(Boolean) ? ` · ${Li("字义", "meaning")} ${o.meaning.map((m, i) => m ? `${i + 1}:${catOf(m).zh}` : "").filter(Boolean).join(" ")}` : ""}${o.dropped_sound ? ` · ${o.dropped_sound} ${Li("个谐音不雅已剔除", "dropped for sounding like a rude or unlucky word")}` : ""}</span>
-      <button class="fchip" data-optclose="1">关闭 close</button></div>
+      <span class="count">${L("ranked by score: useful god 30 + Five Grids 25 + Three Talents 15 + character meaning 10 + sound 5 + gender fit 5 + confidence 10")} · ${Li("elements")} ${o.els.join("·")}${(o.meaning || []).some(Boolean) ? ` · ${Li("meaning")} ${o.meaning.map((m, i) => m ? `${i + 1}:${catOf(m).en.split(" · ")[0]}` : "").filter(Boolean).join(" ")}` : ""}${o.dropped_sound ? ` · ${o.dropped_sound} ${Li("dropped for sounding like a rude or unlucky word")}` : ""}</span>
+      <button class="fchip" data-optclose="1">close</button></div>
     ${o.baseline ? optRow(o.baseline, true) : ""}
     ${o.results.length ? o.results.map(r => optRow(r, false)).join("")
-      : `<div class="empty-msg">${o.mode === "improve" ? L("已是最佳", "No single-character change scores higher with these filters") : L("没有符合条件的字", "No character matches — widen the element filter or clear a meaning choice")}</div>`}
+      : `<div class="empty-msg">${o.mode === "improve" ? L("No single-character change scores higher with these filters") : L("No character matches — widen the element filter or clear a meaning choice")}</div>`}
     <div class="note">Gold outline = the character the optimiser chose.</div>
-    <div class="limits"><b>本工具只是初筛，不是定论。</b> This tool ranks names by the 八字 用神 elements, the 五格 and 三才 stroke methods, and a partly curated character list. 五格 is a modern school, not a classical rule, and element assignments and stroke counts differ between dictionaries and practitioners. Sound is checked by simple house rules: tone pattern, repeated sounds, Chinese words the name sounds like (three strengths: same tones, different tones, merged consonants; severe words such as 死亡 cap the grade whatever the tones; word list hand-reviewed from <a href="https://www.mdbg.net/chinese/dictionary?page=cedict" rel="noopener" target="_blank">CC-CEDICT</a>, CC BY-SA 4.0) and English words the pinyin spelling reads as. It does not judge dialect readings, 生肖 or family naming rules; meaning is screened only for clearly adverse characters. Treat the ranking as a shortlist for the family (and a practitioner) to review, not a verdict.</div></div>`;
+    <div class="limits"><b>This tool is a first screen, not a verdict.</b> It ranks names by the BaZi (八字) useful god (用神) elements, the Five Grids (五格) and Three Talents (三才) stroke methods, and a partly curated character list. The Five Grids are a modern school, not a classical rule, and element assignments and stroke counts differ between dictionaries and practitioners. Sound is checked by simple house rules: tone pattern, repeated sounds, Chinese words the name sounds like (three strengths: same tones, different tones, merged consonants; severe words such as "death" (死亡 sǐ wáng) cap the grade whatever the tones; word list hand-reviewed from <a href="https://www.mdbg.net/chinese/dictionary?page=cedict" rel="noopener" target="_blank">CC-CEDICT</a>, CC BY-SA 4.0) and English words the pinyin spelling reads as. It does not judge dialect readings, the zodiac animal or family naming rules; meaning is screened only for clearly adverse characters. Treat the ranking as a shortlist for the family (and a practitioner) to review, not a verdict.</div></div>`;
 }
 async function loadOpt() {
   S.opt = {loading: true}; $("#opt").innerHTML = optHtml();
@@ -409,15 +425,15 @@ async function loadOpt() {
 
 /* ---------- C · name card ---------- */
 function gridTable(grids) {
-  return `<table class="wg"><tr><th>${L("五格", "grid")}</th><th>${L("数", "number")}</th><th>${L("五行", "element")}</th><th>${L("吉凶", "verdict")}</th></tr>
-    ${grids.map(g => `<tr><td>${L(g.grid, GRID_EN[g.grid])}</td><td class="num">${g.num}</td><td><b class="el-${g.el}">${g.el}</b></td><td>${luckChip(g.luck)}</td></tr>`).join("")}</table>`;
+  return `<table class="wg"><tr><th>${L("Grid", "五格")}</th><th>${L("Number")}</th><th>${L("Element")}</th><th>${L("Verdict")}</th></tr>
+    ${grids.map(g => `<tr><td>${L(GRID_EN[g.grid], g.grid)}</td><td class="num">${g.num}</td><td><b class="el-${g.el}">${elw(g.el)}</b></td><td>${luckChip(g.luck)}</td></tr>`).join("")}</table>`;
 }
 function sancaiPanel(sc) {
-  const lab = [["天", "heaven"], ["人", "person"], ["地", "earth"]];
+  const lab = [["", "heaven"], ["", "person"], ["", "earth"]];
   const relc = r => (r === "生" || r === "比") ? "good" : (r === "剋" || r === "受剋") ? "bad" : "";
-  return `<div class="sancai">${sc.elements.map((e, i) => `<div class="disc bg-${e}"><span class="el-${e}">${e}</span><small>${lab[i][0]} ${lab[i][1]}</small></div>${i < 2 ? `<div class="rel ${relc(sc.relations[i])}"><b>${sc.relations[i]}</b>→</div>` : ""}`).join("")}</div>
+  return `<div class="sancai">${sc.elements.map((e, i) => `<div class="disc bg-${e}"><span class="el-${e} keepzh" lang="zh-Hans">${e}</span><small>${elw(e)} · ${lab[i][1]}</small></div>${i < 2 ? `<div class="rel ${relc(sc.relations[i])}"><b>${REL_EN[sc.relations[i]] || sc.relations[i]}</b>→</div>` : ""}`).join("")}</div>
     <div style="text-align:center">${luckChip(sc.verdict)}</div>
-    <div class="scd">${(sc.detail || []).map(d => `<div><b>${d.pair}</b> ${esc(d.text)} <span class="luck ${d.factor >= 0.8 ? "ji" : d.factor >= 0.4 ? "ping" : "xiong"}">×${d.factor}</span></div>`).join("")}</div>`;
+    <div class="scd">${(sc.detail || []).map(d => `<div><b>${esc(String(d.pair || "").replace("天", "heaven ").replace("人", "person ").replace("地", "earth ").replace(/ →/, " →").trim())}</b> ${esc(d.text_en && window.GL ? GL.pair(d.text, d.text_en) : gt(d.text))} <span class="luck ${d.factor >= 0.8 ? "ji" : d.factor >= 0.4 ? "ping" : "xiong"}">×${d.factor}</span></div>`).join("")}</div>`;
 }
 function certUrl(c) {
   return "/api/pub/certificate?" + new URLSearchParams({surname: c.surname, given: c.given, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, trad: tradParam()});
@@ -425,37 +441,37 @@ function certUrl(c) {
 function cardBlock() {
   if (!complete()) return "";
   const c = S.card;
-  if (!c) return `<div class="sec" id="card"><div class="empty-msg">${L("评析中…", "scoring…")}</div></div>`;
+  if (!c) return `<div class="sec" id="card"><div class="empty-msg">${L("scoring…")}</div></div>`;
   const amb = c.chars.filter(x => !x.surname && x.trad_alts);
   const ct = c.chars.filter(x => !x.surname && x.contested);
-  return `<div class="sec" id="card"><h2>${Lh("名字评析", "Name card")}</h2>
+  return `<div class="sec" id="card"><h2>${Lh("Name card")}</h2>
     <div class="nameband">
       <div class="namegrid" role="group" aria-label="${c.name}">${c.chars.map(x => `<div class="py">${esc(x.py)}</div><div class="ch ${x.surname ? "" : "el-" + (x.el || "")}">${x.ch}</div>
-        <div class="det"><span class="role ${!x.surname && x.el ? "bg-" + x.el + " el-" + x.el : ""}">${Li(!x.surname && x.el ? x.el + " · " + x.role : x.role, x.role_en)}</span>
-          <span class="mk">${x.gender ? `<span class="${x.mismatch ? "gm bad" : "gm"}">${x.gender === "F" ? "女性字 feminine" : "男性字 masculine"}</span>` : ""}${x.radical_inferred ? `<span class="rinf" title="element taken from the radical only — weaker evidence, half credit on 可信度">部首推断 radical-inferred</span>` : ""}</span>
-          ${!x.surname ? `<span class="gls">${catChips(x.tags)}${x.sense ? `<b>${x.sense.zh}</b><small>${esc(x.sense.en)}</small>` : x.gloss ? `<small>${esc(x.gloss)}</small>` : ""}</span>` : ""}</div>`).join("")}</div>
-      <div class="interp"><div class="ilab">${L("名字寓意", "a possible reading of the name")}</div>
-        <div class="izh">${esc(c.interpretation.zh)}</div><div class="ien">${esc(c.interpretation.en)}</div>
-        ${c.interpretation.partial ? `<div class="count">部分字无固定寓意 — one character has no stock name sense; its dictionary gloss is shown.</div>` : ""}</div></div>
+        <div class="det"><span class="role ${!x.surname && x.el ? "bg-" + x.el + " el-" + x.el : ""}">${Li(!x.surname && x.el ? EL_EN[x.el] + " · " + x.role_en : x.role_en)}</span>
+          <span class="mk">${x.gender ? `<span class="${x.mismatch ? "gm bad" : "gm"}">${x.gender === "F" ? "feminine" : "masculine"}</span>` : ""}${x.radical_inferred ? `<span class="rinf" title="element taken from the radical only — weaker evidence, half credit on confidence">radical-inferred</span>` : ""}</span>
+          ${!x.surname ? `<span class="gls">${catChips(x.tags)}${x.sense ? `<b>${esc(x.sense.en)}</b>` : x.gloss ? `<small>${esc(x.gloss)}</small>` : ""}</span>` : ""}</div>`).join("")}</div>
+      <div class="interp"><div class="ilab">${L("A possible reading of the name")}</div>
+        <div class="ien">${esc(c.interpretation.en)}</div>
+        ${c.interpretation.partial ? `<div class="count">one character has no stock name sense; its dictionary gloss is shown.</div>` : ""}</div></div>
     <div class="scoreband" title="${esc(c.score.basis)}">
-      <div class="sbtot"><div class="scoretot">${c.score.total}<small>/100 ${Li("评分", "score")}</small></div>
-        <div class="grade g-${c.score.grade.en}">${c.score.grade.zh}<small>${c.score.grade.en}</small>${c.score.grade.capped ? `<span class="capped" title="${esc(c.score.grade.reason)}">已封顶 capped</span>` : ""}</div>
+      <div class="sbtot"><div class="scoretot">${c.score.total}<small>/100 ${Li("score")}</small></div>
+        <div class="grade g-${c.score.grade.en}">${c.score.grade.en} <small lang="zh-Hans">${c.score.grade.zh} ${py(c.score.grade.zh)}</small>${c.score.grade.capped ? `<span class="capped" title="${esc(c.score.grade.reason)}">capped</span>` : ""}</div>
         ${c.score.grade.capped ? `<div class="count capnote">${esc(c.score.grade.reason)}</div>` : ""}
-        <div><span class="luck ${c.ji === 5 ? "ji" : "amber"}">${c.ji}/5 吉</span> ${luckChip(c.sancai.verdict, true).replace(">", ">三才 ")}</div></div>
+        <div><span class="luck ${c.ji === 5 ? "ji" : "amber"}">${c.ji}/5 auspicious</span> ${luckChip(c.sancai.verdict, true).replace(">", ">Three Talents: ")}</div></div>
       ${scoreParts(c.score)}</div>
-    ${(c.warnings || []).map(w => `<div class="warn" role="alert"><b>${w.ch}</b> ${w.class === "gender" ? Li("性别不符", "gender mismatch — lowers the 性别 score") : w.class === "sound" ? Li("谐音不雅", "sounds like a rude or unlucky word — grade capped at 待斟酌") : Li("字义不宜取名", "adverse meaning — not recommended in a name")}: ${esc(w.why)}</div>`).join("")}
-    <div class="tradline">${Li("繁體", "traditional")} <b>${c.trad}</b>
-      <span class="count">${c.strokes.join(" + ")} 画 (康熙)</span>
-      ${amb.map(x => `<span class="tsw" role="group" aria-label="traditional form of ${x.ch}">${Object.entries(x.trad_alts).map(([f, k]) => `<button data-trad="${x.ch}:${f}" aria-pressed="${x.trad === f}">${f} <small>${k}画</small></button>`).join("")}</span>`).join("")}</div>
+    ${(c.warnings || []).map(w => `<div class="warn" role="alert"><b>${w.ch}</b> ${w.class === "gender" ? Li("gender mismatch — lowers the gender-fit score") : w.class === "sound" ? Li("sounds like a rude or unlucky word — grade capped at needs a second look") : Li("adverse meaning — not recommended in a name")}: ${esc(w.why)}</div>`).join("")}
+    <div class="tradline">${Li("traditional form", "繁體")} <b>${c.trad}</b> <small>${py(c.trad)}</small>
+      <span class="count">${c.strokes.join(" + ")} strokes (Kangxi)</span>
+      ${amb.map(x => `<span class="tsw" role="group" aria-label="traditional form of ${x.ch}">${Object.entries(x.trad_alts).map(([f, k]) => `<button data-trad="${x.ch}:${f}" aria-pressed="${x.trad === f}">${f} <small>${k} strokes</small></button>`).join("")}</span>`).join("")}</div>
     ${amb.length ? `<div class="note">${amb.map(x => x.ch).join("、")}: more than one traditional form — the name-usage form is preselected; switching recomputes the strokes and the grids.</div>` : ""}
     <div class="grid2"><div>${gridTable(c.grids)}</div>
-      <div><div style="font-weight:700;text-align:center;margin-bottom:4px">${L("三才", "heaven · person · earth")}</div>${sancaiPanel(c.sancai)}</div></div>
+      <div><div style="font-weight:700;text-align:center;margin-bottom:4px">${L("Three Talents: heaven · person · earth", "三才")}</div>${sancaiPanel(c.sancai)}</div></div>
     ${ct.length ? `<div class="note">⚑ ${ct.map(x => `${x.ch}: ${x.el}${x.el_alt ? " / " + esc(x.el_alt) : ""}`).join("；")} — element disputed between dictionary schools.</div>` : ""}
-    <div class="actions"><a class="btn primary" href="${certUrl(c)}" target="_blank" rel="noopener">命名证书 certificate →</a>
-      ${S.shortlist.find(x => x.name === c.name) ? `<button class="btn" disabled>已在候选 in the shortlist</button>`
-        : S.shortlist.length >= SL_MAX ? `<button class="btn" disabled>候选已满 ${SL_MAX}/${SL_MAX} — delete one to add another</button>`
-        : `<button class="btn" data-short="1">加入候选 add to shortlist (${S.shortlist.length}/${SL_MAX})</button>`}<button class="btn" data-again="1">重新选字 start over</button></div>
-    <div class="limits"><b>本工具只是初筛，不是定论。</b> This tool ranks names by the 八字 用神 elements, the 五格 and 三才 stroke methods, and a partly curated character list. 五格 is a modern school, not a classical rule, and element assignments and stroke counts differ between dictionaries and practitioners. Sound is checked by simple house rules: tone pattern, repeated sounds, Chinese words the name sounds like (three strengths: same tones, different tones, merged consonants; severe words such as 死亡 cap the grade whatever the tones; word list hand-reviewed from <a href="https://www.mdbg.net/chinese/dictionary?page=cedict" rel="noopener" target="_blank">CC-CEDICT</a>, CC BY-SA 4.0) and English words the pinyin spelling reads as. It does not judge dialect readings, 生肖 or family naming rules; meaning is screened only for clearly adverse characters. Treat the ranking as a shortlist for the family (and a practitioner) to review, not a verdict.</div>
+    <div class="actions"><a class="btn primary" href="${certUrl(c)}" target="_blank" rel="noopener">Naming certificate →</a>
+      ${S.shortlist.find(x => x.name === c.name) ? `<button class="btn" disabled>already in the shortlist</button>`
+        : S.shortlist.length >= SL_MAX ? `<button class="btn" disabled>shortlist full ${SL_MAX}/${SL_MAX} — delete one to add another</button>`
+        : `<button class="btn" data-short="1">Add to shortlist (${S.shortlist.length}/${SL_MAX})</button>`}<button class="btn" data-again="1">Start over</button></div>
+    <div class="limits"><b>This tool is a first screen, not a verdict.</b> It ranks names by the BaZi (八字) useful god (用神) elements, the Five Grids (五格) and Three Talents (三才) stroke methods, and a partly curated character list. The Five Grids are a modern school, not a classical rule, and element assignments and stroke counts differ between dictionaries and practitioners. Sound is checked by simple house rules: tone pattern, repeated sounds, Chinese words the name sounds like (three strengths: same tones, different tones, merged consonants; severe words such as "death" (死亡 sǐ wáng) cap the grade whatever the tones; word list hand-reviewed from <a href="https://www.mdbg.net/chinese/dictionary?page=cedict" rel="noopener" target="_blank">CC-CEDICT</a>, CC BY-SA 4.0) and English words the pinyin spelling reads as. It does not judge dialect readings, the zodiac animal or family naming rules; meaning is screened only for clearly adverse characters. Treat the ranking as a shortlist for the family (and a practitioner) to review, not a verdict.</div>
   </div>`;
 }
 
@@ -502,14 +518,28 @@ async function slLoad() {
 const slCertUrl = (given, trad) => "/api/pub/certificate?" + new URLSearchParams({surname: S.q.surname, given, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, trad: Object.entries(trad || {}).map(([k, v]) => k + ":" + v).join(",")});
 function shortlistBlock() {
   if (!S.shortlist.length) return `<div id="shortlist"></div>`;
-  return `<div class="sec" id="shortlist"><h2>${Lh("候选名单", "Shortlist")} <span class="count">${S.shortlist.length}/${SL_MAX} · ${S.ws && S.wsSaved !== false ? Li("已保存到工作区", "saved to your workspace") : S.ws ? Li("工作区暂不可用，暂存本机", "workspace unreachable — kept in this browser for now") : Li("保存在本机浏览器", "kept in this browser for this baby")}</span></h2>
-    <table class="sl"><tr><th>${L("名字", "name")}</th><th>${L("评分", "score")}</th><th>${L("五格吉", "吉 of 5")}</th><th>${L("三才", "three powers")}</th><th>${L("繁體", "traditional")}</th><th></th><th></th></tr>
-      ${S.shortlist.map((x, i) => `<tr><td><button class="slname" data-slopen="${i}" title="open in the builder">${x.name}</button></td><td><b>${x.score}</b> <small>${x.grade ? x.grade.zh : ""}</small></td><td>${x.ji}/5</td><td>${luckChip(x.sv, true)}</td><td>${x.tradStr}</td>
-        <td><a href="${x.url}" target="_blank" rel="noopener">证书 →</a></td><td><button class="sldel" data-sldel="${i}" aria-label="remove ${x.name}">删除 ✕</button></td></tr>`).join("")}</table>
-    <div class="actions"><button class="btn" data-slclear="1">清空 clear all</button></div></div>`;
+  return `<div class="sec" id="shortlist"><h2>${Lh("Shortlist")} <span class="count">${S.shortlist.length}/${SL_MAX} · ${S.ws && S.wsSaved !== false ? Li("saved to your workspace") : S.ws ? Li("workspace unreachable — kept in this browser for now") : Li("kept in this browser for this baby")}</span></h2>
+    <table class="sl"><tr><th>${L("Name")}</th><th>${L("Score")}</th><th>${L("Auspicious grids of 5")}</th><th>${L("Three Talents", "三才")}</th><th>${L("Traditional form", "繁體")}</th><th></th><th></th></tr>
+      ${S.shortlist.map((x, i) => `<tr><td><button class="slname" data-slopen="${i}" title="open in the builder">${x.name}</button> <small>${py(x.name)}</small></td><td><b>${x.score}</b> <small>${x.grade ? (x.grade.en || x.grade.zh) : ""}</small></td><td>${x.ji}/5</td><td>${luckChip(x.sv, true)}</td><td>${x.tradStr} <small>${py(x.tradStr)}</small></td>
+        <td><a href="${x.url}" target="_blank" rel="noopener">certificate →</a></td><td><button class="sldel" data-sldel="${i}" aria-label="remove ${x.name}">delete ✕</button></td></tr>`).join("")}</table>
+    <div class="actions"><button class="btn" data-slclear="1">clear all</button></div></div>`;
 }
+/* English-first pass over the app region: glossary terms get "English (汉字 pīnyīn)" at first use;
+   candidate-name characters, boxes and names stay as typed (they carry their own pinyin) */
+function glossApp(root) {
+  if (!window.GL || !root) return;
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) => n.parentElement && /[\u3400-\u9fff]/.test(n.nodeValue)
+      && !n.parentElement.closest("input,textarea,.ch,.nm,.box,.tile,.slname,.namegrid,.tradline,.gz,.keepzh,#shortlist table,[lang='zh-Hans']")
+      ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+  const ns = []; let t; while ((t = w.nextNode())) ns.push(t);
+  ns.forEach((n) => { const v = GL.text(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; });
+}
+const py = s => window.GL ? GL.pinyin(s) : "";
 function render() {
+  if (window.GL) { GL.reset(); PG.clear(); }
   $("#app").innerHTML = pillarsBlock() + builderBlock() + cardBlock() + shortlistBlock();
+  glossApp($("#app"));
   const py = $("#py");
   if (py) py.oninput = () => { S.py = py.value; S.page = 1; $("#pyclear").hidden = !S.py; clearTimeout(render.t); render.t = setTimeout(loadTiles, 220); };
 }
@@ -558,7 +588,7 @@ document.addEventListener("click", e => {
   else if (d.trad) { const [ch, f] = d.trad.split(":"); S.trad[ch] = f; }
   else if (d.short) { const c = S.card; if (c && !S.shortlist.find(x => x.name === c.name) && S.shortlist.length < SL_MAX) { S.shortlist.push(slEntry(c, {...S.trad})); S.shortlist.sort((a, b) => b.score - a.score); slSave(); } render(); return; }
   else if (d.sldel) { S.shortlist.splice(+d.sldel, 1); slSave(); render(); return; }
-  else if (d.slclear) { if (confirm("清空候选名单？ Clear the whole shortlist?")) { S.shortlist = []; slSave(); render(); } return; }
+  else if (d.slclear) { if (confirm("Clear the whole shortlist?")) { S.shortlist = []; slSave(); render(); } return; }
   else if (d.slopen) { const x = S.shortlist[+d.slopen]; const g = [...x.given]; S.mode = g.length; S.slots = g.concat([null]).slice(0, 2); S.trad = {...(x.trad || {})}; S.active = 0; }
   else if (d.again) { S.slots = [null, null]; S.trad = {}; S.active = 0; S.meaning = [null, null]; }
   else return;
@@ -577,8 +607,8 @@ document.addEventListener("keydown", e => {
 $("#start").addEventListener("click", async () => {
   const f = $("#f"), q = {surname: f.surname.value.trim(), sex: f.sex.value, dob: f.dob.value, birth_time: f.birth_time.value || "12:00"};
   $("#err").textContent = "";
-  if (!q.surname) { $("#err").textContent = "请输入姓氏 — enter the family surname to build a name"; f.surname.focus(); return; }
-  if (!q.dob) { $("#err").textContent = "请输入出生日期 — enter the birth (or due) date"; f.dob.focus(); return; }
+  if (!q.surname) { $("#err").textContent = "Enter the family surname to build a name"; f.surname.focus(); return; }
+  if (!q.dob) { $("#err").textContent = "Enter the birth (or due) date"; f.dob.focus(); return; }
   $("#start").disabled = true;
   try {
     const chart = await api("/api/pub/name/chart", q);
@@ -605,7 +635,7 @@ $("#start").addEventListener("click", async () => {
 })();
 </script>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
-<div class="learnstrip"><b>Learn 知识库:</b> <a href="/learn/how-chinese-baby-names-are-scored">How Chinese baby names are scored</a> <a href="/learn/what-is-bazi">What is BaZi?</a> <a href="/learn/useful-god-colors">Useful element colours</a> <a href="/learn/five-elements-cycles">The five elements</a></div>
+<div class="learnstrip"><b>Learn:</b> <a href="/learn/how-chinese-baby-names-are-scored">How Chinese baby names are scored</a> <a href="/learn/what-is-bazi">What is BaZi?</a> <a href="/learn/useful-god-colors">Useful element colours</a> <a href="/learn/five-elements-cycles">The five elements</a></div>
 <footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
-<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (中文 zhōng wén)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
 </body></html>

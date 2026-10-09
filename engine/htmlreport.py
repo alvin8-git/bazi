@@ -72,6 +72,127 @@ def _dn(name: str) -> str:
     return _tosimp(name)
 
 
+# ---------------------------------------------------------------- English-first HTML
+_HTML_SPLIT = re.compile(r"(<script.*?</script>|<style.*?</style>|<[^>]+>)", re.S)
+_CJK_ANY = re.compile(r"[\u3400-\u9fff]")
+_STEM_CH, _BRANCH_CH = "甲乙丙丁戊己庚辛壬癸", "子丑寅卯辰巳午未申酉戌亥"
+_CAP_AFTER = re.compile(r"^<(h[1-6]|th|summary|button|b|strong|label)\b|class=\"(pl|pg|sub|tag)\"", re.I)
+
+
+# Report-page labels that scripts/bazi_report.py and the engine emit as bare Chinese; the
+# English is the module's own wording (not a new glossary term).
+_REPORT_WORDS = {"峰值窗口": "peak window", "谨慎年": "careful year", "平稳": "steady",
+                 "不足": "deficient", "过旺": "excessive", "命理战略": "",
+                 "月令克我": "the month controls the Day Master", "食伤生财": "output-feeds-wealth", "得地": "rooted", "得势": "supported"}
+_REPORT_HEADS = {"事业": "Career", "财富": "Wealth", "感情": "Relationships", "健康": "Health",
+                 "时机": "Timing", "人和": "People"}
+
+
+def _pre_phrases(seg: str, g) -> str:
+    """Normalise a text node before the glossary pass: split glued Latin+CJK, take a module's
+    own 'Chinese English' heading pair as 'English (Chinese)' once, English for report labels."""
+    t = re.sub(r"(?<=[A-Za-z])(?=[\u3400-\u9fff])", " ", seg)
+    core = t.strip()
+    if core in _REPORT_HEADS:
+        return t.replace(core, g.pair(core, _REPORT_HEADS[core]))
+    m = re.match(r"^((?:\d+ · )?)([\u3400-\u9fff]{2,8})\s+([A-Z][A-Za-z&;/' ,-]{2,60})((?:\s—\s[^\u3400-\u9fff]*)?)$", core)
+    if m:
+        return t.replace(core, m.group(1) + g.pair(m.group(2), m.group(3)) + m.group(4))
+    m = re.match(r"^((?:\d+ · )?)([A-Z][A-Za-z&;/' ,-]{2,60}?)\s+([\u3400-\u9fff]{2,8})((?:\s—\s[^\u3400-\u9fff]*)?)$", core)
+    if m:
+        return t.replace(core, m.group(1) + g.pair(m.group(3), m.group(2)) + m.group(4))
+    t = re.sub(r"(东|西)四命\s?\((East|West)\)", lambda x: f"{x.group(1)}四命", t)
+    t = re.sub(r"\b([NSEW]{1,2})[(（]([\u3400-\u9fff]{2,4})[)）]",
+               lambda x: f"{x.group(1)} {g.en(x.group(2))}", t)
+    t = re.sub(r"年支([子丑寅卯辰巳午未申酉戌亥])", r"year branch \1", t)
+    t = re.sub(r"合化([木火土金水])", r"combines into \1", t)
+    t = t.replace("冲开财庫", "clash opens the 財庫").replace("财庫", "財庫")
+    t = re.sub(r"(favourable|unfavourable|avoid)\s*[喜忌]", r"\1", t)
+    t = re.sub(r"(prominent|present|faint|absent)\s*[强弱]", r"\1", t)
+    for zh, e in _REPORT_WORDS.items():
+        t = t.replace(zh, e)
+    return t
+
+
+_STRAY = re.compile(r"(?<=[A-Za-z%])\s+([\u3400-\u9fff]{1,10})(?![\u3400-\u9fff])")
+
+
+def _paren_stray(t: str) -> str:
+    """An English phrase followed by its own Chinese ('Learning structure 学习文昌') ->
+    'Learning structure (学习文昌)'; text already inside parentheses is left alone."""
+    from .glossary import lookup, pinyin, segment
+
+    def rep(m):
+        if lookup(m.group(1)) or segment(m.group(1)):      # a glossary term already rendered
+            return m.group(0)
+        before = t[:m.start()]
+        if before.count("(") > before.count(")"):
+            return m.group(0)
+        return f" ({m.group(1)} {pinyin(m.group(1))})"
+    return _STRAY.sub(rep, t)
+
+
+
+def gloss_html(html: str, protect=(), gl=None) -> str:
+    """Rewrite the visible text of a server-rendered HTML page English-first, with ONE
+    Gloss for the whole page: 'Day Master (日主)' the first time, 'Day Master' after.
+    Tags, scripts and styles are untouched; the pillar glyph grid keeps its glyphs (the
+    glyph is the chart) with pinyin beneath; person names in `protect` are left as they are."""
+    from engine.glossary import Gloss, TERMS
+    g = gl or Gloss()
+    i = html.find("<body")
+    head, body = (html[:i], html[i:]) if i >= 0 else ("", html)
+    keep = {}
+    for n, nm in enumerate(sorted({x for x in protect if x}, key=len, reverse=True)):
+        for variant in {nm, _tosimp(nm)}:
+            key = f"\ue000{n}\ue001"
+            if variant in body:
+                body = body.replace(variant, key)
+                keep[key] = variant
+    # hidden-stem cells: '戊(劫财)<br>乙(七杀)' -> 'Wu · Rob Wealth'
+    def _ph(m):
+        cells = re.findall(r"([甲乙丙丁戊己庚辛壬癸])\s?[(（]([^()（）<]+)[)）]", m.group(2))
+        if not cells:
+            return m.group(0)
+        out = "<br>".join(f"{g.en(a)} · {g.text(b)}" for a, b in cells)
+        return m.group(1) + out + "</div>"
+    body = re.sub(r'(<div class="ph">)(.*?)</div>', _ph, body, flags=re.S)
+
+    def _pz(m):
+        gz = m.group(2).strip()
+        if len(gz) == 2 and gz[0] in _STEM_CH and gz[1] in _BRANCH_CH:
+            full = g.pillar(gz)
+            rest = full[len(gz):].strip() if full.startswith(gz) else full
+            key = f"\ue002{len(keep)}\ue003"
+            keep[key] = gz
+            return f'{m.group(1)}{key}<br><small>{rest}</small></div>'
+        return m.group(0)
+    body = re.sub(r'(<div class="pz">)([^<]*)</div>', _pz, body)
+
+    head = re.sub(r"(<title>)([^<]*)(</title>)",
+                  lambda m: m.group(1) + _pre_phrases(m.group(2), Gloss()).rstrip() + m.group(3), head)
+    parts = _HTML_SPLIT.split(body)
+    out, prev = [], ""
+    for seg in parts:
+        if seg.startswith("<") or not _CJK_ANY.search(seg):
+            out.append(seg)
+            if seg.startswith("<"):
+                prev = seg
+            continue
+        seg2 = _pre_phrases(seg, g)
+        new = _paren_stray(g.text(seg2))
+        lead = seg2.lstrip()[:1]
+        if new[:1].islower() and _CJK_ANY.match(lead or " ") and _CAP_AFTER.search(prev):
+            new = new[:1].upper() + new[1:]
+        elif new and new[0].islower() and (seg2 != seg2.lstrip() or True) and _CJK_ANY.match(lead or " "):
+            new = new[:1].upper() + new[1:]
+        out.append(new)
+    res = head + "".join(out)
+    for key, v in keep.items():
+        res = res.replace(key, v)
+    return res
+
+
 CSS = """
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{margin:0 auto;max-width:900px;padding:20px;background:#faf7f2;color:#2b2620;

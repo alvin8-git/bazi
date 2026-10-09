@@ -69,6 +69,7 @@ button:disabled{opacity:.45;cursor:default}
   position:sticky;top:0;z-index:6;box-shadow:0 2px 8px rgba(0,0,0,.04)}
 #toolbar .sep{width:1px;align-self:stretch;background:var(--line)}
 #toolbar .fac{display:flex;align-items:center;gap:8px;flex:1;min-width:230px}
+#toolbar .fac{flex-wrap:wrap}#toolbar #fac-val{white-space:normal}#toolbar{flex-wrap:wrap}
 #toolbar input[type=range]{flex:1;min-width:110px;accent-color:var(--accent)}
 #fac-val{font-weight:700;min-width:86px;font-size:14px}
 #toolbar select{padding:6px 8px;border:1px solid var(--line);border-radius:7px;font-size:13px}
@@ -274,6 +275,9 @@ td.b-poor{background:#fdecea;color:#b03a2e}
 .tgrid .clean{background:#f2faf4;color:#155d24}.tgrid .bad{background:#fdf3f2;color:#a12a20}
 .bl small{display:block;font-size:10px;font-weight:500;color:var(--muted);line-height:1.15}
 .bl.inl small{display:inline;margin-left:4px;opacity:.8}
+.bl.en{display:inline;overflow-wrap:anywhere}
+.bl.en small,.bl.en small[lang]{display:inline;font-size:.78em;font-weight:500;color:var(--muted);margin-left:3px;line-height:1.2;opacity:1}
+.bl.en small[lang]::before{content:"("}.bl.en small[lang]::after{content:")"}
 .whychip .bl small,.dirchip .bl small,.sev .bl small,.swlab .bl small,.verdict .bl small,button .bl small,.hint .bl small{display:inline;margin-left:4px;opacity:.75}
 .seg .bl small{display:block;font-size:9px;opacity:.8}
 .rc-lab .bl small{display:inline;margin-left:4px}
@@ -303,25 +307,25 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
 <style>.sitefoot{padding:18px 22px 28px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:30px}.sitefoot a{color:var(--accent)}.sitefoot .fnav{display:inline-block;margin-top:6px}.learnstrip{max-width:980px;margin:18px auto 0;padding:0 22px;font-size:14px;color:var(--muted)}.learnstrip a{color:var(--accent);margin-right:12px;white-space:nowrap}</style></head><body>
 <header>
   <div>
-    <h1>Home feng shui analyzer <span lang="zh-Hans">宅运分析</span></h1>
+    <h1>Home feng shui analyzer (<span lang="zh-Hans">宅运分析 zhái yùn fēn xī</span>)</h1>
       <div class="hint" style="font-size:13px">every star and score cites its classical rule</div>
     <a href="/start" id="back" style="display:inline-block;margin-top:9px">← Back to
-      workspace 返回</a>
+      workspace</a>
   </div>
   <span class="verbadge" id="ver"></span>
 </header>
 <main>
 <style>.exshot{margin:0 0 18px;max-width:560px}.exshot img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line,#e5ded2)}.exshot figcaption{font-size:12.5px;color:var(--muted,#6b6359);margin-top:6px}</style>
-<figure class="exshot"><img src="/static/img/shots/fengshui-desktop.jpg" alt="Example home fengshui result for a sample condo: family room and aspect scores" width="1280" height="700"><figcaption>Example with fictional data / 示例（虚构数据）</figcaption></figure>
+<figure class="exshot"><img src="/static/img/shots/fengshui-desktop.jpg" alt="Example home fengshui result for a sample condo: family room and aspect scores" width="1280" height="700"><figcaption>Example with fictional data</figcaption></figure>
   <div class="sec" id="need-ws" hidden>
     <b>No workspace yet.</b> <span class="hint">Add at least one person on the
     <a href="/start">start page</a> first — room scores are person-specific
-    (八宅命卦 + 用神 + flying stars).</span>
+    (Eight House kua number + useful god + flying stars).</span>
   </div>
 
   <div class="sec" id="homes-sec" hidden>
     <div id="homes-bar">
-      <span class="hint">Homes 房产:</span>
+      <span class="hint">Homes:</span>
       <span id="home-chips"></span>
       <button class="ghost" id="btn-addhome">＋ Add home</button>
       <button class="ghost" id="btn-battle" hidden>⚔ Compare homes</button>
@@ -332,8 +336,8 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
   <div id="step-up">
     <h2>Upload Your Floor Plan</h2>
     <div class="sub">A clear top-down view — the analysis maps every room to its
-      compass palace. 上传清晰的户型图。</div>
-    <div class="hint">For an HDB flat or condo unit, the facing is the main-door direction measured from inside looking out, and the unit's own plan, not the block's, is what to upload. 组屋或公寓单位：朝向为从室内向外看的大门方向，请上传该单位自己的户型图，而非整栋楼的平面图。</div>
+      compass palace.</div>
+    <div class="hint">For an HDB flat or condo unit, the facing is the main-door direction measured from inside looking out, and the unit's own plan, not the block's, is what to upload.</div>
     <div id="drop">
       <div class="ph" id="drop-ph"><b>⌂</b>Click or drag a floorplan image here<br>
         <span class="hint">jpg / png · up to 8 MB</span></div>
@@ -356,14 +360,14 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
   <!-- ============ STEP 2 — annotate ============ -->
   <div id="step-anno" hidden>
     <div id="anno-head">
-      <a href="#" id="btn-back2">← Back</a><h2>Annotate Plan 标注</h2>
+      <a href="#" id="btn-back2">← Back</a><h2>Annotate Plan</h2>
     </div>
     <div id="toolbar">
       <button class="ghost" id="btn-draw">⛶ Draw Room</button>
       <button class="ghost" id="btn-door">🚪 Set Entrance</button>
       <div class="sep"></div>
       <div class="fac">
-        <span class="hint" style="white-space:nowrap">Facing 朝向</span>
+        <span class="hint" style="white-space:nowrap">Facing</span>
         <input type="range" id="f-facing" min="0" max="359.5" step="0.5" value="0">
         <button class="ghost" id="btn-m15" style="padding:6px 9px">−15</button>
         <button class="ghost" id="btn-m1" style="padding:6px 9px">−1</button>
@@ -371,31 +375,31 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
           style="width:74px;padding:6px 7px;border:1px solid var(--line);border-radius:7px;font-size:14px">
         <button class="ghost" id="btn-p1" style="padding:6px 9px">+1</button>
         <button class="ghost" id="btn-p15" style="padding:6px 9px">+15</button>
-        <span id="fac-val">0° N 坎</span>
+        <span id="fac-val">0° N (坎 kǎn, north)</span>
       </div>
       <div class="sep"></div>
-      <select id="f-period" title="Period 元运">
+      <select id="f-period" title="Period (元运)">
         <option value="9" selected>Period 9 (≥2024)</option>
         <option value="8">Period 8 (2004–24)</option>
         <option value="7">Period 7 (1984–04)</option>
       </select>
-      <label class="hint" id="outdoor-wrap" title="默认排除 excluded by default — the 太极点 belongs to the enclosed home; balconies still get their own palace reading"
-        style="display:inline-flex;align-items:center;gap:4px;margin-right:8px"><input type="checkbox" id="f-outdoor"> 阳台计入太极点 <small>balconies count toward the centre</small></label>
+      <label class="hint" id="outdoor-wrap" title="excluded by default — the centre point (太极点) belongs to the enclosed home; balconies still get their own palace reading"
+        style="display:inline-flex;align-items:center;gap:4px;margin-right:8px"><input type="checkbox" id="f-outdoor"> Balconies count toward the centre point (太极点 tài jí diǎn)</label>
       <button class="dark" id="btn-analyze">Analyze Plan →</button>
     </div>
-    <div class="hint" style="margin:8px 2px"><b>描全围合面积 Trace every enclosed area once</b> — rooms and the
+    <div class="hint" style="margin:8px 2px"><b>Trace every enclosed area once</b> — rooms and the
       spaces between them; balconies stay out of the centre. Measure the facing with a phone compass at
       the main window/balcony, away from metal. Drag on the plan to draw each room; tap 🚪 then click the main door position.
-      <details id="guide" style="margin:6px 0"><summary style="cursor:pointer;color:var(--accent)">描图须知 How to trace</summary>
+      <details id="guide" style="margin:6px 0"><summary style="cursor:pointer;color:var(--accent)">How to trace</summary>
         <ol class="guide">
-          <li><b>全部围合面积</b> <em>Trace all enclosed floor area</em> — corridors, lobby, yard, WC, shelter, walk-in wardrobe.
-            The centre (太极点) is the balance point of the whole home, so a missing area shifts every palace.</li>
-          <li><b>不重叠不留缝</b> <em>No overlaps, no gaps</em> — each patch of floor belongs to exactly one shape; walls are nothing.</li>
-          <li><b>阳台不计</b> <em>Balconies and patios are drawn but excluded from the centre</em> (dashed) — open to the sky and
-            outside the envelope you live in; they still get a palace reading for the 向星 and the gate check.</li>
-          <li><b>房内家具不画</b> <em>Furniture inside a room is not a room</em> — a wardrobe, bay platform or bed stays inside its
+          <li><b>Trace all enclosed floor area</b> — corridors, lobby, yard, WC, shelter, walk-in wardrobe.
+            The centre point is the balance point of the whole home, so a missing area shifts every palace.</li>
+          <li><b>No overlaps, no gaps</b> — each patch of floor belongs to exactly one shape; walls are nothing.</li>
+          <li><b>Balconies and patios are drawn but excluded from the centre</b> (dashed) — open to the sky and
+            outside the envelope you live in; they still get a palace reading for the water star (向星 xiàng xīng) and the gate check.</li>
+          <li><b>Furniture inside a room is not a room</b> — a wardrobe, bay platform or bed stays inside its
             bedroom's shape; only a walk-in with its own walls and door is traced as Wardrobe.</li>
-          <li><b>卧室床位</b> <em>One child per bedroom, parents in the master</em> — set Beds on each bedroom; the optimiser never exceeds it.</li>
+          <li><b>One child per bedroom, parents in the master</b> — set Beds on each bedroom; the optimiser never exceeds it.</li>
         </ol>
       </details>
       <details style="display:inline"><summary style="display:inline;cursor:pointer;color:var(--accent)">advanced</summary>
@@ -420,19 +424,19 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
         <h3>Edit Room</h3>
         <label>Type</label>
         <select id="p-type">
-          <option>Living 客厅</option><option>Dining 餐厅</option>
-          <option>Master Bedroom 主卧</option><option>Bedroom 卧室</option>
-          <option title="outdoor — excluded from the centre">Balcony 阳台</option><option title="outdoor — excluded from the centre">Patio 露台</option><option>Kitchen 厨房</option>
-          <option>Bathroom 卫浴</option><option>Study 书房</option>
-          <option>Store 储藏</option><option title="enclosed, counts toward the centre">Corridor 走廊</option><option title="enclosed, counts toward the centre">Lobby 玄关</option>
-          <option title="walk-in with its own door only">Wardrobe 衣帽间</option><option title="enclosed, counts toward the centre">Yard 后院</option><option>Other 其他</option>
+          <option value="Living 客厅">Living</option><option value="Dining 餐厅">Dining</option>
+          <option value="Master Bedroom 主卧">Master Bedroom</option><option value="Bedroom 卧室">Bedroom</option>
+          <option value="Balcony 阳台" title="outdoor — excluded from the centre">Balcony</option><option value="Patio 露台" title="outdoor — excluded from the centre">Patio</option><option value="Kitchen 厨房">Kitchen</option>
+          <option value="Bathroom 卫浴">Bathroom</option><option value="Study 书房">Study</option>
+          <option value="Store 储藏">Store</option><option value="Corridor 走廊" title="enclosed, counts toward the centre">Corridor</option><option value="Lobby 玄关" title="enclosed, counts toward the centre">Lobby</option>
+          <option value="Wardrobe 衣帽间" title="walk-in with its own door only">Wardrobe</option><option value="Yard 后院" title="enclosed, counts toward the centre">Yard</option><option value="Other 其他">Other</option>
         </select>
         <label>Custom Name</label>
         <input id="p-name" maxlength="40" placeholder="optional — e.g. Kai Lin's room">
         <div id="p-size"></div>
-        <div id="cap-wrap"><label>Beds 床位 <small class="hint">one child per room — the optimiser never doubles up beyond this</small></label>
+        <div id="cap-wrap"><label>Beds <small class="hint">one child per room — the optimiser never doubles up beyond this</small></label>
           <input type="number" id="p-cap" min="1" max="4" style="width:70px"></div>
-        <div id="occ-wrap"><label>Who sleeps here 住户</label><div id="occ"></div></div>
+        <div id="occ-wrap"><label>Who sleeps here</label><div id="occ"></div></div>
         <div class="acts">
           <button id="btn-confirm">✓ Confirm Room</button>
           <button id="btn-delroom">🗑 Delete Room</button>
@@ -443,8 +447,8 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
         </div>
         <div class="hint" id="mark-hint">Optional: click a room edge to place it.
           Click a door to flip its hinge, again to remove. Click a window to mark
-          it a bay window 飘窗, again to remove. Doors unlock the bed-placement
-          audit (門沖床 / commanding position / 門對門).</div>
+          it a bay window (飘窗 piāo chuāng), again to remove. Doors unlock the bed-placement
+          audit (door facing bed, 門沖床 mén chōng chuáng / commanding position / door facing door, 門對門 mén duì mén).</div>
       </div>
     </div>
     <div class="err" id="go-err" style="margin-top:8px"></div>
@@ -452,8 +456,22 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
 
   <div id="results"></div>
 </main>
+<script src="/static/glossary.js"></script>
 <script>
 const $ = s => document.querySelector(s);
+/* English-first pass: rewrite text nodes through the shared glossary in document order
+   (first use carries the Chinese + pinyin once, English after). Presentation only. */
+function glossifyDom(root, fresh) {
+  if (!root || !window.GL) return;
+  if (fresh) GL.reset();
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) => n.parentElement && /[\u3400-\u9fff]/.test(n.nodeValue)
+      && !n.parentElement.closest("script,style,input,textarea,select,option,.keepzh,[lang='zh-Hans']")
+      ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+  const ns = []; let t; while ((t = w.nextNode())) ns.push(t);
+  ns.forEach((n) => { const v = GL.text(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; });
+}
+document.addEventListener("DOMContentLoaded", () => glossifyDom(document.querySelector(".wrap, main, body"), true));
 fetch("/api/pub/version").then(r => r.json())
   .then(v => { $("#ver").textContent = "v " + v.version; }).catch(() => {});
 let token = null, ws = null, rooms = [], drag = null, imgNatural = [0, 0];
@@ -519,7 +537,9 @@ $("#btn-addhome").addEventListener("click", async () => {
 $("#btn-battle").addEventListener("click", async () => {
   try {
     const bc = await api(`/api/pub/w/${token}/battlecard`);
+    if (window.GL) GL.reset();
     $("#results").innerHTML = battlecardBlock(bc);
+    glossifyDom($("#results"), false);
     $("#results").scrollIntoView({behavior: "smooth"});
   } catch (e) { $("#go-err").textContent = e.message; }
 });
@@ -638,8 +658,8 @@ $("#btn-continue").addEventListener("click", async () => {
 });
 
 /* ---------------- facing slider + compass ---------------- */
-const MOUNTAINS = [["N 坎",0],["NE 艮",45],["E 震",90],["SE 巽",135],["S 離",180],
-  ["SW 坤",225],["W 兌",270],["NW 乾",315]];
+const MOUNTAINS = [["N (坎 kǎn, north)",0],["NE (艮 gèn, northeast)",45],["E (震 zhèn, east)",90],["SE (巽 xùn, southeast)",135],["S (離 lí, south)",180],
+  ["SW (坤 kūn, southwest)",225],["W (兌 duì, west)",270],["NW (乾 qián, northwest)",315]];
 function facLabel(d) {
   const m = MOUNTAINS.reduce((a, b) =>
     Math.min(Math.abs(d-b[1]), 360-Math.abs(d-b[1])) <
@@ -995,8 +1015,8 @@ function updateArmedUI() {
     `Now click near any room edge to place the ${armed} — works even where ` +
     `rooms overlap; ↺ undoes a misplaced one.` :
     "Optional: click a room edge to place it. Click a door to flip its hinge, " +
-    "again to remove. Click a window to mark it a bay window 飘窗, again to " +
-    "remove. Doors unlock the bed-placement audit (門沖床 / commanding position / 門對門).";
+    "again to remove. Click a window to mark it a bay window (飘窗), again to " +
+    "remove. Doors unlock the bed-placement audit (door facing bed, 門沖床 mén chōng chuáng / commanding position / door facing door, 門對門 mén duì mén).";
 }
 $("#p-door").addEventListener("click", () => { armed = armed === "door" ? null : "door"; updateArmedUI(); });
 $("#p-win").addEventListener("click", () => { armed = armed === "window" ? null : "window"; updateArmedUI(); });
@@ -1111,7 +1131,7 @@ $("#btn-analyze").addEventListener("click", async () => {
     // come out of the same pie/chart machinery with zero API change
     const ex = entrance[0] * imgNatural[0], ey = entrance[1] * imgNatural[1];
     const d = Math.max(imgNatural[0], imgNatural[1]) * 0.012 || 8;
-    rlist.push({id: "entrance", label: "Entrance 大門", sleeping: false, capacity: 0,
+    rlist.push({id: "entrance", label: "Entrance", sleeping: false, capacity: 0,
       poly: [[ex-d, ey-d], [ex+d, ey-d], [ex+d, ey+d], [ex-d, ey+d]]});
   }
   const req = {
@@ -1139,29 +1159,29 @@ $("#btn-analyze").addEventListener("click", async () => {
 function worksBlock(res) {
   const wt = res.works_timing;
   if (!wt || !wt.rooms.length) return "";
-  return `<div class="sec"><h2>🔨 Renovation timing 动工时序
+  return `<div class="sec"><h2>🔨 Renovation timing
       <span class="hint">annual afflictions ${wt.year}–${wt.next}</span></h2>
     <div style="overflow-x:auto"><table>
-      <tr><th>Room</th><th>宫</th><th>${wt.year}</th><th>${wt.next}</th><th>Advice</th></tr>
+      <tr><th>Room</th><th>Palace</th><th>${wt.year}</th><th>${wt.next}</th><th>Advice</th></tr>
       ${wt.rooms.map(r => `<tr><td><b>${r.label}</b></td><td>${r.palace}</td>
         <td>${r.now.join(" ") || "—"}</td><td>${r.next.join(" ") || "—"}</td>
         <td>${r.advice}</td></tr>`).join("")}</table></div>
-    <div class="hint">太岁/岁破/三煞/五黄 sectors must not be hacked, drilled or dug
-      (动土) while afflicted — schedule structural works for a clean year, or after
-      立春 (≈4 Feb) when the sector clears. Screw-together furniture assembly is not
-      动土. Rooms not listed are clean in both years.</div></div>`;
+    <div class="hint">Grand Duke / Year Breaker / Three Killings / Five Yellow sectors must not be hacked, drilled or dug
+      (breaking ground, 动土) while afflicted — schedule structural works for a clean year, or after
+      Start of Spring (立春, ≈4 Feb) when the sector clears. Screw-together furniture assembly is not
+      breaking ground. Rooms not listed are clean in both years.</div></div>`;
 }
 
 
 /* ---- P1 room cards: colours & materials · objects (design doc v2 §3) ---- */
 const SEV_CHIP = (b) => {
   if (!b || !b.severity) return "";
-  const t = b.severity >= 2 ? "二五 pair" : "二五 one star";
-  return `<span class="whychip neg" title="severity ${b.severity}${b.run_star_element ? " · 运星 " + b.run_star_element : ""}">${t}</span>` +
-    (b.worst ? `<span class="whychip neg" title="the worse of the two 二五 palaces — its 运星 feeds the pair">首要化解 first priority</span>` : "");
+  const t = b.severity >= 2 ? "2-5 pair" : "2-5 one star";
+  return `<span class="whychip neg" title="severity ${b.severity}${b.run_star_element ? " · period star " + b.run_star_element : ""}">${t}</span>` +
+    (b.worst ? `<span class="whychip neg" title="the worse of the two 2-5 palaces — its period star feeds the pair">first priority</span>` : "");
 };
-const ITEM = (it, cls) => `<span class="whychip ${cls}" title="${(it.why || "")} · ${(it.doctrine || "")}">${it.what}${it.scope ? ` <small>${it.scope === "planes" ? "墙面 planes" : it.scope === "textiles" ? "软装 textiles" : "物件 objects"}</small>` : ""}</span>`;
-const FLAG = (f) => `<span class="whychip neg" title="${(f.remedy || "")} · ${(f.doctrine || "")}">${f.zh} ${f.text || ""}</span>`;
+const ITEM = (it, cls) => `<span class="whychip ${cls}" title="${(it.why || "")} · ${(it.doctrine || "")}">${it.what}${it.scope ? ` <small>${it.scope === "planes" ? "planes" : it.scope === "textiles" ? "textiles" : "objects"}</small>` : ""}</span>`;
+const FLAG = (f) => `<span class="whychip neg" title="${(f.remedy || "")} · ${(f.doctrine || "")}">${FLAG_EN[f.zh] || f.zh} ${f.text || ""}</span>`;
 function bedTab(b) {
   let h = "";
   for (const r of (b.beds || [])) {
@@ -1179,26 +1199,26 @@ function bedTab(b) {
     }
     if (!r.has_doors) h += `<div class="hint">⚠ no door marked on this room — mark it in the trace to unlock the door-line audit</div>`;
     if (r.warnings && r.warnings.length) h += `<div>${r.warnings.map(FLAG).join(" ")}</div>`;
-    if (r.site_checks && r.site_checks.length) h += `<div class="rc-lab" style="margin-top:6px">现场核对 Site checks</div><ul class="rc-list">${r.site_checks.map((s) => `<li><b>${s.zh}</b> ${s.text} <small class="hint">${s.doctrine || ""}</small></li>`).join("")}</ul>`;
+    if (r.site_checks && r.site_checks.length) h += `<div class="rc-lab" style="margin-top:6px">Site checks</div><ul class="rc-list">${r.site_checks.map((s) => `<li><b>${s.en || s.zh}</b> ${s.text} <small class="hint">${s.doctrine || ""}</small></li>`).join("")}</ul>`;
     h += `</div>`;
   }
   const pl = b.placements || [], af = (b.afflictions && b.afflictions.hits) || [];
-  h += `<div class="rc-lab" style="margin-top:8px">安位 Placements</div>${pl.length ? pl.map((p) => `<span class="whychip pos" title="${p.rule}">${p.zh} ${p.en} · ${p.person}</span>`).join(" ") : "<span class=hint>no 文昌 / 桃花 / 驿马 corner of any occupant lands here</span>"}`;
-  h += `<div class="rc-lab" style="margin-top:8px">流年 ${b.afflictions ? b.afflictions.year : ""} This year</div>${af.length ? af.map((a) => `<span class="whychip neg" title="${a.rule}">${a.affliction}${a.person ? ` on ${a.person}'s ${a.star}` : ""}</span>`).join(" ") : "<span class=hint>no annual affliction sits on this palace</span>"}`;
+  h += `<div class="rc-lab" style="margin-top:8px">Placements</div>${pl.length ? pl.map((p) => `<span class="whychip pos" title="${p.rule}">${p.en || p.zh} · ${p.person}</span>`).join(" ") : "<span class=hint>no study-star (文昌) / peach-blossom (桃花) / travel-star (驿马) corner of any occupant lands here</span>"}`;
+  h += `<div class="rc-lab" style="margin-top:8px">This year ${b.afflictions ? b.afflictions.year : ""}</div>${af.length ? af.map((a) => `<span class="whychip neg" title="${a.rule}">${a.affliction}${a.person ? ` on ${a.person}'s ${a.star}` : ""}</span>`).join(" ") : "<span class=hint>no annual affliction sits on this palace</span>"}`;
   return h;
 }
 function lightTab(b) {
   const L = b.lighting || {}, hasBeds = (b.beds || []).length > 0;
   const notes = (L.notes || []).filter((n) => !n.bedroom_only || hasBeds);
-  let h = `<div><b>固定灯 Fixed:</b> ${L.fixed_k || "—"}</div><div><b>台灯 Lamps:</b> ${L.lamps_k || "—"}</div>`;
-  if (notes.length) h += `<ul class="rc-list">${notes.map((n) => `<li><b>${n.zh}</b> ${n.text} <small class="hint">${n.doctrine || ""}</small></li>`).join("")}</ul>`;
+  let h = `<div><b>Fixed lights:</b> ${L.fixed_k || "—"}</div><div><b>Lamps:</b> ${L.lamps_k || "—"}</div>`;
+  if (notes.length) h += `<ul class="rc-list">${notes.map((n) => `<li><b>${n.en || n.zh}</b> ${n.text} <small class="hint">${n.doctrine || ""}</small></li>`).join("")}</ul>`;
   const T = b.timing || {}, rules = (b.timing_rules || []).slice().sort((a, c) => (a.code === "F3" ? -1 : c.code === "F3" ? 1 : 0));
-  h += `<div class="rc-lab" style="margin-top:8px">动工时序 Timing</div>`;
+  h += `<div class="rc-lab" style="margin-top:8px">Timing</div>`;
   h += `<span class="whychip pos" title="platform, wall-fixed panel, overlay, cabinet run">finish-fit ✓</span> `;
-  h += T.structure_ok === false ? `<span class="whychip neg" title="${(T.now || []).join(" ")}">structure ✗ until ${T.next && T.next.length ? "a clean year" : "立春 " + ((b.afflictions && b.afflictions.year + 1) || "")}</span>`
+  h += T.structure_ok === false ? `<span class="whychip neg" title="${(T.now || []).join(" ")}">structure ✗ until ${T.next && T.next.length ? "a clean year" : "Start of Spring " + ((b.afflictions && b.afflictions.year + 1) || "")}</span>`
                                 : `<span class="whychip pos" title="no annual affliction this year">structure ✓</span>`;
-  if (rules.length) h += `<ul class="rc-list">${rules.map((r) => `<li><b>${r.zh}</b> ${r.text} <small class="hint">${r.doctrine || ""}</small></li>`).join("")}</ul>`;
-  if (b.gate) h += `<div class="rc-lab" style="margin-top:8px">城门 Gate</div><span class="whychip ${b.gate.valid ? "pos" : "neg"}" title="${b.gate.why}">${b.gate.rank}${b.gate.guarded ? " · 向星5" : ""}</span> <span class="hint">${b.gate.text}</span>`;
+  if (rules.length) h += `<ul class="rc-list">${rules.map((r) => `<li><b>${r.en || r.zh}</b> ${r.text} <small class="hint">${r.doctrine || ""}</small></li>`).join("")}</ul>`;
+  if (b.gate) h += `<div class="rc-lab" style="margin-top:8px">Gate</div><span class="whychip ${b.gate.valid ? "pos" : "neg"}" title="${b.gate.why}">${b.gate.rank}${b.gate.guarded ? " · facing star 5" : ""}</span> <span class="hint">${b.gate.text}</span>`;
   return h;
 }
 function roomCardsBlock(res) {
@@ -1208,26 +1228,26 @@ function roomCardsBlock(res) {
   if (!ids.length) return "";
   const cards = ids.map((rid) => {
     const b = rb[rid];
-    const head = `<div class="rc-head"><b>${b.label || rid}</b> · ${b.palace || "—"}宫${b.mountain !== undefined ? ` · 山${b.mountain}向${b.water}` : ""} ${SEV_CHIP(b)}</div>`;
+    const head = `<div class="rc-head"><b>${b.label || rid}</b> · ${b.palace || "—"} palace${b.mountain !== undefined ? ` · mountain ${b.mountain} · facing ${b.water}` : ""} ${SEV_CHIP(b)}</div>`;
     if (b.note && !b.colours_use.length) return `<div class="rc">${head}<div class="hint">${b.note}</div></div>`;
-    const occ = (b.occupants || []).map((o) => `<div class="rc-occ"><b>${o.name}</b> · 用神 ${o.palette_personal.join(" · ") || "—"}
-        <small>${o.palette_scope === "textiles" ? "软装 textiles only" : "墙面 planes ok"}</small>
-        ${o.palette_avoid.length ? ` · 忌 ${o.palette_avoid.join(" · ")}` : ""}
-        ${o.compensation.map((c) => `<div class="hint">補 ${c.what} — ${c.where}</div>`).join("")}
+    const occ = (b.occupants || []).map((o) => `<div class="rc-occ"><b>${o.name}</b> · useful god ${o.palette_personal.join(" · ") || "—"}
+        <small>${o.palette_scope === "textiles" ? "textiles only" : "planes ok"}</small>
+        ${o.palette_avoid.length ? ` · avoid ${o.palette_avoid.join(" · ")}` : ""}
+        ${o.compensation.map((c) => `<div class="hint">Remedy: ${c.what} — ${c.where}</div>`).join("")}
         ${o.cost ? `<div class="hint">⚑ ${o.cost}</div>` : ""}</div>`).join("");
-    const tab1 = `<div class="rc-grid"><div><div class="rc-lab">宜 USE</div>${b.colours_use.map((i) => ITEM(i, "pos")).join(" ")}</div>
-        <div><div class="rc-lab">忌 AVOID</div>${b.colours_avoid.map((i) => ITEM(i, "neg")).join(" ")}</div>
-        <div><div class="rc-lab">材料宜 materials</div>${b.materials_use.map((i) => ITEM(i, "pos")).join(" ") || "<span class=hint>—</span>"}</div>
-        <div><div class="rc-lab">材料忌 avoid</div>${b.materials_avoid.map((i) => ITEM(i, "neg")).join(" ") || "<span class=hint>—</span>"}</div></div>
+    const tab1 = `<div class="rc-grid"><div><div class="rc-lab">USE</div>${b.colours_use.map((i) => ITEM(i, "pos")).join(" ")}</div>
+        <div><div class="rc-lab">AVOID</div>${b.colours_avoid.map((i) => ITEM(i, "neg")).join(" ")}</div>
+        <div><div class="rc-lab">Materials: use</div>${b.materials_use.map((i) => ITEM(i, "pos")).join(" ") || "<span class=hint>—</span>"}</div>
+        <div><div class="rc-lab">Materials: avoid</div>${b.materials_avoid.map((i) => ITEM(i, "neg")).join(" ") || "<span class=hint>—</span>"}</div></div>
         ${b.override_note ? `<div class="hint">⚑ ${b.override_note}</div>` : ""}${occ}`;
     const tab2 = `${b.objects.length ? `<ul class="rc-list">${b.objects.map((o) => `<li><b>${o.what}</b> — ${o.where}<div class="hint">${o.why} · ${o.doctrine}</div></li>`).join("")}</ul>` : "<div class=hint>no object remedy needed in this palace</div>"}
         ${b.notes.length ? `<div class="hint">${b.notes.join(" · ")}</div>` : ""}`;
     return `<div class="rc" data-rid="${rid}">${head}
-      <div class="rc-tabs"><button class="on" data-t="1">颜色与材料 Colours & materials</button><button data-t="2">物件 Objects</button><button data-t="3">床位书桌 Bed & desk</button><button data-t="4">灯光与时序 Lighting & timing</button></div>
+      <div class="rc-tabs"><button class="on" data-t="1">Colours & materials</button><button data-t="2">Objects</button><button data-t="3">Bed & desk</button><button data-t="4">Lighting & timing</button></div>
       <div class="rc-pane" data-p="1">${tab1}</div><div class="rc-pane" data-p="2" hidden>${tab2}</div><div class="rc-pane" data-p="3" hidden>${bedTab(b)}</div><div class="rc-pane" data-p="4" hidden>${lightTab(b)}</div></div>`;
   }).join("");
-  return `<div class="sec"><h2>🏠 Room briefs 房间指引
-      <span class="hint">palace stars × occupants' 用神 — colours, materials, objects; every chip cites its rule on hover</span></h2>
+  return `<div class="sec"><h2>🏠 Room briefs
+      <span class="hint">palace stars × occupants' useful god (用神) — colours, materials, objects; every chip cites its rule on hover</span></h2>
     <div class="rc-wrap">${cards}</div></div>`;
 }
 document.addEventListener("click", (e) => {
@@ -1239,8 +1259,8 @@ document.addEventListener("click", (e) => {
 
 function colorsBlock(res) {
   if (!res.colors || !res.colors.length) return "";
-  return `<div class="sec"><h2>🎨 Room colours 房间用色
-      <span class="hint">personal 用神 palette × room flying stars</span></h2>
+  return `<div class="sec"><h2>🎨 Room colours
+      <span class="hint">personal useful-god palette × room flying stars</span></h2>
     <div style="overflow-x:auto"><table>
       <tr><th>Room</th><th>Person</th><th>Choose</th><th>Avoid</th></tr>
       ${res.colors.map(c => `<tr><td><b>${c.room}</b></td><td>${c.person}</td>
@@ -1254,11 +1274,11 @@ function colorsBlock(res) {
       palette moves to bedding, curtains and accessories.</div></div>`;
 }
 
-const FLAGCHIP = f => `<span class="whychip neg" title="${f.remedy}">${f.zh} ${f.text}</span>`;
+const FLAGCHIP = f => `<span class="whychip neg" title="${f.remedy}">${FLAG_EN[f.zh] || f.zh} ${f.text}</span>`;
 function placementBlock(res) {
   const pl = res.placement;
   if (!pl || !pl.rows.length) return "";
-  let html = `<div class="sec"><h2>🛏 Bed &amp; desk placement 床位书桌
+  let html = `<div class="sec"><h2>🛏 Bed &amp; desk placement
       <span class="hint">auto-proposed per occupant — hover a flag for its remedy</span></h2>`;
   html += pl.rows.map(r => {
     const best = r.beds[0];
@@ -1279,13 +1299,13 @@ function placementBlock(res) {
         audit.</div>` : ""}</div>`;
   }).join("");
   if (pl.door_pairs.length) {
-    html += `<div class="kv"><b>門對門 door pairs:</b> ${pl.door_pairs.map(p =>
+    html += `<div class="kv"><b>Door-facing-door pairs (門對門):</b> ${pl.door_pairs.map(p =>
       `<span class="whychip neg" title="${p.remedy}">${p.a} ↔ ${p.b}</span>`).join(" ")}
       <span class="hint">hover for the remedy</span></div>`;
   }
   html += `<div class="hint"><label><input type="checkbox" id="ov-toggle" checked>
     show bed proposals on the floor plan</label> — the blue rectangles up in the
-    trace; the thick edge marks the headboard wall. 形勢為先: a form flag outranks
+    trace; the thick edge marks the headboard wall. Form first (形勢為先): a form flag outranks
     a marginally better star — that is why a flagged wall can rank below a
     slightly weaker direction.</div></div>`;
   return html;
@@ -1320,12 +1340,12 @@ function drawBedOverlays(res) {
 }
 
 function moveinBlock() {
-  return `<div class="sec"><h2>📅 Move-in dates 入宅择日</h2>
+  return `<div class="sec"><h2>📅 Move-in dates (入宅择日)</h2>
     <div class="kv">From <input type="date" id="mi-start"> to
       <input type="date" id="mi-end"> <button id="mi-go">Find dates</button></div>
-    <div id="mi-out" class="hint">建除 auspicious officers (成/定/开) minus any day
-      clashing an occupant's year branch (六冲), the house sitting palace (冲坐山),
-      or the year's 太岁 — computed from the people in this workspace and this home's
+    <div id="mi-out" class="hint">Day officers (建除) that are auspicious (Completion, Settle, Open) minus any day
+      clashing an occupant's year branch (Six Clash, 六冲), the house sitting palace (冲坐山),
+      or the year's Grand Duke (太岁) — computed from the people in this workspace and this home's
       facing only. Default window: next 6 months.</div></div>`;
 }
 
@@ -1339,26 +1359,27 @@ async function loadMovein() {
     const r = await api(`/api/pub/w/${token}/homes/${cur}/movein_dates?${q}`);
     $("#mi-out").innerHTML = r.days.length ?
       `<div style="overflow-x:auto"><table>
-        <tr><th>Date</th><th>Day</th><th>干支</th><th>建除</th></tr>
+        <tr><th>Date</th><th>Day</th><th>Ganzhi (干支)</th><th>Day officer (建除)</th></tr>
         ${r.days.map(d => `<tr${["Sat", "Sun"].includes(d.weekday) ?
             ' style="background:#f2f8f2"' : ""}>
           <td><b>${d.date}</b></td><td>${d.weekday}</td>
-          <td>${d.ganzhi}</td><td>${d.officer}日</td></tr>`).join("")}</table></div>
+          <td>${d.ganzhi}</td><td>${d.officer} day</td></tr>`).join("")}</table></div>
       <div class="hint">${r.start} → ${r.end} · sitting palace branch
         ${r.sitting.join("/")} protected · weekend rows shaded. Move in during the
-        morning (巳时 09:00–11:00 is customary) and boil water or cook something simple
+        morning (the Snake hour, 巳时 09:00–11:00, is customary) and boil water or cook something simple
         the same day — the stove declares occupancy.</div>` :
-      "no clean 成/定/开 day in this window — widen the range.";
+      "no clean Completion / Settle / Open day in this window — widen the range.";
+    glossifyDom($("#mi-out"), false);
   } catch (err) { $("#mi-out").textContent = err.message; }
 }
 
 /* ===== clinical report blocks (port to fs_analyze.html) ===== */
 const EL_SW = {
-  "木":[["绿 green","#2F5D3A"],["青 teal-green","#6B8E5A"]],
-  "火":[["红 red","#C5221F"],["橙 terracotta","#B05A37"]],
-  "土":[["米 beige","#D8CDB8"],["棕 oak","#A9814E"]],
-  "金":[["白 stone white","#E8E6E3"],["灰 grey","#B9BCC0"],["金属 brass","#B08D57"]],
-  "水":[["蓝 navy","#1A2F52"],["黑 charcoal","#3A3D42"]]};
+  "木":[["green","#2F5D3A"],["teal-green","#6B8E5A"]],
+  "火":[["red","#C5221F"],["terracotta","#B05A37"]],
+  "土":[["beige","#D8CDB8"],["oak","#A9814E"]],
+  "金":[["stone white","#E8E6E3"],["grey","#B9BCC0"],["brass","#B08D57"]],
+  "水":[["navy","#1A2F52"],["charcoal","#3A3D42"]]};
 const WORD_EL = [["绿/青","木"],["红/橙/紫","火"],["黄/米/棕","土"],["白/灰/金属色","金"],["蓝/黑","水"],
   ["绿","木"],["红","火"],["金属","金"],["綠","木"],["青","木"],["紅","火"],["紫","火"],["黃","土"],["棕","土"],["黑","水"],["藍","水"],["白","金"],["金","金"]];
 const BAZHAI_EN = {"生氣":"Vitality","天醫":"Heavenly Doctor","延年":"Longevity","伏位":"Stability",
@@ -1368,8 +1389,9 @@ const FLAG_EN = {"入門線":"entry line","門沖床":"door onto bed","床在門
 const AFF_EN = {"三煞":"Three Killings","岁破":"Year Breaker","歲破":"Year Breaker","太岁":"Grand Duke","太歲":"Grand Duke",
   "五黄":"Five Yellow","五黃":"Five Yellow","二五不動":"no works"};
 const GATE_EN = {"正城門":"main gate","副城門":"side gate"};
-const L = (zh, en) => `<span class="bl">${zh}${en ? `<small>${en}</small>` : ""}</span>`;
-const Li = (zh, en) => `<span class="bl inl">${zh}${en ? `<small>${en}</small>` : ""}</span>`;
+// English-first labels: L(english, chinese?) -> English label, the Chinese small and shown once (shared glossary)
+const L = (en, zh) => window.GL && zh ? GL.label(zh, en) : `<span class="bl en">${en}</span>`;
+const Li = (en, zh) => L(en, zh);
 function swFor(text) {
   const out = [], seen = new Set();
   const add = (n, h) => { if (!seen.has(h)) { seen.add(h); out.push([n, h]); } };
@@ -1383,7 +1405,7 @@ function swFor(text) {
 }
 const SW = (list, why) => list.map(([n, h]) =>
   `<span class="sw" style="background:${h}" title="${n}${why ? " · " + why : ""}"></span>`).join("");
-const SCOPE = (s) => s === "textiles" ? L("布艺", "textiles") : L("墙面", "planes");
+const SCOPE = (s) => s === "textiles" ? L("textiles") : L("planes");
 const swRow = (items) => items.length
   ? items.map(i => { const s = swFor(i.what); return s.length
       ? `<span title="${i.why}">${SW(s)}<span class="swlab">${SCOPE(i.scope)}</span></span>`
@@ -1392,9 +1414,9 @@ const swRow = (items) => items.length
 const lightSw = (k) => !k ? "" : /4000/.test(k) ? SW([["4000K neutral", "#F4F6F8"]]) :
   /2700/.test(k) && !/3000/.test(k) ? SW([["2700K warm", "#F2C98A"]]) : SW([["3000K warm-neutral", "#F7E3B5"]]);
 const SEV = (b) => b.severity ? `<span class="sev sev${b.severity}" title="二五 severity ${b.severity} (運星 ${b.run_star_element || "—"})">${
-  [2, 5].every(n => n === b.mountain || n === b.water) ? L("二五", "2-5 pair") : L("二/五", "2 or 5")}${b.worst ? L(" 首要", "first priority") : ""}</span>`
-  : `<span class="sev sev0">${L("清", "clear")}</span>`;
-const FLAGC = (f) => `<span class="whychip neg" title="${(f.remedy || "")} · ${(f.doctrine || "")}">${L(f.zh, FLAG_EN[f.zh] || "")}</span>`;
+  [2, 5].every(n => n === b.mountain || n === b.water) ? L("2-5 pair", "二五") : L("2 or 5", "二/五")}${b.worst ? L("first priority") : ""}</span>`
+  : `<span class="sev sev0">${L("clear")}</span>`;
+const FLAGC = (f) => `<span class="whychip neg" title="${(f.remedy || "")} · ${(f.doctrine || "")}">${L(FLAG_EN[f.zh] || f.zh, f.zh)}</span>`;
 const STARC = (star, good) => `<span class="dirchip ${good ? "good" : "bad"}">${L(star, BAZHAI_EN[star] || "")}</span>`;
 const bandCls = (b) => ({strong:"band-strong",good:"band-good",fair:"band-fair",weak:"band-weak",poor:"band-poor"})[b] || "band-fair";
 
@@ -1427,7 +1449,7 @@ function selSummary(res) {
   return { total, over };
 }
 function verdictOf(total) {
-  return total >= 0.5 ? [L("适合", "suitable"), "v-good"] : total >= 0 ? [L("可行", "workable"), "v-ok"] : [L("不宜", "unsuitable"), "v-bad"];
+  return total >= 0.5 ? [L("suitable"), "v-good"] : total >= 0 ? [L("workable"), "v-ok"] : [L("unsuitable", "不宜"), "v-bad"];
 }
 
 /* ---- 1 · House compatibility ---- */
@@ -1436,25 +1458,25 @@ function compatRow(res, p) {
   const room = selRoom(p);
   const [vt, vc] = verdictOf(room ? room.total : -1);
   const top = room ? room.why.filter(w => typeof w !== "string").sort((a, b) => Math.abs(b.v) - Math.abs(a.v))[0] : null;
-  const role = p.role === "parent" ? L("父母", "parent") : p.role === "child" ? L("子女", "child") : L("成人", "adult");
-  return `<div class="cp-name"><b>${p.name}</b> <span class="hint">${role}</span><br><span class="dirchip ${p.match ? "good" : "bad"}">${Li(p.gua + "命 " + (p.group.includes("East") ? "東四" : "西四") + (p.match ? " ✓" : " ✗"), p.match ? "match" : "opposite")}</span></div>
+  const role = p.role === "parent" ? L("parent") : p.role === "child" ? L("child") : L("adult");
+  return `<div class="cp-name"><b>${p.name}</b> <span class="hint">${role}</span><br><span class="dirchip ${p.match ? "good" : "bad"}">${Li(p.gua + " · " + (p.group.includes("East") ? "East" : "West") + " group " + (p.match ? "✓ match" : "✗ opposite"))}</span></div>
     <div class="cp-bar">${ASP_KEYS.map(k => { const a = by[k]; return a
-      ? `<div class="seg ${bandCls(a.band)}" title="${a.driver}"><span>${L(a.zh, (ASP_HEAD[k] || "").split(" ")[1] || k)}</span><b>${a.score}</b></div>`
+      ? `<div class="seg ${bandCls(a.band)}" title="${a.driver}"><span>${window.GL ? GL.pair(a.zh, ASP_HEAD[k] || k) : (ASP_HEAD[k] || k)}</span><b>${a.score}</b></div>`
       : `<div class="seg band-fair">—</div>`; }).join("")}</div>
     <div class="cp-verdict"><span class="verdict ${vc}">${vt}</span><br><small class="hint">${room ? `${room.label} · ${room.total.toFixed(2)}` : "no bedroom traced"}</small></div>
     ${top ? `<div class="cp-reason">${top.v >= 0 ? "▲" : "▼"} ${top.t} <b>${top.v >= 0 ? "+" : ""}${top.v.toFixed(2)}</b></div>` : ""}`;
 }
 function compatBlock(res) {
   const h = res.house, m = res.main;
-  const hz = h.group.includes("East") ? "東四宅" : "西四宅";
+  const hz = h.group.includes("East") ? "East house (東四宅)" : "West house (西四宅)";
   const worst = Object.values(res.room_briefs || {}).filter(b => b.severity > 0)
     .sort((a, b) => b.severity - a.severity)[0];
-  let html = `<div class="sec"><h2>${L("宅命相配", "House compatibility")}</h2>
-    <div class="house-line">${res.period}運 ${m.sitting}山${m.facing}向 · <b>${m.structure}</b> · 坐${h.sitting_gua} ${hz}
-      ${worst ? ` · 二五 首要 <b>${worst.label}</b> (${worst.palace}宫 山${worst.mountain}向${worst.water})` : " · no 二五 palace on a traced room"}</div>
+  let html = `<div class="sec"><h2>${L("House compatibility", "宅命相配")}</h2>
+    <div class="house-line">Period ${res.period} · sitting ${m.sitting} · facing ${m.facing} · <b>${m.structure}</b> · sitting trigram ${h.sitting_gua} · ${hz}
+      ${worst ? ` · 2-5 first priority <b>${worst.label}</b> (${worst.palace} palace mountain ${worst.mountain} · facing ${worst.water})` : " · no 2-5 palace on a traced room"}</div>
     <div id="compat-rows">${res.people.map(p => `<div class="cp-row" data-cp="${p.name}">${compatRow(res, p)}</div>`).join("")}</div>
-    <div class="hint" style="margin-top:6px">${Li("按已选房间评定", "verdict follows the room selected for each person below")}</div>
-    <details class="full"><summary>Full detail 详情 — 六项评分 scorecard, 宅命 doctrine note</summary>
+    <div class="hint" style="margin-top:6px">${Li("verdict follows the room selected for each person below")}</div>
+    <details class="full"><summary>Full detail — six-aspect scorecard, house-and-kua doctrine note</summary>
     ${houseNote(res)}${scorecardBlock(res)}</details></div>`;
   return html;
 }
@@ -1467,29 +1489,29 @@ function roomPane(res, p, room) {
   let bed = "", desk = "";
   if (row && row.beds.length) {
     const t = row.beds[0];
-    bed = `${Li("床头靠", "headboard")} <b>${t.dir}</b> ${STARC(t.star, t.score >= 0)}
-      ${t.flags.length ? t.flags.map(FLAGC).join(" ") : `<span class="whychip pos">${L("无门线冲", "no door-line flag")}</span>`}
+    bed = `${Li("headboard")} <b>${t.dir}</b> ${STARC(t.star, t.score >= 0)}
+      ${t.flags.length ? t.flags.map(FLAGC).join(" ") : `<span class="whychip pos">${L("no door-line flag")}</span>`}
       ${row.warnings.filter(w => !w.site_check).map(FLAGC).join(" ")}`;
-    desk = row.desk ? `${Li("朝", "facing")} <b>${row.desk.dir}</b> ${STARC(row.desk.star, true)} · ${Li("门", "door")} ${row.desk.door_side}
+    desk = row.desk ? `${Li("facing")} <b>${row.desk.dir}</b> ${STARC(row.desk.star, true)} · ${Li("door")} ${row.desk.door_side}
       <div class="hint">${row.desk.remedy || ""}</div>` : `<span class="hint">no auspicious wall free</span>`;
   } else {
     bed = `${p.dirs_good.slice(0, 2).map(d => STARC(d.dir + " " + d.star, true)).join(" ")}
-      <span class="hint">by 命卦 — no door-line audit for this room</span>`;
-    desk = p.wenchang ? `文昌 <span class="dirchip good">${p.wenchang.dir}</span> ${p.wenchang.face ? `chair facing <b>${p.wenchang.face.dir} ${p.wenchang.face.star}</b>` : ""}` : "";
+      <span class="hint">by kua number — no door-line audit for this room</span>`;
+    desk = p.wenchang ? `Study star (文昌) <span class="dirchip good">${p.wenchang.dir}</span> ${p.wenchang.face ? `chair facing <b>${p.wenchang.face.dir} ${p.wenchang.face.star}</b>` : ""}` : "";
   }
   const why = room.why.map(w => typeof w === "string" ? `<span class="whychip">${w}</span>`
     : `<span class="whychip ${w.v >= 0 ? "pos" : "neg"}">${w.t} <b>${w.v >= 0 ? "+" : ""}${w.v.toFixed(2)}</b></span>`).join(" ");
-  const pal = occ ? `<div class="cell"><div class="rc-lab">${L("个人用神", "Personal palette")} <span class="swlab">${SCOPE(occ.palette_scope)}</span></div>
-      ${SW(occ.palette_personal.flatMap(w => swFor(w)), "用神")} <span class="swlab">${L("宜", "use")}</span>
-      ${SW(occ.palette_avoid.flatMap(w => swFor(w)), "忌神")} <span class="swlab">${L("忌", "avoid")}</span>
+  const pal = occ ? `<div class="cell"><div class="rc-lab">${L("Personal palette", "个人用神")} <span class="swlab">${SCOPE(occ.palette_scope)}</span></div>
+      ${SW(occ.palette_personal.flatMap(w => swFor(w)), "用神")} <span class="swlab">${L("use", "宜")}</span>
+      ${SW(occ.palette_avoid.flatMap(w => swFor(w)), "忌神")} <span class="swlab">${L("avoid", "忌")}</span>
       ${occ.cost ? `<div class="hint">${occ.cost}</div>` : ""}</div>` : "";
   return `<div class="rp-grid">
-    <div class="cell"><div class="rc-lab">${L("评分", "Score")}</div><span class="rp-score ${room.total >= 0 ? "b-good" : "b-weak"}">${room.total.toFixed(2)}</span>
-      <span class="hint">${brief.palace}宫 山${brief.mountain}向${brief.water}</span> ${SEV(brief)}<div>${why}</div></div>
-    <div class="cell"><div class="rc-lab">🛏 ${L("床头", "Bed head")}</div>${bed}<div class="rc-lab" style="margin-top:8px">📚 ${L("书桌", "Desk")}</div>${desk}</div>
-    <div class="cell"><div class="rc-lab">${L("房间用色", "Room colours")}</div>
-      <div>${swRow(brief.colours_use || [])} <span class="swlab">${L("宜", "use")}</span></div>
-      <div style="margin-top:4px">${swRow(brief.colours_avoid || [])} <span class="swlab">${L("忌", "avoid")}</span></div>
+    <div class="cell"><div class="rc-lab">${L("Score")}</div><span class="rp-score ${room.total >= 0 ? "b-good" : "b-weak"}">${room.total.toFixed(2)}</span>
+      <span class="hint">${brief.palace} palace mountain ${brief.mountain} · facing ${brief.water}</span> ${SEV(brief)}<div>${why}</div></div>
+    <div class="cell"><div class="rc-lab">🛏 ${L("Bed head")}</div>${bed}<div class="rc-lab" style="margin-top:8px">📚 ${L("Desk")}</div>${desk}</div>
+    <div class="cell"><div class="rc-lab">${L("Room colours")}</div>
+      <div>${swRow(brief.colours_use || [])} <span class="swlab">${L("use", "宜")}</span></div>
+      <div style="margin-top:4px">${swRow(brief.colours_avoid || [])} <span class="swlab">${L("avoid", "忌")}</span></div>
       ${brief.override_note ? `<div class="hint">${brief.override_note}</div>` : ""}</div>
     ${pal}
   </div>`;
@@ -1498,16 +1520,16 @@ function suggestionInner(res) {
   const s = res.suggestion;
   if (!s) return "";
   const line = (key, zh, en, o) => o ? `<div class="sg-row" data-sg="${key}">
-      <span class="sg-name">${L(zh, en)}</span>
+      <span class="sg-name">${L(zh)} <small class="hint">${en}</small></span>
       <span>${Object.entries(o.assignment).map(([room, ns]) => `<b>${room}</b> ← ${ns.join(", ")}`).join(" · ")}
-        · ${Li("合计", "household")} <b>${o.household_total.toFixed(2)}</b>${o.rule ? ` <span class="hint">(${o.rule})</span>` : ""}</span>
-      ${selMatches(res, o.assignment) ? `<span class="dirchip good">✓ ${L("已选", "selected")}</span>` : `<button class="ghost" data-apply="${key}">${L("采用", "apply")}</button>`}
+        · ${Li("household")} <b>${o.household_total.toFixed(2)}</b>${o.rule ? ` <span class="hint">(${o.rule})</span>` : ""}</span>
+      ${selMatches(res, o.assignment) ? `<span class="dirchip good">✓ ${L("selected")}</span>` : `<button class="ghost" data-apply="${key}">${L("apply")}</button>`}
     </div>` : "";
   const sum = selSummary(res);
-  return `<h2>${L("配房方案", "Assignment options")}</h2>
-    ${line("default", "默认", "parents → master", s.default)}${line("optimal", "最优", "optimiser's best", s.optimal)}
-    <div class="assign-line">${Li("已选", "selected")}: ${res.people.map(p => { const r = selRoom(p); return `<b>${p.name}</b> → ${r ? r.label : "—"}`; }).join(" · ")}
-      · ${Li("合计", "household")} <b>${sum.total.toFixed(2)}</b>${sum.over.length ? ` <span class="whychip neg">⚠ ${L("超员", "over capacity")}: ${sum.over.join(", ")}</span>` : ""}</div>`;
+  return `<h2>${L("Assignment options")}</h2>
+    ${line("default", "Default", "parents → master", s.default)}${line("optimal", "Optimal", "optimiser's best", s.optimal)}
+    <div class="assign-line">${Li("selected")}: ${res.people.map(p => { const r = selRoom(p); return `<b>${p.name}</b> → ${r ? r.label : "—"}`; }).join(" · ")}
+      · ${Li("household")} <b>${sum.total.toFixed(2)}</b>${sum.over.length ? ` <span class="whychip neg">⚠ ${L("over capacity")}: ${sum.over.join(", ")}</span>` : ""}</div>`;
 }
 function roomsPeopleBlock(res) {
   if (!res.people || !res.people.length) return "";
@@ -1515,14 +1537,14 @@ function roomsPeopleBlock(res) {
   for (const p of res.people) {
     const def = selRoom(p);
     if (!def) { html += `<div class="sec rp"><h2>${p.name}</h2><div class="hint">mark bedrooms to rank rooms</div></div>`; continue; }
-    html += `<div class="sec rp" data-person="${p.name}"><div class="rp-head"><h2 style="margin:0">${p.name} · ${p.gua}命</h2>
-      <label class="hint">${L("房间", "room")} <select data-room-for="${p.name}">${p.rooms.map((r, i) =>
+    html += `<div class="sec rp" data-person="${p.name}"><div class="rp-head"><h2 style="margin:0">${p.name} · kua ${p.gua}</h2>
+      <label class="hint">${L("room")} <select data-room-for="${p.name}">${p.rooms.map((r, i) =>
         `<option value="${r.id}" ${r.id === def.id ? "selected" : ""}>${i === 0 ? "★ " : ""}${r.label} · ${r.total.toFixed(2)}</option>`).join("")}</select></label>
       <span class="print-only">${def.label}</span></div>
       <div class="rp-body" data-body-for="${p.name}">${roomPane(res, p, def)}</div></div>`;
   }
   html += `<div class="sec" id="sugg-sec"><div id="sugg">${suggestionInner(res)}</div>
-    <details class="full"><summary>Full detail 详情 — directions & rooms tables, person-room score breakdown, bed alternatives, floor-plan overlay</summary>
+    <details class="full"><summary>Full detail — directions & rooms tables, person-room score breakdown, bed alternatives, floor-plan overlay</summary>
     ${personRoomScores(res.scores)}${peopleBlock(res)}${placementBlock(res)}${colorsBlock(res)}</details></div>`;
   return html;
 }
@@ -1531,14 +1553,14 @@ function refreshClinical(res) {
     const room = selRoom(p);
     if (!room) continue;
     const body = document.querySelector(`[data-body-for="${p.name}"]`);
-    if (body) body.innerHTML = roomPane(res, p, room);
+    if (body) { body.innerHTML = roomPane(res, p, room); glossifyDom(body, false); }
     const sel = document.querySelector(`select[data-room-for="${p.name}"]`);
     if (sel) { sel.value = room.id; sel.closest(".rp-head").querySelector(".print-only").textContent = room.label; }
     const cp = document.querySelector(`[data-cp="${p.name}"]`);
-    if (cp) cp.innerHTML = compatRow(res, p);
+    if (cp) { cp.innerHTML = compatRow(res, p); glossifyDom(cp, false); }
   }
   const sg = document.getElementById("sugg");
-  if (sg) { sg.innerHTML = suggestionInner(res); bindApply(res); }
+  if (sg) { sg.innerHTML = suggestionInner(res); glossifyDom(sg, false); bindApply(res); }
 }
 function bindApply(res) {
   document.querySelectorAll("button[data-apply]").forEach(b => b.onclick = () => {
@@ -1564,46 +1586,47 @@ function renovationBlock(res) {
     return `${u ? `<span title="${u.why}">✓ ${u.what.split(/[;,]/)[0]}</span>` : ""}${a ? `<br><span class="b-weak" title="${a.why}">✗ ${a.what.split(/[;,]/)[0]}</span>` : ""}` || "—"; };
   const rows = Object.entries(briefs).map(([rid, b]) => {
     const t = b.timing || {}, L_ = b.lighting || {};
-    return `<tr><td><b>${b.label || rid}</b></td><td>${b.palace || "—"}${b.mountain != null ? `<br><small>山${b.mountain}向${b.water}</small>` : ""}</td>
+    return `<tr><td><b>${b.label || rid}</b></td><td>${b.palace || "—"}${b.mountain != null ? `<br><small>mountain ${b.mountain} · facing ${b.water}</small>` : ""}</td>
       <td>${b.palace === "中" ? "—" : SEV(b)}</td>
       <td>${swRow(b.colours_use || [])}</td><td>${swRow(b.colours_avoid || [])}</td>
       <td>${mats(b)}</td>
       <td>${lightSw(L_.fixed_k)}${L_.fixed_k || "—"}<br><small class="hint">${L_.lamps_k || ""}</small></td>
-      <td>${t.structure_ok === false ? `<span class="whychip neg" title="${(t.now || []).join(" ")}">${L("动土 ✗", t.next && t.next.length ? "structure: both years" : "structure: until 立春 " + wt.next)}</span>`
-          : `<span class="whychip pos">${L("动土 ✓", "structure ok")}</span>`} <span class="whychip pos" title="platform, panel, overlay, cabinet run">${L("装饰 ✓", "finish-fit ok")}</span>
-          ${(b.timing_rules || []).filter(r => r.code === "F3").map(r => `<br><span class="whychip neg" title="${r.text}">${L(r.zh, AFF_EN[r.zh] || "")}</span>`).join("")}</td>
-      <td>${b.gate ? `<span class="whychip ${b.gate.valid ? "pos" : "neg"}" title="${b.gate.text}">${L(b.gate.rank + (b.gate.guarded ? " 向星5" : ""), (GATE_EN[b.gate.rank] || "") + (b.gate.guarded ? " · blocked" : ""))}</span>` : ""}</td></tr>`;
+      <td>${t.structure_ok === false ? `<span class="whychip neg" title="${(t.now || []).join(" ")}">${L("✗ " + (t.next && t.next.length ? "structure: both years" : "structure: until Start of Spring " + wt.next), "动土")}</span>`
+          : `<span class="whychip pos">${L("✓ structure ok")}</span>`} <span class="whychip pos" title="platform, panel, overlay, cabinet run">${L("✓ finish-fit ok")}</span>
+          ${(b.timing_rules || []).filter(r => r.code === "F3").map(r => `<br><span class="whychip neg" title="${r.text}">${L(AFF_EN[r.zh] || r.zh, r.zh)}</span>`).join("")}</td>
+      <td>${b.gate ? `<span class="whychip ${b.gate.valid ? "pos" : "neg"}" title="${b.gate.text}">${L((GATE_EN[b.gate.rank] || b.gate.rank) + (b.gate.guarded ? " · blocked (facing star 5)" : ""))}</span>` : ""}</td></tr>`;
   }).join("");
   const AF = (h) => L(h, AFF_EN[h] || "");
   const grid = Object.entries(briefs).map(([rid, b]) => { const r = wrow[rid];
-    const cell = (hits) => hits && hits.length ? `<div class="bad">${hits.map(AF).join(" ")}</div>` : `<div class="clean">${L("清", "clean")}</div>`;
+    const cell = (hits) => hits && hits.length ? `<div class="bad">${hits.map(AF).join(" ")}</div>` : `<div class="clean">${L("clean")}</div>`;
     return `<div>${b.label || rid}</div>${cell(r && r.now)}${cell(r && r.next)}`; }).join("");
-  return `<div class="sec"><h2>${L("装修", "Renovation")} <span class="hint">per room: colours · materials · lighting · works timing · hover any cell for its rule</span></h2>
-    <div style="overflow-x:auto"><table class="rtable"><tr><th>${L("房间", "Room")}</th><th>${L("宫 山/向", "palace · stars")}</th><th>${L("二五", "2-5")}</th><th>${L("宜", "USE")}</th><th>${L("忌", "AVOID")}</th><th>${L("材料", "Materials")}</th><th>${L("灯光", "Lighting")}</th><th>${L("动工 " + wt.year, "works")}</th><th>${L("城门", "Gate")}</th></tr>${rows}</table></div>
-    <div class="tgrid"><div class="th">${L("动工", "works")}</div><div class="th">${wt.year}</div><div class="th">${wt.next}</div>${grid}</div>
-    <div class="hint" style="margin-top:6px">太岁/岁破/三煞/五黄 sectors: no 动土 (hacking, drilling, wet works) while afflicted; finish-fit proceeds. 立春 ≈ 4 Feb.</div>
-    <details class="full"><summary>Full detail 详情 — room brief cards (colours, objects, bed & desk, lighting & timing), renovation timing table</summary>
+  return `<div class="sec"><h2>${L("Renovation")} <span class="hint">per room: colours · materials · lighting · works timing · hover any cell for its rule</span></h2>
+    <div style="overflow-x:auto"><table class="rtable"><tr><th>${L("Room")}</th><th>${L("palace · stars")}</th><th>${L("2-5", "二五")}</th><th>${L("USE", "宜")}</th><th>${L("AVOID", "忌")}</th><th>${L("Materials")}</th><th>${L("Lighting")}</th><th>${L("works " + wt.year, "动工")}</th><th>${L("Gate")}</th></tr>${rows}</table></div>
+    <div class="tgrid"><div class="th">${L("works")}</div><div class="th">${wt.year}</div><div class="th">${wt.next}</div>${grid}</div>
+    <div class="hint" style="margin-top:6px">Grand Duke / Year Breaker / Three Killings / Five Yellow sectors: no breaking ground (动土: hacking, drilling, wet works) while afflicted; finish-fit proceeds. Start of Spring (立春) ≈ 4 Feb.</div>
+    <details class="full"><summary>Full detail — room brief cards (colours, objects, bed & desk, lighting & timing), renovation timing table</summary>
     ${worksBlock(res)}${roomCardsBlock(res)}</details></div>${moveinBlock()}`;
 }
 
 function houseNote(res) {
-  const h = res.house, hz = h.group.includes("East") ? "東四宅 (East house)" : "西四宅 (West house)";
-  return `<div class="hint" style="margin:8px 0">This home sits 坐${h.sitting_gua} (${h.dir} sitting) → <b>${hz}</b>.
-    八宅 doctrine matches the house group to each person's 命卦 group; a mismatch is not a verdict —
+  const h = res.house, hz = h.group.includes("East") ? "East house (東四宅)" : "West house (西四宅)";
+  return `<div class="hint" style="margin:8px 0">This home sits on the ${h.sitting_gua} trigram (${h.dir} sitting) → <b>${hz}</b>.
+    Eight House (八宅) doctrine matches the house group to each person's kua number (命卦) group; a mismatch is not a verdict —
     the room ranking and bed directions are how it is worked around.</div>`;
 }
 
 function traceChecksBlock(res) {
   const tc = res.trace_checks || [];
   if (!tc.length) return "";
-  return `<div class="tc-box"><b>描图核对 Trace checks</b>
-    ${tc.map(c => `<div><span class="whychip ${c.severity === "warn" ? "neg" : ""}">${L(c.zh, c.code.replace(/-/g, " "))}</span>
+  return `<div class="tc-box"><b>Trace checks</b>
+    ${tc.map(c => `<div><span class="whychip ${c.severity === "warn" ? "neg" : ""}">${L(c.code.replace(/-/g, " "), c.zh)}</span>
       ${c.text}${c.rooms && c.rooms.length ? ` <b>(${c.rooms.join(", ")})</b>` : ""}</div>`).join("")}
-    <div class="hint">${res.include_outdoor ? "balconies are counted toward the centre (box ticked)" : "balconies and patios are excluded from the 太极点 by default; tick the box above the plan to include them"}</div></div>`;
+    <div class="hint">${res.include_outdoor ? "balconies are counted toward the centre (box ticked)" : "balconies and patios are excluded from the centre point (太极点) by default; tick the box above the plan to include them"}</div></div>`;
 }
 
 function renderResults(res) {
   lastRes = res;
+  if (window.GL) GL.reset();
   let html = "";
   if (res.boundary && res.boundary.zone !== "正向") {
     html += `<div class="warn">⚠ ${res.boundary.zone}: the facing sits ${res.boundary.offset_deg}°
@@ -1611,24 +1634,25 @@ function renderResults(res) {
       boundary — both charts shown; re-measure on site to settle which rules.</div>`;
   }
   html += traceChecksBlock(res);
-  html += chartBlock("Main chart 主盘", res.main);
+  html += chartBlock("Main chart", res.main);
   if (res.alternate) {
     html += `<div class="warn">Why an alternate chart? The measured facing sits in the
-      boundary zone between two mountains (兼向/騎線) — a fraction of a degree decides
+      boundary zone between two mountains (mixed facing, 兼向 / straddling a boundary, 騎線) — a fraction of a degree decides
       which flying-star chart rules the house, so BOTH are computed. Re-measure the
       facing on site (2–3 readings away from metal) to settle which one applies.</div>`;
-    html += chartBlock("Alternate chart 兼盘", res.alternate, res.alternate_scores);
+    html += chartBlock("Alternate chart", res.alternate, res.alternate_scores);
   }
   initSel(res);
   html += compatBlock(res);
   html += roomsPeopleBlock(res);
   html += renovationBlock(res);
-  html += `<div class="sec hint foot">Scores blend 八宅命卦 + 玄空飞星 + 用神 element fit —
+  html += `<div class="sec hint foot">Scores blend Eight House kua number (八宅命卦) + Flying Stars (玄空飞星) + useful god (用神) element fit —
     each line above cites its rule. Annual stars are for ${res.year}. Everything on this
     page is computed only from each person's birth chart and this home's traced rooms +
     facing — deterministic rules, no AI guesswork. This analysis is saved to this home
     in your workspace link.</div>`;
   $("#results").innerHTML = html;
+  glossifyDom($("#results"), false);
   bindRoomSelects(res);
   const mi = $("#mi-go");
   if (mi) mi.onclick = loadMovein;
@@ -1638,8 +1662,8 @@ function renderResults(res) {
 }
 
 const ASP_KEYS = ["health", "career", "study", "wealth", "relationship", "luck"];
-const ASP_HEAD = {health: "健康 Health", career: "事业 Career", study: "学业 Study",
-  wealth: "财富 Wealth", relationship: "感情 Relationship", luck: "运势 Luck"};
+const ASP_HEAD = {health: "Health", career: "Career", study: "Study",
+  wealth: "Wealth", relationship: "Relationship", luck: "Luck"};
 const BAND_BY_ZH = {"旺": "strong", "优": "good", "平": "fair", "弱": "weak", "忌": "poor"};
 const aspectCell = a => !a ? "<td>—</td>" :
   `<td class="b-${a.band || BAND_BY_ZH[a.band_zh] || "fair"}" title="${a.driver || ""}">
@@ -1647,25 +1671,25 @@ const aspectCell = a => !a ? "<td>—</td>" :
 
 function scorecardBlock(res) {
   if (!res.aspects) return "";
-  return `<div class="sec"><h2>Per-person scorecard 六项评分</h2>
+  return `<div class="sec"><h2>Per-person scorecard</h2>
     <div style="overflow-x:auto"><table class="bc-table">
-      <tr><th>Person</th><th>宅命 match</th><th>Best room · fit</th>
+      <tr><th>Person</th><th>House–kua match</th><th>Best room · fit</th>
         ${ASP_KEYS.map(k => `<th>${ASP_HEAD[k]}</th>`).join("")}</tr>
       ${res.people.map(p => {
         const by = Object.fromEntries((res.aspects[p.name] || []).map(a => [a.aspect, a]));
         const best = p.rooms[0];
         return `<tr><td><b>${p.name}</b></td>
-          <td class="${p.match ? "b-good" : "b-weak"}">${p.match ? "✓ 相配" : "✗ 相斥"}</td>
+          <td class="${p.match ? "b-good" : "b-weak"}">${p.match ? "✓ match" : "✗ clash"}</td>
           <td class="${best ? (best.total >= 0 ? "b-good" : "b-weak") : ""}">
             ${best ? `${best.label} · <b>${best.total.toFixed(2)}</b>` : "—"}</td>
           ${ASP_KEYS.map(k => aspectCell(by[k])).join("")}</tr>`;
       }).join("")}
     </table></div>
-    <div class="hint">Colour = band: <span class="dirchip" style="background:#cfe9d6;color:#155d24">旺 strong</span>
-      <span class="dirchip" style="background:#e9f7ee;color:#1e7d32">优 good</span>
-      <span class="dirchip" style="background:#f7f4ec">平 fair</span>
-      <span class="dirchip" style="background:#ffe9d2;color:#a35a00">弱 weak</span>
-      <span class="dirchip" style="background:#fdecea;color:#b03a2e">忌 poor</span>
+    <div class="hint">Colour = band: <span class="dirchip" style="background:#cfe9d6;color:#155d24">strong</span>
+      <span class="dirchip" style="background:#e9f7ee;color:#1e7d32">good</span>
+      <span class="dirchip" style="background:#f7f4ec">fair</span>
+      <span class="dirchip" style="background:#ffe9d2;color:#a35a00">weak</span>
+      <span class="dirchip" style="background:#fdecea;color:#b03a2e">poor</span>
       — 0–100 per aspect, hover a cell for its driver. The same scale and colours
       run through the multi-home battlecard, so columns line up as homes are added.</div>
   </div>`;
@@ -1673,11 +1697,11 @@ function scorecardBlock(res) {
 
 function battlecardBlock(bc) {
   const hn = Object.fromEntries(bc.homes.map(h => [h.id, h.name]));
-  let html = `<div class="sec"><h2>⚔ Home battlecard 對決 <span class="hint">
+  let html = `<div class="sec"><h2>⚔ Home battlecard <span class="hint">
     ${bc.homes.length} analyzed homes compared per person</span></h2>
     <table class="bc-table"><tr><th>Home</th><th>House group</th><th>Best household total</th></tr>
     ${bc.homes.map(h => `<tr><td><b>${h.name}</b></td>
-      <td>${h.house ? `坐${h.house.sitting_gua} ${h.house.group.includes("East") ? "東四宅" : "西四宅"}` : "—"}</td>
+      <td>${h.house ? `sitting ${h.house.sitting_gua} · ${h.house.group.includes("East") ? "East house" : "West house"}` : "—"}</td>
       <td>${h.household_total != null ? h.household_total.toFixed(2) : "—"}</td></tr>`).join("")}
     </table></div>`;
   html += bc.people.map(p => `<div class="sec">
@@ -1685,7 +1709,7 @@ function battlecardBlock(bc) {
     <div style="overflow-x:auto"><table class="bc-table">
       <tr><th></th>${Object.keys(p.homes).map(hid =>
         `<th>${hn[hid]}${hid === p.edge ? " 👑" : ""}</th>`).join("")}</tr>
-      <tr><th>宅命 match</th>${Object.values(p.homes).map(r =>
+      <tr><th>House–kua match</th>${Object.values(p.homes).map(r =>
         `<td class="${r.match ? "b-good" : "b-weak"}">${r.match ? "✓ matches" : "✗ opposite"}</td>`).join("")}</tr>
       <tr><th>Best room · fit</th>${Object.values(p.homes).map(r =>
         `<td class="${r.fit != null ? (r.fit >= 0 ? "b-good" : "b-weak") : ""}">
@@ -1703,19 +1727,19 @@ function battlecardBlock(bc) {
 function peopleBlock(res) {
   if (!res.people || !res.people.length) return "";
   const h = res.house;
-  const hz = h.group.includes("East") ? "東四宅 (East house)" : "西四宅 (West house)";
+  const hz = h.group.includes("East") ? "East house (東四宅)" : "West house (西四宅)";
   let html = "";
   html += res.people.map(p => `<div class="sec">
-    <h2>${p.name} — directions &amp; rooms 方位与配房</h2>
-    <div class="kv"><b>Bed / desk facing 床头·书桌:</b>
+    <h2>${p.name} — directions &amp; rooms</h2>
+    <div class="kv"><b>Bed / desk facing:</b>
       ${p.dirs_good.map(d => `<span class="dirchip good">${d.dir} ${d.star}</span>`).join(" ")}
       &nbsp;avoid ${p.dirs_bad.slice(0, 2).map(d =>
         `<span class="dirchip bad">${d.dir} ${d.star}</span>`).join(" ")}</div>
-    ${p.wenchang ? `<div class="kv"><b>文昌 study spot:</b>
-      <span class="dirchip good">${p.wenchang.palace}宫 ${p.wenchang.dir}</span>
+    ${p.wenchang ? `<div class="kv"><b>Study spot (文昌):</b>
+      <span class="dirchip good">${p.wenchang.palace} palace ${p.wenchang.dir}</span>
       ${p.wenchang.rooms.length ?
         `desk in <b>${p.wenchang.rooms.join(" / ")}</b>` :
-        `no traced room in that palace — fallback <b>坐吉向吉</b>: desk at any solid
+        `no traced room in that palace — fallback <b>auspicious sitting and facing</b>: desk at any solid
          wall`}${p.wenchang.face ? `, chair facing
       <b>${p.wenchang.face.dir} ${p.wenchang.face.star}</b>` : ""}
       <span class="hint">(from this person's day master; never sit with your back
@@ -1730,7 +1754,7 @@ function peopleBlock(res) {
         for this person.</div>`}
   </div>`).join("");
   if (res.suggestion) {
-    html += `<div class="sec"><h2>Suggested assignment 最佳配房</h2>
+    html += `<div class="sec"><h2>Suggested assignment</h2>
       ${Object.entries(res.suggestion.assignment).map(([room, ns]) =>
         `<div class="kv">🛏 <b>${room}</b> ← ${ns.join(", ")}</div>`).join("")}
       <div class="hint">household total <b>${res.suggestion.household_total.toFixed(2)}</b>
@@ -1741,7 +1765,7 @@ function peopleBlock(res) {
 
 function personRoomScores(scores) {
   if (!scores) return "";
-  return `<h2 style="margin-top:10px">Person-room scores 配房评分</h2>` +
+  return `<h2 style="margin-top:10px">Person-room scores</h2>` +
     scores.scores.map(s => `<div class="score"><b>${s.person}</b> in ${s.room_label}:
       <b>${s.total.toFixed(2)}</b>${s.breakdown.map(b =>
         `<div class="cite">· [${b.layer}] ${b.contribution>=0?"+":""}${b.contribution.toFixed(2)} — ${b.explanation}</div>`).join("")}</div>`).join("") +
@@ -1756,30 +1780,30 @@ function chartBlock(tag, cb, scores) {
     const v = cb.palaces[p] || {};
     return `<div><div>${p}${DIRS[p] ? " " + DIRS[p] : ""}</div>
       <div class="st"><span class="m">${v.mountain ?? ""}</span>·<span class="w">${v.water ?? ""}</span></div>
-      <div class="ann">年${v.annual ?? ""}</div></div>`;
+      <div class="ann">year ${v.annual ?? ""}</div></div>`;
   }).join("");
   const roomrows = Object.entries(cb.rooms).map(([rid, p]) => {
     const r = rooms.find(x => x.id === rid);
     const v = cb.palaces[p] || {};
-    const nm = rid === "entrance" ? "🚪 Entrance 大門" : (r ? label(r) : rid);
-    return `<tr><td>${nm}</td><td>${p}宮 ${DIRS[p]||""}</td>
-      <td>山${v.mountain} 向${v.water} · 年${v.annual}</td></tr>`;
+    const nm = rid === "entrance" ? "🚪 Entrance" : (r ? label(r) : rid);
+    return `<tr><td>${nm}</td><td>${p} palace ${DIRS[p]||""}</td>
+      <td>mountain ${v.mountain} · facing ${v.water} · year ${v.annual}</td></tr>`;
   }).join("");
   const sc = scores ? personRoomScores(scores) : "";
   const geo = (cb.notes || []).length
-    ? `<div class="georead"><b>释盘 Geomancer's read:</b>
+    ? `<div class="georead"><b>Geomancer's read:</b>
        ${cb.notes.map(n => `<div>${n}</div>`).join("")}</div>` : "";
   return `<div class="sec"><h2>${tag}: ${cb.structure}
       ${cb.chart_type ? `<span class="hint">(${cb.chart_type})</span>` : ""}</h2>
-    <div class="hint">facing ${cb.facing} · sitting ${cb.sitting} · 山=mountain star
-      (people/health) · 向=water star (wealth) · 年=annual star</div>
+    <div class="hint">facing ${cb.facing} · sitting ${cb.sitting} · mountain star
+      (people/health) · facing (water) star (wealth) · annual star</div>
     <div class="cols"><div class="pal">${pal}</div>
     <table><tr><th>Room</th><th>Palace</th><th>Stars</th></tr>${roomrows}</table></div>
     ${geo}${sc}</div>`;
 }
 </script>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
-<div class="learnstrip"><b>Learn 知识库:</b> <a href="/learn/bed-direction-guide">Bed placement and direction</a> <a href="/learn/flying-stars-2027">Flying stars 2027</a> <a href="/learn/eight-house-directions">Eight House basics</a></div>
+<div class="learnstrip"><b>Learn:</b> <a href="/learn/bed-direction-guide">Bed placement and direction</a> <a href="/learn/flying-stars-2027">Flying stars 2027</a> <a href="/learn/eight-house-directions">Eight House basics</a></div>
 <footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
-<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (中文 zhōng wén)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
 </body></html>

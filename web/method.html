@@ -34,23 +34,24 @@ a{color:var(--accent)}ul,ol{padding-left:22px}li{margin-bottom:10px}.zh{display:
 <nav><a href="/">bazifor.me</a> <a href="/start">Your Reading</a> <a href="/fengshui">Home Fengshui</a> <a href="/baby">Baby Names</a> <a href="/learn">Learn</a></nav>
 <main>
 <h1>How bazifor.me computes a reading</h1>
-<div class="role">Ten claims, stated plainly <span class="zh" style="display:inline">· 十条方法声明</span></div>
+<div class="role">Ten claims, stated plainly</div>
 <p>These are the ten things this site commits to about how its engine works and what it does not do; each can be checked against the rule ids printed in every reading.</p>
 <ol>
-<li>Every reading is deterministic: the same birth data or floor plan always produces the same result. <span lang="zh-Hans" class="zh">每一份解读都是确定性的：相同的出生资料或户型图，永远得到相同的结果。</span></li>
-<li>Every line of output names the classical rule it applies, with a rule id a practitioner can check. <span lang="zh-Hans" class="zh">每一条输出都注明所依据的古典规则及规则编号，行家可以逐条核对。</span></li>
-<li>Birth times are converted to true solar time using longitude and the equation of time; Singapore and Malaysia clock times before 1982 use the UTC+7:30 offset of that era. <span lang="zh-Hans" class="zh">出生时间按经度与均时差换算为真太阳时；1982年前新加坡和马来西亚的钟表时间采用当时的UTC+7:30。</span></li>
-<li>Character strokes for naming follow the 康熙字典 count on the traditional form. <span lang="zh-Hans" class="zh">起名用字的笔画按康熙字典，以繁体字形计数。</span></li>
-<li>The 81-number stroke verdicts use a two-state scale, auspicious or not, until a cited finer table is adopted. <span lang="zh-Hans" class="zh">八十一数理的吉凶只分吉与不吉两档，待采用有出处的更细分表后再细化。</span></li>
-<li>Sound-alike checks run at three strengths: same syllables and tones, same syllables with different tones, and merged consonants; severe words cap the grade. <span lang="zh-Hans" class="zh">谐音检查分三档：音节与声调相同、音节相同而声调不同、声母合并；严重的谐音词会限制评级上限。</span></li>
-<li>The engine does not predict events; it computes classical structures and states their traditional reading. <span lang="zh-Hans" class="zh">引擎不预测事件，只计算古典结构并陈述其传统解读。</span></li>
-<li>No generative AI writes any reading; the text is rule output and hand-written guides. <span lang="zh-Hans" class="zh">任何解读都不由生成式人工智能撰写；文字来自规则输出和人工撰写的指南。</span></li>
-<li>Workspaces live behind an unguessable link, are never listed, and are not used for anything else. <span lang="zh-Hans" class="zh">工作区位于无法猜测的私人链接之后，从不公开列出，也不作其他用途。</span></li>
-<li>Where schools disagree on an element or a stroke count, the engine records its choice and marks it as disputed. <span lang="zh-Hans" class="zh">各流派对五行或笔画有分歧时，引擎记录所作选择并标注为有争议。</span></li>
+<li>Every reading is deterministic: the same birth data or floor plan always produces the same result.</li>
+<li>Every line of output names the classical rule it applies, with a rule id a practitioner can check.</li>
+<li>Birth times are converted to true solar time using longitude and the equation of time; Singapore and Malaysia clock times before 1982 use the UTC+7:30 offset of that era.</li>
+<li>Character strokes for naming follow the Kangxi Dictionary (康熙字典 kāng xī zì diǎn) count on the traditional form.</li>
+<li>The 81-number stroke verdicts use a two-state scale, auspicious or not, until a cited finer table is adopted.</li>
+<li>Sound-alike checks run at three strengths: same syllables and tones, same syllables with different tones, and merged consonants; severe words cap the grade.</li>
+<li>The engine does not predict events; it computes classical structures and states their traditional reading.</li>
+<li>No generative AI writes any reading; the text is rule output and hand-written guides.</li>
+<li>Workspaces live behind an unguessable link, are never listed, and are not used for anything else.</li>
+<li>Where schools disagree on an element or a stroke count, the engine records its choice and marks it as disputed.</li>
 </ol>
+<details class="zhver"><summary>The ten claims in Chinese (<span lang="zh-Hans">十条方法声明</span> shí tiáo fāng fǎ shēng míng)</summary><ol lang="zh-Hans"><li>每一份解读都是确定性的：相同的出生资料或户型图，永远得到相同的结果。</li><li>每一条输出都注明所依据的古典规则及规则编号，行家可以逐条核对。</li><li>出生时间按经度与均时差换算为真太阳时；1982年前新加坡和马来西亚的钟表时间采用当时的UTC+7:30。</li><li>起名用字的笔画按康熙字典，以繁体字形计数。</li><li>八十一数理的吉凶只分吉与不吉两档，待采用有出处的更细分表后再细化。</li><li>谐音检查分三档：音节与声调相同、音节相同而声调不同、声母合并；严重的谐音词会限制评级上限。</li><li>引擎不预测事件，只计算古典结构并陈述其传统解读。</li><li>任何解读都不由生成式人工智能撰写；文字来自规则输出和人工撰写的指南。</li><li>工作区位于无法猜测的私人链接之后，从不公开列出，也不作其他用途。</li><li>各流派对五行或笔画有分歧时，引擎记录所作选择并标注为有争议。</li></ol></details>
 <p>For the full pipeline read <a href="/how-it-works">how it works</a>, for who stands behind it see the <a href="/author">author</a>, and for the rules explained see the <a href="/learn">guides</a>.</p>
 </main>
 <footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
-<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (中文 zhōng wén)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 </body></html>
