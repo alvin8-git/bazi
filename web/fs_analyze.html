@@ -312,12 +312,13 @@ header nav.top a,header a#back{display:inline-flex;align-items:center;min-height
 header nav.top a:hover,header a#back:hover{background:#f3ecdd;border-color:var(--gold)}
 header a#back{background:#fff;color:var(--ink)}
 @media(min-width:760px){header h1{font-size:30px}}
+:root{--wood:#187a35;--fire:#c5221f;--earth:#8a6d1f;--metal:#8a6500;--water:#1a56b0}.el-wood{color:var(--wood)}.el-fire{color:var(--fire)}.el-earth{color:var(--earth)}.el-metal{color:var(--metal)}.el-water{color:var(--water)}.zh[data-tip]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;border-radius:2px}.zh[data-tip]:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}.gl-tip{position:fixed;z-index:9999;max-width:calc(100vw - 32px);width:max-content;background:#2b2620;color:#fff;font:500 14px/1.45 system-ui,sans-serif;padding:6px 10px;border-radius:8px;box-shadow:0 4px 14px rgba(43,38,32,.25);opacity:0;transition:opacity .15s;pointer-events:none;text-align:left;white-space:normal}.gl-tip.on{opacity:1}@media (prefers-reduced-motion:reduce){.gl-tip{transition:none}}
 </style><link rel="preload" as="image" href="/static/img/tools/fengshui-intro-600.jpg" media="(max-width: 759px)">
 <link rel="preload" as="image" href="/static/img/tools/fengshui-intro.jpg" media="(min-width: 760px)">
 </head><body>
 <header>
   <div>
-    <h1>Home feng shui analyzer (<span lang="zh-Hans">宅运分析 zhái yùn fēn xī</span>)</h1>
+    <h1>Home feng shui analyzer (<span class="zh" lang="zh-Hans" tabindex="0" title="zhái yùn fēn xī" data-tip="zhái yùn fēn xī">宅运分析</span>)</h1>
       <div class="hint" style="font-size:13px">every star and score cites its classical rule</div>
     <a href="/start" id="back" style="display:inline-block;margin-top:9px">← Back to
       workspace</a>
@@ -372,7 +373,7 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
 <section class="fs-intro" aria-label="About this tool">
   <div>
     
-    <p>Audit your home from its floor plan, with Flying Stars (玄空飛星 xuán kōng fēi xīng) and Eight Mansions (八宅 bā zhái) per person.</p>
+    <p>Audit your home from its floor plan, with Flying Stars (<span class="zh" lang="zh-Hant" tabindex="0" title="xuán kōng fēi xīng · Flying Stars" data-tip="xuán kōng fēi xīng · Flying Stars">玄空飛星</span>) and Eight Mansions (<span class="zh" lang="zh-Hant" tabindex="0" title="bā zhái · Eight House" data-tip="bā zhái · Eight House">八宅</span>) per person.</p>
     <p>You need a floor-plan photo, the facing bearing, and who sleeps where.</p>
     <p>You get room-by-room scores and remedies.</p>
   </div>
@@ -441,7 +442,7 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
           style="width:74px;padding:6px 7px;border:1px solid var(--line);border-radius:7px;font-size:14px">
         <button class="ghost" id="btn-p1" style="padding:6px 9px">+1</button>
         <button class="ghost" id="btn-p15" style="padding:6px 9px">+15</button>
-        <span id="fac-val">0° N (坎 kǎn, north)</span>
+        <span id="fac-val">0° N (<span class="zh" lang="zh-Hant" tabindex="0" title="kǎn · north" data-tip="kǎn · north">坎</span>, north)</span>
       </div>
       <div class="sep"></div>
       <select id="f-period" title="Period (元运)">
@@ -450,7 +451,7 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
         <option value="7">Period 7 (1984–04)</option>
       </select>
       <label class="hint" id="outdoor-wrap" title="excluded by default, the centre point (太极点) belongs to the enclosed home; balconies still get their own palace reading"
-        style="display:inline-flex;align-items:center;gap:4px;margin-right:8px"><input type="checkbox" id="f-outdoor"> Balconies count toward the centre point (太极点 tài jí diǎn)</label>
+        style="display:inline-flex;align-items:center;gap:4px;margin-right:8px"><input type="checkbox" id="f-outdoor"> Balconies count toward the centre point (<span class="zh" lang="zh-Hans" title="tài jí diǎn · centre point">太极点</span>)</label>
       <button class="dark" id="btn-analyze">Analyze plan</button>
     </div>
     <p class="fs-help"><b>Facing bearing:</b> stand at the main door looking out and read the phone compass in degrees. <b>Rooms:</b> draw each room as a box, name it, and mark where beds are.</p>
@@ -463,7 +464,7 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
             The centre point is the balance point of the whole home, so a missing area shifts every palace.</li>
           <li><b>No overlaps, no gaps</b>, each patch of floor belongs to exactly one shape; walls are nothing.</li>
           <li><b>Balconies and patios are drawn but excluded from the centre</b> (dashed), open to the sky and
-            outside the envelope you live in; they still get a palace reading for the water star (向星 xiàng xīng) and the gate check.</li>
+            outside the envelope you live in; they still get a palace reading for the water star (<span class="zh" lang="zh-Hant" tabindex="0" title="xiàng xīng · facing star" data-tip="xiàng xīng · facing star">向星</span>) and the gate check.</li>
           <li><b>Furniture inside a room is not a room</b>, a wardrobe, bay platform or bed stays inside its
             bedroom's shape; only a walk-in with its own walls and door is traced as Wardrobe.</li>
           <li><b>One child per bedroom, parents in the master</b>, set Beds on each bedroom; the optimiser never exceeds it.</li>
@@ -514,8 +515,8 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
         </div>
         <div class="hint" id="mark-hint">Optional: click a room edge to place it.
           Click a door to flip its hinge, again to remove. Click a window to mark
-          it a bay window (飘窗 piāo chuāng), again to remove. Doors enable the bed-placement
-          audit (door facing bed, 門沖床 mén chōng chuáng / commanding position / door facing door, 門對門 mén duì mén).</div>
+          it a bay window (<span class="zh" lang="zh-Hant" tabindex="0" title="piāo chuāng" data-tip="piāo chuāng">飘窗</span>), again to remove. Doors enable the bed-placement
+          audit (door facing bed, <span class="zh" lang="zh-Hant" tabindex="0" title="mén chōng chuáng · door facing the bed" data-tip="mén chōng chuáng · door facing the bed">門沖床</span> / commanding position / door facing door, <span class="zh" lang="zh-Hant" tabindex="0" title="mén duì mén · door facing door" data-tip="mén duì mén · door facing door">門對門</span>).</div>
       </div>
     </div>
     <div class="err" id="go-err" style="margin-top:8px"></div>
@@ -526,8 +527,8 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
       <h2>How to read this</h2>
       <p>Scores run from 0 to 100 for each room and person.</p>
       <ul>
-        <li>Mountain stars (山星 shān xīng) govern people and health. Water stars govern wealth and activity.</li>
-        <li>Favourable directions come from each person's Kua (卦 guà) number.</li>
+        <li>Mountain stars (<span class="zh" lang="zh-Hant" tabindex="0" title="shān xīng · mountain star" data-tip="shān xīng · mountain star">山星</span>) govern people and health. <span class="el el-water">Water</span> stars govern wealth and activity.</li>
+        <li>Favourable directions come from each person's Kua (<span class="zh" lang="zh-Hant" tabindex="0" title="guà" data-tip="guà">卦</span>) number.</li>
         <li>Every line names the rule it comes from.</li>
       </ul>
     </div>
@@ -557,10 +558,11 @@ function glossifyDom(root, fresh) {
   if (fresh) GL.reset();
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: (n) => n.parentElement && /[\u3400-\u9fff]/.test(n.nodeValue)
-      && !n.parentElement.closest("script,style,input,textarea,select,option,.keepzh,[lang='zh-Hans']")
+      && !n.parentElement.closest("script,style,input,textarea,select,option,.keepzh,.zh,[lang='zh-Hans']")
       ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
   const ns = []; let t; while ((t = w.nextNode())) ns.push(t);
   ns.forEach((n) => { const v = GL.text(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; });
+  GL.tipify(root);                     // Chinese runs -> tooltip spans (pinyin there only), element colours
 }
 document.addEventListener("DOMContentLoaded", () => glossifyDom(document.querySelector(".wrap, main, body"), true));
 fetch("/api/pub/version").then(r => r.json())
@@ -749,8 +751,8 @@ $("#btn-continue").addEventListener("click", async () => {
 });
 
 /* ---------------- facing slider + compass ---------------- */
-const MOUNTAINS = [["N (坎 kǎn, north)",0],["NE (艮 gèn, northeast)",45],["E (震 zhèn, east)",90],["SE (巽 xùn, southeast)",135],["S (離 lí, south)",180],
-  ["SW (坤 kūn, southwest)",225],["W (兌 duì, west)",270],["NW (乾 qián, northwest)",315]];
+const MOUNTAINS = [["N (坎, north)",0],["NE (艮, northeast)",45],["E (震, east)",90],["SE (巽, southeast)",135],["S (離, south)",180],
+  ["SW (坤, southwest)",225],["W (兌, west)",270],["NW (乾, northwest)",315]];
 function facLabel(d) {
   const m = MOUNTAINS.reduce((a, b) =>
     Math.min(Math.abs(d-b[1]), 360-Math.abs(d-b[1])) <
@@ -1107,7 +1109,7 @@ function updateArmedUI() {
     `rooms overlap; ↺ undoes a misplaced one.` :
     "Optional: click a room edge to place it. Click a door to flip its hinge, " +
     "again to remove. Click a window to mark it a bay window (飘窗), again to " +
-    "remove. Doors unlock the bed-placement audit (door facing bed, 門沖床 mén chōng chuáng / commanding position / door facing door, 門對門 mén duì mén).";
+    "remove. Doors unlock the bed-placement audit (door facing bed, 門沖床 / commanding position / door facing door, 門對門).";
 }
 $("#p-door").addEventListener("click", () => { armed = armed === "door" ? null : "door"; updateArmedUI(); });
 $("#p-win").addEventListener("click", () => { armed = armed === "window" ? null : "window"; updateArmedUI(); });
@@ -1922,5 +1924,6 @@ function chartBlock(tag, cb, scores) {
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 <div class="learnstrip"><b>Learn:</b> <a href="/learn/bed-direction-guide">Bed placement and direction</a> <a href="/learn/flying-stars-2027">Flying stars 2027</a> <a href="/learn/eight-house-directions">Eight House basics</a></div>
 <footer class="sitefoot">© bazifor.me, deterministic BaZi &amp; fengshui readings.<br>
-<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (中文 zhōng wén)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (<span class="zh" lang="zh-Hant" title="zhōng wén">中文</span>)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
+<script src="/static/glossary-tip.js" defer></script>
 </body></html>

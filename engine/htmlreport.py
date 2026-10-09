@@ -119,8 +119,9 @@ _STRAY = re.compile(r"(?<=[A-Za-z%])\s+([\u3400-\u9fff]{1,10})(?![\u3400-\u9fff]
 
 def _paren_stray(t: str) -> str:
     """An English phrase followed by its own Chinese ('Learning structure 学习文昌') ->
-    'Learning structure (学习文昌)'; text already inside parentheses is left alone."""
-    from .glossary import lookup, pinyin, segment
+    'Learning structure (学习文昌)'; text already inside parentheses is left alone.  The
+    reading goes into the tooltip span (tipify_html), not the text."""
+    from .glossary import lookup, segment
 
     def rep(m):
         if lookup(m.group(1)) or segment(m.group(1)):      # a glossary term already rendered
@@ -128,7 +129,7 @@ def _paren_stray(t: str) -> str:
         before = t[:m.start()]
         if before.count("(") > before.count(")"):
             return m.group(0)
-        return f" ({m.group(1)} {pinyin(m.group(1))})"
+        return f" ({m.group(1)})"
     return _STRAY.sub(rep, t)
 
 
@@ -137,8 +138,10 @@ def gloss_html(html: str, protect=(), gl=None) -> str:
     """Rewrite the visible text of a server-rendered HTML page English-first, with ONE
     Gloss for the whole page: 'Day Master (日主)' the first time, 'Day Master' after.
     Tags, scripts and styles are untouched; the pillar glyph grid keeps its glyphs (the
-    glyph is the chart) with pinyin beneath; person names in `protect` are left as they are."""
-    from engine.glossary import Gloss, TERMS
+    glyph is the chart) with one short caption beneath; person names in `protect` are left
+    as they are.  Finally every Chinese run becomes the shared tooltip span (pinyin lives in
+    the tooltip only) and the five elements take their colour (tipify_html)."""
+    from engine.glossary import TIP_CSS, Gloss, _pgl, tipify_html
     g = gl or Gloss()
     i = html.find("<body")
     head, body = (html[:i], html[i:]) if i >= 0 else ("", html)
@@ -161,11 +164,10 @@ def gloss_html(html: str, protect=(), gl=None) -> str:
     def _pz(m):
         gz = m.group(2).strip()
         if len(gz) == 2 and gz[0] in _STEM_CH and gz[1] in _BRANCH_CH:
-            full = g.pillar(gz)
-            rest = full[len(gz):].strip() if full.startswith(gz) else full
+            g.seen.add(gz)
             key = f"\ue002{len(keep)}\ue003"
             keep[key] = gz
-            return f'{m.group(1)}{key}<br><small>{rest}</small></div>'
+            return f'{m.group(1)}{key}<br><small>{_pgl(gz)}</small></div>'
         return m.group(0)
     body = re.sub(r'(<div class="pz">)([^<]*)</div>', _pz, body)
 
@@ -190,7 +192,9 @@ def gloss_html(html: str, protect=(), gl=None) -> str:
     res = head + "".join(out)
     for key, v in keep.items():
         res = res.replace(key, v)
-    return res
+    res = res.replace("</head>", f"<style>{TIP_CSS}</style></head>", 1)
+    res = res.replace("</body>", '<script src="/static/glossary-tip.js" defer></script></body>', 1)
+    return tipify_html(res)
 
 
 CSS = """

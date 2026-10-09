@@ -1055,16 +1055,15 @@ const rdSection = (id, title, q, grids, tail) =>
     ${tail && tail.filter(Boolean).length ? `<div class="rd-tail">${tail.filter(Boolean).join("")}</div>` : ""}</section>`;
 
 /* --- shared pieces ----------------------------------------------------------- */
-/* chart-grid glyphs stay Chinese (the glyph IS the chart); the small line under each
-   carries pinyin + gloss on first sight, pinyin only afterwards */
+/* chart-grid glyphs stay Chinese (the glyph IS the chart) with their pinyin in the tooltip
+   span; the small line under each carries the short gloss on first sight, nothing after */
 const PG_SEEN = new Set();
 function pgSmall(g) {
-  if (!window.GL) return "";
-  const py = GL.pinyin(g), gl = GL.gloss(g);
-  if (PG_SEEN.has(g)) return py;
+  if (!window.GL || PG_SEEN.has(g)) return "";
   PG_SEEN.add(g);
-  return gl ? `${py} · ${gl}` : py;
+  return GL.gloss(g) || "";
 }
+const zhs = (g) => (window.GL ? GL.zhSpan(g) : g);
 function pillarGrid(c) {
   PG_SEEN.clear();
   const lp = c.life_palaces;
@@ -1075,8 +1074,8 @@ function pillarGrid(c) {
     return `<div class="ccol${p === "day" ? " dm" : ""}">
       <div class="cclab">${labels[p]}</div>
       <div class="ccgod">${c.ten_gods[p] === "日主" ? "Day Master" : c.ten_gods[p]}</div>
-      <div class="ccstem keepzh" style="color:${EL_COL[STEM_EL[st]]}">${st}<span>${pgSmall(st)}</span></div>
-      <div class="ccbranch keepzh" style="color:${EL_COL[BR_EL[br]]}">${br}<span>${pgSmall(br)}</span></div>
+      <div class="ccstem keepzh" style="color:${EL_COL[STEM_EL[st]]}">${zhs(st)}<span>${pgSmall(st)}</span></div>
+      <div class="ccbranch keepzh" style="color:${EL_COL[BR_EL[br]]}">${zhs(br)}<span>${pgSmall(br)}</span></div>
       <div class="ccstage">${c.pillar_extras[p].stage} · ${c.pillar_extras[p].nayin}</div>
       <div class="cchid">${c.hidden_gods[p].join("<br>")}</div>
     </div>`;
@@ -1616,10 +1615,11 @@ function glossifyDom(root, fresh = true) {
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: (n) => n.parentElement
       && /[\u3400-\u9fff]/.test(n.nodeValue)
-      && !n.parentElement.closest("script,style,input,textarea,.keepzh,[lang='zh-Hans']")
+      && !n.parentElement.closest("script,style,input,textarea,.keepzh,.zh,[lang='zh-Hans']")
       ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
   const nodes = []; let t; while ((t = w.nextNode())) nodes.push(t);
   for (const n of nodes) { const v = GL.text(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; }
+  GL.tipify(root);                     // Chinese runs -> tooltip spans (pinyin there only), element colours
 }
 
 function wireReadingTabs(root) {

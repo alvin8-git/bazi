@@ -119,6 +119,7 @@ footer{padding:16px 22px 28px;text-align:center;color:var(--muted);font-size:13p
 footer a{color:var(--accent)}
 footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 6px}
 .verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#6b6359;z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
+:root{--wood:#187a35;--fire:#c5221f;--earth:#8a6d1f;--metal:#8a6500;--water:#1a56b0}.el-wood{color:var(--wood)}.el-fire{color:var(--fire)}.el-earth{color:var(--earth)}.el-metal{color:var(--metal)}.el-water{color:var(--water)}.zh[data-tip]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;border-radius:2px}.zh[data-tip]:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}.gl-tip{position:fixed;z-index:9999;max-width:calc(100vw - 32px);width:max-content;background:#2b2620;color:#fff;font:500 14px/1.45 system-ui,sans-serif;padding:6px 10px;border-radius:8px;box-shadow:0 4px 14px rgba(43,38,32,.25);opacity:0;transition:opacity .15s;pointer-events:none;text-align:left;white-space:normal}.gl-tip.on{opacity:1}@media (prefers-reduced-motion:reduce){.gl-tip{transition:none}}
 </style></head><body>
 <a class="skip" href="#main">Skip to content</a>
 <span class="verbadge" id="ver"></span>
@@ -138,7 +139,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
       <a class="cta" href="/start">Start your free reading</a>
       <a class="cta ghost" href="#how">See how it works</a>
       <p class="free">Free, no account, built for Singapore and Malaysia.</p>
-      <nav class="chips" aria-label="Jump to a tool"><a href="#card-bazi">BaZi (八字 bā zì) reading</a><a href="#card-fengshui">Home feng shui (風水 fēng shuǐ)</a><a href="#card-kua">Kua number (命卦 mìng guà)</a><a href="#card-baby">Baby names (起名 qǐ míng)</a></nav>
+      <nav class="chips" aria-label="Jump to a tool"><a href="#card-bazi">BaZi (<span class="zh" lang="zh-Hant" title="bā zì · BaZi">八字</span>) reading</a><a href="#card-fengshui">Home feng shui (<span class="zh" lang="zh-Hant" title="fēng shuǐ · feng shui">風水</span>)</a><a href="#card-kua">Kua number (<span class="zh" lang="zh-Hant" title="mìng guà · Kua number">命卦</span>)</a><a href="#card-baby">Baby names (<span class="zh" lang="zh-Hant" title="qǐ míng · baby naming">起名</span>)</a></nav>
     </div>
     <img class="hero-img" src="/static/img/hero-landing.jpg" srcset="/static/img/hero-landing-600.jpg 600w, /static/img/hero-landing.jpg 1200w" sizes="(min-width: 760px) 480px, 100vw" width="1200" height="800" fetchpriority="high" alt="Ink-wash illustration of a compass, a folded floor plan, a red seal and a jade pendant on a scholar's desk">
   </div>
@@ -152,7 +153,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
         <img class="shot" src="/static/img/shots/reading-desktop.jpg" alt="Example reading page for a fictional person: four pillars, day master and useful elements" width="1280" height="900" loading="lazy">
         <div class="body">
           <h3><small>Personal</small>BaZi reading</h3>
-          <p>Your four pillars, Day Master (日主 rì zhǔ), useful elements (用神 yòng shén), ten-year luck cycles and the timing windows that follow, each line with the rule that produced it. Add up to eight family members and compare.</p>
+          <p>Your four pillars, Day Master (<span class="zh" lang="zh-Hant" tabindex="0" title="rì zhǔ · Day Master" data-tip="rì zhǔ · Day Master">日主</span>), useful elements (<span class="zh" lang="zh-Hant" tabindex="0" title="yòng shén · useful god" data-tip="yòng shén · useful god">用神</span>), ten-year luck cycles and the timing windows that follow, each line with the rule that produced it. Add up to eight family members and compare.</p>
           <div class="go"><a href="/start">Start a reading</a></div>
         </div>
       </article>
@@ -160,7 +161,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
         <img class="shot" src="/static/img/shots/fengshui-desktop.jpg" alt="Example home fengshui result: room and aspect scores for a sample condo" width="1280" height="700" loading="lazy">
         <div class="body">
           <h3><small>House</small>Home feng shui audit</h3>
-          <p>Upload the floor plan, set the facing, trace the rooms. You get the Flying Stars (玄空飛星 xuán kōng fēi xīng) chart, the Eight Mansions (八宅 bā zhái) fit for each person, and a room-by-room score for an HDB flat or condominium.</p>
+          <p>Upload the floor plan, set the facing, trace the rooms. You get the Flying Stars (<span class="zh" lang="zh-Hant" tabindex="0" title="xuán kōng fēi xīng · Flying Stars" data-tip="xuán kōng fēi xīng · Flying Stars">玄空飛星</span>) chart, the Eight Mansions (<span class="zh" lang="zh-Hant" tabindex="0" title="bā zhái · Eight House" data-tip="bā zhái · Eight House">八宅</span>) fit for each person, and a room-by-room score for an HDB flat or condominium.</p>
           <div class="go"><a href="/fengshui">Audit your home</a></div>
         </div>
       </article>
@@ -168,7 +169,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
         <img class="shot" src="/static/img/shots/kua-desktop.jpg" alt="Example Kua number result: the eight directions around a compass with the favourable ones marked" width="1280" height="900" loading="lazy">
         <div class="body">
           <h3><small>Directions</small>Kua number</h3>
-          <p>Birth date and sex give your Kua number, counted from the Start of Spring (立春 lì chūn) year boundary. The page shows your four favourable and four unfavourable directions for the bed and the desk.</p>
+          <p>Birth date and sex give your Kua number, counted from the Start of Spring (<span class="zh" lang="zh-Hant" tabindex="0" title="lì chūn · Start of Spring" data-tip="lì chūn · Start of Spring">立春</span>) year boundary. The page shows your four favourable and four unfavourable directions for the bed and the desk.</p>
           <div class="go"><a href="/kua">Find your Kua number</a></div>
         </div>
       </article>
@@ -176,7 +177,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
         <img class="shot" src="/static/img/shots/baby-card-desktop.jpg" alt="Example baby name card for a fictional name with seven-part score bars" width="955" height="650" loading="lazy">
         <div class="body">
           <h3><small>Name</small>Baby name builder</h3>
-          <p>From the baby's chart to a scored shortlist: useful elements, Kangxi (康熙 kāng xī) stroke counts, the Five Grids (五格 wǔ gé), meaning, sound-alikes in Mandarin and English, and a printable name card.</p>
+          <p>From the baby's chart to a scored shortlist: useful elements, Kangxi (<span class="zh" lang="zh-Hant" tabindex="0" title="kāng xī · Kangxi" data-tip="kāng xī · Kangxi">康熙</span>) stroke counts, the Five Grids (<span class="zh" lang="zh-Hant" tabindex="0" title="wǔ gé · Five Grids" data-tip="wǔ gé · Five Grids">五格</span>), meaning, sound-alikes in Mandarin and English, and a printable name card.</p>
           <div class="go"><a href="/baby">Build a name</a></div>
         </div>
       </article>
@@ -237,7 +238,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
       <a href="/learn/flying-stars-2027">Flying Stars 2027</a>
       <a href="/learn/how-chinese-baby-names-are-scored">How names are scored</a>
       <a href="/learn">All guides</a>
-      <a href="/zh/learn">Guides in Chinese (中文 zhōng wén)</a>
+      <a href="/zh/learn">Guides in Chinese (<span class="zh" lang="zh-Hant" title="zhōng wén">中文</span>)</a>
     </div>
   </section>
 
@@ -250,6 +251,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
   </section>
 </main>
 <footer class="sitefoot">© bazifor.me, deterministic BaZi &amp; fengshui readings.<br>
-<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (中文 zhōng wén)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span> · <a href="/app">demo app (sample data)</a></footer>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (<span class="zh" lang="zh-Hant" title="zhōng wén">中文</span>)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span> · <a href="/app">demo app (sample data)</a></footer>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
+<script src="/static/glossary-tip.js" defer></script>
 </body></html>

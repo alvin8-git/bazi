@@ -40,12 +40,13 @@ border-radius:12px;padding:20px;text-align:center}
 border-radius:8px;text-decoration:none;font-weight:700;margin-top:8px}
 footer{border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;
 text-align:center;padding:18px}footer a{color:var(--accent)}
-.sitefoot .fnav{display:inline-block;margin-top:6px}</style></head><body>
+.sitefoot .fnav{display:inline-block;margin-top:6px}:root{--wood:#187a35;--fire:#c5221f;--earth:#8a6d1f;--metal:#8a6500;--water:#1a56b0}.el-wood{color:var(--wood)}.el-fire{color:var(--fire)}.el-earth{color:var(--earth)}.el-metal{color:var(--metal)}.el-water{color:var(--water)}.zh[data-tip]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;border-radius:2px}.zh[data-tip]:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}.gl-tip{position:fixed;z-index:9999;max-width:calc(100vw - 32px);width:max-content;background:#2b2620;color:#fff;font:500 14px/1.45 system-ui,sans-serif;padding:6px 10px;border-radius:8px;box-shadow:0 4px 14px rgba(43,38,32,.25);opacity:0;transition:opacity .15s;pointer-events:none;text-align:left;white-space:normal}.gl-tip.on{opacity:1}@media (prefers-reduced-motion:reduce){.gl-tip{transition:none}}
+</style></head><body>
 <nav><a href="/">bazifor.me</a> <a href="/start">Your Reading</a>
 <a href="/fengshui">Home Fengshui</a> <a href="/learn">Learn</a>
 <a href="/about">About</a> <a href="/faq">FAQ</a></nav>
 <main>
-<h1>How it works (<span lang="zh-Hans">运作原理 yùn zuò yuán lǐ</span>)</h1>
+<h1>How it works (<span class="zh" lang="zh-Hans" tabindex="0" title="yùn zuò yuán lǐ" data-tip="yùn zuò yuán lǐ">运作原理</span>)</h1>
 <p>Most "AI fortune telling" sites feed your birthday to a chatbot and hope the prose
 sounds wise. bazifor.me does the opposite: <b>everything is computed by a rules
 engine</b> — the same classical procedures a careful practitioner runs by hand, encoded
@@ -58,38 +59,38 @@ workspace lives behind an unguessable private link that only you hold. Unsure of
 birth time? Mark it, and time-dependent sections are flagged rather than faked.</div>
 
 <div class="step"><b class="n">2</b><b>The engine casts the chart — exactly.</b>
-Four pillars with the Start of Spring (立春 lì chūn) year boundary, solar-term months, the unbroken 60-day Jia Zi (甲子 jiǎ zǐ)
+Four pillars with the Start of Spring (<span class="zh" lang="zh-Hant" tabindex="0" title="lì chūn · Start of Spring" data-tip="lì chūn · Start of Spring">立春</span>) year boundary, solar-term months, the unbroken 60-day Jia Zi (<span class="zh" lang="zh-Hant" tabindex="0" title="jiǎ zǐ · Wood Rat" data-tip="jiǎ zǐ · Wood Rat">甲子</span>)
 cycle, and <b>true solar time</b> correction (including historical clock regimes — a
 pre-1982 Singapore birth is adjusted for the old UTC+7:30 standard). Then the derived
-layers: Day Master (日主 rì zhǔ) strength, useful god (用神 yòng shén) favourable elements, Ten Gods (十神 shí shén), luck cycles (大运 dà yùn),
-Eight House kua number (命卦 mìng guà) and direction maps, Wenchang (文昌 wén chāng) study positions.</div>
+layers: Day Master (<span class="zh" lang="zh-Hant" tabindex="0" title="rì zhǔ · Day Master" data-tip="rì zhǔ · Day Master">日主</span>) strength, useful god (<span class="zh" lang="zh-Hant" tabindex="0" title="yòng shén · useful god" data-tip="yòng shén · useful god">用神</span>) favourable elements, Ten Gods (<span class="zh" lang="zh-Hant" tabindex="0" title="shí shén · Ten Gods" data-tip="shí shén · Ten Gods">十神</span>), luck cycles (<span class="zh" lang="zh-Hans" tabindex="0" title="dà yùn · luck cycles" data-tip="dà yùn · luck cycles">大运</span>),
+Eight House kua number (<span class="zh" lang="zh-Hant" tabindex="0" title="mìng guà · Kua number" data-tip="mìng guà · Kua number">命卦</span>) and direction maps, Wenchang (<span class="zh" lang="zh-Hant" tabindex="0" title="wén chāng · study star" data-tip="wén chāng · study star">文昌</span>) study positions.</div>
 
 <div class="step"><b class="n">3</b><b>The reading assembles itself from cited rules.</b>
-Each section shows three things: the computed data, a plain-language interpretation (解读 jiě dú) narrative, and
+Each section shows three things: the computed data, a plain-language interpretation (<span class="zh" lang="zh-Hant" tabindex="0" title="jiě dú" data-tip="jiě dú">解读</span>) narrative, and
 a strategy — and <b>every line names the classical rule that produced it</b>. You can
 disagree with a rule; you can never be left wondering where a claim came from.</div>
 
 <p>Clock time in, true solar time out. The engine assumes Singapore/Malaysia clock time (UTC+8, and UTC+7:30 before 1982), then converts it to true solar time using your longitude and the equation of time: 09:30 on the clock becomes 08:16 true solar time at 103.85°E. The BaZi year changes at Start of Spring, not on 1 January; Start of Spring 2027 falls on 2027-02-04.</p>
 
-<details class="zhver"><summary>This section in Chinese (<span lang="zh-Hans">中文 zhōng wén</span>)</summary><div lang="zh-Hans"><p>引擎按新加坡/马来西亚钟表时间（UTC+8，1982年前为UTC+7:30）换算为真太阳时；八字的年柱以立春为界，而非1月1日。</p></div></details>
+<details class="zhver"><summary>This section in Chinese (<span class="zh" lang="zh-Hant" title="zhōng wén">中文</span>)</summary><div lang="zh-Hans"><p>引擎按新加坡/马来西亚钟表时间（UTC+8，1982年前为UTC+7:30）换算为真太阳时；八字的年柱以立春为界，而非1月1日。</p></div></details>
 
-<h2>The home fengshui pipeline (<span lang="zh-Hans">宅运分析 zhái yùn fēn xī</span>)</h2>
+<h2>The home fengshui pipeline (<span class="zh" lang="zh-Hans" tabindex="0" title="zhái yùn fēn xī" data-tip="zhái yùn fēn xī">宅运分析</span>)</h2>
 <div class="step"><b class="n">1</b><b>Upload a floor plan and set the facing.</b>
 Any photo or PDF page of your plan; enter the compass facing you measured at the main
-window. If your facing sits near a chart boundary (mixed facing, 兼向 jiān xiàng / straddling a boundary, 骑线 qí xiàn), the engine computes
+window. If your facing sits near a chart boundary (mixed facing, <span class="zh" lang="zh-Hant" tabindex="0" title="jiān xiàng · mixed facing" data-tip="jiān xiàng · mixed facing">兼向</span> / straddling a boundary, <span class="zh" lang="zh-Hant" tabindex="0" title="qí xiàn" data-tip="qí xiàn">骑线</span>), the engine computes
 <b>both</b> candidate charts and says so, instead of silently picking one.</div>
 <div class="step"><b class="n">2</b><b>Trace rooms — and optionally doors and windows.</b>
 Draw each room over the plan; zoom in to mark where doors and windows sit. Doors unlock
-the form-school audit: entry-line checks (door facing bed, 门冲床 mén chōng chuáng), commanding position, door-facing-door
+the form-school audit: entry-line checks (door facing bed, <span class="zh" lang="zh-Hans" tabindex="0" title="mén chōng chuáng · door facing the bed" data-tip="mén chōng chuáng · door facing the bed">门冲床</span>), commanding position, door-facing-door
 pairs.</div>
 <div class="step"><b class="n">3</b><b>Analyze.</b> One click computes the Flying Star
 chart for your building's period and facing, scores every person against every bedroom
 (three layers: Eight House + Flying Stars + useful god, each contribution cited), proposes bed and desk
 placement wall by wall, generates room colour guidance, a renovation-timing table
-against this year's and next year's afflictions, and a move-in date finder (入宅 rù zhái) for
+against this year's and next year's afflictions, and a move-in date finder (<span class="zh" lang="zh-Hant" tabindex="0" title="rù zhái · move-in" data-tip="rù zhái · move-in">入宅</span>) for
 your household. Add up to six homes and compare them side by side.</div>
 
-<h2>What a reading looks like (<span lang="zh-Hans">解读长什么样 jiě dú zhǎng shén me yàng</span>)</h2>
+<h2>What a reading looks like (<span class="zh" lang="zh-Hans" tabindex="0" title="jiě dú zhǎng shén me yàng" data-tip="jiě dú zhǎng shén me yàng">解读长什么样</span>)</h2>
 <style>.gallery{display:grid;grid-template-columns:1fr;gap:16px;margin:16px 0}@media(min-width:640px){.gallery{grid-template-columns:1fr 1fr}}.gallery figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px}.gallery img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;object-position:top;border-radius:8px;border:1px solid var(--line)}.gallery figcaption{font-size:13.5px;color:var(--muted);margin-top:8px;line-height:1.5}</style>
 <div class="gallery">
 <figure><img src="/static/img/shots/reading-desktop.jpg" alt="Example reading page for the fictional person 王大明: four-pillar grid and day master" width="1280" height="900"><figcaption>The reading: four pillars, Day Master and useful god, every number citing its rule.</figcaption></figure>
@@ -99,7 +100,7 @@ your household. Add up to six homes and compare them side by side.</div>
 </div>
 <p class="note">Example screens use fictional data.</p>
 
-<h2>Why you can trust the numbers (<span lang="zh-Hans">为什么可信 wèi shén me kě xìn</span>)</h2>
+<h2>Why you can trust the numbers (<span class="zh" lang="zh-Hant" tabindex="0" title="wèi shén me kě xìn" data-tip="wèi shén me kě xìn">为什么可信</span>)</h2>
 <div class="note">The engine reproduced a professionally produced, paid fengshui audit
 <b>to the digit</b> — 27/27 flying-star palaces and 32/32 directional assignments — and
 matches commercial BaZi chart products character-for-character on the calendar layer.
@@ -107,13 +108,14 @@ Determinism makes that test possible: run it twice, get the same answer, compare
 a benchmark. A chatbot can pass no such test.</div>
 <p>Curious about the methods themselves? The <a href="/learn">Learn library</a> explains
 each layer — four pillars, useful god, Eight House, flying stars, date selection — in plain
-language, in <a href="/learn">English</a> and <a href="/zh/learn">Chinese (中文 zhōng wén)</a>.</p>
+language, in <a href="/learn">English</a> and <a href="/zh/learn">Chinese (<span class="zh" lang="zh-Hant" title="zhōng wén">中文</span>)</a>.</p>
 
 <div class="cta"><b>See it on your own chart.</b><br>
 Free, no account, under a minute.<br>
 <a class="btn" href="/start?utm_source=how-it-works">Get your reading →</a></div>
 </main>
 <footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
-<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (中文 zhōng wén)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (<span class="zh" lang="zh-Hant" title="zhōng wén">中文</span>)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
+<script src="/static/glossary-tip.js" defer></script>
 </body></html>

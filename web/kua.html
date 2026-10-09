@@ -91,13 +91,14 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
 @media (max-width:560px){.empty{grid-template-columns:96px 1fr}.lists{grid-template-columns:1fr}.big .n{font-size:54px}}
 .grp{border-collapse:collapse;width:100%;font-size:14px;margin-top:8px}.grp th,.grp td{border:1px solid var(--line);padding:6px 8px;text-align:left}.grp th{color:var(--muted);font-weight:600}
 .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:8px}.tablewrap table{min-width:560px}
+:root{--wood:#187a35;--fire:#c5221f;--earth:#8a6d1f;--metal:#8a6500;--water:#1a56b0}.el-wood{color:var(--wood)}.el-fire{color:var(--fire)}.el-earth{color:var(--earth)}.el-metal{color:var(--metal)}.el-water{color:var(--water)}.zh[data-tip]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;border-radius:2px}.zh[data-tip]:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}.gl-tip{position:fixed;z-index:9999;max-width:calc(100vw - 32px);width:max-content;background:#2b2620;color:#fff;font:500 14px/1.45 system-ui,sans-serif;padding:6px 10px;border-radius:8px;box-shadow:0 4px 14px rgba(43,38,32,.25);opacity:0;transition:opacity .15s;pointer-events:none;text-align:left;white-space:normal}.gl-tip.on{opacity:1}@media (prefers-reduced-motion:reduce){.gl-tip{transition:none}}
 </style>
 <link rel="preload" as="image" href="/static/img/tools/kua-intro-600.jpg" media="(max-width: 759px)">
 <link rel="preload" as="image" href="/static/img/tools/kua-intro.jpg" media="(min-width: 760px)">
 </head><body>
 <header><div class="in"><p class="sub"><a href="/">bazifor.me</a> · <a href="/fengshui">Home fengshui</a> · <a href="/start">BaZi</a></p></div></header>
 <main>
-  <h1>Kua number calculator (<span lang="zh-Hans">命卦 mìng guà</span>)</h1>
+  <h1>Kua number calculator (<span class="zh" lang="zh-Hant" tabindex="0" title="mìng guà · Kua number" data-tip="mìng guà · Kua number">命卦</span>)</h1>
   <div class="introblock">
     <div>
       <p class="lead">This page works out your Kua number, the Eight Mansions label for you.</p>
@@ -113,7 +114,7 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
       <div>
         <label for="dob">Birth date</label>
         <input type="date" id="dob" name="dob" min="1900-01-01" max="2100-12-31" required aria-describedby="dob-h dob-e">
-        <p class="helper" id="dob-h">Counted from the start of spring (<span lang="zh-Hans">立春 lì chūn</span>), so a January birth may belong to the previous year.</p>
+        <p class="helper" id="dob-h">Counted from the start of spring (<span class="zh" lang="zh-Hant" tabindex="0" title="lì chūn · Start of Spring" data-tip="lì chūn · Start of Spring">立春</span>), so a January birth may belong to the previous year.</p>
         <div class="err" id="dob-e" role="alert"></div>
       </div>
       <fieldset aria-describedby="sex-e">
@@ -141,7 +142,7 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
     </div>
     <div class="sec">
       <h2>Your Kua number</h2>
-      <div class="big"><span class="n" id="r-num"></span><span class="t"><span lang="zh-Hans" id="r-gua"></span> <small id="r-py"></small></span></div>
+      <div class="big"><span class="n" id="r-num"></span><span class="t"><span id="r-gua"></span> <small id="r-py"></small></span></div>
       <div class="grp" id="r-grp"></div>
       <p class="note" id="r-lichun"></p>
     </div>
@@ -167,18 +168,18 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
   <div class="sec">
     <h2>What is a Kua number?</h2>
     <p class="hsub">The idea behind the calculator, in two paragraphs and a table.</p>
-    <p>The Kua number ("life trigram") is the Eight Mansions (八宅 bā zhái) label for a person. It is one of eight trigrams, numbered 1 to 9 with 5 skipped, taken from the birth year counted from Start of Spring and from the person's sex. Each trigram belongs to the East group (東四命 dōng sì mìng: 坎 (kǎn, north) 1, 震 (zhèn, east) 3, 巽 (xùn, south-east) 4, 離 (lí, south) 9) or the West group (西四命 xī sì mìng: 坤 (kūn, south-west) 2, 乾 (qián, north-west) 6, 兌 (duì, west) 7, 艮 (gèn, north-east) 8).</p>
-    <p>The trigram fixes eight directions around you: four favourable (Vitality (生氣 shēng qì), Heavenly Doctor (天醫 tiān yī), Longevity (延年 yán nián), Stability (伏位 fú wèi)) and four to avoid (Mishap (禍害 huò hài), Six Killings (六煞 liù shà), Five Ghosts (五鬼 wǔ guǐ), Severed Fate (絕命 jué mìng)), by the Eight Mansions wandering-year line-change rule (八宅大遊年 bā zhái dà yóu nián). The calculator applies the same table the <a href="/fengshui">home audit</a> uses, so the two always agree.</p>
+    <p>The Kua number ("life trigram") is the Eight Mansions (<span class="zh" lang="zh-Hant" tabindex="0" title="bā zhái · Eight House" data-tip="bā zhái · Eight House">八宅</span>) label for a person. It is one of eight trigrams, numbered 1 to 9 with 5 skipped, taken from the birth year counted from Start of Spring and from the person's sex. Each trigram belongs to the East group (<span class="zh" lang="zh-Hant" tabindex="0" title="dōng sì mìng · East group" data-tip="dōng sì mìng · East group">東四命</span>: <span class="zh" lang="zh-Hant" tabindex="0" title="kǎn · north" data-tip="kǎn · north">坎</span> (north) 1, <span class="zh" lang="zh-Hant" tabindex="0" title="zhèn · east" data-tip="zhèn · east">震</span> (east) 3, <span class="zh" lang="zh-Hant" tabindex="0" title="xùn · southeast" data-tip="xùn · southeast">巽</span> (south-east) 4, <span class="zh" lang="zh-Hant" tabindex="0" title="lí · south" data-tip="lí · south">離</span> (south) 9) or the West group (<span class="zh" lang="zh-Hant" tabindex="0" title="xī sì mìng · West group" data-tip="xī sì mìng · West group">西四命</span>: <span class="zh" lang="zh-Hant" tabindex="0" title="kūn · southwest" data-tip="kūn · southwest">坤</span> (south-west) 2, <span class="zh" lang="zh-Hant" tabindex="0" title="qián · northwest" data-tip="qián · northwest">乾</span> (north-west) 6, <span class="zh" lang="zh-Hant" tabindex="0" title="duì · west" data-tip="duì · west">兌</span> (west) 7, <span class="zh" lang="zh-Hant" tabindex="0" title="gèn · northeast" data-tip="gèn · northeast">艮</span> (north-east) 8).</p>
+    <p>The trigram fixes eight directions around you: four favourable (Vitality (<span class="zh" lang="zh-Hant" tabindex="0" title="shēng qì · Vitality" data-tip="shēng qì · Vitality">生氣</span>), Heavenly Doctor (<span class="zh" lang="zh-Hant" tabindex="0" title="tiān yī · Heavenly Doctor" data-tip="tiān yī · Heavenly Doctor">天醫</span>), Longevity (<span class="zh" lang="zh-Hant" tabindex="0" title="yán nián · Longevity" data-tip="yán nián · Longevity">延年</span>), Stability (<span class="zh" lang="zh-Hant" tabindex="0" title="fú wèi · Stability" data-tip="fú wèi · Stability">伏位</span>)) and four to avoid (Mishap (<span class="zh" lang="zh-Hant" tabindex="0" title="huò hài · Mishap" data-tip="huò hài · Mishap">禍害</span>), Six Killings (<span class="zh" lang="zh-Hant" tabindex="0" title="liù shà · Six Killings" data-tip="liù shà · Six Killings">六煞</span>), Five Ghosts (<span class="zh" lang="zh-Hant" tabindex="0" title="wǔ guǐ · Five Ghosts" data-tip="wǔ guǐ · Five Ghosts">五鬼</span>), Severed Fate (<span class="zh" lang="zh-Hant" tabindex="0" title="jué mìng · Severed Fate" data-tip="jué mìng · Severed Fate">絕命</span>)), by the Eight Mansions wandering-year line-change rule (<span class="zh" lang="zh-Hant" tabindex="0" title="bā zhái dà yóu nián · Great Wandering Year" data-tip="bā zhái dà yóu nián · Great Wandering Year">八宅大遊年</span>). The calculator applies the same table the <a href="/fengshui">home audit</a> uses, so the two always agree.</p>
     <table class="grp"><thead><tr><th>Group</th><th>Trigrams</th><th>Favourable directions</th></tr></thead><tbody>
-    <tr><td>East group</td><td>坎 1 · 震 3 · 巽 4 · 離 9</td><td>N, E, SE, S</td></tr>
-    <tr><td>West group</td><td>坤 2 · 乾 6 · 兌 7 · 艮 8</td><td>NE, SW, W, NW</td></tr></tbody></table>
+    <tr><td>East group</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="kǎn · north" data-tip="kǎn · north">坎</span> 1 · <span class="zh" lang="zh-Hant" tabindex="0" title="zhèn · east" data-tip="zhèn · east">震</span> 3 · <span class="zh" lang="zh-Hant" tabindex="0" title="xùn · southeast" data-tip="xùn · southeast">巽</span> 4 · <span class="zh" lang="zh-Hant" tabindex="0" title="lí · south" data-tip="lí · south">離</span> 9</td><td>N, E, SE, S</td></tr>
+    <tr><td>West group</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="kūn · southwest" data-tip="kūn · southwest">坤</span> 2 · <span class="zh" lang="zh-Hant" tabindex="0" title="qián · northwest" data-tip="qián · northwest">乾</span> 6 · <span class="zh" lang="zh-Hant" tabindex="0" title="duì · west" data-tip="duì · west">兌</span> 7 · <span class="zh" lang="zh-Hant" tabindex="0" title="gèn · northeast" data-tip="gèn · northeast">艮</span> 8</td><td>NE, SW, W, NW</td></tr></tbody></table>
   </div>
 
   <div class="sec">
     <h2>Worked example and lookup table</h2>
     <p class="hsub">Check the result by hand.</p>
-    <p>A fictional man born 15 March 1988 in Singapore: the year 1988 counts in full because Start of Spring fell on 4 February 1988. Its digits add to 26, then to 8; for a man the number is 11 minus 8, so his Kua is 3, the trigram 震 (zhèn, east), East group. His best headboard directions are south (Vitality), north (Heavenly Doctor) and south-east (Longevity). The number 5 is never assigned: a man who computes 5 takes 2 (坤 kūn) and a woman takes 8 (艮 gèn).</p>
-    <div class="tablewrap" tabindex="0" role="region" aria-label="Kua lookup table"><table class="grp"><thead><tr><th>Kua</th><th>Trigram</th><th>Group</th><th>Vitality</th><th>Heavenly Doctor</th><th>Longevity</th><th>Stability</th></tr></thead><tbody><tr><td>1</td><td>坎 Kan</td><td>East</td><td>SE</td><td>E</td><td>S</td><td>N</td></tr><tr><td>2</td><td>坤 Kun</td><td>West</td><td>NE</td><td>W</td><td>NW</td><td>SW</td></tr><tr><td>3</td><td>震 Zhen</td><td>East</td><td>S</td><td>N</td><td>SE</td><td>E</td></tr><tr><td>4</td><td>巽 Xun</td><td>East</td><td>N</td><td>S</td><td>E</td><td>SE</td></tr><tr><td>6</td><td>乾 Qian</td><td>West</td><td>W</td><td>NE</td><td>SW</td><td>NW</td></tr><tr><td>7</td><td>兌 Dui</td><td>West</td><td>NW</td><td>SW</td><td>NE</td><td>W</td></tr><tr><td>8</td><td>艮 Gen</td><td>West</td><td>SW</td><td>NW</td><td>W</td><td>NE</td></tr><tr><td>9</td><td>離 Li</td><td>East</td><td>E</td><td>SE</td><td>N</td><td>S</td></tr></tbody></table></div>
+    <p>A fictional man born 15 March 1988 in Singapore: the year 1988 counts in full because Start of Spring fell on 4 February 1988. Its digits add to 26, then to 8; for a man the number is 11 minus 8, so his Kua is 3, the trigram <span class="zh" lang="zh-Hant" tabindex="0" title="zhèn · east" data-tip="zhèn · east">震</span> (east), East group. His best headboard directions are south (Vitality), north (Heavenly Doctor) and south-east (Longevity). The number 5 is never assigned: a man who computes 5 takes 2 (<span class="zh" lang="zh-Hant" tabindex="0" title="kūn · southwest" data-tip="kūn · southwest">坤</span>) and a woman takes 8 (<span class="zh" lang="zh-Hant" tabindex="0" title="gèn · northeast" data-tip="gèn · northeast">艮</span>).</p>
+    <div class="tablewrap" tabindex="0" role="region" aria-label="Kua lookup table"><table class="grp"><thead><tr><th>Kua</th><th>Trigram</th><th>Group</th><th>Vitality</th><th>Heavenly Doctor</th><th>Longevity</th><th>Stability</th></tr></thead><tbody><tr><td>1</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="kǎn · north" data-tip="kǎn · north">坎</span> Kan</td><td>East</td><td>SE</td><td>E</td><td>S</td><td>N</td></tr><tr><td>2</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="kūn · southwest" data-tip="kūn · southwest">坤</span> Kun</td><td>West</td><td>NE</td><td>W</td><td>NW</td><td>SW</td></tr><tr><td>3</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="zhèn · east" data-tip="zhèn · east">震</span> Zhen</td><td>East</td><td>S</td><td>N</td><td>SE</td><td>E</td></tr><tr><td>4</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="xùn · southeast" data-tip="xùn · southeast">巽</span> Xun</td><td>East</td><td>N</td><td>S</td><td>E</td><td>SE</td></tr><tr><td>6</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="qián · northwest" data-tip="qián · northwest">乾</span> Qian</td><td>West</td><td>W</td><td>NE</td><td>SW</td><td>NW</td></tr><tr><td>7</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="duì · west" data-tip="duì · west">兌</span> Dui</td><td>West</td><td>NW</td><td>SW</td><td>NE</td><td>W</td></tr><tr><td>8</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="gèn · northeast" data-tip="gèn · northeast">艮</span> Gen</td><td>West</td><td>SW</td><td>NW</td><td>W</td><td>NE</td></tr><tr><td>9</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="lí · south" data-tip="lí · south">離</span> Li</td><td>East</td><td>E</td><td>SE</td><td>N</td><td>S</td></tr></tbody></table></div>
     <p class="note">The four directions not listed for your number are the ones to avoid: Mishap, Six Killings, Five Ghosts and Severed Fate. In Singapore and Malaysia an HDB flat or condominium bedroom usually offers only two solid walls, so pick the better of the two available directions rather than the best on paper.</p>
   </div>
   <div class="sec nextstrip">
@@ -196,7 +197,7 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
 </main>
 <div class="learnstrip">Learn more: <a href="/learn/bed-direction-guide">Bed direction guide</a><a href="/learn/eight-house-directions">Eight House directions</a><a href="/learn/what-is-bazi">What is BaZi?</a></div>
 <footer class="sitefoot">© bazifor.me, deterministic BaZi &amp; fengshui readings.<br>
-<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (中文 zhōng wén)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (<span class="zh" lang="zh-Hant" title="zhōng wén">中文</span>)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
 <script src="/static/glossary.js"></script>
 <script>
 (function(){
@@ -214,9 +215,10 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
       var path="M"+p1+" A"+R+","+R+" 0 0 1 "+p2+" L"+p3+" A"+r+","+r+" 0 0 0 "+p4+" Z";
       s.appendChild(el("path",{d:path,fill:x.good?"#cfe9d3":"#f8d3cf",stroke:x.good?"#1e7d32":"#b3261e","stroke-width":1.5}));
       var l=pt(cx,cy,98,c);   // one anchor per sector, three stacked lines (no radial overlap on E/W)
-      labels.push(el("text",{x:l[0],y:l[1]-12,"text-anchor":"middle","font-size":15,"font-weight":700,fill:"#2b2620"},d));
-      labels.push(el("text",{x:l[0],y:l[1]+6,"text-anchor":"middle","font-size":11,"font-weight":700,fill:x.good?"#14551f":"#8f1d17"},window.GL?GL.english(x.star):x.star));
-      labels.push(el("text",{x:l[0],y:l[1]+20,"text-anchor":"middle","font-size":10.5,fill:"#4f483f"},window.GL?GL.pinyin(x.star):x.star_pinyin));
+      labels.push(el("text",{x:l[0],y:l[1]-6,"text-anchor":"middle","font-size":15,"font-weight":700,fill:"#2b2620"},d));
+      var st=el("text",{x:l[0],y:l[1]+12,"text-anchor":"middle","font-size":11,"font-weight":700,fill:x.good?"#14551f":"#8f1d17"},window.GL?GL.english(x.star):x.star);
+      if(window.GL)st.appendChild(el("title",{},x.star+" · "+GL.tip(x.star)));   // pinyin on hover only
+      labels.push(st);
     });
     labels.forEach(function(t){s.appendChild(t)});
     s.appendChild(el("circle",{cx:cx,cy:cy,r:r-4,fill:"#fff",stroke:"#e5ded2"}));
@@ -226,7 +228,7 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
     var o=$(id);o.textContent="";
     items.forEach(function(x){var li=document.createElement("li");
       li.appendChild(document.createTextNode(x.dir+" "+(window.GL?GL.en(x.star):x.star)));
-      var sm=document.createElement("small");sm.textContent=" "+x.star_pinyin+" ("+(x.score>0?"+":"")+x.score.toFixed(1)+")";li.appendChild(sm);o.appendChild(li)});
+      var sm=document.createElement("small");sm.textContent=" ("+(x.score>0?"+":"")+x.score.toFixed(1)+")";li.appendChild(sm);o.appendChild(li)});
   }
   function clear(){["dob-e","sex-e","form-e"].forEach(function(i){$(i).textContent=""})}
   $("f").addEventListener("submit",function(e){
@@ -240,16 +242,18 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
     fetch("/api/pub/kua?dob="+encodeURIComponent(dob)+"&sex="+sx.value).then(function(r){
       return r.json().then(function(j){if(!r.ok)throw new Error(typeof j.detail==="string"?j.detail:"Check the date and try again.");return j})
     }).then(function(d){
-      $("r-num").textContent=d.gua_num;$("r-gua").textContent=d.gua;$("r-py").textContent=(window.GL?GL.pinyin(d.gua)+" · "+d.gua_pinyin+" trigram, "+GL.gloss(d.gua):d.gua_pinyin);
+      $("r-num").textContent=d.gua_num;if(window.GL)$("r-gua").innerHTML=GL.zhSpan(d.gua);else $("r-gua").textContent=d.gua;$("r-py").textContent=(window.GL?GL.gloss(d.gua)+" trigram":d.gua_pinyin);
       var g=$("r-grp");g.className="grp "+(d.group==="East"?"east":"west");
-      g.textContent=d.group+" group";var z=document.createElement("span");z.lang="zh-Hans";z.textContent=" ("+d.group_zh+(window.GL?" "+GL.pinyin(d.group_zh):"")+")";g.appendChild(z);
+      g.textContent=d.group+" group";var z=document.createElement("span");if(window.GL)z.innerHTML=" ("+GL.zhSpan(d.group_zh)+")";else z.textContent=" ("+d.group_zh+")";g.appendChild(z);
       $("r-lichun").textContent="Counted as year "+d.lichun_year+": your year turned on Start of Spring (立春), "+d.lichun_date+".";
       if(window.GL)GL.reset();
       draw(d.stars);fill("bed",d.best_bed);fill("desk",d.best_desk);
+      if(window.GL)GL.tipify($("res"));
       $("empty").hidden=true;$("res").hidden=false;$("res").scrollIntoView({behavior:"smooth",block:"start"});
     }).catch(function(err){$("form-e").textContent=err.message||"Something went wrong. Try again.";$("res").hidden=true})
     .then(function(){$("go").disabled=false;$("go").textContent="Calculate"});
   });
 })();
 </script>
+<script src="/static/glossary-tip.js" defer></script>
 </body></html>

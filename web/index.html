@@ -16,18 +16,18 @@
 <meta name="format-detection" content="telephone=no">
 <title>FengShui Family Compass</title>
 <link rel="stylesheet" href="/static/style.css">
-</head>
+<style>:root{--wood:#187a35;--fire:#c5221f;--earth:#8a6d1f;--metal:#8a6500;--water:#1a56b0}.el-wood{color:var(--wood)}.el-fire{color:var(--fire)}.el-earth{color:var(--earth)}.el-metal{color:var(--metal)}.el-water{color:var(--water)}.zh[data-tip]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;border-radius:2px}.zh[data-tip]:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}.gl-tip{position:fixed;z-index:9999;max-width:calc(100vw - 32px);width:max-content;background:#2b2620;color:#fff;font:500 14px/1.45 system-ui,sans-serif;padding:6px 10px;border-radius:8px;box-shadow:0 4px 14px rgba(43,38,32,.25);opacity:0;transition:opacity .15s;pointer-events:none;text-align:left;white-space:normal}.gl-tip.on{opacity:1}@media (prefers-reduced-motion:reduce){.gl-tip{transition:none}}</style></head>
 <body>
 <header>
-  <h1>FengShui Family Compass (罗盘 luó pán)</h1>
+  <h1>FengShui Family Compass (<span class="zh" lang="zh-Hans" tabindex="0" title="luó pán" data-tip="luó pán">罗盘</span>)</h1>
   <div id="house-line"></div>
   <div class="controls">
     <label>Year <input id="year" type="number" value="2026" min="1990" max="2060"></label>
     <label>Period
-      <select id="period"><option value="8" selected>Period 8 (八运 bā yùn)</option><option value="9">Period 9 (九运 jiǔ yùn)</option></select>
+      <select id="period"><option value="8" selected>Period 8 (八运)</option><option value="9">Period 9 (九运)</option></select>
     </label>
     <label>Sectors
-      <select id="method"><option value="pie" selected>pie (米字 mǐ zì)</option><option value="grid">grid (九宫 jiǔ gōng)</option></select>
+      <select id="method"><option value="pie" selected>pie (米字)</option><option value="grid">grid (九宫)</option></select>
     </label>
     <label>Time
       <select id="policy"><option value="true_solar" selected>true solar</option><option value="clock">clock</option></select>
@@ -74,5 +74,6 @@
 <script src="/static/glossary.js"></script>
 <script src="/static/app.js"></script>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
+<script src="/static/glossary-tip.js" defer></script>
 </body>
 </html>

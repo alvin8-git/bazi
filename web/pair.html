@@ -181,12 +181,13 @@ h2 .scorechip{float:right;margin-top:-2px}
   .pair-band::after{background:rgba(250,247,242,.72)}
   .report{padding:18px 14px}
 }
+:root{--wood:#187a35;--fire:#c5221f;--earth:#8a6d1f;--metal:#8a6500;--water:#1a56b0}.el-wood{color:var(--wood)}.el-fire{color:var(--fire)}.el-earth{color:var(--earth)}.el-metal{color:var(--metal)}.el-water{color:var(--water)}.zh[data-tip]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;border-radius:2px}.zh[data-tip]:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}.gl-tip{position:fixed;z-index:9999;max-width:calc(100vw - 32px);width:max-content;background:#2b2620;color:#fff;font:500 14px/1.45 system-ui,sans-serif;padding:6px 10px;border-radius:8px;box-shadow:0 4px 14px rgba(43,38,32,.25);opacity:0;transition:opacity .15s;pointer-events:none;text-align:left;white-space:normal}.gl-tip.on{opacity:1}@media (prefers-reduced-motion:reduce){.gl-tip{transition:none}}
 </style></head><body>
 <div class="page">
   <div class="pair-band" aria-label="Pair compatibility">
     <img src="/static/img/tools/pair-header-600.jpg" srcset="/static/img/tools/pair-header-600.jpg 600w, /static/img/tools/pair-header.jpg 1200w"
       sizes="(min-width:820px) 788px, 100vw" width="1200" height="400" alt="Two ink-wash figures facing each other across a table" fetchpriority="high">
-    <h1>Pair compatibility <small>(合婚 hé hūn)</small></h1>
+    <h1>Pair compatibility <small>(<span class="zh" lang="zh-Hant" tabindex="0" title="hé hūn · pair compatibility" data-tip="hé hūn · pair compatibility">合婚</span>)</small></h1>
   </div>
   <div class="toolbar"><a id="back" href="#">← Back to workspace</a>
     <button onclick="print()">🖨 Print</button></div>
@@ -194,7 +195,7 @@ h2 .scorechip{float:right;margin-top:-2px}
     <p>The score runs from 5 to 95 and starts at 50. Each comparison adds or removes points, and the table sums exactly to the total.</p>
     <ul>
       <li><b>Component table:</b> one row per factor, drawn against its own range.</li>
-      <li><b>How they see each other:</b> the Ten Gods (十神 shí shén) each person is to the other.</li>
+      <li><b>How they see each other:</b> the Ten Gods (<span class="zh" lang="zh-Hant" tabindex="0" title="shí shén · Ten Gods" data-tip="shí shén · Ten Gods">十神</span>) each person is to the other.</li>
       <li><b>Pillar interactions:</b> every branch of one chart set against every branch of the other.</li>
       <li><b>Three framings:</b> the same score read for family, couple and colleagues.</li>
     </ul>
@@ -308,10 +309,11 @@ function glossifyRep(root) {
   GL.reset();
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: (n) => n.parentElement && /[\u3400-\u9fff]/.test(n.nodeValue)
-      && !n.parentElement.closest("script,style,.keepzh,[lang='zh-Hans']")
+      && !n.parentElement.closest("script,style,.keepzh,.zh,[lang='zh-Hans']")
       ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
   const nodes = []; let t; while ((t = w.nextNode())) nodes.push(t);
   for (const n of nodes) { const v = GL.text(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; }
+  GL.tipify(root);                     // Chinese runs -> tooltip spans (pinyin there only), element colours
 }
 function gauge(score) {                       // band zones + marker, inline SVG
   const x = 20 + (score / 100) * 320;
@@ -466,4 +468,5 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
   } catch (e) { rep.innerHTML = `<b>could not load this pair</b> — ${esc(e.message)}`; }
 })();
 </script><script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
+<script src="/static/glossary-tip.js" defer></script>
 </body></html>

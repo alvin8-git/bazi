@@ -480,32 +480,91 @@ def pinyin(s: str) -> str:
 
 
 def english(term: str) -> str:
-    """The form used after first mention: English, or '漢字 pīnyīn' for terms with no English."""
+    """The form used after first mention: English, or the characters alone for terms with no
+    English (their pinyin lives in the tooltip, see tip())."""
     hit = lookup(term)
     if not hit:
         return term
-    en_, py, _, _ = hit[1]
-    return en_ or f"{term} {py}"
+    return hit[1][0] or term
 
 
 def _first(term: str, entry) -> str:
     en_, py, gl, cat = entry
     if en_:
-        return f"{en_} ({term} {py})"
-    return f"{term} ({py}, {gl})" if gl else f"{term} ({py})"
+        return f"{en_} ({term})"
+    return f"{term} ({gl})" if gl else term
 
 
 def en(term: str, first: bool = True) -> str:
-    """Stateless helper: 'English (漢字 pīnyīn)' when first, 'English' after; for terms with no
-    English equivalent '漢字 (pīnyīn, gloss)' then '漢字 pīnyīn'."""
+    """Stateless helper: 'English (漢字)' when first, 'English' after; for terms with no
+    English equivalent '漢字 (gloss)' then '漢字'.  Pinyin is never inline: see tip()."""
     hit = lookup(term)
     if not hit:
         return term
     return _first(term, hit[1]) if first else english(term)
 
 
+_STEMS = "甲乙丙丁戊己庚辛壬癸"
+_BRANCHES = "子丑寅卯辰巳午未申酉戌亥"
+
+
+def _is_pillar(r: str) -> bool:
+    return len(r) == 2 and r[0] in _STEMS and r[1] in _BRANCHES
+
+
+def _is_year(r: str) -> bool:
+    return len(r) == 3 and _is_pillar(r[:2]) and r[2] == "年"
+
+
+def _pgl(gz: str) -> str:
+    """'戊辰' -> 'Earth Dragon' (the stem's element and the branch's animal)."""
+    return f"{TERMS[gz[0]][2].split()[1]} {TERMS[gz[1]][2].split(',')[0]}"
+
+
+def tip(term: str) -> str:
+    """Tooltip text for a Chinese run: 'pīnyīn · English' (or '· gloss' for terms with no
+    English); stem-branch pairs read 'wù chén · Earth Dragon'; other words get their
+    per-character pinyin only; '' when no reading is known."""
+    hit = lookup(term)
+    if hit:
+        en_, py, gl, _ = hit[1]
+        return f"{py} · {en_ or gl}" if (en_ or gl) else py
+    if _is_pillar(term):
+        return f"{TERMS[term[0]][1]} {TERMS[term[1]][1]} · {_pgl(term)}"
+    if _is_year(term):
+        return f"{TERMS[term[0]][1]} {TERMS[term[1]][1]} nián · {_pgl(term[:2])} year"
+    seg = segment(term)
+    if seg:
+        return " ".join(lookup(p)[1][1] for p in seg) + " · " + ", ".join(
+            lookup(p)[1][0] or lookup(p)[1][2] or p for p in seg)
+    cp = _tipchars()
+    if term and all(c in cp or c in _PUNCT for c in term):
+        return " ".join(cp[c] for c in term if c in cp)
+    return ""
+
+
+_TIPCHARS: dict[str, str] | None = None
+
+
+def _tipchars() -> dict[str, str]:
+    """Per-character readings the tooltip may use: exactly the set web/glossary.js embeds (the
+    common characters plus every glossary character), so server and browser agree."""
+    global _TIPCHARS
+    if _TIPCHARS is None:
+        keep = _js_keep()                      # hoisted: _js_keep re-parses a 1.7 MB file
+        _TIPCHARS = {c: p for c, p in _charpy().items() if c in keep}
+    return _TIPCHARS
+
+
+def _js_keep() -> set[str]:
+    import json
+    from pathlib import Path
+    d = json.loads((Path(__file__).resolve().parent.parent / "data/naming/chardata.json").read_text("utf8"))
+    return {c for c, v in d.items() if v.get("common")} | set("".join(TERMS)) | set("".join(ALIASES))
+
+
 # ---------------------------------------------------------------- free-text rewriting
-_CJK = re.compile(r"[㐀-鿿豈-﫿]+")
+_CJK = re.compile(r"[㐀-鿿豈-﫿]+")
 _MAXLEN = max(len(k) for k in list(TERMS) + list(ALIASES))
 _LIST_CATS = {"element", "stem", "branch", "trigram", "direction", "animal", "colour"}
 _NB = r"(?![A-Za-zÀ-ɏ])"          # end of a latin word (ASCII \b misses tone marks in JS)
@@ -530,8 +589,6 @@ def segment(run: str):
     return out
 
 
-_STEMS = "甲乙丙丁戊己庚辛壬癸"
-_BRANCHES = "子丑寅卯辰巳午未申酉戌亥"
 _START = re.compile(r"(^|[.!?|]|^\s*(?:[-*>#]+|\d+\.)(?:\s+[-*>#]+)*)$")
 
 
@@ -543,13 +600,14 @@ def _cap(prev: str, r: str) -> str:
 
 
 def _compact(r: str) -> str:
-    """A rendering placed inside someone else's parentheses: no nested brackets."""
+    """A rendering placed inside someone else's parentheses: no nested brackets.
+    'Rob Wealth (劫財)' -> 'Rob Wealth, 劫財'; '戊 (yang Earth)' -> '戊, yang Earth'."""
     m = re.match(r"^(.*?) \((.*)\)$", r)
-    if not m:
-        return r
-    if _CJK.match(r):                       # '戊 (wù, yang Earth)' -> '戊 wù, yang Earth'
-        return f"{m.group(1)} {m.group(2)}"
-    return f"{m.group(1)}, {m.group(2)}"   # 'Rob Wealth (劫財 jié cái)' -> 'Rob Wealth, 劫財 jié cái'
+    return f"{m.group(1)}, {m.group(2)}" if m else r
+
+
+def _opened(out: str) -> bool:
+    return out.endswith(("(", "（"))
 
 
 class Gloss:
@@ -562,7 +620,7 @@ class Gloss:
         self.seen.clear()
 
     def en(self, term: str) -> str:
-        """'English (漢字 pīnyīn)' the first time in this context, 'English' afterwards."""
+        """'English (漢字)' the first time in this context, 'English' afterwards."""
         hit = lookup(term)
         if not hit:
             return term
@@ -575,65 +633,58 @@ class Gloss:
     __call__ = en
 
     def zh_once(self, term: str) -> str:
-        """'漢字 pīnyīn' the first time (for a small secondary label), '' afterwards."""
+        """'漢字' the first time (for a small secondary label), '' afterwards."""
         hit = lookup(term)
         k = hit[0] if hit else term
         if k in self.seen:
             return ""
         self.seen.add(k)
-        py = pinyin(term)
-        return f"{term} {py}" if py else term
+        return term
 
     def pair(self, zh: str, en_: str) -> str:
-        """A page's own (Chinese, English) label pair: 'English (中文 pīnyīn)' first, 'English' after.
+        """A page's own (Chinese, English) label pair: 'English (中文)' first, 'English' after.
         Tracked by the glossary key when the Chinese is a glossary term, else by the string."""
         hit = lookup(zh)
         k = hit[0] if hit else zh
         if not zh or k in self.seen:
             return en_
         self.seen.add(k)
-        py = pinyin(zh)
-        return f"{en_} ({zh} {py})" if py else f"{en_} ({zh})"
+        return f"{en_} ({zh})"
 
     def label(self, zh: str, en_: str | None = None) -> str:
-        """HTML label: English big, '漢字 pīnyīn' small once; no-English terms keep the
-        characters with pinyin (and the gloss on first use)."""
+        """HTML label: English big, the characters small once (pinyin in their tooltip);
+        no-English terms keep the characters with the gloss on first use."""
         import html as _h
         hit = lookup(zh)
         k = hit[0] if hit else zh
         first = bool(zh) and k not in self.seen
         self.seen.add(k)
-        py = pinyin(zh)
-        zs = f'<span lang="zh-Hans">{_h.escape(zh)}</span>'
+        zs = zh_span(zh)
         if hit and not hit[1][0] and not en_:
             gl = hit[1][2]
-            small = f"{py}, {gl}" if first and gl else py
-            return f'<span class="bl en">{zs} <small>{_h.escape(small)}</small></span>'
+            small = f" <small>{_h.escape(gl)}</small>" if first and gl else ""
+            return f'<span class="bl en">{zs}{small}</span>'
         e = en_ or (hit[1][0] if hit else zh)
-        small = f" <small>{zs} {_h.escape(py)}</small>" if first and zh != e else ""
+        small = f" <small>{zs}</small>" if first and zh != e else ""
         return f'<span class="bl en">{_h.escape(e)}{small}</span>'
 
     def pillar(self, gz: str) -> str:
-        """A stem-branch pair: '戊辰 (wù chén, Earth Dragon)' on first use, '戊辰 wù chén' after."""
-        if len(gz) != 2 or gz[0] not in _STEMS or gz[1] not in _BRANCHES:
+        """A stem-branch pair: '戊辰 (Earth Dragon)' on first use, '戊辰' after."""
+        if not _is_pillar(gz):
             return self.text(gz)
-        s, b = TERMS[gz[0]], TERMS[gz[1]]
-        py = f"{s[1]} {b[1]}"
         if gz in self.seen:
-            return f"{gz} {py}"
+            return gz
         self.seen.add(gz)
-        return f"{gz} ({py}, {s[2].split()[1]} {b[2].split(',')[0]})"
+        return f"{gz} ({_pgl(gz)})"
 
     def _render_run(self, run: str) -> str | None:
-        if len(run) == 2 and run[0] in _STEMS and run[1] in _BRANCHES:
+        if _is_pillar(run):
             return self.pillar(run)
-        if len(run) == 3 and run[0] in _STEMS and run[1] in _BRANCHES and run[2] == "年":
-            s, b = TERMS[run[0]], TERMS[run[1]]
-            py = f"{s[1]} {b[1]} nián"
+        if _is_year(run):
             if run in self.seen:
-                return f"{run} {py}"
+                return run
             self.seen.add(run)
-            return f"{run} ({py}, {s[2].split()[1]} {b[2].split(',')[0]} year)"
+            return f"{run} ({_pgl(run[:2])} year)"
         seg = segment(run)
         if seg is None:
             return None
@@ -642,10 +693,21 @@ class Gloss:
             return ", ".join(parts)
         return " ".join(parts)
 
+    @staticmethod
+    def _own(after: str, py: str, gl: str) -> int:
+        """Length of an annotation this module (either style) already put after the run:
+        ' (pīnyīn, gloss)', ' pīnyīn (gloss)', ' (gloss)', ' (pīnyīn)' or ' pīnyīn'; 0 if none."""
+        for c in ([f" ({py}, {gl})", f" {py} ({gl})", f" ({gl})"] if gl else []) + [f" ({py})"]:
+            if after.startswith(c):
+                return len(c)
+        m = re.match(r"\s" + re.escape(py) + _NB, after)
+        return m.end() if m else 0
+
     def text(self, s: str) -> str:
         """Rewrite a mixed string English-first.  Handles 'EN (中)', '中 (EN)', '中 EN', 'EN 中',
-        'X(中)' and bare '中', and is idempotent on its own output.  CJK runs that are not
-        entirely glossary terms (names, phrases) are left as they are."""
+        'X(中)' and bare '中', drops any pinyin a previous rendering left inline, and is
+        idempotent on its own output.  CJK runs that are not entirely glossary terms (names,
+        phrases) are left as they are."""
         if not s or not isinstance(s, str) or not _CJK.search(s):
             return s
         out, pos = "", 0
@@ -655,56 +717,77 @@ class Gloss:
                 continue
             out += s[pos:a]
             pos = b
-            hit = lookup(run)
-            if not hit and len(run) == 2 and run[0] in _STEMS and run[1] in _BRANCHES:
-                py = f"{TERMS[run[0]][1]} {TERMS[run[1]][1]}"
-                mp = re.match(r"\s\(?" + re.escape(py) + _NB, s[b:])
-                if mp:                                   # already '戊辰 (wù chén, …' / '戊辰 wù chén'
-                    seen = run in self.seen
-                    self.seen.add(run)
-                    if s[b:].startswith(" ("):
-                        mc = re.match(r" \(([^()]*)\)", s[b:])
-                        out += (run + mc.group(0)) if (not seen and mc) else f"{run} {py}"
-                        pos = b + (mc.end() if mc else 0)
-                    else:
-                        out += f"{run} {py}" if seen else self.pillar(run)
-                        pos = b + mp.end()
-                    continue
             after = s[b:]
-            if not hit and out.endswith(("(", "（")) and after[:1] in ")）":
+            hit = lookup(run)
+            # terms shown as characters + gloss: no-English terms, stem-branch pairs, 'X年' years
+            if hit and not hit[1][0]:
+                key, py, gl = hit[0], hit[1][1], hit[1][2]
+            elif not hit and _is_pillar(run):
+                key, py, gl = run, f"{TERMS[run[0]][1]} {TERMS[run[1]][1]}", _pgl(run)
+            elif not hit and _is_year(run):
+                key, py, gl = run, f"{TERMS[run[0]][1]} {TERMS[run[1]][1]} nián", _pgl(run[:2]) + " year"
+            else:
+                key = None
+            if key is not None:
+                n = self._own(after, py, gl)
+                if n:
+                    first = key not in self.seen
+                    self.seen.add(key)
+                    rest = after[n:]
+                    if gl and rest.startswith(f", {gl}"):          # old '(戊 wù, yang Earth)'
+                        out += run
+                    elif _opened(out) and rest[:1] in ")）":
+                        out += _compact(f"{run} ({gl})") if first and gl else run
+                    else:
+                        out += f"{run} ({gl})" if first and gl else run
+                    pos = b + n
+                    continue
+                if gl and _opened(out) and after.startswith(f", {gl}"):   # our own '(戊, yang Earth)'
+                    self.seen.add(key)
+                    out += run
+                    continue
+            if not hit and _opened(out) and after[:1] in ")）":
                 r = self._render_run(run)
                 out += _compact(r) if r else run
                 continue
             if hit:
-                k, (en_, py, gl, cat) = hit
-                name = en_ or py
+                k, entry = hit
+                en_, py, gl, cat = entry
                 first = k not in self.seen
-                # our own pinyin already follows the characters: consume it
                 mp = re.match(r"\s" + re.escape(py) + _NB, after)
                 if mp and en_:
-                    # '漢字 pīnyīn' — already rendered (by us or by hand): keep once, then English
+                    # '漢字 pīnyīn' from an earlier rendering or by hand: the pinyin goes
                     after = after[mp.end():]; pos = b + mp.end()
                     self.seen.add(k)
+                    me = re.search(re.escape(en_) + r"(\s?)$", out, re.I)
                     if first:
-                        out += f"{run} {py}"
-                    elif out.endswith(("(", "（")) and after[:1] in ")）":
+                        if re.search(re.escape(en_) + r"[*_]*\s?[(（]$|" + re.escape(en_) + r",\s$", out, re.I):
+                            out += run                   # 'EN (中' or 'EN, 中': English already there
+                        elif _opened(out):
+                            out += _compact(_first(run, entry))
+                        elif me:
+                            out = out[:len(out) - len(me.group(1))] + f" ({run})"
+                        else:
+                            out += _cap(out, _first(run, entry))
+                    elif _opened(out) and after[:1] in ")）":
                         out = re.sub(r"\s?[(（]$", "", out); pos += 1
-                    elif out.endswith(("(", "（")) and after[:2] in (", ", "; "):
+                    elif _opened(out) and after[:2] in (", ", "; "):
                         pos += 2
                     elif re.search(re.escape(en_) + r",\s$", out, re.I):
                         out = out[:-2]
-                    else:
+                    elif not me:
                         out += _cap(out, en_)
                     continue
-                if out.endswith(("(", "（")):
+                if _opened(out):
                     eb = re.search(r"([A-Za-z][A-Za-z0-9' \-]*?)[*_]*\s?[(（]$", out)
                     if eb and not re.search(r"[A-Za-z]{3,}", eb.group(1)):
                         eb = None                        # 'N(天醫)': a compass letter is not English
-                    if en_ and eb and eb.group(1).lower().endswith(en_.lower()):
+                    if en_ and ((eb and eb.group(1).lower().endswith(en_.lower()))
+                                or re.search(re.escape(en_) + r"[*_]*\s?[(（]$", out, re.I)):
                         # 'EN (中 …' — already English-first
                         self.seen.add(k)
                         if first:
-                            out += f"{run} {py}"
+                            out += run
                         elif after[:1] in ")）":
                             out = re.sub(r"\s?[(（]$", "", out); pos += 1
                         elif after[:2] in (", ", "; "):
@@ -720,45 +803,43 @@ class Gloss:
                     if eb and after[:1] in ",;，；":
                         # 'english words (中, …' — the term's English joins the bracket
                         self.seen.add(k)
-                        out += (f"{en_}, {run} {py}" if first else en_) if en_ else f"{run} {py}"
+                        out += (f"{en_}, {run}" if first else en_) if en_ else run
                         continue
                 # '中 (x)' — something already sits in the parentheses
                 ma = re.match(r"\s?[(（]\s*([A-Za-zÀ-ɏ][^()（）㐀-鿿]{0,60}?)\s*[)）]", after)
                 if ma:
                     x = ma.group(1)
                     if not en_:
-                        if x.lower() == py.lower() and first:      # '漢字 (pīnyīn)' — add the gloss
-                            out += _cap(out, self.en(run))
-                        elif x.lower().startswith(py.lower()):      # our own '漢字 (pīnyīn, gloss)'
-                            out += _cap(out, f"{run} ({x})" if first else f"{run} {py}")
-                        elif first:
-                            out += _cap(out, f"{run} ({py}, {x})")
-                        else:
-                            out += _cap(out, f"{run} {py} ({x})")
                         self.seen.add(k)
+                        if x.lower().startswith(py.lower()):      # '(pīnyīn, note)': keep the note
+                            rest = x[len(py):].lstrip(" ,;")
+                            out += _cap(out, f"{run} ({rest})" if rest else run)
+                        else:
+                            out += _cap(out, f"{run} ({x})")
                     elif x.lower() in en_.lower() or en_.lower() in x.lower():
                         out += _cap(out, self.en(run))
                     else:
                         self.seen.add(k)
-                        out += _cap(out, f"{x} ({run} {py})" if first else x)
+                        out += _cap(out, f"{x} ({run})" if first else x)
                     pos += ma.end()
                     continue
-                # '中 EN' (also '漢字 pīnyīn' for no-English terms)
-                ma = re.match(r"\s?" + re.escape(name) + _NB, after, re.I)
-                if ma:
-                    out += _cap(out, self.en(run)); pos += ma.end()
-                    continue
+                # '中 EN'
+                if en_:
+                    ma = re.match(r"\s?" + re.escape(en_) + _NB, after, re.I)
+                    if ma:
+                        out += _cap(out, self.en(run)); pos += ma.end()
+                        continue
                 # 'EN 中'
                 me = re.search(re.escape(en_) + r"(\s?)$", out, re.I) if en_ else None
                 if me:                                   # also glued 'Wood木'
                     self.seen.add(k)
-                    out = out[:len(out) - len(me.group(1))] + (f" ({run} {py})" if first else "")
+                    out = out[:len(out) - len(me.group(1))] + (f" ({run})" if first else "")
                     continue
-                # 'EN, 中 pīnyīn' — our own compact form inside parentheses
-                if en_ and mp and re.search(re.escape(en_) + r",\s$", out, re.I):
+                # 'EN, 中' — our own compact form inside parentheses
+                if en_ and re.search(re.escape(en_) + r",\s$", out, re.I):
                     self.seen.add(k)
                     if first:
-                        out += f"{run} {py}"
+                        out += run
                     else:
                         out = out[:-2]
                     continue
@@ -778,14 +859,181 @@ class Gloss:
         return obj
 
 
+# ---------------------------------------------------------------- HTML: tooltips and element colours
+# One shape for a glossed run on every English surface (pages, guides, report, browser):
+#   <span class="zh" lang="zh-Hant" tabindex="0" title="rì zhǔ · Day Master" data-tip="…">日主</span>
+# title gives the hover tooltip; web/glossary-tip.js shows the same text on tap, focus or
+# Enter/Space.  Inside a link or button the span is not focusable (title only).
+# The five elements take the site's element colour on the English word and the character:
+#   <span class="el el-wood">Wood (<span class="zh" …>木</span>)</span>
+# The shared CSS for the tooltip span, its popover and the element colours (each colour passes
+# 4.5:1 on cream #faf7f2 and on white).  Server-rendered pages inline it; web/glossary-tip.js
+# injects the same block, so every English page has it exactly once per source.
+TIP_CSS = (":root{--wood:#187a35;--fire:#c5221f;--earth:#8a6d1f;--metal:#8a6500;--water:#1a56b0}"
+           ".el-wood{color:var(--wood)}.el-fire{color:var(--fire)}.el-earth{color:var(--earth)}"
+           ".el-metal{color:var(--metal)}.el-water{color:var(--water)}"
+           ".zh[data-tip]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;"
+           "text-underline-offset:3px;border-radius:2px}"
+           ".zh[data-tip]:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}"
+           ".gl-tip{position:fixed;z-index:9999;max-width:calc(100vw - 32px);width:max-content;"
+           "background:#2b2620;color:#fff;font:500 14px/1.45 system-ui,sans-serif;padding:6px 10px;"
+           "border-radius:8px;box-shadow:0 4px 14px rgba(43,38,32,.25);opacity:0;transition:opacity .15s;"
+           "pointer-events:none;text-align:left;white-space:normal}"
+           ".gl-tip.on{opacity:1}@media (prefers-reduced-motion:reduce){.gl-tip{transition:none}}")
+_SIMP_ONLY = set(_T2S.values()) - set(_T2S)
+EL_CLASS = {"木": "wood", "火": "fire", "土": "earth", "金": "metal", "水": "water",
+            "Wood": "wood", "Fire": "fire", "Earth": "earth", "Metal": "metal", "Water": "water"}
+_TONED = re.compile(r"[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ]")
+_SYL = r"[a-zü]*[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜa-zü][a-zü]*"
+_RUNX = re.compile(r"[㐀-鿿豈-﫿]+(?:[，、；：][㐀-鿿豈-﫿]+)*")   # a run, CJK punctuation inside kept
+_PUNCT = "，、；："
+
+
+def zh_lang(run: str) -> str:
+    return "zh-Hans" if any(c in _SIMP_ONLY for c in run) else "zh-Hant"
+
+
+def zh_span(run: str, focus: bool = True, reading: str = "") -> str:
+    """The shared tooltip span for a Chinese run ('' title -> the run stays as plain text).
+    `reading` overrides the pinyin part (a hand-written reading taken from the source)."""
+    import html as _h
+    t = tip(run)
+    if reading:
+        t = reading + (" · " + t.split(" · ", 1)[1] if " · " in t else "")
+    if not t:
+        return _h.escape(run, quote=False)
+    a = _h.escape(t, quote=True)
+    f = f' tabindex="0" title="{a}" data-tip="{a}"' if focus else f' title="{a}"'
+    return f'<span class="zh" lang="{zh_lang(run)}"{f}>{_h.escape(run, quote=False)}</span>'
+
+
+def _inline_reading(run: str, after: str):
+    """Pinyin written inline right after a run, in any of the forms the language pass used:
+    ' pīnyīn', ' (pīnyīn)', ' (pīnyīn, gloss)'.  Returns (chars consumed, replacement, reading)
+    or None.  One syllable per character, at least one tone mark."""
+    n = len([c for c in run if c not in _PUNCT])
+    syl = _SYL + (r"(?:,? " + _SYL + r"){%d}" % (n - 1) if n > 1 else "")
+    m = re.match(r"( \()(" + syl + r")(\)|, )", after)
+    if m and _TONED.search(m.group(2)):
+        if m.group(3) == ")":
+            return m.end(), "", m.group(2)
+        return m.end(), " (", m.group(2)
+    m = re.match(r" (" + syl + r")" + _NB, after)
+    if m and _TONED.search(m.group(1)):
+        return m.end(), "", m.group(1)
+    return None
+
+
+_TOKEN = re.compile(r"(?<![A-Za-z])((?:[Yy]in |[Yy]ang )?(Wood|Fire|Earth|Metal|Water))(?![A-Za-z])"
+                    r"(?: \(([木火土金水])(?:\x01(\d+)\x02)?\))?|([㐀-鿿豈-﫿]+(?:[，、；：][㐀-鿿豈-﫿]+)*)(?:\x01(\d+)\x02)?")
+_VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source",
+         "track", "wbr", "param"}
+_RAW = {"script", "style", "textarea", "title"}
+_SKIP = {"select", "option", "svg", "code", "pre", "template", "head", "noscript"}
+_FOCUS_NO = {"a", "button", "label", "summary", "option"}
+_COLOR_NO = {"h1", "h2", "h3", "h4", "h5", "h6", "a", "button", "nav", "footer", "label", "summary"}
+_TAG = re.compile(r"<!--.*?-->|<(/?)([A-Za-z][A-Za-z0-9]*)\b((?:[^>\"']|\"[^\"]*\"|'[^']*')*)>", re.S)
+
+
+def _tagflags(name: str, attrs: str) -> tuple[bool, bool, bool]:
+    """(skip, no-focus, no-colour) contributed by one open tag."""
+    cls = re.search(r"""class\s*=\s*["']([^"']*)["']""", attrs)
+    cls = cls.group(1).split() if cls else []
+    lang = re.search(r"""lang\s*=\s*["']?zh""", attrs)
+    skip = (name in _SKIP or bool({"zh", "el", "zhver"} & set(cls))
+            or (lang is not None and name != "span"))
+    painted = any(re.match(r"(el|bg|f)-", c) for c in cls) or "chip" in cls or bool(
+        re.search(r"""style\s*=\s*["'][^"']*(?<![-\w])color\s*:""", attrs))
+    return skip, name in _FOCUS_NO, name in _COLOR_NO or painted
+
+
+def _tipify_text(seg: str, focus: bool, colour: bool, strip_py: bool) -> str:
+    readings: list[str] = []
+    if strip_py and _CJK.search(seg):  # inline pinyin -> a marker holding the reading
+        buf, p = [], 0
+        for m in _RUNX.finditer(seg):
+            if m.start() < p:
+                continue
+            buf.append(seg[p:m.end()])
+            p = m.end()
+            r = _inline_reading(m.group(0), seg[p:])
+            if r:
+                readings.append(r[2])
+                buf.append(f"\x01{len(readings) - 1}\x02" + r[1])
+                p += r[0]
+        seg = "".join(buf) + seg[p:]
+    out, pos = [], 0
+    for m in _TOKEN.finditer(seg):
+        out.append(seg[pos:m.start()])
+        pos = m.end()
+        if m.group(2):                                    # an English element word
+            word, ch = m.group(1), m.group(3)
+            rd = readings[int(m.group(4))] if m.group(4) else ""
+            prev = seg[max(0, m.start() - 9):m.start()]
+            inner = word + (f" ({zh_span(ch, focus, rd)})" if ch else "")
+            if colour and (ch is None or EL_CLASS[ch] == EL_CLASS[m.group(2)]) \
+                    and not re.search(r"Heaven,? (?:and )?$", prev):
+                out.append(f'<span class="el el-{EL_CLASS[m.group(2)]}">{inner}</span>')
+            else:
+                out.append(inner)
+            continue
+        run = m.group(5)
+        sp = zh_span(run, focus, readings[int(m.group(6))] if m.group(6) else "")
+        if colour and run in EL_CLASS:
+            sp = f'<span class="el el-{EL_CLASS[run]}">{sp}</span>'
+        out.append(sp)
+    out.append(seg[pos:])
+    return "".join(out)
+
+
+def tipify_html(html: str, strip_py: bool = True) -> str:
+    """Wrap every Chinese run of an English page's <body> in the tooltip span, move any
+    pinyin written inline into the span's tooltip (strip_py), and give the five elements
+    their colour.  Scripts, styles, form controls, SVG, Chinese-version blocks and spans
+    already processed are left alone; links, buttons and headings get no colour, and inside
+    links and buttons the span is title-only (not focusable).  Idempotent."""
+    i = html.find("<body")
+    head, body = (html[:i], html[i:]) if i >= 0 else ("", html)
+    out, stack, pos = [], [], 0
+    while True:
+        m = _TAG.search(body, pos)
+        seg = body[pos:m.start() if m else len(body)]
+        if seg:
+            skip = any(f[0] for _, f in stack)
+            if skip or not (_CJK.search(seg) or re.search(r"Wood|Fire|Earth|Metal|Water", seg)):
+                out.append(seg)
+            else:
+                out.append(_tipify_text(seg, not any(f[1] for _, f in stack),
+                                        not any(f[2] for _, f in stack), strip_py))
+        if not m:
+            break
+        out.append(m.group(0))
+        pos = m.end()
+        if m.group(0).startswith("<!--"):
+            continue
+        close, name, attrs = m.group(1), m.group(2).lower(), m.group(3) or ""
+        if close:
+            for j in range(len(stack) - 1, -1, -1):
+                if stack[j][0] == name:
+                    del stack[j:]
+                    break
+        elif name in _RAW:
+            e = re.compile(r"</" + name + r"\s*>", re.I).search(body, pos)
+            end = e.start() if e else len(body)
+            out.append(body[pos:end])
+            pos = end
+        elif name not in _VOID and not attrs.rstrip().endswith("/"):
+            stack.append((name, _tagflags(name, attrs)))
+    return head + "".join(out)
+
+
 def table_for_js() -> dict:
     """The compact table web/glossary.js embeds: terms, aliases, and the per-character pinyin of
     the 3,500 common characters plus every glossary character (for page labels the table lacks)."""
     import json
     from pathlib import Path
-    d = json.loads((Path(__file__).resolve().parent.parent / "data/naming/chardata.json").read_text("utf8"))
     cp = _charpy()
-    keep = {c for c, v in d.items() if v.get("common")} | set("".join(TERMS)) | set("".join(ALIASES))
+    keep = _js_keep()
     return {"terms": {k: list(v) for k, v in TERMS.items()}, "aliases": ALIASES,
-            "list_cats": sorted(_LIST_CATS),
+            "list_cats": sorted(_LIST_CATS), "simp_only": "".join(sorted(_SIMP_ONLY)),
             "charpy": "".join(c + cp[c] + " " for c in sorted(keep) if c in cp)}

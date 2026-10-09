@@ -25,7 +25,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "bazifor.me", "item": "https://bazifor.me"}, {"@type": "ListItem", "position": 2, "name": "Baby name builder", "item": "https://bazifor.me/baby"}]}</script>
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6f675d;--accent:#b03a2e;--gold:#8a6d1f;--line:#e5ded2;
-  --wood:#1e8e3e;--wood-bg:#e9f7ee;--fire:#c5221f;--fire-bg:#fdecea;--earth:#8a6d1f;--earth-bg:#f6efdc;
+  --wood:#187a35;--wood-bg:#e9f7ee;--fire:#c5221f;--fire-bg:#fdecea;--earth:#8a6d1f;--earth-bg:#f6efdc;
   --metal:#8a6500;--metal-bg:#faf3dd;--water:#1a56b0;--water-bg:#e8f0fe;--ji:#1e7d32;--ji-bg:#e3f4e7;
   --xiong:#b3261e;--xiong-bg:#fde8e6;--ping:#6f675d;--ping-bg:#f1ede6}
 *{box-sizing:border-box}
@@ -114,6 +114,7 @@ table.wg{display:block;max-width:100%;overflow-x:auto}.grid2>div{min-width:0}
 .tile .jn{position:absolute;top:3px;right:5px;font-size:10px;font-weight:700;color:var(--ji)}
 .tile.noel .ch{color:#8a8177}
 .tile.blk{background:#f4f1ec;border-style:dashed;opacity:.7}.tile.blk .ch{color:#8a8177}
+.tlegend{font-size:13px;color:var(--muted);margin:2px 0 8px;line-height:1.5}
 .tile .bk{position:absolute;top:3px;left:5px;font-size:10px;color:#fff;background:var(--xiong);border-radius:4px;padding:0 4px}
 .warn{background:#fde8e6;border:1.5px solid var(--xiong);color:#8c1d18;border-radius:10px;padding:8px 12px;margin:10px 0;font-size:14px}
 .rinf{display:block;font-size:11px;color:var(--muted);margin-top:2px}
@@ -263,7 +264,7 @@ body.has-app .emptystate{display:none}
 #app>.sec:first-child>h2::after,#builder>h2::after,#card>h2::after,#shortlist.sec>h2::after{display:block;font:400 14px/1.4 system-ui,"Noto Sans SC",sans-serif;color:var(--muted);margin-top:4px;margin-bottom:6px}
 #app>.sec:first-child>h2::after{content:"How to read this: the baby's chart decides which elements the name should add."}
 #builder>h2::after{content:"How to read this: pick characters; each shows its element and stroke count."}
-#card>h2::after{content:"How to read this: seven parts add to 100; excellent (\4E0A\4F73 shàng jiā) is 90 or more; a strong sound warning caps the grade."}
+#card>h2::after{content:"How to read this: seven parts add to 100; excellent (\4E0A\4F73) is 90 or more; a strong sound warning caps the grade."}
 #shortlist.sec>h2::after{content:"How to read this: up to eight names kept in this workspace."}
 #card::before{content:"";display:block;aspect-ratio:3/1;max-height:170px;width:calc(100% + 40px);margin:-20px -20px 16px;border-radius:14px 14px 0 0;background:#f3ece0 url(/static/img/tools/baby-card-header.jpg) center/cover no-repeat}
 @media (max-width:640px){#card::before{background-image:url(/static/img/tools/baby-card-header-600.jpg)}}
@@ -289,6 +290,7 @@ header nav.top a,header a#back{display:inline-flex;align-items:center;min-height
 header nav.top a:hover,header a#back:hover{background:#f3ecdd;border-color:var(--gold)}
 header a#back{background:#fff;color:var(--ink)}
 @media(min-width:760px){header h1{font-size:30px}}
+:root{--wood:#187a35;--fire:#c5221f;--earth:#8a6d1f;--metal:#8a6500;--water:#1a56b0}.el-wood{color:var(--wood)}.el-fire{color:var(--fire)}.el-earth{color:var(--earth)}.el-metal{color:var(--metal)}.el-water{color:var(--water)}.zh[data-tip]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;border-radius:2px}.zh[data-tip]:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}.gl-tip{position:fixed;z-index:9999;max-width:calc(100vw - 32px);width:max-content;background:#2b2620;color:#fff;font:500 14px/1.45 system-ui,sans-serif;padding:6px 10px;border-radius:8px;box-shadow:0 4px 14px rgba(43,38,32,.25);opacity:0;transition:opacity .15s;pointer-events:none;text-align:left;white-space:normal}.gl-tip.on{opacity:1}@media (prefers-reduced-motion:reduce){.gl-tip{transition:none}}
 </style><link rel="preload" as="image" href="/static/img/tools/baby-intro-600.jpg" media="(max-width: 759px)">
 <link rel="preload" as="image" href="/static/img/tools/baby-intro.jpg" media="(min-width: 760px)">
 </head><body>
@@ -296,8 +298,8 @@ header a#back{background:#fff;color:var(--ink)}
 <script>fetch("/api/pub/version").then(r=>r.json())
   .then(v=>{document.getElementById("ver").textContent="v "+v.version}).catch(()=>{});</script>
 <header>
-  <h1>Baby name builder (<span lang="zh-Hans">宝宝起名 bǎo bǎo qǐ míng</span>)</h1>
-  <div class="sub">The chart, its useful god (用神 yòng shén), and a name you build character by character, every rule cited.
+  <h1>Baby name builder (<span class="zh" lang="zh-Hans" tabindex="0" title="bǎo bǎo qǐ míng · baby name builder" data-tip="bǎo bǎo qǐ míng · baby name builder">宝宝起名</span>)</h1>
+  <div class="sub">The chart, its useful god (<span class="zh" lang="zh-Hant" tabindex="0" title="yòng shén · useful god" data-tip="yòng shén · useful god">用神</span>), and a name you build character by character, every rule cited.
     <a href="/start">← people workspace</a></div>
 </header>
 <main>
@@ -347,25 +349,25 @@ header a#back{background:#fff;color:var(--ink)}
   <div class="sec" id="explainer">
     <h2>What the name builder returns</h2>
     <p class="subhead">The seven scoring parts, the grades and the sound check.</p>
-    <p>Every name you build is scored out of 100 in seven parts, and each part has a fixed weight: <b>Useful god</b> 30 (does each character carry an element your baby's BaZi chart needs), <b>Five Grids (五格 wǔ gé)</b> 25 (the five stroke-count grids), <b>Three Talents (三才 sān cái)</b> 15 (whether the elements of the heaven, person and earth grids support each other), <b>character meaning (字义 zì yì)</b> 10 (what the characters mean, in 16 meaning categories), <b>sound (音韵 yīn yùn)</b> 5 (tones, repeated sounds and unlucky homophones), <b>gender fit (性别 xìng bié)</b> 5 (whether the characters suit a boy or a girl) and <b>confidence (可信度 kě xìn dù)</b> 10 (how far the engine can trust the data behind the other parts). The weights add up to 100.</p>
-    <p>The total maps to a grade: <b>excellent (上佳 shàng jiā)</b> at 90 and above, <b>good (佳 jiā)</b> at 80 and above, <b>fair (可 kě)</b> at 65 and above, and <b>needs a second look (待斟酌 dài zhēn zhuó)</b> below 65. A strong sound hit caps the grade at needs a second look whatever the total.</p>
-    <p>The sound layer checks two things. It looks for Mandarin sound-alikes, characters that sound like an unlucky or rude word, and it checks the English reading of the pinyin, since many Singapore and Malaysia families raise children who will be addressed in English at school and at work. Beside the score you also get the Five Grids with their auspicious (吉 jí) or adverse (凶 xiōng) verdicts, the element of every character, its Kangxi (康熙 kāng xī) stroke count, a short reading of what the name suggests, and a shortlist of up to eight names you can compare.</p>
+    <p>Every name you build is scored out of 100 in seven parts, and each part has a fixed weight: <b>Useful god</b> 30 (does each character carry an element your baby's BaZi chart needs: <span class="el el-wood">Wood</span>, <span class="el el-fire">Fire</span>, <span class="el el-earth">Earth</span>, <span class="el el-metal">Metal</span> or <span class="el el-water">Water</span>), <b>Five Grids (<span class="zh" lang="zh-Hant" tabindex="0" title="wǔ gé · Five Grids" data-tip="wǔ gé · Five Grids">五格</span>)</b> 25 (the five stroke-count grids), <b>Three Talents (<span class="zh" lang="zh-Hant" tabindex="0" title="sān cái · Three Talents" data-tip="sān cái · Three Talents">三才</span>)</b> 15 (whether the elements of the heaven, person and earth grids support each other), <b>character meaning (<span class="zh" lang="zh-Hans" tabindex="0" title="zì yì · character meaning" data-tip="zì yì · character meaning">字义</span>)</b> 10 (what the characters mean, in 16 meaning categories), <b>sound (<span class="zh" lang="zh-Hans" tabindex="0" title="yīn yùn · sound" data-tip="yīn yùn · sound">音韵</span>)</b> 5 (tones, repeated sounds and unlucky homophones), <b>gender fit (<span class="zh" lang="zh-Hans" tabindex="0" title="xìng bié · gender fit" data-tip="xìng bié · gender fit">性别</span>)</b> 5 (whether the characters suit a boy or a girl) and <b>confidence (<span class="zh" lang="zh-Hant" tabindex="0" title="kě xìn dù · confidence" data-tip="kě xìn dù · confidence">可信度</span>)</b> 10 (how far the engine can trust the data behind the other parts). The weights add up to 100.</p>
+    <p>The total maps to a grade: <b>excellent (<span class="zh" lang="zh-Hant" tabindex="0" title="shàng jiā · excellent" data-tip="shàng jiā · excellent">上佳</span>)</b> at 90 and above, <b>good (<span class="zh" lang="zh-Hant" tabindex="0" title="jiā · good" data-tip="jiā · good">佳</span>)</b> at 80 and above, <b>fair (<span class="zh" lang="zh-Hant" tabindex="0" title="kě · fair" data-tip="kě · fair">可</span>)</b> at 65 and above, and <b>needs a second look (<span class="zh" lang="zh-Hant" tabindex="0" title="dài zhēn zhuó · needs a second look" data-tip="dài zhēn zhuó · needs a second look">待斟酌</span>)</b> below 65. A strong sound hit caps the grade at needs a second look whatever the total.</p>
+    <p>The sound layer checks two things. It looks for Mandarin sound-alikes, characters that sound like an unlucky or rude word, and it checks the English reading of the pinyin, since many Singapore and Malaysia families raise children who will be addressed in English at school and at work. Beside the score you also get the Five Grids with their auspicious (<span class="zh" lang="zh-Hant" tabindex="0" title="jí · auspicious" data-tip="jí · auspicious">吉</span>) or adverse (<span class="zh" lang="zh-Hant" tabindex="0" title="xiōng · adverse" data-tip="xiōng · adverse">凶</span>) verdicts, the element of every character, its Kangxi (<span class="zh" lang="zh-Hant" tabindex="0" title="kāng xī · Kangxi" data-tip="kāng xī · Kangxi">康熙</span>) stroke count, a short reading of what the name suggests, and a shortlist of up to eight names you can compare.</p>
   </div>
   <div class="sec" id="explainer2">
     <h2>How Singapore and Malaysia names are handled</h2>
     <p class="subhead">Romanised surnames, Kangxi strokes and Singapore time.</p>
-    <p>Families in Singapore and Malaysia usually know their surname by a Hokkien, Teochew or Cantonese romanisation such as Tan, Lim, Lee, Ng or Wong, while the scoring needs the Chinese character. Enter the Chinese surname you choose in the surname box (for example 王 wáng, 林 lín, 李 lǐ or 吴 wú) and the builder uses that character for the stroke count and the grids. The romanised spelling on a passport is a spelling of the character, not a different surname, so pick the character your family writes.</p>
-    <p>The Five Grids use the <b>Kangxi</b> stroke count from the Kangxi dictionary, which counts the traditional form of each character. 祿 (lù) has more strokes than the simplified 禄 (lù), so the builder counts the traditional form and shows you the strokes it used. The chart is calculated for Singapore time with a true-solar correction, and a due date gives a provisional chart that you can recalculate after birth. Read <a href="/learn/how-chinese-baby-names-are-scored">how Chinese baby names are scored</a> for the full method.</p>
+    <p>Families in Singapore and Malaysia usually know their surname by a Hokkien, Teochew or Cantonese romanisation such as Tan, Lim, Lee, Ng or Wong, while the scoring needs the Chinese character. Enter the Chinese surname you choose in the surname box (for example <span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span>, <span class="zh" lang="zh-Hant" tabindex="0" title="lín" data-tip="lín">林</span>, <span class="zh" lang="zh-Hant" tabindex="0" title="lǐ" data-tip="lǐ">李</span> or <span class="zh" lang="zh-Hant" tabindex="0" title="wú" data-tip="wú">吴</span>) and the builder uses that character for the stroke count and the grids. The romanised spelling on a passport is a spelling of the character, not a different surname, so pick the character your family writes.</p>
+    <p>The Five Grids use the <b>Kangxi</b> stroke count from the Kangxi dictionary, which counts the traditional form of each character. The traditional <span class="zh" lang="zh-Hant" tabindex="0" title="lù" data-tip="lù">祿</span> has more strokes than the simplified <span class="zh" lang="zh-Hans" tabindex="0" title="lù" data-tip="lù">禄</span>, so the builder counts the traditional form and shows you the strokes it used. The chart is calculated for Singapore time with a true-solar correction, and a due date gives a provisional chart that you can recalculate after birth. Read <a href="/learn/how-chinese-baby-names-are-scored">how Chinese baby names are scored</a> for the full method.</p>
   </div>
   <div class="sec" id="example">
     <h2>Example output</h2>
     <p class="subhead">Three fictional names for one fictional chart.</p>
-    <p><b>Fictional example, computed by the engine.</b> A fictional baby girl born 2026-03-15 09:30 Singapore time, surname 王 (wáng). The three names below are real engine output for that chart; each scores good or better.</p>
+    <p><b>Fictional example, computed by the engine.</b> A fictional baby girl born 2026-03-15 09:30 Singapore time, surname <span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span>. The three names below are real engine output for that chart; each scores good or better.</p>
     <table class="exs" aria-label="Fictional example, computed by the engine">
-      <tr><th>Name</th><th>Pinyin</th><th>Elements</th><th>Kangxi strokes</th><th>Meaning</th><th>Score</th><th>Grade</th></tr>
-      <tr><td><b>王熙乐</b> (wáng xī lè, example name)</td><td>wáng xī lè</td><td>熙 xī fire, 乐 lè fire</td><td>王 wáng 4, 熙 xī 14, 乐 lè 15</td><td>bright and harmonious; happy and content</td><td>97.5 / 100</td><td>excellent</td></tr>
-      <tr><td><b>王暖璇</b> (wáng nuǎn xuán, example name)</td><td>wáng nuǎn xuán</td><td>暖 nuǎn fire, 璇 xuán fire</td><td>王 wáng 4, 暖 nuǎn 13, 璇 xuán 16</td><td>warm-hearted; fine jade, a guiding star</td><td>96.5 / 100</td><td>excellent</td></tr>
-      <tr><td><b>王晨光</b> (wáng chén guāng, example name)</td><td>wáng chén guāng</td><td>晨 chén fire, 光 guāng fire</td><td>王 wáng 4, 晨 chén 11, 光 guāng 6</td><td>the hope of dawn; bright and open</td><td>96.0 / 100</td><td>excellent</td></tr>
+      <tr><th>Name</th><th>Elements</th><th>Kangxi strokes</th><th>Meaning</th><th>Score</th><th>Grade</th></tr>
+      <tr><td><b><span class="zh" lang="zh-Hant" tabindex="0" title="wáng xī lè" data-tip="wáng xī lè">王熙乐</span></b> (example name)</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="xī" data-tip="xī">熙</span> <span class="el el-fire">Fire</span>, <span class="zh" lang="zh-Hant" tabindex="0" title="lè" data-tip="lè">乐</span> <span class="el el-fire">Fire</span></td><td><span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span> 4, <span class="zh" lang="zh-Hant" tabindex="0" title="xī" data-tip="xī">熙</span> 14, <span class="zh" lang="zh-Hant" tabindex="0" title="lè" data-tip="lè">乐</span> 15</td><td>bright and harmonious; happy and content</td><td>97.5 / 100</td><td>excellent</td></tr>
+      <tr><td><b><span class="zh" lang="zh-Hant" tabindex="0" title="wáng nuǎn xuán" data-tip="wáng nuǎn xuán">王暖璇</span></b> (example name)</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="nuǎn" data-tip="nuǎn">暖</span> <span class="el el-fire">Fire</span>, <span class="zh" lang="zh-Hant" tabindex="0" title="xuán" data-tip="xuán">璇</span> <span class="el el-fire">Fire</span></td><td><span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span> 4, <span class="zh" lang="zh-Hant" tabindex="0" title="nuǎn" data-tip="nuǎn">暖</span> 13, <span class="zh" lang="zh-Hant" tabindex="0" title="xuán" data-tip="xuán">璇</span> 16</td><td>warm-hearted; fine jade, a guiding star</td><td>96.5 / 100</td><td>excellent</td></tr>
+      <tr><td><b><span class="zh" lang="zh-Hant" tabindex="0" title="wáng chén guāng" data-tip="wáng chén guāng">王晨光</span></b> (example name)</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="chén" data-tip="chén">晨</span> <span class="el el-fire">Fire</span>, <span class="zh" lang="zh-Hant" tabindex="0" title="guāng" data-tip="guāng">光</span> <span class="el el-fire">Fire</span></td><td><span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span> 4, <span class="zh" lang="zh-Hant" tabindex="0" title="chén" data-tip="chén">晨</span> 11, <span class="zh" lang="zh-Hant" tabindex="0" title="guāng" data-tip="guāng">光</span> 6</td><td>the hope of dawn; bright and open</td><td>96.0 / 100</td><td>excellent</td></tr>
     </table>
   </div>
   <div id="app"></div>
@@ -386,9 +388,11 @@ const cap = w => w ? w[0].toUpperCase() + w.slice(1) : "";
 const elw = e => cap(EL_EN[e] || "");
 const REL_EN = {"生": "generates", "比": "same", "剋": "controls", "受剋": "controlled by", "克": "controls"};
 const gt = x => window.GL ? GL.text(x) : x;
-/* chart-grid glyphs stay Chinese; pinyin + gloss on first sight, pinyin afterwards */
+/* chart-grid glyphs stay Chinese with their pinyin in the tooltip span (zs); pg gives the
+   short gloss caption once per card ("yang Earth", "Dragon"), nothing afterwards */
 const PG = new Set();
-const pg = g => { if (!window.GL) return ""; const py = GL.pinyin(g), gl = GL.gloss(g); if (PG.has(g)) return py; PG.add(g); return gl ? py + " · " + gl : py; };
+const zs = g => window.GL ? GL.zhSpan(g) : esc(g);
+const pg = g => { if (!window.GL || PG.has(g)) return ""; PG.add(g); return (GL.gloss(g) || "").split(",")[0]; };
 const gp = (zh, en) => window.GL ? GL.pair(zh, en) : en;
 const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 const LUCK = {"吉": ["ji", "auspicious"], "凶/平": ["amber", "weak or neutral"], "中": ["ping", "neutral"], "凶": ["xiong", "adverse"]};
@@ -416,15 +420,15 @@ function pillarsBlock() {
   return `<div class="sec"><h2>${Lh("Four Pillars", "四柱")}</h2>
     <div class="pillars">${P.pillars.map(p => `<div class="pil ${p.k === "day" ? "dm" : ""}">
       <div class="lab">${L(p.en, p.zh)}</div>
-      <div class="gz"><span class="el-${p.sel}" title="${p.sel}">${p.stem}</span><span class="el-${p.bel}" title="${p.bel}">${p.branch}</span></div>
-      <div class="elx">${pg(p.stem)} · ${pg(p.branch)} · ${EL_EN[p.sel]} / ${EL_EN[p.bel]}${p.k === "day" ? " · Day Master" : ""}</div></div>`).join("")}</div>
+      <div class="gz"><span class="el-${p.sel}">${zs(p.stem)}</span><span class="el-${p.bel}">${zs(p.branch)}</span></div>
+      <div class="elx">${[pg(p.stem), pg(p.branch)].filter(Boolean).join(" · ") || cap(EL_EN[p.sel]) + " / " + cap(EL_EN[p.bel])}${p.k === "day" ? " · Day Master" : ""}</div></div>`).join("")}</div>
     <div class="bars">${EL.map(e => `<div class="bar"><b class="el-${e}">${elw(e)}</b><div class="track"><div class="fill f-${e}" style="width:${P.weights[e] || 0}%"></div></div><span>${P.weights[e] || 0}%</span></div>`).join("")}</div>
-    <div class="ysline">${Li("Day Master", "日主")} <b class="el-${P.pillars[2].sel} keepzh">${P.day_master}</b> <small>${pg(P.day_master)}</small> · ${esc(gt(P.strength))}</div>
+    <div class="ysline">${Li("Day Master", "日主")} <b class="el-${P.pillars[2].sel} keepzh">${zs(P.day_master)}</b> <small>${pg(P.day_master)}</small> · ${esc(gt(P.strength))}</div>
     <div class="ysbox">
       <div class="ysgrp use"><div class="ystitle">${L("Choose names with these elements", "用神")}</div>
-        <div class="ysdiscs">${P.fav.map((e, i) => `<div class="ysd off"><span class="el-${e}">${elw(e)}</span><small><span lang="zh-Hans">${e}</span> ${pg(e)} · ${i === 0 ? "useful god" : "favourable"}</small></div>`).join("")}</div></div>
+        <div class="ysdiscs">${P.fav.map((e, i) => `<div class="ysd off"><span class="el-${e}">${elw(e)}</span><small>${zs(e)} · ${i === 0 ? "useful god" : "favourable"}</small></div>`).join("")}</div></div>
       <div class="ysgrp avoid"><div class="ystitle">${L("Avoid these elements")}</div>
-        <div class="ysdiscs">${P.unfav.map(e => `<div class="ysd off"><span class="el-${e}">${elw(e)}</span><small><span lang="zh-Hans">${e}</span> ${pg(e)}</small></div>`).join("") || `<span class="count">none</span>`}</div></div>
+        <div class="ysdiscs">${P.unfav.map(e => `<div class="ysd off"><span class="el-${e}">${elw(e)}</span><small>${zs(e)}</small></div>`).join("") || `<span class="count">none</span>`}</div></div>
     </div></div>`;
 }
 
@@ -446,13 +450,17 @@ function chipsHtml() {
 function tilesHtml() {
   if (!S.data) return `<div class="empty-msg">${L("loading…")}</div>`;
   if (!S.tiles.length) return `<div class="empty-msg">${L("No character matches these filters")}<div style="margin-top:8px">${S.meaning[S.active] ? `<button class="btn" data-mean="${S.meaning[S.active]}">clear the meaning filter</button> ` : ""}<button class="btn" data-reset="1">reset filters</button></div></div>`;
-  return `<div class="tiles">${S.tiles.map(c => `<button class="tile ${c.el ? "" : "noel"} ${c.blocked ? "blk" : ""}" data-pick="${c.ch}" title="${c.blocked ? "not for names — " + esc(c.why) : c.mismatch ? (c.gender === "F" ? "feminine character — usually a girl's name character" : "masculine character — usually a boy's name character") : esc(c.sense ? c.sense.en : c.gloss || "")}" aria-label="${c.ch} ${esc(c.py)}, ${c.el || "element not set"}, ${c.ks} strokes${c.gloss ? ", " + esc(c.gloss) : ""}${c.blocked ? ", not recommended for names: " + esc(c.why) : ""}">
-      ${c.blocked ? `<span class="bk">avoid</span>` : c.mismatch ? `<span class="bk gmk">${c.gender === "F" ? "feminine" : "masculine"}</span>` : c.pool ? `<span class="pm">name</span>` : ""}<span class="jn">${c.blocked ? "" : c.ji ? c.ji + " ji" : ""}</span>
+  return `<div class="tiles" data-notip>${S.tiles.map(c => `<button class="tile ${c.el ? "" : "noel"} ${c.blocked ? "blk" : ""}" data-pick="${c.ch}" title="${c.blocked ? "not for names — " + esc(c.why) : c.mismatch ? (c.gender === "F" ? "feminine character — usually a girl's name character" : "masculine character — usually a boy's name character") : esc(c.sense ? c.sense.en : c.gloss || "")}" aria-label="${c.ch} ${esc(c.py)}, ${c.el || "element not set"}, ${c.ks} strokes${c.gloss ? ", " + esc(c.gloss) : ""}${c.blocked ? ", not recommended for names: " + esc(c.why) : ""}">
+      ${c.blocked ? `<span class="bk">不宜</span>` : c.mismatch ? `<span class="bk gmk">${c.gender === "F" ? "feminine" : "masculine"}</span>` : c.pool ? `<span class="pm">名</span>` : ""}<span class="jn">${c.blocked ? "" : c.ji ? c.ji + "吉" : ""}</span>
       <span class="ch el-${c.el || ""}">${c.ch}</span><span class="py">${esc(c.py)}</span><span class="ks">${c.ks} strokes · ${c.el ? EL_EN[c.el] : "unset"}${c.gender ? " · " + (c.gender === "F" ? "F" : "M") : ""}</span></button>`).join("")}</div>
     ${S.data.total > S.tiles.length ? `<div class="more"><button class="btn" data-more="1">more (${S.data.total - S.tiles.length})</button></div>` : ""}`;
 }
+/* the tile marks are the engine's own Chinese labels; one always-visible line explains them */
+function legendHtml() {
+  return `<p class="tlegend" id="tlegend">${zs("吉")} auspicious (3${zs("吉")}: three of the four grids are auspicious with that stroke count) · ${zs("名")} common in names · ${zs("不宜")} adverse meaning, not for names</p>`;
+}
 function countHtml() {
-  return `${S.data ? S.data.total : "…"} ${Li("characters")} · ★ = useful-god element · <span style="background:var(--gold);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">name</span> = common name character · unset = element not set · <span style="background:var(--xiong);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">avoid</span> = adverse meaning (pinyin search only) · feminine / masculine = usually the other gender (pinyin search only, lowers the score). unset characters also appear when a meaning is chosen`;
+  return `${S.data ? S.data.total : "…"} ${Li("characters")} · ★ = useful-god element · <span style="background:var(--gold);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">名</span> = common name character · unset = element not set · <span style="background:var(--xiong);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">不宜</span> = adverse meaning (pinyin search only) · feminine / masculine = usually the other gender (pinyin search only, lowers the score). unset characters also appear when a meaning is chosen`;
 }
 function panelHtml() {
   if (complete()) return "";
@@ -469,6 +477,7 @@ function panelHtml() {
       <input class="pyin" id="py" type="text" inputmode="latin" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="ting, xuan, yu…" value="${esc(S.py)}">
       <button class="fchip" data-clearpy="1" id="pyclear" ${S.py ? "" : "hidden"}>clear</button></div>
     <div class="count" id="count" aria-live="polite">${countHtml()}</div>
+    ${legendHtml()}
     <div id="tiles">${tilesHtml()}</div></div>`;
 }
 function builderBlock() {
@@ -505,7 +514,7 @@ function optHtml() {
     ${o.results.length ? o.results.map(r => optRow(r, false)).join("")
       : `<div class="empty-msg">${o.mode === "improve" ? L("No single-character change scores higher with these filters") : L("No character matches — widen the element filter or clear a meaning choice")}</div>`}
     <div class="note">Gold outline = the character the optimiser chose.</div>
-    <div class="limits"><b>This tool is a first screen, not a verdict.</b> It ranks names by the BaZi (八字) useful god (用神) elements, the Five Grids (五格) and Three Talents (三才) stroke methods, and a partly curated character list. The Five Grids are a modern school, not a classical rule, and element assignments and stroke counts differ between dictionaries and practitioners. Sound is checked by simple house rules: tone pattern, repeated sounds, Chinese words the name sounds like (three strengths: same tones, different tones, merged consonants; severe words such as "death" (死亡 sǐ wáng) cap the grade whatever the tones; word list hand-reviewed from <a href="https://www.mdbg.net/chinese/dictionary?page=cedict" rel="noopener" target="_blank">CC-CEDICT</a>, CC BY-SA 4.0) and English words the pinyin spelling reads as. It does not judge dialect readings, the zodiac animal or family naming rules; meaning is screened only for clearly adverse characters. Treat the ranking as a shortlist for the family (and a practitioner) to review, not a verdict.</div></div>`;
+    <div class="limits"><b>This tool is a first screen, not a verdict.</b> It ranks names by the BaZi (八字) useful god (用神) elements, the Five Grids (五格) and Three Talents (三才) stroke methods, and a partly curated character list. The Five Grids are a modern school, not a classical rule, and element assignments and stroke counts differ between dictionaries and practitioners. Sound is checked by simple house rules: tone pattern, repeated sounds, Chinese words the name sounds like (three strengths: same tones, different tones, merged consonants; severe words such as "death" (死亡) cap the grade whatever the tones; word list hand-reviewed from <a href="https://www.mdbg.net/chinese/dictionary?page=cedict" rel="noopener" target="_blank">CC-CEDICT</a>, CC BY-SA 4.0) and English words the pinyin spelling reads as. It does not judge dialect readings, the zodiac animal or family naming rules; meaning is screened only for clearly adverse characters. Treat the ranking as a shortlist for the family (and a practitioner) to review, not a verdict.</div></div>`;
 }
 async function loadOpt() {
   S.opt = {loading: true}; $("#opt").innerHTML = optHtml();
@@ -549,12 +558,12 @@ function cardBlock() {
         ${c.interpretation.partial ? `<div class="count">one character has no stock name sense; its dictionary gloss is shown.</div>` : ""}</div></div>
     <div class="scoreband" title="${esc(c.score.basis)}">
       <div class="sbtot"><div class="scoretot">${c.score.total}<small>/100 ${Li("score")}</small></div>
-        <div class="grade g-${c.score.grade.en}">${c.score.grade.en} <small lang="zh-Hans">${c.score.grade.zh} ${py(c.score.grade.zh)}</small>${c.score.grade.capped ? `<span class="capped" title="${esc(c.score.grade.reason)}">capped</span>` : ""}</div>
+        <div class="grade g-${c.score.grade.en}">${c.score.grade.en} <small>${zs(c.score.grade.zh)}</small>${c.score.grade.capped ? `<span class="capped" title="${esc(c.score.grade.reason)}">capped</span>` : ""}</div>
         ${c.score.grade.capped ? `<div class="count capnote">${esc(c.score.grade.reason)}</div>` : ""}
         <div><span class="luck ${c.ji === 5 ? "ji" : "amber"}">${c.ji}/5 auspicious</span> ${luckChip(c.sancai.verdict, true).replace(">", ">Three Talents: ")}</div></div>
       ${scoreParts(c.score)}</div>
     ${(c.warnings || []).map(w => `<div class="warn" role="alert"><b>${w.ch}</b> ${w.class === "gender" ? Li("gender mismatch — lowers the gender-fit score") : w.class === "sound" ? Li("sounds like a rude or unlucky word — grade capped at needs a second look") : Li("adverse meaning — not recommended in a name")}: ${esc(w.why)}</div>`).join("")}
-    <div class="tradline">${Li("traditional form", "繁體")} <b>${c.trad}</b> <small>${py(c.trad)}</small>
+    <div class="tradline">${Li("traditional form", "繁體")} <b>${zs(c.trad)}</b>
       <span class="count">${c.strokes.join(" + ")} strokes (Kangxi)</span>
       ${amb.map(x => `<span class="tsw" role="group" aria-label="traditional form of ${x.ch}">${Object.entries(x.trad_alts).map(([f, k]) => `<button data-trad="${x.ch}:${f}" aria-pressed="${x.trad === f}">${f} <small>${k} strokes</small></button>`).join("")}</span>`).join("")}</div>
     ${amb.length ? `<div class="note">${amb.map(x => x.ch).join("、")}: more than one traditional form — the name-usage form is preselected; switching recomputes the strokes and the grids.</div>` : ""}
@@ -565,7 +574,7 @@ function cardBlock() {
       ${S.shortlist.find(x => x.name === c.name) ? `<button class="btn" disabled>already in the shortlist</button>`
         : S.shortlist.length >= SL_MAX ? `<button class="btn" disabled>shortlist full ${SL_MAX}/${SL_MAX} — delete one to add another</button>`
         : `<button class="btn" data-short="1">Add to shortlist (${S.shortlist.length}/${SL_MAX})</button>`}<button class="btn" data-again="1">Start over</button></div>
-    <div class="limits"><b>This tool is a first screen, not a verdict.</b> It ranks names by the BaZi (八字) useful god (用神) elements, the Five Grids (五格) and Three Talents (三才) stroke methods, and a partly curated character list. The Five Grids are a modern school, not a classical rule, and element assignments and stroke counts differ between dictionaries and practitioners. Sound is checked by simple house rules: tone pattern, repeated sounds, Chinese words the name sounds like (three strengths: same tones, different tones, merged consonants; severe words such as "death" (死亡 sǐ wáng) cap the grade whatever the tones; word list hand-reviewed from <a href="https://www.mdbg.net/chinese/dictionary?page=cedict" rel="noopener" target="_blank">CC-CEDICT</a>, CC BY-SA 4.0) and English words the pinyin spelling reads as. It does not judge dialect readings, the zodiac animal or family naming rules; meaning is screened only for clearly adverse characters. Treat the ranking as a shortlist for the family (and a practitioner) to review, not a verdict.</div>
+    <div class="limits"><b>This tool is a first screen, not a verdict.</b> It ranks names by the BaZi (八字) useful god (用神) elements, the Five Grids (五格) and Three Talents (三才) stroke methods, and a partly curated character list. The Five Grids are a modern school, not a classical rule, and element assignments and stroke counts differ between dictionaries and practitioners. Sound is checked by simple house rules: tone pattern, repeated sounds, Chinese words the name sounds like (three strengths: same tones, different tones, merged consonants; severe words such as "death" (死亡) cap the grade whatever the tones; word list hand-reviewed from <a href="https://www.mdbg.net/chinese/dictionary?page=cedict" rel="noopener" target="_blank">CC-CEDICT</a>, CC BY-SA 4.0) and English words the pinyin spelling reads as. It does not judge dialect readings, the zodiac animal or family naming rules; meaning is screened only for clearly adverse characters. Treat the ranking as a shortlist for the family (and a practitioner) to review, not a verdict.</div>
   </div>`;
 }
 
@@ -618,16 +627,17 @@ function shortlistBlock() {
         <td><a href="${x.url}" target="_blank" rel="noopener">certificate →</a></td><td><button class="sldel" data-sldel="${i}" aria-label="remove ${x.name}">delete ✕</button></td></tr>`).join("")}</table>
     <div class="actions"><button class="btn" data-slclear="1">clear all</button></div></div>`;
 }
-/* English-first pass over the app region: glossary terms get "English (汉字 pīnyīn)" at first use;
+/* English-first pass over the app region: glossary terms get "English (汉字)" at first use (pinyin in the tooltip);
    candidate-name characters, boxes and names stay as typed (they carry their own pinyin) */
 function glossApp(root) {
   if (!window.GL || !root) return;
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: (n) => n.parentElement && /[\u3400-\u9fff]/.test(n.nodeValue)
-      && !n.parentElement.closest("input,textarea,.ch,.nm,.box,.tile,.slname,.namegrid,.tradline,.gz,.keepzh,#shortlist table,[lang='zh-Hans']")
+      && !n.parentElement.closest("input,textarea,.ch,.nm,.box,.tile,.slname,.namegrid,.tradline,.gz,.keepzh,.zh,#shortlist table,[lang='zh-Hans']")
       ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
   const ns = []; let t; while ((t = w.nextNode())) ns.push(t);
   ns.forEach((n) => { const v = GL.text(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; });
+  GL.tipify(root);                         // Chinese runs -> tooltip spans, element colours
 }
 const py = s => window.GL ? GL.pinyin(s) : "";
 function render() {
@@ -641,6 +651,7 @@ function renderDynamic() {                  // tiles/chips/count only — keeps 
   const t = $("#tiles"); if (!t) return render();
   t.innerHTML = tilesHtml(); t.classList.remove("busy");
   $("#chips").innerHTML = chipsHtml(); $("#count").innerHTML = countHtml();
+  if (window.GL) GL.tipify($("#count"));
 }
 async function loadTiles(append) {
   if (complete()) return;
@@ -731,5 +742,6 @@ $("#start").addEventListener("click", async () => {
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 <div class="learnstrip"><b>Learn:</b> <a href="/learn/how-chinese-baby-names-are-scored">How Chinese baby names are scored</a> <a href="/learn/what-is-bazi">What is BaZi?</a> <a href="/learn/useful-god-colors">Useful element colours</a> <a href="/learn/five-elements-cycles">The five elements</a></div>
 <footer class="sitefoot">© bazifor.me, deterministic BaZi &amp; fengshui readings.<br>
-<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (中文 zhōng wén)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
+<span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (<span class="zh" lang="zh-Hant" title="zhōng wén">中文</span>)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span></footer>
+<script src="/static/glossary-tip.js" defer></script>
 </body></html>
