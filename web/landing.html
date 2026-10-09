@@ -21,90 +21,232 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preload" as="image" href="/static/img/hero-landing-600.jpg" media="(max-width: 759px)">
+<link rel="preload" as="image" href="/static/img/hero-landing.jpg" media="(min-width: 760px)">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "image": "https://bazifor.me/static/og/home.png", "name": "bazifor.me", "url": "https://bazifor.me", "logo": "https://bazifor.me/static/img/brand/icon-512.png", "sameAs": []}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "bazifor.me", "url": "https://bazifor.me", "inLanguage": ["en", "zh-Hans"]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+{"@type": "Question", "name": "Is bazifor.me free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The BaZi reading, the home feng shui audit, the Kua number calculator and the baby name builder are free, with no account and no sign-up."}},
+{"@type": "Question", "name": "Do I need an account to keep my results?", "acceptedAnswer": {"@type": "Answer", "text": "No. Your workspace lives behind an unguessable private link. Keep the link to come back to it; nothing is listed or shared."}},
+{"@type": "Question", "name": "Is the reading written by AI?", "acceptedAnswer": {"@type": "Answer", "text": "No. Every line is the output of a fixed classical rule, and the guides are hand-written. No generative AI writes any reading, and the same inputs always give the same result."}},
+{"@type": "Question", "name": "Does it predict events?", "acceptedAnswer": {"@type": "Answer", "text": "No. The engine computes classical structures such as the four pillars, the useful elements and the Flying Stars of a home, and states their traditional reading. It does not forecast events."}},
+{"@type": "Question", "name": "Why is it built for Singapore and Malaysia?", "acceptedAnswer": {"@type": "Answer", "text": "Birth times are converted to true solar time for the longitude, and clock times before 1982 use the UTC+7:30 offset of that era. The home tool is written for HDB flats and condominiums, and every term appears in English with the Chinese once."}}
+]}</script>
 <style>
-:root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;
-  --gold:#8a6d1f;--line:#e5ded2}
+:root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;--seal:#c7301d;
+  --gold:#8a6d1f;--line:#e5ded2;--soft:#f3ecdd}
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 body{margin:0;background:var(--bg);color:var(--ink);
-  font:16px/1.55 system-ui,"Noto Sans SC","PingFang SC",sans-serif;
-  min-height:100vh;display:flex;flex-direction:column}
-header{padding:44px 22px 10px;text-align:center}
-h1{margin:0 auto;font-size:28px;line-height:1.25;max-width:720px;color:var(--accent)}
-.brand{font-size:15px;color:var(--gold);letter-spacing:2px;margin-top:8px;font-weight:700}
-.sub{color:var(--muted);font-size:15px;margin-top:6px}
-main{flex:1;max-width:900px;margin:0 auto;padding:24px 22px 60px;width:100%}
-.menu{display:grid;grid-template-columns:1fr;gap:16px}
-@media(min-width:760px){.menu{grid-template-columns:1fr 1fr}}
-a.tile{display:block;background:var(--card);border:1px solid var(--line);
-  border-radius:12px;padding:20px;min-height:44px;text-decoration:none;color:var(--ink);
-  transition:box-shadow .15s,border-color .15s}
-a.tile:hover{border-color:var(--gold);box-shadow:0 4px 16px rgba(43,38,32,.10)}
-a.tile:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-.tile .icon{width:44px;height:44px;border-radius:12px;background:#f3ecdd;color:var(--gold);
-  display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700}
-.tile h2{margin:12px 0 6px;font-size:20px;color:var(--accent)}
-.tile .shot{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border-radius:8px;border:1px solid var(--line);margin-bottom:12px}
-.tile p{margin:0;font-size:14.5px;line-height:1.6;color:var(--muted)}
-.tile .zh{color:var(--gold);font-size:14px;margin-left:6px}
+  font:16px/1.55 system-ui,"Noto Sans SC","PingFang SC",sans-serif;min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.skip{position:absolute;left:-999px;top:8px;background:#fff;padding:8px 12px;border-radius:8px}
+.skip:focus{left:12px;z-index:100}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px;width:100%}
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0}
+.logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:700;min-height:44px}
+.logo img{width:32px;height:32px;border-radius:7px}
+.topnav{display:none;gap:4px}
+.topnav a{text-decoration:none;color:var(--ink);padding:10px 12px;border-radius:8px;min-height:44px;display:inline-flex;align-items:center;font-size:15px}
+.topnav a:hover{background:var(--soft)}
+@media(min-width:760px){.topnav{display:flex}}
+/* hero */
+.hero{display:grid;grid-template-columns:1fr;gap:24px;align-items:center;padding:16px 0 32px}
+@media(min-width:760px){.hero{grid-template-columns:1.1fr 1fr;gap:40px;padding:28px 0 48px}}
+.eyebrow{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+h1{margin:0 0 14px;font:700 34px/1.15 Georgia,"Noto Serif SC","Songti SC",serif;color:var(--ink);letter-spacing:-.01em}
+@media(min-width:760px){h1{font-size:44px}}
+.lead{margin:0 0 22px;font-size:18px;line-height:1.55;color:#4a433a;max-width:34em}
+.cta{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:10px;
+  background:var(--seal);color:#fff;font-weight:700;text-decoration:none;font-size:16px;transition:background .15s,transform .15s}
+.cta:hover{background:#a9281a}
+.cta:active{transform:scale(.98)}
+.cta.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--line);margin-left:8px}
+.cta.ghost:hover{background:var(--soft)}
+.hero-img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);background:var(--card);display:block}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chips span{font-size:13px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+/* sections */
+section{padding:34px 0}
+.sec-h{margin:0 0 6px;font:700 26px/1.2 Georgia,"Noto Serif SC","Songti SC",serif;color:var(--ink)}
+.sec-sub{margin:0 0 20px;color:var(--muted);font-size:15.5px;max-width:40em}
+.cards{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:760px){.cards{grid-template-columns:1fr 1fr}}
+.card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.card .shot{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+.card .body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h3{margin:0;font-size:20px;color:var(--ink)}
+.card h3 small{display:block;font-size:13px;font-weight:600;color:var(--gold);letter-spacing:.04em;margin-bottom:2px}
+.card p{margin:0;color:#4a433a;font-size:15px;line-height:1.55}
+.card .go{margin-top:auto;padding-top:8px}
+.card .go a{display:inline-flex;align-items:center;min-height:44px;font-weight:700;text-decoration:none}
+.card .go a::after{content:" →";margin-left:4px}
+/* steps */
+.steps{display:grid;grid-template-columns:1fr;gap:14px;counter-reset:step}
+@media(min-width:760px){.steps{grid-template-columns:1fr 1fr 1fr}}
+.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.step .n{width:36px;height:36px;border-radius:50%;background:var(--seal);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.step h3{margin:0 0 6px;font-size:17px}
+.step p{margin:0;font-size:15px;color:#4a433a;line-height:1.55}
+/* trust */
+.trust{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:760px){.trust{grid-template-columns:1fr 1fr}}
+.fact{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.55}
+.fact b{display:block;color:var(--ink);margin-bottom:2px}
+.proof{margin:14px 0 0;background:var(--soft);border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.55}
+/* who */
+.who{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.who ul{margin:8px 0 0;padding-left:20px}
+.who li{margin:4px 0}
+/* faq */
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
+summary{cursor:pointer;padding:14px 16px;font-weight:700;min-height:44px;display:flex;align-items:center;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";display:inline-block;width:22px;color:var(--gold);font-size:20px}
+details[open] summary::before{content:"–"}
+details p{margin:0;padding:0 16px 14px 38px;color:#4a433a;font-size:15px;line-height:1.55}
+/* guides + final */
+.guides{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.guides a{font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:9px 13px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.final{text-align:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px 18px}
+.final h2{margin:0 0 10px;font:700 28px/1.2 Georgia,"Noto Serif SC","Songti SC",serif}
+.final p{margin:0 0 18px;color:var(--muted)}
 footer{padding:16px 22px 28px;text-align:center;color:var(--muted);font-size:13px}.sitefoot .fnav{display:inline-block;margin-top:6px}
 footer a{color:var(--accent)}
 footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 6px}
-.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#6b6359;
-  z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
-.trust{max-width:760px;margin:26px auto 0;background:var(--card);
-  border:1px solid var(--line);border-left:4px solid var(--gold);
-  border-radius:12px;padding:16px 20px;font-size:14.5px;line-height:1.6;color:#5a5348}
+.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#6b6359;z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
 </style></head><body>
+<a class="skip" href="#main">Skip to content</a>
 <span class="verbadge" id="ver"></span>
 <script>fetch("/api/pub/version").then(r=>r.json())
   .then(v=>{document.getElementById("ver").textContent="v "+v.version}).catch(()=>{});</script>
-<header>
-  <h1>BaZi, home feng shui and baby names, computed and cited</h1>
-  <div class="brand">bazifor.me</div>
-  <div class="sub">Classical BaZi 八字 and FengShui 风水 — deterministic, rule-cited,
-    no AI guesswork. 计算透明 · 条条有据</div>
+<header class="wrap">
+  <div class="top">
+    <a class="logo" href="/" aria-label="bazifor.me home"><img src="/static/img/brand/icon-64.png" width="32" height="32" alt="">bazifor.me</a>
+    <nav class="topnav" aria-label="Tools">
+      <a href="/start">BaZi reading</a><a href="/fengshui">Home feng shui</a><a href="/kua">Kua number</a><a href="/baby">Baby names</a><a href="/learn">Guides</a>
+    </nav>
+  </div>
+  <div class="hero">
+    <div>
+      <span class="eyebrow">Free · no account · Singapore and Malaysia</span>
+      <h1>Your BaZi chart, your home's feng shui and your baby's name, computed from the classical rules</h1>
+      <p class="lead">Enter a birth date and time, a floor plan, or a surname. The engine runs the traditional rules and shows which rule produced each line, so you can check it.</p>
+      <a class="cta" href="/start">Start your free reading</a>
+      <a class="cta ghost" href="#how">See how it works</a>
+      <div class="chips" aria-label="What is covered"><span>BaZi (八字) reading</span><span>Home feng shui (風水)</span><span>Kua number (命卦)</span><span>Baby names (起名)</span></div>
+    </div>
+    <img class="hero-img" src="/static/img/hero-landing.jpg" srcset="/static/img/hero-landing-600.jpg 600w, /static/img/hero-landing.jpg 1200w" sizes="(min-width: 760px) 480px, 100vw" width="1200" height="800" fetchpriority="high" alt="Ink-wash illustration of a compass, a folded floor plan, a red seal and a jade pendant on a scholar's desk">
+  </div>
 </header>
-<main>
-  <div class="menu">
-    <a class="tile" href="/start">
-      <img class="shot" src="/static/img/shots/reading-desktop.jpg" fetchpriority="high" alt="Example reading page for a fictional person: four pillars, day master and useful elements" width="1280" height="900">
-      <div class="icon" aria-hidden="true">命</div>
-      <h2>Personal<span class="zh">个人命理</span></h2>
-      <p>Enter a birth date and time — get the full reading: four pillars, element
-        balance, 用神, careers, health, timing windows. Add up to 8 people for
-        harmony and cross-comparison.</p>
-    </a>
-    <a class="tile" href="/fengshui">
-      <img class="shot" src="/static/img/shots/fengshui-desktop.jpg" alt="Example home fengshui result: room and aspect scores for a sample condo" loading="lazy" width="1280" height="700">
-      <div class="icon" aria-hidden="true">宅</div>
-      <h2>House<span class="zh">宅运风水</span></h2>
-      <p>Upload your floorplan, give the compass facing, draw the rooms — flying-star
-        chart and person-by-person room scores, every star cited.</p>
-    </a>
-    <a class="tile" href="/baby">
-      <img class="shot" src="/static/img/shots/baby-card-desktop.jpg" alt="Example baby name card for a fictional name with seven-part score bars" loading="lazy" width="955" height="650">
-      <div class="icon" aria-hidden="true">名</div>
-      <h2>Name<span class="zh">宝宝起名</span></h2>
-      <p>A newborn's chart and the naming direction that follows from it — which
-        elements and radical families the name should carry.</p>
-    </a>
-    <a class="tile" href="/learn">
-      <div class="icon" aria-hidden="true">学</div>
-      <h2>Learn<span class="zh">知识库</span></h2>
-      <p>Plain-language guides to BaZi and fengshui — day masters, 用神 colours,
-        八宅 directions, flying stars, date selection. The same rules the engine
-        cites, explained.</p>
-    </a>
-  </div>
-  <div class="trust">
-    <b>Why trust this?</b> The engine reproduced a paid professional audit to the digit
-    (27/27 flying stars, 32/32 directional assignments) and matches commercial chart
-    products character-for-character — then shows you every classical rule it cites,
-    which they don't. Your birth data stays behind an unguessable private link; no
-    account, nothing shared.
-  </div>
+<main id="main" class="wrap">
+  <section id="tools" aria-labelledby="h-tools">
+    <h2 class="sec-h" id="h-tools">What you get</h2>
+    <p class="sec-sub">Four tools, one engine. Each result shows its working, with the rule beside every line.</p>
+    <div class="cards">
+      <article class="card">
+        <img class="shot" src="/static/img/shots/reading-desktop.jpg" alt="Example reading page for a fictional person: four pillars, day master and useful elements" width="1280" height="900" loading="lazy">
+        <div class="body">
+          <h3><small>Personal</small>BaZi reading (八字)</h3>
+          <p>Your four pillars, Day Master (日主), useful elements (用神), ten-year luck cycles and the timing windows that follow, each line with the rule that produced it. Add up to eight family members and compare.</p>
+          <div class="go"><a href="/start">Start a reading</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <img class="shot" src="/static/img/shots/fengshui-desktop.jpg" alt="Example home fengshui result: room and aspect scores for a sample condo" width="1280" height="700" loading="lazy">
+        <div class="body">
+          <h3><small>House</small>Home feng shui audit (風水)</h3>
+          <p>Upload the floor plan, set the facing, trace the rooms. You get the Flying Stars (玄空飛星) chart, the Eight Mansions (八宅) fit for each person, and a room-by-room score for an HDB flat or condominium.</p>
+          <div class="go"><a href="/fengshui">Audit your home</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <img class="shot" src="/static/img/shots/kua-desktop.jpg" alt="Example Kua number result: the eight directions around a compass with the favourable ones marked" width="1280" height="900" loading="lazy">
+        <div class="body">
+          <h3><small>Directions</small>Kua number (命卦)</h3>
+          <p>Birth date and sex give your Kua number, counted from the 立春 year boundary. The page shows your four favourable and four unfavourable directions for the bed and the desk.</p>
+          <div class="go"><a href="/kua">Find your Kua number</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <img class="shot" src="/static/img/shots/baby-card-desktop.jpg" alt="Example baby name card for a fictional name with seven-part score bars" width="955" height="650" loading="lazy">
+        <div class="body">
+          <h3><small>Name</small>Baby name builder (起名)</h3>
+          <p>From the baby's chart to a scored shortlist: useful elements, 康熙 stroke counts, the five grids, meaning, sound-alikes in Mandarin and English, and a printable name card.</p>
+          <div class="go"><a href="/baby">Build a name</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="how" aria-labelledby="h-how">
+    <h2 class="sec-h" id="h-how">How it works</h2>
+    <p class="sec-sub">Three steps, the same for every tool.</p>
+    <div class="steps">
+      <div class="step"><div class="n" aria-hidden="true">1</div><h3>Enter the inputs</h3><p>A birth date, time and place. Or a floor plan photo and the facing direction. Or a surname and the baby's birth data.</p></div>
+      <div class="step"><div class="n" aria-hidden="true">2</div><h3>The engine runs the rules</h3><p>True solar time, the 立春 year boundary, Flying Stars by period and facing, Eight Mansions by Kua number, 康熙 strokes for names. Fixed rules, no guesswork.</p></div>
+      <div class="step"><div class="n" aria-hidden="true">3</div><h3>Read the result with its citations</h3><p>Every line names the classical rule behind it. Your workspace stays behind a private link that only you hold.</p></div>
+    </div>
+  </section>
+
+  <section id="trust" aria-labelledby="h-trust">
+    <h2 class="sec-h" id="h-trust">Why trust it</h2>
+    <p class="sec-sub">No testimonials here. These are the claims the site stands on, and you can test each one.</p>
+    <div class="trust">
+      <div class="fact"><b>Deterministic</b>The same birth data or floor plan always gives the same result. Run it twice and compare.</div>
+      <div class="fact"><b>Every line cites its rule</b>Each output line names the classical rule it applies, with an id a practitioner can check.</div>
+      <div class="fact"><b>No account, private by default</b>Workspaces live behind an unguessable link, are never listed and are used for nothing else.</div>
+      <div class="fact"><b>No AI-written readings</b>The text is rule output and hand-written guides. Where schools disagree, the engine records its choice and marks it as disputed.</div>
+    </div>
+    <p class="proof">The home engine reproduced a paid professional audit to the digit: 27 of 27 flying-star palaces and 32 of 32 directional assignments, as described on the <a href="/about">about page</a>. Read the full <a href="/method">method</a> and meet the <a href="/author">author</a>.</p>
+  </section>
+
+  <section id="who" aria-labelledby="h-who">
+    <h2 class="sec-h" id="h-who">Built for Singapore and Malaysia</h2>
+    <div class="who">
+      <p>The rules are classical. The defaults are local.</p>
+      <ul>
+        <li>Birth times are converted to true solar time for the longitude, and clock times before 1982 use the UTC+7:30 offset of that era.</li>
+        <li>The home tool is written for HDB flats and condominiums: main-door facing, lift lobbies, bay windows and shared walls.</li>
+        <li>English first, with the Chinese term shown once, so a bilingual family can read the same page together. Sixteen guides are available in English and Chinese.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="faq" aria-labelledby="h-faq">
+    <h2 class="sec-h" id="h-faq">Questions people ask first</h2>
+    <details><summary>Is bazifor.me free?</summary><p>Yes. The BaZi reading, the home feng shui audit, the Kua number calculator and the baby name builder are free, with no account and no sign-up.</p></details>
+    <details><summary>Do I need an account to keep my results?</summary><p>No. Your workspace lives behind an unguessable private link. Keep the link to come back to it; nothing is listed or shared.</p></details>
+    <details><summary>Is the reading written by AI?</summary><p>No. Every line is the output of a fixed classical rule, and the guides are hand-written. No generative AI writes any reading, and the same inputs always give the same result.</p></details>
+    <details><summary>Does it predict events?</summary><p>No. The engine computes classical structures such as the four pillars, the useful elements and the Flying Stars of a home, and states their traditional reading. It does not forecast events.</p></details>
+    <details><summary>Why is it built for Singapore and Malaysia?</summary><p>Birth times are converted to true solar time for the longitude, and clock times before 1982 use the UTC+7:30 offset of that era. The home tool is written for HDB flats and condominiums, and every term appears in English with the Chinese once.</p></details>
+  </section>
+
+  <section id="learn" aria-labelledby="h-learn">
+    <h2 class="sec-h" id="h-learn">Learn the rules the engine uses</h2>
+    <p class="sec-sub">Sixteen plain-language guides, each with the same facts the engine computes.</p>
+    <div class="guides learnstrip">
+      <a href="/learn/what-is-bazi">What is BaZi?</a>
+      <a href="/learn/day-masters-explained">Day Masters</a>
+      <a href="/learn/useful-god-colors">Useful elements and colours</a>
+      <a href="/learn/bed-direction-guide">Bed direction</a>
+      <a href="/learn/flying-stars-2027">Flying Stars 2027</a>
+      <a href="/learn/how-chinese-baby-names-are-scored">How names are scored</a>
+      <a href="/learn">All guides</a>
+      <a href="/zh/learn" lang="zh-Hans">中文知识库</a>
+    </div>
+  </section>
+
+  <section>
+    <div class="final">
+      <h2>See your own chart, computed, not guessed</h2>
+      <p>Free, no account, about two minutes.</p>
+      <a class="cta" href="/start">Start your free reading</a>
+    </div>
+  </section>
 </main>
 <footer class="sitefoot">© bazifor.me — deterministic BaZi &amp; fengshui readings.<br>
 <span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">知识库</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a></span> · <a href="/app">demo app (sample data)</a></footer>
