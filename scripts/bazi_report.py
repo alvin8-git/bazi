@@ -33,6 +33,7 @@ from engine.shensha import (ANIMALS, TEN_GOD_MEANING, WENCHANG, life_palaces,
 from engine.windows import timing_windows
 from engine.wuxing import BRANCH_ELEMENT, HE_MAP, KE, SANHE, STEM_ELEMENT
 from engine.yongshen import yong_shen
+from engine.i18n import L, T, and_l, cap, dot, jn, zs  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 YEAR = 2026
@@ -134,7 +135,8 @@ REL_ADVICE = {
 WEALTH_ADVICE = {
     "steady": ["Automate a fixed savings percentage before spending touches "
                "it — this chart wins by compounding, not by timing.",
-               "Prefer boring instruments (index, property, CPF top-ups); "
+               "Prefer boring instruments (index funds, property, retirement "
+               "account top-ups); "
                "FOMO trades fight the chart's nature.",
                "Review once a quarter, not once a day."],
     "opportunistic": ["Cap each deal at a fixed share of net worth, decided "
@@ -174,7 +176,7 @@ ORGAN_CARE = {
     "土": "spleen/stomach care: regular mealtimes, chew slowly, a 10-minute walk "
           "after dinner, park the worrying at the table's edge",
     "金": "lungs/skin care: breathing practice, moisturise, mind air quality "
-          "(purifier in haze season), sing or swim for lung volume",
+          "(a purifier when the air is bad), sing or swim for lung volume",
 }
 BOSS_FIT = [
     (lambda p: p.get("七殺", 0) > p.get("正官", 0) and p.get("七殺", 0) >= 10,
@@ -214,7 +216,8 @@ GOD_HANDLE = {
 MONTH_RANGE = {"寅": "Feb", "卯": "Mar", "辰": "Apr", "巳": "May", "午": "Jun",
                "未": "Jul", "申": "Aug", "酉": "Sep", "戌": "Oct", "亥": "Nov",
                "子": "Dec", "丑": "Jan"}
-EXAMS = {12: "PSLE", 16: "O-Levels", 18: "A-Levels"}
+EXAMS = {12: "the end-of-primary exam", 16: "the end-of-secondary exam",
+         18: "the university entrance exam"}
 CLASH = {"子": "午", "午": "子", "丑": "未", "未": "丑", "寅": "申", "申": "寅",
          "卯": "酉", "酉": "卯", "辰": "戌", "戌": "辰", "巳": "亥", "亥": "巳"}
 
@@ -224,23 +227,23 @@ def sugg(items):
             + "".join(f"<div>· {i}</div>" for i in items) + "</div>")
 
 
-def dial(pct):
+def dial(pct, lang: str = "en"):
     corp = sum(pct.get(g, 0) * w for g, w in CORPORATE_GODS.items())
     vent = sum(pct.get(g, 0) * w for g, w in VENTURE_GODS.items())
     ratio = corp / ((corp + vent) or 1)
     mode = "corp" if ratio >= .6 else "vent" if ratio <= .4 else "ambi"
-    verdict = {"corp": "built for STRUCTURED environments — corporate ladders, "
-                       "institutions, expert tracks",
-               "vent": "built for HIGH-VOLATILITY work — ventures, deals, "
-                       "performance-paid roles",
-               "ambi": "AMBIDEXTROUS — can run either mode; pick by season of life"}[mode]
+    verdict = {"corp": T("bazi_report.dial.01", "built for STRUCTURED environments — corporate ladders, "
+                       "institutions, expert tracks", lang),
+               "vent": T("bazi_report.dial.02", "built for HIGH-VOLATILITY work — ventures, deals, "
+                       "performance-paid roles", lang),
+               "ambi": T("bazi_report.dial.03", "AMBIDEXTROUS — can run either mode; pick by season of life", lang)}[mode]
     ev = [f"{g} {pct[g]:.0f}%" for g in CORPORATE_GODS if pct.get(g, 0) >= 8]
     vv = [f"{g} {pct[g]:.0f}%" for g in VENTURE_GODS if pct.get(g, 0) >= 8]
     return {"pct_corp": round(ratio * 100), "mode": mode, "verdict": verdict,
-            "corp_ev": ev, "vent_ev": vv}
+            "corp_ev": [zs(x, lang) for x in ev], "vent_ev": [zs(x, lang) for x in vv]}
 
 
-def relationship_risk(chart, pct, w):
+def relationship_risk(chart, pct, w, lang: str = "en"):
     p = chart.pillars
     day_hits = [k for k in ("year", "month", "hour")
                 if p[k].branch == CLASH.get(p["day"].branch)]
@@ -251,59 +254,59 @@ def relationship_risk(chart, pct, w):
     ev = {k: [] for k in scores}
     if mixed:
         scores["selection"] += 2
-        ev["selection"].append("both 正/偏 spouse stars present — attracts mixed signals")
+        ev["selection"].append(T("bazi_report.relationship_risk.01", "both 正/偏 spouse stars present — attracts mixed signals", lang))
     if absent:
         scores["selection"] += 2
-        ev["selection"].append("no spouse star — partners found through activity, not gravity")
+        ev["selection"].append(T("bazi_report.relationship_risk.02", "no spouse star — partners found through activity, not gravity", lang))
     if "牆外" in w["taohua"]["type"]:
         scores["selection"] += 1
-        ev["selection"].append("桃花 outside the walls — variable attraction")
+        ev["selection"].append(T("bazi_report.relationship_risk.03", "桃花 outside the walls — variable attraction", lang))
     if pct.get("傷官", 0) >= 14:
         scores["communication"] += 2
-        ev["communication"].append(f"傷官 {pct['傷官']:.0f}% — sharp expression cuts close partners first")
+        ev["communication"].append(T("bazi_report.relationship_risk.04", f"傷官 {pct['傷官']:.0f}% — sharp expression cuts close partners first", lang, pct_傷官=pct['傷官']))
     if day_hits:
         scores["communication"] += 2
-        ev["communication"].append(f"day branch clashed by the {'/'.join(day_hits)} pillar — "
-                                   "friction lives in daily contact")
+        ev["communication"].append(T("bazi_report.relationship_risk.05", f"day branch clashed by the {'/'.join(day_hits)} pillar — "
+                                   "friction lives in daily contact", lang, join_day_hits='/'.join(day_hits)))
     if pct.get("比肩", 0) + pct.get("劫財", 0) >= 25:
         scores["division"] += 2
-        ev["division"].append("heavy 比劫 — parity struggles: who leads, who yields")
+        ev["division"].append(T("bazi_report.relationship_risk.06", "heavy 比劫 — parity struggles: who leads, who yields", lang))
     if pct.get("七殺", 0) >= 20 and pct.get("正官", 0) == 0:
         scores["division"] += 1
-        ev["division"].append("七殺 without 正官 — control asserted under stress")
+        ev["division"].append(T("bazi_report.relationship_risk.07", "七殺 without 正官 — control asserted under stress", lang))
     key = max(scores, key=lambda k: scores[k])
     if scores[key] == 0:
-        key, note = "none", "no dominant structural risk point — pattern risks are situational"
+        key, note = "none", T("bazi_report.relationship_risk.08", "no dominant structural risk point — pattern risks are situational", lang)
     else:
-        note = {"selection": "partner SELECTION — who is chosen matters more than how it's run",
-                "communication": "COMMUNICATION — the relationship works when the channel does",
-                "division": "ROLE DIVISION — agree who owns what, explicitly"}[key]
+        note = {"selection": T("bazi_report.relationship_risk.09", "partner SELECTION — who is chosen matters more than how it's run", lang),
+                "communication": T("bazi_report.relationship_risk.10", "COMMUNICATION — the relationship works when the channel does", lang),
+                "division": T("bazi_report.relationship_risk.11", "ROLE DIVISION — agree who owns what, explicitly", lang)}[key]
     return {"key": key, "note": note, "evidence": ev.get(key, [])}
 
 
-def wealth_pattern(chart, pct, w):
+def wealth_pattern(chart, pct, w, lang: str = "en"):
     zf, pf = pct.get("正財", 0), pct.get("偏財", 0)
     weak = chart.strength["verdict"].startswith("身弱")
     if pf >= 15 and pf > zf:
-        mode, pat = "opportunistic", ("OPPORTUNISTIC 偏財 — lumpy income: deals, "
-                                      "ventures, timing plays")
+        mode, pat = "opportunistic", (T("bazi_report.wealth_pattern.01", "OPPORTUNISTIC 偏財 — lumpy income: deals, "
+                                      "ventures, timing plays", lang))
     elif zf >= 12:
-        mode, pat = "steady", ("STEADY ACCUMULATOR 正財 — salary, savings and "
-                               "compounding beat speculation")
+        mode, pat = "steady", (T("bazi_report.wealth_pattern.02", "STEADY ACCUMULATOR 正財 — salary, savings and "
+                               "compounding beat speculation", lang))
     elif zf + pf > 0:
-        mode, pat = "competence", ("MODEST wealth stars — income follows competence "
-                                   "(食傷生財 route): monetise skill, not capital")
+        mode, pat = "competence", (T("bazi_report.wealth_pattern.03", "MODEST wealth stars — income follows competence "
+                                   "(食傷生財 route): monetise skill, not capital", lang))
     else:
-        mode, pat = "competence", ("NO wealth star — earn through expertise and let "
-                                   "structure hold the money")
+        mode, pat = "competence", (T("bazi_report.wealth_pattern.04", "NO wealth star — earn through expertise and let "
+                                   "structure hold the money", lang))
     if weak:
         mode = "weak-carry"
-        carry = ("the chart is WEAK relative to its wealth element — money that "
+        carry = (T("bazi_report.wealth_pattern.05", "the chart is WEAK relative to its wealth element — money that "
                  "arrives tends to pass through; build the container (health, "
-                 "routine, seniority) before scaling exposure")
+                 "routine, seniority) before scaling exposure", lang))
     else:
-        carry = "the chart can HOLD wealth — favourable periods reward decisive action"
-    wins = [f'{y["y"]} {y["gz"]} — {y["wealth"]["note"]}'
+        carry = T("bazi_report.wealth_pattern.06", "the chart can HOLD wealth — favourable periods reward decisive action", lang)
+    wins = [f'{y["y"]} {y["gz"]}{"：" if lang == "zh" else " — "}{y["wealth"]["note"]}'
             for y in w["years"] if y["wealth"]["flag"] == "window"]
     cautions = [str(y["y"]) for y in w["years"] if y["wealth"]["flag"] == "caution"]
     return {"mode": mode, "pattern": pat, "carry": carry, "windows": wins,
@@ -359,38 +362,38 @@ def tengod_section(pct, chart):
     return bars + reads + '<div class="cite" style="margin-top:5px"><b>Temperament read:</b></div>' + ax
 
 
-def monthly_rhythm(ys):
+def monthly_rhythm(ys, lang: str = "en"):
     fav, unfav = set(ys["favourable"]), set(ys["unfavourable"])
     out = []
     for br in "寅卯辰巳午未申酉戌亥子丑":
         el = BRANCH_ELEMENT[br]
         cls = "good" if el in fav else "bad" if el in unfav else "mid"
-        out.append((MONTH_RANGE[br], br, el, cls))
+        out.append((L("bazi_report.MONTH_RANGE", MONTH_RANGE, lang)[br], br, el, cls))
     return out
 
 
-def exam_overlay(chart, w):
+def exam_overlay(chart, w, lang: str = "en"):
     wc_branch = WENCHANG[chart.day_master]
     rows = []
-    for age, exam in EXAMS.items():
+    for age, exam in L("bazi_report.EXAMS", EXAMS, lang).items():
         y = chart.lichun_year + age
         if y < YEAR:
             continue
         yr = next((r for r in w["years"] if r["y"] == y), None)
         bits = []
         if yr:
-            bits.append(f'{yr["overall_zh"]} overall')
+            bits.append(T("bazi_report.exam_overlay.01", f'{yr["overall_zh"]} overall', lang, yr_overall_zh=yr["overall_zh"]))
             if yr["gz"][1] == wc_branch:
-                bits.append("文昌 year — the scholar star itself arrives ✓")
+                bits.append(T("bazi_report.exam_overlay.02", "文昌 year — the scholar star itself arrives ✓", lang))
             for k in ("career", "health"):
                 if yr[k]["flag"] == "caution":
-                    bits.append(f'{k} caution: {yr[k]["note"]}')
+                    bits.append(T("bazi_report.exam_overlay.03", f'{k} caution: {yr[k]["note"]}', lang, k=T(f"plain.AREA.{k}", k, lang), yr_k_note=yr[k]["note"]))
         rows.append({"exam": exam, "year": y,
-                     "note": " · ".join(bits) or "beyond the 10-year window — recheck nearer"})
+                     "note": jn(bits, lang, " · ", "；") or T("bazi_report.exam_overlay.04", "beyond the 10-year window — recheck nearer", lang)})
     return rows
 
 
-def people_compat(chart, pct, ys, others):
+def people_compat(chart, pct, ys, others, lang: str = "en"):
     """Who energizes, who drains, who complements — element + zodiac level."""
     yb = chart.pillars["year"].branch
     trine = next((set(g) for g, _ in SANHE if yb in g), set()) - {yb}
@@ -401,13 +404,13 @@ def people_compat(chart, pct, ys, others):
     drain = [n for n, el in others if el in unfav]
     weakest = min(GOD_GROUPS, key=lambda g: sum(pct.get(x, 0)
                                                 for x in GOD_GROUPS[g]))
-    boss = next(txt for cond, txt in BOSS_FIT if cond(pct))
-    return {"allies": allies, "clash": clash, "boost": boost, "drain": drain,
-            "partner": PARTNER_SUPPLY[weakest], "weak_group": weakest,
+    boss = next(txt for cond, txt in L("bazi_report.BOSS_FIT", BOSS_FIT, lang) if cond(pct))
+    return {"allies": [zs(a, lang) for a in allies], "clash": zs(clash, lang), "boost": boost, "drain": drain,
+            "partner": L("bazi_report.PARTNER_SUPPLY", PARTNER_SUPPLY, lang)[weakest], "weak_group": weakest,
             "boss": boss,
-            "el_line": (f"people whose charts run rich in {'·'.join(ys['favourable'])} "   # ranked lists, not sets
+            "el_line": (T("bazi_report.people_compat.01", f"people whose charts run rich in {'·'.join(ys['favourable'])} "   # ranked lists, not sets
                         f"energize you; heavy-{'·'.join(ys['unfavourable'])} people are fine "
-                        "in small doses but tiring as daily fixtures")}
+                        "in small doses but tiring as daily fixtures", lang, join_ys_favourable='·'.join(ys['favourable']), join_ys_unfavourable='·'.join(ys['unfavourable'])))}
 
 
 def birth_time_confidence(chart):
@@ -421,68 +424,68 @@ def birth_time_confidence(chart):
             "could flip the Hour Pillar; consider chart rectification ⚠")
 
 
-def strategy_payload(chart, ys, year=YEAR, others=()) -> dict:
+def strategy_payload(chart, ys, year=YEAR, others=(), lang: str = "en") -> dict:
     """The strategy report's advice blocks, keyed by the Reading section each
     belongs to (s2 strength, s5 用神 rhythm, s8 relationships, s10 handling,
     s11 health, s12 career, s13 windows/wealth) — the Reading tab renders
     them in place, replacing the separate strategy report link."""
     pct = ten_god_pct(chart)
-    w = timing_windows(chart, ys, dayun_detail(chart, year), year)
-    d = dial(pct)
-    rr = relationship_risk(chart, pct, w)
-    wp = wealth_pattern(chart, pct, w)
-    pc = people_compat(chart, pct, ys, list(others))
-    hm = health_map(chart)
+    w = timing_windows(chart, ys, dayun_detail(chart, year, lang=lang), year, lang=lang)
+    d = dial(pct, lang=lang)
+    rr = relationship_risk(chart, pct, w, lang=lang)
+    wp = wealth_pattern(chart, pct, w, lang=lang)
+    pc = people_compat(chart, pct, ys, list(others), lang=lang)
+    hm = health_map(chart)           # read for its element and status codes only
     weak = chart.strength["verdict"].startswith("身弱")
     is_kid = (year - chart.lichun_year) < 18
-    imbal = [ELEMENT_READING[h["element"]][0 if "excess" in h["status"] else 1]
+    imbal = [L("bazi_report.ELEMENT_READING", ELEMENT_READING, lang)[h["element"]][0 if "excess" in h["status"] else 1]
              for h in hm if h["status"] != "balanced"]
-    trig = [f'{y["y"]} ({y["health"]["note"]})' for y in w["years"]
-            if y["health"]["flag"] == "caution"]
+    trig = [f'{y["y"]}（{y["health"]["note"]}）' if lang == "zh" else f'{y["y"]} ({y["health"]["note"]})'
+            for y in w["years"] if y["health"]["flag"] == "caution"]
     rec = [str(y["y"]) for y in w["years"] if y["health"]["flag"] == "window"]
     nxt = next((dd for i, dd in enumerate(w["decades"])
                 if i and w["decades"][i - 1]["current"]), None)
     handoff = None
     if nxt:
         start = chart.lichun_year + int(nxt["ages"].split("–")[0].split("-")[0])
-        handoff = (f'{nxt["gz"]} begins ~{start} as a {nxt["phase_zh"]} '
-                   f'{nxt["phase"]} phase'
-                   + (f' — {"; ".join(nxt["notes"])}' if nxt["notes"] else ""))
+        handoff = (T("bazi_report.strategy_payload.01", f'{nxt["gz"]} begins ~{start} as a {nxt["phase_zh"]} '
+                   f'{nxt["phase"]} phase', lang, nxt_gz=nxt["gz"], start=start, nxt_phase_zh=nxt["phase_zh"], nxt_phase="" if lang == "zh" else nxt["phase"])
+                   + (f'{"：" if lang == "zh" else " — "}{jn(nxt["notes"], lang, "; ", "；")}' if nxt["notes"] else ""))
     top2 = [g for g, _ in sorted(pct.items(), key=lambda kv: -kv[1])[:2]
-            if g in GOD_HANDLE]
+            if g in L("bazi_report.GOD_HANDLE", GOD_HANDLE, lang)]
     return {
-        "s2": {"advice": STRENGTH_ADVICE[weak]},
+        "s2": {"advice": L("bazi_report.STRENGTH_ADVICE", STRENGTH_ADVICE, lang)[weak]},
         "s5": {"rhythm": [{"mon": mo, "br": b, "el": e, "cls": c}
-                          for mo, b, e, c in monthly_rhythm(ys)]},
+                          for mo, b, e, c in monthly_rhythm(ys, lang=lang)]},
         "s8": {"risk": rr["note"], "evidence": rr["evidence"],
-               "advice": REL_ADVICE[rr["key"]], "kid": is_kid,
+               "advice": L("bazi_report.REL_ADVICE", REL_ADVICE, lang)[rr["key"]], "kid": is_kid,
                "allies": pc["allies"], "clash": pc["clash"],
                "el_line": pc["el_line"], "taohua": w["taohua"]["branch"]},
-        "s10": {"handle": [GOD_HANDLE[g] for g in top2], "kid": is_kid},
-        "s11": {"advice": (imbal or ["keep the balanced baseline: seasonal "
+        "s10": {"handle": [L("bazi_report.GOD_HANDLE", GOD_HANDLE, lang)[g] for g in top2], "kid": is_kid},
+        "s11": {"advice": (imbal or [T("bazi_report.strategy_payload.02", "keep the balanced baseline: seasonal "
                                      "food, regular sleep, and use recovery "
                                      "years for elective procedures and "
-                                     "habit resets."])
-                + [ORGAN_CARE[h["element"]] for h in hm
+                                     "habit resets.", lang)])
+                + [L("bazi_report.ORGAN_CARE", ORGAN_CARE, lang)[h["element"]] for h in hm
                    if h["status"] != "balanced"]
-                + ["Double the care in trigger years; schedule check-ups "
-                   "into them in advance."],
+                + [T("bazi_report.strategy_payload.03", "Double the care in trigger years; schedule check-ups "
+                   "into them in advance.", lang)],
                 "trigger_years": trig, "recovery_years": rec},
         "s12": {"pct_corp": d["pct_corp"], "verdict": d["verdict"],
                 "corp_ev": d["corp_ev"], "vent_ev": d["vent_ev"],
-                "advice": CAREER_ADVICE[d["mode"]] + [
-                    f"Fields carry elements: prefer "
+                "advice": L("bazi_report.CAREER_ADVICE", CAREER_ADVICE, lang)[d["mode"]] + [
+                    T("bazi_report.strategy_payload.04", f"Fields carry elements: prefer "
                     f"{'·'.join(ys['favourable'])}-flavoured industries even "
                     "inside the same job title — the same work in the right "
-                    "field costs less energy.",
+                    "field costs less energy.", lang, join_ys_favourable='·'.join(ys['favourable'])),
                     pc["boss"],
-                    f"Ideal collaborator: this chart's thinnest resource is "
-                    f"{pc['weak_group']} — team up with {pc['partner']}."]},
+                    T("bazi_report.strategy_payload.05", f"Ideal collaborator: this chart's thinnest resource is "
+                    f"{pc['weak_group']} — team up with {pc['partner']}.", lang, pc_weak_group=pc['weak_group'], pc_partner=pc['partner'])]},
         "s13": {"wealth_pattern": wp["pattern"], "wealth_carry": wp["carry"],
                 "act_windows": wp["windows"], "cautions": wp["cautions"],
-                "wealth_advice": WEALTH_ADVICE[wp["mode"]],
-                "advice": WINDOWS_ADVICE, "handoff": handoff,
-                "exams": exam_overlay(chart, w) if is_kid else []},
+                "wealth_advice": L("bazi_report.WEALTH_ADVICE", WEALTH_ADVICE, lang)[wp["mode"]],
+                "advice": L("bazi_report.WINDOWS_ADVICE", WINDOWS_ADVICE, lang), "handoff": handoff,
+                "exams": exam_overlay(chart, w, lang=lang) if is_kid else []},
     }
 
 

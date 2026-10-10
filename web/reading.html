@@ -58,8 +58,11 @@ body.reading-pub a:focus-visible,body.reading-pub button:focus-visible,body.read
 
 /* the person's name is the page heading; the old title drops to a small line under it */
 .reading-pub header.pub h1 small.rp-sub1{display:block;margin-top:6px}
+/* the heading gets its second line (the sub-title) when the name arrives; hold that height so the page below does not move */
+.reading-pub header.pub h1{min-height:calc(46px*1.1 + 22px)}
+@media(max-width:720px){.reading-pub header.pub h1{min-height:calc(36px*1.1 + 22px)}}
 
-</style></head><body class="reading-pub">
+/*langtoggle*/a.langtoggle{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:44px;height:44px;flex:none;margin:0 0 0 8px;padding:0;border:1px solid var(--line,#e5ded2);border-radius:50%;background:transparent;color:var(--ink,#2b2620);font:600 14px/1 system-ui,"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;text-decoration:none;vertical-align:middle}a.langtoggle::before{content:attr(data-l)}.top .topnav{margin-left:auto}a.langtoggle:hover{background:rgba(0,0,0,.05)}a.langtoggle:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}/*/langtoggle*/</style></head><body class="reading-pub">
 <span class="verbadge" id="ver"></span>
 <header class="pub">
   <img class="pub-band" src="/static/img/tools/reading-header-600.jpg"
@@ -68,7 +71,7 @@ body.reading-pub a:focus-visible,body.reading-pub button:focus-visible,body.read
   <div class="pub-in">
     <h1>Your reading <small>(<span class="zh" lang="zh-Hans" tabindex="0" title="mìng shū · the reading" data-tip="mìng shū · the reading">命书</span>)</small></h1>
     <span class="hint">Every number and label here is engine output, and the rule behind it is cited beside it.</span>
-    <a id="back" href="/start">&larr; Back to workspace</a>
+    <a id="back" href="/start">&larr; Back to workspace</a><a class="langtoggle" href="/zh/reading" hreflang="zh-CN" lang="zh-CN" aria-label="中文版" data-l="中文" onclick="try{localStorage.setItem('lang','zh')}catch(e){}"></a>
   </div>
 </header>
 <main>
@@ -89,16 +92,32 @@ body.reading-pub a:focus-visible,body.reading-pub button:focus-visible,body.read
   fetch("/api/pub/version").then(r => r.json())
     .then(v => { document.getElementById("ver").textContent = "v " + v.version; })
     .catch(() => {});
-  const m = location.pathname.match(/^\/w\/([A-Za-z0-9_-]+)\/person\/(\d+)\/reading/);
+  const m = location.pathname.match(/^(\/zh)?\/w\/([A-Za-z0-9_-]+)\/person\/(\d+)\/reading/);
   window.__PUBLIC_READING__ = m ? {
-    chartUrl: `/api/pub/w/${m[1]}/person/${m[2]}/chart`,
-    token: m[1], idx: +m[2],
+    chartUrl: `/api/pub/w/${m[2]}/person/${m[3]}/chart${m[1] ? "?lang=zh" : ""}`,
+    token: m[2], idx: +m[3],
     name: "",
   } : null;
-  if (m) document.getElementById("back").href = `/w/${m[1]}`;
+  if (m) document.getElementById("back").href = `${m[1] || ""}/w/${m[2]}`;
 </script>
 <script src="/static/glossary.js"></script>
 <script src="/static/app.js"></script>
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 <script src="/static/glossary-tip.js" defer></script>
+<script>/*wslang*/(() => {
+  const m = location.pathname.match(/^(\/zh)?\/w\/([A-Za-z0-9_-]{8,64})/), t = document.querySelector("a.langtoggle");
+  if (!m || !t) return;
+  const zh = !!m[1], tail = location.pathname.replace(/^\/zh/, "") + location.search + location.hash;
+  t.href = zh ? tail : "/zh" + tail;
+  t.addEventListener("click", (e) => {
+    e.preventDefault();
+    fetch(`/api/pub/workspace/${m[2]}/lang`, {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify({lang: zh ? "en" : "zh"})})
+      .catch(() => {}).finally(() => { location.href = t.href; });
+  });
+  fetch(`/api/pub/w/${m[2]}`).then((r) => (r.ok ? r.json() : null)).then((w) => {
+    if (!w) return;
+    if (w.lang === "zh" && !zh) location.replace("/zh" + tail);
+    else if (w.lang !== "zh" && zh) location.replace(tail);
+  }).catch(() => {});
+})();</script>
 </body></html>

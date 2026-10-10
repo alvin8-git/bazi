@@ -16,6 +16,7 @@ from .hehun import pair_compatibility
 from .liunian import (BRANCH_PALACE, taisui_interactions, year_element_read,
                       year_ganzhi)
 from .shensha import TIANYI, WENCHANG, shensha
+from .i18n import L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
 PALACES8 = ["坎", "艮", "震", "巽", "離", "坤", "兌", "乾"]
 ROLE_PALACE = {"乾": "father 父", "坤": "mother 母", "震": "eldest son 長男",
@@ -175,7 +176,7 @@ PALACE_DIR = {"坎": "N", "艮": "NE", "震": "E", "巽": "SE", "離": "S", "坤
 _GOOD_STARS = ("生氣", "天醫", "延年", "伏位")
 
 
-def placements(chart) -> list[dict]:
+def placements(chart, lang: str = "en") -> list[dict]:
     """Where to put the bed, desk, door and study corner — 八宅 star → palace
     for the long-stay items, plus the personal 文昌 / 桃花 / 驛馬 branches
     (classical 神煞 by day stem / year-branch trine) mapped to their palace."""
@@ -192,43 +193,43 @@ def placements(chart) -> list[dict]:
         return {"key": key, "zh": zh, "en": en, "palace": pal, "dir": PALACE_DIR[pal],
                 "star": star or "", "branch": branch or "", "rule": rule}
     return [
-        row("bed", "床头", "bed head", star="天醫",
-            rule="八宅: 天醫 for rest and recovery; 生氣 is the alternate when the room cannot allow it"),
-        row("desk", "书桌", "work desk", star="生氣",
-            rule="八宅: face 生氣 for vitality and output"),
-        row("door", "大门", "main door", star="生氣",
-            rule="八宅: the door draws 氣 — 生氣 first, 延年 second"),
-        row("couple", "夫妻床", "couples' bed", star="延年",
-            rule="八宅: 延年 governs longevity and harmony between partners"),
-        row("quiet", "静室", "quiet study / retreat", star="伏位",
-            rule="八宅: 伏位 is the stable, low-drama sector for reflection"),
-        row("wenchang", "文昌位", "study corner", branch=wc,
-            rule=f"文昌 by day stem {chart.day_master} → {wc}; the classical seat for study and exams"),
-        row("taohua", "桃花位", "relationship corner", branch=trine["桃花"],
-            rule=f"桃花 of the {yb} trine → {trine['桃花']}; activate for social and romantic life"),
-        row("yima", "驿马位", "travel corner", branch=trine["驛馬"],
-            rule=f"驛馬 of the {yb} trine → {trine['驛馬']}; movement, travel and relocation"),
+        row("bed", "床头", T("extras.placements.01", "bed head", lang), star="天醫",
+            rule=T("extras.placements.02", "八宅: 天醫 for rest and recovery; 生氣 is the alternate when the room cannot allow it", lang)),
+        row("desk", "书桌", T("extras.placements.03", "work desk", lang), star="生氣",
+            rule=T("extras.placements.04", "八宅: face 生氣 for vitality and output", lang)),
+        row("door", "大门", T("extras.placements.05", "main door", lang), star="生氣",
+            rule=T("extras.placements.06", "八宅: the door draws 氣 — 生氣 first, 延年 second", lang)),
+        row("couple", "夫妻床", T("extras.placements.07", "couples' bed", lang), star="延年",
+            rule=T("extras.placements.08", "八宅: 延年 governs longevity and harmony between partners", lang)),
+        row("quiet", "静室", T("extras.placements.09", "quiet study / retreat", lang), star="伏位",
+            rule=T("extras.placements.10", "八宅: 伏位 is the stable, low-drama sector for reflection", lang)),
+        row("wenchang", "文昌位", T("extras.placements.11", "study corner", lang), branch=wc,
+            rule=T("extras.placements.12", f"文昌 by day stem {chart.day_master} → {wc}; the classical seat for study and exams", lang, day_master=chart.day_master, wc=wc)),
+        row("taohua", "桃花位", T("extras.placements.13", "relationship corner", lang), branch=trine["桃花"],
+            rule=T("extras.placements.14", f"桃花 of the {yb} trine → {trine['桃花']}; activate for social and romantic life", lang, yb=yb, trine_桃花=trine['桃花'])),
+        row("yima", "驿马位", T("extras.placements.15", "travel corner", lang), branch=trine["驛馬"],
+            rule=T("extras.placements.16", f"驛馬 of the {yb} trine → {trine['驛馬']}; movement, travel and relocation", lang, yb=yb, trine_驛馬=trine['驛馬'])),
     ]
 
 
-def compass_afflictions(chart, lichun_year: int) -> dict:
+def compass_afflictions(chart, lichun_year: int, lang: str = "en") -> dict:
     """annual_afflictions for the year plus the collisions with this person's
     four favourable 八宅 sectors — the geomancer's pre-renovation check."""
     from .liunian import annual_afflictions
-    a = annual_afflictions(lichun_year)
+    a = annual_afflictions(lichun_year, lang=lang)
     stars = youxing_stars(ming_gua(chart.lichun_year, chart.sex))
     hits = []
     for key, zh in (("taisui", "太歲"), ("suipo", "歲破")):
         pal = a[key]["palace"]
         if stars[pal] in _GOOD_STARS:
             hits.append({"affliction": zh, "palace": pal, "dir": PALACE_DIR[pal], "star": stars[pal],
-                         "note": f"your {stars[pal]} sector carries {zh} this year — "
-                                 + ("sit with your back to it, do not renovate" if key == "taisui"
-                                    else "no ground-breaking or heavy disturbance there")})
+                         "note": T("extras.compass_afflictions.01", f"your {stars[pal]} sector carries {zh} this year — ", lang, stars_pal=stars[pal], zh=zh)
+                                 + (T("extras.compass_afflictions.02", "sit with your back to it, do not renovate", lang) if key == "taisui"
+                                    else T("extras.compass_afflictions.03", "no ground-breaking or heavy disturbance there", lang))})
     for pal in a["sansha"]["palaces"]:
         if stars[pal] in _GOOD_STARS:
             hits.append({"affliction": "三煞", "palace": pal, "dir": PALACE_DIR[pal], "star": stars[pal],
-                         "note": f"your {stars[pal]} sector carries 三煞 this year — facing it is fine, avoid sitting toward it or renovating"})
+                         "note": T("extras.compass_afflictions.04", f"your {stars[pal]} sector carries 三煞 this year — facing it is fine, avoid sitting toward it or renovating", lang, stars_pal=stars[pal])})
     a["year"] = lichun_year
     a["collisions"] = hits
     for k in ("taisui", "suipo"):

@@ -7,8 +7,10 @@ markers that open the figure, rule or citation in place. Same payload in, same t
 """
 from __future__ import annotations
 
+from .area_reference import standing_key
+from .i18n import T, an, num_word, zh_join
 from .plain import (ANIMAL, AREA, BAND_KEY, DIR_WORD, EL_ROOM, EN, MEDICINE, NEG_STARS, POLE, SEASON,
-                    STEM_EL, and_join, strength_key)
+                    STEM_EL, _day_label, _month_runs, _run_words, and_join, strength_key)
 
 GOD_NOUN = {"比肩": "peers and self-reliance", "劫財": "rivals and bold moves", "劫财": "rivals and bold moves",
             "食神": "ease and natural talent", "傷官": "sharp expression and challenge", "伤官": "sharp expression and challenge",
@@ -18,13 +20,13 @@ GOD_NOUN = {"比肩": "peers and self-reliance", "劫財": "rivals and bold move
 ROLE = {"output": "expression: what you make, say and show", "resource": "support: the people, learning and care that feed you",
         "wealth": "results: earning and getting things done", "pressure": "structure: discipline and responsibility",
         "peer": "allies: friends, partners and teams"}
-PHASE_ADJ = {"growth": "growth", "consolidation": "gathering", "transition": "changing", "corrective": "repairing"}
+PHASE_ADJ = {"growth": "expanding", "consolidation": "gathering", "transition": "changing", "corrective": "repairing"}
 PHASE_RANK = {"growth": 3, "consolidation": 2, "transition": 1, "corrective": 0}
 LU = dict(zip("甲乙丙丁戊己庚辛壬癸", "寅卯巳午巳午申酉亥子"))   # 祿: each stem's own station
 NUM = dict(enumerate("zero one two three four five six seven eight nine ten".split()))
 DOMAIN = {"attraction": "love and attraction", "stability": "relationship stability", "career": "career",
           "wealth": "money", "learning": "learning", "health": "health and stamina"}
-PRIORITY = {   # lowest life area, when it trails the strongest by 40 points or more
+PRIORITY = {   # lowest life area (by standing among charts), when it trails the strongest by 60 percentile points or more
     "health": "So the risk is your body, not your ambitions: protect your health first.",
     "wealth": "So money is the area to build on purpose, not leave to chance.",
     "stability": "So your relationships are where steady care pays off most.",
@@ -127,143 +129,195 @@ def _ages(d):
 
 
 # ---- chapters ---------------------------------------------------------------------------------
-def _makeup(p, kid):
+def _gn(g, lang):
+    """The ten-god noun phrase; the English table's value when the key is unknown."""
+    return T(f"story.GOD_NOUN.{g}", GOD_NOUN.get(g, g), lang) if g in GOD_NOUN else g
+
+
+def _fav_el(e, lang):
+    return T(f"plain.EN.{e}", EN[e], lang)
+
+
+def _acts(med, v, lang):
+    table, tid = (ACTS_CHILD, "ACTS_CHILD") if v == "child" else (ACTS_SENIOR, "ACTS_SENIOR") if v == "senior" else ({}, "")
+    if med in table:
+        return T(f"story.{tid}.{med}", table[med], lang)
+    return T(f"plain.MEDICINE.{med}.acts", MEDICINE[med]["acts"], lang)
+
+
+def _makeup(p, kid, lang="en"):
     pct = p.get("tengods_pct") or {}
     ranked = sorted(pct.items(), key=lambda kv: -kv[1])
     p1 = []
     if len(ranked) >= 6 and ranked[0][1] - ranked[3][1] < 3:
-        p1.append(S("Your chart is unusually even: no single role leads, and you carry a little of everything.", "gods"))
+        p1.append(S(T("story._makeup.01", "Your chart is unusually even: no single role leads, and you carry a little of everything.", lang), "gods"))
     elif ranked:
         (g1, v1), *rest = ranked
-        n1 = GOD_NOUN.get(g1, g1)
+        n1 = _gn(g1, lang)
         if rest and rest[0][1] == v1:   # a tie is a shared lead, not "followed by"
-            p1.append(S(f"{cap(n1)} and {GOD_NOUN.get(rest[0][0], rest[0][0])} share the lead in your chart, at {v1:g}% each.", "gods"))
+            p1.append(S(T("story._makeup.02", f"{cap(n1)} and {_gn(rest[0][0], lang)} share the lead in your chart, at {v1:g}% each.", lang,
+                          cap_n1=n1, GOD_NOUN_rest=_gn(rest[0][0], lang), v1=v1), "gods"))
         else:
-            tail = f", followed by {GOD_NOUN.get(rest[0][0], rest[0][0])} at {rest[0][1]:g}%" if rest else ""
-            p1.append(S(f"{cap(n1)} {'lead' if ' and ' in n1 else 'leads'} your chart at {v1:g}%{tail}.", "gods"))
+            tail = T("story._makeup.03", f", followed by {_gn(rest[0][0], lang)} at {rest[0][1]:g}%", lang,
+                     GOD_NOUN_rest=_gn(rest[0][0], lang), rest=rest[0][1]) if rest else ""
+            lead_word = T("story._makeup.05" if " and " in n1 else "story._makeup.06", "lead" if " and " in n1 else "leads", lang)
+            p1.append(S(T("story._makeup.04", f"{cap(n1)} {lead_word} your chart at {v1:g}%{tail}.", lang,
+                          cap_n1=n1, lead_leads=lead_word, v1=v1, tail=tail), "gods"))
     pal = {x["key"]: x for x in (p.get("palaces") or {}).get("pillars") or []}
     y, m = (pal.get("year") or {}).get("stem_god"), (pal.get("month") or {}).get("stem_god")
     if y in GOD_NOUN and m in GOD_NOUN:
-        work = "will set the climate of your working life" if kid else "set the climate of your working life"
-        p1.append(S(f"{cap(GOD_NOUN[y])} shaped your early years, and {GOD_NOUN[m]} {work}.", "pillars"))
+        work = T("story._makeup.07", "will set the climate of your working life", lang) if kid else T("story._makeup.08", "set the climate of your working life", lang)
+        p1.append(S(T("story._makeup.09", f"{cap(_gn(y, lang))} shaped your early years, and {_gn(m, lang)} {work}.", lang,
+                      cap_y_god_noun=_gn(y, lang), m_god_noun=_gn(m, lang), work=work), "pillars"))
 
     axes = [a for a in p.get("personality") or [] if a.get("zone") in ("left", "right")]
-    p2 = [S(POLE[a["poles"][a["zone"]]["en"]][1], "personality") for a in axes if a["poles"][a["zone"]]["en"] in POLE][:3]
+    p2 = [S(T(f"plain.POLE.{a['poles'][a['zone']]['en'].replace(' ', '_')}.line", POLE[a["poles"][a["zone"]]["en"]][1], lang), "personality")
+          for a in axes if a["poles"][a["zone"]]["en"] in POLE][:3]
 
     p3 = []
     stars = p.get("shensha") or []
     good = next((s for s in stars if s["star"] not in NEG_STARS), None)
     bad = next((s for s in stars if s["star"] in NEG_STARS), None)
-    for s, lead in ((good, "A helpful star sits in your chart"), (bad, "One star asks for care")):
+    for s, lead, lid in ((good, "A helpful star sits in your chart", "story._makeup.10"), (bad, "One star asks for care", "story._makeup.11")):
         if s:
             name, _, gist = s["meaning"].partition(" — ")
             gist = STAR_GIST.get(s["star"], (gist or s["meaning"]).split(";")[0])
-            p3.append(S(f"{lead}: the {name}, {gist}.", "stars"))
+            if lang == "zh":
+                from .htmlreport import _tosimp
+                from .i18n.zh import ZH
+                name, gist = _tosimp(s["star"]), ZH.get(f"story.STAR_GIST.{s['star']}", gist)
+            lead_l = T(lid, lead, lang)
+            p3.append(S(T("story._makeup.12", f"{lead_l}: the {name}, {gist}.", lang, lead=lead_l, name=name, gist=gist), "stars"))
     ia = p.get("interactions") or []
     hard = sum(1 for x in ia if any(k in x["kind"] for k in ("沖", "冲", "刑")))
     if hard >= 3:
-        p3.append(S("Your pillars clash more than most, so change in one part of your life tends to shake the others; "
-                    "steady routines are worth more to you than to most people.", "interactions"))
+        p3.append(S(T("story._makeup.13", "Your pillars clash more than most, so change in one part of your life tends to shake the others; "
+                      "steady routines are worth more to you than to most people.", lang), "interactions"))
     elif any(any(k in x["kind"] for k in ("沖", "冲")) for x in ia):
-        p3.append(S("Some of your pillars clash, so change tends to arrive through friction between home, work and family.", "interactions"))
+        p3.append(S(T("story._makeup.14", "Some of your pillars clash, so change tends to arrive through friction between home, work and family.", lang), "interactions"))
     elif any("刑" in x["kind"] for x in ia):
-        p3.append(S("Some of your pillars punish one another, so strain tends to build slowly inside your own circle; name it early.", "interactions"))
+        p3.append(S(T("story._makeup.15", "Some of your pillars punish one another, so strain tends to build slowly inside your own circle; name it early.", lang), "interactions"))
     elif ia and all("合" in x["kind"] for x in ia):
-        p3.append(S("Your pillars mostly combine, so the parts of your life tend to back each other up.", "interactions"))
+        p3.append(S(T("story._makeup.16", "Your pillars mostly combine, so the parts of your life tend to back each other up.", lang), "interactions"))
     elif ia:
-        p3.append(S("Your pillars rub quietly against each other: small frictions, but no open clash.", "interactions"))
+        p3.append(S(T("story._makeup.17", "Your pillars rub quietly against each other: small frictions, but no open clash.", lang), "interactions"))
     else:
-        p3.append(S("Your four pillars sit comfortably together, so little of your energy goes on inner conflict.", "interactions"))
+        p3.append(S(T("story._makeup.18", "Your four pillars sit comfortably together, so little of your energy goes on inner conflict.", lang), "interactions"))
     return {"paras": [x for x in (p1, p2, p3) if x], "chart_after": 0}
 
 
-def _balance(p, v):
+def _balance(p, v, lang="en"):
     dm_el = STEM_EL[p["day_master"]]; st = p["strength"]; sk = strength_key(st["verdict"])
     fav, unfav = p["yongshen"]["favourable"], p["yongshen"]["unfavourable"]; med = fav[0]
     H = sorted(p.get("health") or [], key=lambda h: -h["share"])
     fl = (p.get("element_relations") or {}).get("flows") or {}
     season = (st.get("parts") or {}).get("season_pts", 0) or 0
     p1, p2, p3 = [], [], []
+    el = lambda e: _fav_el(e, lang)
+    hname = lambda h: el(h["element"]) if lang == "zh" else h["en"]
     if H:
-        own = ", and it is your own element" if H[0]["element"] == dm_el else ""
-        p1.append(S(f"{H[0]['en']} is the heaviest element in your chart, at {H[0]['share']:g}%{own}.", "elements"))
+        own = T("story._balance.01", ", and it is your own element", lang) if H[0]["element"] == dm_el else ""
+        p1.append(S(T("story._balance.02", f"{H[0]['en']} is the heaviest element in your chart, at {H[0]['share']:g}%{own}.", lang,
+                      H_en=hname(H[0]), H_share=H[0]["share"], own=own), "elements"))
     pr, rs = fl.get("pressure"), fl.get("resource")
     if sk == "weak" and pr and rs and pr["share"] > rs["share"]:
-        p1.append(S(f"The pressure on you, from {EN[pr['el']]}, outweighs the support that feeds you, from {EN[rs['el']]}, "
-                    "which is why the reading calls you weak.", "flows", "strength"))
+        p1.append(S(T("story._balance.03", f"The pressure on you, from {EN[pr['el']]}, outweighs the support that feeds you, from {EN[rs['el']]}, "
+                      "which is why the reading calls you weak.", lang, pr_el_en=el(pr["el"]), rs_el_en=el(rs["el"])), "flows", "strength"))
     elif sk == "weak":
-        p1.append(S("The reading calls you weak.", "strength"))
+        p1.append(S(T("story._balance.04", "The reading calls you weak.", lang), "strength"))
     elif sk == "strong" and pr and rs and pr["share"] > rs["share"]:
-        p1.append(S(f"The reading calls you strong, even though the pressure from {EN[pr['el']]} outweighs the support from "
-                    f"{EN[rs['el']]}: your own element carries the load.", "strength", "flows"))
+        p1.append(S(T("story._balance.05", f"The reading calls you strong, even though the pressure from {EN[pr['el']]} outweighs the support from "
+                      f"{EN[rs['el']]}: your own element carries the load.", lang, pr_el_en=el(pr["el"]), rs_el_en=el(rs["el"])), "strength", "flows"))
     elif sk == "strong":
-        p1.append(S("You have more support than you spend, which is why the reading calls you strong.", "strength"))
+        p1.append(S(T("story._balance.06", "You have more support than you spend, which is why the reading calls you strong.", lang), "strength"))
     elif sk == "balanced":
-        p1.append(S("Support and pressure roughly cancel out, so the reading calls you balanced.", "strength"))
+        p1.append(S(T("story._balance.07", "Support and pressure roughly cancel out, so the reading calls you balanced.", lang), "strength"))
     else:
-        p1.append(S("Your chart gives itself to its strongest element, so you do best by going with it.", "strength"))
+        p1.append(S(T("story._balance.08", "Your chart gives itself to its strongest element, so you do best by going with it.", lang), "strength"))
 
     # why: the strength paradox, then the scarce element and the role it plays
+    need = T(f"plain.MEDICINE.{med}.need", MEDICINE[med]["need"], lang)
     if sk == "weak" and season < 0:
-        p2.append(S(f"You were born in {SEASON[p['pillars']['month'][1]]}, a season that works against {EN[dm_el]}, "
-                    f"so the {EN[dm_el]} you have gives you less strength than the number suggests.", "strength"))
+        sea = T(f"plain.SEASON.{p['pillars']['month'][1]}", SEASON[p["pillars"]["month"][1]], lang)
+        p2.append(S(T("story._balance.09", f"You were born in {SEASON[p['pillars']['month'][1]]}, a season that works against {EN[dm_el]}, "
+                      f"so the {EN[dm_el]} you have gives you less strength than the number suggests.", lang,
+                      p_pillars_month_season=sea, dm_el_en=el(dm_el)), "strength"))
         med_high = any(h["element"] == med and h["status"].startswith("excess") for h in H)
         if (st.get("support_ratio") or 0) >= 50 and not med_high:
-            p2.append(S(f"You are not short of backing; you are short of {MEDICINE[med]['need']}.", "strength", "medicine"))
+            p2.append(S(T("story._balance.10", f"You are not short of backing; you are short of {MEDICINE[med]['need']}.", lang, med_medicine_need=need), "strength", "medicine"))
     elif sk == "weak" and (st.get("root_ratio") or 0) < 10:
-        p2.append(S("You were born in a helpful season, but your own element has few roots in the branches, "
-                    "so that help does not hold.", "strength"))
+        p2.append(S(T("story._balance.11", "You were born in a helpful season, but your own element has few roots in the branches, "
+                      "so that help does not hold.", lang), "strength"))
     elif sk == "strong":
-        p2.append(S("So what helps you is not more of what you have, but outlets for it.", "strength", "medicine"))
+        p2.append(S(T("story._balance.12", "So what helps you is not more of what you have, but outlets for it.", lang), "strength", "medicine"))
     role = next((k for k, f in fl.items() if f.get("el") == med), None)
     scarce = H[-1]["element"] if H else None
     if scarce == med:
-        p2.append(S(f"{EN[med]} is both the element you have least of and the one that helps you most.", "elements", "medicine"))
+        p2.append(S(T("story._balance.13", f"{EN[med]} is both the element you have least of and the one that helps you most.", lang, med_en=el(med)), "elements", "medicine"))
     else:
-        p2.append(S(f"Of the elements that help you, {EN[med]} matters most.", "medicine"))
+        p2.append(S(T("story._balance.14", f"Of the elements that help you, {EN[med]} matters most.", lang, med_en=el(med)), "medicine"))
     if role in ROLE:
-        p2.append(S(f"For {EN[dm_el]}, {EN[med]} is {ROLE[role]}.", "flows"))
+        p2.append(S(T("story._balance.15", f"For {EN[dm_el]}, {EN[med]} is {ROLE[role]}.", lang, dm_el_en=el(dm_el), med_en=el(med),
+                      role_role=T(f"story.ROLE.{role}", ROLE[role], lang)), "flows"))
         exp = next((a for a in p.get("personality") or [] if a["axis"].endswith("Expression")), None)
         if role == "output" and exp and exp.get("zone") == "left":
-            p2.append(S("Your personality reading says you hold your output back, so what you most need is a way "
-                        "for your energy to come out.", "personality"))
+            p2.append(S(T("story._balance.16", "Your personality reading says you hold your output back, so what you most need is a way "
+                          "for your energy to come out.", lang), "personality"))
 
-    m = MEDICINE[med]; acts = (ACTS_CHILD if v == "child" else ACTS_SENIOR if v == "senior" else {}).get(med, m["acts"])
-    p3.append(S(f"In practice: {acts}, with {m['colours']} in the rooms where you spend hours.", "medicine"))
+    m = MEDICINE[med]; acts = _acts(med, v, lang); colours = T(f"plain.MEDICINE.{med}.colours", m["colours"], lang)
+    p3.append(S(T("story._balance.17", f"In practice: {acts}, with {m['colours']} in the rooms where you spend hours.", lang, acts=acts, m_colours=colours), "medicine"))
     if unfav:
-        p3.append(S(f"{and_join([EN[e] for e in unfav])} take more than they give, so go easy on them.", "medicine"))
+        names = [el(e) for e in unfav]
+        p3.append(S(T("story._balance.18", f"{and_join([EN[e] for e in unfav])} take more than they give, so go easy on them.", lang,
+                      and_join_x=zh_join(names) if lang == "zh" else and_join(names)), "medicine"))
     hi = next((h for h in H if h["status"].startswith("excess")), None)
     lo = [h for h in H if h["status"].startswith("weak")]
     if hi or lo:
-        bits = ([f"{hi['en']} runs high"] if hi else []) + ([f"{and_join([h['en'] for h in lo])} run{'s' if len(lo) == 1 else ''} low"] if lo else [])
+        bits = ([T("story._balance.19", f"{hi['en']} runs high", lang, hi_en=hname(hi))] if hi else []) + \
+               ([T("story._balance.20", f"{and_join([h['en'] for h in lo])} run{'s' if len(lo) == 1 else ''} low", lang,
+                   and_join_x=zh_join([hname(h) for h in lo]), s_x="")] if lo else [])
         organs = and_join([(hi or lo[0])["organs"].split(", ")[0]] + [h["organs"].split(", ")[0] for h in lo if h is not (hi or lo[0])])
-        p3.append(S(f"Your body follows the same shape: {' and '.join(bits)}, so look after your {organs}. "
-                    "This is a traditional pairing, not medical advice.", HEALTH_EV))
-    one = S(ONE_THING[v][sk], "strength") if sk in ONE_THING[v] else None
+        if lang == "zh":
+            organs = zh_join([(hi or lo[0])["organs"].split(", ")[0]] + [h["organs"].split(", ")[0] for h in lo if h is not (hi or lo[0])])
+        joined = "，".join(bits) if lang == "zh" else " and ".join(bits)
+        p3.append(S(T("story._balance.21", f"Your body follows the same shape: {' and '.join(bits)}, so look after your {organs}. "
+                      "This is a traditional pairing, not medical advice.", lang, join_bits=joined, organs=organs), HEALTH_EV))
+    one = S(T(f"story.ONE_THING.{v}.{sk}", ONE_THING[v][sk], lang), "strength") if sk in ONE_THING[v] else None
     return {"paras": [x for x in (p1, p2, p3) if x], "chart_after": 1, "one": one}
 
 
-def _drives(p, v):
+def _drives(p, v, lang="en"):
     kid = v in ("child", "teen")
-    D = sorted([d for d in p.get("domains") or [] if d["key"] in AREAS_FOR[v]], key=lambda d: -d["score"])
+    # Layer 2 (owner 2026-10-11): areas are compared by their standing among charts (percentile), because the raw scores sit on
+    # different scales (learning averages 85, stability 46). The sentence below still states the raw scores; it only picks by standing.
+    D = sorted([d for d in p.get("domains") or [] if d["key"] in AREAS_FOR[v]], key=standing_key, reverse=True)
     p1, p2, p3 = [], [], []
     one = None
+    jn = (lambda xs: zh_join(xs)) if lang == "zh" else ljoin
     if D:
         top, low = D[0], D[-1]
-        nm = lambda d: DOMAIN.get(d["key"], d["en"].lower())
-        p1.append(S(f"Your strongest life area is {nm(top)} ({top['score']} of 100); your weakest is {nm(low)} ({low['score']}).", "domains"))
-        pri = {**PRIORITY, **PRIORITY_BY_VOICE.get(v, {})}
-        if top["score"] - low["score"] >= 40 and low["key"] in pri:
-            p1.append(S(pri[low["key"]], "domains"))
+        nm = lambda d: T(f"story.DOMAIN.{d['key']}", DOMAIN.get(d["key"], d["en"].lower()), lang) if d["key"] in DOMAIN else d["en"].lower()
+        p1.append(S(T("story._drives.01", f"Compared with other charts, your strongest life area is {nm(top)} ({top['score']} of 100); your weakest is {nm(low)} ({low['score']}).", lang,
+                      nm_top=nm(top), top_score=top["score"], nm_low=nm(low), low_score=low["score"]), "domains"))
+        # the old trigger was a raw-score gap of 40, which fired for 95% of readings; the percentile gap of 60 fires about half as often for adults
+        if standing_key(top)[0] - standing_key(low)[0] >= 60 and (low["key"] in PRIORITY or low["key"] in PRIORITY_BY_VOICE.get(v, {})):
+            k = low["key"]
+            en = PRIORITY_BY_VOICE.get(v, {}).get(k) or PRIORITY[k]
+            tid = f"story.PRIORITY_BY_VOICE.{v}.{k}" if k in PRIORITY_BY_VOICE.get(v, {}) else f"story.PRIORITY.{k}"
+            p1.append(S(T(tid, en, lang), "domains"))
     C = (p.get("careers") or {})
     top3 = [c["en"].lower().replace("&", "and") for c in (C.get("top") or [])[:3]]
     if top3:
-        lead = {"child": "Strengths to grow into later point toward", "teen": "Later on, the work that suits you best is",
-                "senior": "For work, volunteering or mentoring, you suit"}.get(v, "You do best in")
-        p2.append(S(f"{lead} {top3[0]}" + (f", then {ljoin(top3[1:])}." if top3[1:] else "."), "work"))
+        leads = {"child": ("story._drives.02", "Strengths to grow into later point toward"), "teen": ("story._drives.03", "Later on, the work that suits you best is"),
+                 "senior": ("story._drives.04", "For work, volunteering or mentoring, you suit")}
+        lid, len_ = leads.get(v, ("story._drives.05", "You do best in"))
+        lead = T(lid, len_, lang)
+        rest_t = T("story._drives.06", f", then {ljoin(top3[1:])}.", lang, ljoin_top3=jn(top3[1:])) if top3[1:] else ("。" if lang == "zh" else ".")
+        p2.append(S((f"{lead} {top3[0]}" if lang != "zh" else f"{lead}{top3[0]}") + rest_t, "work"))
     av = [c["en"].lower().replace("&", "and") for c in C.get("avoid") or []]
     if av and v != "child":
-        p2.append(S(f"{cap(ljoin(av))}{',' if len(av) > 1 else ''} {'is' if len(av) == 1 else 'are'} harder going for this chart, not off limits.", "work"))
+        p2.append(S(T("story._drives.07", f"{cap(ljoin(av))}{',' if len(av) > 1 else ''} {'is' if len(av) == 1 else 'are'} harder going for this chart, not off limits.", lang,
+                      cap_ljoin_av=jn(av), x_x="", is_are=""), "work"))
     V = (p.get("palaces") or {}).get("vault") or {}
     ys = {y["y"]: y for y in (p.get("windows") or {}).get("years") or []}
     if v in ("child", "teen"):
@@ -272,141 +326,184 @@ def _drives(p, v):
         br = V.get("state", "").split(" opens in ")[-1][:1]
         nxt = next((y for y in range(_year_now(p), _year_now(p) + 13) if "子丑寅卯辰巳午未申酉戌亥"[(y - 4) % 12] == br), None)
         if nxt:
-            also = (", a good year to put your affairs in order" if v == "senior"
-                    else ", which is also a window for money" if (ys.get(nxt, {}).get("wealth") or {}).get("flag") == "window" else "")
-            p2.append(S(f"You have a store of wealth that opens in {ANIMAL.get(br, br)} years; the next is {nxt}{also}.", "money", "years"))
+            also = (T("story._drives.10", ", a good year to put your affairs in order", lang) if v == "senior"
+                    else T("story._drives.11", ", which is also a window for money", lang) if (ys.get(nxt, {}).get("wealth") or {}).get("flag") == "window" else "")
+            p2.append(S(T("story._drives.12", f"You have a store of wealth that opens in {ANIMAL.get(br, br)} years; the next is {nxt}{also}.", lang,
+                          ANIMAL_br=T(f"plain.ANIMAL.{br}", ANIMAL.get(br, br), lang) if br in ANIMAL else br, nxt=nxt, also=also), "money", "years"))
     elif V.get("present"):
-        p2.append(S("Your wealth store is open, so money moves freely; keep a buffer.", "money"))
+        p2.append(S(T("story._drives.13", "Your wealth store is open, so money moves freely; keep a buffer.", lang), "money"))
     else:
-        p2.append(S("Your chart has no store for wealth, so keep savings simple and safe rather than chasing returns." if v == "senior" else
-                    "Your chart has no store for wealth, so money flows rather than stays: " + ("when you start earning, " if kid else "")
-                    + "save automatically rather than counting on windfalls.", "money"))
+        if v == "senior":
+            txt = T("story._drives.14", "Your chart has no store for wealth, so keep savings simple and safe rather than chasing returns.", lang)
+        else:
+            txt = T("story._drives.15", "Your chart has no store for wealth, so money flows rather than stays: ", lang) \
+                + (T("story._drives.16", "when you start earning, ", lang) if kid else "") \
+                + T("story._drives.17", "save automatically rather than counting on windfalls.", lang)
+        p2.append(S(txt, "money"))
     dom = {d["key"]: d for d in p.get("domains") or []}
     if not kid and "stability" in dom:
         st = BAND_KEY(dom["stability"]["band"])
-        p3.append(S({"strong": "Your relationships hold steady.", "even": "Your relationships stay steady when tended.",
-                     "weak": "Lasting relationships need deliberate care."}[st], "domains"))
+        p3.append(S({"strong": T("story._drives.18", "Your relationships hold steady.", lang),
+                     "even": T("story._drives.19", "Your relationships stay steady when tended.", lang),
+                     "weak": T("story._drives.20", "Lasting relationships need deliberate care.", lang)}[st], "domains"))
         day = next((x for x in (p.get("palaces") or {}).get("pillars") or [] if x["key"] == "day"), {})
         g = (day.get("hidden") or [""])[0]
         if g in GOD_NOUN:
-            p3.append(S(f"Your partner tends to bring {GOD_NOUN[g]}.", "domains"))
+            p3.append(S(T("story._drives.21", f"Your partner tends to bring {GOD_NOUN[g]}.", lang, g_god_noun=_gn(g, lang)), "domains"))
         if st == "weak":
-            p3.append(S("Keep shared routines, and say the quiet things out loud.", "domains"))
+            p3.append(S(T("story._drives.22", "Keep shared routines, and say the quiet things out loud.", lang), "domains"))
     elif v == "teen":
-        p3.append(S("Relationships are a theme for later in life, so this reading leaves them for now.", "domains"))
+        p3.append(S(T("story._drives.23", "Relationships are a theme for later in life, so this reading leaves them for now.", lang), "domains"))
     return {"paras": [x for x in (p1, p2, p3) if x], "chart_after": 0, "one": one}
 
 
-def _timing(p, v):
+# the next-decade closing line and verb read the phase that is coming (approved English fix, 2026-10-11)
+NEXT_EASIER = {"growth": ("story._timing.10", "a kinder stretch ahead"), "consolidation": ("story._timing.10c", "a steadier stretch ahead"),
+               "transition": ("story._timing.10t", "an easier stretch than this one")}
+NEXT_VERB = {"consolidation": "settles into", "transition": "shifts into", "corrective": "cools into"}
+
+
+def _timing(p, v, lang="en"):
     AREA_V = {**AREA, **AREA_BY_VOICE.get(v, {})}
     W = p.get("windows") or {}; decs = W.get("decades") or []; Y = W.get("years") or []
     now = _year_now(p); age = _age(p, now)
-    turn = lambda y: f" (the year you turn {y - (now - age)})" if age is not None and age < 30 else ""
+    zh = lang == "zh"
+    area = lambda k: (T(f"story.AREA_BY_VOICE.{v}.{k}", AREA_BY_VOICE[v][k], lang) if k in AREA_BY_VOICE.get(v, {}) else T(f"plain.AREA.{k}", AREA[k], lang))
+    jn = (lambda xs: zh_join(xs)) if zh else ljoin
+    adj = lambda ph: T(f"story.PHASE_ADJ.{ph}", PHASE_ADJ[ph], lang)
+    turn = lambda y: T("story._timing.01", f" (the year you turn {y - (now - age)})", lang, y_now_age=y - (now - age)) if age is not None and age < 30 else ""
     p1, p2, p3 = [], [], []
     i = next((k for k, d in enumerate(decs) if d.get("current")), None)
     if i is None and decs:
-        p1.append(S(f"Your first luck decade starts at age {_ages(decs[0])[0]}.", "decades"))
+        p1.append(S(T("story._timing.02", f"Your first luck decade starts at age {_ages(decs[0])[0]}.", lang, ages_decs=_ages(decs[0])[0]), "decades"))
     elif i is not None:
         d = decs[i]; ph = d["phase"]; a = i; b = i
         while a > 0 and decs[a - 1]["phase"] == ph:
             a -= 1
         while b + 1 < len(decs) and decs[b + 1]["phase"] == ph:
             b += 1
-        n, word = b - a + 1, PHASE_ADJ[ph]
+        n, word = b - a + 1, adj(ph)
+        nw = num_word(n, lang, NUM)
         if n == 1:
-            lead = f"You are in a {word} decade, ages {d['ages']}."
+            lead = T("story._timing.03", f"You are in {an(word)} decade, ages {d['ages']}.", lang, word=word, d_ages=d["ages"])
         elif i == b:
-            lead = f"You are in the last of {NUM.get(n, n)} {word} decades in a row, ages {d['ages']}."
+            lead = T("story._timing.04", f"You are in the last of {nw} {word} decades in a row, ages {d['ages']}.", lang, NUM_n=nw, word=word, d_ages=d["ages"])
         elif i == a:
-            lead = f"You are in the first of {NUM.get(n, n)} {word} decades in a row, ages {d['ages']}."
+            lead = T("story._timing.05", f"You are in the first of {nw} {word} decades in a row, ages {d['ages']}.", lang, NUM_n=nw, word=word, d_ages=d["ages"])
         else:
-            lead = f"You are in the middle of {NUM.get(n, n)} {word} decades in a row, ages {d['ages']}."
+            lead = T("story._timing.06", f"You are in the middle of {nw} {word} decades in a row, ages {d['ages']}.", lang, NUM_n=nw, word=word, d_ages=d["ages"])
         from .plain import PHASE
-        p1.append(S(lead + " " + PHASE_BY_VOICE.get(v, {}).get(ph, PHASE[ph]["means"]), "decades"))
+        by_voice = PHASE_BY_VOICE.get(v, {}).get(ph)
+        means = T(f"story.PHASE_BY_VOICE.{v}.{ph}", by_voice, lang) if by_voice else T(f"plain.PHASE.{ph}.means", PHASE[ph]["means"], lang)
+        p1.append(S(lead + ("" if zh else " ") + means, "decades"))
         lu = next((k for k, x in enumerate(decs) if x["gz"][1] == LU[p["day_master"]]), None)
         if lu is not None and decs[lu]["phase"] in ("growth", "consolidation"):
             if lu < i:
-                p1.append(S(f"Your chart's turning point came at ages {decs[lu]['ages']}, when your own element arrived.", "decades"))
+                p1.append(S(T("story._timing.07", f"Your chart's turning point came at ages {decs[lu]['ages']}, when your own element arrived.", lang, decs_lu_ages=decs[lu]["ages"]), "decades"))
             elif lu == i:
-                p1.append(S("This decade is your chart's turning point: your own element arrives in it.", "decades"))
+                p1.append(S(T("story._timing.08", "This decade is your chart's turning point: your own element arrives in it.", lang), "decades"))
             else:
-                p1.append(S(f"Your own element arrives at ages {decs[lu]['ages']}, the turning point of your chart.", "decades"))
+                p1.append(S(T("story._timing.09", f"Your own element arrives at ages {decs[lu]['ages']}, the turning point of your chart.", lang, decs_lu_ages=decs[lu]["ages"]), "decades"))
         if i + 1 < len(decs) and age is not None:
             nx = decs[i + 1]; start = _ages(nx)[0]; left = max(start - age, 1)
-            one = left == 1; yrs = "year" if one else "years"; left = NUM.get(left, left); dn, up = PHASE_RANK[nx["phase"]], PHASE_RANK[ph]
+            one = left == 1; yrs = "year" if one else "years"; left = NUM.get(left, left) if not zh else num_word(left, lang); dn, up = PHASE_RANK[nx["phase"]], PHASE_RANK[ph]
+            yrs_l = "年" if zh else yrs
+            nadj = adj(nx["phase"])
+            within = T("story._timing.11", "Within a year", lang) if one else T("story._timing.12", f"In about {left} {yrs}", lang, left=left, yrs=yrs_l)
             if dn > up and v == "senior":
-                p2.append(S(f"{'Within a year' if one else f'In about {left} {yrs}'} the climate turns: the next decade, from {start}, "
-                            f"is a {PHASE_ADJ[nx['phase']]} one, a kinder stretch ahead.", "decades"))
+                tid, tail = NEXT_EASIER[nx["phase"]]
+                p2.append(S(T(tid, f"{within} the climate turns: the next decade, from {start}, is {an(nadj)} one, {tail}.", lang,
+                              Within_a=within, start=start, nx_phase_phase_adj=nadj), "decades"))
             elif dn > up:
-                p2.append(S((f"Within a year the climate turns: the next decade, from {start}, is a {PHASE_ADJ[nx['phase']]} one, so this year is the run-up."
-                             if one else f"In about {left} {yrs} the climate turns: the next decade, from {start}, is a {PHASE_ADJ[nx['phase']]} one, "
-                             f"so the next {left} {yrs} are the run-up."), "decades"))
+                p2.append(S(T("story._timing.13", f"Within a year the climate turns: the next decade, from {start}, is {an(nadj)} one, so this year is the run-up.", lang,
+                              start=start, nx_phase_phase_adj=nadj) if one else
+                            T("story._timing.14", f"In about {left} {yrs} the climate turns: the next decade, from {start}, is {an(nadj)} one, "
+                              f"so the next {left} {yrs} are the run-up.", lang, left=left, yrs=yrs_l, start=start, nx_phase_phase_adj=nadj), "decades"))
             elif dn < up:
-                when = "this year" if one else f"the next {left} {yrs}"
-                p2.append(S(f"From {start} the climate cools into a {PHASE_ADJ[nx['phase']]} decade, so "
-                            + {"senior": f"use {when} for what matters most to you.", "child": f"{when} are a good time to learn and build habits.",
-                               "teen": f"{when} are a good time to learn and build habits."}.get(v, f"what you start {'this year' if one else f'in the next {left} {yrs}'} has the best weather behind it."), "decades"))
+                when = T("story._timing.15", "this year", lang) if one else T("story._timing.16", f"the next {left} {yrs}", lang, left=left, yrs=yrs_l)
+                this_yea = T("story._timing.15", "this year", lang) if one else T("story._timing.23", f"in the next {left} {yrs}", lang, left=left, yrs=yrs_l)
+                lead2 = T("story._timing.17", f"From {start} the climate {NEXT_VERB[nx['phase']]} {an(nadj)} decade, so ", lang, start=start, nx_phase_phase_adj=nadj)
+                tails = {"senior": T("story._timing.18", f"use {when} for what matters most to you.", lang, when=when),
+                         "child": T("story._timing.19", f"{when} are a good time to learn and build habits.", lang, when=when),
+                         "teen": T("story._timing.19", f"{when} are a good time to learn and build habits.", lang, when=when)}
+                p2.append(S(lead2 + tails.get(v, T("story._timing.21", f"what you start {'this year' if one else f'in the next {left} {yrs}'} has the best weather behind it.", lang, this_yea=this_yea)), "decades"))
             else:
-                p2.append(S(f"The next decade, from {start}, is also a {PHASE_ADJ[nx['phase']]} one.", "decades"))
+                p2.append(S(T("story._timing.24", f"The next decade, from {start}, is also {an(nadj)} one.", lang, start=start, nx_phase_phase_adj=nadj), "decades"))
             if ph in ("consolidation", "corrective") and nx["phase"] in ("consolidation", "corrective", "transition"):
                 peaks = [y["y"] for y in Y if y["overall"] == "peak"]
-                inside = f" The strong years inside them, such as {and_join([str(y) for y in peaks[:2]])}, are where to move." if peaks else ""
-                hold = {"child": "These are years for steady habits rather than big changes.", "teen": "These are years for steady habits rather than big changes.",
-                        "senior": "These are years for keeping things steady and close."}.get(v, "These are years for holding structure, not for expansion.")
+                inside = T("story._timing.25", f" The strong years inside them, such as {and_join([str(y) for y in peaks[:2]])}, are where to move.", lang,
+                           and_join_x=zh_join([str(y) for y in peaks[:2]]) if zh else and_join([str(y) for y in peaks[:2]])) if peaks else ""
+                hold = {"child": T("story._timing.26", "These are years for steady habits rather than big changes.", lang),
+                        "teen": T("story._timing.26", "These are years for steady habits rather than big changes.", lang),
+                        "senior": T("story._timing.28", "These are years for keeping things steady and close.", lang)}.get(v, T("story._timing.29", "These are years for holding structure, not for expansion.", lang))
                 p2.append(S(hold + ("" if v in ("child", "senior") else inside), "decades", "years"))
     if Y:
         y0 = Y[0]
-        win = [AREA_V[k] for k in AREA_V if AREA_V[k] and (y0.get(k) or {}).get("flag") == "window"]
-        cau = [AREA_V[k] for k in AREA_V if AREA_V[k] and (y0.get(k) or {}).get("flag") == "caution"]
-        lead = {"peak": f"{y0['y']} is one of your strongest years", "steady": f"{y0['y']} is a steady year",
-                "careful": f"{y0['y']} asks for care"}[y0["overall"]]
-        tail = (f", with a window for {ljoin(win)}" if win else "") + \
-               ((", but go carefully with " if y0["overall"] == "peak" else "; go carefully with ") + ljoin(cau) if cau else "")
-        p3.append(S(lead + tail + ".", "years"))
+        win = [area(k) for k in AREA_V if AREA_V[k] and (y0.get(k) or {}).get("flag") == "window"]
+        cau = [area(k) for k in AREA_V if AREA_V[k] and (y0.get(k) or {}).get("flag") == "caution"]
+        lid = {"peak": ("story._timing.30", "is one of your strongest years"), "steady": ("story._timing.31", "is a steady year"),
+               "careful": ("story._timing.32", "asks for care")}[y0["overall"]]
+        lead = T(lid[0], f"{y0['y']} {lid[1]}", lang, y0_y=y0["y"])
+        tail = (T("story._timing.33", f", with a window for {ljoin(win)}", lang, ljoin_win=jn(win)) if win else "") + \
+               ((T("story._timing.34", ", but go carefully with ", lang) if y0["overall"] == "peak" else T("story._timing.35", "; go carefully with ", lang)) + jn(cau) if cau else "")
+        p3.append(S(lead + tail + ("。" if zh else "."), "years"))
         dims = [k for k in AREA_V if k in y0 and AREA_V[k]]
         rest = Y[1:] or Y
         rank = {"peak": 2, "steady": 1, "careful": 0}
         best = max(rest, key=lambda y: (rank[y["overall"]], sum((y.get(k) or {}).get("flag") == "window" for k in dims)))
         careful = [y for y in rest if y["overall"] == "careful"]
         worst = max(careful, key=lambda y: sum((y.get(k) or {}).get("flag") == "caution" for k in dims)) if careful else best
-        cw = [AREA_V[k] for k in dims if (worst.get(k) or {}).get("flag") == "caution"]
-        bw = [AREA_V[k] for k in dims if (best.get(k) or {}).get("flag") == "window"]
-        line = f"Looking further ahead, push in {best['y']}{turn(best['y'])}" + (f", a window for {ljoin(bw)}" if bw else "")
-        line += f"; protect {worst['y']}{turn(worst['y'])}, which asks for care with {ljoin(cw)}." if cw and worst is not best else "."
+        cw = [area(k) for k in dims if (worst.get(k) or {}).get("flag") == "caution"]
+        bw = [area(k) for k in dims if (best.get(k) or {}).get("flag") == "window"]
+        line = T("story._timing.36", f"Looking further ahead, push in {best['y']}{turn(best['y'])}", lang, best_y=best["y"], turn_best_y=turn(best["y"]))
+        line += T("story._timing.37", f", a window for {ljoin(bw)}", lang, ljoin_bw=jn(bw)) if bw else ""
+        line += (T("story._timing.38", f"; protect {worst['y']}{turn(worst['y'])}, which asks for care with {ljoin(cw)}.", lang,
+                   worst_y=worst["y"], turn_worst_y=turn(worst["y"]), ljoin_cw=jn(cw)) if cw and worst is not best else ("。" if zh else "."))
         p3.append(S(line, "years"))
-    RH = ((p.get("strategy") or {}).get("s5") or {}).get("rhythm") or []
-    if RH:
-        from .plain import _months
-        M = _months(p)
-        if M and M["head"].startswith("Your best months: "):
-            p3.append(S("Within each year, your best months are " + M["head"][len("Your best months: "):], "months"))
+    RH, _good, runs = _month_runs(p)
+    if RH and runs:
+        shown = _run_words(runs, lang)
+        p3.append(S(T("story._timing.months_head", f"Within each year, your best months are {and_join(shown)}.", lang, runs=zh_join(shown) if zh else and_join(shown)), "months"))
     Dd = (p.get("daily") or {}).get("best")
     if Dd:
-        from .plain import _days
-        p3.append(S(_days(p)["head"].replace("Your next good day: ", "Your next good day is "), "days"))
+        day = _day_label(Dd["date"], lang)
+        p3.append(S(T("story._timing.days_head", f"Your next good day is {day}.", lang, day=day), "days"))
     return {"paras": [x for x in (p1, p2, p3) if x], "chart_after": 0}
 
 
-def _space(p, kid):
+def _space(p, kid, lang="en"):
     med = p["yongshen"]["favourable"][0]; m = MEDICINE[med]; side, what = EL_ROOM[med]
     pl = {x["key"]: x for x in p.get("placements") or []}
     A = p.get("afflictions") or {}
     hit = {DIR_WORD.get(A[k]["dir"]) for k in ("taisui", "suipo") if A.get(k)}
-    p1 = [S(f"Bring {m['colours']} into the rooms where you spend hours: they carry {EN[med]}, the element you need.", "medicine"),
-          S(f"Put {EN[med]} on the {side} side of your main room, with {what}" + (", using objects rather than building work this year." if side in hit else "."), "medicine")]
+    el_med = _fav_el(med, lang); colours = T(f"plain.MEDICINE.{med}.colours", m["colours"], lang)
+    what_l = T(f"plain.EL_ROOM.{med}.what", what, lang)
+    full_stop = "。" if lang == "zh" else "."
+    objects = T("story._space.03", ", using objects rather than building work this year.", lang)
+    if side == "centre":   # the centre is not a side of the room
+        put = T("story._space.02c", f"Put {EN[med]} in the centre of your main room, with {what}", lang, med_en=el_med, what=what_l)
+    else:
+        side_l = T(f"plain.DIR_WORD.{next(k for k, vv in DIR_WORD.items() if vv == side)}", side, lang)
+        put = T("story._space.02", f"Put {EN[med]} on the {side} side of your main room, with {what}", lang, med_en=el_med, side=side_l, what=what_l)
+    p1 = [S(T("story._space.01", f"Bring {m['colours']} into the rooms where you spend hours: they carry {EN[med]}, the element you need.", lang, m_colours=colours, med_en=el_med), "medicine"),
+          S(put + (objects if side in hit else full_stop), "medicine")]
     p2 = []
+    dw = lambda d: T(f"plain.DIR_WORD.{d}", DIR_WORD[d], lang)
     if "bed" in pl and "desk" in pl:   # owner convention: say which way each thing faces
-        p2.append(S(f"Point your bed head {DIR_WORD[pl['bed']['dir']]}, and face {DIR_WORD[pl['desk']['dir']]} at your desk.", "placements"))
+        p2.append(S(T("story._space.04", f"Point your bed head {DIR_WORD[pl['bed']['dir']]}, and face {DIR_WORD[pl['desk']['dir']]} at your desk.", lang,
+                      pl_bed_dir_dir_word=dw(pl["bed"]["dir"]), pl_desk_dir_dir_word=dw(pl["desk"]["dir"])), "placements"))
     if "door" in pl:
-        p2.append(S(f"Your best door faces {DIR_WORD[pl['door']['dir']]}.", "placements"))
+        p2.append(S(T("story._space.05", f"Your best door faces {DIR_WORD[pl['door']['dir']]}.", lang, pl_door_dir_dir_word=dw(pl["door"]["dir"])), "placements"))
     p3 = []   # owner 2026-10-10: the chart's own directions always win; a year's afflictions only govern building work
     if A:
         ts, sp = A["taisui"]["dir"], A["suipo"]["dir"]
         ss = [DIR_WORD[d] for d in A["sansha"]["dirs"] if d not in (ts, sp)]
-        p3.append(S(f"This year, leave the {DIR_WORD[ts]} and {DIR_WORD[sp]} sides of your home undisturbed: no renovation or digging there"
-                    + (f", and the same care on the {and_join(ss)}." if ss else "."), "afflict"))
+        ss_l = [dw(d) for d in A["sansha"]["dirs"] if d not in (ts, sp)]
+        p3.append(S(T("story._space.06", f"This year, leave the {DIR_WORD[ts]} and {DIR_WORD[sp]} sides of your home undisturbed: no renovation or digging there",
+                      lang, ts_dir_word=dw(ts), sp_dir_word=dw(sp))
+                    + (T("story._space.07", f", and the same care on the {and_join(ss)}.", lang, and_join_ss=zh_join(ss_l) if lang == "zh" else and_join(ss)) if ss else full_stop), "afflict"))
         if A.get("collisions"):
-            p3.append(S("Your bed and desk directions above still hold; this year only asks you not to build or dig on those sides.", "afflict"))
+            p3.append(S(T("story._space.08", "Your bed and desk directions above still hold; this year only asks you not to build or dig on those sides.", lang), "afflict"))
     return {"paras": [x for x in (p1, p2, p3) if x], "chart_after": 1 if p2 else 0}
 
 
@@ -416,35 +513,40 @@ EVIDENCE_LABEL = {
     "strength": "Why the strength verdict", "flows": "What feeds you and what presses on you", "medicine": "What helps you, and why",
     "health": "Body: the traditional pairing", "domains": "Your six life areas", "work": "Work that fits", "money": "Your wealth store",
     "decades": "Your luck decades", "years": "Year by year", "months": "Month by month", "days": "Day by day",
-    "placements": "Where to sleep and face", "afflict": "This year's disturbances",
+    "placements": "Where to sleep and face", "afflict": "This year's afflictions",
 }
 
 
-def _vault_why(V):
+def _vault_why(V, lang="en"):
     """The wealth store in one plain line (the engine's state string repeats 'vault' once glossed)."""
+    an_ = lambda b: T(f"plain.ANIMAL.{b}", ANIMAL.get(b, b), lang) if b in ANIMAL else b
     if not V.get("present"):
-        return "No wealth store (财库) in the chart: money flows rather than stays."
+        return T("story._vault_why.01", "No wealth store (财库) in the chart: money flows rather than stays.", lang)
     br = V.get("branch", "")
     if V.get("open"):
-        return f"Wealth store (财库): the {br} ({ANIMAL.get(br, br)}) branch, already open."
+        return T("story._vault_why.02", f"Wealth store (财库): the {br} ({ANIMAL.get(br, br)}) branch, already open.", lang, br=br, ANIMAL_br=an_(br))
     opens = V.get("state", "").split(" opens in ")[-1][:1]
-    return (f"Wealth store (财库): the {br} ({ANIMAL.get(br, br)}) branch, sealed; it opens in {ANIMAL.get(opens, opens)} ({opens}) years, "
-            "which the timing windows mark as years to save and build.")
+    return T("story._vault_why.03", f"Wealth store (财库): the {br} ({ANIMAL.get(br, br)}) branch, sealed; it opens in {ANIMAL.get(opens, opens)} ({opens}) years, "
+             "which the timing windows mark as years to save and build.", lang, br=br, ANIMAL_br=an_(br), ANIMAL_opens=an_(opens), opens=opens)
 
 
-def _why(p, plain):
+def _why(p, plain, lang="en"):
     st = p["strength"]; V = (p.get("palaces") or {}).get("vault") or {}
+    zh = lang == "zh"
+    elem = ("，" if zh else ", ").join(f"{(_fav_el(h['element'], lang) if zh else h['en'])} {h['share']}% ({h['status']})" for h in p.get("health") or [])
     return {
         "gods": plain["drives"]["why"], "pillars": "\n".join(s["why"] for s in plain["sides"]),   # one note per line
         "personality": (plain.get("personality") or {}).get("why", ""), "stars": "",   # the stars figure lists each star once
         "interactions": plain["makeup"]["why"],
-        "elements": "Weighted element shares: " + ", ".join(f"{h['en']} {h['share']}% ({h['status']})" for h in p.get("health") or []) + ".",
-        "strength": (f"Strength verdict {st['verdict']}, score {st['score']}; support {st.get('support_ratio')}%, roots "
-                     f"{st.get('root_ratio')}%, season points {(st.get('parts') or {}).get('season_pts')}. {(p.get('synthesis') or {}).get('assessment', '')}"),
+        "elements": T("story._why.01", "Weighted element shares: ", lang) + elem + ("。" if zh else "."),
+        "strength": T("story._why.02", f"Strength verdict {st['verdict']}, score {st['score']}; support {st.get('support_ratio')}%, roots "
+                      f"{st.get('root_ratio')}%, season points {(st.get('parts') or {}).get('season_pts')}. {(p.get('synthesis') or {}).get('assessment', '')}", lang,
+                      st_verdict=st["verdict"], st_score=st["score"], st_support_rati=st.get("support_ratio"), st_root_ratio=st.get("root_ratio"),
+                      x_season_pts=(st.get("parts") or {}).get("season_pts"), x_assessment=(p.get("synthesis") or {}).get("assessment", "")),
         "flows": (plain.get("flows") or {}).get("why", ""), "medicine": plain["helps"]["why"],
         "health": plain["health"]["why"], "domains": "",   # the life-areas table and its key carry every score
         "work": "",   # the work figure lists every field, role and reason once
-        "money": _vault_why(V),
+        "money": _vault_why(V, lang),
         "decades": (p.get("windows") or {}).get("arc", ""), "years": (plain.get("next_ten") or {}).get("why", ""),
         "months": "",   # the month rhythm figure shows every month's branch, element and rating; no word wall
         "days": (plain.get("days") or {}).get("why", ""),
@@ -452,14 +554,14 @@ def _why(p, plain):
     }
 
 
-def compose_story(p: dict, plain: dict) -> dict:
+def compose_story(p: dict, plain: dict, lang: str = "en") -> dict:
     age = _age(p, _year_now(p)); v = voice_of(age); kid = v in ("child", "teen")
-    ch = {"makeup": _makeup(p, kid), "balance": _balance(p, v), "drives": _drives(p, v),
-          "timing": _timing(p, v), "space": _space(p, kid)}
-    why = _why(p, plain)
+    ch = {"makeup": _makeup(p, kid, lang), "balance": _balance(p, v, lang), "drives": _drives(p, v, lang),
+          "timing": _timing(p, v, lang), "space": _space(p, kid, lang)}
+    why = _why(p, plain, lang)
     used = {e for c in ch.values() for para in c["paras"] + [[c["one"]] if c.get("one") else []] for s in para for e in s["ev"]}
     return {"age": age, "young": kid, "voice": v, "chapters": ch,
-            "evidence": {k: {"label": EVIDENCE_LABEL[k], "why": why.get(k, "")} for k in EVIDENCE_LABEL if k in used}}
+            "evidence": {k: {"label": T(f"story.EVIDENCE_LABEL.{k}", EVIDENCE_LABEL[k], lang), "why": why.get(k, "")} for k in EVIDENCE_LABEL if k in used}}
 
 
 if __name__ == "__main__":   # self-check on the fictional chart

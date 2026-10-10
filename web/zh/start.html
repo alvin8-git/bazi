@@ -132,7 +132,7 @@ header a#back{background:#fff;color:var(--ink)}
 <link rel="preload" as="image" href="/static/img/tools/start-intro.jpg" media="(min-width: 760px)">
 <style id="zhx">html[lang="zh-CN"] body{font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC","Noto Sans SC","Source Han Sans SC",sans-serif}nav a{white-space:nowrap}.tagline{margin:-6px 0 14px;font-size:17px;letter-spacing:.04em;color:#5f574e}.zhnotice{margin:12px 0;padding:10px 14px;border:1px solid var(--line,#e5ded2);border-radius:8px;background:#fff7e0;color:#5c4d0f;font-size:15px;line-height:1.5}</style>
 </head><body>
-<script>window.I18N = {"place":{"country":"出生国家","city":"出生城市","cityHelp":"请选最近的城市：它的经度和时区决定真太阳时。"},"card":{"helps":"助益","avoid":"宜少用","strongest":"最强","weakest":"最弱","decade":"{0}大运","ages":"{0} 岁","open":"打开解读","edit":"编辑","remove":"删除","hourApprox":"时辰为大致推算","you":"你","pillars":{"year":"年","month":"月","day":"你","hour":"时"},"areas":{"attraction":"爱情与吸引力","stability":"稳定的感情关系","career":"事业","wealth":"财运","learning":"学习","health":"健康"},"pair":"{0}与{1}：{2}，{3}。打开合婚报告","of100":"{0} 分（满分 100）"}}; window.PLACE_TEXT = I18N.place;</script>
+<script>window.I18N = {"place":{"country":"出生国家","city":"出生城市","cityHelp":"请选最近的城市：它的经度和时区决定真太阳时。"},"card":{"helps":"助益","avoid":"宜少用","strongest":"最强","weakest":"最弱","decade":"{0}大运","ages":"{0} 岁","open":"打开解读","edit":"编辑","remove":"删除","hourApprox":"时辰为大致推算","you":"你","pillars":{"year":"年","month":"月","day":"你","hour":"时"},"areas":{"attraction":"爱情与吸引力","stability":"稳定的感情关系","career":"事业","wealth":"财运","learning":"学习","health":"健康"},"pair":"{0}与{1}：{2}，{3}。打开合婚报告","of100":"{0} 分（满分 100）","standing":"相对位次 {0}/100","standingNote":"位次是在众多命盘中的相对位置，不代表强弱。"}}; window.PLACE_TEXT = I18N.place;</script>
 <span class="verbadge" id="ver"></span>
 <header>
   <h1>免费八字排盘</h1>
@@ -235,7 +235,8 @@ nav.top a{min-height:44px;display:inline-flex;align-items:center}
 .careas{display:grid;grid-template-columns:1fr 1fr;gap:10px}.car{display:grid;justify-items:center;text-align:center;gap:2px}
 .car img{width:52px;height:52px}.car small{font-size:12.5px;color:var(--muted)}
 .car span{font:600 15px/1.2 Georgia,"Noto Serif SC","Songti SC","Noto Serif CJK SC","Source Han Serif SC",serif;color:var(--ink)}.car em{font-style:normal;font-size:13.5px;font-weight:600}
-.car i{font-style:normal;font-size:12.5px;color:var(--muted)}
+.car i{font-style:normal;font-size:12.5px;color:var(--muted)}.car i.cpct{font-size:12px}
+.cnote{margin:-4px 0 0;font-size:12px;line-height:1.35;color:var(--muted)}
 .cdec{display:flex;align-items:center;gap:10px}.cdec p{margin:0;display:grid;font-size:14px;line-height:1.3}.cdec span{color:var(--muted)}
 .cgo{margin-top:auto;display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:8px;border:1.5px solid var(--accent);color:var(--accent);font-weight:700;text-decoration:none}
 .cgo:hover{background:var(--accent);color:#fff}
@@ -377,8 +378,9 @@ const CARD_TEXT = { helps: "Helps", avoid: "Go easy on", strongest: "Strongest",
   pillars: { year: "year", month: "month", day: "you", hour: "hour" },
   areas: { attraction: "Love and attraction", stability: "Steady relationships", career: "Career",
            wealth: "Money", learning: "Learning", health: "Health" },
-  pair: (a, b, s, w) => `${a} and ${b}: ${s}, ${w}. Open the pair report`, of100: (s) => `${s} of 100` };
-if (window.I18N) { const f = (t) => (...a) => t.replace(/\{(\d)\}/g, (_, i) => a[i]), c = I18N.card; Object.assign(CARD_TEXT, c, { decade: f(c.decade), ages: f(c.ages), pair: f(c.pair), of100: f(c.of100) }); }   // /zh build supplies I18N
+  pair: (a, b, s, w) => `${a} and ${b}: ${s}, ${w}. Open the pair report`, of100: (s) => `${s} of 100`,
+  standing: (p) => `standing ${p} of 100`, standingNote: "Standing is the relative standing among charts, not strength." };
+if (window.I18N) { const f = (t) => (...a) => t.replace(/\{(\d)\}/g, (_, i) => a[i]), c = I18N.card; Object.assign(CARD_TEXT, c, { decade: f(c.decade), ages: f(c.ages), pair: f(c.pair), of100: f(c.of100), standing: f(c.standing) }); }   // /zh build supplies I18N
 /* life-area band words are the engine's own (domains.py); text colours pass 4.5:1 on white */
 const BAND_TXT = { prominent: "#1e7a3a", balanced: "#5c4d0f", "needs support": "#8a4b0f" };
 const EL_TXT = { 木: "#187a35", 火: "#c5221f", 土: "#7a601b", 金: "#5f6b7a", 水: "#1a56b0" };
@@ -395,24 +397,25 @@ function personCard(p, i) {
   const art = `/static/img/reading/bg/${STEM_SLUG[p.day_master]}-${SEASON[(p.pillars.month || "")[1]] || "spring"}-p-600.webp`;
   const seal = ["year", "month", "day", "hour"].map((k) => { const gz = p.pillars[k] || "";
     return `<span class="cpz${k === "day" ? " me" : ""}"><b style="color:${EL_TXT[STEM_EL[gz[0]]] || "inherit"}">${gz[0] || ""}</b><b style="color:${EL_TXT[BR_EL[gz[1]]] || "inherit"}">${gz[1] || ""}</b><small>${T.pillars[k]}</small></span>`; }).join("");
-  const els = (a, cls) => (a || []).map((e) => `<li class="${cls}">${ico(e, e, 30)}<span>${EL_EN[e]}</span></li>`).join("");
+  const els = (a, cls) => (a || []).map((e) => `<li class="${cls}">${ico(e, e, 30)}<span>${e}</span></li>`).join("");
   const area = (d, lab) => d ? `<div class="car"><img src="/static/img/reading/ar/${d.key}-128.webp" alt="" width="52" height="52" loading="lazy" decoding="async">
-    <small>${lab}</small><span>${T.areas[d.key] || d.key}</span><em style="color:${BAND_TXT[d.band] || "inherit"}">${d.band || ""}</em><i>${T.of100(d.score)}</i></div>` : "";
-  const head = (C.head || "").replace(/^You are /, "").replace(/\.$/, "");
+    <small>${lab}</small><span>${T.areas[d.key] || d.key}</span><em style="color:${BAND_TXT[d.band_key || d.band] || "inherit"}">${d.band || ""}</em><i>${T.of100(d.score)}</i>${d.percentile == null ? "" : `<i class="cpct">${T.standing(d.percentile)}</i>`}</div>` : "";
+  const head = C.line || "";
   const tk = p.time_known === false ? `<span class="badge">${T.hourApprox}</span>` : "";
   return `<article class="pcard ccard" data-i="${i}">
     <div class="cside"><img src="${art}" alt="" width="600" height="750" loading="lazy" decoding="async"></div>
     <div class="cin">
       <div class="ctag">${ctag(p, i, "h3")}${tk}</div>
       <div class="cseal keepzh" lang="zh-Hans">${seal}</div>
-      ${head ? `<p class="cidl"><span class="nm">${p.name}</span>, you are ${head}.</p>` : ""}
+      ${head ? `<p class="cidl">${head.replace(p.name, `<span class="nm">${p.name}</span>`)}</p>` : ""}
       ${(C.traits || []).length ? `<p class="ctraits">${C.traits.join(" · ")}</p>` : ""}
       <div class="cels"><div><p class="ck">${T.helps}</p><ul>${els(p.favourable, "")}</ul></div>
         <div><p class="ck">${T.avoid}</p><ul>${els(p.unfavourable, "av")}</ul></div></div>
       <div class="careas">${area(C.strongest, T.strongest)}${area(C.weakest, T.weakest)}</div>
+      ${C.strongest && C.strongest.percentile != null ? `<p class="cnote">${T.standingNote}</p>` : ""}
       ${C.decade ? `<div class="cdec"><img src="/static/img/reading/mk/${C.decade.phase}-96.png" alt="" width="40" height="40" loading="lazy">
         <p><b>${T.decade(C.decade.word)}</b><span>${T.ages(C.decade.ages)}</span></p></div>` : ""}
-      <a class="cgo" href="/w/${token}/person/${i}/reading">${T.open}</a>
+      <a class="cgo" href="/zh/w/${token}/person/${i}/reading">${T.open}</a>
       <div class="cops"><button type="button" class="ghost edit" data-i="${i}">${T.edit}</button><button type="button" class="ghost del" data-i="${i}">${T.remove}</button></div>
       <form class="editf" data-i="${i}" hidden>
         <div class="row">

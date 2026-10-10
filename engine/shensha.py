@@ -7,8 +7,14 @@ from __future__ import annotations
 
 from .wuxing import (BRANCHES, CHONG_MAP, EARTH, FIRE, HAI_MAP, HE_MAP, METAL,
                      SANHE, STEMS, STEM_ELEMENT, WATER, WOOD)
+from .i18n import L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
 POS = ("year", "month", "day", "hour")
+
+
+def pos_label(pos: str, lang: str = "en") -> str:
+    """The pillar name a reader sees (POS itself stays the English dict key: chart.pillars[pos])."""
+    return T(f"shensha.POS_LABEL.{pos}", pos, lang)
 
 # ---- star tables ------------------------------------------------------------
 TIANYI = {"甲": "丑未", "戊": "丑未", "庚": "丑未", "乙": "子申", "己": "子申",
@@ -110,13 +116,13 @@ _WUHU_DUN = {"甲": "丙", "己": "丙", "乙": "戊", "庚": "戊", "丙": "庚
              "辛": "庚", "丁": "壬", "壬": "壬", "戊": "甲", "癸": "甲"}
 
 
-def life_palaces(chart) -> dict:
+def life_palaces(chart, lang: str = "en") -> dict:
     """命宮 Life Palace, 胎元 Conception Palace, 年命星 Life Star, 生肖.
 
     命宮: month and hour branches both counted from 寅=1; sum<14 → 14−sum,
     else 26−sum, counted on from 寅; stem by 五虎遁 from the year stem.
     胎元: month stem +1, month branch +3. 命星: 紫白 digit-root rule
-    (male 11−root, female root+4). Validated against the Joey Yap Destiny
+    (male 11−root, female root+4). Checked against a published 2026 almanac
     chart for the 1976 戊寅 day master (命宮 甲午, 胎元 戊子, 命星 六白)."""
     def from_yin(b):
         return (BRANCHES.index(b) - 2) % 12 + 1
@@ -134,8 +140,8 @@ def life_palaces(chart) -> dict:
     return {"ming_gong": mg_stem + mg_branch, "tai_yuan": tai_yuan,
             "life_star": n, "life_star_zh": zh, "life_star_element": el,
             "animal": ANIMALS[chart.pillars["year"].branch],
-            "source_ref": "命宮/胎元 (淵海子平 palace formulas) · 年命星 紫白 "
-                          "digit-root rule — validated vs Joey Yap Destiny 2026 chart"}
+            "source_ref": T("shensha.life_palaces.01", "命宮/胎元 (淵海子平 palace formulas) · 年命星 紫白 "
+                          "digit-root rule (紫白九星), counted from the 立春 year", lang)}
 
 
 def _void_branches(day_gz) -> str:
@@ -144,7 +150,7 @@ def _void_branches(day_gz) -> str:
     return BRANCHES[(j - i + 10) % 12] + BRANCHES[(j - i + 11) % 12]
 
 
-def shensha(chart) -> list[dict]:
+def shensha(chart, lang: str = "en") -> list[dict]:
     """All symbolic stars found in the chart, with the pillar(s) carrying them."""
     p = chart.pillars
     stems = {pos: p[pos].stem for pos in POS}
@@ -196,8 +202,8 @@ def shensha(chart) -> list[dict]:
         if branches[pos] in void:
             hit("空亡", pos)
 
-    return [{"star": s, "pillars": sorted(ps, key=POS.index), "meaning": MEANING[s],
-             "source_ref": "神煞 classical tables"}
+    return [{"star": s, "pillars": sorted(ps, key=POS.index), "meaning": L("shensha.MEANING", MEANING, lang)[s],
+             "source_ref": T("shensha.shensha.01", "神煞 classical tables", lang)}
             for s, ps in sorted(found.items(), key=lambda kv: POS.index(sorted(kv[1], key=POS.index)[0]))]
 
 
@@ -208,7 +214,7 @@ _XING_PAIRS = {frozenset(p) for p in
 _SELF_XING = set("辰午酉亥")
 
 
-def natal_interactions(chart) -> list[dict]:
+def natal_interactions(chart, lang: str = "en") -> list[dict]:
     """六合/六沖/六害/三合(半合)/刑 among the chart's own four branches."""
     b = {pos: chart.pillars[pos].branch for pos in POS}
     out = []
@@ -218,7 +224,7 @@ def natal_interactions(chart) -> list[dict]:
         hits = [pos for pos in POS if b[pos] in grp]
         if len({b[pos] for pos in hits}) == 3:
             out.append({"kind": "三合", "pair": "".join(grp), "pillars": hits,
-                        "note": f"full trine → {el}"})
+                        "note": T("shensha.natal_interactions.01", f"full trine → {el}", lang, el=el)})
             full.append(set(grp))
     for i, p1 in enumerate(POS):
         for p2 in POS[i + 1:]:
@@ -226,24 +232,24 @@ def natal_interactions(chart) -> list[dict]:
             if x == y:
                 if x in _SELF_XING:
                     out.append({"kind": "自刑", "pair": x + y, "pillars": [p1, p2],
-                                "note": "self-punishment — internal friction"})
+                                "note": T("shensha.natal_interactions.02", "self-punishment — internal friction", lang)})
                 continue
             if frozenset((x, y)) in _XING_PAIRS:
                 out.append({"kind": "刑", "pair": x + y, "pillars": [p1, p2],
-                            "note": "punishment — hidden entanglement/stress"})
+                            "note": T("shensha.natal_interactions.03", "punishment — hidden entanglement/stress", lang)})
             if HE_MAP.get(x) == y:
                 out.append({"kind": "六合", "pair": x + y, "pillars": [p1, p2],
-                            "note": "binding & attraction"})
+                            "note": T("shensha.natal_interactions.04", "binding & attraction", lang)})
             elif CHONG_MAP.get(x) == y:
                 out.append({"kind": "六沖", "pair": x + y, "pillars": [p1, p2],
-                            "note": "clash — instability between these pillars"})
+                            "note": T("shensha.natal_interactions.05", "clash — instability between these pillars", lang)})
             elif HAI_MAP.get(x) == y:
                 out.append({"kind": "六害", "pair": x + y, "pillars": [p1, p2],
-                            "note": "harm — quiet friction"})
+                            "note": T("shensha.natal_interactions.06", "harm — quiet friction", lang)})
             elif _TRINE.get(x) == _TRINE.get(y) and _TRINE.get(x) is not None \
                     and not any({x, y} <= f for f in full):
                 out.append({"kind": "半合", "pair": x + y, "pillars": [p1, p2],
-                            "note": "half trine — latent alliance"})
+                            "note": T("shensha.natal_interactions.07", "half trine — latent alliance", lang)})
     return out
 
 

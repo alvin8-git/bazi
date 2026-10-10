@@ -233,7 +233,8 @@ nav.top a{min-height:44px;display:inline-flex;align-items:center}
 .careas{display:grid;grid-template-columns:1fr 1fr;gap:10px}.car{display:grid;justify-items:center;text-align:center;gap:2px}
 .car img{width:52px;height:52px}.car small{font-size:12.5px;color:var(--muted)}
 .car span{font:600 15px/1.2 Georgia,"Noto Serif SC",serif;color:var(--ink)}.car em{font-style:normal;font-size:13.5px;font-weight:600}
-.car i{font-style:normal;font-size:12.5px;color:var(--muted)}
+.car i{font-style:normal;font-size:12.5px;color:var(--muted)}.car i.cpct{font-size:12px}
+.cnote{margin:-4px 0 0;font-size:12px;line-height:1.35;color:var(--muted)}
 .cdec{display:flex;align-items:center;gap:10px}.cdec p{margin:0;display:grid;font-size:14px;line-height:1.3}.cdec span{color:var(--muted)}
 .cgo{margin-top:auto;display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:8px;border:1.5px solid var(--accent);color:var(--accent);font-weight:700;text-decoration:none}
 .cgo:hover{background:var(--accent);color:#fff}
@@ -380,8 +381,9 @@ const CARD_TEXT = { helps: "Helps", avoid: "Go easy on", strongest: "Strongest",
   pillars: { year: "year", month: "month", day: "you", hour: "hour" },
   areas: { attraction: "Love and attraction", stability: "Steady relationships", career: "Career",
            wealth: "Money", learning: "Learning", health: "Health" },
-  pair: (a, b, s, w) => `${a} and ${b}: ${s}, ${w}. Open the pair report`, of100: (s) => `${s} of 100` };
-if (window.I18N) { const f = (t) => (...a) => t.replace(/\{(\d)\}/g, (_, i) => a[i]), c = I18N.card; Object.assign(CARD_TEXT, c, { decade: f(c.decade), ages: f(c.ages), pair: f(c.pair), of100: f(c.of100) }); }   // /zh build supplies I18N
+  pair: (a, b, s, w) => `${a} and ${b}: ${s}, ${w}. Open the pair report`, of100: (s) => `${s} of 100`,
+  standing: (p) => `standing ${p} of 100`, standingNote: "Standing is the relative standing among charts, not strength." };
+if (window.I18N) { const f = (t) => (...a) => t.replace(/\{(\d)\}/g, (_, i) => a[i]), c = I18N.card; Object.assign(CARD_TEXT, c, { decade: f(c.decade), ages: f(c.ages), pair: f(c.pair), of100: f(c.of100), standing: f(c.standing) }); }   // /zh build supplies I18N
 /* life-area band words are the engine's own (domains.py); text colours pass 4.5:1 on white */
 const BAND_TXT = { prominent: "#1e7a3a", balanced: "#5c4d0f", "needs support": "#8a4b0f" };
 const EL_TXT = { 木: "#187a35", 火: "#c5221f", 土: "#7a601b", 金: "#5f6b7a", 水: "#1a56b0" };
@@ -400,7 +402,7 @@ function personCard(p, i) {
     return `<span class="cpz${k === "day" ? " me" : ""}"><b style="color:${EL_TXT[STEM_EL[gz[0]]] || "inherit"}">${gz[0] || ""}</b><b style="color:${EL_TXT[BR_EL[gz[1]]] || "inherit"}">${gz[1] || ""}</b><small>${T.pillars[k]}</small></span>`; }).join("");
   const els = (a, cls) => (a || []).map((e) => `<li class="${cls}">${ico(e, e, 30)}<span>${EL_EN[e]}</span></li>`).join("");
   const area = (d, lab) => d ? `<div class="car"><img src="/static/img/reading/ar/${d.key}-128.webp" alt="" width="52" height="52" loading="lazy" decoding="async">
-    <small>${lab}</small><span>${T.areas[d.key] || d.key}</span><em style="color:${BAND_TXT[d.band] || "inherit"}">${d.band || ""}</em><i>${T.of100(d.score)}</i></div>` : "";
+    <small>${lab}</small><span>${T.areas[d.key] || d.key}</span><em style="color:${BAND_TXT[d.band] || "inherit"}">${d.band || ""}</em><i>${T.of100(d.score)}</i>${d.percentile == null ? "" : `<i class="cpct">${T.standing(d.percentile)}</i>`}</div>` : "";
   const head = (C.head || "").replace(/^You are /, "").replace(/\.$/, "");
   const tk = p.time_known === false ? `<span class="badge">${T.hourApprox}</span>` : "";
   return `<article class="pcard ccard" data-i="${i}">
@@ -413,6 +415,7 @@ function personCard(p, i) {
       <div class="cels"><div><p class="ck">${T.helps}</p><ul>${els(p.favourable, "")}</ul></div>
         <div><p class="ck">${T.avoid}</p><ul>${els(p.unfavourable, "av")}</ul></div></div>
       <div class="careas">${area(C.strongest, T.strongest)}${area(C.weakest, T.weakest)}</div>
+      ${C.strongest && C.strongest.percentile != null ? `<p class="cnote">${T.standingNote}</p>` : ""}
       ${C.decade ? `<div class="cdec"><img src="/static/img/reading/mk/${C.decade.phase}-96.png" alt="" width="40" height="40" loading="lazy">
         <p><b>${T.decade(C.decade.word)}</b><span>${T.ages(C.decade.ages)}</span></p></div>` : ""}
       <a class="cgo" href="/w/${token}/person/${i}/reading">${T.open}</a>

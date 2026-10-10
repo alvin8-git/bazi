@@ -11,6 +11,7 @@ against the chart, never forbidden.
 from __future__ import annotations
 
 from .shensha import shensha, ten_god_pct
+from .i18n import L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
 GOD_STYLE = {
     "正官": "rules, legitimacy and diligence",
@@ -60,46 +61,46 @@ ARCHETYPES = [
 ]
 
 
-def career_paths(chart, ys: dict, top: int = 5) -> dict:
+def career_paths(chart, ys: dict, top: int = 5, lang: str = "en") -> dict:
     pct = ten_god_pct(chart)
-    stars = {s["star"] for s in shensha(chart)}
+    stars = {s["star"] for s in shensha(chart, lang=lang)}
     fav, unfav = set(ys["favourable"]), set(ys["unfavourable"])
     scored = []
-    for key, en, zh, elements, gods, star_bonus in ARCHETYPES:
+    for key, en, zh, elements, gods, star_bonus in L("careers.ARCHETYPES", ARCHETYPES, lang):
         score, reasons, negs = 0.0, [], []
         if elements:
             score += sum(12 if e in fav else -12 if e in unfav else 0
                          for e in elements) / len(elements)
             for e in elements:
                 if e in fav:
-                    reasons.append(f"field element {e} is a favourable 用神")
+                    reasons.append(T("careers.career_paths.01", f"field element {e} is a favourable 用神", lang, e=e))
                 elif e in unfav:
-                    negs.append(f"field element {e} is on the avoid list")
+                    negs.append(T("careers.career_paths.02", f"field element {e} is on the avoid list", lang, e=e))
         else:
-            reasons.append("field-agnostic — pick the venture's domain from "
-                           "the favourable elements")
+            reasons.append(T("careers.career_paths.03", "field-agnostic — pick the venture's domain from "
+                           "the favourable elements", lang))
         for god, w in gods.items():
             p = pct.get(god, 0)
             if p >= 8:
                 score += w * p / 10
-                reasons.append(f"{god} {p:.0f}% — {GOD_STYLE[god]}")
+                reasons.append(zs(f"{god} {p:.0f}%{'：' if lang == 'zh' else ' — '}{L('careers.GOD_STYLE', GOD_STYLE, lang)[god]}", lang))
         for star, bonus in star_bonus.items():
             if star in stars:
                 score += bonus
-                reasons.append(f"{star} star serves this path")
+                reasons.append(T("careers.career_paths.04", f"{star} star serves this path", lang, star=star))
         scored.append({"key": key, "en": en, "zh": zh,
                        "score": round(score, 1),
-                       "reasons": reasons or ["no supporting structure"],
+                       "reasons": reasons or [T("careers.career_paths.05", "no supporting structure", lang)],
                        "negs": negs})
     scored.sort(key=lambda a: -a["score"])
     avoid = [{"en": a["en"], "zh": a["zh"], "score": a["score"],
-              "reasons": a["negs"] or ["no supporting structure in the chart"]}
+              "reasons": a["negs"] or [T("careers.career_paths.06", "no supporting structure in the chart", lang)]}
              for a in scored[-2:]]
     for a in scored:
         a.pop("negs")
     return {"top": scored[:top], "avoid": avoid,
-            "source_ref": "career archetype ranking — 用神 field elements + "
-                          "ten-god style + 神煞 (MODERN SYNTHESIS)"}
+            "source_ref": T("careers.career_paths.07", "career archetype ranking — 用神 field elements + "
+                          "ten-god style + 神煞 (MODERN SYNTHESIS)", lang)}
 
 
 # ---- roles for today's economy (2026-09-27; docs/designs/pair-compatibility-deep-dive.md §D) ----
@@ -148,31 +149,31 @@ ROLES = [
 _ARCH_EN = {a[0]: a[1] for a in ARCHETYPES}
 
 
-def career_roles(chart, ys: dict, top: int = 8) -> dict:
+def career_roles(chart, ys: dict, top: int = 8, lang: str = "en") -> dict:
     """Present-day roles scored by the SAME rules as the archetypes: field
     element vs 用神 (±12 averaged), ten-god style at ≥8% (first god ×2)."""
     pct = ten_god_pct(chart)
     fav, unfav = set(ys["favourable"]), set(ys["unfavourable"])
     scored = []
-    for role, els, gods, parents, basis in ROLES:
+    for role, els, gods, parents, basis in L("careers.ROLES", ROLES, lang):
         score, reasons = 0.0, []
         if els:
             score += sum(12 if e in fav else -12 if e in unfav else 0 for e in els) / len(els)
             for e in els:
                 if e in fav:
-                    reasons.append(f"field element {e} is a favourable 用神")
+                    reasons.append(T("careers.career_roles.01", f"field element {e} is a favourable 用神", lang, e=e))
                 elif e in unfav:
-                    reasons.append(f"field element {e} is on the avoid list")
+                    reasons.append(T("careers.career_roles.02", f"field element {e} is on the avoid list", lang, e=e))
         for i, god in enumerate(gods):
             p = pct.get(god, 0)
             if p >= 8:
                 w = 2 if i == 0 else 1
                 score += w * p / 10
-                reasons.append(f"{god} {p:.0f}% — {GOD_STYLE[god]}")
+                reasons.append(zs(f"{god} {p:.0f}%{'：' if lang == 'zh' else ' — '}{L('careers.GOD_STYLE', GOD_STYLE, lang)[god]}", lang))
         scored.append({"role": role, "elements": list(els), "score": round(score, 1),
-                       "reasons": reasons or ["no supporting structure"], "basis": basis,
-                       "parent": " / ".join(_ARCH_EN.get(k, k) for k in parents)})
+                       "reasons": reasons or [T("careers.career_roles.03", "no supporting structure", lang)], "basis": basis,
+                       "parent": " / ".join(L("careers._ARCH_EN", _ARCH_EN, lang).get(k, k) for k in parents)})
     scored.sort(key=lambda a: -a["score"])
     return {"top": scored[:top],
-            "source_ref": "roles mapped onto the archetype rules — 用神 field elements + "
-                          "ten-god style; element assignments per deep-dive §D (MODERN SYNTHESIS)"}
+            "source_ref": T("careers.career_roles.04", "roles mapped onto the archetype rules — 用神 field elements + "
+                          "ten-god style; element assignments per deep-dive §D (MODERN SYNTHESIS)", lang)}

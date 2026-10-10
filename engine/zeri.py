@@ -17,6 +17,7 @@ from datetime import date, timedelta
 import sxtwl
 
 from .wuxing import BRANCHES, CHONG_MAP, HAI_MAP, HE_MAP, STEMS
+from .i18n import L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
 OFFICERS = ["建", "除", "滿", "平", "定", "執", "破", "危", "成", "收", "開", "閉"]
 # simplified 宜忌 for move-in/renovation-type events
@@ -33,32 +34,32 @@ def day_info(d: date) -> dict:
             "month_branch": mb, "officer": officer}
 
 
-def rate_day(d: date, members: list[dict]) -> dict:
+def rate_day(d: date, members: list[dict], lang: str = "en") -> dict:
     """members: [{name, year_branch, day_branch}]"""
     info = day_info(d)
     db = info["day_branch"]
     score = OFFICER_SCORE[info["officer"]]
     notes = [{"rule_id": "jianchu", "layer": "zeri",
-              "source_ref": f"十二建除 — {info['officer']}日 (simplified 宜忌)",
-              "explanation": f"officer {info['officer']}, base {score:+.1f}"}]
+              "source_ref": T("zeri.rate_day.01", f"十二建除 — {info['officer']}日 (simplified 宜忌)", lang, info_officer=info['officer']),
+              "explanation": T("zeri.rate_day.02", f"officer {info['officer']}, base {score:+.1f}", lang, info_officer=info['officer'], score=score)}]
     if CHONG_MAP.get(db) == info["month_branch"]:
         score -= 1.0
         notes.append({"rule_id": "podi", "layer": "zeri", "source_ref": "月破",
-                      "explanation": f"day {db} 沖 month {info['month_branch']} — 破日, avoid"})
+                      "explanation": T("zeri.rate_day.03", f"day {db} 沖 month {info['month_branch']} — 破日, avoid", lang, db=db, info_month_branch=info['month_branch'])})
     flags = []
     for m in members:
         if CHONG_MAP.get(db) == m["year_branch"]:
             score -= 1.0
             flags.append({"name": m["name"], "kind": "沖生肖",
-                          "why": f"day {db} 沖 year branch {m['year_branch']} — {m['name']} should not lead this day"})
+                          "why": T("zeri.rate_day.04", f"day {db} 沖 year branch {m['year_branch']} — {m['name']} should not lead this day", lang, db=db, m_year_branch=m['year_branch'], m_name=m['name'])})
         elif CHONG_MAP.get(db) == m["day_branch"]:
             score -= 0.5
             flags.append({"name": m["name"], "kind": "沖日柱",
-                          "why": f"day {db} 沖 day-pillar branch {m['day_branch']} — personally unfavourable"})
+                          "why": T("zeri.rate_day.05", f"day {db} 沖 day-pillar branch {m['day_branch']} — personally unfavourable", lang, db=db, m_day_branch=m['day_branch'])})
         elif HE_MAP.get(db) == m["day_branch"]:
             score += 0.25
             flags.append({"name": m["name"], "kind": "合日柱",
-                          "why": f"day {db} 六合 day-pillar branch {m['day_branch']} — personally supportive"})
+                          "why": T("zeri.rate_day.06", f"day {db} 六合 day-pillar branch {m['day_branch']} — personally supportive", lang, db=db, m_day_branch=m['day_branch'])})
     return {**info, "score": round(score, 2), "person_flags": flags, "notes": notes,
             "hours": day_hours(info["day_gz"])}
 

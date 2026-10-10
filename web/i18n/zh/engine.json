@@ -1,0 +1,6154 @@
+{
+"plain.EN.木": {
+"en": "Wood",
+"zh": "木"
+},
+"plain.EN.火": {
+"en": "Fire",
+"zh": "火"
+},
+"plain.EN.土": {
+"en": "Earth",
+"zh": "土"
+},
+"plain.EN.金": {
+"en": "Metal",
+"zh": "金"
+},
+"plain.EN.水": {
+"en": "Water",
+"zh": "水"
+},
+"plain.STEM_IMAGE.甲.image": {
+"en": "a tall tree",
+"zh": "参天大树"
+},
+"plain.STEM_IMAGE.甲.trait": {
+"en": "Upright and principled, always growing toward the light",
+"zh": "正直有原则，总是朝着光生长"
+},
+"plain.STEM_IMAGE.乙.image": {
+"en": "a climbing vine",
+"zh": "攀缘的藤蔓"
+},
+"plain.STEM_IMAGE.乙.trait": {
+"en": "Adaptable and persuasive, you find a way around obstacles",
+"zh": "善于变通和说服，总能绕过障碍找到出路"
+},
+"plain.STEM_IMAGE.丙.image": {
+"en": "the sun",
+"zh": "太阳"
+},
+"plain.STEM_IMAGE.丙.trait": {
+"en": "Warm and open, you want to be seen and to light things up",
+"zh": "热情坦荡，希望被人看见，也爱照亮身边的事物"
+},
+"plain.STEM_IMAGE.丁.image": {
+"en": "lamplight",
+"zh": "灯火"
+},
+"plain.STEM_IMAGE.丁.trait": {
+"en": "Focused and attentive, you glow brightest close up",
+"zh": "专注细心，近处的光最亮"
+},
+"plain.STEM_IMAGE.戊.image": {
+"en": "a mountain",
+"zh": "高山"
+},
+"plain.STEM_IMAGE.戊.trait": {
+"en": "Solid and dependable, you are hard to move once settled",
+"zh": "稳重可靠，一旦安顿下来就很难被撼动"
+},
+"plain.STEM_IMAGE.己.image": {
+"en": "garden soil",
+"zh": "田园里的泥土"
+},
+"plain.STEM_IMAGE.己.trait": {
+"en": "Patient and nurturing, you make things grow around you",
+"zh": "耐心，爱滋养，让身边的一切慢慢长起来"
+},
+"plain.STEM_IMAGE.庚.image": {
+"en": "raw iron",
+"zh": "未经锻打的生铁"
+},
+"plain.STEM_IMAGE.庚.trait": {
+"en": "Direct and decisive, you are built for hard work",
+"zh": "直接果断，天生能扛重活"
+},
+"plain.STEM_IMAGE.辛.image": {
+"en": "a cut jewel",
+"zh": "精心切割的宝石"
+},
+"plain.STEM_IMAGE.辛.trait": {
+"en": "Refined and precise, you know your own worth",
+"zh": "讲究精细，清楚自己的价值"
+},
+"plain.STEM_IMAGE.壬.image": {
+"en": "a great river",
+"zh": "奔涌的大江"
+},
+"plain.STEM_IMAGE.壬.trait": {
+"en": "Restless and far-seeing, you carry others along",
+"zh": "不安于现状，目光长远，会带着身边的人一起往前走"
+},
+"plain.STEM_IMAGE.癸.image": {
+"en": "soft rain",
+"zh": "细雨"
+},
+"plain.STEM_IMAGE.癸.trait": {
+"en": "Quiet and perceptive, you work by seeping in",
+"zh": "安静敏锐，做事靠一点一点渗透"
+},
+"plain.SEASON.寅": {
+"en": "early spring",
+"zh": "初春"
+},
+"plain.SEASON.卯": {
+"en": "spring",
+"zh": "仲春"
+},
+"plain.SEASON.辰": {
+"en": "late spring",
+"zh": "暮春"
+},
+"plain.SEASON.巳": {
+"en": "early summer",
+"zh": "初夏"
+},
+"plain.SEASON.午": {
+"en": "midsummer",
+"zh": "盛夏"
+},
+"plain.SEASON.未": {
+"en": "late summer",
+"zh": "夏末"
+},
+"plain.SEASON.申": {
+"en": "early autumn",
+"zh": "初秋"
+},
+"plain.SEASON.酉": {
+"en": "autumn",
+"zh": "仲秋"
+},
+"plain.SEASON.戌": {
+"en": "late autumn",
+"zh": "深秋"
+},
+"plain.SEASON.亥": {
+"en": "early winter",
+"zh": "初冬"
+},
+"plain.SEASON.子": {
+"en": "midwinter",
+"zh": "隆冬"
+},
+"plain.SEASON.丑": {
+"en": "late winter",
+"zh": "冬末"
+},
+"plain.MEDICINE.火.need": {
+"en": "warmth",
+"zh": "温暖"
+},
+"plain.MEDICINE.火.gives": {
+"en": "energy, visibility and encouragement",
+"zh": "活力、被看见和鼓舞"
+},
+"plain.MEDICINE.火.colours": {
+"en": "red, purple and orange",
+"zh": "红色、紫色和橙色"
+},
+"plain.MEDICINE.火.acts": {
+"en": "sunlight, exercise that lifts your heart rate, and being seen",
+"zh": "晒太阳、做能提高心率的运动，以及被人看见"
+},
+"plain.MEDICINE.水.need": {
+"en": "water",
+"zh": "水"
+},
+"plain.MEDICINE.水.gives": {
+"en": "rest, reflection and flow",
+"zh": "休息、反思和流动"
+},
+"plain.MEDICINE.水.colours": {
+"en": "black and deep blue",
+"zh": "黑色和深蓝色"
+},
+"plain.MEDICINE.水.acts": {
+"en": "real rest, time near water, travel and letting ideas run",
+"zh": "真正的休息、亲近水边、出行，以及让想法自由流动"
+},
+"plain.MEDICINE.木.need": {
+"en": "growth",
+"zh": "成长"
+},
+"plain.MEDICINE.木.gives": {
+"en": "learning and fresh starts",
+"zh": "学习和新的开始"
+},
+"plain.MEDICINE.木.colours": {
+"en": "green",
+"zh": "绿色"
+},
+"plain.MEDICINE.木.acts": {
+"en": "learning something new, plants and early mornings",
+"zh": "学点新东西、养植物和早起"
+},
+"plain.MEDICINE.土.need": {
+"en": "steadiness",
+"zh": "稳定"
+},
+"plain.MEDICINE.土.gives": {
+"en": "routine and solid ground",
+"zh": "规律和踏实的根基"
+},
+"plain.MEDICINE.土.colours": {
+"en": "yellow, beige and brown",
+"zh": "黄色、米色和棕色"
+},
+"plain.MEDICINE.土.acts": {
+"en": "routine, home life and keeping commitments",
+"zh": "规律作息、家庭生活和信守承诺"
+},
+"plain.MEDICINE.金.need": {
+"en": "structure",
+"zh": "条理"
+},
+"plain.MEDICINE.金.gives": {
+"en": "clarity and discipline",
+"zh": "清晰和自律"
+},
+"plain.MEDICINE.金.colours": {
+"en": "white, gold and silver",
+"zh": "白色、金色和银色"
+},
+"plain.MEDICINE.金.acts": {
+"en": "order, precision and finishing what you start",
+"zh": "保持秩序、讲究精确，以及把开了头的事做完"
+},
+"plain.STRENGTH.weak.short": {
+"en": "run low on your own fuel",
+"zh": "自身能量不足"
+},
+"plain.STRENGTH.weak.head": {
+"en": "You run on borrowed fuel",
+"zh": "你靠借来的能量运转"
+},
+"plain.STRENGTH.weak.means": {
+"en": "Your chart has more pressure than support, so you do best when you protect your energy and accept help.",
+"zh": "你的命盘压力多于扶持，所以保护好精力、愿意接受帮助时，状态最好。"
+},
+"plain.STRENGTH.weak.todo": {
+"en": "Drop one commitment this month and guard your recovery time.",
+"zh": "这个月放掉一项承诺，留足恢复的时间。"
+},
+"plain.STRENGTH.strong.short": {
+"en": "have energy to spare",
+"zh": "精力有余"
+},
+"plain.STRENGTH.strong.head": {
+"en": "You have strength to spare",
+"zh": "你的力量绰绰有余"
+},
+"plain.STRENGTH.strong.means": {
+"en": "Your chart carries load easily. The risk is restlessness from too little challenge, not burnout.",
+"zh": "你的命盘担得起重担。要留意的不是累垮，而是挑战太少带来的躁动。"
+},
+"plain.STRENGTH.strong.todo": {
+"en": "Take on one real responsibility you have been putting off.",
+"zh": "接下一件你一直拖着没接的正经责任。"
+},
+"plain.STRENGTH.balanced.short": {
+"en": "are evenly balanced",
+"zh": "整体均衡"
+},
+"plain.STRENGTH.balanced.head": {
+"en": "You are evenly balanced",
+"zh": "你的命盘很均衡"
+},
+"plain.STRENGTH.balanced.means": {
+"en": "Neither side of your chart dominates, so timing matters more than temperament.",
+"zh": "命盘里哪一边都没有压过另一边，所以时机比性情更要紧。"
+},
+"plain.STRENGTH.balanced.todo": {
+"en": "Use the good years below for your big moves.",
+"zh": "把下面列出的好年份留给你的大动作。"
+},
+"plain.STRENGTH.follower.short": {
+"en": "are shaped by one strong force",
+"zh": "被一股强势力量主导"
+},
+"plain.STRENGTH.follower.head": {
+"en": "You go with your strongest current",
+"zh": "你顺着最强的那股力量走"
+},
+"plain.STRENGTH.follower.means": {
+"en": "Your chart gives itself to its dominant element. You thrive by working with it, not against it.",
+"zh": "你的命盘顺从占主导的五行。顺着它发力事半功倍，逆着它会很吃力。"
+},
+"plain.STRENGTH.follower.todo": {
+"en": "Lean into the element that dominates your chart.",
+"zh": "顺着命盘里占主导的五行去发力。"
+},
+"plain.BAND.weak_不足": {
+"en": "too little",
+"zh": "偏少"
+},
+"plain.BAND.balanced": {
+"en": "about right",
+"zh": "适中"
+},
+"plain.BAND.excess_過旺": {
+"en": "too much",
+"zh": "偏多"
+},
+"plain.PHASE.growth.word": {
+"en": "Expanding",
+"zh": "成长"
+},
+"plain.PHASE.growth.glyph": {
+"en": "sun",
+"zh": "sun"
+},
+"plain.PHASE.growth.means": {
+"en": "Conditions favour building. What you start now tends to take root.",
+"zh": "条件有利于打基础。此刻开头的事容易扎下根。"
+},
+"plain.PHASE.consolidation.word": {
+"en": "Gathering",
+"zh": "积累"
+},
+"plain.PHASE.consolidation.glyph": {
+"en": "partsun",
+"zh": "partsun"
+},
+"plain.PHASE.consolidation.means": {
+"en": "A decade for building reserves rather than big leaps.",
+"zh": "这十年适合积蓄储备，不宜大步跃进。"
+},
+"plain.PHASE.transition.word": {
+"en": "Changing",
+"zh": "转变"
+},
+"plain.PHASE.transition.glyph": {
+"en": "wind",
+"zh": "wind"
+},
+"plain.PHASE.transition.means": {
+"en": "Expect a shake-up at home or work. Stay flexible and keep options open.",
+"zh": "家里或工作上会有一番动荡。保持灵活，给自己多留几条路。"
+},
+"plain.PHASE.corrective.word": {
+"en": "Repairing",
+"zh": "修复"
+},
+"plain.PHASE.corrective.glyph": {
+"en": "rain",
+"zh": "rain"
+},
+"plain.PHASE.corrective.means": {
+"en": "A decade for care: protect health, money and the relationships that matter.",
+"zh": "这十年重在照料：守好健康、钱财和重要的关系。"
+},
+"plain.YEAR.peak.word": {
+"en": "Strong year",
+"zh": "旺年"
+},
+"plain.YEAR.peak.head": {
+"en": "{y} is one of your strongest years",
+"zh": "{y}年是你最强的年份之一"
+},
+"plain.YEAR.steady.word": {
+"en": "Steady year",
+"zh": "平稳年"
+},
+"plain.YEAR.steady.head": {
+"en": "{y} is a steady year",
+"zh": "{y}年是平稳的一年"
+},
+"plain.YEAR.careful.word": {
+"en": "Careful year",
+"zh": "谨慎年"
+},
+"plain.YEAR.careful.head": {
+"en": "{y} asks for care",
+"zh": "{y}年宜多加留意"
+},
+"plain.AREA.career": {
+"en": "work",
+"zh": "工作"
+},
+"plain.AREA.wealth": {
+"en": "money",
+"zh": "钱财"
+},
+"plain.AREA.relationship": {
+"en": "relationships",
+"zh": "感情"
+},
+"plain.AREA.health": {
+"en": "health",
+"zh": "健康"
+},
+"plain.AREA.study": {
+"en": "learning",
+"zh": "学习"
+},
+"plain.AREA.movement": {
+"en": "travel",
+"zh": "出行"
+},
+"plain.DIR_WORD.N": {
+"en": "north",
+"zh": "北"
+},
+"plain.DIR_WORD.S": {
+"en": "south",
+"zh": "南"
+},
+"plain.DIR_WORD.E": {
+"en": "east",
+"zh": "东"
+},
+"plain.DIR_WORD.W": {
+"en": "west",
+"zh": "西"
+},
+"plain.DIR_WORD.NE": {
+"en": "north-east",
+"zh": "东北"
+},
+"plain.DIR_WORD.NW": {
+"en": "north-west",
+"zh": "西北"
+},
+"plain.DIR_WORD.SE": {
+"en": "south-east",
+"zh": "东南"
+},
+"plain.DIR_WORD.SW": {
+"en": "south-west",
+"zh": "西南"
+},
+"plain.GROUPS.比劫.name": {
+"en": "Self and peers",
+"zh": "自己与同辈"
+},
+"plain.GROUPS.比劫.gloss": {
+"en": "independence, competition, standing your ground",
+"zh": "独立、竞争、坚守立场"
+},
+"plain.GROUPS.食傷.name": {
+"en": "Expression",
+"zh": "表达"
+},
+"plain.GROUPS.食傷.gloss": {
+"en": "creativity, speaking up, enjoyment",
+"zh": "创造力、敢于发声、享受生活"
+},
+"plain.GROUPS.財.name": {
+"en": "Money and results",
+"zh": "钱财与成果"
+},
+"plain.GROUPS.財.gloss": {
+"en": "earning, managing, getting things done",
+"zh": "赚钱、打理、把事情办成"
+},
+"plain.GROUPS.官殺.name": {
+"en": "Pressure and duty",
+"zh": "压力与责任"
+},
+"plain.GROUPS.官殺.gloss": {
+"en": "rules, deadlines, ambition under pressure",
+"zh": "规矩、期限、压力之下的进取心"
+},
+"plain.GROUPS.印.name": {
+"en": "Support and learning",
+"zh": "扶持与学习"
+},
+"plain.GROUPS.印.gloss": {
+"en": "mentors, study, being looked after",
+"zh": "贵人、学习、被人照顾"
+},
+"plain.PILLAR_LIFE.year": {
+"en": "family roots",
+"zh": "家族根基"
+},
+"plain.PILLAR_LIFE.month": {
+"en": "work and parents",
+"zh": "工作与父母"
+},
+"plain.PILLAR_LIFE.day": {
+"en": "you and your partner",
+"zh": "你和伴侣"
+},
+"plain.PILLAR_LIFE.hour": {
+"en": "children and later years",
+"zh": "子女与晚年"
+},
+"plain.SIDE.year.head": {
+"en": "In your roots",
+"zh": "在你的根基里"
+},
+"plain.SIDE.year.phrase": {
+"en": "your roots",
+"zh": "你的根基"
+},
+"plain.SIDE.month.head": {
+"en": "At work",
+"zh": "在工作中"
+},
+"plain.SIDE.month.phrase": {
+"en": "you at work",
+"zh": "工作中的你"
+},
+"plain.SIDE.day.head": {
+"en": "At home",
+"zh": "在家里"
+},
+"plain.SIDE.day.phrase": {
+"en": "you at home",
+"zh": "居家时的你"
+},
+"plain.SIDE.hour.head": {
+"en": "In your later years",
+"zh": "在你的晚年"
+},
+"plain.SIDE.hour.phrase": {
+"en": "your later years",
+"zh": "你的晚年"
+},
+"plain.GOD_ROLE.比肩": {
+"en": "Peers and equals stand beside you here.",
+"zh": "同辈和同伴在这方面与你并肩。"
+},
+"plain.GOD_ROLE.劫財": {
+"en": "Rivals and bold moves shape this part of life.",
+"zh": "对手和大胆的行动，影响着人生的这一方面。"
+},
+"plain.GOD_ROLE.食神": {
+"en": "Ease, enjoyment and natural talent show here.",
+"zh": "从容、享受和天生的才华，在这里显现。"
+},
+"plain.GOD_ROLE.傷官": {
+"en": "Sharp expression and a will to challenge show here.",
+"zh": "犀利的表达和敢于挑战的意愿，在这里显现。"
+},
+"plain.GOD_ROLE.正財": {
+"en": "Steady earning and careful management show here.",
+"zh": "稳定的收入和细致的打理，在这里显现。"
+},
+"plain.GOD_ROLE.偏財": {
+"en": "Deals, windfalls and generosity show here.",
+"zh": "买卖往来、意外之财和慷慨，在这里显现。"
+},
+"plain.GOD_ROLE.正官": {
+"en": "Rules, rank and responsibility shape this part of life.",
+"zh": "规矩、地位和责任，影响着人生的这一方面。"
+},
+"plain.GOD_ROLE.七殺": {
+"en": "Pressure and hard challenges shape this part of life, and make you decisive.",
+"zh": "压力和艰难的挑战影响着人生的这一方面，也逼你学会果断。"
+},
+"plain.GOD_ROLE.正印": {
+"en": "Mentors, learning and protection support you here.",
+"zh": "贵人、学习和庇护，在这方面支持着你。"
+},
+"plain.GOD_ROLE.偏印": {
+"en": "Unusual knowledge and solitary study support you here.",
+"zh": "冷门的学问和独自钻研，在这方面支持着你。"
+},
+"plain.GOD_GIST.比肩": {
+"en": "companionship",
+"zh": "陪伴"
+},
+"plain.GOD_GIST.劫財": {
+"en": "competition",
+"zh": "竞争"
+},
+"plain.GOD_GIST.食神": {
+"en": "ease and enjoyment",
+"zh": "从容与享受"
+},
+"plain.GOD_GIST.傷官": {
+"en": "spark and challenge",
+"zh": "锋芒与挑战"
+},
+"plain.GOD_GIST.正財": {
+"en": "steady provision",
+"zh": "稳定的收入"
+},
+"plain.GOD_GIST.偏財": {
+"en": "generosity and deals",
+"zh": "慷慨与买卖"
+},
+"plain.GOD_GIST.正官": {
+"en": "order and duty",
+"zh": "秩序与责任"
+},
+"plain.GOD_GIST.七殺": {
+"en": "pressure and drive",
+"zh": "压力与冲劲"
+},
+"plain.GOD_GIST.正印": {
+"en": "support and care",
+"zh": "扶持与关照"
+},
+"plain.GOD_GIST.偏印": {
+"en": "unusual insight",
+"zh": "独到的见解"
+},
+"plain.POLE.reserved.trait": {
+"en": "reserved",
+"zh": "内敛"
+},
+"plain.POLE.reserved.line": {
+"en": "You keep your thoughts to yourself until they are ready.",
+"zh": "你习惯把想法留在心里，想清楚了才说。"
+},
+"plain.POLE.expressive.trait": {
+"en": "expressive",
+"zh": "善于表达"
+},
+"plain.POLE.expressive.line": {
+"en": "You say what you think and show what you make.",
+"zh": "你想到什么就说什么，做出来的东西也愿意拿给人看。"
+},
+"plain.POLE.deliberate.trait": {
+"en": "deliberate",
+"zh": "慎重"
+},
+"plain.POLE.deliberate.line": {
+"en": "You take your time before you act.",
+"zh": "你做事不急，先想好再动手。"
+},
+"plain.POLE.decisive.trait": {
+"en": "decisive",
+"zh": "果断"
+},
+"plain.POLE.decisive.line": {
+"en": "You act fast, and best under pressure.",
+"zh": "你出手快，压力越大发挥越好。"
+},
+"plain.POLE.challenges_rules.trait": {
+"en": "independent-minded",
+"zh": "不拘常规"
+},
+"plain.POLE.challenges_rules.line": {
+"en": "You question rules and push against them.",
+"zh": "你爱质疑规矩，也爱和规矩较劲。"
+},
+"plain.POLE.works_within_structure.trait": {
+"en": "disciplined",
+"zh": "守规矩"
+},
+"plain.POLE.works_within_structure.line": {
+"en": "You work well inside rules and rank.",
+"zh": "在有规矩、分层级的环境里，你做事很稳。"
+},
+"plain.POLE.pragmatic.trait": {
+"en": "practical",
+"zh": "务实"
+},
+"plain.POLE.pragmatic.line": {
+"en": "You think in practical terms.",
+"zh": "你想问题讲究实际。"
+},
+"plain.POLE.reflective.trait": {
+"en": "reflective",
+"zh": "爱思考"
+},
+"plain.POLE.reflective.line": {
+"en": "You think deeply and enjoy theory.",
+"zh": "你想得深，也喜欢琢磨道理。"
+},
+"plain.POLE.contained.trait": {
+"en": "private",
+"zh": "含蓄"
+},
+"plain.POLE.contained.line": {
+"en": "You keep your feelings close.",
+"zh": "你习惯把感受放在心里。"
+},
+"plain.POLE.direct_&_open.trait": {
+"en": "open",
+"zh": "坦率"
+},
+"plain.POLE.direct_&_open.line": {
+"en": "You show your feelings openly.",
+"zh": "你的感受表露得很坦然。"
+},
+"plain.EL_ROOM.木.what": {
+"en": "plants, timber and green accents",
+"zh": "绿植、木质家具和绿色点缀"
+},
+"plain.EL_ROOM.火.what": {
+"en": "warm light and a red or orange accent",
+"zh": "暖色灯光，再加一点红色或橙色"
+},
+"plain.EL_ROOM.土.side": {
+"en": "centre",
+"zh": "中央"
+},
+"plain.EL_ROOM.土.what": {
+"en": "ceramics, stone and yellow or brown tones",
+"zh": "陶瓷、石材和黄色、棕色调"
+},
+"plain.EL_ROOM.金.what": {
+"en": "metal frames and white or gold",
+"zh": "金属框架，以及白色或金色"
+},
+"plain.EL_ROOM.水.what": {
+"en": "glass, a water feature, or blue and black",
+"zh": "玻璃、水景，或蓝色、黑色"
+},
+"plain.ANIMAL.子": {
+"en": "Rat",
+"zh": "鼠"
+},
+"plain.ANIMAL.丑": {
+"en": "Ox",
+"zh": "牛"
+},
+"plain.ANIMAL.寅": {
+"en": "Tiger",
+"zh": "虎"
+},
+"plain.ANIMAL.卯": {
+"en": "Rabbit",
+"zh": "兔"
+},
+"plain.ANIMAL.辰": {
+"en": "Dragon",
+"zh": "龙"
+},
+"plain.ANIMAL.巳": {
+"en": "Snake",
+"zh": "蛇"
+},
+"plain.ANIMAL.午": {
+"en": "Horse",
+"zh": "马"
+},
+"plain.ANIMAL.未": {
+"en": "Goat",
+"zh": "羊"
+},
+"plain.ANIMAL.申": {
+"en": "Monkey",
+"zh": "猴"
+},
+"plain.ANIMAL.酉": {
+"en": "Rooster",
+"zh": "鸡"
+},
+"plain.ANIMAL.戌": {
+"en": "Dog",
+"zh": "狗"
+},
+"plain.ANIMAL.亥": {
+"en": "Pig",
+"zh": "猪"
+},
+"plain.band_word.01": {
+"en": "a little thin",
+"zh": "略弱"
+},
+"plain._identity.01": {
+"en": "are well backed but born out of season",
+"zh": "根基不错，但出生时不当令"
+},
+"plain._identity.02": {
+"en": "are in season but have few roots",
+"zh": "出生当令，但根气不多"
+},
+"plain._identity.03": {
+"en": "You are {img} in {p_pillars_month_season}.",
+"zh": "你是 {p_pillars_month_season} 里的 {img}。"
+},
+"plain._identity.04": {
+"en": "{trait}. You {short}, and what you need most is {med_medicine_need}.",
+"zh": "{trait}。你 {short}，最需要的是 {med_medicine_need}。"
+},
+"plain._identity.05": {
+"en": "Day Master {dm} ({dm_stem_el_en}) born in the {p_pillars_month} month; strength {p_strength_verdict} (score {p_strength_score}); medicine {med} ({med_en}).",
+"zh": "日主 {dm}（{dm_stem_el_en}），生于 {p_pillars_month}月；强弱：{p_strength_verdict}（得分 {p_strength_score}）；用神：{med}（{med_en}）。"
+},
+"plain._helps.01": {
+"en": " {and_join_rest} {helps_help} too.",
+"zh": "{and_join_rest} 也 {helps_help}。"
+},
+"plain._helps.02": {
+"en": "helps",
+"zh": "有帮助"
+},
+"plain._helps.03": {
+"en": "help",
+"zh": "有帮助"
+},
+"plain._helps.04": {
+"en": "{fav_en} helps you most.",
+"zh": "{fav_en} 对你的帮助最大。"
+},
+"plain._helps.05": {
+"en": "It brings {m_gives}.{more}",
+"zh": "它带来 {m_gives}。{more}"
+},
+"plain._helps.06": {
+"en": "Wear and decorate with {m_colours}; favour {m_acts}.",
+"zh": "穿着和布置多用 {m_colours}；行事上多 {m_acts}。"
+},
+"plain._helps.07": {
+"en": "用神 (useful elements): {join_fav}; avoid {join_p_yongshen_unfavourable}. {p_medicine_ran}",
+"zh": "用神：{join_fav}；忌：{join_p_yongshen_unfavourable}。{p_medicine_ran}"
+},
+"plain._year.01": {
+"en": "a window for {and_join_win}",
+"zh": "{and_join_win} 的窗口期"
+},
+"plain._year.02": {
+"en": "go carefully with {and_join_cau}",
+"zh": "在 {and_join_cau} 上要多加小心"
+},
+"plain._year.03": {
+"en": "No single area is strongly switched on or off.",
+"zh": "没有哪一方面特别顺，也没有哪一方面特别受阻。"
+},
+"plain._year.04": {
+"en": "Year {y_y} {y_gz}: overall {y_overall} ({y_overall_zh}). ",
+"zh": "{y_y}年 {y_gz}：整体 {y_overall}（{y_overall_zh}）。"
+},
+"plain._actions.01": {
+"en": "Bring {fav_en} into the rooms where you spend hours: {fav_medicine_colours}.",
+"zh": "把 {fav_en} 带进你待得最久的房间：{fav_medicine_colours}。"
+},
+"plain._actions.02": {
+"en": "Point your bed head {pl_bed_dir_dir_word}, and face {pl_desk_dir_dir_word} at your desk.",
+"zh": "床头朝 {pl_bed_dir_dir_word}，坐在书桌前时面朝 {pl_desk_dir_dir_word}。"
+},
+"plain._balance.01": {
+"en": "Your own element, and plentiful, but out of season, so it gives less strength than the number suggests.",
+"zh": "和你同属一个五行，数量也多，但不当令，所以实际给你的力量比数字显示的要小。"
+},
+"plain._balance.02": {
+"en": "You are short of the thing that helps you most.",
+"zh": "你缺的，正是对你帮助最大的那一样。"
+},
+"plain._balance.03": {
+"en": "Enough to keep you balanced, but more of it is what helps you most.",
+"zh": "够你保持平衡了，不过再多一些，对你的帮助最大。"
+},
+"plain._balance.04": {
+"en": "Already plenty; add no more.",
+"zh": "已经很充足，不必再加。"
+},
+"plain._strength.01": {
+"en": "Strength verdict {p_strength_verdict}, score {p_strength_score}, support {p_strength_support_rati}%.",
+"zh": "强弱判断：{p_strength_verdict}，得分 {p_strength_score}，扶持占比 {p_strength_support_rati}%。"
+},
+"plain._flows.01": {
+"en": "Pressure outweighs support, so pace yourself.",
+"zh": "压力大于扶持，凡事要量力而行。"
+},
+"plain._flows.02": {
+"en": "You already have more than enough {rs_el_en}, so its support adds weight rather than help.",
+"zh": "你的 {rs_el_en} 已经绰绰有余，再多的扶持反成负担，帮不上忙。"
+},
+"plain._flows.03": {
+"en": "Support holds the pressure, so you can take more on.",
+"zh": "扶持足以顶住压力，所以你可以多担一些。"
+},
+"plain._flows.04": {
+"en": "{pr_el_en} presses on you hardest; {rs_el_en} feeds you.",
+"zh": "{pr_el_en} 给你的压力最大；{rs_el_en} 则滋养你。"
+},
+"plain._flows.05": {
+"en": "{pr_el_en} brings pressure ({pr_share}%), {rs_el_en} brings support ({rs_share}%). {tail}",
+"zh": "{pr_el_en} 带来压力（{pr_share}%），{rs_el_en} 带来扶持（{rs_share}%）。{tail}"
+},
+"plain._flows.06": {
+"en": "生剋 flows: pressure {pr_el} {pr_share}%, resource {rs_el} {rs_share}%.",
+"zh": "生克：压力 {pr_el}（{pr_share}%），扶持 {rs_el}（{rs_share}%）。"
+},
+"plain._decades.01": {
+"en": "You are in {an_a} {w} decade.",
+"zh": "你现在走的是 {an_a}{w} 的大运。"
+},
+"plain._decades.02": {
+"en": "an",
+"zh": ""
+},
+"plain._decades.03": {
+"en": " This decade runs through ages {cur_ages}.",
+"zh": "这步大运覆盖 {cur_ages}岁。"
+},
+"plain._decades.04": {
+"en": "大運 {cur_gz} (ages {cur_ages}): phase {cur_phase} ({cur_phase_zh}), score {cur_score}. ",
+"zh": "大运 {cur_gz}（{cur_ages}岁）：阶段 {cur_phase}（{cur_phase_zh}），得分 {cur_score}。"
+},
+"plain._decades.05": {
+"en": "Your first luck decade has not begun yet.",
+"zh": "你的第一步大运还没有开始。"
+},
+"plain._decades.06": {
+"en": "It starts at age {str_decs_ages}.",
+"zh": "要到 {str_decs_ages}岁才开始。"
+},
+"plain._makeup.01": {
+"en": "Parts of your life pull hard against each other.",
+"zh": "你生活的几个部分之间，拉扯得很厉害。"
+},
+"plain._makeup.02": {
+"en": "Some of your pillars clash, so change tends to arrive through friction between home, work and family.",
+"zh": "你的四柱中有几柱相冲，所以变化多半会借着家里、工作和家人之间的摩擦到来。"
+},
+"plain._makeup.03": {
+"en": "Parts of your life rub quietly against each other.",
+"zh": "你生活的几个部分之间，有些不动声色的摩擦。"
+},
+"plain._makeup.04": {
+"en": "No open clashes, but small frictions between your pillars wear on you over time. Name them and they lose their grip.",
+"zh": "没有明显的相冲，但四柱之间的小摩擦会慢慢消耗你。把它们说清楚，就不再那么束缚你。"
+},
+"plain._makeup.05": {
+"en": "Your four pillars sit comfortably together.",
+"zh": "你的四柱相处融洽。"
+},
+"plain._makeup.06": {
+"en": "No strong pulls between the parts of your life, so your energy is not spent on inner conflict.",
+"zh": "生活的各个部分之间没有强烈的拉扯，精力不会耗在内心冲突上。"
+},
+"plain._makeup.07": {
+"en": "Branch interactions: ",
+"zh": "地支关系："
+},
+"plain._makeup.08": {
+"en": "{x_kind} {x_pair} ({x_pillars} and {x_pillars_2})",
+"zh": "{x_kind} {x_pair}（{x_pillars} 与 {x_pillars_2}）"
+},
+"plain._drives.01": {
+"en": "You are driven most by {top_name}.",
+"zh": "你最大的驱动力是 {top_name}。"
+},
+"plain._drives.02": {
+"en": "Your chart leans toward {top_gloss}.",
+"zh": "你的命盘偏向 {top_gloss}。"
+},
+"plain._drives.03": {
+"en": "Ten-god shares: ",
+"zh": "十神占比："
+},
+"plain._space.01": {
+"en": "Bed head",
+"zh": "床头"
+},
+"plain._space.02": {
+"en": "Desk",
+"zh": "书桌"
+},
+"plain._space.03": {
+"en": "Door",
+"zh": "门"
+},
+"plain._space.04": {
+"en": "Where to sleep and where to face.",
+"zh": "睡的方位和面对的方向。"
+},
+"plain._space.05": {
+"en": "八宅 placements for {p_gua} ({p_group}): bed head toward {pl_bed_star} ({pl_bed_dir}), desk facing {pl_desk_star} ({pl_desk_dir}).",
+"zh": "命卦 {p_gua}（{p_group}）的八宅摆位：床头朝 {pl_bed_star}（{pl_bed_dir}），书桌面朝 {pl_desk_star}（{pl_desk_dir}）。"
+},
+"plain._sides.01": {
+"en": "This is you, the Day Master, at the centre of the whole chart.",
+"zh": "这就是你，日主，位于整张命盘的中心。"
+},
+"plain._sides.02": {
+"en": "{img_img}, at your most yourself.",
+"zh": "{img_img}，是最本真的你。"
+},
+"plain._sides.03": {
+"en": "{prefix} you are {img}, at your most yourself.",
+"zh": "{prefix} 你是 {img}，是最本真的你。"
+},
+"plain._sides.04": {
+"en": "{img_img} in {br_season}.",
+"zh": "{br_season} 里的 {img_img}。"
+},
+"plain._sides.05": {
+"en": "{prefix} you are {img} in {br_season}.",
+"zh": "{prefix} 你是 {br_season} 里的 {img}。"
+},
+"plain._sides.06": {
+"en": "{P_zh} {gz}: stem {stem}, branch {br}. {P_line}",
+"zh": "{P_zh} {gz}：天干 {stem}，地支 {br}。{P_line}"
+},
+"plain._stars.01": {
+"en": "You carry a helpful star: {name}.",
+"zh": "你命里带有一颗吉星：{name}。"
+},
+"plain._stars.02": {
+"en": "{gist_gist}. It sits in {and_join_x}.",
+"zh": "{gist_gist}。它落在 {and_join_x}。"
+},
+"plain._stars.03": {
+"en": "{good_star} in the {join_good_pillars} pillar. {good_meaning} ({good_source_ref}).",
+"zh": "{good_star} 落在 {join_good_pillars} 柱。{good_meaning}（{good_source_ref}）。"
+},
+"plain._stars.04": {
+"en": "One star asks for care: {name}.",
+"zh": "有一颗星需要留意：{name}。"
+},
+"plain._stars.06": {
+"en": "{bad_star} in the {join_bad_pillars} pillar. {bad_meaning} ({bad_source_ref}).",
+"zh": "{bad_star} 落在 {join_bad_pillars} 柱。{bad_meaning}（{bad_source_ref}）。"
+},
+"plain._health.01": {
+"en": "No organ system is flagged.",
+"zh": "没有哪个脏腑系统被特别提示。"
+},
+"plain._health.02": {
+"en": "All five elements sit in range. This is a traditional pairing, not medical advice.",
+"zh": "五行都在正常范围内。这只是传统上的对应，不是医疗建议。"
+},
+"plain._health.03": {
+"en": ", and watch for {mood}",
+"zh": "，也留意 {mood}"
+},
+"plain._health.04": {
+"en": "Look after your {org_main}.",
+"zh": "照顾好你的 {org_main}。"
+},
+"plain._health.05": {
+"en": "{main_en} runs high in your chart, which traditionally strains the {org_main}; notice {watch}. ",
+"zh": "{main_en} 在你的命盘里偏多，传统上会累及 {org_main}；留意 {watch}。"
+},
+"plain._health.06": {
+"en": "{main_en} runs low in your chart; the {org_main} want support, so notice {watch}. ",
+"zh": "{main_en} 在你的命盘里偏少；{org_main} 需要照顾，所以留意 {watch}。"
+},
+"plain._health.07": {
+"en": "This is a traditional pairing, not medical advice.",
+"zh": "这只是传统上的对应，不是医疗建议。"
+},
+"plain._health.08": {
+"en": "Support your {join_x} too; your chart is short of them.",
+"zh": "也要照顾好 {join_x}，你的命盘里这些偏少。"
+},
+"plain._health.09": {
+"en": ", and your ",
+"zh": "，还有你的"
+},
+"plain._personality.01": {
+"en": "You are {and_join_words}.",
+"zh": "你是 {and_join_words} 的人。"
+},
+"plain._work.01": {
+"en": "You do best in {top_en}.",
+"zh": "你最适合 {top_en}。"
+},
+"plain._work.02": {
+"en": "Roles that suit you now: {and_join_roles}. ",
+"zh": "现阶段适合你的角色：{and_join_roles}。"
+},
+"plain._work.03": {
+"en": "Fields that recharge you: {and_join_fav}.",
+"zh": "能让你恢复精力的行业：{and_join_fav}。"
+},
+"plain._work.04": {
+"en": "Treat {and_join_avoid} as harder going, not off limits.",
+"zh": "{and_join_avoid} 走起来会更吃力，但并非禁区。"
+},
+"plain._work.05": {
+"en": "Top archetype {top_en} ({top_score} pts): ",
+"zh": "最高分类型 {top_en}（{top_score} 分）："
+},
+"plain._money.01": {
+"en": "Money comes to you readily.",
+"zh": "钱来得比较容易。"
+},
+"plain._money.02": {
+"en": "Money comes through steady effort.",
+"zh": "钱要靠持续的努力才会来。"
+},
+"plain._money.03": {
+"en": "Money needs deliberate building.",
+"zh": "钱需要你有意识地一点点积累。"
+},
+"plain._money.04": {
+"en": "You have a store of wealth that opens in {ANIMAL_br} years ({br}); the next is {nxt}. Those are your years to save and build.",
+"zh": "你命里有一座财库，在 {ANIMAL_br}年（{br}）开启；下一次是 {nxt}。那几年适合储蓄和积累。"
+},
+"plain._money.05": {
+"en": "Your wealth store is open, so money moves freely; keep a buffer.",
+"zh": "你的财库是开着的，钱进出自如；记得留一笔备用金。"
+},
+"plain._money.06": {
+"en": "There is no fixed wealth store in your chart, so build one on purpose.",
+"zh": "你的命盘里没有固定的财库，所以要有意识地自己建一个。"
+},
+"plain._money.07": {
+"en": "Wealth domain {W_score} ({W_band}). Vault: {V_state}.",
+"zh": "财运得分 {W_score}（{W_band}）。财库：{V_state}。"
+},
+"plain._love.01": {
+"en": "Your relationships hold steady.",
+"zh": "你的感情关系很稳定。"
+},
+"plain._love.02": {
+"en": "Your relationships stay steady when tended.",
+"zh": "只要用心经营，你的感情关系就会保持稳定。"
+},
+"plain._love.03": {
+"en": "Lasting relationships need deliberate care.",
+"zh": "长久的感情需要你用心经营。"
+},
+"plain._love.04": {
+"en": "You draw people easily",
+"zh": "你很容易吸引别人"
+},
+"plain._love.05": {
+"en": "You draw people at an even pace",
+"zh": "你吸引人的节奏比较平稳"
+},
+"plain._love.06": {
+"en": "Attraction builds slowly",
+"zh": "吸引力是慢慢积累起来的"
+},
+"plain._love.07": {
+"en": "Your partner tends to bring {gist}.",
+"zh": "你的伴侣往往会带来 {gist}。"
+},
+"plain._love.08": {
+"en": "Keep shared routines and say the quiet things out loud.",
+"zh": "保持共同的日常，把心里不好开口的话说出来。"
+},
+"plain._next_ten.01": {
+"en": "Push in {best_y}; protect {worst_y}.",
+"zh": "{best_y}年宜进取；{worst_y}年宜守成。"
+},
+"plain._next_ten.02": {
+"en": "Push in {best_y}.",
+"zh": "{best_y}年宜进取。"
+},
+"plain._next_ten.03": {
+"en": "{best_y} opens windows for {and_join_win}.",
+"zh": "{best_y}年会为 {and_join_win} 打开窗口。"
+},
+"plain._next_ten.04": {
+"en": "{best_y} is your strongest year ahead.",
+"zh": "{best_y}年是你接下来最强的一年。"
+},
+"plain._next_ten.05": {
+"en": " {worst_y} asks for care with {and_join_cau}.",
+"zh": "{worst_y}年在 {and_join_cau} 上要多加小心。"
+},
+"plain._months.01": {
+"en": "Your best months: {and_join_runs}.",
+"zh": "你最顺的月份：{and_join_runs}。"
+},
+"plain._months.02": {
+"en": "No month carries your medicine.",
+"zh": "没有哪个月带着你的用神。"
+},
+"plain._months.03": {
+"en": "They carry {els}, which {helps_help} you. Keep the other months for steady work.",
+"zh": "这些月份带有 {els}，对你 {helps_help}。其余的月份用来踏实做事。"
+},
+"plain._months.06": {
+"en": "Pace the whole year evenly.",
+"zh": "全年保持均匀的节奏。"
+},
+"plain._months.07": {
+"en": "Month by month: ",
+"zh": "逐月："
+},
+"plain._days.Jan": {
+"en": "Jan",
+"zh": "1月"
+},
+"plain._days.Feb": {
+"en": "Feb",
+"zh": "2月"
+},
+"plain._days.Mar": {
+"en": "Mar",
+"zh": "3月"
+},
+"plain._days.Apr": {
+"en": "Apr",
+"zh": "4月"
+},
+"plain._days.May": {
+"en": "May",
+"zh": "5月"
+},
+"plain._days.Jun": {
+"en": "Jun",
+"zh": "6月"
+},
+"plain._days.Jul": {
+"en": "Jul",
+"zh": "7月"
+},
+"plain._days.Aug": {
+"en": "Aug",
+"zh": "8月"
+},
+"plain._days.Sep": {
+"en": "Sep",
+"zh": "9月"
+},
+"plain._days.Oct": {
+"en": "Oct",
+"zh": "10月"
+},
+"plain._days.Nov": {
+"en": "Nov",
+"zh": "11月"
+},
+"plain._days.Dec": {
+"en": "Dec",
+"zh": "12月"
+},
+"plain._days.01": {
+"en": "most things",
+"zh": "大多数事情"
+},
+"plain._days.02": {
+"en": "Your next good day: {day_B_date}.",
+"zh": "你的下一个吉日：{day_B_date}。"
+},
+"plain._days.03": {
+"en": "No clear good day this month.",
+"zh": "这个月没有明显的吉日。"
+},
+"plain._days.04": {
+"en": "Good for {acts_B_for}. ",
+"zh": "适合 {acts_B_for}。"
+},
+"plain._days.05": {
+"en": "Hold off on big decisions on {day_W_date}.",
+"zh": "{day_W_date} 不宜做重大决定。"
+},
+"plain._days.06": {
+"en": "On {day_W_date}, avoid {acts_W_avoid}.",
+"zh": "{day_W_date} 要避开 {acts_W_avoid}。"
+},
+"plain._days.07": {
+"en": "Best {B_date} {B_gz} ({B_officer} day). ",
+"zh": "最佳日：{B_date} {B_gz}（{B_officer}日）。"
+},
+"plain._days.08": {
+"en": "Worst {W_date} {W_gz}: {W_why}.",
+"zh": "最差日：{W_date} {W_gz}，{W_why}。"
+},
+"plain._room.01": {
+"en": "Put {fav_en} on the {side} side of your main room.",
+"zh": "把 {fav_en} 放在主房间的 {side} 侧。"
+},
+"plain._room.02": {
+"en": "Use {what}.",
+"zh": "用 {what}。"
+},
+"plain._room.03": {
+"en": "Medicine {fav} ({fav_en}) placed by its direction.",
+"zh": "用神 {fav}（{fav_en}）按其方位摆放。"
+},
+"plain._afflictions.01": {
+"en": "Leave the {ts_dir_word} and {sp_dir_word} undisturbed this year.",
+"zh": "今年 {ts_dir_word} 和 {sp_dir_word} 两个方位不要去动。"
+},
+"plain._afflictions.02": {
+"en": "Do not renovate or dig there, and take the same care on the {and_join_x}.",
+"zh": "那里不要装修或动土，{and_join_x} 也要同样小心。"
+},
+"plain._afflictions.03": {
+"en": "Your bed and desk directions still hold; this year only asks you not to build or dig on those sides.",
+"zh": "你的床头和书桌朝向不变；今年只是请你不要在这几个方位动工或动土。"
+},
+"plain._afflictions.04": {
+"en": "None of this year's afflictions sits on your four favourable sectors.",
+"zh": "今年的煞位，没有一个落在你的四个吉方上。"
+},
+"story.GOD_NOUN.比肩": {
+"en": "peers and self-reliance",
+"zh": "同辈与自立"
+},
+"story.GOD_NOUN.劫財": {
+"en": "rivals and bold moves",
+"zh": "对手与敢闯敢拼"
+},
+"story.GOD_NOUN.食神": {
+"en": "ease and natural talent",
+"zh": "从容自在与天生的才华"
+},
+"story.GOD_NOUN.傷官": {
+"en": "sharp expression and challenge",
+"zh": "犀利的表达与挑战"
+},
+"story.GOD_NOUN.正財": {
+"en": "steady earning",
+"zh": "稳定的收入"
+},
+"story.GOD_NOUN.偏財": {
+"en": "deals and opportunity",
+"zh": "买卖与机会"
+},
+"story.GOD_NOUN.正官": {
+"en": "rules and responsibility",
+"zh": "规矩与责任"
+},
+"story.GOD_NOUN.七殺": {
+"en": "pressure and ambition",
+"zh": "压力与进取心"
+},
+"story.GOD_NOUN.正印": {
+"en": "mentors and learning",
+"zh": "贵人与学习"
+},
+"story.GOD_NOUN.偏印": {
+"en": "unusual knowledge and solitary study",
+"zh": "冷门学问与独自钻研"
+},
+"story.ROLE.output": {
+"en": "expression: what you make, say and show",
+"zh": "表达：你创造、说出和展示的东西"
+},
+"story.ROLE.resource": {
+"en": "support: the people, learning and care that feed you",
+"zh": "扶持：滋养你的人、学习和关怀"
+},
+"story.ROLE.wealth": {
+"en": "results: earning and getting things done",
+"zh": "成果：赚钱和把事情做成"
+},
+"story.ROLE.pressure": {
+"en": "structure: discipline and responsibility",
+"zh": "约束：纪律与责任"
+},
+"story.ROLE.peer": {
+"en": "allies: friends, partners and teams",
+"zh": "同伴：朋友、搭档和团队"
+},
+"story.PHASE_ADJ.growth": {
+"en": "expanding",
+"zh": "成长"
+},
+"story.PHASE_ADJ.consolidation": {
+"en": "gathering",
+"zh": "积累"
+},
+"story.PHASE_ADJ.transition": {
+"en": "changing",
+"zh": "转变"
+},
+"story.PHASE_ADJ.corrective": {
+"en": "repairing",
+"zh": "修复"
+},
+"story.NUM.0": {
+"en": "zero",
+"zh": "零"
+},
+"story.NUM.1": {
+"en": "one",
+"zh": "一"
+},
+"story.NUM.2": {
+"en": "two",
+"zh": "二"
+},
+"story.NUM.3": {
+"en": "three",
+"zh": "三"
+},
+"story.NUM.4": {
+"en": "four",
+"zh": "四"
+},
+"story.NUM.5": {
+"en": "five",
+"zh": "五"
+},
+"story.NUM.6": {
+"en": "six",
+"zh": "六"
+},
+"story.NUM.7": {
+"en": "seven",
+"zh": "七"
+},
+"story.NUM.8": {
+"en": "eight",
+"zh": "八"
+},
+"story.NUM.9": {
+"en": "nine",
+"zh": "九"
+},
+"story.NUM.10": {
+"en": "ten",
+"zh": "十"
+},
+"story.DOMAIN.attraction": {
+"en": "love and attraction",
+"zh": "恋爱与异性缘"
+},
+"story.DOMAIN.stability": {
+"en": "relationship stability",
+"zh": "感情稳定"
+},
+"story.DOMAIN.career": {
+"en": "career",
+"zh": "事业"
+},
+"story.DOMAIN.wealth": {
+"en": "money",
+"zh": "钱财"
+},
+"story.DOMAIN.learning": {
+"en": "learning",
+"zh": "学习"
+},
+"story.DOMAIN.health": {
+"en": "health and stamina",
+"zh": "健康与体力"
+},
+"story.PRIORITY.health": {
+"en": "So the risk is your body, not your ambitions: protect your health first.",
+"zh": "所以要留意的是身体，而不是抱负：先把健康放在前面。"
+},
+"story.PRIORITY.wealth": {
+"en": "So money is the area to build on purpose, not leave to chance.",
+"zh": "所以钱财是要有意去经营的领域，不要听其自然。"
+},
+"story.PRIORITY.stability": {
+"en": "So your relationships are where steady care pays off most.",
+"zh": "所以在感情关系上，持续用心最见回报。"
+},
+"story.PRIORITY.attraction": {
+"en": "So let people come to you through shared work rather than chasing them.",
+"zh": "所以让别人在共同做事中走近你，而不是你去追着人跑。"
+},
+"story.PRIORITY.career": {
+"en": "So give your working life a clear structure before you add more to it.",
+"zh": "所以在添更多担子之前，先给工作理出一个清晰的章法。"
+},
+"story.PRIORITY.learning": {
+"en": "So learn by doing, in short steps, rather than long courses.",
+"zh": "所以要边做边学，一小步一小步来，而不是报长期课程。"
+},
+"story.PRIORITY_BY_VOICE.child.health": {
+"en": "So protect sleep, food and play first.",
+"zh": "所以先保证睡眠、饮食和玩耍。"
+},
+"story.PRIORITY_BY_VOICE.child.learning": {
+"en": "So keep learning playful and in short steps.",
+"zh": "所以让学习保持好玩，一小步一小步来。"
+},
+"story.PRIORITY_BY_VOICE.teen.health": {
+"en": "So protect sleep and exercise before anything else.",
+"zh": "所以先保证睡眠和运动，其他的往后放。"
+},
+"story.PRIORITY_BY_VOICE.teen.career": {
+"en": "So build steady study habits before adding more.",
+"zh": "所以先养成稳定的学习习惯，再往上加。"
+},
+"story.PRIORITY_BY_VOICE.senior.health": {
+"en": "So health comes first now: pace yourself and keep regular check-ups.",
+"zh": "所以现在健康第一：放慢节奏，定期体检。"
+},
+"story.PRIORITY_BY_VOICE.senior.wealth": {
+"en": "So keep what you have safe rather than chasing more.",
+"zh": "所以守住已有的，不必再去追求更多。"
+},
+"story.PRIORITY_BY_VOICE.senior.stability": {
+"en": "So time with the people closest to you pays off most.",
+"zh": "所以多陪陪最亲近的人，回报最大。"
+},
+"story.ACTS_CHILD.火": {
+"en": "sunlight, outdoor play and active games",
+"zh": "阳光、户外玩耍和活动量大的游戏"
+},
+"story.ACTS_CHILD.水": {
+"en": "good sleep, swimming and quiet time",
+"zh": "睡好觉、游泳和安静的时光"
+},
+"story.ACTS_CHILD.木": {
+"en": "time outdoors, growing things and trying new skills",
+"zh": "待在户外、种养点什么，再学点新本领"
+},
+"story.ACTS_CHILD.土": {
+"en": "regular meals, routine and a calm home",
+"zh": "按时吃饭、规律作息和安稳的家"
+},
+"story.ACTS_CHILD.金": {
+"en": "tidy routines, music practice and finishing tasks",
+"zh": "整洁的作息、练琴和把事情做完"
+},
+"story.ACTS_SENIOR.火": {
+"en": "morning sunlight, gentle exercise and good company",
+"zh": "早晨的阳光、轻柔的运动和合得来的人作伴"
+},
+"story.ACTS_SENIOR.水": {
+"en": "rest, warmth and time near water",
+"zh": "休息、保暖和靠近水边的时光"
+},
+"story.ACTS_SENIOR.木": {
+"en": "walks among trees, light stretching and learning something new",
+"zh": "在树林间散步、轻柔的拉伸和学点新东西"
+},
+"story.ACTS_SENIOR.土": {
+"en": "regular meals, routine and home comforts",
+"zh": "按时吃饭、规律作息和家里的舒适"
+},
+"story.ACTS_SENIOR.金": {
+"en": "order, calm breathing and finishing what you start",
+"zh": "有条理、平稳的呼吸和把开了头的事做完"
+},
+"story.ONE_THING.child.weak": {
+"en": "If you do one thing: protect sleep and downtime, and keep the schedule light.",
+"zh": "只做一件事的话：保护好睡眠和休息时间，日程排轻一点。"
+},
+"story.ONE_THING.child.strong": {
+"en": "If you do one thing: give that energy a sport, an instrument or a project.",
+"zh": "只做一件事的话：给这股精力一个出口，比如一项运动、一门乐器或一个小项目。"
+},
+"story.ONE_THING.teen.weak": {
+"en": "If you do one thing: protect sleep, and do not overload the timetable.",
+"zh": "只做一件事的话：保证睡眠，别把课表排得太满。"
+},
+"story.ONE_THING.teen.strong": {
+"en": "If you do one thing: give that energy a sport, a craft or a team.",
+"zh": "只做一件事的话：给这股精力一个去处，比如运动、手艺或一支团队。"
+},
+"story.ONE_THING.adult.weak": {
+"en": "If you do one thing: guard your recovery time, and drop a commitment before you add one.",
+"zh": "只做一件事的话：守住恢复的时间，要加一件事之前，先放下一件。"
+},
+"story.ONE_THING.adult.strong": {
+"en": "If you do one thing: keep a demanding project running, so your strength has somewhere to go.",
+"zh": "只做一件事的话：让一个有挑战的项目一直在推进，你的力量才有地方使。"
+},
+"story.ONE_THING.senior.weak": {
+"en": "If you do one thing: pace your days, and rest before you are tired.",
+"zh": "只做一件事的话：放慢每天的节奏，累之前就先休息。"
+},
+"story.ONE_THING.senior.strong": {
+"en": "If you do one thing: keep a steady purpose, such as a craft, a garden or helping family.",
+"zh": "只做一件事的话：保持一个稳定的寄托，比如一门手艺、一座小花园，或是帮衬家人。"
+},
+"story.PHASE_BY_VOICE.child.growth": {
+"en": "A good decade to grow, learn and try new things.",
+"zh": "这十年适合成长、学习，多尝试新事物。"
+},
+"story.PHASE_BY_VOICE.child.consolidation": {
+"en": "A steady decade: routines and good habits pay off.",
+"zh": "这十年平稳：规律的作息和好习惯会有回报。"
+},
+"story.PHASE_BY_VOICE.child.transition": {
+"en": "Expect changes at home or school; keep routines steady.",
+"zh": "家里或学校可能有变动；作息尽量保持稳定。"
+},
+"story.PHASE_BY_VOICE.child.corrective": {
+"en": "A decade for care: protect health and keep home calm.",
+"zh": "这十年要多加照顾：护好健康，让家里保持平静。"
+},
+"story.PHASE_BY_VOICE.teen.growth": {
+"en": "A good decade to learn and try new things.",
+"zh": "这十年适合学习，多尝试新事物。"
+},
+"story.PHASE_BY_VOICE.teen.consolidation": {
+"en": "A steady decade: good habits pay off.",
+"zh": "这十年平稳：好习惯会有回报。"
+},
+"story.PHASE_BY_VOICE.teen.corrective": {
+"en": "A decade for care: protect health and keep habits steady.",
+"zh": "这十年要多加照顾：护好健康，让习惯保持稳定。"
+},
+"story.PHASE_BY_VOICE.senior.growth": {
+"en": "A kind decade: good for health, family and the things you care about.",
+"zh": "这十年相对温和：对健康、家人和你在意的事都有利。"
+},
+"story.PHASE_BY_VOICE.senior.consolidation": {
+"en": "A steady decade: keep routines and reserves.",
+"zh": "这十年平稳：守住作息，守住积蓄。"
+},
+"story.PHASE_BY_VOICE.senior.transition": {
+"en": "Expect change at home; keep things simple and close.",
+"zh": "家里可能有变动；把事情放简单，多守着身边。"
+},
+"story.PHASE_BY_VOICE.senior.corrective": {
+"en": "A decade for care: protect health and keep close ties near.",
+"zh": "这十年要多加照顾：护好健康，把亲近的人留在身边。"
+},
+"story.AREA_BY_VOICE.child.career": {
+"en": "schoolwork",
+"zh": "功课"
+},
+"story.AREA_BY_VOICE.teen.career": {
+"en": "school and work",
+"zh": "学业和工作"
+},
+"story.AREA_BY_VOICE.senior.career": {
+"en": "commitments",
+"zh": "手头要担的事"
+},
+"story.STAR_GIST.天乙貴人": {
+"en": "so helpful people appear at the moments that matter",
+"zh": "所以关键时刻总有人出手相助"
+},
+"story.STAR_GIST.太極貴人": {
+"en": "a pull toward philosophy and deep study",
+"zh": "容易被哲学和深入的钻研吸引"
+},
+"story.STAR_GIST.華蓋": {
+"en": "a taste for solitude, depth and the arts",
+"zh": "喜欢独处、深思和艺术"
+},
+"story.STAR_GIST.文昌": {
+"en": "so study and exams tend to go well",
+"zh": "所以读书考试往往顺利"
+},
+"story.STAR_GIST.學堂": {
+"en": "the mark of a natural learner",
+"zh": "天生爱学习的印记"
+},
+"story.STAR_GIST.桃花": {
+"en": "charm that draws people in",
+"zh": "有吸引人的魅力"
+},
+"story.STAR_GIST.驛馬": {
+"en": "movement, travel and relocation",
+"zh": "奔波、出行与搬迁"
+},
+"story.STAR_GIST.將星": {
+"en": "natural authority among others",
+"zh": "在人群中自带威信"
+},
+"story.STAR_GIST.祿神": {
+"en": "the means to a steady income",
+"zh": "有稳定的收入来源"
+},
+"story.STAR_GIST.天德": {
+"en": "protection that softens hard years",
+"zh": "能缓和艰难年份的庇护"
+},
+"story.STAR_GIST.金輿": {
+"en": "comfort and support from others",
+"zh": "得到他人的照应与扶持"
+},
+"story.STAR_GIST.空亡": {
+"en": "so the part of life it sits in can feel empty until a year wakes it",
+"zh": "所以它所在的那一部分人生，可能会觉得空落落的，要等某一年把它唤醒"
+},
+"story.STAR_GIST.劫煞": {
+"en": "so guard what you own and avoid needless risk",
+"zh": "所以要守住自己的东西，不要无谓冒险"
+},
+"story.STAR_GIST.羊刃": {
+"en": "a strong will that needs a check on impulsiveness",
+"zh": "意志很强，需要克制冲动"
+},
+"story.STAR_GIST.災煞": {
+"en": "so take care with accidents and hasty moves",
+"zh": "所以要小心意外和仓促的举动"
+},
+"story.STAR_GIST.亡神": {
+"en": "so keep plans and money matters private",
+"zh": "所以计划和钱财上的事要保密"
+},
+"story.STAR_GIST.孤辰": {
+"en": "a streak of independence and solitude",
+"zh": "带着一股独立、爱独处的劲头"
+},
+"story.EVIDENCE_LABEL.gods": {
+"en": "The ten roles, and how much of each you carry",
+"zh": "十神，以及你各带多少"
+},
+"story.EVIDENCE_LABEL.pillars": {
+"en": "Your four pillars",
+"zh": "你的四柱"
+},
+"story.EVIDENCE_LABEL.personality": {
+"en": "Personality axes",
+"zh": "性格维度"
+},
+"story.EVIDENCE_LABEL.stars": {
+"en": "Symbolic stars",
+"zh": "神煞"
+},
+"story.EVIDENCE_LABEL.interactions": {
+"en": "How your pillars pull on each other",
+"zh": "四柱之间如何相互牵动"
+},
+"story.EVIDENCE_LABEL.elements": {
+"en": "How much of each element you carry",
+"zh": "五行你各带多少"
+},
+"story.EVIDENCE_LABEL.strength": {
+"en": "Why the strength verdict",
+"zh": "日主强弱的判断依据"
+},
+"story.EVIDENCE_LABEL.flows": {
+"en": "What feeds you and what presses on you",
+"zh": "什么在滋养你，什么在压着你"
+},
+"story.EVIDENCE_LABEL.medicine": {
+"en": "What helps you, and why",
+"zh": "什么对你有帮助，为什么"
+},
+"story.EVIDENCE_LABEL.health": {
+"en": "Body: the traditional pairing",
+"zh": "身体：传统上的对应"
+},
+"story.EVIDENCE_LABEL.domains": {
+"en": "Your six life areas",
+"zh": "你的六个人生领域"
+},
+"story.EVIDENCE_LABEL.work": {
+"en": "Work that fits",
+"zh": "适合你的工作"
+},
+"story.EVIDENCE_LABEL.money": {
+"en": "Your wealth store",
+"zh": "你的财库"
+},
+"story.EVIDENCE_LABEL.decades": {
+"en": "Your luck decades",
+"zh": "你的大运"
+},
+"story.EVIDENCE_LABEL.years": {
+"en": "Year by year",
+"zh": "逐年看"
+},
+"story.EVIDENCE_LABEL.months": {
+"en": "Month by month",
+"zh": "逐月看"
+},
+"story.EVIDENCE_LABEL.days": {
+"en": "Day by day",
+"zh": "逐日看"
+},
+"story.EVIDENCE_LABEL.placements": {
+"en": "Where to sleep and face",
+"zh": "睡在哪里、朝向哪边"
+},
+"story.EVIDENCE_LABEL.afflict": {
+"en": "This year's afflictions",
+"zh": "今年的煞位"
+},
+"story._makeup.01": {
+"en": "Your chart is unusually even: no single role leads, and you carry a little of everything.",
+"zh": "你的命盘异常均衡：没有哪一个角色占主导，每样都带一点。"
+},
+"story._makeup.02": {
+"en": "{cap_n1} and {GOD_NOUN_rest} share the lead in your chart, at {v1:g}% each.",
+"zh": "{cap_n1} 和 {GOD_NOUN_rest} 在你的命盘中并列领先，各占 {v1:g}%。"
+},
+"story._makeup.03": {
+"en": ", followed by {GOD_NOUN_rest} at {rest:g}%",
+"zh": "，其后是 {GOD_NOUN_rest}，占 {rest:g}%"
+},
+"story._makeup.04": {
+"en": "{cap_n1} {lead_leads} your chart at {v1:g}%{tail}.",
+"zh": "{cap_n1} 在你的命盘中 {lead_leads}，占 {v1:g}%{tail}。"
+},
+"story._makeup.05": {
+"en": "lead",
+"zh": "领先"
+},
+"story._makeup.06": {
+"en": "leads",
+"zh": "领先"
+},
+"story._makeup.07": {
+"en": "will set the climate of your working life",
+"zh": "会定下你工作生活的基调"
+},
+"story._makeup.08": {
+"en": "set the climate of your working life",
+"zh": "会定下你工作生活的基调"
+},
+"story._makeup.09": {
+"en": "{cap_y_god_noun} shaped your early years, and {m_god_noun} {work}.",
+"zh": "{cap_y_god_noun} 塑造了你的早年，而 {m_god_noun}{work}。"
+},
+"story._makeup.10": {
+"en": "A helpful star sits in your chart",
+"zh": "你的命盘里有一颗吉星"
+},
+"story._makeup.11": {
+"en": "One star asks for care",
+"zh": "有一颗星需要你多加留意"
+},
+"story._makeup.12": {
+"en": "{lead}: the {name}, {gist}.",
+"zh": "{lead}：{name}，{gist}。"
+},
+"story._makeup.13": {
+"en": "Your pillars clash more than most, so change in one part of your life tends to shake the others; steady routines are worth more to you than to most people.",
+"zh": "你的四柱相冲比多数人更多，所以生活中一处有变动，往往会震动其他几处；稳定的日常对你比对多数人更重要。"
+},
+"story._makeup.14": {
+"en": "Some of your pillars clash, so change tends to arrive through friction between home, work and family.",
+"zh": "你的部分四柱相冲，所以变化往往从家里、工作和家人之间的摩擦中冒出来。"
+},
+"story._makeup.15": {
+"en": "Some of your pillars punish one another, so strain tends to build slowly inside your own circle; name it early.",
+"zh": "你的部分四柱相刑，所以压力往往在你自己的圈子里慢慢积累；早点说出来为好。"
+},
+"story._makeup.16": {
+"en": "Your pillars mostly combine, so the parts of your life tend to back each other up.",
+"zh": "你的四柱多半相合，所以生活的各个方面往往互相支撑。"
+},
+"story._makeup.17": {
+"en": "Your pillars rub quietly against each other: small frictions, but no open clash.",
+"zh": "你的四柱之间有些轻微的摩擦：都是小摩擦，没有正面的相冲。"
+},
+"story._makeup.18": {
+"en": "Your four pillars sit comfortably together, so little of your energy goes on inner conflict.",
+"zh": "你的四柱相处得很安稳，所以很少把精力耗在内心冲突上。"
+},
+"story._balance.01": {
+"en": ", and it is your own element",
+"zh": "，而且它正是你自己的五行"
+},
+"story._balance.02": {
+"en": "{H_en} is the heaviest element in your chart, at {H_share:g}%{own}.",
+"zh": "{H_en} 是你命盘里占比最重的五行，占 {H_share:g}%{own}。"
+},
+"story._balance.03": {
+"en": "The pressure on you, from {pr_el_en}, outweighs the support that feeds you, from {rs_el_en}, which is why the reading calls you weak.",
+"zh": "{pr_el_en} 给你的压力，超过了 {rs_el_en} 给你的扶持，所以解读认为你的日主偏弱。"
+},
+"story._balance.04": {
+"en": "The reading calls you weak.",
+"zh": "解读认为你的日主偏弱。"
+},
+"story._balance.05": {
+"en": "The reading calls you strong, even though the pressure from {pr_el_en} outweighs the support from {rs_el_en}: your own element carries the load.",
+"zh": "虽然 {pr_el_en} 给你的压力超过了 {rs_el_en} 的扶持，解读仍认为你的日主偏强：你自己的五行扛得起来。"
+},
+"story._balance.06": {
+"en": "You have more support than you spend, which is why the reading calls you strong.",
+"zh": "你得到的扶持多于消耗，所以解读认为你的日主偏强。"
+},
+"story._balance.07": {
+"en": "Support and pressure roughly cancel out, so the reading calls you balanced.",
+"zh": "扶持和压力大致相抵，所以解读认为你的命盘均衡。"
+},
+"story._balance.08": {
+"en": "Your chart gives itself to its strongest element, so you do best by going with it.",
+"zh": "你的命盘整个倾向最强的那一行，所以顺着它走对你最合适。"
+},
+"story._balance.09": {
+"en": "You were born in {p_pillars_month_season}, a season that works against {dm_el_en}, so the {dm_el_en} you have gives you less strength than the number suggests.",
+"zh": "你生于 {p_pillars_month_season}，这个季节对 {dm_el_en} 不利，所以你命里的 {dm_el_en} 给你的力量，比数字显示的要小。"
+},
+"story._balance.10": {
+"en": "You are not short of backing; you are short of {med_medicine_need}.",
+"zh": "你不缺扶持，缺的是 {med_medicine_need}。"
+},
+"story._balance.11": {
+"en": "You were born in a helpful season, but your own element has few roots in the branches, so that help does not hold.",
+"zh": "你生在得令的季节，但日主五行在地支里没有多少根，这份助力留不住。"
+},
+"story._balance.12": {
+"en": "So what helps you is not more of what you have, but outlets for it.",
+"zh": "所以对你有帮助的，不是更多你已有的，而是给它找个出口。"
+},
+"story._balance.13": {
+"en": "{med_en} is both the element you have least of and the one that helps you most.",
+"zh": "{med_en} 既是你命里最少的五行，也是对你帮助最大的五行。"
+},
+"story._balance.14": {
+"en": "Of the elements that help you, {med_en} matters most.",
+"zh": "在对你有帮助的五行里，{med_en} 最要紧。"
+},
+"story._balance.15": {
+"en": "For {dm_el_en}, {med_en} is {role_role}.",
+"zh": "对 {dm_el_en}日主来说，{med_en} 是 {role_role}。"
+},
+"story._balance.16": {
+"en": "Your personality reading says you hold your output back, so what you most need is a way for your energy to come out.",
+"zh": "你的性格解读显示你习惯把表达收着，所以最需要的是让精力有个出口。"
+},
+"story._balance.17": {
+"en": "In practice: {acts}, with {m_colours} in the rooms where you spend hours.",
+"zh": "落到实处：{acts}，并在你待得久的房间里多用 {m_colours}。"
+},
+"story._balance.18": {
+"en": "{and_join_x} take more than they give, so go easy on them.",
+"zh": "{and_join_x} 取走的多于给出的，宜少沾。"
+},
+"story._balance.19": {
+"en": "{hi_en} runs high",
+"zh": "{hi_en} 偏多"
+},
+"story._balance.20": {
+"en": "{and_join_x} run{s_x} low",
+"zh": "{and_join_x} 偏少"
+},
+"story._balance.21": {
+"en": "Your body follows the same shape: {join_bits}, so look after your {organs}. This is a traditional pairing, not medical advice.",
+"zh": "你的身体也是同一个走向：{join_bits}，所以要照顾好 {organs}。这只是传统上的对应，不是医疗建议。"
+},
+"story._drives.01": {
+"en": "Compared with other charts, your strongest life area is {nm_top} ({top_score} of 100); your weakest is {nm_low} ({low_score}).",
+"zh": "与其他命盘相比，你最强的人生领域是 {nm_top}（{top_score}/100）；最弱的是 {nm_low}（{low_score}/100）。"
+},
+"story._drives.02": {
+"en": "Strengths to grow into later point toward",
+"zh": "日后值得发展的长处，指向"
+},
+"story._drives.03": {
+"en": "Later on, the work that suits you best is",
+"zh": "往后最适合你的工作是"
+},
+"story._drives.04": {
+"en": "For work, volunteering or mentoring, you suit",
+"zh": "在工作、志愿服务或带人方面，你适合"
+},
+"story._drives.05": {
+"en": "You do best in",
+"zh": "你最适合"
+},
+"story._drives.06": {
+"en": ", then {ljoin_top3}.",
+"zh": "，其次是 {ljoin_top3}。"
+},
+"story._drives.07": {
+"en": "{cap_ljoin_av}{x_x} {is_are} harder going for this chart, not off limits.",
+"zh": "{cap_ljoin_av} 对这张命盘来说走起来更吃力，但并非禁区。"
+},
+"story._drives.08": {
+"en": "is",
+"zh": ""
+},
+"story._drives.09": {
+"en": "are",
+"zh": ""
+},
+"story._drives.10": {
+"en": ", a good year to put your affairs in order",
+"zh": "，这一年适合把手头的事务理清楚"
+},
+"story._drives.11": {
+"en": ", which is also a window for money",
+"zh": "，同时也是进财的窗口"
+},
+"story._drives.12": {
+"en": "You have a store of wealth that opens in {ANIMAL_br} years; the next is {nxt}{also}.",
+"zh": "你有一座财库，在 {ANIMAL_br}年开启；下一次是 {nxt}{also}。"
+},
+"story._drives.13": {
+"en": "Your wealth store is open, so money moves freely; keep a buffer.",
+"zh": "你的财库是开着的，钱进出自如；记得留一笔备用金。"
+},
+"story._drives.14": {
+"en": "Your chart has no store for wealth, so keep savings simple and safe rather than chasing returns.",
+"zh": "你的命盘里没有财库，所以储蓄要简单稳妥，别去追逐高回报。"
+},
+"story._drives.15": {
+"en": "Your chart has no store for wealth, so money flows rather than stays: ",
+"zh": "你的命盘里没有财库，钱是流过去的，留不住："
+},
+"story._drives.16": {
+"en": "when you start earning, ",
+"zh": "开始赚钱之后，"
+},
+"story._drives.17": {
+"en": "save automatically rather than counting on windfalls.",
+"zh": "要自动存下来，别指望意外之财。"
+},
+"story._drives.18": {
+"en": "Your relationships hold steady.",
+"zh": "你的感情关系很稳定。"
+},
+"story._drives.19": {
+"en": "Your relationships stay steady when tended.",
+"zh": "只要用心经营，你的感情关系就会保持稳定。"
+},
+"story._drives.20": {
+"en": "Lasting relationships need deliberate care.",
+"zh": "长久的感情需要你用心经营。"
+},
+"story._drives.21": {
+"en": "Your partner tends to bring {g_god_noun}.",
+"zh": "你的伴侣往往会带来 {g_god_noun}。"
+},
+"story._drives.22": {
+"en": "Keep shared routines, and say the quiet things out loud.",
+"zh": "保持共同的日常，把心里不好开口的话说出来。"
+},
+"story._drives.23": {
+"en": "Relationships are a theme for later in life, so this reading leaves them for now.",
+"zh": "感情是人生后段的主题，所以这份解读暂不展开。"
+},
+"story._timing.01": {
+"en": " (the year you turn {y_now_age})",
+"zh": "（这年你 {y_now_age}岁）"
+},
+"story._timing.02": {
+"en": "Your first luck decade starts at age {ages_decs}.",
+"zh": "你的第一步大运从 {ages_decs}岁开始。"
+},
+"story._timing.03": {
+"en": "You are in a {word} decade, ages {d_ages}.",
+"zh": "你正走在一步 {word} 的大运里（{d_ages}岁）。"
+},
+"story._timing.04": {
+"en": "You are in the last of {NUM_n} {word} decades in a row, ages {d_ages}.",
+"zh": "你正处在连续 {NUM_n} 步 {word} 的大运的最后一步（{d_ages}岁）。"
+},
+"story._timing.05": {
+"en": "You are in the first of {NUM_n} {word} decades in a row, ages {d_ages}.",
+"zh": "你正处在连续 {NUM_n} 步 {word} 的大运的第一步（{d_ages}岁）。"
+},
+"story._timing.06": {
+"en": "You are in the middle of {NUM_n} {word} decades in a row, ages {d_ages}.",
+"zh": "你正处在连续 {NUM_n} 步 {word} 的大运的中间一步（{d_ages}岁）。"
+},
+"story._timing.07": {
+"en": "Your chart's turning point came at ages {decs_lu_ages}, when your own element arrived.",
+"zh": "你命盘的转折点出现在 {decs_lu_ages}岁，那时你自己的五行来到了大运里。"
+},
+"story._timing.08": {
+"en": "This decade is your chart's turning point: your own element arrives in it.",
+"zh": "这步大运是你命盘的转折点：你自己的五行在这十年里到来。"
+},
+"story._timing.09": {
+"en": "Your own element arrives at ages {decs_lu_ages}, the turning point of your chart.",
+"zh": "你自己的五行在 {decs_lu_ages}岁到来，这是你命盘的转折点。"
+},
+"story._timing.10": {
+"en": "{Within_a} the climate turns: the next decade, from {start}, is a {nx_phase_phase_adj} one, a kinder stretch ahead.",
+"zh": "{Within_a}，气候就要转向：下一步大运从 {start} 开始，是 {nx_phase_phase_adj} 的一步，前面是一段更宽松的日子。"
+},
+"story._timing.11": {
+"en": "Within a year",
+"zh": "一年之内"
+},
+"story._timing.12": {
+"en": "In about {left} {yrs}",
+"zh": "大约 {left}{yrs} 之后"
+},
+"story._timing.13": {
+"en": "Within a year the climate turns: the next decade, from {start}, is a {nx_phase_phase_adj} one, so this year is the run-up.",
+"zh": "一年之内，气候就要转向：下一步大运从 {start} 开始，是 {nx_phase_phase_adj} 的一步，所以今年是预备期。"
+},
+"story._timing.14": {
+"en": "In about {left} {yrs} the climate turns: the next decade, from {start}, is a {nx_phase_phase_adj} one, so the next {left} {yrs} are the run-up.",
+"zh": "大约 {left}{yrs} 之后，气候就要转向：下一步大运从 {start} 开始，是 {nx_phase_phase_adj} 的一步，所以接下来这 {left}{yrs} 是预备期。"
+},
+"story._timing.15": {
+"en": "this year",
+"zh": "今年"
+},
+"story._timing.16": {
+"en": "the next {left} {yrs}",
+"zh": "接下来的 {left}{yrs}"
+},
+"story._timing.17": {
+"en": "From {start} the climate cools into a {nx_phase_phase_adj} decade, so ",
+"zh": "从 {start} 起，气候转入 {nx_phase_phase_adj} 的一步大运，所以"
+},
+"story._timing.18": {
+"en": "use {when} for what matters most to you.",
+"zh": "把 {when} 留给对你最重要的事。"
+},
+"story._timing.19": {
+"en": "{when} are a good time to learn and build habits.",
+"zh": "{when} 是学习和养成习惯的好时候。"
+},
+"story._timing.21": {
+"en": "what you start {this_yea} has the best weather behind it.",
+"zh": "{this_yea} 开始的事，背后的“天气”最好。"
+},
+"story._timing.23": {
+"en": "in the next {left} {yrs}",
+"zh": "在接下来的 {left}{yrs} 里"
+},
+"story._timing.24": {
+"en": "The next decade, from {start}, is also a {nx_phase_phase_adj} one.",
+"zh": "下一步大运从 {start} 开始，同样是 {nx_phase_phase_adj} 的一步。"
+},
+"story._timing.25": {
+"en": " The strong years inside them, such as {and_join_x}, are where to move.",
+"zh": "其中的旺年，比如 {and_join_x} 这几年，是出手的时机。"
+},
+"story._timing.26": {
+"en": "These are years for steady habits rather than big changes.",
+"zh": "这几年适合靠稳定的习惯，而不是大动作。"
+},
+"story._timing.28": {
+"en": "These are years for keeping things steady and close.",
+"zh": "这几年适合稳住局面，守住身边的人。"
+},
+"story._timing.29": {
+"en": "These are years for holding structure, not for expansion.",
+"zh": "这几年宜守住已有的根基，不宜扩张。"
+},
+"story._timing.30": {
+"en": "{y0_y} is one of your strongest years",
+"zh": "{y0_y} 年是你最旺的流年之一"
+},
+"story._timing.31": {
+"en": "{y0_y} is a steady year",
+"zh": "{y0_y} 年是平稳的一年"
+},
+"story._timing.32": {
+"en": "{y0_y} asks for care",
+"zh": "{y0_y} 年需要多加小心"
+},
+"story._timing.33": {
+"en": ", with a window for {ljoin_win}",
+"zh": "，有适合 {ljoin_win} 的窗口"
+},
+"story._timing.34": {
+"en": ", but go carefully with ",
+"zh": "，但要小心"
+},
+"story._timing.35": {
+"en": "; go carefully with ",
+"zh": "；要小心"
+},
+"story._timing.36": {
+"en": "Looking further ahead, push in {best_y}{turn_best_y}",
+"zh": "再往后看，宜在 {best_y}年 {turn_best_y} 发力"
+},
+"story._timing.37": {
+"en": ", a window for {ljoin_bw}",
+"zh": "，是 {ljoin_bw} 的窗口"
+},
+"story._timing.38": {
+"en": "; protect {worst_y}{turn_worst_y}, which asks for care with {ljoin_cw}.",
+"zh": "；{worst_y}年 {turn_worst_y} 要守住，那一年在 {ljoin_cw} 上需要格外小心。"
+},
+"story._timing.39": {
+"en": "Within each year, your best months are ",
+"zh": "每年之中，你最好的月份是"
+},
+"story._space.01": {
+"en": "Bring {m_colours} into the rooms where you spend hours: they carry {med_en}, the element you need.",
+"zh": "在你待得久的房间里多用 {m_colours}：它们带着你需要的 {med_en}。"
+},
+"story._space.02": {
+"en": "Put {med_en} on the {side} side of your main room, with {what}",
+"zh": "在主房间的 {side} 侧放上 {med_en}，配上 {what}"
+},
+"story._space.03": {
+"en": ", using objects rather than building work this year.",
+"zh": "，今年用摆设来做，不要动土装修。"
+},
+"story._space.04": {
+"en": "Point your bed head {pl_bed_dir_dir_word}, and face {pl_desk_dir_dir_word} at your desk.",
+"zh": "床头朝 {pl_bed_dir_dir_word}，坐在书桌前时面朝 {pl_desk_dir_dir_word}。"
+},
+"story._space.05": {
+"en": "Your best door faces {pl_door_dir_dir_word}.",
+"zh": "你最合适的大门朝 {pl_door_dir_dir_word}。"
+},
+"story._space.06": {
+"en": "This year, leave the {ts_dir_word} and {sp_dir_word} sides of your home undisturbed: no renovation or digging there",
+"zh": "今年，请不要惊动家里的 {ts_dir_word} 方和 {sp_dir_word} 方：这两处不要装修，不要动土"
+},
+"story._space.07": {
+"en": ", and the same care on the {and_join_ss}.",
+"zh": "，{and_join_ss} 也要同样小心。"
+},
+"story._space.08": {
+"en": "Your bed and desk directions above still hold; this year only asks you not to build or dig on those sides.",
+"zh": "上面说的床和书桌朝向依然有效；今年只是请你不要在那几个方位动土施工。"
+},
+"story._vault_why.01": {
+"en": "No wealth store (财库) in the chart: money flows rather than stays.",
+"zh": "命盘里没有财库：钱是流过去的，留不住。"
+},
+"story._vault_why.02": {
+"en": "Wealth store (财库): the {br} ({ANIMAL_br}) branch, already open.",
+"zh": "财库：{br}（{ANIMAL_br}）支，已经开启。"
+},
+"story._vault_why.03": {
+"en": "Wealth store (财库): the {br} ({ANIMAL_br}) branch, sealed; it opens in {ANIMAL_opens} ({opens}) years, which the timing windows mark as years to save and build.",
+"zh": "财库：{br}（{ANIMAL_br}）支，目前封着；要到 {ANIMAL_opens}（{opens}）年才开，时机窗口把那几年标为适合存钱、积累的年份。"
+},
+"story._why.01": {
+"en": "Weighted element shares: ",
+"zh": "加权五行占比："
+},
+"story._why.02": {
+"en": "Strength verdict {st_verdict}, score {st_score}; support {st_support_rati}%, roots {st_root_ratio}%, season points {x_season_pts}. {x_assessment}",
+"zh": "强弱判断：{st_verdict}，得分 {st_score}；扶持占比 {st_support_rati}%，根气 {st_root_ratio}%，月令分 {x_season_pts}。{x_assessment}"
+},
+"story._timing.days_head": {
+"en": "Your next good day is {day}.",
+"zh": "你的下一个吉日是 {day}。"
+},
+"story._timing.months_head": {
+"en": "Within each year, your best months are {runs}.",
+"zh": "每年之中，你最好的月份是 {runs}。"
+},
+"card.band.prominent": {
+"en": "prominent",
+"zh": "突出"
+},
+"card.band.balanced": {
+"en": "balanced",
+"zh": "均衡"
+},
+"card.band.needs_support": {
+"en": "needs support",
+"zh": "需要扶持"
+},
+"card.traits": {
+"en": "(plain.POLE.<pole>.trait, capitalised)",
+"zh": "(plain.POLE.<pole>.trait)"
+},
+"card.decade.word": {
+"en": "(plain.PHASE.<phase>.word)",
+"zh": "(plain.PHASE.<phase>.word)"
+},
+"card.head": {
+"en": "(plain._identity.head)",
+"zh": "(plain._identity.head)"
+},
+"card.line.you_are": {
+"en": "{name}, you are {head}.",
+"zh": "{name}，{head}。"
+},
+"card.EL_EN.木": {
+"en": "Wood",
+"zh": "木"
+},
+"card.EL_EN.火": {
+"en": "Fire",
+"zh": "火"
+},
+"card.EL_EN.土": {
+"en": "Earth",
+"zh": "土"
+},
+"card.EL_EN.金": {
+"en": "Metal",
+"zh": "金"
+},
+"card.EL_EN.水": {
+"en": "Water",
+"zh": "水"
+},
+"plain._makeup.09": {
+"en": "none",
+"zh": "无"
+},
+"plain._room.01c": {
+"en": "Put {fav_en} in the centre of your main room.",
+"zh": "把 {fav_en} 放在主房间的正中央。"
+},
+"story._space.02c": {
+"en": "Put {med_en} in the centre of your main room, with {what}",
+"zh": "把 {med_en} 放在主房间的正中央，配上 {what}"
+},
+"story._timing.10c": {
+"en": "{Within_a} the climate turns: the next decade, from {start}, is {nx_phase_phase_adj} one, a steadier stretch ahead.",
+"zh": "{Within_a}，气候就要转向：下一步大运从 {start} 开始，是 {nx_phase_phase_adj} 的一步，前面是一段更平稳的日子。"
+},
+"story._timing.10t": {
+"en": "{Within_a} the climate turns: the next decade, from {start}, is {nx_phase_phase_adj} one, an easier stretch than this one.",
+"zh": "{Within_a}，气候就要转向：下一步大运从 {start} 开始，是 {nx_phase_phase_adj} 的一步，不过比眼下轻松一些。"
+},
+"bazhai.gua_group.01": {
+"en": "東四命 (East)",
+"zh": "东四命"
+},
+"bazhai.gua_group.02": {
+"en": "西四命 (West)",
+"zh": "西四命"
+},
+"bazi.TEN_GOD_EN.比肩": {
+"en": "Friend",
+"zh": "比肩"
+},
+"bazi.TEN_GOD_EN.劫財": {
+"en": "Rob Wealth",
+"zh": "劫财"
+},
+"bazi.TEN_GOD_EN.食神": {
+"en": "Eating God",
+"zh": "食神"
+},
+"bazi.TEN_GOD_EN.傷官": {
+"en": "Hurting Officer",
+"zh": "伤官"
+},
+"bazi.TEN_GOD_EN.偏財": {
+"en": "Indirect Wealth",
+"zh": "偏财"
+},
+"bazi.TEN_GOD_EN.正財": {
+"en": "Direct Wealth",
+"zh": "正财"
+},
+"bazi.TEN_GOD_EN.七殺": {
+"en": "Seven Killings",
+"zh": "七杀"
+},
+"bazi.TEN_GOD_EN.正官": {
+"en": "Direct Officer",
+"zh": "正官"
+},
+"bazi.TEN_GOD_EN.偏印": {
+"en": "Indirect Resource",
+"zh": "偏印"
+},
+"bazi.TEN_GOD_EN.正印": {
+"en": "Direct Resource",
+"zh": "正印"
+},
+"bazi.build_chart.01": {
+"en": "time zone ",
+"zh": "时区"
+},
+"bazi.build_chart.02": {
+"en": "standard time estimated from longitude",
+"zh": "按经度估算的标准时"
+},
+"bazi.build_chart.03": {
+"en": "true solar time: clock {birth_local:%H:%M} → {eff:%H:%M} ({place_name}, {place_country}: UTC{off:+g} by {how}, lon {abs_lon}°{E_W}, equation of time {equation_of_time_minutes_dat:+.1f} min)",
+"zh": "真太阳时：钟表时间 {birth_local:%H:%M} → {eff:%H:%M}（{place_name}，{place_country}：UTC{off:+g}，依据 {how}，{E_W}经 {abs_lon}°，均时差 {equation_of_time_minutes_dat:+.1f}分钟）"
+},
+"bazi.build_chart.04": {
+"en": "true solar time: clock {birth_local:%H:%M} → {eff:%H:%M} (SG UTC+{sg_utc_offset_hours_date:g}, lon {SG_LON}°E, equation of time {equation_of_time_minutes_dat:+.1f} min)",
+"zh": "真太阳时：钟表时间 {birth_local:%H:%M} → {eff:%H:%M}（新加坡 UTC+{sg_utc_offset_hours_date:g}，东经 {SG_LON}°，均时差 {equation_of_time_minutes_dat:+.1f}分钟）"
+},
+"bazi.build_chart.05": {
+"en": "civil clock time, no solar correction",
+"zh": "按钟表时间，不做太阳时校正"
+},
+"bazi.build_chart.06": {
+"en": "子平 convention (design premise 2)",
+"zh": "子平惯例（设计前提 2）"
+},
+"bazi.analyze.01": {
+"en": "身弱 (Weak)",
+"zh": "身弱"
+},
+"bazi.analyze.02": {
+"en": "身強 (Strong)",
+"zh": "身强"
+},
+"bazi.analyze.03": {
+"en": "從弱 candidate (follower)",
+"zh": "从弱候选"
+},
+"bazi.analyze.04": {
+"en": "no roots and minimal support — a specialist school may read this as a follower structure; we keep the ordinary 扶抑 reading and flag it",
+"zh": "无根且几乎没有扶持，专门的流派可能把它读作从格；我们仍按通常的扶抑来读，并加以标注"
+},
+"bazi.analyze.05": {
+"en": "專旺 candidate (dominant)",
+"zh": "专旺候选"
+},
+"bazi.analyze.06": {
+"en": "support overwhelms all drains — may qualify as a dominant structure; ordinary reading kept, flagged",
+"zh": "扶持压过所有泄耗，可能构成专旺格；仍按通常的读法，并加以标注"
+},
+"bazi.analyze.07": {
+"en": "正格 ordinary structure",
+"zh": "正格（通常格局）"
+},
+"bazi.analyze.08": {
+"en": "evidence does not support a follower/special formation — standard strength rules apply",
+"zh": "证据不支持从格或特殊格局，按通常的强弱规则来读"
+},
+"bazi.analyze.09": {
+"en": "Season 得令",
+"zh": "得令（季节）"
+},
+"bazi.analyze.10": {
+"en": "month branch {branch} is {month_el_element_en}; Day Master {dm} is {dm_el_element_en} → {season_state} (branch-element reading; the seasonal-qi 旺相休囚死 school reads the month by its SEASON's element and can differ — e.g. early-辰月 metal is 囚 under the lingering 木令)",
+"zh": "月支 {branch} 属 {month_el_element_en}；日主 {dm} 属 {dm_el_element_en} → {season_state}（按地支五行来读；以节令之气论旺相休囚死的一派，是按当季的五行来读月令，结果可能不同，例如初入辰月时金为囚，因木令未退）"
+},
+"bazi.analyze.11": {
+"en": "Support count",
+"zh": "扶持计数"
+},
+"bazi.analyze.12": {
+"en": "Drain count",
+"zh": "泄耗计数"
+},
+"bazi.analyze.13": {
+"en": "食傷 + 財 + 官殺 weights combined",
+"zh": "食伤、财、官杀的权重相加"
+},
+"bazi.analyze.14": {
+"en": "Root check",
+"zh": "根气检查"
+},
+"bazi.analyze.15": {
+"en": "branches whose hidden stems carry {dm_el_element_en}",
+"zh": "藏干里含 {dm_el_element_en} 的地支"
+},
+"bazi.analyze.16": {
+"en": "扶抑 framework (旺相休囚死 + 通根)",
+"zh": "扶抑框架（旺相休囚死加通根）"
+},
+"bazi.analyze.17": {
+"en": "{verdict}, score {score:+.2f}",
+"zh": "{verdict}，得分 {score:+.2f}"
+},
+"bazi._compute_dayun.01": {
+"en": "{forward_backward} from month pillar {m}; start age {start_age:.1f} (to 節 {jie})",
+"zh": "{forward_backward}，自月柱 {m} 起；起运 {start_age:.1f}岁（从出生数到节令 {jie}）"
+},
+"bazi._compute_dayun.02": {
+"en": "forward 順行",
+"zh": "顺行"
+},
+"bazi._compute_dayun.03": {
+"en": "backward 逆行",
+"zh": "逆行"
+},
+"bazi_report.ELEMENT_READING.木.0": {
+"en": "drive and growth in surplus — plans multiply, patience thins, frustration builds in the body. Burn it kinetically: stretching, sport, deadlines with finish lines; prune projects rather than add.",
+"zh": "干劲和成长过剩：计划越来越多，耐心越来越少，烦躁会积在身体里。用动起来的方式把它烧掉：拉伸、运动、有截止日期的任务；多修剪项目，少往上加。"
+},
+"bazi_report.ELEMENT_READING.木.1": {
+"en": "growth impulse under-supplied — starting is the hard part. Borrow structure: morning routines, green surroundings, one live project always on the desk.",
+"zh": "成长的冲劲不足：难的是开头。借点框架来撑着：早晨的固定流程、绿色的环境、桌上始终有一个在推进的项目。"
+},
+"bazi_report.ELEMENT_READING.火.0": {
+"en": "visibility and urgency in surplus — quick warmth, quick burn. Guard sleep, cut evening stimulants, keep one cool hour a day; let others own the spotlight sometimes.",
+"zh": "存在感和紧迫感过剩：升温快，烧得也快。守住睡眠，晚上少喝刺激性饮料，每天留一小时降温；偶尔把聚光灯让给别人。"
+},
+"bazi_report.ELEMENT_READING.火.1": {
+"en": "warmth and confidence under-supplied — energy dips and ideas stay private. Morning sun, cardio, red accents, deliberately social lunches; present work before it feels ready.",
+"zh": "热度和自信不足：精力容易低落，想法留在心里。多晒早晨的太阳，做有氧运动，点缀一点红色，刻意安排社交午餐；作品觉得还没准备好，也先拿出来给人看。"
+},
+"bazi_report.ELEMENT_READING.土.0": {
+"en": "stability in surplus — reliable but heavy: rumination, over-caution, digestion sluggish after worry. Move after meals, decide with deadlines, delegate the double-checking.",
+"zh": "稳定过剩：可靠，但偏沉重，容易反复琢磨、过度谨慎，一担心消化就变慢。饭后动一动，设下期限再做决定，把反复核对交给别人。"
+},
+"bazi_report.ELEMENT_READING.土.1": {
+"en": "grounding under-supplied — routines drift. Fixed mealtimes, one anchoring weekly ritual, finish small things daily.",
+"zh": "根基感不足：日常节奏容易飘。固定吃饭时间，每周一个定心的小仪式，每天做完一件小事。"
+},
+"bazi_report.ELEMENT_READING.金.0": {
+"en": "precision in surplus — high standards that cut inward and outward: rigidity, dry skin/airways. Add softness on purpose: flexibility practice, humid air, forgiving deadlines, music.",
+"zh": "精确过剩：标准很高，对内对外都锋利，容易僵硬，皮肤和呼吸道偏干。有意加一点柔软：柔韧练习、湿润的空气、宽松一点的期限、音乐。"
+},
+"bazi_report.ELEMENT_READING.金.1": {
+"en": "structure under-supplied — edges blur, follow-through leaks. Checklists, decluttered desk, breathing practice, metal-white accents in the work zone.",
+"zh": "条理不足：边界模糊，落实容易漏掉。用清单，收拾桌面，练习呼吸，在工作区放些银白色的点缀。"
+},
+"bazi_report.ELEMENT_READING.水.0": {
+"en": "flow in surplus —深 thinking that can pool into fear or fatigue; keep warm, protect the lower back and kidneys, cap late nights.",
+"zh": "流动过剩：思虑太深，容易沉成恐惧或疲惫；注意保暖，护好腰和肾，少熬夜。"
+},
+"bazi_report.ELEMENT_READING.水.1": {
+"en": "reserves under-supplied — wisdom-on-demand but shallow recovery. Hydration, real rest cycles, swimming or baths, early nights in winter; schedule thinking time, don't steal it from sleep.",
+"zh": "储备不足：智慧随叫随到，但恢复很浅。多喝水，好好安排休息节奏，游泳或泡澡，冬天早睡；给思考留出时间，别从睡眠里挤。"
+},
+"bazi_report.STRENGTH_ADVICE.True": {
+"en": "A weak Day Master is not a weak person — it is a chart that runs on borrowed fuel. Protect energy deliberately: fewer, deeper commitments; recover before the tank empties. Borrow strength where the chart says to — 印 (mentors, study, institutions) and 比劫 (peers, alliances) are structural supports, not crutches. Say no early; this chart pays compound interest on rest.",
+"zh": "日主偏弱不等于人弱，只是这张命盘靠借来的燃料运转。要有意识地保护精力：承诺少一点、深一点，在油箱见底之前就恢复。该借力的地方就借：印（贵人、学习、机构）和比劫（同辈、盟友）是结构上的支撑，不是拐杖。早点说不；休息在这张命盘上是有复利的。"
+},
+"bazi_report.STRENGTH_ADVICE.False": {
+"en": "A strong Day Master carries load well — the risk is under-loading, not burnout. Seek output channels: responsibility, production, expression. Idle strength turns inward as stubbornness; keep a demanding project running at all times.",
+"zh": "日主偏强，担得起分量，风险是担子太轻，不是累垮。要找到发挥的出口：责任、产出、表达。闲置的力量会转向内部，变成固执；始终让一个有挑战的项目在跑。"
+},
+"bazi_report.CAREER_ADVICE.corp.0": {
+"en": "Negotiate for scope and expertise, not just title — this chart compounds inside institutions with deep technical ladders.",
+"zh": "争取更大的职责范围和专业深度，不只是头衔：这张命盘在专业晋升通道很长的机构里，优势会越积越大。"
+},
+"bazi_report.CAREER_ADVICE.corp.1": {
+"en": "Scratch any venture itch through intrapreneurship: own a new capability inside the structure rather than leaving it.",
+"zh": "想创业的念头，用内部创业来解：在体系里负责一项新的能力，而不是离开。"
+},
+"bazi_report.CAREER_ADVICE.corp.2": {
+"en": "Change employers rarely and deliberately, in window years only.",
+"zh": "尽量少换东家；要换就想清楚，并且只在窗口年换。"
+},
+"bazi_report.CAREER_ADVICE.vent.0": {
+"en": "Tie pay to performance wherever possible — fixed salary undervalues this chart's opportunity engine.",
+"zh": "尽量让收入与表现挂钩：固定薪水会埋没这张命盘抓机会的本事。"
+},
+"bazi_report.CAREER_ADVICE.vent.1": {
+"en": "Keep personal fixed costs low; volatility charts win on staying power, and low burn IS staying power.",
+"zh": "把个人固定开销压低：波动型命盘靠的是耐力，而低消耗本身就是耐力。"
+},
+"bazi_report.CAREER_ADVICE.vent.2": {
+"en": "One mentor plus written quarterly goals — the 貴人 channel keeps the deal-chasing pointed.",
+"zh": "找一位愿意指点你的贵人，再加上写下来的季度目标：贵人这条线能让追逐买卖的劲头不跑偏。"
+},
+"bazi_report.CAREER_ADVICE.ambi.0": {
+"en": "Sequence it: structured roles first to bank capital, skill and network; option the venture mode for a supportive decade.",
+"zh": "分先后：先做有结构的岗位，积累资本、技能和人脉；创业模式留到一个有利的十年再启用。"
+},
+"bazi_report.CAREER_ADVICE.ambi.1": {
+"en": "In corporate phases, keep one small side asset alive so the switch, if it comes, is a step not a leap.",
+"zh": "在上班阶段，保留一个小副业，这样要转的时候，是迈一步，不是跳一大步。"
+},
+"bazi_report.REL_ADVICE.selection.0": {
+"en": "Slow the funnel: extend the getting-to-know phase past the first impression this chart falls for.",
+"zh": "放慢筛选：把相互了解的阶段拉长，别被第一印象带着走；这张命盘最容易栽在第一印象上。"
+},
+"bazi_report.REL_ADVICE.selection.1": {
+"en": "Weigh stability markers (how they handle stress, money, family) above spark — the spark self-supplies.",
+"zh": "稳定的迹象（对方怎么处理压力、金钱和家人）比心动的火花更要紧；火花你自己就能提供。"
+},
+"bazi_report.REL_ADVICE.selection.2": {
+"en": "Let trusted friends meet candidates early; outside eyes correct this chart's blind spot.",
+"zh": "让信得过的朋友早点见见对象；旁人的眼睛能补上这张命盘的盲点。"
+},
+"bazi_report.REL_ADVICE.communication.0": {
+"en": "The 24-hour rule: write the hard message, sleep, then say it — 傷官 edges dull overnight.",
+"zh": "24小时规则：把难开口的话写下来，睡一觉，再说；伤官的锋芒过一夜就钝了。"
+},
+"bazi_report.REL_ADVICE.communication.1": {
+"en": "Schedule check-ins so issues surface on calm days, not only when they boil.",
+"zh": "把沟通固定排进日程，让问题在平静的日子里浮出来，不要等到烧开了才说。"
+},
+"bazi_report.REL_ADVICE.communication.2": {
+"en": "Have hard conversations on neutral ground (a walk, a drive) — not across the dinner table.",
+"zh": "难谈的话放在中性的场合谈（散步、开车），别隔着饭桌。"
+},
+"bazi_report.REL_ADVICE.division.0": {
+"en": "Write the ownership map: who owns money, schooling, household, and revisit it yearly — parity charts fight over undefined territory, not real differences.",
+"zh": "写一张分工图：谁管钱、谁管孩子的学业、谁管家务，每年复盘一次；势均力敌的命盘吵的是没划清的地盘，不是真正的分歧。"
+},
+"bazi_report.REL_ADVICE.division.1": {
+"en": "Avoid working in the same role as a partner; adjacent beats identical.",
+"zh": "避免和伴侣做同一个角色；相邻比完全一样好。"
+},
+"bazi_report.REL_ADVICE.division.2": {
+"en": "Score decisions by domain owner, not by who feels stronger that week.",
+"zh": "决定按各自管辖的领域来定，别看那一周谁感觉更强。"
+},
+"bazi_report.REL_ADVICE.none.0": {
+"en": "No structural fix needed — use the Windows table: invest in the relationship in window years, and treat caution years as maintenance mode, not verdicts.",
+"zh": "不需要结构上的修补，看窗口表就够了：窗口年多在感情上投入，谨慎年当作维护期，不当作判决。"
+},
+"bazi_report.WEALTH_ADVICE.steady.0": {
+"en": "Automate a fixed savings percentage before spending touches it — this chart wins by compounding, not by timing.",
+"zh": "花钱之前，先自动存下固定比例：这张命盘靠复利取胜，不靠抓时机。"
+},
+"bazi_report.WEALTH_ADVICE.steady.1": {
+"en": "Prefer boring instruments (index funds, property, retirement account top-ups); FOMO trades fight the chart's nature.",
+"zh": "优先选平淡无奇的工具（指数基金、房产、往退休账户多存一笔）；怕错过而跟风的交易，和这张命盘的性子相冲。"
+},
+"bazi_report.WEALTH_ADVICE.steady.2": {
+"en": "Review once a quarter, not once a day.",
+"zh": "每季度复盘一次，不要每天看。"
+},
+"bazi_report.WEALTH_ADVICE.opportunistic.0": {
+"en": "Cap each deal at a fixed share of net worth, decided in advance, and take profits mechanically.",
+"zh": "每笔交易占净资产的比例，事先定好上限；到价就止盈，不凭感觉。"
+},
+"bazi_report.WEALTH_ADVICE.opportunistic.1": {
+"en": "Pair with a steady-accumulator for sign-off (see the family delegation map) — the pairing is the remedy.",
+"zh": "找一个稳健积累型的人把关签字（见家庭分工图），搭档本身就是解法。"
+},
+"bazi_report.WEALTH_ADVICE.opportunistic.2": {
+"en": "Act in window years, and force a written thesis before any deal in a caution year.",
+"zh": "在窗口年出手；谨慎年做任何交易之前，先逼自己写下交易理由。"
+},
+"bazi_report.WEALTH_ADVICE.competence.0": {
+"en": "Raise rates and skills, not risk — this chart converts expertise to income better than capital to income.",
+"zh": "要提高的是收费标准和技能，不是风险：这张命盘把专业变成收入，比把资本变成收入强。"
+},
+"bazi_report.WEALTH_ADVICE.competence.1": {
+"en": "Build assets from the skill itself: royalties, tooling, teaching, IP.",
+"zh": "用技能本身去建资产：版税、工具、教学、知识产权。"
+},
+"bazi_report.WEALTH_ADVICE.competence.2": {
+"en": "Let structure hold the money: auto-invest what expertise earns, then ignore it.",
+"zh": "让机制来守住钱：把专业挣来的钱自动投出去，然后别再管它。"
+},
+"bazi_report.WEALTH_ADVICE.weak-carry.0": {
+"en": "Route income out of easy reach on arrival — automatic transfers are the container the chart lacks.",
+"zh": "收入一到账就转到不容易取用的地方：自动转账就是这张命盘缺的那个容器。"
+},
+"bazi_report.WEALTH_ADVICE.weak-carry.1": {
+"en": "Make large financial moves only in window years, with a co-pilot's sign-off.",
+"zh": "大额的资金安排只放在窗口年，并请一位信得过的搭档把关签字。"
+},
+"bazi_report.WEALTH_ADVICE.weak-carry.2": {
+"en": "Grow the container first (health, seniority, routine) — capacity, then exposure.",
+"zh": "先把容器做大（健康、资历、日常节奏）：先有承载力，再谈风险敞口。"
+},
+"bazi_report.WINDOWS_ADVICE.0": {
+"en": "Book the big asks — raises, launches, moves, proposals — into window years; the same effort lands softer ground in a caution year.",
+"zh": "大的请求，比如加薪、上线、搬家、提案，放进窗口年；同样的力气，在谨慎年效果会打折扣。"
+},
+"bazi_report.WINDOWS_ADVICE.1": {
+"en": "Caution years are for maintenance, consolidation and preparation — they reward finishing, not starting.",
+"zh": "谨慎年适合维护、巩固和准备，奖励的是收尾，不是开头。"
+},
+"bazi_report.WINDOWS_ADVICE.2": {
+"en": "Recheck this table each 立春 (early Feb): the annual layer rolls forward and next year's weather becomes visible.",
+"zh": "每年立春（2月初）重看一次这张表：流年那一层往前翻，明年的天气就看得见了。"
+},
+"bazi_report.ORGAN_CARE.水": {
+"en": "kidneys/bladder care: drink water through the day (not one late flood), guard sleep before midnight, keep the lower back warm",
+"zh": "肾和膀胱的养护：一天里分次喝水（别在晚上一次灌下去），午夜前入睡，腰部保暖"
+},
+"bazi_report.ORGAN_CARE.木": {
+"en": "liver/gallbladder care: limit alcohol, stretch daily, give the eyes screen breaks, walk off frustration the same day",
+"zh": "肝和胆的养护：少喝酒，每天拉伸，让眼睛歇一歇屏幕，当天的烦躁当天走掉"
+},
+"bazi_report.ORGAN_CARE.火": {
+"en": "heart/circulation care: regular cardio, fixed lights-out, taper caffeine after noon",
+"zh": "心脏和血液循环的养护：规律做有氧，固定熄灯时间，中午以后逐渐减少咖啡因"
+},
+"bazi_report.ORGAN_CARE.土": {
+"en": "spleen/stomach care: regular mealtimes, chew slowly, a 10-minute walk after dinner, park the worrying at the table's edge",
+"zh": "脾和胃的养护：按时吃饭，细嚼慢咽，晚饭后散步10分钟，把担忧留在饭桌边上"
+},
+"bazi_report.ORGAN_CARE.金": {
+"en": "lungs/skin care: breathing practice, moisturise, mind air quality (a purifier when the air is bad), sing or swim for lung volume",
+"zh": "肺和皮肤的养护：练习呼吸，做好保湿，留意空气质量（空气差时用净化器），唱歌或游泳来增加肺活量"
+},
+"bazi_report.BOSS_FIT.0.1": {
+"en": "Under management: demanding, decisive bosses get your best — slow committees and vague briefs frustrate you.",
+"zh": "被管理时：要求高、决断快的老板能让你发挥最好；慢吞吞的委员会和含糊的任务说明会让你烦躁。"
+},
+"bazi_report.BOSS_FIT.1.1": {
+"en": "Under management: fair, rule-based managers get your best — arbitrary authority gets quiet resistance.",
+"zh": "被管理时：公平、按规则办事的上司能让你发挥最好；任意妄为的权威只会换来你无声的抵抗。"
+},
+"bazi_report.BOSS_FIT.2.1": {
+"en": "Under management: negotiate autonomy and judge-me-by-output arrangements — heavy supervision wastes this chart.",
+"zh": "被管理时：争取自主权，以及按产出来评价你的安排；管得太紧会浪费这张命盘。"
+},
+"bazi_report.PARTNER_SUPPLY.財": {
+"en": "someone who spots opportunities and closes deals (財-rich)",
+"zh": "能发现机会、谈成买卖的人（财旺）"
+},
+"bazi_report.PARTNER_SUPPLY.官殺": {
+"en": "someone who enforces structure, deadlines and discipline (官殺-rich)",
+"zh": "能把约束、期限和纪律落实下来的人（官杀旺）"
+},
+"bazi_report.PARTNER_SUPPLY.印": {
+"en": "someone who researches, documents and keeps institutional memory (印-rich)",
+"zh": "能做研究、写文档、守住机构记忆的人（印旺）"
+},
+"bazi_report.PARTNER_SUPPLY.食傷": {
+"en": "someone who presents, markets and charms the room (食傷-rich)",
+"zh": "能做展示、做推广、在人群里讨人喜欢的人（食伤旺）"
+},
+"bazi_report.PARTNER_SUPPLY.比劫": {
+"en": "someone who brings manpower, network and shared grind (比劫-rich)",
+"zh": "能带来人手、人脉和一起苦干的人（比劫旺）"
+},
+"bazi_report.GOD_HANDLE.正官": {
+"en": "give clear rules, fair process and visible standards — they honour them",
+"zh": "给清楚的规则、公平的流程和看得见的标准，他们会遵守"
+},
+"bazi_report.GOD_HANDLE.七殺": {
+"en": "give autonomy plus hard deadlines; pressure motivates, micromanagement backfires",
+"zh": "给自主权，再配上硬期限；压力能激励他们，事无巨细地盯着只会适得其反"
+},
+"bazi_report.GOD_HANDLE.正印": {
+"en": "teach the why; they absorb through study and trusted mentors",
+"zh": "把为什么讲清楚；他们靠学习和信得过的贵人来吸收"
+},
+"bazi_report.GOD_HANDLE.偏印": {
+"en": "let them learn sideways — unusual methods and niche depth are features",
+"zh": "让他们换条路去学：不寻常的方法和冷门的深度，都是优点"
+},
+"bazi_report.GOD_HANDLE.比肩": {
+"en": "respect their independence; ask, don't command; peer framing works",
+"zh": "尊重他们的独立；用请求，别用命令；同辈的口吻最管用"
+},
+"bazi_report.GOD_HANDLE.劫財": {
+"en": "channel competitiveness into team wins; watch impulsive sharing/spending",
+"zh": "把好胜心引向团队的胜利；留意冲动的分享和花销"
+},
+"bazi_report.GOD_HANDLE.食神": {
+"en": "give them room to craft and finish; praise the work, not the speed",
+"zh": "给他们空间去琢磨、去做完；夸作品，不夸速度"
+},
+"bazi_report.GOD_HANDLE.傷官": {
+"en": "let them speak and perform; correct in private, never on stage",
+"zh": "让他们发言、登台；要纠正就私下说，千万别当众"
+},
+"bazi_report.GOD_HANDLE.正財": {
+"en": "steady routines and visible savings goals; they compound",
+"zh": "稳定的日常和看得见的储蓄目标；他们会越积越多"
+},
+"bazi_report.GOD_HANDLE.偏財": {
+"en": "give opportunity and a budget cap; teach them to finish one deal before the next",
+"zh": "给机会，同时给预算上限；教他们先做完一单，再做下一单"
+},
+"bazi_report.MONTH_RANGE.寅": {
+"en": "Feb",
+"zh": "2月"
+},
+"bazi_report.MONTH_RANGE.卯": {
+"en": "Mar",
+"zh": "3月"
+},
+"bazi_report.MONTH_RANGE.辰": {
+"en": "Apr",
+"zh": "4月"
+},
+"bazi_report.MONTH_RANGE.巳": {
+"en": "May",
+"zh": "5月"
+},
+"bazi_report.MONTH_RANGE.午": {
+"en": "Jun",
+"zh": "6月"
+},
+"bazi_report.MONTH_RANGE.未": {
+"en": "Jul",
+"zh": "7月"
+},
+"bazi_report.MONTH_RANGE.申": {
+"en": "Aug",
+"zh": "8月"
+},
+"bazi_report.MONTH_RANGE.酉": {
+"en": "Sep",
+"zh": "9月"
+},
+"bazi_report.MONTH_RANGE.戌": {
+"en": "Oct",
+"zh": "10月"
+},
+"bazi_report.MONTH_RANGE.亥": {
+"en": "Nov",
+"zh": "11月"
+},
+"bazi_report.MONTH_RANGE.子": {
+"en": "Dec",
+"zh": "12月"
+},
+"bazi_report.MONTH_RANGE.丑": {
+"en": "Jan",
+"zh": "1月"
+},
+"bazi_report.EXAMS.12": {
+"en": "the end-of-primary exam",
+"zh": "小学毕业考试"
+},
+"bazi_report.EXAMS.16": {
+"en": "the end-of-secondary exam",
+"zh": "初中毕业考试"
+},
+"bazi_report.EXAMS.18": {
+"en": "the university entrance exam",
+"zh": "大学入学考试"
+},
+"bazi_report.dial.01": {
+"en": "built for STRUCTURED environments — corporate ladders, institutions, expert tracks",
+"zh": "适合结构清晰的环境：公司晋升序列、机构、专家路线"
+},
+"bazi_report.dial.02": {
+"en": "built for HIGH-VOLATILITY work — ventures, deals, performance-paid roles",
+"zh": "适合高波动的工作：创业、交易、按业绩付酬的岗位"
+},
+"bazi_report.dial.03": {
+"en": "AMBIDEXTROUS — can run either mode; pick by season of life",
+"zh": "两栖：两种模式都能跑，按人生的阶段来选"
+},
+"bazi_report.relationship_risk.01": {
+"en": "both 正/偏 spouse stars present — attracts mixed signals",
+"zh": "正、偏配偶星都有：容易收到混杂的信号"
+},
+"bazi_report.relationship_risk.02": {
+"en": "no spouse star — partners found through activity, not gravity",
+"zh": "没有配偶星：伴侣是在活动中遇到的，不是被吸引来的"
+},
+"bazi_report.relationship_risk.03": {
+"en": "桃花 outside the walls — variable attraction",
+"zh": "桃花在墙外：吸引力忽高忽低"
+},
+"bazi_report.relationship_risk.04": {
+"en": "傷官 {pct_傷官:.0f}% — sharp expression cuts close partners first",
+"zh": "伤官 {pct_傷官:.0f}%：言辞锋利，最先伤到身边的伴侣"
+},
+"bazi_report.relationship_risk.05": {
+"en": "day branch clashed by the {join_day_hits} pillar — friction lives in daily contact",
+"zh": "日支被 {join_day_hits} 柱冲到：摩擦出在日常相处里"
+},
+"bazi_report.relationship_risk.06": {
+"en": "heavy 比劫 — parity struggles: who leads, who yields",
+"zh": "比劫偏重：地位对等的较劲，谁带头，谁让步"
+},
+"bazi_report.relationship_risk.07": {
+"en": "七殺 without 正官 — control asserted under stress",
+"zh": "有七杀而无正官：压力下会变得强势，爱控制"
+},
+"bazi_report.relationship_risk.08": {
+"en": "no dominant structural risk point — pattern risks are situational",
+"zh": "没有突出的结构性风险点：风险来自具体情境"
+},
+"bazi_report.relationship_risk.09": {
+"en": "partner SELECTION — who is chosen matters more than how it's run",
+"zh": "伴侣的选择：选了谁，比怎么经营更重要"
+},
+"bazi_report.relationship_risk.10": {
+"en": "COMMUNICATION — the relationship works when the channel does",
+"zh": "沟通：渠道通了，关系才运转得起来"
+},
+"bazi_report.relationship_risk.11": {
+"en": "ROLE DIVISION — agree who owns what, explicitly",
+"zh": "角色分工：明明白白讲清楚谁管什么"
+},
+"bazi_report.wealth_pattern.01": {
+"en": "OPPORTUNISTIC 偏財 — lumpy income: deals, ventures, timing plays",
+"zh": "机会型偏财：收入起伏大，靠买卖、创业和抓时机"
+},
+"bazi_report.wealth_pattern.02": {
+"en": "STEADY ACCUMULATOR 正財 — salary, savings and compounding beat speculation",
+"zh": "稳健积累型正财：薪水、储蓄和复利胜过投机"
+},
+"bazi_report.wealth_pattern.03": {
+"en": "MODEST wealth stars — income follows competence (食傷生財 route): monetise skill, not capital",
+"zh": "财星偏弱：收入跟着能力走（食伤生财之路），把技能变现，不靠资本"
+},
+"bazi_report.wealth_pattern.04": {
+"en": "NO wealth star — earn through expertise and let structure hold the money",
+"zh": "没有财星：靠专业赚钱，让机制来守住钱"
+},
+"bazi_report.wealth_pattern.05": {
+"en": "the chart is WEAK relative to its wealth element — money that arrives tends to pass through; build the container (health, routine, seniority) before scaling exposure",
+"zh": "相对于财星所属的五行，命盘偏弱：到手的钱容易流走；先把容器做大（健康、日常节奏、资历），再扩大敞口"
+},
+"bazi_report.wealth_pattern.06": {
+"en": "the chart can HOLD wealth — favourable periods reward decisive action",
+"zh": "命盘守得住财：有利的时期，果断行动会有回报"
+},
+"bazi_report.exam_overlay.01": {
+"en": "{yr_overall_zh} overall",
+"zh": "总体 {yr_overall_zh}"
+},
+"bazi_report.exam_overlay.02": {
+"en": "文昌 year — the scholar star itself arrives ✓",
+"zh": "文昌年：主学业的文昌星亲自到了 ✓"
+},
+"bazi_report.exam_overlay.03": {
+"en": "{k} caution: {yr_k_note}",
+"zh": "{k}需谨慎：{yr_k_note}"
+},
+"bazi_report.exam_overlay.04": {
+"en": "beyond the 10-year window — recheck nearer",
+"zh": "超出10年窗口，请到更近的时候再复查"
+},
+"bazi_report.people_compat.01": {
+"en": "people whose charts run rich in {join_ys_favourable} energize you; heavy-{join_ys_unfavourable} people are fine in small doses but tiring as daily fixtures",
+"zh": "命盘里 {join_ys_favourable} 旺的人会给你带来能量；{join_ys_unfavourable} 重的人少量接触没问题，但天天相处会让人疲惫"
+},
+"bazi_report.strategy_payload.01": {
+"en": "{nxt_gz} begins ~{start} as a {nxt_phase_zh} {nxt_phase} phase",
+"zh": "{nxt_gz} 约从 {start} 开始，进入 {nxt_phase_zh} {nxt_phase} 阶段"
+},
+"bazi_report.strategy_payload.02": {
+"en": "keep the balanced baseline: seasonal food, regular sleep, and use recovery years for elective procedures and habit resets.",
+"zh": "保持均衡的基线：吃应季的食物，睡眠规律，在恢复年里安排择期的治疗或手术，并重设习惯。"
+},
+"bazi_report.strategy_payload.03": {
+"en": "Double the care in trigger years; schedule check-ups into them in advance.",
+"zh": "触发年里加倍小心；提前把体检排进去。"
+},
+"bazi_report.strategy_payload.04": {
+"en": "Fields carry elements: prefer {join_ys_favourable}-flavoured industries even inside the same job title — the same work in the right field costs less energy.",
+"zh": "行业带着五行：即使职位相同，也优先选五行属 {join_ys_favourable} 的行业；同样的工作放在对的行业里，耗的精力更少。"
+},
+"bazi_report.strategy_payload.05": {
+"en": "Ideal collaborator: this chart's thinnest resource is {pc_weak_group} — team up with {pc_partner}.",
+"zh": "理想搭档：这张命盘最薄弱的资源是 {pc_weak_group}，不妨和 {pc_partner} 合作。"
+},
+"calendar._walk_to_jie.01": {
+"en": "no 節 found within 40 days — should be impossible",
+"zh": "40天内没有找到节令，这不应该发生"
+},
+"careers.GOD_STYLE.正官": {
+"en": "rules, legitimacy and diligence",
+"zh": "守规矩、讲正统、勤勉"
+},
+"careers.GOD_STYLE.七殺": {
+"en": "decisive authority — thrives under pressure",
+"zh": "果断的权威，越有压力越出色"
+},
+"careers.GOD_STYLE.正印": {
+"en": "deep study and absorbed knowledge",
+"zh": "深入钻研，沉淀知识"
+},
+"careers.GOD_STYLE.偏印": {
+"en": "unconventional methods and niche expertise",
+"zh": "非常规的方法和小众专长"
+},
+"careers.GOD_STYLE.比肩": {
+"en": "steady self-driven effort",
+"zh": "靠自己稳扎稳打地努力"
+},
+"careers.GOD_STYLE.劫財": {
+"en": "peer networks and competitive drive",
+"zh": "同辈人脉和竞争劲头"
+},
+"careers.GOD_STYLE.食神": {
+"en": "product sense and craft output",
+"zh": "产品思维和手艺活"
+},
+"careers.GOD_STYLE.傷官": {
+"en": "expression, performance and persuasion",
+"zh": "表达、表演与说服"
+},
+"careers.GOD_STYLE.正財": {
+"en": "patient, steady accumulation",
+"zh": "耐心、稳健地积累"
+},
+"careers.GOD_STYLE.偏財": {
+"en": "opportunity-spotting and deal-making",
+"zh": "善于发现机会、促成交易"
+},
+"careers.ARCHETYPES.0.0": {
+"en": "research",
+"zh": "research"
+},
+"careers.ARCHETYPES.0.1": {
+"en": "Research & analysis",
+"zh": "研究与分析"
+},
+"careers.ARCHETYPES.1.0": {
+"en": "engineering",
+"zh": "engineering"
+},
+"careers.ARCHETYPES.1.1": {
+"en": "Engineering & technical craft",
+"zh": "工程与技术"
+},
+"careers.ARCHETYPES.2.0": {
+"en": "tech",
+"zh": "tech"
+},
+"careers.ARCHETYPES.2.1": {
+"en": "Tech & software product",
+"zh": "科技与软件产品"
+},
+"careers.ARCHETYPES.3.0": {
+"en": "teaching",
+"zh": "teaching"
+},
+"careers.ARCHETYPES.3.1": {
+"en": "Teaching & training",
+"zh": "教学与培训"
+},
+"careers.ARCHETYPES.4.0": {
+"en": "media",
+"zh": "media"
+},
+"careers.ARCHETYPES.4.1": {
+"en": "Communications & media",
+"zh": "传播与媒体"
+},
+"careers.ARCHETYPES.5.0": {
+"en": "law",
+"zh": "law"
+},
+"careers.ARCHETYPES.5.1": {
+"en": "Law & compliance",
+"zh": "法律与合规"
+},
+"careers.ARCHETYPES.6.0": {
+"en": "finance",
+"zh": "finance"
+},
+"careers.ARCHETYPES.6.1": {
+"en": "Finance & investment",
+"zh": "金融与投资"
+},
+"careers.ARCHETYPES.7.0": {
+"en": "trading",
+"zh": "trading"
+},
+"careers.ARCHETYPES.7.1": {
+"en": "Trading & business development",
+"zh": "贸易与商务拓展"
+},
+"careers.ARCHETYPES.8.0": {
+"en": "venture",
+"zh": "venture"
+},
+"careers.ARCHETYPES.8.1": {
+"en": "Entrepreneurship",
+"zh": "创业"
+},
+"careers.ARCHETYPES.9.0": {
+"en": "management",
+"zh": "management"
+},
+"careers.ARCHETYPES.9.1": {
+"en": "Management & operations",
+"zh": "管理与运营"
+},
+"careers.ARCHETYPES.10.0": {
+"en": "public",
+"zh": "public"
+},
+"careers.ARCHETYPES.10.1": {
+"en": "Public service & institutions",
+"zh": "公共服务与机构"
+},
+"careers.ARCHETYPES.11.0": {
+"en": "property",
+"zh": "property"
+},
+"careers.ARCHETYPES.11.1": {
+"en": "Property & asset stewardship",
+"zh": "地产与资产管理"
+},
+"careers.ARCHETYPES.12.0": {
+"en": "logistics",
+"zh": "logistics"
+},
+"careers.ARCHETYPES.12.1": {
+"en": "Logistics & mobility",
+"zh": "物流与出行"
+},
+"careers.ARCHETYPES.13.0": {
+"en": "design",
+"zh": "design"
+},
+"careers.ARCHETYPES.13.1": {
+"en": "Design & aesthetics",
+"zh": "设计与美学"
+},
+"careers.ARCHETYPES.14.0": {
+"en": "care",
+"zh": "care"
+},
+"careers.ARCHETYPES.14.1": {
+"en": "Care & wellbeing professions",
+"zh": "照护与身心健康类职业"
+},
+"careers.ROLES.0.0": {
+"en": "Data scientist",
+"zh": "数据科学家"
+},
+"careers.ROLES.0.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.1.0": {
+"en": "Machine-learning engineer",
+"zh": "机器学习工程师"
+},
+"careers.ROLES.1.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.2.0": {
+"en": "Software engineer",
+"zh": "软件工程师"
+},
+"careers.ROLES.3.0": {
+"en": "DevOps / SRE",
+"zh": "DevOps / SRE 工程师"
+},
+"careers.ROLES.4.0": {
+"en": "Cybersecurity analyst",
+"zh": "网络安全分析师"
+},
+"careers.ROLES.5.0": {
+"en": "Product manager",
+"zh": "产品经理"
+},
+"careers.ROLES.6.0": {
+"en": "UX / UI designer",
+"zh": "UX / UI 设计师"
+},
+"careers.ROLES.7.0": {
+"en": "Growth marketer",
+"zh": "增长营销专员"
+},
+"careers.ROLES.8.0": {
+"en": "Social media creator",
+"zh": "社交媒体创作者"
+},
+"careers.ROLES.9.0": {
+"en": "Content strategist",
+"zh": "内容策略师"
+},
+"careers.ROLES.10.0": {
+"en": "Podcaster",
+"zh": "播客主播"
+},
+"careers.ROLES.11.0": {
+"en": "Video editor",
+"zh": "视频剪辑师"
+},
+"careers.ROLES.12.0": {
+"en": "Game designer",
+"zh": "游戏设计师"
+},
+"careers.ROLES.13.0": {
+"en": "Esports coach",
+"zh": "电竞教练"
+},
+"careers.ROLES.14.0": {
+"en": "E-commerce seller",
+"zh": "电商卖家"
+},
+"careers.ROLES.15.0": {
+"en": "Logistics / supply-chain planner",
+"zh": "物流 / 供应链规划师"
+},
+"careers.ROLES.16.0": {
+"en": "Fintech product manager",
+"zh": "金融科技产品经理"
+},
+"careers.ROLES.17.0": {
+"en": "Crypto / derivatives trader",
+"zh": "加密货币 / 衍生品交易员"
+},
+"careers.ROLES.18.0": {
+"en": "ESG / sustainability analyst",
+"zh": "ESG / 可持续发展分析师"
+},
+"careers.ROLES.19.0": {
+"en": "HR business partner",
+"zh": "人力资源业务伙伴"
+},
+"careers.ROLES.20.0": {
+"en": "Recruiter",
+"zh": "招聘专员"
+},
+"careers.ROLES.21.0": {
+"en": "Paralegal",
+"zh": "律师助理"
+},
+"careers.ROLES.22.0": {
+"en": "Compliance officer",
+"zh": "合规专员"
+},
+"careers.ROLES.23.0": {
+"en": "Teacher / tutor",
+"zh": "教师 / 家教"
+},
+"careers.ROLES.24.0": {
+"en": "Edtech product manager",
+"zh": "教育科技产品经理"
+},
+"careers.ROLES.25.0": {
+"en": "Nurse practitioner",
+"zh": "高级执业护士"
+},
+"careers.ROLES.26.0": {
+"en": "Physiotherapist",
+"zh": "物理治疗师"
+},
+"careers.ROLES.27.0": {
+"en": "Pharmacist",
+"zh": "药剂师"
+},
+"careers.ROLES.28.0": {
+"en": "Biomedical researcher",
+"zh": "生物医学研究员"
+},
+"careers.ROLES.29.0": {
+"en": "Life coach / therapist",
+"zh": "人生教练 / 心理治疗师"
+},
+"careers.ROLES.30.0": {
+"en": "Real-estate agent",
+"zh": "房产经纪"
+},
+"careers.ROLES.31.0": {
+"en": "Property manager",
+"zh": "物业经理"
+},
+"careers.ROLES.32.0": {
+"en": "Chef / F&B founder",
+"zh": "厨师 / 餐饮创业者"
+},
+"careers.ROLES.33.0": {
+"en": "Barista",
+"zh": "咖啡师"
+},
+"careers.ROLES.34.0": {
+"en": "Event / wedding planner",
+"zh": "活动策划 / 婚礼策划师"
+},
+"careers.ROLES.35.0": {
+"en": "Interior designer",
+"zh": "室内设计师"
+},
+"careers.ROLES.36.0": {
+"en": "Architect",
+"zh": "建筑师"
+},
+"careers.ROLES.37.0": {
+"en": "Civil engineer",
+"zh": "土木工程师"
+},
+"careers.ROLES.38.0": {
+"en": "Drone / robotics operator",
+"zh": "无人机 / 机器人操作员"
+},
+"careers.career_paths.01": {
+"en": "field element {e} is a favourable 用神",
+"zh": "行业对应的五行 {e} 属于你的喜用"
+},
+"careers.career_paths.02": {
+"en": "field element {e} is on the avoid list",
+"zh": "行业对应的五行 {e} 属于你的忌"
+},
+"careers.career_paths.03": {
+"en": "field-agnostic — pick the venture's domain from the favourable elements",
+"zh": "不限定行业，请从喜用五行里挑创业的领域"
+},
+"careers.career_paths.04": {
+"en": "{star} star serves this path",
+"zh": "{star} 星对这条路有助力"
+},
+"careers.career_paths.05": {
+"en": "no supporting structure",
+"zh": "缺少支撑条件"
+},
+"careers.career_paths.06": {
+"en": "no supporting structure in the chart",
+"zh": "命盘里缺少支撑条件"
+},
+"careers.career_paths.07": {
+"en": "career archetype ranking — 用神 field elements + ten-god style + 神煞 (MODERN SYNTHESIS)",
+"zh": "职业类型排序：用神行业五行 + 十神风格 + 神煞（现代综合推演）"
+},
+"careers.career_roles.04": {
+"en": "roles mapped onto the archetype rules — 用神 field elements + ten-god style; element assignments per deep-dive §D (MODERN SYNTHESIS)",
+"zh": "职位按职业类型的规则对应：用神行业五行 + 十神风格；五行归属依据本站研究笔记 §D（现代综合推演）"
+},
+"daily.ACTIVITIES.0.0": {
+"en": "moving",
+"zh": "moving"
+},
+"daily.ACTIVITIES.0.1": {
+"en": "搬家 moving house",
+"zh": "搬家"
+},
+"daily.ACTIVITIES.1.0": {
+"en": "signing",
+"zh": "signing"
+},
+"daily.ACTIVITIES.1.1": {
+"en": "签约 signing & banking",
+"zh": "签约与银行事务"
+},
+"daily.ACTIVITIES.2.0": {
+"en": "marriage",
+"zh": "marriage"
+},
+"daily.ACTIVITIES.2.1": {
+"en": "婚嫁 marriage & proposals",
+"zh": "婚嫁与求婚"
+},
+"daily.ACTIVITIES.3.0": {
+"en": "travel",
+"zh": "travel"
+},
+"daily.ACTIVITIES.3.1": {
+"en": "出行 travel",
+"zh": "出行"
+},
+"daily.ACTIVITIES.4.0": {
+"en": "medical",
+"zh": "medical"
+},
+"daily.ACTIVITIES.4.1": {
+"en": "医疗 medical & surgery",
+"zh": "就医与手术"
+},
+"daily.ACTIVITIES.5.0": {
+"en": "launch",
+"zh": "launch"
+},
+"daily.ACTIVITIES.5.1": {
+"en": "开业 launching & starting",
+"zh": "开业与启动"
+},
+"daily._GOOD_OFFICERS.成": {
+"en": "成日 success",
+"zh": "成日"
+},
+"daily._GOOD_OFFICERS.開": {
+"en": "開日 open",
+"zh": "开日"
+},
+"daily._GOOD_OFFICERS.定": {
+"en": "定日 settled",
+"zh": "定日"
+},
+"daily.daily_fortune.02": {
+"en": "除日 removal — treatment and cleansing",
+"zh": "除日，宜治疗与清洁"
+},
+"daily.daily_fortune.03": {
+"en": "閉日 closed",
+"zh": "闭日"
+},
+"daily.daily_fortune.05": {
+"en": "危日 danger",
+"zh": "危日"
+},
+"daily.daily_fortune.07": {
+"en": "破日 — day 沖 month",
+"zh": "破日，即日冲月"
+},
+"daily.daily_fortune.08": {
+"en": "day {db} 沖 your day branch {natal_db}",
+"zh": "日支 {db} 冲你的日支 {natal_db}"
+},
+"daily.daily_fortune.09": {
+"en": "day {db} 沖 your year branch {natal_yb}",
+"zh": "日支 {db} 冲你的年支 {natal_yb}"
+},
+"daily.daily_fortune.10": {
+"en": "day {db} 六合 your day branch {natal_db}",
+"zh": "日支 {db} 与你的日支 {natal_db} 六合"
+},
+"daily.daily_fortune.11": {
+"en": "day {db} 害 your day branch {natal_db}",
+"zh": "日支 {db} 害你的日支 {natal_db}"
+},
+"daily.daily_fortune.12": {
+"en": "{el} day carries your primary 用神",
+"zh": "{el}日带着你的主要用神"
+},
+"daily.daily_fortune.13": {
+"en": "{el} day carries your chief 忌神",
+"zh": "{el}日带着你的主要忌神"
+},
+"daily.daily_fortune.14": {
+"en": "十二建除 + 月破 (zeri) · day branch 沖/合/害 vs natal day & year branch · day stem element vs 用神/忌神",
+"zh": "建除十二神 + 月破（择日）· 日支对你日支、年支的冲/合/害 · 日干五行对用神/忌神"
+},
+"domains.ELEMENT_ORGANS.木.0": {
+"en": "liver, gallbladder",
+"zh": "肝、胆"
+},
+"domains.ELEMENT_ORGANS.木.1": {
+"en": "eyes, tendons; stress and frustration",
+"zh": "眼睛、筋腱；压力与烦躁"
+},
+"domains.ELEMENT_ORGANS.火.0": {
+"en": "heart, small intestine",
+"zh": "心脏、小肠"
+},
+"domains.ELEMENT_ORGANS.火.1": {
+"en": "circulation, sleep quality; anxiety",
+"zh": "血液循环、睡眠质量；焦虑"
+},
+"domains.ELEMENT_ORGANS.土.0": {
+"en": "spleen, stomach",
+"zh": "脾、胃"
+},
+"domains.ELEMENT_ORGANS.土.1": {
+"en": "digestion, muscle tone; overthinking",
+"zh": "消化、肌肉张力；思虑过度"
+},
+"domains.ELEMENT_ORGANS.金.0": {
+"en": "lungs, large intestine",
+"zh": "肺、大肠"
+},
+"domains.ELEMENT_ORGANS.金.1": {
+"en": "respiratory system, skin; grief",
+"zh": "呼吸系统、皮肤；悲伤"
+},
+"domains.ELEMENT_ORGANS.水.0": {
+"en": "kidneys, bladder",
+"zh": "肾、膀胱"
+},
+"domains.ELEMENT_ORGANS.水.1": {
+"en": "bones, ears, hormones; fatigue and fear",
+"zh": "骨骼、耳朵、激素；疲惫与恐惧"
+},
+"domains.ELEMENT_INDUSTRIES.木": {
+"en": "education, publishing, textiles, botany & agriculture, design",
+"zh": "教育、出版、纺织、园艺与农业、设计"
+},
+"domains.ELEMENT_INDUSTRIES.火": {
+"en": "energy, F&B, media & entertainment, tech/electronics, beauty",
+"zh": "能源、餐饮、传媒与娱乐、科技/电子、美容"
+},
+"domains.ELEMENT_INDUSTRIES.土": {
+"en": "property, construction, insurance, land & farming, HR/admin",
+"zh": "地产、建筑、保险、土地与农耕、人事/行政"
+},
+"domains.ELEMENT_INDUSTRIES.金": {
+"en": "finance, engineering, hardware, automotive, law",
+"zh": "金融、工程、硬件、汽车、法律"
+},
+"domains.ELEMENT_INDUSTRIES.水": {
+"en": "logistics & shipping, tourism, trading, beverages, communication",
+"zh": "物流与航运、旅游、贸易、饮料、通信"
+},
+"domains.personality_axes.01": {
+"en": "表達 Expression",
+"zh": "表达"
+},
+"domains.personality_axes.02": {
+"en": "expressive & outspoken",
+"zh": "外放敢言"
+},
+"domains.personality_axes.03": {
+"en": "reserved output",
+"zh": "内敛含蓄"
+},
+"domains.personality_axes.04": {
+"en": "no strong tendency",
+"zh": "倾向不明显"
+},
+"domains.personality_axes.05": {
+"en": "食傷 {e:.0%} (≥20% expressive, ≤5% reserved)",
+"zh": "食伤 {e:.0%}（≥20%外放，≤5%内敛）"
+},
+"domains.personality_axes.06": {
+"en": "行動 Action",
+"zh": "行动"
+},
+"domains.personality_axes.07": {
+"en": "decisive — acts under pressure",
+"zh": "果断，压力下能行动"
+},
+"domains.personality_axes.08": {
+"en": "deliberate — needs runway",
+"zh": "稳重，需要铺垫的时间"
+},
+"domains.personality_axes.10": {
+"en": "七殺+劫財 {a:.0%} (≥25% decisive, ≤8% deliberate)",
+"zh": "七杀+劫财 {a:.0%}（≥25%果断，≤8%稳重）"
+},
+"domains.personality_axes.11": {
+"en": "權威 Authority stance",
+"zh": "权威态度"
+},
+"domains.personality_axes.12": {
+"en": "challenges rules",
+"zh": "敢于挑战规则"
+},
+"domains.personality_axes.13": {
+"en": "works within structure",
+"zh": "在体系内做事"
+},
+"domains.personality_axes.15": {
+"en": "思維 Thinking style",
+"zh": "思维方式"
+},
+"domains.personality_axes.16": {
+"en": "reflective & theoretical",
+"zh": "偏思考、重理论"
+},
+"domains.personality_axes.17": {
+"en": "pragmatic & concrete",
+"zh": "务实、重具体"
+},
+"domains.personality_axes.19": {
+"en": "印 {r:.0%} vs 財 {w:.0%} (≥25% and larger wins)",
+"zh": "印 {r:.0%} 对 财 {w:.0%}（≥25%且较大的一方胜出）"
+},
+"domains.personality_axes.20": {
+"en": "情感 Emotional display",
+"zh": "情感表露"
+},
+"domains.personality_axes.21": {
+"en": "direct & open",
+"zh": "直接坦率"
+},
+"domains.personality_axes.23": {
+"en": "比劫 {b:.0%}; 印 {r:.0%} with 食傷 {e:.0%}",
+"zh": "比劫 {b:.0%}；印 {r:.0%}，配食伤 {e:.0%}"
+},
+"domains.life_domains.01": {
+"en": "capped at 95",
+"zh": "上限 95"
+},
+"domains.life_domains.02": {
+"en": "prominent 强",
+"zh": "突出"
+},
+"domains.life_domains.03": {
+"en": "balanced 中",
+"zh": "均衡"
+},
+"domains.life_domains.04": {
+"en": "needs support 待补",
+"zh": "需要扶持"
+},
+"domains.life_domains.05": {
+"en": "structural signal — ten-god shares + 神煞 + palace checks (MODERN SYNTHESIS)",
+"zh": "结构信号：十神占比 + 神煞 + 宫位检查（现代综合推演）"
+},
+"domains.life_domains.06": {
+"en": "Love & attraction",
+"zh": "恋爱与异性缘"
+},
+"domains.life_domains.07": {
+"en": "spouse star prominent",
+"zh": "配偶星突出"
+},
+"domains.life_domains.08": {
+"en": "spouse star present",
+"zh": "配偶星具备"
+},
+"domains.life_domains.09": {
+"en": "spouse star faint",
+"zh": "配偶星微弱"
+},
+"domains.life_domains.10": {
+"en": "spouse star absent",
+"zh": "配偶星缺失"
+},
+"domains.life_domains.11": {
+"en": "桃花 peach-blossom star",
+"zh": "桃花星"
+},
+"domains.life_domains.12": {
+"en": "expressive 食傷 presence",
+"zh": "食伤表达力强"
+},
+"domains.life_domains.13": {
+"en": "Relationship stability",
+"zh": "感情稳定"
+},
+"domains.life_domains.14": {
+"en": "spouse palace clashed (日支沖)",
+"zh": "配偶宫被冲克（日支冲）"
+},
+"domains.life_domains.15": {
+"en": "spouse palace combined (日支合)",
+"zh": "配偶宫被合（日支合）"
+},
+"domains.life_domains.16": {
+"en": "spouse palace undisturbed",
+"zh": "配偶宫安稳"
+},
+"domains.life_domains.17": {
+"en": "mixed 正/偏 spouse stars",
+"zh": "正、偏配偶星并见"
+},
+"domains.life_domains.18": {
+"en": "single clear spouse star",
+"zh": "配偶星单一清晰"
+},
+"domains.life_domains.19": {
+"en": "no spouse star to anchor",
+"zh": "没有配偶星可作依托"
+},
+"domains.life_domains.20": {
+"en": "spouse element is favourable",
+"zh": "配偶五行为喜用"
+},
+"domains.life_domains.21": {
+"en": "spouse element is avoided",
+"zh": "配偶五行为忌"
+},
+"domains.life_domains.22": {
+"en": "Career structure",
+"zh": "事业结构"
+},
+"domains.life_domains.23": {
+"en": "authority stars prominent",
+"zh": "官杀星突出"
+},
+"domains.life_domains.24": {
+"en": "authority stars faint",
+"zh": "官杀星偏弱"
+},
+"domains.life_domains.25": {
+"en": "power element favourable",
+"zh": "官杀五行为喜用"
+},
+"domains.life_domains.26": {
+"en": "power element avoided — pressure",
+"zh": "官杀五行为忌，压力偏大"
+},
+"domains.life_domains.27": {
+"en": "resource 印 cushions pressure",
+"zh": "印星缓冲压力"
+},
+"domains.life_domains.28": {
+"en": "驛馬 mobility star",
+"zh": "驿马星"
+},
+"domains.life_domains.29": {
+"en": "將星 leadership star",
+"zh": "将星"
+},
+"domains.life_domains.30": {
+"en": "strong Day Master carries pressure",
+"zh": "日主偏强，扛得住压力"
+},
+"domains.life_domains.31": {
+"en": "weak Day Master under pressure",
+"zh": "日主偏弱，压力下吃紧"
+},
+"domains.life_domains.32": {
+"en": "Wealth capacity",
+"zh": "担财能力"
+},
+"domains.life_domains.33": {
+"en": "wealth stars prominent",
+"zh": "财星突出"
+},
+"domains.life_domains.34": {
+"en": "wealth stars present",
+"zh": "财星具备"
+},
+"domains.life_domains.35": {
+"en": "wealth stars faint",
+"zh": "财星微弱"
+},
+"domains.life_domains.36": {
+"en": "wealth stars absent",
+"zh": "财星缺失"
+},
+"domains.life_domains.37": {
+"en": "wealth element favourable",
+"zh": "财的五行为喜用"
+},
+"domains.life_domains.38": {
+"en": "wealth element avoided",
+"zh": "财的五行为忌"
+},
+"domains.life_domains.39": {
+"en": "財庫 wealth vault branch present",
+"zh": "财库地支在命"
+},
+"domains.life_domains.40": {
+"en": "祿神 salary star present",
+"zh": "禄神在命"
+},
+"domains.life_domains.41": {
+"en": "strong enough to carry wealth",
+"zh": "日主够强，担得起财"
+},
+"domains.life_domains.42": {
+"en": "wealth drains a weak chart — pace it",
+"zh": "财会耗弱命盘，要放慢节奏"
+},
+"domains.life_domains.43": {
+"en": "Learning structure",
+"zh": "学习结构"
+},
+"domains.life_domains.44": {
+"en": "resource 印 prominent",
+"zh": "印星突出"
+},
+"domains.life_domains.45": {
+"en": "resource 印 present",
+"zh": "印星具备"
+},
+"domains.life_domains.46": {
+"en": "文昌/學堂 study star",
+"zh": "文昌/学堂，主学业"
+},
+"domains.life_domains.47": {
+"en": "華蓋 depth star",
+"zh": "华盖，主深思"
+},
+"domains.life_domains.48": {
+"en": "expressive output supports learning",
+"zh": "食伤的表达有助学习"
+},
+"domains.life_domains.49": {
+"en": "Constitution",
+"zh": "体质"
+},
+"domains.life_domains.50": {
+"en": "five elements in workable balance",
+"zh": "五行平衡得当"
+},
+"domains.health_map.01": {
+"en": "excess 過旺",
+"zh": "过旺"
+},
+"domains.health_map.02": {
+"en": "weak 不足",
+"zh": "不足"
+},
+"domains.health_map.03": {
+"en": "watch 偏弱 (day-master element thin, 無根)",
+"zh": "留意偏弱（日主五行偏薄，无根）"
+},
+"extras.PALACE_DIR.艮": {
+"en": "NE",
+"zh": "东北"
+},
+"extras.PALACE_DIR.巽": {
+"en": "SE",
+"zh": "东南"
+},
+"extras.PALACE_DIR.坤": {
+"en": "SW",
+"zh": "西南"
+},
+"extras.PALACE_DIR.乾": {
+"en": "NW",
+"zh": "西北"
+},
+"extras.placements.01": {
+"en": "bed head",
+"zh": "床头"
+},
+"extras.placements.02": {
+"en": "八宅: 天醫 for rest and recovery; 生氣 is the alternate when the room cannot allow it",
+"zh": "八宅：休息和恢复取天医；房间不允许时，以生气为备选"
+},
+"extras.placements.03": {
+"en": "work desk",
+"zh": "书桌"
+},
+"extras.placements.04": {
+"en": "八宅: face 生氣 for vitality and output",
+"zh": "八宅：面朝生气，利精力和产出"
+},
+"extras.placements.05": {
+"en": "main door",
+"zh": "大门"
+},
+"extras.placements.06": {
+"en": "八宅: the door draws 氣 — 生氣 first, 延年 second",
+"zh": "八宅：大门是纳气之处，先取生气，再取延年"
+},
+"extras.placements.07": {
+"en": "couples' bed",
+"zh": "夫妻床"
+},
+"extras.placements.08": {
+"en": "八宅: 延年 governs longevity and harmony between partners",
+"zh": "八宅：延年主长寿和夫妻和睦"
+},
+"extras.placements.09": {
+"en": "quiet study / retreat",
+"zh": "安静读书 / 静修处"
+},
+"extras.placements.10": {
+"en": "八宅: 伏位 is the stable, low-drama sector for reflection",
+"zh": "八宅：伏位最稳、最少波折，适合沉思"
+},
+"extras.placements.11": {
+"en": "study corner",
+"zh": "学习角"
+},
+"extras.placements.12": {
+"en": "文昌 by day stem {day_master} → {wc}; the classical seat for study and exams",
+"zh": "以日干 {day_master} 取文昌在 {wc}，是古法中读书考试的位置"
+},
+"extras.placements.13": {
+"en": "relationship corner",
+"zh": "感情角"
+},
+"extras.placements.14": {
+"en": "桃花 of the {yb} trine → {trine_桃花}; activate for social and romantic life",
+"zh": "{yb} 三合局的桃花在 {trine_桃花}，用来激活社交和感情"
+},
+"extras.placements.15": {
+"en": "travel corner",
+"zh": "出行角"
+},
+"extras.placements.16": {
+"en": "驛馬 of the {yb} trine → {trine_驛馬}; movement, travel and relocation",
+"zh": "{yb} 三合局的驿马在 {trine_驛馬}，主奔波、出行和搬迁"
+},
+"extras.compass_afflictions.01": {
+"en": "your {stars_pal} sector carries {zh} this year — ",
+"zh": "你的 {stars_pal} 方位今年有 {zh}，"
+},
+"extras.compass_afflictions.02": {
+"en": "sit with your back to it, do not renovate",
+"zh": "坐时背对它，不要装修"
+},
+"extras.compass_afflictions.03": {
+"en": "no ground-breaking or heavy disturbance there",
+"zh": "那里不要动土，也不要做大的改动"
+},
+"extras.compass_afflictions.04": {
+"en": "your {stars_pal} sector carries 三煞 this year — facing it is fine, avoid sitting toward it or renovating",
+"zh": "你的 {stars_pal} 方位今年有三煞：面对它没关系，但别背对着它坐，也别在那里装修"
+},
+"interpret.GROUP_MEANING.比劫": {
+"en": "peers & independence (self-reliance, siblings, competition for resources)",
+"zh": "同辈与独立（自立、兄弟姐妹、争夺资源）"
+},
+"interpret.GROUP_MEANING.食傷": {
+"en": "output & expression (creativity, performance, children)",
+"zh": "表达与输出（创造力、表现、子女）"
+},
+"interpret.GROUP_MEANING.財": {
+"en": "wealth (practical results, money; classically the spouse star in a man's chart)",
+"zh": "财星（务实的成果、金钱；古法中是男命的配偶星）"
+},
+"interpret.GROUP_MEANING.官殺": {
+"en": "authority (career, discipline, status, pressure; classically the spouse star in a woman's chart)",
+"zh": "官杀（事业、纪律、地位、压力；古法中是女命的配偶星）"
+},
+"interpret.GROUP_MEANING.印": {
+"en": "resource (learning, protection, support from elders)",
+"zh": "印星（学习、庇护、长辈的扶持）"
+},
+"interpret.SHENG_META.('木',_'火')": {
+"en": "ideas and growth fuel expression",
+"zh": "点子和成长滋养表达"
+},
+"interpret.SHENG_META.('火',_'土')": {
+"en": "action settles into stability and routine",
+"zh": "行动沉淀为稳定和规律"
+},
+"interpret.SHENG_META.('土',_'金')": {
+"en": "routine sharpens discipline and follow-through",
+"zh": "规律磨出纪律和执行力"
+},
+"interpret.SHENG_META.('金',_'水')": {
+"en": "structure deepens insight and adaptability",
+"zh": "条理加深洞察力和应变力"
+},
+"interpret.SHENG_META.('水',_'木')": {
+"en": "reflection feeds growth and initiative",
+"zh": "思考滋养成长和主动"
+},
+"interpret.KE_META.('木',_'土')": {
+"en": "growth overruns stability — plans trample routines",
+"zh": "生长压过了稳定，计划踩乱了日常"
+},
+"interpret.KE_META.('土',_'水')": {
+"en": "caution dams flow — communication and adaptability get blocked",
+"zh": "谨慎拦住了流动，沟通和应变受阻"
+},
+"interpret.KE_META.('水',_'火')": {
+"en": "overthinking damps enthusiasm and visibility",
+"zh": "想得太多浇灭了热情和存在感"
+},
+"interpret.KE_META.('火',_'金')": {
+"en": "urgency melts discipline — structure gives way under passion",
+"zh": "急躁熔掉了纪律，条理在激情面前松动"
+},
+"interpret.KE_META.('金',_'木')": {
+"en": "structure prunes growth — rules and rigidity cut initiative",
+"zh": "条理修剪了成长，规矩和僵化削弱了主动"
+},
+"interpret.ELEMENT_TRAIT.木": {
+"en": "pioneering, growth-driven, initiating",
+"zh": "开拓、重成长、爱发起"
+},
+"interpret.ELEMENT_TRAIT.火": {
+"en": "expressive, social, leadership-leaning",
+"zh": "外向、善交际、有领导倾向"
+},
+"interpret.ELEMENT_TRAIT.土": {
+"en": "steady, reliable, grounding",
+"zh": "稳当、可靠、踏实"
+},
+"interpret.ELEMENT_TRAIT.金": {
+"en": "structured, precise, disciplined",
+"zh": "有条理、精准、自律"
+},
+"interpret.ELEMENT_TRAIT.水": {
+"en": "reflective, adaptive, communicative",
+"zh": "爱思考、善变通、会沟通"
+},
+"interpret.ABSENT_COST.木": {
+"en": "initiative and fresh starts need deliberate effort",
+"zh": "主动和新的开始需要刻意用力"
+},
+"interpret.ABSENT_COST.火": {
+"en": "visibility and self-promotion need deliberate effort",
+"zh": "存在感和自我推介需要刻意用力"
+},
+"interpret.ABSENT_COST.土": {
+"en": "grounding and routine need deliberate effort",
+"zh": "踏实和规律需要刻意用力"
+},
+"interpret.ABSENT_COST.金": {
+"en": "structure and follow-through need deliberate effort",
+"zh": "条理和执行力需要刻意用力"
+},
+"interpret.ABSENT_COST.水": {
+"en": "adaptability and communication need deliberate effort",
+"zh": "应变和沟通需要刻意用力"
+},
+"interpret._TG_GROUP.比肩": {
+"en": "peer",
+"zh": "peer"
+},
+"interpret._TG_GROUP.食神": {
+"en": "output",
+"zh": "output"
+},
+"interpret._TG_GROUP.正財": {
+"en": "wealth",
+"zh": "wealth"
+},
+"interpret._TG_GROUP.正官": {
+"en": "authority",
+"zh": "authority"
+},
+"interpret._TG_GROUP.正印": {
+"en": "resource",
+"zh": "resource"
+},
+"interpret.PALACE_INFO.0.0": {
+"en": "year",
+"zh": "year"
+},
+"interpret.PALACE_INFO.0.1": {
+"en": "年柱 Year",
+"zh": "年柱"
+},
+"interpret.PALACE_INFO.0.2": {
+"en": "ages 0–15",
+"zh": "0～15岁"
+},
+"interpret.PALACE_INFO.0.3": {
+"en": "ancestry, childhood environment, first impressions on strangers",
+"zh": "祖上、童年环境、给陌生人的第一印象"
+},
+"interpret.PALACE_INFO.1.0": {
+"en": "month",
+"zh": "month"
+},
+"interpret.PALACE_INFO.1.1": {
+"en": "月柱 Month",
+"zh": "月柱"
+},
+"interpret.PALACE_INFO.1.2": {
+"en": "ages 16–32",
+"zh": "16～32岁"
+},
+"interpret.PALACE_INFO.1.3": {
+"en": "parents, early adulthood, the career headquarters",
+"zh": "父母、青年时期、事业的大本营"
+},
+"interpret.PALACE_INFO.2.0": {
+"en": "day",
+"zh": "day"
+},
+"interpret.PALACE_INFO.2.1": {
+"en": "日柱 Day",
+"zh": "日柱"
+},
+"interpret.PALACE_INFO.2.2": {
+"en": "ages 33–48",
+"zh": "33～48岁"
+},
+"interpret.PALACE_INFO.2.3": {
+"en": "the self (stem) · spouse and domestic life (branch)",
+"zh": "自己（天干）· 配偶与家庭生活（地支）"
+},
+"interpret.PALACE_INFO.3.0": {
+"en": "hour",
+"zh": "hour"
+},
+"interpret.PALACE_INFO.3.1": {
+"en": "時柱 Hour",
+"zh": "时柱"
+},
+"interpret.PALACE_INFO.3.2": {
+"en": "ages 49+",
+"zh": "49岁以后"
+},
+"interpret.PALACE_INFO.3.3": {
+"en": "children, late-life luck, side pursuits, the subconscious",
+"zh": "子女、晚年运势、副业爱好、潜意识"
+},
+"interpret._PALACE_TMPL.year": {
+"en": "Roots & first impressions read as {god}: {meaning}",
+"zh": "根基与第一印象，读作 {god}：{meaning}"
+},
+"interpret._PALACE_TMPL.month": {
+"en": "The career HQ is {god}-flavoured: {meaning} — the environment your working life grows in",
+"zh": "事业的大本营带着 {god} 的底色：{meaning}；这是你的职业生涯生长的土壤"
+},
+"interpret._PALACE_TMPL.day": {
+"en": "You sit on {god}: {meaning} — see the spouse-palace reading (十神/婚戀)",
+"zh": "你坐 {god}：{meaning}，详见配偶宫的解读（十神/婚恋）"
+},
+"interpret._PALACE_TMPL.hour": {
+"en": "The fruit palace carries {god}: {meaning} — the flavour of children, students and late-life work",
+"zh": "果实宫带 {god}：{meaning}，影响子女、学生和晚年工作的底色"
+},
+"interpret.element_relations.01": {
+"en": "feeds you",
+"zh": "生你"
+},
+"interpret.element_relations.02": {
+"en": "support, learning, protection — your recharge line",
+"zh": "扶持、学习、庇护，是你补充能量的通道"
+},
+"interpret.element_relations.03": {
+"en": "you feed",
+"zh": "你所生"
+},
+"interpret.element_relations.04": {
+"en": "expression and output — spends your energy",
+"zh": "表达和输出，消耗你的能量"
+},
+"interpret.element_relations.05": {
+"en": "you control",
+"zh": "你所克"
+},
+"interpret.element_relations.06": {
+"en": "wealth — results the chart can seize and hold",
+"zh": "财星：命盘抓得住、留得住的成果"
+},
+"interpret.element_relations.07": {
+"en": "controls you",
+"zh": "克你"
+},
+"interpret.element_relations.08": {
+"en": "discipline, career pressure, external structure",
+"zh": "纪律、事业压力、外在约束"
+},
+"interpret.element_relations.09": {
+"en": "self-strength, siblings, competition",
+"zh": "自身力量、兄弟姐妹、竞争"
+},
+"interpret.element_relations.10": {
+"en": "{hi} dominates at {share_hi}% — {hi_element_trait} colours the whole chart, and its excesses are the first faults to watch.",
+"zh": "{hi} 占 {share_hi}%，是命盘里最旺的一方，{hi_element_trait} 的特质染透整张命盘，它过头的地方是最先要留意的毛病。"
+},
+"interpret.element_relations.11": {
+"en": "{el} is effectively absent ({s}%) — {el_absent_cost}; the generating chain into {el_sheng_c} also loses its feeder.",
+"zh": "{el} 几乎缺失（{s}%），{el_absent_cost}；通向 {el_sheng_c} 的相生链也因此少了供给。"
+},
+"interpret.element_relations.12": {
+"en": "{a} ({share_a}%) bears down on weak {b} ({share_b}%) — {x_ke_meta}.",
+"zh": "{a}（{share_a}%）压着偏弱的 {b}（{share_b}%），{x_ke_meta}。"
+},
+"interpret.element_relations.13": {
+"en": "Two strong camps: {a} ({share_a}%) vs {b} ({share_b}%) — {x_ke_meta}; a recurring life theme, manageable once named.",
+"zh": "两大阵营对峙：{a}（{share_a}%）对 {b}（{share_b}%），{x_ke_meta}；这是反复出现的人生主题，点明之后就好应对。"
+},
+"interpret.element_relations.14": {
+"en": "The support line is intact: {r_el} ({r_share}%) 生 {dm_el} — {x_sheng_meta}; help and recovery are structurally available.",
+"zh": "扶持线是通的：{r_el}（{r_share}%）生 {dm_el}，{x_sheng_meta}；帮助和恢复在结构上是有的。"
+},
+"interpret.element_relations.15": {
+"en": "The support line is thin: {r_el} ({r_share}%) barely feeds {dm_el} — recharge does not happen by itself here; build it in deliberately (rest, mentors, study).",
+"zh": "扶持线偏细：{r_el}（{r_share}%）很难滋养 {dm_el}，能量不会自己补回来，要主动安排进去（休息、贵人、学习）。"
+},
+"interpret.element_relations.16": {
+"en": "五行生剋 cycles applied to this chart's weighted element balance",
+"zh": "五行生克的循环，套用在这张命盘加权后的五行比重上"
+},
+"interpret.ten_god_insights.01": {
+"en": "carries {el} — one of your 用神: a clean engine, using it strengthens the chart",
+"zh": "带 {el}，是你的用神之一：这是一台干净的引擎，用它会让命盘更有力"
+},
+"interpret.ten_god_insights.02": {
+"en": "carries {el} — an UNFAVOURABLE element here: its gifts run on borrowed energy; use it deliberately and budget recovery",
+"zh": "带 {el}，对你是忌：它的长处靠透支来的能量运转，要有意识地用，并留出恢复的时间"
+},
+"interpret.ten_god_insights.03": {
+"en": "carries {el} — neutral for this chart",
+"zh": "带 {el}，对这张命盘属中性"
+},
+"interpret.ten_god_insights.04": {
+"en": "rooted",
+"zh": "有根"
+},
+"interpret.ten_god_insights.05": {
+"en": "floating",
+"zh": "无根"
+},
+"interpret.ten_god_insights.06": {
+"en": "formed 已成 (all components 透干)",
+"zh": "已成（各组成部分都透干）"
+},
+"interpret.ten_god_insights.07": {
+"en": "latent 待透 ({join_missing} hidden only)",
+"zh": "待透（{join_missing} 只藏不透）"
+},
+"interpret.ten_god_insights.08": {
+"en": "the {dec_gz} decade (ages {dec_ages}) brings the missing component — the pattern activates then",
+"zh": "{dec_gz} 这步大运（{dec_ages}岁）会补上缺的那一块，格局到那时才被激活"
+},
+"interpret.ten_god_insights.09": {
+"en": "refined skill tames force",
+"zh": "精炼的本事能驯服力量"
+},
+"interpret.ten_god_insights.10": {
+"en": "the advisor pattern — influence through mastery, not dominance; demanding roles suit you when you bring craft to them",
+"zh": "顾问型格局：靠精通产生影响，而不是靠强势压人；带着手艺去担当要求高的角色，最适合你"
+},
+"interpret.ten_god_insights.11": {
+"en": "talent chafes against authority",
+"zh": "才华与权威相互摩擦"
+},
+"interpret.ten_god_insights.12": {
+"en": "the classic friction pattern — candour collides with hierarchy; choose environments that price honesty as an asset, and document wins before challenging rules",
+"zh": "典型的摩擦格局：直率撞上等级；选重视坦诚的环境，先把成绩记录下来，再去挑战规则"
+},
+"interpret.ten_god_insights.13": {
+"en": "pressure converts to growth",
+"zh": "压力转化为成长"
+},
+"interpret.ten_god_insights.14": {
+"en": "stress becomes study: credentials, mentors and frameworks turn 七殺 pressure into rank — the high-stakes professional pattern",
+"zh": "压力变成学习：学历、贵人和框架把七杀的压力变成职级，是高压专业人士的典型格局"
+},
+"interpret.ten_god_insights.15": {
+"en": "talent under discipline",
+"zh": "才华受纪律约束"
+},
+"interpret.ten_god_insights.16": {
+"en": "raw output with built-in quality control — creative work that survives editing; protect the learning time that powers it",
+"zh": "原始的表达力自带质量把关：创作经得起修改；守住滋养它的学习时间"
+},
+"interpret.ten_god_insights.17": {
+"en": "authority feeds learning",
+"zh": "权威滋养学习"
+},
+"interpret.ten_god_insights.18": {
+"en": "the steady-ascent pattern — institutions reward you; rank comes through credentials rather than risk",
+"zh": "稳步上升的格局：机构会回报你；职级靠资质和资历积累，而不是靠冒险"
+},
+"interpret.ten_god_insights.19": {
+"en": "peers crowd the wealth",
+"zh": "同辈挤占了财"
+},
+"interpret.ten_god_insights.20": {
+"en": "partnerships and 'friends' bleed money faster than rivals do — keep finances separate, put agreements in writing",
+"zh": "合伙和“朋友”漏钱比对手还快：钱要分开管，约定写成白纸黑字"
+},
+"interpret.ten_god_insights.21": {
+"en": "wealth outweighs the carrier",
+"zh": "财多过承载它的人"
+},
+"interpret.ten_god_insights.22": {
+"en": "opportunities exceed carrying capacity — strengthen the self (rest, support, focus) before chasing more, or money passes through without staying",
+"zh": "机会超过承载力：先把自己养强（休息、扶持、专注），再去追更多，否则钱只是从手里经过，留不住"
+},
+"interpret.ten_god_insights.23": {
+"en": "structure over percentages: 用神 alignment of the heavy gods, rooting of visible stems, classical pair patterns — thresholds on weighted god shares",
+"zh": "重结构，不重百分比：看主要十神与用神是否相合、透出的天干有没有根、经典的成对格局，而不是按十神加权占比设阈值"
+},
+"interpret.four_palaces.01": {
+"en": "clashed 被沖 ({clash_pair}) — attraction comes easily, but the relationship moves through more change before it settles",
+"zh": "被冲（{clash_pair}）：容易互相吸引，但感情要经历更多变动才会安定"
+},
+"interpret.four_palaces.02": {
+"en": "in combination 逢合 ({he_pair}) — the palace is pulled by another pillar; family and context shape the marriage",
+"zh": "逢合（{he_pair}）：宫位被另一柱牵动；家庭和环境会左右婚姻"
+},
+"interpret.four_palaces.03": {
+"en": "under {xing_kind} ({xing_pair}) — quiet friction in the domestic seat; name it early rather than let it accumulate",
+"zh": "受 {xing_kind}（{xing_pair}）：家宅之位有暗暗的摩擦；早点说开，别让它越积越多"
+},
+"interpret.four_palaces.04": {
+"en": "undisturbed — a stable seat for the marriage",
+"zh": "未受冲扰：是婚姻稳固的位置"
+},
+"interpret.four_palaces.05": {
+"en": "hosts {join_sp_gods} — the partner's energy reads as {TEN_GOD_MEANING_sp_gods}",
+"zh": "坐 {join_sp_gods}：伴侣的能量表现为 {TEN_GOD_MEANING_sp_gods}"
+},
+"interpret.four_palaces.06": {
+"en": "carries {join_fromkeys_hr_gods}",
+"zh": "藏有 {join_fromkeys_hr_gods}"
+},
+"interpret.four_palaces.07": {
+"en": "; output stars at {out_share}% — the bond with children/students runs through shared creation and teaching",
+"zh": "；食伤星占 {out_share}%：与子女、学生的缘分通过共同创作和教导来体现"
+},
+"interpret.four_palaces.08": {
+"en": "; output stars at {out_share}% — the bond builds through deliberate time, not shared projects",
+"zh": "；食伤星占 {out_share}%：这份缘分靠有意安排的相处时间来建立，而不是共同做项目"
+},
+"interpret.four_palaces.09": {
+"en": "natally OPEN 已開 — the storehouse works from birth; accumulation compounds",
+"zh": "原局已开：财库从出生就能运作，积累会越滚越大"
+},
+"interpret.four_palaces.10": {
+"en": "present but sealed — it opens in {opener} years (the 財庫 vault years in the timing windows); those are the accumulation windows",
+"zh": "有库但封着：到 {opener}年才打开（时机窗口里的财库年）；这些就是积累的窗口"
+},
+"interpret.four_palaces.11": {
+"en": "no {w_el}-vault branch ({vb}) in the chart — wealth flows rather than stores; retention needs systems (automatic saving), not windfalls",
+"zh": "命盘里没有 {w_el} 库之支（{vb}）：财是流动的，存不住；要靠机制（比如自动储蓄）留财，而不是靠横财"
+},
+"interpret.four_palaces.12": {
+"en": "宮位 four-palace doctrine: year=ancestry/0–15, month=career HQ/16–32, day=self+spouse/33–48, hour=children/49+; 財庫 = wealth-element vault branch, opened by its 六沖 clash",
+"zh": "宫位：四宫之说。年柱=祖上，0～15岁；月柱=事业大本营，16～32岁；日柱=自己与配偶，33～48岁；时柱=子女，49岁起；财库=财星五行的库支，由六冲打开"
+},
+"interpret._fav_word.01": {
+"en": "favourable 喜",
+"zh": "喜"
+},
+"interpret._fav_word.02": {
+"en": "unfavourable 忌",
+"zh": "忌"
+},
+"interpret.interpret_person.01": {
+"en": "[§2] The Day Master — the stem that represents the person — is {day_master} ({dm_el_element_en}{dm_el}), judged {strength_verdict} (score {strength_score:+.2f}; season state {season}). ",
+"zh": "[§2] 日主，也就是代表你自己的那个天干，是 {day_master}（{dm_el}），判断为 {strength_verdict}（得分 {strength_score:+.2f}；月令状态 {season}）。"
+},
+"interpret.interpret_person.02": {
+"en": "A strong chart can carry responsibility, output and wealth — it benefits more from productive outlets (食傷·財·官殺) than from further support.",
+"zh": "身强的命盘能担起责任、产出和财；比起继续扶持，更适合通过食伤、财、官杀这几条出口来发挥。"
+},
+"interpret.interpret_person.03": {
+"en": "A weak chart thrives on support — resource 印 and peers 比劫 strengthen it, while heavy drain (overwork, over-extension, excessive pressure) taxes it.",
+"zh": "身弱的命盘靠扶持才旺：印和比劫能让它强起来，而大量消耗（过劳、铺得太开、压力过大）会拖累它。"
+},
+"interpret.interpret_person.04": {
+"en": " Strength is a measure of balance, not ability — it only decides which elements act as this person's medicine.",
+"zh": "强弱衡量的是平衡，不是能力，它只决定哪些五行是这个人的用神。"
+},
+"interpret.interpret_person.05": {
+"en": "[§1·§5] BaZi treats a chart as a five-element ecosystem that wants balance. This one tilts: strongest {hi_element_en}{hi} ({w_hi}), weakest {lo_element_en}{lo} ({w_lo}). The elements that would correct the tilt are the 用神 — here {join_ys_favourable} — and they become practical levers: {wardrobe_phrase_ys}.",
+"zh": "[§1·§5] 八字把命盘看成一个追求平衡的五行生态。这张命盘有所偏：{hi} 最旺（{w_hi}），{lo} 最弱（{w_lo}）。能把偏差扶回来的五行就是用神，这里是 {join_ys_favourable}，它们可以落到实处：{wardrobe_phrase_ys}。"
+},
+"interpret.interpret_person.06": {
+"en": "[§1] Interactions 生剋: ",
+"zh": "[§1] 五行生克："
+},
+"interpret.interpret_person.07": {
+"en": "[§3–4] BaZi classifies every other character by its relationship to the Day Master into ten archetypes (十神) covering five life domains; where a chart's characters concentrate shows where its energy naturally goes. Here the concentration is: ",
+"zh": "[§3～4] 八字按每个字与日主的关系，把其余各字分成十神这十种角色，涵盖五大人生领域；命盘里哪些字集中，就说明能量自然流向哪里。这张命盘的集中情况是："
+},
+"interpret.interpret_person.08": {
+"en": "a supportive decade for this chart.",
+"zh": "这是对这张命盘有扶持的一步大运。"
+},
+"interpret.interpret_person.09": {
+"en": "a demanding decade — lean harder on the compensations above.",
+"zh": "这步大运要求高，要更多靠上面说的那些补救。"
+},
+"interpret.interpret_person.10": {
+"en": "a mixed decade — activate the favourable half.",
+"zh": "这步大运好坏参半，把有利的那一半用起来。"
+},
+"interpret.interpret_person.11": {
+"en": "[§6] Luck cycle 大運 in {year} (age {age}): pillar {gz} (ages {start_age:.0f}–{end_age:.0f}) carries {se_element_en}{se} ({fav_word_se}) over {be_element_en}{be} ({fav_word_be}) — {mood} Each decade-pillar overlays its two elements on the birth chart, tilting the balance for or against it — this is why the same chart has easier and harder decades.",
+"zh": "[§6] {year}年（{age}岁）的大运：{gz} 柱（{start_age:.0f}～{end_age:.0f}岁），天干 {se}（{fav_word_se}）盖在地支 {be}（{fav_word_be}）之上，{mood} 每步大运都会把它的两个五行叠在原局上，让平衡朝有利或不利的方向倾斜，这就是同一张命盘既有顺的十年、也有难的十年的原因。"
+},
+"interpret.interpret_person.12": {
+"en": "[§6] In {year} (age {age}) the first 10-year luck pillar has not started yet — the birth chart itself dominates.",
+"zh": "[§6] {year}年（{age}岁）第一步大运还没开始，主要看原局本身。"
+},
+"interpret.interpret_person.13": {
+"en": "[§8] Life-domain signals (rule-derived, 0–100; compared by standing among charts): strongest {best_en} {best_zh} ({best_score} — {best_band}); most in need of support {low_en} {low_zh} ({low_score}). Each score is assembled from auditable parts — star shares, 神煞 and palace checks, listed under the cards below — and reads as a structural tendency, not a prediction.",
+"zh": "[§8] 人生领域信号（按规则得出，0～100；按在命盘中的位次比较）：最强的是 {best_zh}（{best_score}，{best_band}）；最需要扶持的是 {low_zh}（{low_score}）。每个分数都由可核查的部分拼成：星的占比、神煞和宫位检查，列在下面的卡片里；它反映的是结构上的倾向，不是预测。"
+},
+"interpret.interpret_person.14": {
+"en": "[§7] Directions (八宅): {gua}命 · {gua_group_gua} — best directions {good_dirs_gua}. Sleep with the headboard toward, or face while working/studying, one of these where the room allows. The belief: the hours spent aligned to supportive directions (a third of life is spent asleep) let the home reinforce the chart instead of fighting it.",
+"zh": "[§7] 八宅方位：{gua}命 · {gua_group_gua}，吉方有 {good_dirs_gua}。房间条件允许的话，睡觉时头朝这些方向之一，或者工作、学习时面朝其中一个。背后的想法是：长时间（人生有三分之一在睡觉）对准有利的方向，家就能顺着命盘帮你，而不是跟它对着干。"
+},
+"interpret.interpret_person.15": {
+"en": "[§4] Read the distribution as where life's attention goes by default: this chart runs on {g1} ({p1}% — {g1_ten_god_meaning}) backed by {g2} ({p2}%). That is the engine; point it at things worth doing.",
+"zh": "[§4] 把这个分布看作你的注意力默认流向哪里：这张命盘主要靠 {g1}（{p1}%，{g1_ten_god_meaning}）运转，{g2}（{p2}%）为辅。这是你的引擎，把它用在值得做的事上。"
+},
+"interpret.interpret_person.16": {
+"en": " The faint gods ({join_faint}) mark domains that never happen by themselves here — they need a system, a schedule or a partner who carries them.",
+"zh": "微弱的十神（{join_faint}）对应的领域在这里不会自己发生，需要靠机制、日程，或者一位伙伴来分担。"
+},
+"interpret.interpret_person.17": {
+"en": " No god is faint — an unusually even spread; versatile, but watch for energy scattering across too many fronts.",
+"zh": "没有哪个十神微弱，分布异常均匀；多面手，但要当心精力分散到太多方面。"
+},
+"interpret.interpret_person.18": {
+"en": "[§5] Why {join_ys_favourable} are the medicine: 扶抑法 feeds a weak chart and drains a strong one",
+"zh": "[§5] 为什么 {join_ys_favourable} 是用神：扶抑法对弱盘是滋养，对强盘是泄耗"
+},
+"interpret.interpret_person.19": {
+"en": " — this chart is strong, so its medicine is productive outlets (output, wealth, discipline), not more support.",
+"zh": "。这张命盘身强，用神就是发挥的出路（食伤、财、官杀），不是更多扶持。"
+},
+"interpret.interpret_person.20": {
+"en": " — this chart is weak, so its medicine feeds and protects it (resource and peer elements), not more drain.",
+"zh": "。这张命盘身弱，用神就是滋养和保护它的五行（印和比劫），不是更多消耗。"
+},
+"interpret.interpret_person.21": {
+"en": " Apply it where exposure is long: bedroom direction, industry, daily colours. Treat 忌神 {join_ys_unfavourable} as load, not poison — fine in doses, taxing as a lifestyle.",
+"zh": "用在长期接触的地方：卧室朝向、行业、日常颜色。把忌神 {join_ys_unfavourable} 当作负担而不是毒药：少量无妨，长期当生活方式就会拖累。"
+},
+"interpret.interpret_person.22": {
+"en": "貴人 nobleman stars — help tends to arrive through people; ask early, it is structurally available",
+"zh": "贵人星：帮助多半通过人而来，早点开口，命盘里本来就有这份助力"
+},
+"interpret.interpret_person.23": {
+"en": "桃花 — natural charm/visibility; an asset in front-of-people roles, worth boundaries in commitments",
+"zh": "桃花：天生有魅力、容易被看见；适合要面对人的角色，感情承诺里要守好边界"
+},
+"interpret.interpret_person.24": {
+"en": "文昌/學堂 — study and writing are supported; exams and credentials pay off above average",
+"zh": "文昌/学堂：学习和写作有助力；考试和学历的回报高于平均"
+},
+"interpret.interpret_person.25": {
+"en": "驛馬 — movement luck; relocation, travel and role changes tend to open doors rather than close them",
+"zh": "驿马：走动运；搬家、出行和换岗位多半是开门而不是关门"
+},
+"interpret.interpret_person.26": {
+"en": "華蓋 — a solitary, contemplative streak; depth over breadth, needs alone-time to recharge",
+"zh": "华盖：有独处、爱沉思的一面；重深不重广，要有独处时间来恢复精力"
+},
+"interpret.interpret_person.27": {
+"en": "[§9] {len_ss} symbolic stars colour this chart. ",
+"zh": "[§9] 命盘里有 {len_ss} 个神煞，给它添了些色彩。"
+},
+"interpret.interpret_person.28": {
+"en": "Standouts: ",
+"zh": "其中最值得一提的："
+},
+"interpret.interpret_person.29": {
+"en": "None of the major auspicious clusters — read the individual notes below.",
+"zh": "没有出现主要的吉星组合，请看下面各项单独的说明。"
+},
+"interpret.interpret_person.30": {
+"en": " 神煞 are flavour on top of structure — never let one star overrule the balance reading above.",
+"zh": "神煞只是结构之上的点缀，千万别让某一颗星压过上面的平衡解读。"
+},
+"interpret.interpret_person.31": {
+"en": "[§10] Temperament, read straight off the ten-god mix: ",
+"zh": "[§10] 性格，直接从十神的配比读出："
+},
+"interpret.interpret_person.32": {
+"en": ". These are operating instructions, not judgments — arrange work and relationships so the tendencies are features.",
+"zh": "。这些是使用说明，不是评判，安排工作和关系时让这些倾向成为优点。"
+},
+"interpret.interpret_person.33": {
+"en": "no axis shows a strong tendency — a flexible, situation-driven temperament. The cost of flexibility is drift; external structure (deadlines, partners, routines) substitutes for the missing internal compulsion.",
+"zh": "没有哪条轴倾向明显，性格灵活、随情境而变。灵活的代价是容易没有重心；用外部的框架（截止日期、伙伴、日常规律）补上缺少的内在驱动力。"
+},
+"interpret.interpret_person.34": {
+"en": "{h_element} — {h_organs} carry the first strain when life overloads",
+"zh": "{h_element}：生活超负荷时，{h_organs} 最先吃力"
+},
+"interpret.interpret_person.35": {
+"en": "{h_element} — {h_organs} deserve baseline care before symptoms ask for it",
+"zh": "{h_element}：{h_organs} 值得在出症状之前先做基础保养"
+},
+"interpret.interpret_person.36": {
+"en": "[§11] Where this chart's body keeps score: ",
+"zh": "[§11] 这张命盘的身体最容易在哪里留下痕迹："
+},
+"interpret.interpret_person.37": {
+"en": ". Balanced elements are not risk markers. Reference against the timing trigger years, not medical advice.",
+"zh": "。平衡的五行不算风险标记。请对照时机窗口里的触发年份来看，这不是医疗建议。"
+},
+"interpret.interpret_person.38": {
+"en": "[§11] All five elements sit in the balanced band — no organ system is structurally flagged. Maintenance beats intervention: seasonal food, regular sleep, and use the the timing-window recovery years for elective procedures.",
+"zh": "[§11] 五行都在平衡区间，没有哪个脏腑系统在结构上被标出。维护胜过干预：吃应季的食物、规律睡觉，择期的治疗或手术可以放在时机窗口里的恢复年。"
+},
+"interpret.interpret_person.39": {
+"en": "[§12] Careers are ranked by how cheaply this chart converts effort into result: {t1_en} {t1_zh} and {t2_en} {t2_zh} lead because their field elements feed the 用神 and their working style matches the dominant gods.",
+"zh": "[§12] 职业按这张命盘把努力换成结果的成本从低到高排序：{t1_zh} 和 {t2_zh} 排在前面，因为它们的五行能滋养用神，工作方式也与主导十神相合。"
+},
+"interpret.interpret_person.40": {
+"en": " {av_en} is priced against the chart — possible, but it spends more than it returns; choose it only for reasons the chart doesn't measure.",
+"zh": "{av_en} 与这张命盘不太相配：做得到，但付出多过回报；选它，只该是出于命盘衡量不到的理由。"
+},
+"interpret.interpret_person.41": {
+"en": "momentum is structurally supported — expand",
+"zh": "势头有结构支撑，可以扩张"
+},
+"interpret.interpret_person.42": {
+"en": "friction does the teaching — repair, consolidate, don't force expansion",
+"zh": "摩擦在教你：修复、巩固，不要硬扩张"
+},
+"interpret.interpret_person.43": {
+"en": "the ground is shifting — stay liquid and commit late",
+"zh": "地面在动：保持流动性，晚点再下决心"
+},
+"interpret.interpret_person.44": {
+"en": "gains want banking, not betting — build quietly",
+"zh": "进账要存起来，不要拿去赌：悄悄积累"
+},
+"interpret.interpret_person.45": {
+"en": "The current decade ({cur_d_gz}, ages {cur_d_ages}) reads {cur_d_phase_zh} {cur_d_phase}: {PHASE_GLOSS_cur_d_phase}. ",
+"zh": "当前这步大运（{cur_d_gz}，{cur_d_ages}岁）属于 {cur_d_phase_zh} 阶段：{PHASE_GLOSS_cur_d_phase}。"
+},
+"interpret.interpret_person.46": {
+"en": "a mixed phase",
+"zh": "好坏参半的阶段"
+},
+"interpret.interpret_person.47": {
+"en": "Outside the tabulated 大運 decades (before the first or past the last) the birth chart itself dominates — the year-by-year table below still applies. ",
+"zh": "表上没有列出的大运之外（第一步之前或最后一步之后），主要看原局本身，下面逐年的表仍然适用。"
+},
+"interpret.interpret_person.48": {
+"en": "Standout years ahead: {join_peaks} — schedule launches and commitments into them. ",
+"zh": "往后的旺年：{join_peaks}，把启动和承诺排进这些年。"
+},
+"interpret.interpret_person.49": {
+"en": "No peak year in the next ten — a building stretch; judge yourself on inputs, not outcomes. ",
+"zh": "未来十年没有旺年，是积累期；以投入而不是结果来衡量自己。"
+},
+"interpret.interpret_person.50": {
+"en": "Care flagged in {join_cares}: consolidation years, not retreat years.",
+"zh": "需要留意的年份：{join_cares}，这是巩固之年，不是退缩之年。"
+},
+"liunian.TG_KEY.比肩": {
+"en": "self-drive & peers",
+"zh": "自我驱动与同辈"
+},
+"liunian.TG_KEY.劫財": {
+"en": "competition & bold moves",
+"zh": "竞争与大胆行动"
+},
+"liunian.TG_KEY.食神": {
+"en": "enjoyment & easy output",
+"zh": "享受与轻松的表达"
+},
+"liunian.TG_KEY.傷官": {
+"en": "expression & disruption",
+"zh": "表达与冲击"
+},
+"liunian.TG_KEY.偏財": {
+"en": "opportunities & ventures",
+"zh": "机会与创业"
+},
+"liunian.TG_KEY.正財": {
+"en": "cashflow & practical resources",
+"zh": "现金流与实用资源"
+},
+"liunian.TG_KEY.七殺": {
+"en": "pressure & decisive action",
+"zh": "压力与果断行动"
+},
+"liunian.TG_KEY.正官": {
+"en": "rules & stable responsibility",
+"zh": "规则与稳定的责任"
+},
+"liunian.TG_KEY.偏印": {
+"en": "intuition & niche skills",
+"zh": "直觉与小众技能"
+},
+"liunian.TG_KEY.正印": {
+"en": "learning & support",
+"zh": "学习与扶持"
+},
+"liunian.year_element_read.01": {
+"en": "favourable 喜",
+"zh": "喜"
+},
+"liunian.year_element_read.02": {
+"en": "unfavourable 忌",
+"zh": "忌"
+},
+"liunian.year_element_read.03": {
+"en": "流年 {stem}{branch} ({se_element_en} {se}/{be_element_en} {be}) vs 用神",
+"zh": "流年 {stem}{branch}（{se}/{be}）对照用神"
+},
+"liunian.year_element_read.04": {
+"en": "year stem {stem} {se_element_en} is {verdict_se}; year branch {branch} {be_element_en} is {verdict_be}",
+"zh": "流年天干 {stem}（{se_element_en}）为 {verdict_se}；流年地支 {branch}（{be_element_en}）为 {verdict_be}"
+},
+"liunian.annual_afflictions.01": {
+"en": "太歲 可坐不可向 — sitting with your back to it is fine; avoid FACING it for long periods, and never renovate or dig in its sector this year",
+"zh": "太岁可坐不可向：背对它没问题；避免长时间面朝它，今年也不要在它的方位动土装修"
+},
+"liunian.annual_afflictions.02": {
+"en": "歲破 (opposite 太歲) — the year breaker; avoid ground-breaking and major disturbance in this sector",
+"zh": "岁破（与太岁正对）：年内最易受冲破的方位；这个方位避免动土和大的扰动"
+},
+"liunian.annual_afflictions.03": {
+"en": "三煞 可向不可坐 — facing it is acceptable; avoid SITTING toward it and avoid renovation in its sectors",
+"zh": "三煞可向不可坐：面朝它可以；避免背对它而坐，其所在方位也避免装修"
+},
+"remedies.wardrobe_phrase.01": {
+"en": "wear/decorate with the colours {join_ys_colours} and favour room sectors of those elements; keep {join_ys_unfavourable} understated in decor and wardrobe",
+"zh": "穿戴和布置用 {join_ys_colours} 这些颜色，房间里也多用这些五行的方位；{join_ys_unfavourable} 在装饰和衣着上低调些"
+},
+"shensha.POS.0": {
+"en": "year",
+"zh": "year"
+},
+"shensha.POS.1": {
+"en": "month",
+"zh": "month"
+},
+"shensha.POS.2": {
+"en": "day",
+"zh": "day"
+},
+"shensha.POS.3": {
+"en": "hour",
+"zh": "hour"
+},
+"shensha.TEN_GOD_MEANING.比肩": {
+"en": "peers & self-reliance — siblings, equals, standing your ground",
+"zh": "同辈与自立：兄弟姐妹、同辈、站稳自己的立场"
+},
+"shensha.TEN_GOD_MEANING.劫財": {
+"en": "rivals & boldness — shared resources, competition, risk appetite",
+"zh": "对手与敢闯：共享资源、竞争、风险偏好"
+},
+"shensha.TEN_GOD_MEANING.食神": {
+"en": "gentle output — enjoyment, nurture, easy creativity",
+"zh": "温和的表达：享受、滋养、轻松的创造力"
+},
+"shensha.TEN_GOD_MEANING.傷官": {
+"en": "sharp output — brilliance, critique, rebellion against rules",
+"zh": "犀利的表达：才华横溢、批评、对规则的反叛"
+},
+"shensha.TEN_GOD_MEANING.偏財": {
+"en": "windfall wealth — opportunity, generosity, business flair",
+"zh": "意外之财：机会、慷慨、做生意的天分"
+},
+"shensha.TEN_GOD_MEANING.正財": {
+"en": "steady wealth — salary, prudence, savings (spouse star in a man's chart)",
+"zh": "稳定的财富：薪水、谨慎、储蓄（男命的配偶星）"
+},
+"shensha.TEN_GOD_MEANING.七殺": {
+"en": "raw pressure — ambition, decisiveness, discipline imposed from outside",
+"zh": "强烈的压力：进取心、果断、来自外部的纪律"
+},
+"shensha.TEN_GOD_MEANING.正官": {
+"en": "proper authority — rules, status, responsibility (spouse star in a woman's chart)",
+"zh": "正当的权威：规则、地位、责任（女命的配偶星）"
+},
+"shensha.TEN_GOD_MEANING.偏印": {
+"en": "unconventional learning — intuition, niche skills, solitary study",
+"zh": "不拘一格的学习：直觉、小众技能、独自钻研"
+},
+"shensha.TEN_GOD_MEANING.正印": {
+"en": "nurturing support — study, protection, elders, credentials",
+"zh": "滋养与扶持：学习、庇护、长辈、学历"
+},
+"shensha.MEANING.天乙貴人": {
+"en": "Nobleman — helpful people appear at critical moments",
+"zh": "天乙贵人：关键时刻有人出手相助"
+},
+"shensha.MEANING.太極貴人": {
+"en": "Tai Ji noble — affinity for philosophy, metaphysics, deep research",
+"zh": "太极贵人：对哲学、玄学、深入研究有亲和力"
+},
+"shensha.MEANING.文昌貴人": {
+"en": "Scholar star — study, writing, examinations",
+"zh": "文昌贵人：学习、写作、考试"
+},
+"shensha.MEANING.學堂": {
+"en": "Study Hall — natural learner, academic aptitude",
+"zh": "学堂：天生爱学习，有学术天赋"
+},
+"shensha.MEANING.桃花": {
+"en": "Peach Blossom — charm, attraction, social magnetism",
+"zh": "桃花：魅力、吸引力、社交感染力"
+},
+"shensha.MEANING.驛馬": {
+"en": "Travel Horse — movement, relocation, overseas links",
+"zh": "驿马：奔波、搬迁、海外缘分"
+},
+"shensha.MEANING.華蓋": {
+"en": "Canopy — solitary depth, spirituality, arts; thrives on niche study",
+"zh": "华盖：独处的深度、灵性、艺术；适合钻研小众学问"
+},
+"shensha.MEANING.空亡": {
+"en": "Void — the tagged pillar's matters feel intangible until triggered",
+"zh": "空亡：所在柱的事感觉虚而不实，直到被触发"
+},
+"shensha.MEANING.羊刃": {
+"en": "Yang Blade — drive and decisiveness; watch impulsiveness",
+"zh": "羊刃：冲劲与决断；留意冲动"
+},
+"shensha.MEANING.天德貴人": {
+"en": "Heavenly Virtue — protective benevolence, eases crises",
+"zh": "天德贵人：庇佑的善意，能化解危机"
+},
+"shensha.MEANING.月德貴人": {
+"en": "Monthly Virtue — quiet protection and goodwill",
+"zh": "月德贵人：默默的保护与善意"
+},
+"shensha.MEANING.將星": {
+"en": "General Star — leadership, command presence",
+"zh": "将星：领导力、统率的气场"
+},
+"shensha.MEANING.劫煞": {
+"en": "Robbery Sha — guard resources, avoid overexposure to risk",
+"zh": "劫煞：守住资源，避免过度暴露于风险"
+},
+"shensha.MEANING.祿神": {
+"en": "Salary star — innate earning capacity; steady income where it sits",
+"zh": "禄神：天生的赚钱能力；禄所在之处收入稳定"
+},
+"shensha.life_palaces.01": {
+"en": "命宮/胎元 (淵海子平 palace formulas) · 年命星 紫白 digit-root rule (紫白九星), counted from the 立春 year",
+"zh": "命宫/胎元（渊海子平宫位公式）· 年命星 紫白数根法（紫白九星），自立春年起算"
+},
+"shensha.shensha.01": {
+"en": "神煞 classical tables",
+"zh": "神煞经典表"
+},
+"shensha.natal_interactions.01": {
+"en": "full trine → {el}",
+"zh": "三合成 {el}"
+},
+"shensha.natal_interactions.02": {
+"en": "self-punishment — internal friction",
+"zh": "自刑：内部摩擦"
+},
+"shensha.natal_interactions.03": {
+"en": "punishment — hidden entanglement/stress",
+"zh": "刑：暗藏的纠缠与压力"
+},
+"shensha.natal_interactions.04": {
+"en": "binding & attraction",
+"zh": "牵绊与吸引"
+},
+"shensha.natal_interactions.05": {
+"en": "clash — instability between these pillars",
+"zh": "冲：这几柱之间不稳定"
+},
+"shensha.natal_interactions.06": {
+"en": "harm — quiet friction",
+"zh": "害：暗暗的摩擦"
+},
+"shensha.natal_interactions.07": {
+"en": "half trine — latent alliance",
+"zh": "半合：潜在的结盟"
+},
+"synthesis._BAND_ZH.用": {
+"en": "用神 the medicine",
+"zh": "用神"
+},
+"synthesis._BAND_ZH.喜": {
+"en": "喜神 supports the medicine",
+"zh": "喜神"
+},
+"synthesis._BAND_ZH.忌": {
+"en": "忌神 works against",
+"zh": "忌神"
+},
+"synthesis._BAND_ZH.仇": {
+"en": "仇神 feeds the opposition",
+"zh": "仇神"
+},
+"synthesis._BAND_ZH.閒": {
+"en": "閒神 neutral",
+"zh": "闲神"
+},
+"synthesis._DIR.艮": {
+"en": "NE",
+"zh": "东北"
+},
+"synthesis._DIR.巽": {
+"en": "SE",
+"zh": "东南"
+},
+"synthesis._DIR.坤": {
+"en": "SW",
+"zh": "西南"
+},
+"synthesis._DIR.乾": {
+"en": "NW",
+"zh": "西北"
+},
+"synthesis._GRP_EN.比劫": {
+"en": "peers",
+"zh": "比劫"
+},
+"synthesis._GRP_EN.印": {
+"en": "resource",
+"zh": "印星"
+},
+"synthesis._GRP_EN.食傷": {
+"en": "output",
+"zh": "食伤"
+},
+"synthesis._GRP_EN.財": {
+"en": "wealth",
+"zh": "财星"
+},
+"synthesis._GRP_EN.官殺": {
+"en": "authority",
+"zh": "官杀"
+},
+"synthesis._SHADOW.比劫": {
+"en": "keep money and friendships in separate ledgers",
+"zh": "把钱和朋友分开记账"
+},
+"synthesis._SHADOW.官殺": {
+"en": "budget recovery after every push",
+"zh": "每次冲刺之后，都留出恢复的预算"
+},
+"synthesis._SHADOW.財": {
+"en": "store before you spend",
+"zh": "先存后花"
+},
+"synthesis._SHADOW.食傷": {
+"en": "finish one thing before opening the next",
+"zh": "先做完一件事，再开下一件"
+},
+"synthesis._SHADOW.印": {
+"en": "act before you feel fully prepared",
+"zh": "不必等到觉得准备充分，先行动"
+},
+"synthesis.geju_line.01": {
+"en": "no 月支藏干 is 透 — the chart frames on the 司令 {ruler_god} with the transparent stems as actors",
+"zh": "月支藏干没有一个透出，命盘就以司令的 {ruler_god} 为框架，以透出的天干为主角"
+},
+"synthesis.geju_line.02": {
+"en": "格局: 月令 {mb}, 本氣 {ruler} ({ruler_god}) 司令 · {frame}. The 格 names the chart's operating frame; the strength verdict below says how well the frame is carried.",
+"zh": "格局：月令 {mb}，本气 {ruler}（{ruler_god}）司令 · {frame}。格指明这张命盘运作的框架；下面的强弱判断说明这个框架撑得有多好。"
+},
+"synthesis.medicine_ranking.01": {
+"en": "{primary} ({primary_element_en}) primary",
+"zh": "{primary}居首"
+},
+"synthesis.medicine_ranking.02": {
+"en": "{e} ({e_element_en}) secondary",
+"zh": "{e}其次"
+},
+"synthesis.medicine_ranking.03": {
+"en": "Medicine, ranked: ",
+"zh": "用神排序："
+},
+"synthesis.medicine_ranking.04": {
+"en": " Within 土, wet earth 濕土 (辰丑) genuinely generates 金; dry earth 燥土 (未戌) is neutral-to-unhelpful — and the ceiling is 土多金埋: past sufficiency, more earth buries the metal it was meant to feed.",
+"zh": "在土之中，湿土（辰丑）真正能生金；燥土（未戌）不生金，甚至帮不上忙。而且有个上限，叫土多金埋：土过了够用的程度，再多就把它本该滋养的金埋住了。"
+},
+"synthesis.synthesis.01": {
+"en": "This is a {dm} {dm_el_element_en} chart judged {strength_verdict} (score {strength_score}), with its weight in {heavy} ({heavy_2}%)",
+"zh": "这是一张 {dm}{dm_el_element_en} 命盘，判断为 {strength_verdict}（得分 {strength_score}），力量集中在 {heavy}（{heavy_2}%）"
+},
+"synthesis.synthesis.02": {
+"en": " — the classical {x_x} shape: more to hold than the hands are yet strong enough to carry.",
+"zh": "，这是经典的 {x_x} 格局：要扛的东西多，手上的力气却还不够。"
+},
+"synthesis.synthesis.03": {
+"en": "Its working friction is 貪財壞印: the {wealth_el_element_en} wealth camp ({wealth}%) directly controls the {res_el_element_en} resource camp ({res}%) that feeds the Day Master — chasing outcomes starves the support system that makes outcomes durable.",
+"zh": "它主要的摩擦在于贪财坏印：{wealth_el_element_en} 财星一方（{wealth}%）直接克制着滋养日主的 {res_el_element_en} 印星一方（{res}%）；一味追结果，就会饿坏让结果能够持久的扶持。"
+},
+"synthesis.synthesis.04": {
+"en": "The protective 印 is present but 藏而不透 (hidden in branches, no rooted visible stem): support does not arrive automatically — it works when deliberately invoked (study, mentors, credentials).",
+"zh": "起保护作用的印虽然有，却是藏而不透（藏在地支里，没有通根的可见天干）：扶持不会自动到来，要主动去用才有效（学习、贵人、证书）。"
+},
+"synthesis.synthesis.05": {
+"en": "With 比劫 entirely absent, self-force must be built, not assumed: structures and allies substitute for raw stamina.",
+"zh": "比劫完全缺失，自身的力量要靠打造，不能想当然：用框架和同伴来补足原始的体力。"
+},
+"synthesis.synthesis.06": {
+"en": "The present {cur_gz} decade is {cur_phase_zh} ({cur_phase}); the chart's structural season arrives with {first_growth_gz} at ages {first_growth_ages} — a late-building arc, so the early decades are for containers, not conquest.",
+"zh": "当前的 {cur_gz} 大运是 {cur_phase_zh}（{cur_phase}）；命盘真正得力的时期，要到 {first_growth_gz} 大运才来，在 {first_growth_ages}岁。这是个晚成的走势，所以早年的几步大运宜先搭好容器，不宜急着扩张。"
+},
+"synthesis.synthesis.07": {
+"en": "The present {cur_gz} decade is {cur_phase_zh} — the chart is already in its supported season.",
+"zh": "当前的 {cur_gz} 大运是 {cur_phase_zh}，命盘已经走进有扶持的阶段。"
+},
+"synthesis.synthesis.08": {
+"en": "The medicine is {fav}: choose environments, colours, fields and sectors that carry it, and treat the abundant elements as weather to dress for, not fuel to add.",
+"zh": "用神是 {fav}：选择带有它的环境、颜色、行业和方位；对偏多的五行，当作要添衣防备的天气，不要当燃料去添。"
+},
+"synthesis.synthesis.09": {
+"en": "Confidence note: the verdict above is the 扶抑 method's; the 窮通寶鑑 調候 prescription for this month is {gods}, which {v} with it",
+"zh": "信心说明：以上判断依据扶抑法；这个月的《穷通宝鉴》调候用神是 {gods}，与之{v}"
+},
+"synthesis.synthesis.10": {
+"en": " — satisfy the climate stems through use and the 扶抑 elements through support; both, not either.",
+"zh": "。调候的天干要靠运用来满足，扶抑的五行要靠扶持来满足；两者兼顾，不是二选一。"
+},
+"synthesis.synthesis.11": {
+"en": "Confidence note: the verdict is the 扶抑 (support-the-weak) method's; the 調候 climate school weighs the birth season separately and can lean differently — where the two disagree, satisfying both is the safe posture.",
+"zh": "信心说明：以上判断依据扶抑法（扶弱抑强）；调候派单独权衡出生的季节，结论可能不同。两者不一致时，两边都顾到最稳妥。"
+},
+"synthesis.spouse_reading.01": {
+"en": "官殺 (husband star)",
+"zh": "官杀（夫星）"
+},
+"synthesis.spouse_reading.02": {
+"en": "財星 (wife star)",
+"zh": "财星（妻星）"
+},
+"synthesis.spouse_reading.03": {
+"en": "prominent",
+"zh": "突出"
+},
+"synthesis.spouse_reading.04": {
+"en": "present",
+"zh": "具备"
+},
+"synthesis.spouse_reading.05": {
+"en": "faint",
+"zh": "微弱"
+},
+"synthesis.spouse_reading.06": {
+"en": "absent",
+"zh": "缺失"
+},
+"synthesis.spouse_reading.07": {
+"en": "Spouse star {star_zh}: {share}% — {band}. ",
+"zh": "配偶星 {star_zh}：{share}%，{band}。"
+},
+"synthesis.spouse_reading.08": {
+"en": "A prominent spouse star marks the theme as central; its condition, not its size, decides the quality.",
+"zh": "配偶星突出，说明这个主题是核心；决定质量的是它的状态，不是它的大小。"
+},
+"synthesis.spouse_reading.09": {
+"en": "A quiet spouse star means the relationship follows the palace and the years more than the natal weight.",
+"zh": "配偶星不显，说明感情更多跟着配偶宫和流年走，而不是原局的分量。"
+},
+"synthesis.spouse_reading.10": {
+"en": "Spouse palace (day branch {sp_branch}): {sp_line} The palace is {sp_state}.",
+"zh": "配偶宫（日支 {sp_branch}）：{sp_line} 这个宫位 {sp_state}。"
+},
+"synthesis.spouse_reading.11": {
+"en": "傷官見官 in a woman's chart reads on the MARRIAGE axis before the career one: the talent that critiques authority also critiques the partner. Managed openly (channel the critique into shared projects), it is compatibility with texture, not an affliction.",
+"zh": "女命见伤官见官，先看婚姻这条线，再看事业：会批评权威的才华，也会批评伴侣。若能坦率处理（把批评用到共同的事上），这是一种带点棱角的合拍，而不是缺陷。"
+},
+"synthesis.spouse_reading.12": {
+"en": "Watch-window: the {gz} decade (ages {int_start_age}–{int_end_age}) introduces {missing} beside the natal {x_x} — 官殺混雜 by luck: two models of authority/partnership run at once in that window; clarity about which applies matters more than usual.",
+"zh": "留意期：{gz} 大运（{int_start_age}～{int_end_age}岁）在原局的 {x_x} 之外，又带来 {missing}，成了运里的官杀混杂：这段时间里，两种权威或伴侣的模式同时运行，弄清楚哪一种适用，比平时更重要。"
+},
+"synthesis.spouse_reading.13": {
+"en": "spouse star (十神) × spouse palace (日支) × activation years (流年) — the three-legged classical marriage reading",
+"zh": "配偶星（十神）× 配偶宫（日支）× 触发之年（流年），这就是经典婚姻解读的三条腿"
+},
+"synthesis.clinical_report.01": {
+"en": "out of season: the month works against it",
+"zh": "失令：月令对它不利"
+},
+"synthesis.clinical_report.02": {
+"en": "in season: the month carries it",
+"zh": "得令：月令扶持它"
+},
+"synthesis.clinical_report.03": {
+"en": "neutral to the month",
+"zh": "月令中性"
+},
+"synthesis.clinical_report.04": {
+"en": "A {weak_strong} {dm} {en_dm_el} day master {carried_driven_b} {_GRP_EN_top_grp} ({top_grp} {top_grp_2}%), {short_of_heavy_in} {en_heavy_el}: {supply_spend_th} {fav_en}, pace {x} years.",
+"zh": "{dm}{en_dm_el}日主 {weak_strong}，{carried_driven_b} {_GRP_EN_top_grp}（{top_grp_2}%），{short_of_heavy_in} {en_heavy_el}：{supply_spend_th} {fav_en}，遇到 {x}年要放慢节奏。"
+},
+"synthesis.clinical_report.05": {
+"en": "weak",
+"zh": "偏弱"
+},
+"synthesis.clinical_report.06": {
+"en": "strong",
+"zh": "偏强"
+},
+"synthesis.clinical_report.07": {
+"en": "carried by",
+"zh": "靠"
+},
+"synthesis.clinical_report.08": {
+"en": "driven by",
+"zh": "由"
+},
+"synthesis.clinical_report.09": {
+"en": "short of",
+"zh": "缺"
+},
+"synthesis.clinical_report.10": {
+"en": "heavy in",
+"zh": "偏重"
+},
+"synthesis.clinical_report.11": {
+"en": "supply",
+"zh": "补充"
+},
+"synthesis.clinical_report.12": {
+"en": "spend through",
+"zh": "泄耗于"
+},
+"synthesis.clinical_report.13": {
+"en": "Constitution",
+"zh": "体质"
+},
+"synthesis.clinical_report.14": {
+"en": "{dm} {en_dm_el} born in the {mb} month ({stage} stage): {st_verdict}, score {st_score}; {x_status}. {season_season}.",
+"zh": "{dm}{en_dm_el} 生于 {mb}月（{stage} 阶段）：{st_verdict}，得分 {st_score}；{x_status}。{season_season}。"
+},
+"synthesis.clinical_report.15": {
+"en": "a weak day master is fed by its resource and its own element",
+"zh": "日主偏弱，靠印星和自身五行来滋养"
+},
+"synthesis.clinical_report.16": {
+"en": "a strong day master spends through output, wealth and pressure",
+"zh": "日主偏强，要通过食伤、财星和官杀把力量用出去"
+},
+"synthesis.clinical_report.17": {
+"en": "Balance",
+"zh": "平衡"
+},
+"synthesis.clinical_report.18": {
+"en": "{heavy_el} {en_heavy_el} dominates the chart at {share_heavy_el}%",
+"zh": "{heavy_el} 在命盘中占主导，达到 {share_heavy_el}%"
+},
+"synthesis.clinical_report.19": {
+"en": ". Medicine: {fav_en} — {why}. Keep {x} ({join_x}) light — {they_dra_they_add}.",
+"zh": "。用神：{fav_en}，{why}。{x}宜少沾：{they_dra_they_add}。"
+},
+"synthesis.clinical_report.20": {
+"en": "they drain what the chart lacks",
+"zh": "它们会泄掉命盘所缺的"
+},
+"synthesis.clinical_report.21": {
+"en": "they add to what is already heavy",
+"zh": "它们会加重本来就偏重的"
+},
+"synthesis.clinical_report.22": {
+"en": "{g1} {legend_g1_en} {p1}% leads, {g2} {legend_g2_en} {p2}% second — {first_clause_legend_g1_meani}. ",
+"zh": "{g1} {p1}%居首，{g2} {p2}%其次：{first_clause_legend_g1_meani}。"
+},
+"synthesis.clinical_report.23": {
+"en": "{bad_god} at {bad_pct}% carries {bad_el} {en_bad_el}, a 忌 element: it delivers, but on borrowed energy. ",
+"zh": "{bad_god} 占 {bad_pct}%，带着 {bad_el}，是忌的五行：它能出成果，靠的却是借来的能量。"
+},
+"synthesis.clinical_report.24": {
+"en": "The heavy gods all carry favourable elements: engine and medicine point the same way. ",
+"zh": "重的十神带的都是喜用五行：动力和用神指向同一个方向。"
+},
+"synthesis.clinical_report.25": {
+"en": "{len_rooted} of {len_ins_rooted} visible stems are rooted. ",
+"zh": "{len_ins_rooted} 个可见天干中，有 {len_rooted} 个通根。"
+},
+"synthesis.clinical_report.26": {
+"en": "Personality: {axis_verdict}.",
+"zh": "性格：{axis_verdict}。"
+},
+"synthesis.clinical_report.27": {
+"en": "Drivers",
+"zh": "驱动力"
+},
+"synthesis.clinical_report.28": {
+"en": "Spouse palace {sp_branch} is {first_clause_sp_state}. ",
+"zh": "配偶宫 {sp_branch}：{first_clause_sp_state}。"
+},
+"synthesis.clinical_report.29": {
+"en": "Children palace output stars {ch_output_share}%. ",
+"zh": "子女宫的食伤星占 {ch_output_share}%。"
+},
+"synthesis.clinical_report.30": {
+"en": "Wealth vault ",
+"zh": "财库"
+},
+"synthesis.clinical_report.31": {
+"en": "{vt_branch} is {open_sealed}",
+"zh": "{vt_branch} 库 {open_sealed}"
+},
+"synthesis.clinical_report.32": {
+"en": "open",
+"zh": "已开"
+},
+"synthesis.clinical_report.33": {
+"en": "sealed",
+"zh": "封着"
+},
+"synthesis.clinical_report.34": {
+"en": "absent — wealth flows rather than stores. ",
+"zh": "无库，财来财去，存不住。"
+},
+"synthesis.clinical_report.35": {
+"en": "{pos_star} in the {join_pos_pillars} pillar: {first_clause_pos_meaning_x}. ",
+"zh": "{pos_star} 在 {join_pos_pillars} 柱：{first_clause_pos_meaning_x}。"
+},
+"synthesis.clinical_report.36": {
+"en": "Watch {neg_star} in the {join_neg_pillars} pillar: {first_clause_neg_meaning_x}.",
+"zh": "留意 {neg_star} 在 {join_neg_pillars} 柱：{first_clause_neg_meaning_x}。"
+},
+"synthesis.clinical_report.37": {
+"en": "No symbolic star is carried — the structure reads unadorned.",
+"zh": "命盘里没有神煞，结构一目了然。"
+},
+"synthesis.clinical_report.38": {
+"en": "Palaces & stars",
+"zh": "宫位与神煞"
+},
+"synthesis.clinical_report.39": {
+"en": "The {cur_gz} decade (ages {cur_ages}, {cur_phase_zh} {cur_phase}) brings {L_stem_god}/{L_branch_god}; ",
+"zh": "{cur_gz} 大运（{cur_ages}岁，{cur_phase_zh} {cur_phase}）带来 {L_stem_god}/{L_branch_god}；"
+},
+"synthesis.clinical_report.40": {
+"en": "{T_year_gz} this year adds {T_year_stem_go}/{T_year_branch_}. ",
+"zh": "今年 {T_year_gz} 再添 {T_year_stem_go}/{T_year_branch_}。"
+},
+"synthesis.clinical_report.41": {
+"en": "Next window: {win_y} {win_gz} ({join_flags_win}). ",
+"zh": "下一个窗口：{win_y}年 {win_gz}（{join_flags_win}）。"
+},
+"synthesis.clinical_report.42": {
+"en": "Next caution: {cau_y} {cau_gz} ({join_flags_cau}).",
+"zh": "下一个要谨慎的年份：{cau_y}年 {cau_gz}（{join_flags_cau}）。"
+},
+"synthesis.clinical_report.43": {
+"en": "Timing now",
+"zh": "当前时机"
+},
+"synthesis.clinical_report.44": {
+"en": "Orientation",
+"zh": "方位"
+},
+"synthesis.clinical_report.45": {
+"en": "{p_group} ({p_gua}): face {x} (生氣) for bed and desk; keep {x_2} (絕命) for storage. Colours {join_ys_colours} carry the medicine.",
+"zh": "{p_group}（{p_gua}）：床头和书桌朝 {x}（生气），{x_2}（绝命）留给储物。颜色选 {join_ys_colours}，它们带着你的用神。"
+},
+"synthesis.clinical_report.46": {
+"en": "The chart's defining tension is that its engine is also its drain: {bad_god} carries {bad_el} {en_bad_el}, which a {weak_strong} {en_dm_el} day master cannot afford to run on unchecked.",
+"zh": "这张命盘的核心矛盾是：它的动力同时也是它的消耗。{bad_god} 带着 {bad_el}，而 {en_dm_el}日主 {weak_strong}，经不起毫无制衡地靠它运转。"
+},
+"synthesis.clinical_report.49": {
+"en": "The defining tension is {bad_god} ({bad_pct}%) on {bad_el} {en_bad_el}: it supplies {_GRP_EN_grp_of_bad_god} the chart uses, at the cost of the recovery a {weak_strong} day master {needs_can_spar}.",
+"zh": "核心矛盾是 {bad_el} 上的 {bad_god}（{bad_pct}%）：它供给命盘要用的 {_GRP_EN_grp_of_bad_god}，代价是日主 {weak_strong}时 {needs_can_spar} 的那份恢复。"
+},
+"synthesis.clinical_report.52": {
+"en": "needs",
+"zh": "需要"
+},
+"synthesis.clinical_report.53": {
+"en": "can spare",
+"zh": "可以匀出"
+},
+"synthesis.clinical_report.54": {
+"en": "The chart's heavy gods and its medicine point the same way: what drives this person also feeds them.",
+"zh": "这张命盘的重神和用神方向一致：推动这个人的，也在滋养这个人。"
+},
+"synthesis.clinical_report.55": {
+"en": "Support outweighs drain ({parts_support} to {parts_drain}) yet the {mb} month sets the verdict: well-backed but under-lit — it needs warmth more than help.",
+"zh": "扶持大于泄耗（{parts_support} 比 {parts_drain}），但 {mb}月定下了判断：靠得住却照不到光，它要的是暖意，不是帮手。"
+},
+"synthesis.clinical_report.56": {
+"en": "Drain exceeds support ({parts_drain} to {parts_support}): the chart is genuinely thin and every favourable element added is felt.",
+"zh": "泄耗大于扶持（{parts_drain} 比 {parts_support}）：这张命盘确实单薄，每多补一个喜用五行，都感觉得到。"
+},
+"synthesis.clinical_report.57": {
+"en": "Support exceeds drain ({parts_support} to {parts_drain}): the chart has surplus to spend, and spending it is the medicine.",
+"zh": "扶持大于泄耗（{parts_support} 比 {parts_drain}）：命盘有余力可用，把余力用出去，就是用神。"
+},
+"synthesis.clinical_report.58": {
+"en": "The present {cur_gz} decade is {cur_phase}: ",
+"zh": "当前的 {cur_gz} 大运属 {cur_phase}："
+},
+"synthesis.clinical_report.59": {
+"en": "the timing supports building now.",
+"zh": "时机适合现在就动手打基础。"
+},
+"synthesis.clinical_report.60": {
+"en": "hold structure and pace effort until the next growth decade.",
+"zh": "守住结构，放慢用力的节奏，等下一步成长大运。"
+},
+"synthesis.clinical_report.61": {
+"en": " — fields: {inds_industries}, {inds_industries_2}",
+"zh": "，行业：{inds_industries}、{inds_industries_2}"
+},
+"synthesis.clinical_report.62": {
+"en": "Supply {fav} {en_fav} first: {join_ys_colours} in the rooms you spend hours in{ind}.",
+"zh": "先补 {fav}：在你一待好几个小时的房间里用 {join_ys_colours}{ind}。"
+},
+"synthesis.clinical_report.63": {
+"en": "Set bed head and desk to face {best}; keep long sitting out of {x}.",
+"zh": "床头和书桌朝 {best}；久坐要避开 {x}。"
+},
+"synthesis.clinical_report.64": {
+"en": "the 絕命 sector",
+"zh": "绝命位"
+},
+"synthesis.clinical_report.65": {
+"en": "Act in {win_y} {win_gz}",
+"zh": "宜在 {win_y}年 {win_gz} 行动"
+},
+"synthesis.clinical_report.66": {
+"en": "; protect {cau_y} {cau_gz} ({join_flags_cau}).",
+"zh": "；{cau_y}年 {cau_gz}（{join_flags_cau}）宜守。"
+},
+"synthesis.clinical_report.67": {
+"en": "Support {low_zh} {low_en} ({low_score}), the domain that stands lowest among charts, with routine rather than effort spikes.",
+"zh": "用规律的日常，而不是用力冲刺，来扶持在命盘中位次最低的领域：{low_zh}（{low_score}分）。"
+},
+"synthesis.clinical_report.68": {
+"en": "Offset {g1}'s shadow: {_SHADOW_grp_of_g1}.",
+"zh": "化解 {g1} 的盲点：{_SHADOW_grp_of_g1}。"
+},
+"synthesis.clinical_report.69": {
+"en": "Method: the verdict is 扶抑's; the 窮通寶鑑 調候 prescription for the {mb} month ({join_x}) {th_verdict}",
+"zh": "方法：判断依据扶抑法；{mb}月《穷通宝鉴》的调候用神（{join_x}）与之{th_verdict}"
+},
+"synthesis.clinical_report.70": {
+"en": " — satisfy both: climate stems through use, 扶抑 elements through support.",
+"zh": "，两边都要满足：调候的天干靠运用，扶抑的五行靠扶持。"
+},
+"synthesis.clinical_report.71": {
+"en": "Method note: the verdict is the 扶抑 method's; the 調候 climate school can lean differently — where they disagree, satisfying both is the safe posture.",
+"zh": "方法说明：判断依据扶抑法；调候派的结论可能不同，两者不一致时，两边都顾到最稳妥。"
+},
+"tiaohou.tiaohou_reading.01": {
+"en": "agrees",
+"zh": "相符"
+},
+"tiaohou.tiaohou_reading.02": {
+"en": "partially agrees",
+"zh": "部分相符"
+},
+"tiaohou.tiaohou_reading.03": {
+"en": "differs",
+"zh": "不同"
+},
+"tiaohou.tiaohou_reading.04": {
+"en": "調候 (窮通寶鑑): a {dm} Day Master in the {mb} month calls for ",
+"zh": "调候（《穷通宝鉴》）：{dm}日主生在 {mb}月，需要"
+},
+"tiaohou.tiaohou_reading.05": {
+"en": " — the climate prescription {verdict} with the 扶抑 verdict",
+"zh": "，调候用神与扶抑的判断{verdict}"
+},
+"tiaohou.tiaohou_reading.06": {
+"en": ": where they part, satisfy the 調候 stems through USE (timing, activity, environment) and the 扶抑 elements through SUPPORT (colours, sectors, fields) — both, not either.",
+"zh": "；两者不一致时，调候的天干靠“用”来满足（时机、活动、环境），扶抑的五行靠“扶持”来满足（颜色、方位、行业）。两者都要，不是二选一。"
+},
+"tiaohou.tiaohou_reading.07": {
+"en": "窮通寶鑑 喜用提要 (cross-checked reproduction; primary god uncontested in all sources)",
+"zh": "《穷通宝鉴》喜用提要（多方核对后的转述；各家对首要用神没有分歧）"
+},
+"windows._decade_phase.01": {
+"en": "{what} {el} favourable",
+"zh": "{what}{el} 属喜用"
+},
+"windows._decade_phase.02": {
+"en": "{what} {el} unfavourable",
+"zh": "{what}{el} 属忌"
+},
+"windows._decade_phase.03": {
+"en": "decade branch 沖 day branch {day_br} — personal upheaval",
+"zh": "大运地支冲日支 {day_br}：个人生活有起伏"
+},
+"windows._decade_phase.04": {
+"en": "decade branch 沖 month branch {month_br} — career-pillar shakeup",
+"zh": "大运地支冲月支 {month_br}：事业柱受到冲击"
+},
+"windows._decade_phase.05": {
+"en": "decade branch 六合 with a core pillar — steadying",
+"zh": "大运地支与核心柱六合：有稳定作用"
+},
+"windows._year_row.01": {
+"en": "年支{br} 沖 month pillar {month_br} — don't force career moves",
+"zh": "年支 {br} 冲月柱 {month_br}：别硬推事业上的变动"
+},
+"windows._year_row.02": {
+"en": "年支{br} 合 month pillar but 合化{he_el} feeds an unfavourable element — engagement without tailwind, choose battles",
+"zh": "年支 {br} 合月柱，但合化 {he_el} 生的是不利的五行：有交集却没有顺风，要挑重点用力"
+},
+"windows._year_row.03": {
+"en": "年支{br} 合 month pillar — career pillar activated, leverage window",
+"zh": "年支 {br} 合月柱：事业柱被触发，是可以借力的窗口"
+},
+"windows._year_row.04": {
+"en": "{join_sorted_gods_OFFICER_GOD} arrives with support — authority spotlight",
+"zh": "{join_sorted_gods_OFFICER_GOD} 到来，且有扶持：站到了聚光灯下"
+},
+"windows._year_row.05": {
+"en": "{join_sorted_gods_OFFICER_GOD} arrives on a weak chart — pressure year, deliver quietly",
+"zh": "{join_sorted_gods_OFFICER_GOD} 到来，而命盘偏弱：压力之年，默默把事做好"
+},
+"windows._year_row.06": {
+"en": "no career-pillar activation",
+"zh": "事业柱未被触发"
+},
+"windows._year_row.07": {
+"en": "{join_sorted_gods_WEALTH_GODS} arrives but the chart can't hold it — wealth passes through; strengthen first, don't overreach",
+"zh": "{join_sorted_gods_WEALTH_GODS} 到来，但命盘接不住：财来财去，先增强自己，别贪大"
+},
+"windows._year_row.08": {
+"en": "{join_sorted_gods_WEALTH_GODS} arrives — income moves possible",
+"zh": "{join_sorted_gods_WEALTH_GODS} 到来：收入有机会增加"
+},
+"windows._year_row.09": {
+"en": "年支{br} 沖開財庫 {wealth_el_vault} — the vault OPENS: a classical accumulation year",
+"zh": "年支 {br} 冲开财库 {wealth_el_vault}：库被冲开，是经典的积累之年"
+},
+"windows._year_row.10": {
+"en": "年支{br} sits ON the sealed 財庫 (值庫, not the 沖 that opens it) — store, don't expect release",
+"zh": "年支 {br} 正落在封着的财库上（值库，不是能冲开它的冲）：宜存，别指望放出来"
+},
+"windows._year_row.11": {
+"en": "no wealth activation",
+"zh": "财运未被触发"
+},
+"windows._year_row.12": {
+"en": "年支{br} 伏吟 the spouse palace {day_br} — the palace doubled: emotional intensification, avoid forcing relationship decisions",
+"zh": "年支 {br} 伏吟配偶宫 {day_br}：宫位叠了一重，情绪加深，别急着在感情上做决定"
+},
+"windows._year_row.13": {
+"en": "年支{br} 沖 spouse palace {day_br} — relationships need extra care",
+"zh": "年支 {br} 冲配偶宫 {day_br}：感情需要多花心思"
+},
+"windows._year_row.14": {
+"en": "桃花 year ({br}) — social magnetism and relational openings",
+"zh": "桃花年（{br}）：人缘旺，感情上有新的开口"
+},
+"windows._year_row.15": {
+"en": "年支{br} 合 spouse palace but 合化{he_el} is unfavourable — closeness with friction, communicate early",
+"zh": "年支 {br} 合配偶宫，但合化 {he_el} 不利：亲近中带着摩擦，早点沟通"
+},
+"windows._year_row.16": {
+"en": "年支{br} 合 spouse palace — partnership supported",
+"zh": "年支 {br} 合配偶宫：伴侣关系得到支持"
+},
+"windows._year_row.17": {
+"en": "no relationship activation",
+"zh": "感情未被触发"
+},
+"windows._year_row.18": {
+"en": "year feeds {join_hit_ex} excess — watch those organ systems",
+"zh": "流年生助过旺的 {join_hit_ex}：留意这些脏腑系统"
+},
+"windows._year_row.19": {
+"en": "year replenishes weak {join_hit_wk} — good recovery year",
+"zh": "流年补益不足的 {join_hit_wk}：是恢复的好年"
+},
+"windows._year_row.20": {
+"en": "no imbalance triggered",
+"zh": "没有触发失衡"
+},
+"windows._year_row.21": {
+"en": "年支{br} 沖 month pillar {month_br} — study plans disrupted; keep courses short",
+"zh": "年支 {br} 冲月柱 {month_br}：学习计划易被打乱，课程宜短"
+},
+"windows._year_row.22": {
+"en": "傷官 year meets a chart with prominent 正官 — exams and credentials contested; verify before you rely",
+"zh": "伤官年遇上正官突出的命盘：考试和证书上有争议，先核实再依赖"
+},
+"windows._year_row.23": {
+"en": "{join_sorted_gods_RESOURCE_GO} arrives — learning, mentors and credentials favoured",
+"zh": "{join_sorted_gods_RESOURCE_GO} 到来：利于学习、贵人和证书"
+},
+"windows._year_row.24": {
+"en": "年支{br} is a {x_x} year — scholar star active",
+"zh": "年支 {br} 逢 {x_x}年：文昌星起作用"
+},
+"windows._year_row.25": {
+"en": "年支{br} 合 month pillar — structured study and training land",
+"zh": "年支 {br} 合月柱：系统的学习和培训能落地"
+},
+"windows._year_row.26": {
+"en": "no study activation",
+"zh": "学业未被触发"
+},
+"windows._year_row.27": {
+"en": "年支{br} 沖 year branch {yb} (生肖 clash) — forced moves; travel with margins, relocate only with cause",
+"zh": "年支 {br} 冲年支 {yb}（生肖相冲）：被动变动；出行留余地，没有缘由不要搬迁"
+},
+"windows._year_row.28": {
+"en": "年支{br} 沖 day branch {day_br} — the home base is shaken; delay a move if you can",
+"zh": "年支 {br} 冲日支 {day_br}：根基动摇，能推迟搬迁就推迟"
+},
+"windows._year_row.29": {
+"en": "驛馬 year ({br}) — relocation, travel and job moves carry momentum",
+"zh": "驿马年（{br}）：搬迁、出行、换工作都带着势头"
+},
+"windows._year_row.30": {
+"en": "年支{br} 合 day branch — a move with support: settling somewhere new lands well",
+"zh": "年支 {br} 合日支：有支持的变动，在新地方安顿下来会顺利"
+},
+"windows._year_row.31": {
+"en": "no movement activation",
+"zh": "迁动未被触发"
+},
+"windows.timing_windows.01": {
+"en": "牆內 within walls — stable affection",
+"zh": "墙内：感情稳定"
+},
+"windows.timing_windows.02": {
+"en": "牆外 outside walls — variable attraction",
+"zh": "墙外：吸引力不稳定"
+},
+"windows.timing_windows.03": {
+"en": "not in the natal chart — activated only in 桃花 years",
+"zh": "原局中没有，只在桃花年被触发"
+},
+"windows.timing_windows.04": {
+"en": "Element arc: {runs} …",
+"zh": "五行走势：{runs}……"
+},
+"windows.timing_windows.05": {
+"en": " — 祿 ({lu}, the Day Master's own station) arrives in the {lu_dec_gz} decade (ages {lu_dec_ages}): the structural turning point where the chart finally stands on its own element.",
+"zh": "，禄（{lu}，日主自己的禄位）出现在 {lu_dec_gz} 大运（{lu_dec_ages}岁）：这是命盘的转折点，终于站到了自己的五行上。"
+},
+"windows.timing_windows.06": {
+"en": "timing cross-layer — 大運/流年 × natal pillars × 用神 (month pillar = career, 財星+財庫 = wealth, 日支+桃花 = relationship, element imbalance = health; decade = climate, year = weather)",
+"zh": "时运交叉层：大运/流年 × 原局四柱 × 用神（月柱看事业，财星加财库看财运，日支加桃花看感情，五行失衡看健康；大运是气候，流年是天气）"
+},
+"wuxing.ELEMENT_EN.木": {
+"en": "Wood",
+"zh": "木"
+},
+"wuxing.ELEMENT_EN.火": {
+"en": "Fire",
+"zh": "火"
+},
+"wuxing.ELEMENT_EN.土": {
+"en": "Earth",
+"zh": "土"
+},
+"wuxing.ELEMENT_EN.金": {
+"en": "Metal",
+"zh": "金"
+},
+"wuxing.ELEMENT_EN.水": {
+"en": "Water",
+"zh": "水"
+},
+"wuxing.PALACES.坤.dir": {
+"en": "SW",
+"zh": "西南"
+},
+"wuxing.PALACES.巽.dir": {
+"en": "SE",
+"zh": "东南"
+},
+"wuxing.PALACES.乾.dir": {
+"en": "NW",
+"zh": "西北"
+},
+"wuxing.PALACES.艮.dir": {
+"en": "NE",
+"zh": "东北"
+},
+"yongshen.yong_shen.01": {
+"en": "Weak Day Master: favour 印 ({dm_el_sheng_rev_element_en}) to nourish and 比劫 ({dm_el_element_en}) to support; avoid 官殺/財/食傷",
+"zh": "日主偏弱：宜用印（{dm_el_sheng_rev_element_en}）来生扶，用比劫（{dm_el_element_en}）来帮身；忌官杀、财、食伤"
+},
+"yongshen.yong_shen.02": {
+"en": "Strong Day Master: favour 食傷 ({dm_el_sheng_element_en}) to drain, 財 ({dm_el_ke_element_en}) and 官殺 ({officer_el_element_en}); avoid 印/比劫",
+"zh": "日主偏强：宜用食伤（{dm_el_sheng_element_en}）来泄秀，宜财（{dm_el_ke_element_en}）与官杀（{officer_el_element_en}）；忌印、比劫"
+},
+"yongshen.yong_shen.03": {
+"en": "扶抑法 (technique 1 of 4)",
+"zh": "扶抑法（四法之一）"
+},
+"yongshen.yong_shen.04": {
+"en": "born in winter — chart is cold, 火 (Fire) promoted by 調候",
+"zh": "生于冬季：命盘偏寒，调候取火"
+},
+"yongshen.yong_shen.05": {
+"en": "born in summer — chart is hot, 水 (Water) promoted by 調候",
+"zh": "生于夏季：命盘偏燥热，调候取水"
+},
+"yongshen.yong_shen.06": {
+"en": "climatic need already satisfied by 扶抑 selection",
+"zh": "扶抑取用已兼顾调候之需"
+},
+"yongshen.yong_shen.07": {
+"en": "調候法 (technique 2 of 4)",
+"zh": "调候法（四法之二）"
+},
+"yongshen.yong_shen.08": {
+"en": "month {month_branch}: mild season, no climatic override",
+"zh": "{month_branch}月：季节平和，无需调候"
+},
+"yongshen.yong_shen.09": {
+"en": "病藥法 (technique 3 of 4)",
+"zh": "病药法（四法之三）"
+},
+"yongshen.yong_shen.10": {
+"en": "advisory in M1 — full pillar-interaction pass planned (M4)",
+"zh": "目前仅供参考：完整的柱间冲合刑害分析将在后续版本加入"
+},
+"yongshen.yong_shen.11": {
+"en": "通關法 (technique 4 of 4)",
+"zh": "通关法（四法之四）"
+},
+"yongshen.yong_shen.12": {
+"en": "advisory in M1 — applied when two camps deadlock (M4)",
+"zh": "目前仅供参考：两方对峙时的完整处理将在后续版本加入"
+},
+"zeri.rate_day.01": {
+"en": "十二建除 — {info_officer}日 (simplified 宜忌)",
+"zh": "建除十二神：{info_officer}日（简化版宜忌）"
+},
+"zeri.rate_day.02": {
+"en": "officer {info_officer}, base {score:+.1f}",
+"zh": "建除 {info_officer}，基础分 {score:+.1f}"
+},
+"zeri.rate_day.03": {
+"en": "day {db} 沖 month {info_month_branch} — 破日, avoid",
+"zh": "日支 {db} 冲月支 {info_month_branch}：破日，不宜行事"
+},
+"zeri.rate_day.04": {
+"en": "day {db} 沖 year branch {m_year_branch} — {m_name} should not lead this day",
+"zh": "日支 {db} 冲年支 {m_year_branch}：这天不宜由 {m_name} 主事"
+},
+"zeri.rate_day.05": {
+"en": "day {db} 沖 day-pillar branch {m_day_branch} — personally unfavourable",
+"zh": "日支 {db} 冲日柱地支 {m_day_branch}：对你个人不利"
+},
+"zeri.rate_day.06": {
+"en": "day {db} 六合 day-pillar branch {m_day_branch} — personally supportive",
+"zh": "日支 {db} 六合日柱地支 {m_day_branch}：对你个人有助"
+},
+"windows._decade_phase.what_stem": {
+"en": "stem {st}",
+"zh": "天干{st}"
+},
+"windows._decade_phase.what_branch": {
+"en": "branch {br}",
+"zh": "地支{br}"
+},
+"shensha.POS_LABEL.year": {
+"en": "year",
+"zh": "年"
+},
+"shensha.POS_LABEL.month": {
+"en": "month",
+"zh": "月"
+},
+"shensha.POS_LABEL.day": {
+"en": "day",
+"zh": "日"
+},
+"shensha.POS_LABEL.hour": {
+"en": "hour",
+"zh": "时"
+},
+"daily.WEEKDAY.Mon": {
+"en": "Mon",
+"zh": "周一"
+},
+"daily.WEEKDAY.Tue": {
+"en": "Tue",
+"zh": "周二"
+},
+"daily.WEEKDAY.Wed": {
+"en": "Wed",
+"zh": "周三"
+},
+"daily.WEEKDAY.Thu": {
+"en": "Thu",
+"zh": "周四"
+},
+"daily.WEEKDAY.Fri": {
+"en": "Fri",
+"zh": "周五"
+},
+"daily.WEEKDAY.Sat": {
+"en": "Sat",
+"zh": "周六"
+},
+"daily.WEEKDAY.Sun": {
+"en": "Sun",
+"zh": "周日"
+},
+"domains.life_domains.51": {
+"en": "比劫 rivals crowd the wealth star",
+"zh": "比劫争财，夺走财星"
+},
+"domains.life_domains.52": {
+"en": "spouse palace pressed (日支刑/害/自刑)",
+"zh": "配偶宫受刑害（日支刑/害/自刑）"
+},
+"domains.life_domains.53": {
+"en": "mixed 官/殺 spouse stars (官殺混雜)",
+"zh": "官杀混杂（配偶星官、杀并见）"
+},
+"domains.life_domains.54": {
+"en": "no resource 印 against pressure",
+"zh": "官杀压力大而无印星化解"
+},
+"domains.life_domains.55": {
+"en": "thin resource 印 for a weak Day Master",
+"zh": "日主偏弱而印星偏薄"
+},
+"domains.life_domains.56": {
+"en": "官印相生 authority feeds resource",
+"zh": "官印相生，官星生印"
+},
+"domains.life_domains.57": {
+"en": "財壞印 wealth overruns a wanted resource",
+"zh": "财坏印，财星压制了所需的印星"
+},
+"domains.life_domains.58": {
+"en": "Day Master rooted (通根)",
+"zh": "日主通根"
+},
+"domains.life_domains.59": {
+"en": "Day Master rootless (無根)",
+"zh": "日主无根"
+},
+"domains.life_domains.60": {
+"en": "strength near balance (中和)",
+"zh": "身强弱接近中和"
+},
+"domains.life_domains.61": {
+"en": "useful elements well supplied (用神有力)",
+"zh": "用神有力（用神五行占比充足）"
+},
+"domains.life_domains.62": {
+"en": "useful elements thin (用神無力)",
+"zh": "用神无力（用神五行占比偏低）"
+},
+"domains.life_domains.63": {
+"en": "one element holds 45% or more (偏枯)",
+"zh": "单一五行占四成五以上（偏枯）"
+},
+"plain.EL_ROOM.水.side": {
+"en": "north",
+"zh": "北"
+},
+"plain.EL_ROOM.火.side": {
+"en": "south",
+"zh": "南"
+},
+"plain.EL_ROOM.木.side": {
+"en": "east",
+"zh": "东"
+},
+"plain.EL_ROOM.金.side": {
+"en": "west",
+"zh": "西"
+},
+"plain.GOD_ROLE.劫财": {
+"en": "Rivals and bold moves shape this part of life.",
+"zh": "对手和大胆的行动，影响着人生的这一方面。"
+},
+"plain.GOD_ROLE.伤官": {
+"en": "Sharp expression and a will to challenge show here.",
+"zh": "犀利的表达和敢于挑战的意愿，在这里显现。"
+},
+"plain.GOD_ROLE.正财": {
+"en": "Steady earning and careful management show here.",
+"zh": "稳定的收入和细致的打理，在这里显现。"
+},
+"plain.GOD_ROLE.偏财": {
+"en": "Deals, windfalls and generosity show here.",
+"zh": "买卖往来、意外之财和慷慨，在这里显现。"
+},
+"plain.GOD_ROLE.七杀": {
+"en": "Pressure and hard challenges shape this part of life, and make you decisive.",
+"zh": "压力和艰难的挑战影响着人生的这一方面，也逼你学会果断。"
+},
+"plain.GOD_GIST.劫财": {
+"en": "competition",
+"zh": "竞争"
+},
+"plain.GOD_GIST.伤官": {
+"en": "spark and challenge",
+"zh": "锋芒与挑战"
+},
+"plain.GOD_GIST.正财": {
+"en": "steady provision",
+"zh": "稳定的收入"
+},
+"plain.GOD_GIST.偏财": {
+"en": "generosity and deals",
+"zh": "慷慨与买卖"
+},
+"plain.GOD_GIST.七杀": {
+"en": "pressure and drive",
+"zh": "压力与冲劲"
+},
+"plain._months.04": {
+"en": "helps",
+"zh": "有帮助"
+},
+"plain._months.05": {
+"en": "help",
+"zh": "有帮助"
+},
+"plain._stars.05": {
+"en": "{gist_gist}. It sits in {and_join_x}.",
+"zh": "{gist_gist}。它落在 {and_join_x}。"
+},
+"story.GOD_NOUN.劫财": {
+"en": "rivals and bold moves",
+"zh": "对手与敢闯敢拼"
+},
+"story.GOD_NOUN.伤官": {
+"en": "sharp expression and challenge",
+"zh": "犀利的表达与挑战"
+},
+"story.GOD_NOUN.正财": {
+"en": "steady earning",
+"zh": "稳定的收入"
+},
+"story.GOD_NOUN.偏财": {
+"en": "deals and opportunity",
+"zh": "买卖与机会"
+},
+"story.GOD_NOUN.七杀": {
+"en": "pressure and ambition",
+"zh": "压力与进取心"
+},
+"story.PHASE_BY_VOICE.teen.transition": {
+"en": "Expect changes at home or school; keep routines steady.",
+"zh": "家里或学校可能有变动；作息尽量保持稳定。"
+},
+"story.STAR_GIST.天乙贵人": {
+"en": "so helpful people appear at the moments that matter",
+"zh": "所以关键时刻总有人出手相助"
+},
+"story.STAR_GIST.太极贵人": {
+"en": "a pull toward philosophy and deep study",
+"zh": "容易被哲学和深入的钻研吸引"
+},
+"story.STAR_GIST.华盖": {
+"en": "a taste for solitude, depth and the arts",
+"zh": "喜欢独处、深思和艺术"
+},
+"story.STAR_GIST.学堂": {
+"en": "the mark of a natural learner",
+"zh": "天生爱学习的印记"
+},
+"story.STAR_GIST.驿马": {
+"en": "movement, travel and relocation",
+"zh": "奔波、出行与搬迁"
+},
+"story.STAR_GIST.将星": {
+"en": "natural authority among others",
+"zh": "在人群中自带威信"
+},
+"story.STAR_GIST.禄神": {
+"en": "the means to a steady income",
+"zh": "有稳定的收入来源"
+},
+"story.STAR_GIST.月德": {
+"en": "protection that softens hard years",
+"zh": "能缓和艰难年份的庇护"
+},
+"story.STAR_GIST.金舆": {
+"en": "comfort and support from others",
+"zh": "得到他人的照应与扶持"
+},
+"story.STAR_GIST.灾煞": {
+"en": "so take care with accidents and hasty moves",
+"zh": "所以要小心意外和仓促的举动"
+},
+"story.STAR_GIST.寡宿": {
+"en": "a streak of independence and solitude",
+"zh": "带着一股独立、爱独处的劲头"
+},
+"story._timing.22": {
+"en": "this year",
+"zh": "今年"
+},
+"story._timing.20": {
+"en": "{when} are a good time to learn and build habits.",
+"zh": "{when} 是学习和养成习惯的好时候。"
+},
+"story._timing.27": {
+"en": "These are years for steady habits rather than big changes.",
+"zh": "这几年适合靠稳定的习惯，而不是大动作。"
+},
+"careers.ROLES.0.3.0": {
+"en": "research",
+"zh": "research"
+},
+"careers.ROLES.18.3.0": {
+"en": "research",
+"zh": "research"
+},
+"careers.ROLES.28.3.0": {
+"en": "research",
+"zh": "research"
+},
+"careers._ARCH_EN.research": {
+"en": "Research & analysis",
+"zh": "研究与分析"
+},
+"careers.ROLES.2.3.0": {
+"en": "engineering",
+"zh": "engineering"
+},
+"careers.ROLES.3.3.0": {
+"en": "engineering",
+"zh": "engineering"
+},
+"careers.ROLES.4.3.0": {
+"en": "engineering",
+"zh": "engineering"
+},
+"careers.ROLES.27.3.0": {
+"en": "engineering",
+"zh": "engineering"
+},
+"careers.ROLES.36.3.0": {
+"en": "engineering",
+"zh": "engineering"
+},
+"careers.ROLES.37.3.0": {
+"en": "engineering",
+"zh": "engineering"
+},
+"careers.ROLES.38.3.0": {
+"en": "engineering",
+"zh": "engineering"
+},
+"careers._ARCH_EN.engineering": {
+"en": "Engineering & technical craft",
+"zh": "工程与技术"
+},
+"careers.ROLES.1.3.0": {
+"en": "tech",
+"zh": "tech"
+},
+"careers.ROLES.2.3.1": {
+"en": "tech",
+"zh": "tech"
+},
+"careers.ROLES.16.3.1": {
+"en": "tech",
+"zh": "tech"
+},
+"careers.ROLES.24.3.1": {
+"en": "tech",
+"zh": "tech"
+},
+"careers._ARCH_EN.tech": {
+"en": "Tech & software product",
+"zh": "科技与软件产品"
+},
+"careers.ROLES.9.3.0": {
+"en": "teaching",
+"zh": "teaching"
+},
+"careers.ROLES.13.3.0": {
+"en": "teaching",
+"zh": "teaching"
+},
+"careers.ROLES.18.3.1": {
+"en": "teaching",
+"zh": "teaching"
+},
+"careers.ROLES.23.3.0": {
+"en": "teaching",
+"zh": "teaching"
+},
+"careers.ROLES.24.3.0": {
+"en": "teaching",
+"zh": "teaching"
+},
+"careers._ARCH_EN.teaching": {
+"en": "Teaching & training",
+"zh": "教学与培训"
+},
+"careers.ROLES.7.3.0": {
+"en": "media",
+"zh": "media"
+},
+"careers.ROLES.8.3.0": {
+"en": "media",
+"zh": "media"
+},
+"careers.ROLES.9.3.1": {
+"en": "media",
+"zh": "media"
+},
+"careers.ROLES.10.3.0": {
+"en": "media",
+"zh": "media"
+},
+"careers.ROLES.11.3.1": {
+"en": "media",
+"zh": "media"
+},
+"careers.ROLES.20.3.1": {
+"en": "media",
+"zh": "media"
+},
+"careers.ROLES.29.3.1": {
+"en": "media",
+"zh": "media"
+},
+"careers.ROLES.34.3.0": {
+"en": "media",
+"zh": "media"
+},
+"careers._ARCH_EN.media": {
+"en": "Communications & media",
+"zh": "传播与媒体"
+},
+"careers.ROLES.4.3.1": {
+"en": "law",
+"zh": "law"
+},
+"careers.ROLES.21.3.0": {
+"en": "law",
+"zh": "law"
+},
+"careers.ROLES.22.3.0": {
+"en": "law",
+"zh": "law"
+},
+"careers._ARCH_EN.law": {
+"en": "Law & compliance",
+"zh": "法律与合规"
+},
+"careers.ROLES.16.3.0": {
+"en": "finance",
+"zh": "finance"
+},
+"careers._ARCH_EN.finance": {
+"en": "Finance & investment",
+"zh": "金融与投资"
+},
+"careers.ROLES.14.3.0": {
+"en": "trading",
+"zh": "trading"
+},
+"careers.ROLES.17.3.0": {
+"en": "trading",
+"zh": "trading"
+},
+"careers.ROLES.20.3.0": {
+"en": "trading",
+"zh": "trading"
+},
+"careers.ROLES.30.3.1": {
+"en": "trading",
+"zh": "trading"
+},
+"careers._ARCH_EN.trading": {
+"en": "Trading & business development",
+"zh": "贸易与商务拓展"
+},
+"careers.ROLES.5.3.0": {
+"en": "venture",
+"zh": "venture"
+},
+"careers.ROLES.32.3.0": {
+"en": "venture",
+"zh": "venture"
+},
+"careers._ARCH_EN.venture": {
+"en": "Entrepreneurship",
+"zh": "创业"
+},
+"careers.ROLES.5.3.1": {
+"en": "management",
+"zh": "management"
+},
+"careers._ARCH_EN.management": {
+"en": "Management & operations",
+"zh": "管理与运营"
+},
+"careers.ROLES.19.3.0": {
+"en": "public",
+"zh": "public"
+},
+"careers._ARCH_EN.public": {
+"en": "Public service & institutions",
+"zh": "公共服务与机构"
+},
+"careers.ROLES.30.3.0": {
+"en": "property",
+"zh": "property"
+},
+"careers.ROLES.31.3.0": {
+"en": "property",
+"zh": "property"
+},
+"careers.ROLES.34.3.1": {
+"en": "property",
+"zh": "property"
+},
+"careers._ARCH_EN.property": {
+"en": "Property & asset stewardship",
+"zh": "地产与资产管理"
+},
+"careers.ROLES.15.3.0": {
+"en": "logistics",
+"zh": "logistics"
+},
+"careers._ARCH_EN.logistics": {
+"en": "Logistics & mobility",
+"zh": "物流与出行"
+},
+"careers.ROLES.6.3.0": {
+"en": "design",
+"zh": "design"
+},
+"careers.ROLES.11.3.0": {
+"en": "design",
+"zh": "design"
+},
+"careers.ROLES.12.3.0": {
+"en": "design",
+"zh": "design"
+},
+"careers.ROLES.35.3.0": {
+"en": "design",
+"zh": "design"
+},
+"careers.ROLES.36.3.1": {
+"en": "design",
+"zh": "design"
+},
+"careers._ARCH_EN.design": {
+"en": "Design & aesthetics",
+"zh": "设计与美学"
+},
+"careers.ROLES.25.3.0": {
+"en": "care",
+"zh": "care"
+},
+"careers.ROLES.26.3.0": {
+"en": "care",
+"zh": "care"
+},
+"careers.ROLES.27.3.1": {
+"en": "care",
+"zh": "care"
+},
+"careers.ROLES.29.3.0": {
+"en": "care",
+"zh": "care"
+},
+"careers.ROLES.33.3.0": {
+"en": "care",
+"zh": "care"
+},
+"careers._ARCH_EN.care": {
+"en": "Care & wellbeing professions",
+"zh": "照护与身心健康类职业"
+},
+"careers.ROLES.2.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.4.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.5.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.8.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.9.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.11.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.13.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.16.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.17.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.18.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.20.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.24.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.25.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.27.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.29.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.33.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.34.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.36.4": {
+"en": "arguable",
+"zh": "arguable"
+},
+"careers.ROLES.3.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.6.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.7.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.10.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.12.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.14.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.15.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.19.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.21.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.22.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.23.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.26.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.28.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.30.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.31.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.32.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.35.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.37.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.ROLES.38.4": {
+"en": "firm",
+"zh": "firm"
+},
+"careers.career_roles.01": {
+"en": "field element {e} is a favourable 用神",
+"zh": "行业对应的五行 {e} 属于你的喜用"
+},
+"careers.career_roles.02": {
+"en": "field element {e} is on the avoid list",
+"zh": "行业对应的五行 {e} 属于你的忌"
+},
+"careers.career_roles.03": {
+"en": "no supporting structure",
+"zh": "缺少支撑条件"
+},
+"daily.daily_fortune.01": {
+"en": "成日 success",
+"zh": "成日"
+},
+"daily.daily_fortune.04": {
+"en": "閉日 closed",
+"zh": "闭日"
+},
+"daily.daily_fortune.06": {
+"en": "危日 danger",
+"zh": "危日"
+},
+"domains.personality_axes.09": {
+"en": "no strong tendency",
+"zh": "倾向不明显"
+},
+"domains.personality_axes.14": {
+"en": "no strong tendency",
+"zh": "倾向不明显"
+},
+"domains.personality_axes.18": {
+"en": "no strong tendency",
+"zh": "倾向不明显"
+},
+"domains.personality_axes.22": {
+"en": "no strong tendency",
+"zh": "倾向不明显"
+},
+"domains.personality_axes.24": {
+"en": "challenges rules",
+"zh": "敢于挑战规则"
+},
+"domains.personality_axes.25": {
+"en": "works within structure",
+"zh": "在体系内做事"
+},
+"domains.personality_axes.26": {
+"en": "direct & open",
+"zh": "直接坦率"
+},
+"interpret._TG_GROUP.劫財": {
+"en": "peer",
+"zh": "peer"
+},
+"interpret._TG_GROUP.劫财": {
+"en": "peer",
+"zh": "peer"
+},
+"interpret._TG_GROUP.傷官": {
+"en": "output",
+"zh": "output"
+},
+"interpret._TG_GROUP.伤官": {
+"en": "output",
+"zh": "output"
+},
+"interpret._TG_GROUP.偏財": {
+"en": "wealth",
+"zh": "wealth"
+},
+"interpret._TG_GROUP.正财": {
+"en": "wealth",
+"zh": "wealth"
+},
+"interpret._TG_GROUP.偏财": {
+"en": "wealth",
+"zh": "wealth"
+},
+"interpret._TG_GROUP.七殺": {
+"en": "authority",
+"zh": "authority"
+},
+"interpret._TG_GROUP.七杀": {
+"en": "authority",
+"zh": "authority"
+},
+"interpret._TG_GROUP.偏印": {
+"en": "resource",
+"zh": "resource"
+},
+"synthesis.clinical_report.47": {
+"en": "weak",
+"zh": "偏弱"
+},
+"synthesis.clinical_report.50": {
+"en": "weak",
+"zh": "偏弱"
+},
+"synthesis.clinical_report.48": {
+"en": "strong",
+"zh": "偏强"
+},
+"synthesis.clinical_report.51": {
+"en": "strong",
+"zh": "偏强"
+}
+}

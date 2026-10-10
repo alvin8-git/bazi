@@ -10,6 +10,7 @@ from .bazi import Chart
 from .wuxing import (BRANCH_ELEMENT, BRANCHES, CHONG_MAP, ELEMENT_EN, HAI_MAP,
                      HE_MAP, SANHE, STEM_ELEMENT, STEMS)
 from .xuankong import _fly, annual_star, star_quality
+from .i18n import ELEM, L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
 MONTH_BRANCH_ORDER = ["寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥", "子", "丑"]
 
@@ -61,15 +62,15 @@ def taisui_interactions(chart: Chart, lichun_year: int) -> list[dict]:
     return out
 
 
-def year_element_read(chart: Chart, ys_fav: list[str], lichun_year: int) -> dict:
+def year_element_read(chart: Chart, ys_fav: list[str], lichun_year: int, lang: str = "en") -> dict:
     stem, branch = year_ganzhi(lichun_year)
     se, be = STEM_ELEMENT[stem], BRANCH_ELEMENT[branch]
     def verdict(el: str) -> str:
-        return ("favourable 喜" if el in ys_fav else "unfavourable 忌")
+        return (T("liunian.year_element_read.01", "favourable 喜", lang) if el in ys_fav else T("liunian.year_element_read.02", "unfavourable 忌", lang))
     return {"rule_id": "year-element", "layer": "liunian",
-            "source_ref": f"流年 {stem}{branch} ({ELEMENT_EN[se]} {se}/{ELEMENT_EN[be]} {be}) vs 用神",
-            "explanation": f"year stem {stem} {ELEMENT_EN[se]} is {verdict(se)}; "
-                           f"year branch {branch} {ELEMENT_EN[be]} is {verdict(be)}"}
+            "source_ref": T("liunian.year_element_read.03", f"流年 {stem}{branch} ({ELEM(lang)[se]} {se}/{ELEM(lang)[be]} {be}) vs 用神", lang, stem=stem, branch=branch, se_element_en=ELEM(lang)[se], se=se, be_element_en=ELEM(lang)[be], be=be),
+            "explanation": T("liunian.year_element_read.04", f"year stem {stem} {ELEM(lang)[se]} is {verdict(se)}; "
+                           f"year branch {branch} {ELEM(lang)[be]} is {verdict(be)}", lang, stem=stem, se_element_en=ELEM(lang)[se], verdict_se=verdict(se), branch=branch, be_element_en=ELEM(lang)[be], verdict_be=verdict(be))}
 
 
 def room_month_watch(room_palace: str, lichun_year: int) -> list[dict]:
@@ -112,7 +113,7 @@ TG_KEY = {"比肩": "self-drive & peers", "劫財": "competition & bold moves",
           "偏印": "intuition & niche skills", "正印": "learning & support"}
 
 
-def dayun_detail(chart: Chart, year: int) -> list[dict]:
+def dayun_detail(chart: Chart, year: int, lang: str = "en") -> list[dict]:
     """Each 大運 decade labelled by the ten gods of its stem and branch main qi."""
     from .bazi import ten_god
     from .wuxing import HIDDEN_STEMS
@@ -123,7 +124,7 @@ def dayun_detail(chart: Chart, year: int) -> list[dict]:
         bg = ten_god(chart.day_master, HIDDEN_STEMS[d.gz.branch][0])
         out.append({"gz": str(d.gz), "ages": f"{d.start_age:.0f}–{d.end_age:.0f}",
                     "stem_god": sg, "branch_god": bg,
-                    "keywords": f"{TG_KEY[sg]} / {TG_KEY[bg]}",
+                    "keywords": f"{L("liunian.TG_KEY", TG_KEY, lang)[sg]} / {L("liunian.TG_KEY", TG_KEY, lang)[bg]}",
                     "current": d.covers(age)})
     return out
 
@@ -206,7 +207,7 @@ _SANSHA = {  # year-branch trine → the three 煞 branches (opposite frame)
     ("巳", "酉", "丑"): "寅卯辰", ("亥", "卯", "未"): "申酉戌"}
 
 
-def annual_afflictions(lichun_year: int) -> dict:
+def annual_afflictions(lichun_year: int, lang: str = "en") -> dict:
     """太歲 / 歲破 / 三煞 sectors for the year — the directions a geomancer
     checks before any renovation or seating decision."""
     _, yb = year_ganzhi(lichun_year)
@@ -215,14 +216,14 @@ def annual_afflictions(lichun_year: int) -> dict:
     sansha_branches = _SANSHA[grp]
     return {
         "taisui": {"branch": yb, "palace": BRANCH_PALACE[yb],
-                   "rule": "太歲 可坐不可向 — sitting with your back to it is fine; "
+                   "rule": T("liunian.annual_afflictions.01", "太歲 可坐不可向 — sitting with your back to it is fine; "
                            "avoid FACING it for long periods, and never renovate or "
-                           "dig in its sector this year"},
+                           "dig in its sector this year", lang)},
         "suipo": {"branch": po, "palace": BRANCH_PALACE[po],
-                  "rule": "歲破 (opposite 太歲) — the year breaker; avoid "
-                          "ground-breaking and major disturbance in this sector"},
+                  "rule": T("liunian.annual_afflictions.02", "歲破 (opposite 太歲) — the year breaker; avoid "
+                          "ground-breaking and major disturbance in this sector", lang)},
         "sansha": {"branches": sansha_branches,
                    "palaces": sorted({BRANCH_PALACE[b] for b in sansha_branches}),
-                   "rule": "三煞 可向不可坐 — facing it is acceptable; avoid SITTING "
-                           "toward it and avoid renovation in its sectors"},
+                   "rule": T("liunian.annual_afflictions.03", "三煞 可向不可坐 — facing it is acceptable; avoid SITTING "
+                           "toward it and avoid renovation in its sectors", lang)},
     }

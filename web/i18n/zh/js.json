@@ -103,6 +103,14 @@
   "en": "{0} of 100",
   "zh": "{0} 分（满分 100）"
  },
+ "card.standing": {
+  "en": "standing {0} of 100",
+  "zh": "相对位次 {0}/100"
+ },
+ "card.standingNote": {
+  "en": "Standing is the relative standing among charts, not strength.",
+  "zh": "位次是在众多命盘中的相对位置，不代表强弱。"
+ },
  "t.001": {
   "en": "Four Pillars",
   "zh": "四柱"

@@ -152,12 +152,16 @@ def person_cards(chart, ys, natal: dict, annual: dict[str, int], year: int,
     def component(rule_id):
         # each branch returns (sub 0-100, explanation, source_ref)
         if rule_id == "tcm-balance":
+            # Same rule as the reading (blind review B, Q6; owner 2026-10-11): the sub-score IS the corrected health area from
+            # engine/domains.py (Day Master root, 中和, 用神 supply, 偏枯 outside 專旺/從). The organ-map flags no longer move
+            # points; they are listed in the explanation as an advice-only watch list. The rule id stays "tcm-balance" so audits keep their key.
+            d = doms["health"]
+            chips = "; ".join(f"{e['label']} {e['delta']:+d}" for e in d["evidence"])
             flags = [h for h in health_map(chart) if h["status"] != "balanced"]
-            sub = _clamp(90 - 20 * len(flags))
-            why = ("all five elements in workable balance" if not flags else
-                   "; ".join(f"{h['element']} {h['status']} ({h['share']}% — "
-                             f"{h['organs']})" for h in flags))
-            return sub, why, "TCM element-organ map (reference, not medical advice)"
+            watch = ("; organ-map watch list (advice only, not scored): " + "; ".join(
+                f"{h['element']} {h['status']} ({h['share']}% — {h['organs']})" for h in flags)) if flags else ""
+            return d["score"], f"constitution {d['score']}: {chips}{watch}", \
+                "constitution from Day Master root, 中和 and 用神 supply (MODERN SYNTHESIS); organ map is reference, not medical advice"
         if rule_id == "bed-mountain-star":
             if not room_palace:
                 return 50, "no assigned room — neutral", "玄空 山星 (degraded: unassigned)"

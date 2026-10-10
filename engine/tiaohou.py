@@ -14,6 +14,7 @@ Gods are ordered primary-first, as in the 提要.
 from __future__ import annotations
 
 from .wuxing import STEM_ELEMENT
+from .i18n import L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
 TIAOHOU = {
     "甲": {"寅": "丙癸", "卯": "庚丙丁戊己", "辰": "庚丁壬", "巳": "癸庚丁", "午": "癸庚丁", "未": "癸庚丁", "申": "庚丁壬", "酉": "庚丁丙", "戌": "庚甲丁壬癸", "亥": "庚丁丙戊", "子": "丁庚丙", "丑": "丁庚丙"},
@@ -29,7 +30,7 @@ TIAOHOU = {
 }
 
 
-def tiaohou_reading(c, ys: dict) -> dict:
+def tiaohou_reading(c, ys: dict, lang: str = "en") -> dict:
     """Chart-specific 調候: the season's prescribed stems for this Day Master
     and month, whether each is visible (透) in this chart, and how the climate
     prescription sits against the 扶抑 favourable elements."""
@@ -47,16 +48,16 @@ def tiaohou_reading(c, ys: dict) -> dict:
                       "visible": st in visible,
                       "aligned": STEM_ELEMENT[st] in fav})
     n_align = sum(1 for i in items if i["aligned"])
-    verdict = ("agrees" if n_align == len(items) else
-               "partially agrees" if n_align else "differs")
-    line = (f"調候 (窮通寶鑑): a {dm} Day Master in the {mb} month calls for "
+    verdict = (T("tiaohou.tiaohou_reading.01", "agrees", lang) if n_align == len(items) else
+               T("tiaohou.tiaohou_reading.02", "partially agrees", lang) if n_align else T("tiaohou.tiaohou_reading.03", "differs", lang))
+    line = (T("tiaohou.tiaohou_reading.04", f"調候 (窮通寶鑑): a {dm} Day Master in the {mb} month calls for ", lang, dm=dm, mb=mb)
             + "、".join(f'{i["stem"]}({i["god"]}{"·透" if i["visible"] else "·不透"})'
                         for i in items)
-            + f" — the climate prescription {verdict} with the 扶抑 verdict"
-            + ("." if verdict == "agrees" else
-               ": where they part, satisfy the 調候 stems through USE (timing, "
+            + T("tiaohou.tiaohou_reading.05", f" — the climate prescription {verdict} with the 扶抑 verdict", lang, verdict=verdict)
+            + (dot(lang) if n_align == len(items) else
+               T("tiaohou.tiaohou_reading.06", ": where they part, satisfy the 調候 stems through USE (timing, "
                "activity, environment) and the 扶抑 elements through SUPPORT "
-               "(colours, sectors, fields) — both, not either."))
-    return {"gods": items, "verdict": verdict, "line": line,
-            "source_ref": "窮通寶鑑 喜用提要 (cross-checked reproduction; "
-                          "primary god uncontested in all sources)"}
+               "(colours, sectors, fields) — both, not either.", lang)))
+    return {"gods": items, "verdict": verdict, "line": zs(line, lang),
+            "source_ref": T("tiaohou.tiaohou_reading.07", "窮通寶鑑 喜用提要 (cross-checked reproduction; "
+                          "primary god uncontested in all sources)", lang)}

@@ -15,6 +15,7 @@ from .bazhai import STAR_SCORE, youxing_stars
 from .liunian import BRANCH_PALACE, annual_afflictions
 from .shensha import TRINE_STARS, WENCHANG
 from .wuxing import ELEMENT_COLOURS, ELEMENT_EN, ELEMENTS, PALACES, SHENG, SHENG_REV
+from .i18n import L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
 # 五行 materials map (design doc §4 R1)
 MATERIALS = {
@@ -45,12 +46,15 @@ def _act(trigger, action, category, priority, source_ref, resource):
             "priority": priority, "source_ref": source_ref, "resource": resource}
 
 
-def good_dirs(gua: str, top: int = 3) -> str:
+def good_dirs(gua: str, top: int = 3, lang: str = "en") -> str:
     """Best 八宅 directions for a 命卦, strongest star first (7A: shared by
     interpret.py so remedy text and narrative name the same directions)."""
     good = sorted(((p, st) for p, st in youxing_stars(gua).items() if STAR_SCORE[st] > 0),
                   key=lambda x: -STAR_SCORE[x[1]])
-    return ", ".join(f"{PALACES[p]['dir']} ({st})" for p, st in good[:top])
+    def one(p, st):
+        d = PALACES[p]["dir"]
+        return T(f"plain.DIR_WORD.{d}", d, lang) + (f"（{st}）" if lang == "zh" else f" ({st})")
+    return zs(jn([one(p, st) for p, st in good[:top]], lang), lang)
 
 
 # ---------- R1 · element imbalance (person) ---------------------------------
@@ -100,11 +104,11 @@ def bazhai_compensation(gua: str, ys) -> dict:
         "placement", 2, "八宅遊年 + 用神 (in-room compensation)", "headboard")
 
 
-def wardrobe_phrase(ys) -> str:
+def wardrobe_phrase(ys, lang: str = "en") -> str:
     """The 用神 colour/decor sentence fragment interpret_person embeds (7A)."""
-    return (f"wear/decorate with the colours {'·'.join(ys['colours'])} and favour "
+    return (T("remedies.wardrobe_phrase.01", f"wear/decorate with the colours {'·'.join(ys['colours'])} and favour "
             f"room sectors of those elements; keep {'·'.join(ys['unfavourable'])} "
-            f"understated in decor and wardrobe")
+            f"understated in decor and wardrobe", lang, join_ys_colours='·'.join(ys['colours']), join_ys_unfavourable='·'.join(ys['unfavourable'])))
 
 
 # ---------- R2 · room fit (person × room) -----------------------------------

@@ -14,12 +14,14 @@ import argparse
 import json
 from pathlib import Path
 
+from .bazi import localized_chart
 from .bazhai import EAST_GROUP, STAR_SCORE, gua_group, ming_gua, youxing_stars
 from .optimizer import optimize, score_assignment
 from .remedies import bazhai_compensation, wardrobe_phrase
 from .wuxing import (BRANCH_ELEMENT, ELEMENT_EN, PALACES, STEM_ELEMENT,
                      mountain_of_degrees)
 from .xuankong import annual_chart, natal_chart, natal_chart_from_degrees
+from .i18n import ELEM, L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
 STRUCTURE_TEXT = {
     "旺山旺向": "one of the BEST flying-star structures: the prosperous mountain star "
@@ -62,9 +64,9 @@ def _band(x: float) -> str:
     return "poor fit"
 
 
-def _good_dirs(gua: str, top: int = 3) -> str:
+def _good_dirs(gua: str, top: int = 3, lang: str = "en") -> str:
     from .remedies import good_dirs   # 7A: remedies.py is the single source
-    return good_dirs(gua, top)
+    return good_dirs(gua, top, lang=lang)
 
 
 TEN_GOD_GROUP = {"比肩": "比劫", "劫財": "比劫", "食神": "食傷", "傷官": "食傷",
@@ -113,7 +115,7 @@ ABSENT_COST = {
 }
 
 
-def element_relations(chart) -> dict:
+def element_relations(chart, lang: str = "en") -> dict:
     """The chart's 生剋 dynamics, personalised: Day-Master flows, dominance /
     absence, and productive-vs-destructive findings — the interaction reading
     a practitioner does on top of the balance bars."""
@@ -134,35 +136,35 @@ def element_relations(chart) -> dict:
                 "role": role, "en": en, "meaning": meaning}
 
     flows = {
-        "resource": node(inv_sheng[dm_el], "生我 印", "feeds you",
-                         "support, learning, protection — your recharge line"),
-        "output": node(SHENG_C[dm_el], "我生 食傷", "you feed",
-                       "expression and output — spends your energy"),
-        "wealth": node(KE_C[dm_el], "我剋 財", "you control",
-                       "wealth — results the chart can seize and hold"),
-        "pressure": node(inv_ke[dm_el], "剋我 官殺", "controls you",
-                         "discipline, career pressure, external structure"),
+        "resource": node(inv_sheng[dm_el], "生我 印", T("interpret.element_relations.01", "feeds you", lang),
+                         T("interpret.element_relations.02", "support, learning, protection — your recharge line", lang)),
+        "output": node(SHENG_C[dm_el], "我生 食傷", T("interpret.element_relations.03", "you feed", lang),
+                       T("interpret.element_relations.04", "expression and output — spends your energy", lang)),
+        "wealth": node(KE_C[dm_el], "我剋 財", T("interpret.element_relations.05", "you control", lang),
+                       T("interpret.element_relations.06", "wealth — results the chart can seize and hold", lang)),
+        "pressure": node(inv_ke[dm_el], "剋我 官殺", T("interpret.element_relations.07", "controls you", lang),
+                         T("interpret.element_relations.08", "discipline, career pressure, external structure", lang)),
         "peer": node(dm_el, "同我 比劫", "peers",
-                     "self-strength, siblings, competition"),
+                     T("interpret.element_relations.09", "self-strength, siblings, competition", lang)),
     }
     findings, afflictions = [], []
     hi = max(share, key=share.get)
     if share[hi] >= 30:
         findings.append(
-            f"{hi} dominates at {share[hi]}% — {ELEMENT_TRAIT[hi]} colours "
-            "the whole chart, and its excesses are the first faults to watch.")
+            T("interpret.element_relations.10", f"{hi} dominates at {share[hi]}% — {L("interpret.ELEMENT_TRAIT", ELEMENT_TRAIT, lang)[hi]} colours "
+            "the whole chart, and its excesses are the first faults to watch.", lang, hi=hi, share_hi=share[hi], hi_element_trait=L("interpret.ELEMENT_TRAIT", ELEMENT_TRAIT, lang)[hi]))
     for el, s in share.items():
         if s < 4:
             findings.append(
-                f"{el} is effectively absent ({s}%) — {ABSENT_COST[el]}; the "
-                f"generating chain into {SHENG_C[el]} also loses its feeder.")
+                T("interpret.element_relations.11", f"{el} is effectively absent ({s}%) — {L("interpret.ABSENT_COST", ABSENT_COST, lang)[el]}; the "
+                f"generating chain into {SHENG_C[el]} also loses its feeder.", lang, el=el, s=s, el_absent_cost=L("interpret.ABSENT_COST", ABSENT_COST, lang)[el], el_sheng_c=SHENG_C[el]))
     for a, b in KE_C.items():
         if share[a] >= 25 and share[b] <= 10:
             afflictions.append([a, b])
             if share[b] >= 4:
                 findings.append(
-                    f"{a} ({share[a]}%) bears down on weak {b} "
-                    f"({share[b]}%) — {KE_META[(a, b)]}.")
+                    T("interpret.element_relations.12", f"{a} ({share[a]}%) bears down on weak {b} "
+                    f"({share[b]}%) — {L("interpret.KE_META", KE_META, lang)[(a, b)]}.", lang, a=a, share_a=share[a], b=b, share_b=share[b], x_ke_meta=L("interpret.KE_META", KE_META, lang)[(a, b)]))
     heavies = {el for el, s in share.items() if s >= 20}
     for a in sorted(heavies, key="木火土金水".index):   # fixed order: a set's order changes between processes
         b = KE_C[a]
@@ -170,24 +172,24 @@ def element_relations(chart) -> dict:
             if [a, b] not in afflictions:
                 afflictions.append([a, b])
             findings.append(
-                f"Two strong camps: {a} ({share[a]}%) vs {b} ({share[b]}%) — "
-                f"{KE_META[(a, b)]}; a recurring life theme, manageable once "
-                "named.")
+                T("interpret.element_relations.13", f"Two strong camps: {a} ({share[a]}%) vs {b} ({share[b]}%) — "
+                f"{L("interpret.KE_META", KE_META, lang)[(a, b)]}; a recurring life theme, manageable once "
+                "named.", lang, a=a, share_a=share[a], b=b, share_b=share[b], x_ke_meta=L("interpret.KE_META", KE_META, lang)[(a, b)]))
     r = flows["resource"]
     if r["band"] in ("present", "heavy"):
         findings.append(
-            f"The support line is intact: {r['el']} ({r['share']}%) 生 "
-            f"{dm_el} — {SHENG_META[(r['el'], dm_el)]}; help and recovery "
-            "are structurally available.")
+            T("interpret.element_relations.14", f"The support line is intact: {r['el']} ({r['share']}%) 生 "
+            f"{dm_el} — {L("interpret.SHENG_META", SHENG_META, lang)[(r['el'], dm_el)]}; help and recovery "
+            "are structurally available.", lang, r_el=r['el'], r_share=r['share'], dm_el=dm_el, x_sheng_meta=L("interpret.SHENG_META", SHENG_META, lang)[(r['el'], dm_el)]))
     else:
         findings.append(
-            f"The support line is thin: {r['el']} ({r['share']}%) barely "
+            T("interpret.element_relations.15", f"The support line is thin: {r['el']} ({r['share']}%) barely "
             f"feeds {dm_el} — recharge does not happen by itself here; build "
-            "it in deliberately (rest, mentors, study).")
+            "it in deliberately (rest, mentors, study).", lang, r_el=r['el'], r_share=r['share'], dm_el=dm_el))
     return {"dm": dm_el, "share": share, "flows": flows,
             "afflictions": afflictions, "findings": findings,
-            "source_ref": "五行生剋 cycles applied to this chart's weighted "
-                          "element balance"}
+            "source_ref": T("interpret.element_relations.16", "五行生剋 cycles applied to this chart's weighted "
+                          "element balance", lang)}
 
 
 _TG_GROUP = {g: grp for grp, gods in {
@@ -205,7 +207,7 @@ def _group_el(dm_el: str, grp: str) -> str:
             "authority": inv_k[dm_el], "resource": inv_s[dm_el]}[grp]
 
 
-def ten_god_insights(chart, ys: dict) -> dict:
+def ten_god_insights(chart, ys: dict, lang: str = "en") -> dict:
     """Structure over percentages (the Sean-Chan critique, applied): 用神
     alignment of the heavy gods, rooted-vs-floating for visible stems, and
     classical pair patterns (食神制殺, 傷官見官, 殺印相生, …)."""
@@ -222,12 +224,12 @@ def ten_god_insights(chart, ys: dict) -> dict:
         el = _group_el(dm_el, _TG_GROUP[god])
         st = ("favourable" if el in fav else
               "unfavourable" if el in unfav else "neutral")
-        note = (f"carries {el} — one of your 用神: a clean engine, using it "
-                "strengthens the chart" if st == "favourable" else
-                f"carries {el} — an UNFAVOURABLE element here: its gifts run "
-                "on borrowed energy; use it deliberately and budget recovery"
+        note = (T("interpret.ten_god_insights.01", f"carries {el} — one of your 用神: a clean engine, using it "
+                "strengthens the chart", lang, el=el) if st == "favourable" else
+                T("interpret.ten_god_insights.02", f"carries {el} — an UNFAVOURABLE element here: its gifts run "
+                "on borrowed energy; use it deliberately and budget recovery", lang, el=el)
                 if st == "unfavourable" else
-                f"carries {el} — neutral for this chart")
+                T("interpret.ten_god_insights.03", f"carries {el} — neutral for this chart", lang, el=el))
         favor.append({"god": god, "pct": p, "el": el, "status": st,
                       "note": note})
 
@@ -240,7 +242,7 @@ def ten_god_insights(chart, ys: dict) -> dict:
         seen.add(god)
         el = _group_el(dm_el, _TG_GROUP[god])
         rooted.append({"god": god,
-                       "state": "rooted" if el in branch_els else "floating"})
+                       "state": "rooted" if el in branch_els else "floating"})        # a code: the page and the report test it, and show their own words
 
     patterns = []
     # 透-state (follow-up audit 2026-09-19): a pattern whose components are all
@@ -270,14 +272,14 @@ def ten_god_insights(chart, ys: dict) -> dict:
         if comps:
             missing = [g for g in comps if g not in visible]
             if not missing:
-                entry["state"] = "formed 已成 (all components 透干)"
+                entry["state"] = T("interpret.ten_god_insights.06", "formed 已成 (all components 透干)", lang)
             else:
-                entry["state"] = f"latent 待透 ({'/'.join(missing)} hidden only)"
+                entry["state"] = T("interpret.ten_god_insights.07", f"latent 待透 ({'/'.join(missing)} hidden only)", lang, join_missing='/'.join(missing))
                 dec = _decade_with(missing)
                 if dec:
-                    entry["activation"] = (f"the {dec['gz']} decade (ages "
+                    entry["activation"] = (T("interpret.ten_god_insights.08", f"the {dec['gz']} decade (ages "
                                            f"{dec['ages']}) brings the missing "
-                                           "component — the pattern activates then")
+                                           "component — the pattern activates then", lang, dec_gz=dec['gz'], dec_ages=dec['ages']))
         patterns.append(entry)
 
     shi, shang = g("食神"), g("傷官", "伤官")
@@ -287,42 +289,42 @@ def ten_god_insights(chart, ys: dict) -> dict:
     cai = g("正財", "正财", "偏財", "偏财")
     weak = chart.strength["verdict"].startswith("身弱")
     if shi >= 8 and sha >= 8:
-        add("食神制殺", "refined skill tames force",
-            "the advisor pattern — influence through mastery, not dominance; "
-            "demanding roles suit you when you bring craft to them",
+        add("食神制殺", T("interpret.ten_god_insights.09", "refined skill tames force", lang),
+            T("interpret.ten_god_insights.10", "the advisor pattern — influence through mastery, not dominance; "
+            "demanding roles suit you when you bring craft to them", lang),
             comps=("食神", "七殺"))
     if shang >= 8 and guan >= 5:
-        add("傷官見官", "talent chafes against authority",
-            "the classic friction pattern — candour collides with hierarchy; "
+        add("傷官見官", T("interpret.ten_god_insights.11", "talent chafes against authority", lang),
+            T("interpret.ten_god_insights.12", "the classic friction pattern — candour collides with hierarchy; "
             "choose environments that price honesty as an asset, and document "
-            "wins before challenging rules", comps=("傷官", "正官"))
+            "wins before challenging rules", lang), comps=("傷官", "正官"))
     if sha >= 8 and (yin + pyin) >= 8:
-        add("殺印相生", "pressure converts to growth",
-            "stress becomes study: credentials, mentors and frameworks turn "
-            "七殺 pressure into rank — the high-stakes professional pattern",
+        add("殺印相生", T("interpret.ten_god_insights.13", "pressure converts to growth", lang),
+            T("interpret.ten_god_insights.14", "stress becomes study: credentials, mentors and frameworks turn "
+            "七殺 pressure into rank — the high-stakes professional pattern", lang),
             comps=("七殺", "正印"))
     if shang >= 8 and yin >= 8:
-        add("傷官配印", "talent under discipline",
-            "raw output with built-in quality control — creative work that "
-            "survives editing; protect the learning time that powers it",
+        add("傷官配印", T("interpret.ten_god_insights.15", "talent under discipline", lang),
+            T("interpret.ten_god_insights.16", "raw output with built-in quality control — creative work that "
+            "survives editing; protect the learning time that powers it", lang),
             comps=("傷官", "正印"))
     if guan >= 8 and yin >= 8:
-        add("官印相生", "authority feeds learning",
-            "the steady-ascent pattern — institutions reward you; rank comes "
-            "through credentials rather than risk", comps=("正官", "正印"))
+        add("官印相生", T("interpret.ten_god_insights.17", "authority feeds learning", lang),
+            T("interpret.ten_god_insights.18", "the steady-ascent pattern — institutions reward you; rank comes "
+            "through credentials rather than risk", lang), comps=("正官", "正印"))
     if bj >= 20 and cai <= 8:
-        add("比劫奪財", "peers crowd the wealth",
-            "partnerships and 'friends' bleed money faster than rivals do — "
-            "keep finances separate, put agreements in writing")
+        add("比劫奪財", T("interpret.ten_god_insights.19", "peers crowd the wealth", lang),
+            T("interpret.ten_god_insights.20", "partnerships and 'friends' bleed money faster than rivals do — "
+            "keep finances separate, put agreements in writing", lang))
     if cai >= 25 and weak:
-        add("財多身弱", "wealth outweighs the carrier",
-            "opportunities exceed carrying capacity — strengthen the self "
+        add("財多身弱", T("interpret.ten_god_insights.21", "wealth outweighs the carrier", lang),
+            T("interpret.ten_god_insights.22", "opportunities exceed carrying capacity — strengthen the self "
             "(rest, support, focus) before chasing more, or money passes "
-            "through without staying")
+            "through without staying", lang))
     return {"favor": favor, "rooted": rooted, "patterns": patterns,
-            "source_ref": "structure over percentages: 用神 alignment of the "
+            "source_ref": T("interpret.ten_god_insights.23", "structure over percentages: 用神 alignment of the "
                           "heavy gods, rooting of visible stems, classical "
-                          "pair patterns — thresholds on weighted god shares"}
+                          "pair patterns — thresholds on weighted god shares", lang)}
 
 
 PALACE_INFO = [
@@ -347,40 +349,40 @@ _VAULT = {"木": "未", "火": "戌", "土": "戌", "金": "丑", "水": "辰"}
 _VAULT_CLASH = {"辰": "戌", "戌": "辰", "丑": "未", "未": "丑"}
 
 
-def four_palaces(chart, ys: dict) -> dict:
+def four_palaces(chart, ys: dict, lang: str = "en") -> dict:
     """The 宮位 layer: each pillar as a life-stage palace with its resident
     gods and a reading; spouse-palace, children-palace and 財庫 deep lines."""
     from .shensha import TEN_GOD_MEANING, natal_interactions, ten_god_pct
     dm_el = STEM_ELEMENT[chart.day_master]
     pillars = []
-    for key, zh, ages, governs in PALACE_INFO:
+    for key, zh, ages, governs in L("interpret.PALACE_INFO", PALACE_INFO, lang):
         stem_god = chart.ten_gods[key]
         hidden = [g for _, g in chart.hidden_gods[key]]
         gods = ([stem_god] if stem_god in _TG_GROUP else []) + hidden
         main = gods[0] if gods else None
-        line = (_PALACE_TMPL[key].format(
-            god=main, meaning=TEN_GOD_MEANING.get(main, "")) if main else governs)
+        line = (zs(L("interpret._PALACE_TMPL", _PALACE_TMPL, lang)[key].format(
+            god=main, meaning=L("shensha.TEN_GOD_MEANING", TEN_GOD_MEANING, lang).get(main, "")), lang) if main else governs)
         pillars.append({"key": key, "zh": zh, "ages": ages, "governs": governs,
                         "gz": str(chart.pillars[key]), "stem_god": stem_god,
                         "hidden": hidden, "line": line})
 
-    inter = [i for i in natal_interactions(chart) if "day" in i["pillars"]]
+    inter = [i for i in natal_interactions(chart, lang=lang) if "day" in i["pillars"]]
     clash = next((i for i in inter if "沖" in i["kind"] or "冲" in i["kind"]), None)
     he = next((i for i in inter if "合" in i["kind"]), None)
     xing = next((i for i in inter if "刑" in i["kind"] or "害" in i["kind"]), None)
     sp_state = (
-        f"clashed 被沖 ({clash['pair']}) — attraction comes easily, but the "
-        "relationship moves through more change before it settles" if clash else
-        f"in combination 逢合 ({he['pair']}) — the palace is pulled by another "
-        "pillar; family and context shape the marriage" if he else
-        f"under {xing['kind']} ({xing['pair']}) — quiet friction in the "
-        "domestic seat; name it early rather than let it accumulate" if xing else
-        "undisturbed — a stable seat for the marriage")
+        T("interpret.four_palaces.01", f"clashed 被沖 ({clash['pair']}) — attraction comes easily, but the "
+        "relationship moves through more change before it settles", lang, clash_pair=clash['pair']) if clash else
+        T("interpret.four_palaces.02", f"in combination 逢合 ({he['pair']}) — the palace is pulled by another "
+        "pillar; family and context shape the marriage", lang, he_pair=he['pair']) if he else
+        T("interpret.four_palaces.03", f"under {xing['kind']} ({xing['pair']}) — quiet friction in the "
+        "domestic seat; name it early rather than let it accumulate", lang, xing_kind=xing['kind'], xing_pair=xing['pair']) if xing else
+        T("interpret.four_palaces.04", "undisturbed — a stable seat for the marriage", lang))
     sp_gods = [g for _, g in chart.hidden_gods["day"]]
     spouse = {"branch": str(chart.pillars["day"])[1], "gods": sp_gods,
               "state": sp_state,
-              "line": (f"hosts {'/'.join(sp_gods)} — the partner's energy "
-                       f"reads as {TEN_GOD_MEANING.get(sp_gods[0], '')}"
+              "line": (T("interpret.four_palaces.05", f"hosts {'/'.join(sp_gods)} — the partner's energy "
+                       f"reads as {L("shensha.TEN_GOD_MEANING", TEN_GOD_MEANING, lang).get(sp_gods[0], '')}", lang, join_sp_gods='/'.join(sp_gods), TEN_GOD_MEANING_sp_gods=L("shensha.TEN_GOD_MEANING", TEN_GOD_MEANING, lang).get(sp_gods[0], ''))
                        if sp_gods else "")}
 
     pct = ten_god_pct(chart)
@@ -390,12 +392,12 @@ def four_palaces(chart, ys: dict) -> dict:
                if chart.ten_gods["hour"] in _TG_GROUP else []) \
         + [g for _, g in chart.hidden_gods["hour"]]
     children = {"gods": hr_gods, "output_share": out_share,
-                "line": (f"carries {'/'.join(dict.fromkeys(hr_gods))}"
-                         + (f"; output stars at {out_share}% — the bond with "
+                "line": (T("interpret.four_palaces.06", f"carries {'/'.join(dict.fromkeys(hr_gods))}", lang, join_fromkeys_hr_gods='/'.join(dict.fromkeys(hr_gods)))
+                         + (T("interpret.four_palaces.07", f"; output stars at {out_share}% — the bond with "
                             "children/students runs through shared creation "
-                            "and teaching" if out_share >= 15 else
-                            f"; output stars at {out_share}% — the bond builds "
-                            "through deliberate time, not shared projects"))}
+                            "and teaching", lang, out_share=out_share) if out_share >= 15 else
+                            T("interpret.four_palaces.08", f"; output stars at {out_share}% — the bond builds "
+                            "through deliberate time, not shared projects", lang, out_share=out_share)))}
 
     w_el = KE_C[dm_el]
     vb = _VAULT[w_el]
@@ -404,62 +406,64 @@ def four_palaces(chart, ys: dict) -> dict:
         opener = _VAULT_CLASH[vb]
         vault = {"present": True, "branch": vb, "element": w_el,
                  "open": opener in branches,
-                 "state": ("natally OPEN 已開 — the storehouse works from "
-                           "birth; accumulation compounds" if opener in branches
-                           else f"present but sealed — it opens in {opener} "
+                 "state": (T("interpret.four_palaces.09", "natally OPEN 已開 — the storehouse works from "
+                           "birth; accumulation compounds", lang) if opener in branches
+                           else T("interpret.four_palaces.10", f"present but sealed — it opens in {opener} "
                            "years (the 財庫 vault years in the timing windows); "
-                           "those are the accumulation windows")}
+                           "those are the accumulation windows", lang, opener=opener))}
     else:
         vault = {"present": False, "element": w_el,
-                 "state": f"no {w_el}-vault branch ({vb}) in the chart — "
+                 "state": T("interpret.four_palaces.11", f"no {w_el}-vault branch ({vb}) in the chart — "
                           "wealth flows rather than stores; retention needs "
-                          "systems (automatic saving), not windfalls"}
+                          "systems (automatic saving), not windfalls", lang, w_el=w_el, vb=vb)}
     return {"pillars": pillars, "spouse": spouse, "children": children,
             "vault": vault,
-            "source_ref": "宮位 four-palace doctrine: year=ancestry/0–15, "
+            "source_ref": T("interpret.four_palaces.12", "宮位 four-palace doctrine: year=ancestry/0–15, "
                           "month=career HQ/16–32, day=self+spouse/33–48, "
                           "hour=children/49+; 財庫 = wealth-element vault "
-                          "branch, opened by its 六沖 clash"}
+                          "branch, opened by its 六沖 clash", lang)}
 
 
-def _fav_word(el: str, ys: dict) -> str:
+def _fav_word(el: str, ys: dict, lang: str = "en") -> str:
     if el in ys["favourable"]:
-        return "favourable 喜"
+        return T("interpret._fav_word.01", "favourable 喜", lang)
     if el in ys["unfavourable"]:
-        return "unfavourable 忌"
+        return T("interpret._fav_word.02", "unfavourable 忌", lang)
     return "neutral"
 
 
-def interpret_person(chart, ys: dict, year: int) -> dict:
+def interpret_person(chart, ys: dict, year: int, lang: str = "en") -> dict:
     """Plain-English narrative for one BaZi chart — deterministic templates."""
     paras = []
     dm_el = STEM_ELEMENT[chart.day_master]
     strong = chart.strength["verdict"].startswith("身強")
-    season = chart.strength["steps"][0]["value"]
+    S = localized_chart(chart, lang).strength       # display text of the strength walkthrough; every rule below reads chart.strength
+    season = S["steps"][0]["value"]
+    zh = lang == "zh"
     paras.append(
-        f"[§2] The Day Master — the stem that represents the person — is {chart.day_master} "
-        f"({ELEMENT_EN[dm_el]}{dm_el}), judged {chart.strength['verdict']} "
-        f"(score {chart.strength['score']:+.2f}; season state {season}). "
-        + ("A strong chart can carry responsibility, output and wealth — it benefits more "
-           "from productive outlets (食傷·財·官殺) than from further support."
+        T("interpret.interpret_person.01", f"[§2] The Day Master — the stem that represents the person — is {chart.day_master} "
+        f"({ELEM(lang)[dm_el]}{dm_el}), judged {S['verdict']} "
+        f"(score {S['score']:+.2f}; season state {season}). ", lang, day_master=chart.day_master, dm_el_element_en=ELEM(lang)[dm_el], dm_el=dm_el, strength_verdict=S['verdict'], strength_score=S['score'], season=season)
+        + (T("interpret.interpret_person.02", "A strong chart can carry responsibility, output and wealth — it benefits more "
+           "from productive outlets (食傷·財·官殺) than from further support.", lang)
            if strong else
-           "A weak chart thrives on support — resource 印 and peers 比劫 strengthen it, "
-           "while heavy drain (overwork, over-extension, excessive pressure) taxes it.")
-        + " Strength is a measure of balance, not ability — it only decides which "
-          "elements act as this person's medicine.")
+           T("interpret.interpret_person.03", "A weak chart thrives on support — resource 印 and peers 比劫 strengthen it, "
+           "while heavy drain (overwork, over-extension, excessive pressure) taxes it.", lang))
+        + T("interpret.interpret_person.04", " Strength is a measure of balance, not ability — it only decides which "
+          "elements act as this person's medicine.", lang))
 
     w = chart.element_weights
     hi, lo = max(w, key=w.get), min(w, key=w.get)
     paras.append(
-        "[§1·§5] BaZi treats a chart as a five-element ecosystem that wants balance. This one "
-        f"tilts: strongest {ELEMENT_EN[hi]}{hi} ({w[hi]}), weakest {ELEMENT_EN[lo]}{lo} "
+        T("interpret.interpret_person.05", "[§1·§5] BaZi treats a chart as a five-element ecosystem that wants balance. This one "
+        f"tilts: strongest {ELEM(lang)[hi]}{hi} ({w[hi]}), weakest {ELEM(lang)[lo]}{lo} "
         f"({w[lo]}). The elements that would correct the tilt are the 用神 — here "
         f"{'·'.join(ys['favourable'])} — and they become practical levers: "
-        f"{wardrobe_phrase(ys)}.")
+        f"{wardrobe_phrase(ys, lang=lang)}.", lang, hi_element_en=ELEM(lang)[hi], hi=hi, w_hi=w[hi], lo_element_en=ELEM(lang)[lo], lo=lo, w_lo=w[lo], join_ys_favourable='·'.join(ys['favourable']), wardrobe_phrase_ys=wardrobe_phrase(ys, lang=lang)))
 
-    er = element_relations(chart)
+    er = element_relations(chart, lang=lang)
     if er["findings"]:
-        paras.append("[§1] Interactions 生剋: " + " ".join(er["findings"][:3]))
+        paras.append(T("interpret.interpret_person.06", "[§1] Interactions 生剋: ", lang) + jn(er["findings"][:3], lang, " ", ""))
 
     counts: dict[str, float] = {}
     for g in chart.ten_gods.values():
@@ -469,11 +473,11 @@ def interpret_person(chart, ys: dict, year: int) -> dict:
         for _, g in hidden:
             counts[TEN_GOD_GROUP[g]] = counts.get(TEN_GOD_GROUP[g], 0) + 1
     top = sorted(counts.items(), key=lambda kv: -kv[1])[:2]
-    paras.append("[§3–4] BaZi classifies every other character by its relationship to the Day "
+    paras.append(T("interpret.interpret_person.07", "[§3–4] BaZi classifies every other character by its relationship to the Day "
                  "Master into ten archetypes (十神) covering five life domains; where a "
                  "chart's characters concentrate shows where its energy naturally goes. "
-                 "Here the concentration is: "
-                 + "; ".join(f"{g} ×{n:g} — {GROUP_MEANING[g]}" for g, n in top) + ".")
+                 "Here the concentration is: ", lang)
+                 + zs(jn([f"{g} ×{n:g}{'：' if zh else ' — '}{L('interpret.GROUP_MEANING', GROUP_MEANING, lang)[g]}" for g, n in top], lang, "; ", "；"), lang) + dot(lang))
 
     age = year - chart.birth_local.year
     cur = next((d for d in chart.dayun if d.covers(age)), None)
@@ -481,38 +485,39 @@ def interpret_person(chart, ys: dict, year: int) -> dict:
         se, be = STEM_ELEMENT[cur.gz.stem], BRANCH_ELEMENT[cur.gz.branch]
         fav = sum(el in ys["favourable"] for el in (se, be))
         unfav = sum(el in ys["unfavourable"] for el in (se, be))
-        mood = ("a supportive decade for this chart." if fav == 2 else
-                "a demanding decade — lean harder on the compensations above."
+        mood = (T("interpret.interpret_person.08", "a supportive decade for this chart.", lang) if fav == 2 else
+                T("interpret.interpret_person.09", "a demanding decade — lean harder on the compensations above.", lang)
                 if unfav == 2 else
-                "a mixed decade — activate the favourable half.")
+                T("interpret.interpret_person.10", "a mixed decade — activate the favourable half.", lang))
         paras.append(
-            f"[§6] Luck cycle 大運 in {year} (age {age}): pillar {cur.gz} "
-            f"(ages {cur.start_age:.0f}–{cur.end_age:.0f}) carries {ELEMENT_EN[se]}{se} "
-            f"({_fav_word(se, ys)}) over {ELEMENT_EN[be]}{be} ({_fav_word(be, ys)}) — {mood} "
+            T("interpret.interpret_person.11", f"[§6] Luck cycle 大運 in {year} (age {age}): pillar {cur.gz} "
+            f"(ages {cur.start_age:.0f}–{cur.end_age:.0f}) carries {ELEM(lang)[se]}{se} "
+            f"({_fav_word(se, ys, lang=lang)}) over {ELEM(lang)[be]}{be} ({_fav_word(be, ys, lang=lang)}) — {mood} "
             "Each decade-pillar overlays its two elements on the birth chart, tilting the "
             "balance for or against it — this is why the same chart has easier and harder "
-            "decades.")
+            "decades.", lang, year=year, age=age, gz=cur.gz, start_age=cur.start_age, end_age=cur.end_age, se_element_en=ELEM(lang)[se], se=se, fav_word_se=_fav_word(se, ys, lang=lang), be_element_en=ELEM(lang)[be], be=be, fav_word_be=_fav_word(be, ys, lang=lang), mood=mood))
     else:
-        paras.append(f"[§6] In {year} (age {age}) the first 10-year luck pillar has not "
-                     "started yet — the birth chart itself dominates.")
+        paras.append(T("interpret.interpret_person.12", f"[§6] In {year} (age {age}) the first 10-year luck pillar has not "
+                     "started yet — the birth chart itself dominates.", lang, year=year, age=age))
 
     from .domains import life_domains
-    doms = life_domains(chart, ys)
-    best = max(doms, key=lambda d: d["score"])
-    low = min(doms, key=lambda d: d["score"])
+    doms = life_domains(chart, ys, lang=lang)
+    from .area_reference import standing_key
+    best = max(doms, key=standing_key)   # Layer 2: strongest and most-in-need are picked by standing among charts; each sentence still states the raw score
+    low = min(doms, key=standing_key)
     paras.append(
-        f"[§8] Life-domain signals (rule-derived, 0–100): strongest {best['en']} "
+        T("interpret.interpret_person.13", f"[§8] Life-domain signals (rule-derived, 0–100; compared by standing among charts): strongest {best['en']} "
         f"{best['zh']} ({best['score']} — {best['band']}); most in need of support "
         f"{low['en']} {low['zh']} ({low['score']}). Each score is assembled from "
         "auditable parts — star shares, 神煞 and palace checks, listed under the "
-        "cards below — and reads as a structural tendency, not a prediction.")
+        "cards below — and reads as a structural tendency, not a prediction.", lang, best_en=best['en'], best_zh=best['zh'], best_score=best['score'], best_band=best['band'], low_en=low['en'], low_zh=low['zh'], low_score=low['score']))
 
     gua = ming_gua(chart.lichun_year, chart.sex)
-    paras.append(f"[§7] Directions (八宅): {gua}命 · {gua_group(gua)} — best directions "
-                 f"{_good_dirs(gua)}. Sleep with the headboard toward, or face while "
+    paras.append(T("interpret.interpret_person.14", f"[§7] Directions (八宅): {gua}命 · {gua_group(gua, lang=lang)} — best directions "
+                 f"{_good_dirs(gua, lang=lang)}. Sleep with the headboard toward, or face while "
                  "working/studying, one of these where the room allows. The belief: the "
                  "hours spent aligned to supportive directions (a third of life is spent "
-                 "asleep) let the home reinforce the chart instead of fighting it.")
+                 "asleep) let the home reinforce the chart instead of fighting it.", lang, gua=gua, gua_group_gua=gua_group(gua, lang=lang), good_dirs_gua=_good_dirs(gua, lang=lang)))
 
     # ---- every remaining section gets its own reading (§4,5,9,10,11,12,13) --
     from .careers import career_paths
@@ -526,129 +531,130 @@ def interpret_person(chart, ys: dict, year: int) -> dict:
     (g1, p1), (g2, p2) = ordered[0], ordered[1]
     faint = [g for g, p in ordered if p < 5]
     paras.append(
-        f"[§4] Read the distribution as where life's attention goes by default: "
-        f"this chart runs on {g1} ({p1}% — {TEN_GOD_MEANING[g1]}) backed by {g2} "
-        f"({p2}%). That is the engine; point it at things worth doing."
-        + (f" The faint gods ({', '.join(faint)}) mark domains that never happen "
+        T("interpret.interpret_person.15", f"[§4] Read the distribution as where life's attention goes by default: "
+        f"this chart runs on {g1} ({p1}% — {L("shensha.TEN_GOD_MEANING", TEN_GOD_MEANING, lang)[g1]}) backed by {g2} "
+        f"({p2}%). That is the engine; point it at things worth doing.", lang, g1=g1, p1=p1, g1_ten_god_meaning=L("shensha.TEN_GOD_MEANING", TEN_GOD_MEANING, lang)[g1], g2=g2, p2=p2)
+        + (T("interpret.interpret_person.16", f" The faint gods ({', '.join(faint)}) mark domains that never happen "
            "by themselves here — they need a system, a schedule or a partner "
-           "who carries them." if faint else
-           " No god is faint — an unusually even spread; versatile, but watch "
-           "for energy scattering across too many fronts."))
+           "who carries them.", lang, join_faint=jn(faint, lang)) if faint else
+           T("interpret.interpret_person.17", " No god is faint — an unusually even spread; versatile, but watch "
+           "for energy scattering across too many fronts.", lang)))
 
     strong = chart.strength["verdict"].startswith("身強")
     paras.append(
-        f"[§5] Why {'·'.join(ys['favourable'])} are the medicine: 扶抑法 feeds a "
-        "weak chart and drains a strong one"
-        + (" — this chart is strong, so its medicine is productive outlets "
-           "(output, wealth, discipline), not more support."
+        T("interpret.interpret_person.18", f"[§5] Why {'·'.join(ys['favourable'])} are the medicine: 扶抑法 feeds a "
+        "weak chart and drains a strong one", lang, join_ys_favourable='·'.join(ys['favourable']))
+        + (T("interpret.interpret_person.19", " — this chart is strong, so its medicine is productive outlets "
+           "(output, wealth, discipline), not more support.", lang)
            if strong else
-           " — this chart is weak, so its medicine feeds and protects it "
-           "(resource and peer elements), not more drain.")
-        + f" Apply it where exposure is long: bedroom direction, industry, "
+           T("interpret.interpret_person.20", " — this chart is weak, so its medicine feeds and protects it "
+           "(resource and peer elements), not more drain.", lang))
+        + T("interpret.interpret_person.21", f" Apply it where exposure is long: bedroom direction, industry, "
           f"daily colours. Treat 忌神 {'·'.join(ys['unfavourable'])} as load, "
-          "not poison — fine in doses, taxing as a lifestyle.")
+          "not poison — fine in doses, taxing as a lifestyle.", lang, join_ys_unfavourable='·'.join(ys['unfavourable'])))
 
-    ss = [s["star"] for s in shensha(chart)]
+    ss = [s["star"] for s in shensha(chart, lang=lang)]
     bits = []
     if any("貴人" in s for s in ss):
-        bits.append("貴人 nobleman stars — help tends to arrive through "
-                    "people; ask early, it is structurally available")
+        bits.append(T("interpret.interpret_person.22", "貴人 nobleman stars — help tends to arrive through "
+                    "people; ask early, it is structurally available", lang))
     if "桃花" in ss:
-        bits.append("桃花 — natural charm/visibility; an asset in front-of-"
-                    "people roles, worth boundaries in commitments")
+        bits.append(T("interpret.interpret_person.23", "桃花 — natural charm/visibility; an asset in front-of-"
+                    "people roles, worth boundaries in commitments", lang))
     if any(s in ("文昌貴人", "學堂") for s in ss):
-        bits.append("文昌/學堂 — study and writing are supported; exams and "
-                    "credentials pay off above average")
+        bits.append(T("interpret.interpret_person.24", "文昌/學堂 — study and writing are supported; exams and "
+                    "credentials pay off above average", lang))
     if "驛馬" in ss:
-        bits.append("驛馬 — movement luck; relocation, travel and role "
-                    "changes tend to open doors rather than close them")
+        bits.append(T("interpret.interpret_person.25", "驛馬 — movement luck; relocation, travel and role "
+                    "changes tend to open doors rather than close them", lang))
     if "華蓋" in ss:
-        bits.append("華蓋 — a solitary, contemplative streak; depth over "
-                    "breadth, needs alone-time to recharge")
+        bits.append(T("interpret.interpret_person.26", "華蓋 — a solitary, contemplative streak; depth over "
+                    "breadth, needs alone-time to recharge", lang))
     if ss:
-        paras.append(f"[§9] {len(ss)} symbolic stars colour this chart. "
-                     + ("Standouts: " + "; ".join(bits) + "."
+        paras.append(T("interpret.interpret_person.27", f"[§9] {len(ss)} symbolic stars colour this chart. ", lang, len_ss=len(ss))
+                     + (T("interpret.interpret_person.28", "Standouts: ", lang) + jn(bits, lang, "; ", "；") + dot(lang)
                         if bits else
-                        "None of the major auspicious clusters — read the "
-                        "individual notes below.")
-                     + " 神煞 are flavour on top of structure — never let one "
-                       "star overrule the balance reading above.")
+                        T("interpret.interpret_person.29", "None of the major auspicious clusters — read the "
+                        "individual notes below.", lang))
+                     + T("interpret.interpret_person.30", " 神煞 are flavour on top of structure — never let one "
+                       "star overrule the balance reading above.", lang))
 
-    axes = [a for a in personality_axes(chart)
-            if a["verdict"] != "no strong tendency"]
+    axes = [a_l for a_en, a_l in zip(personality_axes(chart), personality_axes(chart, lang=lang))
+            if a_en["verdict"] != "no strong tendency"]       # the rule reads the English verdict, the page the translation
     paras.append(
-        "[§10] Temperament, read straight off the ten-god mix: "
-        + ("; ".join(a["verdict"] for a in axes) + ". These are operating "
+        T("interpret.interpret_person.31", "[§10] Temperament, read straight off the ten-god mix: ", lang)
+        + (jn([a["verdict"] for a in axes], lang, "; ", "；") + T("interpret.interpret_person.32", ". These are operating "
            "instructions, not judgments — arrange work and relationships so "
-           "the tendencies are features."
+           "the tendencies are features.", lang)
            if axes else
-           "no axis shows a strong tendency — a flexible, situation-driven "
+           T("interpret.interpret_person.33", "no axis shows a strong tendency — a flexible, situation-driven "
            "temperament. The cost of flexibility is drift; external structure "
            "(deadlines, partners, routines) substitutes for the missing "
-           "internal compulsion."))
+           "internal compulsion.", lang)))
 
-    hm = health_map(chart)
-    exc = [h for h in hm if "excess" in h["status"]]
-    def_ = [h for h in hm if h["status"] != "balanced" and h not in exc]
+    hm_en, hm = health_map(chart), health_map(chart, lang=lang)      # the rule reads the English status, the page the translation
+    exc = [h for h_en, h in zip(hm_en, hm) if "excess" in h_en["status"]]
+    def_ = [h for h_en, h in zip(hm_en, hm) if h_en["status"] != "balanced" and "excess" not in h_en["status"]]
     if exc or def_:
         parts = []
+        exc_w, def_w = T("domains.health_map.01", "excess 過旺", lang), T("domains.health_map.02", "weak 不足", lang)
         if exc:
-            parts.append("excess " + "; ".join(
-                f"{h['element']} — {h['organs']} carry the first strain when "
-                f"life overloads" for h in exc))
+            parts.append((exc_w.split()[-1] + " " if zh else "excess ") + jn([
+                T("interpret.interpret_person.34", f"{h['element']} — {h['organs']} carry the first strain when "
+                f"life overloads", lang, h_element=h['element'], h_organs=h['organs']) for h in exc], lang, "; ", "；"))
         if def_:
-            parts.append("deficiency " + "; ".join(
-                f"{h['element']} — {h['organs']} deserve baseline care before "
-                f"symptoms ask for it" for h in def_))
-        paras.append("[§11] Where this chart's body keeps score: "
-                     + "; ".join(parts)
-                     + ". Balanced elements are not risk markers. Reference "
-                       "against the timing trigger years, not medical advice.")
+            parts.append((def_w.split()[-1] + " " if zh else "deficiency ") + jn([
+                T("interpret.interpret_person.35", f"{h['element']} — {h['organs']} deserve baseline care before "
+                f"symptoms ask for it", lang, h_element=h['element'], h_organs=h['organs']) for h in def_], lang, "; ", "；"))
+        paras.append(T("interpret.interpret_person.36", "[§11] Where this chart's body keeps score: ", lang)
+                     + jn(parts, lang, "; ", "；")
+                     + T("interpret.interpret_person.37", ". Balanced elements are not risk markers. Reference "
+                       "against the timing trigger years, not medical advice.", lang))
     else:
-        paras.append("[§11] All five elements sit in the balanced band — no "
+        paras.append(T("interpret.interpret_person.38", "[§11] All five elements sit in the balanced band — no "
                      "organ system is structurally flagged. Maintenance beats "
                      "intervention: seasonal food, regular sleep, and use the "
-                     "the timing-window recovery years for elective procedures.")
+                     "the timing-window recovery years for elective procedures.", lang))
 
-    cp = career_paths(chart, ys)
+    cp = career_paths(chart, ys, lang=lang)
     t1, t2 = cp["top"][0], cp["top"][1]
     av = cp["avoid"][0] if cp["avoid"] else None
     paras.append(
-        f"[§12] Careers are ranked by how cheaply this chart converts effort "
+        T("interpret.interpret_person.39", f"[§12] Careers are ranked by how cheaply this chart converts effort "
         f"into result: {t1['en']} {t1['zh']} and {t2['en']} {t2['zh']} lead "
         "because their field elements feed the 用神 and their working style "
-        "matches the dominant gods."
-        + (f" {av['en']} is priced against the chart — possible, but it "
+        "matches the dominant gods.", lang, t1_en=t1['en'], t1_zh=t1['zh'], t2_en=t2['en'], t2_zh=t2['zh'])
+        + (T("interpret.interpret_person.40", f" {av['en']} is priced against the chart — possible, but it "
            "spends more than it returns; choose it only for reasons the "
-           "chart doesn't measure." if av else ""))
+           "chart doesn't measure.", lang, av_en=av['en']) if av else ""))
 
-    w = timing_windows(chart, ys, dayun_detail(chart, year), year)
+    w = timing_windows(chart, ys, dayun_detail(chart, year, lang=lang), year, lang=lang)
     cur_d = next((d for d in w["decades"] if d["current"]), None)
     peaks = [str(y["y"]) for y in w["years"] if y["overall"] == "peak"]
     cares = [str(y["y"]) for y in w["years"] if y["overall"] == "careful"]
-    PHASE_GLOSS = {"growth": "momentum is structurally supported — expand",
-                   "corrective": "friction does the teaching — repair, "
-                                 "consolidate, don't force expansion",
-                   "transition": "the ground is shifting — stay liquid and "
-                                 "commit late",
-                   "consolidation": "gains want banking, not betting — "
-                                    "build quietly"}
+    PHASE_GLOSS = {"growth": T("interpret.interpret_person.41", "momentum is structurally supported — expand", lang),
+                   "corrective": T("interpret.interpret_person.42", "friction does the teaching — repair, "
+                                 "consolidate, don't force expansion", lang),
+                   "transition": T("interpret.interpret_person.43", "the ground is shifting — stay liquid and "
+                                 "commit late", lang),
+                   "consolidation": T("interpret.interpret_person.44", "gains want banking, not betting — "
+                                    "build quietly", lang)}
     decade_line = (
-        f"The current decade ({cur_d['gz']}, ages {cur_d['ages']}) reads "
+        T("interpret.interpret_person.45", f"The current decade ({cur_d['gz']}, ages {cur_d['ages']}) reads "
         f"{cur_d['phase_zh']} {cur_d['phase']}: "
-        f"{PHASE_GLOSS.get(cur_d['phase'], 'a mixed phase')}. "
+        f"{PHASE_GLOSS.get(cur_d['phase'], T("interpret.interpret_person.46", 'a mixed phase', lang))}. ", lang, cur_d_gz=cur_d['gz'], cur_d_ages=cur_d['ages'], cur_d_phase_zh=cur_d['phase_zh'], cur_d_phase=cur_d['phase'], PHASE_GLOSS_cur_d_phase=PHASE_GLOSS.get(cur_d['phase'], T("interpret.interpret_person.46", 'a mixed phase', lang)))
         if cur_d else
-        "Outside the tabulated 大運 decades (before the first or past the "
+        T("interpret.interpret_person.47", "Outside the tabulated 大運 decades (before the first or past the "
         "last) the birth chart itself dominates — the year-by-year table "
-        "below still applies. ")
+        "below still applies. ", lang))
     paras.append(
         "[§13] " + decade_line
-        + (f"Standout years ahead: {', '.join(peaks)} — schedule launches "
-           "and commitments into them. " if peaks else
-           "No peak year in the next ten — a building stretch; judge "
-           "yourself on inputs, not outcomes. ")
-        + (f"Care flagged in {', '.join(cares)}: consolidation years, "
-           "not retreat years." if cares else ""))
+        + (T("interpret.interpret_person.48", f"Standout years ahead: {', '.join(peaks)} — schedule launches "
+           "and commitments into them. ", lang, join_peaks=jn(peaks, lang)) if peaks else
+           T("interpret.interpret_person.49", "No peak year in the next ten — a building stretch; judge "
+           "yourself on inputs, not outcomes. ", lang))
+        + (T("interpret.interpret_person.50", f"Care flagged in {', '.join(cares)}: consolidation years, "
+           "not retreat years.", lang, join_cares=jn(cares, lang)) if cares else ""))
     return {"paragraphs": paras}
 
 

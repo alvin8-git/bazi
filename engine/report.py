@@ -13,7 +13,8 @@ from pathlib import Path
 
 from .plain import plain_reading
 from .story import compose_story
-from .bazi import CLOCK, TRUE_SOLAR, build_chart
+from .bazi import CLOCK, TRUE_SOLAR, build_chart, localized_chart
+from .i18n import L
 from .import_family import import_family, load_family
 from .interpret import interpret_house
 from .join import score_all_directions
@@ -26,7 +27,7 @@ from .extras import compass_afflictions, placements
 ROOT = Path(__file__).resolve().parent.parent
 
 
-def chart_payload(name: str, c, ys: dict, year: int) -> dict:
+def chart_payload(name: str, c, ys: dict, year: int, lang: str = "en") -> dict:
     """The full Reading 命书 payload (13 sections) for ANY chart — shared by
     the family /api/chart route and the public workspace reading route."""
     from .bazhai import gua_group, ming_gua, youxing_stars
@@ -51,57 +52,63 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
     from scripts.bazi_report import strategy_payload
     st, br = year_ganzhi(year)
     _pct = ten_god_pct(c)
-    _insights = ten_god_insights(c, ys)
-    _palaces = four_palaces(c, ys)
-    _windows = timing_windows(c, ys, dayun_detail(c, year), year)
-    _tiaohou = tiaohou_reading(c, ys)
-    p = {"name": name, "sex": c.sex, **chart_json(c), "yongshen": ys,
-            "synthesis_lines": synthesis(c, ys, _pct, _insights, _windows, _tiaohou),
-            "geju": geju_line(c),
+    _insights = ten_god_insights(c, ys, lang=lang)
+    _palaces = four_palaces(c, ys, lang=lang)
+    _dayun = dayun_detail(c, year, lang=lang)
+    _windows = timing_windows(c, ys, _dayun, year, lang=lang)
+    _tiaohou = tiaohou_reading(c, ys, lang=lang)
+    _gua = ming_gua(c.lichun_year, c.sex)
+    from .yongshen import yong_shen
+    # the citations are display text; the favourable lists and colours are the caller's and stay as they are
+    _ys = ys if lang != "zh" else {**ys, "citations": yong_shen(c, lang=lang)["citations"]}
+    p = {"name": name, "sex": c.sex, **chart_json(c, lang), "yongshen": _ys,
+            "synthesis_lines": synthesis(c, ys, _pct, _insights, _windows, _tiaohou, lang=lang),
+            "geju": geju_line(c, lang=lang),
             "tiaohou": _tiaohou,
-            "medicine_rank": medicine_ranking(c, ys),
-            "xiji": xiji_table(c, ys, _pct),
-            "spouse_reading": spouse_reading(c, ys, _pct, _palaces, _windows),
-            "strategy": strategy_payload(c, ys, year),
-            "element_relations": element_relations(c),
-            "tengod_insights": ten_god_insights(c, ys),
-            "palaces": four_palaces(c, ys),
-            "gua": ming_gua(c.lichun_year, c.sex),
-            "group": gua_group(ming_gua(c.lichun_year, c.sex)),
-            "youxing": youxing_stars(ming_gua(c.lichun_year, c.sex)),
-            "shensha": shensha(c), "interactions": natal_interactions(c),
+            "medicine_rank": medicine_ranking(c, ys, lang=lang),
+            "xiji": xiji_table(c, ys, _pct, lang=lang),
+            "spouse_reading": spouse_reading(c, ys, _pct, _palaces, _windows, lang=lang),
+            "strategy": strategy_payload(c, ys, year, lang=lang),
+            "element_relations": element_relations(c, lang=lang),
+            "tengod_insights": _insights,
+            "palaces": _palaces,
+            "gua": _gua,
+            "group": gua_group(_gua, lang=lang),
+            "youxing": youxing_stars(_gua),
+            "shensha": shensha(c, lang=lang), "interactions": natal_interactions(c, lang=lang),
             "tengods_pct": ten_god_pct(c),
-            "tengods_legend": {g: {"en": TEN_GOD_EN[g],
-                                   "meaning": TEN_GOD_MEANING[g]}
+            "tengods_legend": {g: {"en": L("bazi.TEN_GOD_EN", TEN_GOD_EN, lang)[g],
+                                   "meaning": L("shensha.TEN_GOD_MEANING", TEN_GOD_MEANING, lang)[g]}
                                for g in ten_god_pct(c)},
-            "domains": life_domains(c, ys),
-            "dayun_detail": dayun_detail(c, year),
+            "domains": life_domains(c, ys, lang=lang),
+            "dayun_detail": _dayun,
             "transit": {
                 "year_gz": st + br,
                 "year_stem_god": ten_god(c.day_master, st),
                 "year_branch_god": ten_god(c.day_master, HIDDEN_STEMS[br][0]),
-                "luck": next((d for d in dayun_detail(c, year)
+                "luck": next((d for d in _dayun
                               if d["current"]), None),
             },
             "pillar_extras": pillar_extras(c),
-            "personality": personality_axes(c),
-            "health": health_map(c), "industries": industry_map(ys),
-            "careers": career_paths(c, ys),
-            "life_palaces": life_palaces(c),
+            "personality": personality_axes(c, lang=lang),
+            "health": health_map(c, lang=lang), "industries": industry_map(ys, lang=lang),
+            "careers": career_paths(c, ys, lang=lang),
+            "life_palaces": life_palaces(c, lang=lang),
             "windows": _windows,
-            "interpretation": interpret_person(c, ys, year)}
+            "interpretation": interpret_person(c, ys, year, lang=lang)}
     # the geomancer's report reads the assembled payload so it cites the same numbers the tabs draw
-    p["synthesis"] = clinical_report(p)
-    p["daily"] = daily_fortune(c, ys)          # next 30 days from today, six activities
-    p["career_roles"] = career_roles(c, ys)
-    p["placements"] = placements(c)
-    p["afflictions"] = compass_afflictions(c, year)
-    p["plain"] = plain_reading(p)              # plain-language layer, read from the assembled payload
-    p["story"] = compose_story(p, p["plain"])  # story layer: chapter paragraphs, each sentence tagged with its evidence
+    p["synthesis"] = clinical_report(p, lang=lang)
+    p["daily"] = daily_fortune(c, ys, lang=lang)          # next 30 days from today, six activities
+    p["career_roles"] = career_roles(c, ys, lang=lang)
+    p["placements"] = placements(c, lang=lang)
+    p["afflictions"] = compass_afflictions(c, year, lang=lang)
+    p["plain"] = plain_reading(p, lang)              # plain-language layer, read from the assembled payload
+    p["story"] = compose_story(p, p["plain"], lang)  # story layer: chapter paragraphs, each sentence tagged with its evidence
     return p
 
 
-def chart_json(c) -> dict:
+def chart_json(c, lang: str = "en") -> dict:
+    lc = localized_chart(c, lang)      # the strength walkthrough and the citations are display text; every number is the same
     return {
         "policy": c.policy,
         "effective_time": c.effective_dt.strftime("%Y-%m-%d %H:%M"),
@@ -110,9 +117,9 @@ def chart_json(c) -> dict:
         "ten_gods": c.ten_gods,
         "hidden_gods": {k: [f"{s}({g})" for s, g in v] for k, v in c.hidden_gods.items()},
         "element_weights": {ELEMENT_EN[e]: w for e, w in c.element_weights.items()},
-        "strength": c.strength,
+        "strength": lc.strength,
         "dayun": [{"gz": str(d.gz), "ages": f"{d.start_age:.0f}-{d.end_age:.0f}"} for d in c.dayun],
-        "citations": c.citations,
+        "citations": lc.citations,
     }
 
 

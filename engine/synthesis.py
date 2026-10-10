@@ -8,8 +8,13 @@ its evidence; nothing here invents a number.
 """
 from __future__ import annotations
 
+import re
+
 from .wuxing import (ELEMENT_EN, ELEMENTS, HIDDEN_STEMS, KE, SHENG,
                      SHENG_REV, STEM_ELEMENT)
+from .area_reference import standing_key
+from .i18n import ELEM, L, T, and_l, cap, dot, jn, zs  # noqa: F401
+from .shensha import pos_label
 
 _WEALTH = ("正財", "偏財")
 _OFFICER = ("正官", "七殺")
@@ -22,7 +27,7 @@ def _grp(pct: dict, gods) -> float:
     return round(sum(pct.get(g, 0) for g in gods), 1)
 
 
-def geju_line(c) -> str:
+def geju_line(c, lang: str = "en") -> str:
     """One-line 格局 frame (follow-up audit): the month branch's ruling hidden
     stem (本氣 司令) plus which month-hidden gods are 透干. Frames, not fate."""
     from .bazi import ten_god
@@ -36,14 +41,14 @@ def geju_line(c) -> str:
         g = ten_god(c.day_master, tou[0])
         frame = f"{g}格 (月支藏干 {tou[0]} 透干)"
     else:
-        frame = (f"no 月支藏干 is 透 — the chart frames on the 司令 "
-                 f"{ruler_god} with the transparent stems as actors")
-    return (f"格局: 月令 {mb}, 本氣 {ruler} ({ruler_god}) 司令 · {frame}. "
+        frame = (T("synthesis.geju_line.01", f"no 月支藏干 is 透 — the chart frames on the 司令 "
+                 f"{ruler_god} with the transparent stems as actors", lang, ruler_god=ruler_god))
+    return (T("synthesis.geju_line.02", f"格局: 月令 {mb}, 本氣 {ruler} ({ruler_god}) 司令 · {frame}. "
             "The 格 names the chart's operating frame; the strength verdict "
-            "below says how well the frame is carried.")
+            "below says how well the frame is carried.", lang, mb=mb, ruler=ruler, ruler_god=ruler_god, frame=frame))
 
 
-def medicine_ranking(c, ys: dict) -> str:
+def medicine_ranking(c, ys: dict, lang: str = "en") -> str:
     """Rank the 用神 elements instead of listing them flat, with the classical
     ceiling where it applies (e.g. 土多金埋 for a 金 Day Master fed by 土)."""
     dm_el = STEM_ELEMENT[c.day_master]
@@ -55,14 +60,14 @@ def medicine_ranking(c, ys: dict) -> str:
     # and 喜忌 table already show. Previously this promoted the Day Master's own
     # element, so the page could say "金 primary" while the badges led with 土.
     primary, rest = fav[0], fav[1:]
-    bits = [f"{primary} ({ELEMENT_EN[primary]}) primary"]
-    bits += [f"{e} ({ELEMENT_EN[e]}) secondary" for e in rest]
-    line = "Medicine, ranked: " + " · ".join(bits) + "."
+    bits = [T("synthesis.medicine_ranking.01", f"{primary} ({ELEM(lang)[primary]}) primary", lang, primary=primary, primary_element_en=ELEM(lang)[primary])]
+    bits += [T("synthesis.medicine_ranking.02", f"{e} ({ELEM(lang)[e]}) secondary", lang, e=e, e_element_en=ELEM(lang)[e]) for e in rest]
+    line = T("synthesis.medicine_ranking.03", "Medicine, ranked: ", lang) + " · ".join(bits) + dot(lang)
     if dm_el == "金" and "土" in fav:
-        line += (" Within 土, wet earth 濕土 (辰丑) genuinely generates 金; dry "
+        line += (T("synthesis.medicine_ranking.04", " Within 土, wet earth 濕土 (辰丑) genuinely generates 金; dry "
                  "earth 燥土 (未戌) is neutral-to-unhelpful — and the ceiling is "
                  "土多金埋: past sufficiency, more earth buries the metal it "
-                 "was meant to feed.")
+                 "was meant to feed.", lang))
     return line
 
 
@@ -71,7 +76,7 @@ _BAND_ZH = {"用": "用神 the medicine", "喜": "喜神 supports the medicine",
             "閒": "閒神 neutral"}
 
 
-def xiji_table(c, ys: dict, pct: dict) -> list[dict]:
+def xiji_table(c, ys: dict, pct: dict, lang: str = "en") -> list[dict]:
     """The five-band 喜忌 summary (用/喜/忌/仇/閒) by element, with each band's
     ten gods for THIS Day Master. Convention: 喜 = the element generating the
     primary 用神; 仇 = the element generating the chief 忌神; rest 閒."""
@@ -104,13 +109,13 @@ def xiji_table(c, ys: dict, pct: dict) -> list[dict]:
         if not els:
             continue
         gods = [g for e in els for g in el_gods.get(e, [])]
-        rows.append({"band": band, "zh": _BAND_ZH[band],
+        rows.append({"band": band, "zh": L("synthesis._BAND_ZH", _BAND_ZH, lang)[band],
                      "elements": els, "gods": gods})
     return rows
 
 
 def synthesis(c, ys: dict, pct: dict, insights: dict, windows: dict,
-              tiaohou: dict | None = None) -> list[str]:
+              tiaohou: dict | None = None, lang: str = "en") -> list[str]:
     """~6 sentences, one voice: diagnosis → mechanism → latency → arc → counsel
     → confidence. Returns a list of sentences (rendered as one paragraph)."""
     dm = c.day_master
@@ -124,90 +129,92 @@ def synthesis(c, ys: dict, pct: dict, insights: dict, windows: dict,
     # 1 · diagnosis
     heavy = max((("財", wealth), ("官殺", officer), ("食傷", out),
                  ("印", res), ("比劫", peers)), key=lambda x: x[1])
-    S.append(f"This is a {dm} {ELEMENT_EN[dm_el]} chart judged "
+    S.append(T("synthesis.synthesis.01", f"This is a {dm} {ELEM(lang)[dm_el]} chart judged "
              f"{c.strength['verdict']} (score {c.strength['score']}), with its "
-             f"weight in {heavy[0]} ({heavy[1]}%)"
-             + (f" — the classical {'財旺身弱' if heavy[0] == '財' else '官旺身弱'} "
+             f"weight in {heavy[0]} ({heavy[1]}%)", lang, dm=dm, dm_el_element_en=ELEM(lang)[dm_el], strength_verdict=c.strength['verdict'], strength_score=c.strength['score'], heavy=heavy[0], heavy_2=heavy[1])
+             + (T("synthesis.synthesis.02", f" — the classical {'財旺身弱' if heavy[0] == '財' else '官旺身弱'} "
                 "shape: more to hold than the hands are yet strong enough to "
-                "carry." if weak and heavy[0] in ("財", "官殺") else "."))
+                "carry.", lang, x_x='財旺身弱' if heavy[0] == '財' else '官旺身弱') if weak and heavy[0] in ("財", "官殺") else dot(lang)))
     # 2 · mechanism (the 病): wealth element attacks the resource element by cycle
     wealth_el = KE[dm_el]
     res_el = SHENG_REV[dm_el]
     if weak and wealth >= 15 and res >= 15 and KE.get(wealth_el) == res_el:
-        S.append(f"Its working friction is 貪財壞印: the {ELEMENT_EN[wealth_el]} "
+        S.append(T("synthesis.synthesis.03", f"Its working friction is 貪財壞印: the {ELEM(lang)[wealth_el]} "
                  f"wealth camp ({wealth}%) directly controls the "
-                 f"{ELEMENT_EN[res_el]} resource camp ({res}%) that feeds the Day "
+                 f"{ELEM(lang)[res_el]} resource camp ({res}%) that feeds the Day "
                  "Master — chasing outcomes starves the support system that makes "
-                 "outcomes durable.")
+                 "outcomes durable.", lang, wealth_el_element_en=ELEM(lang)[wealth_el], wealth=wealth, res_el_element_en=ELEM(lang)[res_el], res=res))
     # 3 · latency: resource present but not rooted/visible
     rooted = {r["god"] for r in insights.get("rooted", []) if r["state"] == "rooted"}
     if res >= 15 and not (set(_RESOURCE) & rooted):
-        S.append("The protective 印 is present but 藏而不透 (hidden in branches, "
+        S.append(T("synthesis.synthesis.04", "The protective 印 is present but 藏而不透 (hidden in branches, "
                  "no rooted visible stem): support does not arrive automatically — "
-                 "it works when deliberately invoked (study, mentors, credentials).")
+                 "it works when deliberately invoked (study, mentors, credentials).", lang))
     if peers == 0:
-        S.append("With 比劫 entirely absent, self-force must be built, not "
-                 "assumed: structures and allies substitute for raw stamina.")
+        S.append(T("synthesis.synthesis.05", "With 比劫 entirely absent, self-force must be built, not "
+                 "assumed: structures and allies substitute for raw stamina.", lang))
     # 4 · decade arc
     decs = windows.get("decades", [])
     cur = next((d for d in decs if d["current"]), None)
     first_growth = next((d for d in decs if d["phase"] == "growth"), None)
     if cur and first_growth and cur is not first_growth:
-        S.append(f"The present {cur['gz']} decade is {cur['phase_zh']} "
+        S.append(T("synthesis.synthesis.06", f"The present {cur['gz']} decade is {cur['phase_zh']} "
                  f"({cur['phase']}); the chart's structural season arrives with "
                  f"{first_growth['gz']} at ages {first_growth['ages']} — a "
                  "late-building arc, so the early decades are for containers, "
-                 "not conquest.")
+                 "not conquest.", lang, cur_gz=cur['gz'], cur_phase_zh=cur['phase_zh'], cur_phase="" if lang == "zh" else cur['phase'], first_growth_gz=first_growth['gz'], first_growth_ages=first_growth['ages']))
     elif cur:
-        S.append(f"The present {cur['gz']} decade is {cur['phase_zh']} — "
-                 "the chart is already in its supported season.")
+        S.append(T("synthesis.synthesis.07", f"The present {cur['gz']} decade is {cur['phase_zh']} — "
+                 "the chart is already in its supported season.", lang, cur_gz=cur['gz'], cur_phase_zh=cur['phase_zh']))
     # 5 · counsel from 用神
     fav = "·".join(ys["favourable"])
-    S.append(f"The medicine is {fav}: choose environments, colours, fields and "
+    S.append(T("synthesis.synthesis.08", f"The medicine is {fav}: choose environments, colours, fields and "
              "sectors that carry it, and treat the abundant elements as weather "
-             "to dress for, not fuel to add.")
+             "to dress for, not fuel to add.", lang, fav=fav))
     # 6 · confidence — chart-specific when the 調候 table has this cell
     if tiaohou and tiaohou.get("verdict"):
         v = tiaohou["verdict"]
+        agrees_w = T("tiaohou.tiaohou_reading.01", "agrees", lang)
         gods = "、".join(i["stem"] for i in tiaohou["gods"])
-        S.append(f"Confidence note: the verdict above is the 扶抑 method's; the "
+        S.append(T("synthesis.synthesis.09", f"Confidence note: the verdict above is the 扶抑 method's; the "
                  f"窮通寶鑑 調候 prescription for this month is {gods}, which "
-                 f"{v} with it"
-                 + ("." if v == "agrees" else
-                    " — satisfy the climate stems through use and the 扶抑 "
-                    "elements through support; both, not either."))
+                 f"{v} with it", lang, gods=gods, v=v)
+                 + (dot(lang) if v == agrees_w else
+                    T("synthesis.synthesis.10", " — satisfy the climate stems through use and the 扶抑 "
+                    "elements through support; both, not either.", lang)))
     else:
-        S.append("Confidence note: the verdict is the 扶抑 (support-the-weak) "
+        S.append(T("synthesis.synthesis.11", "Confidence note: the verdict is the 扶抑 (support-the-weak) "
                  "method's; the 調候 climate school weighs the birth season "
                  "separately and can lean differently — where the two disagree, "
-                 "satisfying both is the safe posture.")
+                 "satisfying both is the safe posture.", lang))
     return S
 
 
-def spouse_reading(c, ys: dict, pct: dict, palaces: dict, windows: dict) -> dict:
+def spouse_reading(c, ys: dict, pct: dict, palaces: dict, windows: dict, lang: str = "en") -> dict:
     """The marriage/spouse block a paying client expects: star strength, palace
     condition, the operating pattern, and the activation years."""
     female = c.sex == "F"
+    zh = lang == "zh"
     star_gods = _OFFICER if female else _WEALTH
-    star_zh = "官殺 (husband star)" if female else "財星 (wife star)"
+    star_zh = T("synthesis.spouse_reading.01", "官殺 (husband star)", lang) if female else T("synthesis.spouse_reading.02", "財星 (wife star)", lang)
     share = _grp(pct, star_gods)
-    band = ("prominent" if share >= 20 else "present" if share >= 8 else
-            "faint" if share > 0 else "absent")
-    star_line = (f"Spouse star {star_zh}: {share}% — {band}. "
-                 + ("A prominent spouse star marks the theme as central; its "
-                    "condition, not its size, decides the quality." if share >= 20
-                    else "A quiet spouse star means the relationship follows the "
-                         "palace and the years more than the natal weight."))
+    band = (T("synthesis.spouse_reading.03", "prominent", lang) if share >= 20 else T("synthesis.spouse_reading.04", "present", lang) if share >= 8 else
+            T("synthesis.spouse_reading.05", "faint", lang) if share > 0 else T("synthesis.spouse_reading.06", "absent", lang))
+    star_line = (T("synthesis.spouse_reading.07", f"Spouse star {star_zh}: {share}% — {band}. ", lang, star_zh=star_zh, share=share, band=band)
+                 + (T("synthesis.spouse_reading.08", "A prominent spouse star marks the theme as central; its "
+                    "condition, not its size, decides the quality.", lang) if share >= 20
+                    else T("synthesis.spouse_reading.09", "A quiet spouse star means the relationship follows the "
+                         "palace and the years more than the natal weight.", lang)))
     sp = palaces.get("spouse", {})
-    palace_line = (f"Spouse palace (day branch {sp.get('branch', '?')}): "
-                   f"{sp.get('line', '')} The palace is {sp.get('state', '—')}.")
+    palace_line = (T("synthesis.spouse_reading.10", f"Spouse palace (day branch {sp.get('branch', '?')}): "
+                   f"{sp.get('line', '')} The palace is {sp.get('state', '—')}.", lang, sp_branch=sp.get('branch', '?'), sp_line=sp.get('line', '') + ("。" if zh and sp.get('line') else ""), sp_state=sp.get('state', '—')))
     pattern_line = ""
     if female and pct.get("傷官", 0) >= 8 and _grp(pct, ("正官",)) >= 8:
-        pattern_line = ("傷官見官 in a woman's chart reads on the MARRIAGE axis "
+        pattern_line = (T("synthesis.spouse_reading.11", "傷官見官 in a woman's chart reads on the MARRIAGE axis "
                         "before the career one: the talent that critiques "
                         "authority also critiques the partner. Managed openly "
                         "(channel the critique into shared projects), it is "
-                        "compatibility with texture, not an affliction.")
+                        "compatibility with texture, not an affliction.", lang))
     mix_line = ""
     if female:
         natal_guan = pct.get("正官", 0) > 0
@@ -221,25 +228,25 @@ def spouse_reading(c, ys: dict, pct: dict, palaces: dict, windows: dict) -> dict
                 dg = {_tg(c.day_master, gz[0]),
                       _tg(c.day_master, _HS[gz[1]][0])}
                 if missing in dg or missing.replace("殺", "杀") in dg:
-                    mix_line = (f"Watch-window: the {gz} decade (ages "
+                    mix_line = (T("synthesis.spouse_reading.12", f"Watch-window: the {gz} decade (ages "
                                 f"{int(d.start_age)}–{int(d.end_age)}) introduces "
                                 f"{missing} beside the natal "
                                 f"{'正官' if natal_guan else '七殺'} — 官殺混雜 by "
                                 "luck: two models of authority/partnership run at "
                                 "once in that window; clarity about which applies "
-                                "matters more than usual.")
+                                "matters more than usual.", lang, gz=gz, int_start_age=int(d.start_age), int_end_age=int(d.end_age), missing=missing, x_x='正官' if natal_guan else '七殺'))
                     break
     yrs = [y for y in windows.get("years", [])
            if y["relationship"]["flag"] != "quiet"]
-    year_bits = [f"{y['y']} {y['gz']} — "
+    year_bits = [f"{y['y']} {y['gz']}{'：' if lang == 'zh' else ' — '}"
                  + ("⚠ " if y['relationship']['flag'] == 'caution' else "◉ ")
                  + y['relationship']['note'] for y in yrs[:6]]
     return {"star_line": star_line, "palace_line": palace_line,
             "pattern_line": pattern_line, "mix_line": mix_line,
             "years": year_bits,
-            "source_ref": "spouse star (十神) × spouse palace (日支) × "
+            "source_ref": T("synthesis.spouse_reading.13", "spouse star (十神) × spouse palace (日支) × "
                           "activation years (流年) — the three-legged classical "
-                          "marriage reading"}
+                          "marriage reading", lang)}
 
 
 # ---------------------------------------------------------------------------
@@ -266,14 +273,22 @@ def _grp_of(g: str) -> str:
     return "印"
 
 
+_CLAUSE = re.compile(r" — |：")        # the dash of the English sentences, the colon of the Chinese ones
+_SEMI = re.compile(r"; |；")
+
+
+def _clauses(s: str) -> list[str]:
+    return _CLAUSE.split(s or "")
+
+
 def _first_clause(s: str) -> str:
-    return (s or "").split(" — ")[0].split("; ")[0].strip()
+    return _SEMI.split(_clauses(s)[0])[0].strip()
 
 
-def clinical_report(p: dict) -> dict:
+def clinical_report(p: dict, lang: str = "en") -> dict:
     """summary · findings · assessment · plan · confidence — the geomancer's
     report a client reads first. Every claim names its number or rule."""
-    dm = p["day_master"]; dm_el = STEM_ELEMENT[dm]; en = ELEMENT_EN
+    dm = p["day_master"]; dm_el = STEM_ELEMENT[dm]; en = ELEM(lang)
     st = p["strength"]; weak = st["verdict"].startswith("身弱")
     parts = st.get("parts") or {}
     ys = p["yongshen"]; fav, unfav = list(ys["favourable"]), list(ys["unfavourable"])
@@ -288,145 +303,166 @@ def clinical_report(p: dict) -> dict:
         groups[_grp_of(g)] = round(groups.get(_grp_of(g), 0) + v, 1)
     top_grp = max(groups.items(), key=lambda kv: kv[1]) if groups else ("—", 0)
     heavy_el = max(share.items(), key=lambda kv: kv[1])[0] if share else dm_el
-    fav_en = " and ".join(en[e] for e in fav) if fav else "—"
+    fav_en = and_l([en[e] for e in fav], lang) if fav else "—"
     lack = fav[0] if fav else dm_el
     mb = p["pillars"]["month"][1]
     stage = ((p.get("pillar_extras") or {}).get("month") or {}).get("stage", "")
     season_pts = parts.get("season_pts", 0)
-    season = ("out of season: the month works against it" if season_pts < 0 else
-              "in season: the month carries it" if season_pts > 0 else "neutral to the month")
+    season = (T("synthesis.clinical_report.01", "out of season: the month works against it", lang) if season_pts < 0 else
+              T("synthesis.clinical_report.02", "in season: the month carries it", lang) if season_pts > 0 else T("synthesis.clinical_report.03", "neutral to the month", lang))
     # ---- summary
-    summary = (f"A {'weak' if weak else 'strong'} {dm} {en[dm_el]} day master "
-               f"{'carried by' if weak else 'driven by'} {_GRP_EN.get(top_grp[0], top_grp[0])} "
-               f"({top_grp[0]} {top_grp[1]}%), {'short of' if weak else 'heavy in'} "
-               f"{en[heavy_el] if not weak else en[lack]}: "
-               f"{'supply' if weak else 'spend through'} {fav_en}, "
-               f"pace {en[unfav[0]] if unfav else '—'} years.")
+    w_s = T("synthesis.clinical_report.05", "weak", lang) if weak else T("synthesis.clinical_report.06", "strong", lang)
+    carried = T("synthesis.clinical_report.07", "carried by", lang) if weak else T("synthesis.clinical_report.08", "driven by", lang)
+    grp_en = L("synthesis._GRP_EN", _GRP_EN, lang).get(top_grp[0], top_grp[0])
+    short_of = T("synthesis.clinical_report.09", "short of", lang) if weak else T("synthesis.clinical_report.10", "heavy in", lang)
+    heavy_name = en[heavy_el] if not weak else en[lack]
+    supply = T("synthesis.clinical_report.11", "supply", lang) if weak else T("synthesis.clinical_report.12", "spend through", lang)
+    pace = en[unfav[0]] if unfav else "—"
+    summary = T("synthesis.clinical_report.04",
+                f"A {w_s} {dm} {en[dm_el]} day master {carried} {grp_en} ({top_grp[0]} {top_grp[1]}%), {short_of} {heavy_name}: "
+                f"{supply} {fav_en}, pace {pace} years.", lang,
+                weak_strong=w_s, dm=dm, en_dm_el=en[dm_el], carried_driven_b=carried, _GRP_EN_top_grp=grp_en, top_grp=top_grp[0],
+                top_grp_2=top_grp[1], short_of_heavy_in=short_of, en_heavy_el=heavy_name, supply_spend_th=supply, fav_en=fav_en, x=pace)
     F = []
     # ---- constitution
-    F.append(("Constitution",
-              f"{dm} {en[dm_el]} born in the {mb} month ({stage} stage): {st['verdict']}, score {st['score']}; "
-              f"{(st.get('formation') or {}).get('status', '')}. {season[0].upper() + season[1:]}."))
+    F.append((T("synthesis.clinical_report.13", "Constitution", lang),
+              T("synthesis.clinical_report.14", f"{dm} {en[dm_el]} born in the {mb} month ({stage} stage): {st['verdict']}, score {st['score']}; "
+              f"{(st.get('formation') or {}).get('status', '')}. {cap(season, lang)}.", lang, dm=dm, en_dm_el=en[dm_el], mb=mb, stage=stage, st_verdict=st['verdict'], st_score=st['score'], x_status=(st.get('formation') or {}).get('status', ''), season_season=cap(season, lang))))
     # ---- balance
-    fav_share = ", ".join(f"{e} {en[e]} {share.get(e, 0)}%" for e in fav if e != heavy_el) if share else ""
-    why = ("a weak day master is fed by its resource and its own element" if weak else
-           "a strong day master spends through output, wealth and pressure")
-    F.append(("Balance",
-              f"{heavy_el} {en[heavy_el]} dominates the chart at {share.get(heavy_el, '—')}%"
-              + (f"; {fav_share}" if fav_share else "") + ". "
-              f"Medicine: {fav_en} — {why}. "
-              f"Keep {'、'.join(unfav) if unfav else '—'} ({', '.join(en[e] for e in unfav)}) light — "
-              f"{'they drain what the chart lacks' if weak else 'they add to what is already heavy'}."))
+    fav_share = jn([f"{e} {share.get(e, 0)}%" if lang == "zh" else f"{e} {en[e]} {share.get(e, 0)}%"
+                    for e in fav if e != heavy_el], lang) if share else ""
+    why = (T("synthesis.clinical_report.15", "a weak day master is fed by its resource and its own element", lang) if weak else
+           T("synthesis.clinical_report.16", "a strong day master spends through output, wealth and pressure", lang))
+    drains = (T("synthesis.clinical_report.20", "they drain what the chart lacks", lang) if weak
+              else T("synthesis.clinical_report.21", "they add to what is already heavy", lang))
+    F.append((T("synthesis.clinical_report.17", "Balance", lang),
+              T("synthesis.clinical_report.18", f"{heavy_el} {en[heavy_el]} dominates the chart at {share.get(heavy_el, '—')}%", lang, heavy_el=heavy_el, en_heavy_el=en[heavy_el], share_heavy_el=share.get(heavy_el, '—'))
+              + (f"{'；' if lang == 'zh' else '; '}{fav_share}" if fav_share else "")
+              + T("synthesis.clinical_report.19", f". Medicine: {fav_en} — {why}. "
+                  f"Keep {'、'.join(unfav) if unfav else '—'} ({jn([en[e] for e in unfav], lang)}) light — {drains}.", lang,
+                  fav_en=fav_en, why=why, x='、'.join(unfav) if unfav else '—', join_x=jn([en[e] for e in unfav], lang),
+                  they_dra_they_add=drains)))
     # ---- drivers
     ins = p.get("tengod_insights") or {}
     favor = ins.get("favor") or []
     bad = next((f for f in favor if f.get("status") == "unfavourable"), None)
     rooted = [r for r in (ins.get("rooted") or []) if r.get("state") == "rooted"]
     axis = next((a for a in (p.get("personality") or []) if a.get("zone") and a["zone"] != "mid"), None)
-    drv = (f"{g1} {legend.get(g1, {}).get('en', '')} {p1}% leads, {g2} {legend.get(g2, {}).get('en', '')} {p2}% second — "
-           f"{_first_clause(legend.get(g1, {}).get('meaning', ''))}. ")
-    drv += (f"{bad['god']} at {bad['pct']}% carries {bad['el']} {en.get(bad['el'], '')}, a 忌 element: it delivers, but on borrowed energy. "
-            if bad else "The heavy gods all carry favourable elements: engine and medicine point the same way. ")
+    drv = (T("synthesis.clinical_report.22", f"{g1} {legend.get(g1, {}).get('en', '')} {p1}% leads, {g2} {legend.get(g2, {}).get('en', '')} {p2}% second — "
+           f"{_first_clause(legend.get(g1, {}).get('meaning', ''))}. ", lang, g1=g1, legend_g1_en=legend.get(g1, {}).get('en', ''), p1=p1, g2=g2, legend_g2_en=legend.get(g2, {}).get('en', ''), p2=p2, first_clause_legend_g1_meani=_first_clause(legend.get(g1, {}).get('meaning', ''))))
+    drv += (T("synthesis.clinical_report.23", f"{bad['god']} at {bad['pct']}% carries {bad['el']} {en.get(bad['el'], '')}, a 忌 element: it delivers, but on borrowed energy. ", lang, bad_god=bad['god'], bad_pct=bad['pct'], bad_el=bad['el'], en_bad_el=en.get(bad['el'], ''))
+            if bad else T("synthesis.clinical_report.24", "The heavy gods all carry favourable elements: engine and medicine point the same way. ", lang))
     if ins.get("rooted"):
-        drv += f"{len(rooted)} of {len(ins['rooted'])} visible stems are rooted. "
+        drv += T("synthesis.clinical_report.25", f"{len(rooted)} of {len(ins['rooted'])} visible stems are rooted. ", lang, len_rooted=len(rooted), len_ins_rooted=len(ins['rooted']))
     if axis:
-        drv += f"Personality: {axis['verdict']}."
-    F.append(("Drivers", drv.strip()))
+        drv += T("synthesis.clinical_report.26", f"Personality: {axis['verdict']}.", lang, axis_verdict=axis['verdict'])
+    F.append((T("synthesis.clinical_report.27", "Drivers", lang), drv.strip()))
     # ---- palaces & stars
     P = p.get("palaces") or {}
     sp, ch, vt = P.get("spouse") or {}, P.get("children") or {}, P.get("vault") or {}
+    zh = lang == "zh"
     pal = ""
     if sp:
-        pal += f"Spouse palace {sp.get('branch', '')} is {_first_clause(sp.get('state', ''))}. "
+        pal += T("synthesis.clinical_report.28", f"Spouse palace {sp.get('branch', '')} is {_first_clause(sp.get('state', ''))}. ", lang, sp_branch=sp.get('branch', ''), first_clause_sp_state=_first_clause(sp.get('state', '')))
     if ch:
-        pal += f"Children palace output stars {ch.get('output_share', '—')}%. "
+        pal += T("synthesis.clinical_report.29", f"Children palace output stars {ch.get('output_share', '—')}%. ", lang, ch_output_share=ch.get('output_share', '—'))
     if vt:
-        tail = (vt.get("state") or "").split(" — ")
-        pal += ("Wealth vault " + (f"{vt.get('branch', '')} is {'open' if vt.get('open') else 'sealed'}"
-                                    + (f"; {tail[1].split(' (')[0]}" if len(tail) > 1 else "") + ". "
-                                    if vt.get("present") else "absent — wealth flows rather than stores. "))
+        tail = _clauses(vt.get("state") or "")
+        open_sealed = T("synthesis.clinical_report.32", "open", lang) if vt.get("open") else T("synthesis.clinical_report.33", "sealed", lang)
+        vault_line = (T("synthesis.clinical_report.31", f"{vt.get('branch', '')} is {open_sealed}", lang, vt_branch=vt.get('branch', ''), open_sealed=open_sealed)
+                      + (f"{'；' if zh else '; '}{re.split(r' \(|（', tail[1])[0]}" if len(tail) > 1 else "") + ("。" if zh else ". "))
+        pal += T("synthesis.clinical_report.30", "Wealth vault ", lang) + (vault_line if vt.get("present") else
+                T("synthesis.clinical_report.34", "absent — wealth flows rather than stores. ", lang))
     stars = p.get("shensha") or []
     pos = next((s for s in stars if s["star"] not in _NEG_STARS), None)
     neg = next((s for s in stars if s["star"] in _NEG_STARS), None)
     if pos:
-        pal += f"{pos['star']} in the {'/'.join(pos['pillars'])} pillar: {_first_clause(pos['meaning'].split(' — ')[-1])}. "
+        pal += T("synthesis.clinical_report.35", f"{pos['star']} in the {'/'.join(pos_label(x, lang) for x in pos['pillars'])} pillar: {_first_clause(_clauses(pos['meaning'])[-1])}. ", lang, pos_star=pos['star'], join_pos_pillars='/'.join(pos_label(x, lang) for x in pos['pillars']), first_clause_pos_meaning_x=_first_clause(_clauses(pos['meaning'])[-1]))
     if neg:
-        pal += f"Watch {neg['star']} in the {'/'.join(neg['pillars'])} pillar: {_first_clause(neg['meaning'].split(' — ')[-1])}."
+        pal += T("synthesis.clinical_report.36", f"Watch {neg['star']} in the {'/'.join(pos_label(x, lang) for x in neg['pillars'])} pillar: {_first_clause(_clauses(neg['meaning'])[-1])}.", lang, neg_star=neg['star'], join_neg_pillars='/'.join(pos_label(x, lang) for x in neg['pillars']), first_clause_neg_meaning_x=_first_clause(_clauses(neg['meaning'])[-1]))
     if not stars:
-        pal += "No symbolic star is carried — the structure reads unadorned."
-    F.append(("Palaces & stars", pal.strip()))
+        pal += T("synthesis.clinical_report.37", "No symbolic star is carried — the structure reads unadorned.", lang)
+    F.append((T("synthesis.clinical_report.38", "Palaces & stars", lang), pal.strip()))
     # ---- timing now
-    W = p.get("windows") or {}; T = p.get("transit") or {}; L = T.get("luck") or {}
+    W = p.get("windows") or {}; Tr = p.get("transit") or {}; Lk = Tr.get("luck") or {}
     cur = next((d for d in W.get("decades", []) if d.get("current")), None)
     tim = ""
     if cur:
-        tim += (f"The {cur['gz']} decade (ages {cur['ages']}, {cur['phase_zh']} {cur['phase']}) brings "
-                f"{L.get('stem_god', '')}/{L.get('branch_god', '')}; ")
-    tim += f"{T.get('year_gz', '')} this year adds {T.get('year_stem_god', '')}/{T.get('year_branch_god', '')}. "
+        tim += T("synthesis.clinical_report.39", f"The {cur['gz']} decade (ages {cur['ages']}, {cur['phase_zh']} {cur['phase']}) brings "
+                 f"{Lk.get('stem_god', '')}/{Lk.get('branch_god', '')}; ", lang, cur_gz=cur['gz'], cur_ages=cur['ages'], cur_phase_zh=cur['phase_zh'], cur_phase="" if zh else cur['phase'], L_stem_god=Lk.get('stem_god', ''), L_branch_god=Lk.get('branch_god', ''))
+    tim += T("synthesis.clinical_report.40", f"{Tr.get('year_gz', '')} this year adds {Tr.get('year_stem_god', '')}/{Tr.get('year_branch_god', '')}. ", lang, T_year_gz=Tr.get('year_gz', ''), T_year_stem_go=Tr.get('year_stem_god', ''), T_year_branch_=Tr.get('year_branch_god', ''))
     years = W.get("years") or []
     dims = ("career", "wealth", "relationship", "health")
     def flags(y, f): return [d for d in dims if (y.get(d) or {}).get("flag") == f]
+    def dims_l(ds): return jn([T(f"plain.AREA.{d}", d, lang) for d in ds], lang)
     win = max(years, key=lambda y: len(flags(y, "window")), default=None)
     cau = max(years, key=lambda y: len(flags(y, "caution")), default=None)
     if win and flags(win, "window"):
-        tim += f"Next window: {win['y']} {win['gz']} ({', '.join(flags(win, 'window'))}). "
+        tim += T("synthesis.clinical_report.41", f"Next window: {win['y']} {win['gz']} ({dims_l(flags(win, 'window'))}). ", lang, win_y=win['y'], win_gz=win['gz'], join_flags_win=dims_l(flags(win, 'window')))
     if cau and flags(cau, "caution"):
-        tim += f"Next caution: {cau['y']} {cau['gz']} ({', '.join(flags(cau, 'caution'))})."
-    F.append(("Timing now", tim.strip()))
+        tim += T("synthesis.clinical_report.42", f"Next caution: {cau['y']} {cau['gz']} ({dims_l(flags(cau, 'caution'))}).", lang, cau_y=cau['y'], cau_gz=cau['gz'], join_flags_cau=dims_l(flags(cau, 'caution')))
+    F.append((T("synthesis.clinical_report.43", "Timing now", lang), tim.strip()))
     # ---- orientation
     yx = p.get("youxing") or {}
-    dir_of = {s: _DIR.get(k, k) for k, s in yx.items()}
+    dir_of = {s: T(f"plain.DIR_WORD.{_DIR.get(k, k)}", _DIR.get(k, k), lang) for k, s in yx.items()}
     best, worst = dir_of.get("生氣"), dir_of.get("絕命")
-    F.append(("Orientation",
-              f"{p.get('group', '')} ({p.get('gua', '')}): face {best or '—'} (生氣) for bed and desk; "
+    F.append((T("synthesis.clinical_report.44", "Orientation", lang),
+              T("synthesis.clinical_report.45", f"{p.get('group', '')} ({p.get('gua', '')}): face {best or '—'} (生氣) for bed and desk; "
               f"keep {worst or '—'} (絕命) for storage. "
-              f"Colours {'、'.join(ys.get('colours', []))} carry the medicine."))
+              f"Colours {'、'.join(ys.get('colours', []))} carry the medicine.", lang, p_group=p.get('group', ''), p_gua=p.get('gua', ''), x=best or '—', x_2=worst or '—', join_ys_colours='、'.join(ys.get('colours', [])))))
     # ---- assessment
     A = []
     if bad and _grp_of(bad["god"]) == top_grp[0]:
-        A.append(f"The chart's defining tension is that its engine is also its drain: {bad['god']} carries "
-                 f"{bad['el']} {en.get(bad['el'], '')}, which a {'weak' if weak else 'strong'} {en[dm_el]} day master cannot afford to run on unchecked.")
+        w_s2 = T("synthesis.clinical_report.47", "weak", lang) if weak else T("synthesis.clinical_report.48", "strong", lang)
+        A.append(T("synthesis.clinical_report.46", f"The chart's defining tension is that its engine is also its drain: {bad['god']} carries "
+                 f"{bad['el']} {en.get(bad['el'], '')}, which a {w_s2} {en[dm_el]} day master cannot afford to run on unchecked.", lang, bad_god=bad['god'], bad_el=bad['el'], en_bad_el=en.get(bad['el'], ''), weak_strong=w_s2, en_dm_el=en[dm_el]))
     elif bad:
-        A.append(f"The defining tension is {bad['god']} ({bad['pct']}%) on {bad['el']} {en.get(bad['el'], '')}: "
-                 f"it supplies {_GRP_EN.get(_grp_of(bad['god']), '')} the chart uses, at the cost of the recovery a "
-                 f"{'weak' if weak else 'strong'} day master {'needs' if weak else 'can spare'}.")
+        w_s3 = T("synthesis.clinical_report.50", "weak", lang) if weak else T("synthesis.clinical_report.51", "strong", lang)
+        needs = T("synthesis.clinical_report.52", "needs", lang) if weak else T("synthesis.clinical_report.53", "can spare", lang)
+        bad_grp = L("synthesis._GRP_EN", _GRP_EN, lang).get(_grp_of(bad['god']), '')
+        A.append(T("synthesis.clinical_report.49", f"The defining tension is {bad['god']} ({bad['pct']}%) on {bad['el']} {en.get(bad['el'], '')}: "
+                 f"it supplies {bad_grp} the chart uses, at the cost of the recovery a "
+                 f"{w_s3} day master {needs}.", lang, bad_god=bad['god'], bad_pct=bad['pct'], bad_el=bad['el'], en_bad_el=en.get(bad['el'], ''), _GRP_EN_grp_of_bad_god=bad_grp, weak_strong=w_s3, needs_can_spar=needs))
     else:
-        A.append("The chart's heavy gods and its medicine point the same way: what drives this person also feeds them.")
+        A.append(T("synthesis.clinical_report.54", "The chart's heavy gods and its medicine point the same way: what drives this person also feeds them.", lang))
     if parts:
         if weak and parts.get("support", 0) > parts.get("drain", 0):
-            A.append(f"Support outweighs drain ({parts['support']} to {parts['drain']}) yet the {mb} month sets the verdict: "
-                     "well-backed but under-lit — it needs warmth more than help.")
+            A.append(T("synthesis.clinical_report.55", f"Support outweighs drain ({parts['support']} to {parts['drain']}) yet the {mb} month sets the verdict: "
+                     "well-backed but under-lit — it needs warmth more than help.", lang, parts_support=parts['support'], parts_drain=parts['drain'], mb=mb))
         elif weak:
-            A.append(f"Drain exceeds support ({parts.get('drain')} to {parts.get('support')}): the chart is genuinely thin and every "
-                     "favourable element added is felt.")
+            A.append(T("synthesis.clinical_report.56", f"Drain exceeds support ({parts.get('drain')} to {parts.get('support')}): the chart is genuinely thin and every "
+                     "favourable element added is felt.", lang, parts_drain=parts.get('drain'), parts_support=parts.get('support')))
         elif parts.get("support", 0) > parts.get("drain", 0):
-            A.append(f"Support exceeds drain ({parts['support']} to {parts['drain']}): the chart has surplus to spend, and spending it is the medicine.")
+            A.append(T("synthesis.clinical_report.57", f"Support exceeds drain ({parts['support']} to {parts['drain']}): the chart has surplus to spend, and spending it is the medicine.", lang, parts_support=parts['support'], parts_drain=parts['drain']))
     if cur:
-        A.append(f"The present {cur['gz']} decade is {cur['phase']}: "
-                 + ("the timing supports building now." if cur.get("phase") in ("growth", "consolidation") else
-                    "hold structure and pace effort until the next growth decade."))
+        A.append(T("synthesis.clinical_report.58", f"The present {cur['gz']} decade is {cur['phase']}: ", lang, cur_gz=cur['gz'], cur_phase=T(f"plain.PHASE.{cur['phase']}.word", cur['phase'], lang))
+                 + (T("synthesis.clinical_report.59", "the timing supports building now.", lang) if cur.get("phase") in ("growth", "consolidation") else
+                    T("synthesis.clinical_report.60", "hold structure and pace effort until the next growth decade.", lang)))
     # ---- plan
     plan = []
     inds = ((p.get("industries") or {}).get("favourable") or [])
-    ind = f" — fields: {inds[0]['industries'].split(',')[0].strip()}, {inds[0]['industries'].split(',')[1].strip()}" if inds and "," in inds[0].get("industries", "") else ""
+    fields = re.split(r"[,、]", inds[0]["industries"]) if inds else []         # "a, b, c" in English, "a、b、c" in Chinese
+    ind = (T("synthesis.clinical_report.61", f" — fields: {fields[0].strip()}, {fields[1].strip()}", lang,
+             inds_industries=fields[0].strip(), inds_industries_2=fields[1].strip()) if len(fields) > 1 else "")
     if fav:
-        plan.append(f"Supply {fav[0]} {en[fav[0]]} first: {'、'.join(ys.get('colours', [])[:2])} in the rooms you spend hours in{ind}.")
+        plan.append(T("synthesis.clinical_report.62", f"Supply {fav[0]} {en[fav[0]]} first: {'、'.join(ys.get('colours', [])[:2])} in the rooms you spend hours in{ind}.", lang, fav=fav[0], en_fav=en[fav[0]], join_ys_colours='、'.join(ys.get('colours', [])[:2]), ind=ind))
     if best:
-        plan.append(f"Set bed head and desk to face {best}; keep long sitting out of {worst or 'the 絕命 sector'}.")
+        worst_l = worst or T("synthesis.clinical_report.64", "the 絕命 sector", lang)
+        plan.append(T("synthesis.clinical_report.63", f"Set bed head and desk to face {best}; keep long sitting out of {worst_l}.", lang, best=best, x=worst_l))
     if win and flags(win, "window"):
-        plan.append(f"Act in {win['y']} {win['gz']}" + (f"; protect {cau['y']} {cau['gz']} ({', '.join(flags(cau, 'caution'))})." if cau and flags(cau, "caution") else "."))
+        plan.append(T("synthesis.clinical_report.65", f"Act in {win['y']} {win['gz']}", lang, win_y=win['y'], win_gz=win['gz']) + (T("synthesis.clinical_report.66", f"; protect {cau['y']} {cau['gz']} ({dims_l(flags(cau, 'caution'))}).", lang, cau_y=cau['y'], cau_gz=cau['gz'], join_flags_cau=dims_l(flags(cau, 'caution'))) if cau and flags(cau, "caution") else ("。" if zh else ".")))
     doms = p.get("domains") or []
     if doms:
-        low = min(doms, key=lambda d: d["score"])
-        plan.append(f"Support {low['zh']} {low['en']} ({low['score']}), the lowest domain, with routine rather than effort spikes.")
-    plan.append(f"Offset {g1}'s shadow: {_SHADOW.get(_grp_of(g1), '')}.")
+        low = min(doms, key=standing_key)   # Layer 2: the lowest standing among charts, not the lowest raw number; the sentence still states the score
+        plan.append(T("synthesis.clinical_report.67", f"Support {low['zh']} {low['en']} ({low['score']}), the domain that stands lowest among charts, with routine rather than effort spikes.", lang, low_zh=low['zh'], low_en=low['en'], low_score=low['score']))
+    plan.append(T("synthesis.clinical_report.68", f"Offset {g1}'s shadow: {L("synthesis._SHADOW", _SHADOW, lang).get(_grp_of(g1), '')}.", lang, g1=g1, _SHADOW_grp_of_g1=L("synthesis._SHADOW", _SHADOW, lang).get(_grp_of(g1), '')))
     # ---- confidence
     th = p.get("tiaohou") or {}
     if th.get("verdict"):
-        conf = (f"Method: the verdict is 扶抑's; the 窮通寶鑑 調候 prescription for the {mb} month "
-                f"({'、'.join(g['stem'] for g in th.get('gods', []))}) {th['verdict']}"
-                + ("." if th["verdict"] == "agrees" else " — satisfy both: climate stems through use, 扶抑 elements through support."))
+        conf = (T("synthesis.clinical_report.69", f"Method: the verdict is 扶抑's; the 窮通寶鑑 調候 prescription for the {mb} month "
+                f"({'、'.join(g['stem'] for g in th.get('gods', []))}) {th['verdict']}", lang, mb=mb, join_x='、'.join(g['stem'] for g in th.get('gods', [])), th_verdict=th['verdict'])
+                + (dot(lang) if th["verdict"] == T("tiaohou.tiaohou_reading.01", "agrees", lang) else T("synthesis.clinical_report.70", " — satisfy both: climate stems through use, 扶抑 elements through support.", lang)))
     else:
-        conf = "Method note: the verdict is the 扶抑 method's; the 調候 climate school can lean differently — where they disagree, satisfying both is the safe posture."
+        conf = T("synthesis.clinical_report.71", "Method note: the verdict is the 扶抑 method's; the 調候 climate school can lean differently — where they disagree, satisfying both is the safe posture.", lang)
     return {"summary": summary, "findings": [{"label": l, "text": t} for l, t in F],
-            "assessment": " ".join(A), "plan": plan, "confidence": conf}
+            "assessment": jn(A, lang, " ", ""), "plan": plan, "confidence": conf}

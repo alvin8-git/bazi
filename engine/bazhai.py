@@ -4,6 +4,7 @@ eight 遊年 stars per direction, derived from trigram line transformations
 from __future__ import annotations
 
 from .wuxing import PALACES
+from .i18n import L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
 EAST_GROUP = {"坎", "離", "震", "巽"}
 
@@ -42,8 +43,8 @@ def ming_gua(lichun_year: int, sex: str) -> str:
     return next(p for p, v in PALACES.items() if v["num"] == g)
 
 
-def gua_group(gua: str) -> str:
-    return "東四命 (East)" if gua in EAST_GROUP else "西四命 (West)"
+def gua_group(gua: str, lang: str = "en") -> str:
+    return T("bazhai.gua_group.01", "東四命 (East)", lang) if gua in EAST_GROUP else T("bazhai.gua_group.02", "西四命 (West)", lang)
 
 
 def youxing_stars(gua: str) -> dict[str, str]:

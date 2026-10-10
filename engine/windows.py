@@ -21,6 +21,7 @@ from .domains import VAULT, health_map
 from .liunian import year_element_read, year_ganzhi
 from .wuxing import (BRANCH_ELEMENT, CHONG_MAP, HE_MAP, HIDDEN_STEMS, KE,
                      SANHE, STEM_ELEMENT)
+from .i18n import L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
 # 合化 — the element a combination PRODUCES (audit 2026-09-19: a 合 that feeds an
 # unfavourable element is engagement, not blessing). 六合 per the standard table;
@@ -51,32 +52,33 @@ OFFICER_GODS = {"正官", "七殺"}
 SUPPORT_GODS = {"比肩", "劫財", "正印", "偏印"}
 
 
-def _decade_phase(chart, ys, d) -> dict:
+def _decade_phase(chart, ys, d, lang: str = "en") -> dict:
     """Phase-label one 大運 pillar dict (needs gz/ages/current)."""
     st, br = d["gz"][0], d["gz"][1]
     fav, unfav = set(ys["favourable"]), set(ys["unfavourable"])
     score, notes = 0, []
-    for el, what in ((STEM_ELEMENT[st], f"stem {st}"), (BRANCH_ELEMENT[br], f"branch {br}")):
+    for el, what in ((STEM_ELEMENT[st], T("windows._decade_phase.what_stem", f"stem {st}", lang, st=st)),
+                     (BRANCH_ELEMENT[br], T("windows._decade_phase.what_branch", f"branch {br}", lang, br=br))):
         if el in fav:
             score += 1
-            notes.append(f"{what} {el} favourable")
+            notes.append(T("windows._decade_phase.01", f"{what} {el} favourable", lang, what=what, el=el))
         elif el in unfav:
             score -= 1
-            notes.append(f"{what} {el} unfavourable")
+            notes.append(T("windows._decade_phase.02", f"{what} {el} unfavourable", lang, what=what, el=el))
     day_br = chart.pillars["day"].branch
     month_br = chart.pillars["month"].branch
     transition = False
     if CHONG_MAP.get(br) == day_br:
         score -= 1
         transition = True
-        notes.append(f"decade branch 沖 day branch {day_br} — personal upheaval")
+        notes.append(T("windows._decade_phase.03", f"decade branch 沖 day branch {day_br} — personal upheaval", lang, day_br=day_br))
     if CHONG_MAP.get(br) == month_br:
         score -= 1
         transition = True
-        notes.append(f"decade branch 沖 month branch {month_br} — career-pillar shakeup")
+        notes.append(T("windows._decade_phase.04", f"decade branch 沖 month branch {month_br} — career-pillar shakeup", lang, month_br=month_br))
     if HE_MAP.get(br) in (day_br, month_br):
         score += 1
-        notes.append("decade branch 六合 with a core pillar — steadying")
+        notes.append(T("windows._decade_phase.05", "decade branch 六合 with a core pillar — steadying", lang))
     phase, zh = (("growth", "成長") if score >= 2 else
                  ("corrective", "修整") if score <= -2 else
                  ("transition", "轉換") if transition else
@@ -85,7 +87,7 @@ def _decade_phase(chart, ys, d) -> dict:
             "phase": phase, "phase_zh": zh, "score": score, "notes": notes}
 
 
-def _year_row(chart, ys, hm_excess, hm_weak, y, decade_score) -> dict:
+def _year_row(chart, ys, hm_excess, hm_weak, y, decade_score, lang: str = "en") -> dict:
     dm = chart.day_master
     st, br = year_ganzhi(y)
     g_st, g_br = ten_god(dm, st), ten_god(dm, HIDDEN_STEMS[br][0])
@@ -102,94 +104,94 @@ def _year_row(chart, ys, hm_excess, hm_weak, y, decade_score) -> dict:
 
     # career — month pillar activation vs clash, officer arrival
     if CHONG_MAP.get(br) == month_br:
-        career = dim("caution", f"年支{br} 沖 month pillar {month_br} — don't force career moves")
+        career = dim("caution", T("windows._year_row.01", f"年支{br} 沖 month pillar {month_br} — don't force career moves", lang, br=br, month_br=month_br))
     elif HE_MAP.get(br) == month_br or (br in _TRINE.get(month_br, set()) and br != month_br):
         he_el = _he_element(br, month_br)
         if he_el in unfav:
-            career = dim("caution", f"年支{br} 合 month pillar but 合化{he_el} feeds an "
-                                    "unfavourable element — engagement without tailwind, choose battles")
+            career = dim("caution", T("windows._year_row.02", f"年支{br} 合 month pillar but 合化{he_el} feeds an "
+                                    "unfavourable element — engagement without tailwind, choose battles", lang, br=br, he_el=he_el))
         else:
-            career = dim("window", f"年支{br} 合 month pillar — career pillar activated, leverage window")
+            career = dim("window", T("windows._year_row.03", f"年支{br} 合 month pillar — career pillar activated, leverage window", lang, br=br))
     elif gods & OFFICER_GODS:
         if gods & SUPPORT_GODS or not weak:
-            career = dim("window", f"{'/'.join(sorted(gods & OFFICER_GODS))} arrives with support — authority spotlight")
+            career = dim("window", T("windows._year_row.04", f"{'/'.join(sorted(gods & OFFICER_GODS))} arrives with support — authority spotlight", lang, join_sorted_gods_OFFICER_GOD='/'.join(sorted(gods & OFFICER_GODS))))
         else:
-            career = dim("caution", f"{'/'.join(sorted(gods & OFFICER_GODS))} arrives on a weak chart — pressure year, deliver quietly")
+            career = dim("caution", T("windows._year_row.05", f"{'/'.join(sorted(gods & OFFICER_GODS))} arrives on a weak chart — pressure year, deliver quietly", lang, join_sorted_gods_OFFICER_GOD='/'.join(sorted(gods & OFFICER_GODS))))
     else:
-        career = dim("quiet", "no career-pillar activation")
+        career = dim("quiet", T("windows._year_row.06", "no career-pillar activation", lang))
     # wealth — wealth god arrival, vault, carry check
     if gods & WEALTH_GODS:
         if weak and wealth_el in unfav:
-            wealth = dim("caution", f"{'/'.join(sorted(gods & WEALTH_GODS))} arrives but the chart can't hold it — "
-                                    "wealth passes through; strengthen first, don't overreach")
+            wealth = dim("caution", T("windows._year_row.07", f"{'/'.join(sorted(gods & WEALTH_GODS))} arrives but the chart can't hold it — "
+                                    "wealth passes through; strengthen first, don't overreach", lang, join_sorted_gods_WEALTH_GODS='/'.join(sorted(gods & WEALTH_GODS))))
         else:
-            wealth = dim("window", f"{'/'.join(sorted(gods & WEALTH_GODS))} arrives — income moves possible")
+            wealth = dim("window", T("windows._year_row.08", f"{'/'.join(sorted(gods & WEALTH_GODS))} arrives — income moves possible", lang, join_sorted_gods_WEALTH_GODS='/'.join(sorted(gods & WEALTH_GODS))))
     elif CHONG_MAP.get(br) == VAULT[wealth_el]:
-        wealth = dim("window", f"年支{br} 沖開財庫 {VAULT[wealth_el]} — the vault OPENS: "
-                               "a classical accumulation year")
+        wealth = dim("window", T("windows._year_row.09", f"年支{br} 沖開財庫 {VAULT[wealth_el]} — the vault OPENS: "
+                               "a classical accumulation year", lang, br=br, wealth_el_vault=VAULT[wealth_el]))
     elif br == VAULT[wealth_el]:
-        wealth = dim("quiet", f"年支{br} sits ON the sealed 財庫 (值庫, not the 沖 that "
-                              "opens it) — store, don't expect release")
+        wealth = dim("quiet", T("windows._year_row.10", f"年支{br} sits ON the sealed 財庫 (值庫, not the 沖 that "
+                              "opens it) — store, don't expect release", lang, br=br))
     else:
-        wealth = dim("quiet", "no wealth activation")
+        wealth = dim("quiet", T("windows._year_row.11", "no wealth activation", lang))
     # relationship — 桃花 and spouse palace
     th = _TAOHUA[chart.pillars["year"].branch]
     if br == day_br:
-        rel = dim("caution", f"年支{br} 伏吟 the spouse palace {day_br} — the palace doubled: "
-                             "emotional intensification, avoid forcing relationship decisions")
+        rel = dim("caution", T("windows._year_row.12", f"年支{br} 伏吟 the spouse palace {day_br} — the palace doubled: "
+                             "emotional intensification, avoid forcing relationship decisions", lang, br=br, day_br=day_br))
     elif CHONG_MAP.get(br) == day_br:
-        rel = dim("caution", f"年支{br} 沖 spouse palace {day_br} — relationships need extra care")
+        rel = dim("caution", T("windows._year_row.13", f"年支{br} 沖 spouse palace {day_br} — relationships need extra care", lang, br=br, day_br=day_br))
     elif br == th:
-        rel = dim("window", f"桃花 year ({br}) — social magnetism and relational openings")
+        rel = dim("window", T("windows._year_row.14", f"桃花 year ({br}) — social magnetism and relational openings", lang, br=br))
     elif HE_MAP.get(br) == day_br or (br in _TRINE.get(day_br, set()) and br != day_br):
         he_el = _he_element(br, day_br)
         if he_el in unfav:
-            rel = dim("caution", f"年支{br} 合 spouse palace but 合化{he_el} is unfavourable — "
-                                 "closeness with friction, communicate early")
+            rel = dim("caution", T("windows._year_row.15", f"年支{br} 合 spouse palace but 合化{he_el} is unfavourable — "
+                                 "closeness with friction, communicate early", lang, br=br, he_el=he_el))
         else:
-            rel = dim("window", f"年支{br} 合 spouse palace — partnership supported")
+            rel = dim("window", T("windows._year_row.16", f"年支{br} 合 spouse palace — partnership supported", lang, br=br))
     else:
-        rel = dim("quiet", "no relationship activation")
+        rel = dim("quiet", T("windows._year_row.17", "no relationship activation", lang))
     # health — feeds an excess or replenishes a weakness
     hit_ex = sorted(els & hm_excess)
     hit_wk = sorted(els & hm_weak)
     if hit_ex:
-        health = dim("caution", f"year feeds {'/'.join(hit_ex)} excess — watch those organ systems")
+        health = dim("caution", T("windows._year_row.18", f"year feeds {'/'.join(hit_ex)} excess — watch those organ systems", lang, join_hit_ex='/'.join(hit_ex)))
     elif hit_wk:
-        health = dim("window", f"year replenishes weak {'/'.join(hit_wk)} — good recovery year")
+        health = dim("window", T("windows._year_row.19", f"year replenishes weak {'/'.join(hit_wk)} — good recovery year", lang, join_hit_wk='/'.join(hit_wk)))
     else:
-        health = dim("quiet", "no imbalance triggered")
+        health = dim("quiet", T("windows._year_row.20", "no imbalance triggered", lang))
     # study — resource arrival, scholar stars, month-pillar 合 (windows); 沖 month, 傷官 vs prominent 正官 (cautions)
     pct = ten_god_pct(chart)
     wc = {WENCHANG.get(dm), WENCHANG.get(chart.pillars["year"].stem)} - {None}
     xt = XUETANG[STEM_ELEMENT[dm]]
     if CHONG_MAP.get(br) == month_br:
-        study = dim("caution", f"年支{br} 沖 month pillar {month_br} — study plans disrupted; keep courses short")
+        study = dim("caution", T("windows._year_row.21", f"年支{br} 沖 month pillar {month_br} — study plans disrupted; keep courses short", lang, br=br, month_br=month_br))
     elif g_st == "傷官" and pct.get("正官", 0) >= 15:
-        study = dim("caution", "傷官 year meets a chart with prominent 正官 — exams and credentials contested; verify before you rely")
+        study = dim("caution", T("windows._year_row.22", "傷官 year meets a chart with prominent 正官 — exams and credentials contested; verify before you rely", lang))
     elif gods & RESOURCE_GODS:
-        study = dim("window", f"{'/'.join(sorted(gods & RESOURCE_GODS))} arrives — learning, mentors and credentials favoured")
+        study = dim("window", T("windows._year_row.23", f"{'/'.join(sorted(gods & RESOURCE_GODS))} arrives — learning, mentors and credentials favoured", lang, join_sorted_gods_RESOURCE_GO='/'.join(sorted(gods & RESOURCE_GODS))))
     elif br in wc or br == xt:
-        study = dim("window", f"年支{br} is a {'文昌' if br in wc else '學堂'} year — scholar star active")
+        study = dim("window", T("windows._year_row.24", f"年支{br} is a {'文昌' if br in wc else '學堂'} year — scholar star active", lang, br=br, x_x='文昌' if br in wc else '學堂'))
     elif HE_MAP.get(br) == month_br:
-        study = dim("window", f"年支{br} 合 month pillar — structured study and training land")
+        study = dim("window", T("windows._year_row.25", f"年支{br} 合 month pillar — structured study and training land", lang, br=br))
     else:
-        study = dim("quiet", "no study activation")
+        study = dim("quiet", T("windows._year_row.26", "no study activation", lang))
     # movement — 驛馬 years and 合 to the day branch (windows); 沖 year or day branch (cautions)
     yb = chart.pillars["year"].branch
     yima = {TRINE_STARS[next(g for g in TRINE_STARS if base in g)]["驛馬"] for base in (yb, day_br)}
     if CHONG_MAP.get(br) == yb:
-        movement = dim("caution", f"年支{br} 沖 year branch {yb} (生肖 clash) — forced moves; travel with margins, relocate only with cause")
+        movement = dim("caution", T("windows._year_row.27", f"年支{br} 沖 year branch {yb} (生肖 clash) — forced moves; travel with margins, relocate only with cause", lang, br=br, yb=yb))
     elif CHONG_MAP.get(br) == day_br:
-        movement = dim("caution", f"年支{br} 沖 day branch {day_br} — the home base is shaken; delay a move if you can")
+        movement = dim("caution", T("windows._year_row.28", f"年支{br} 沖 day branch {day_br} — the home base is shaken; delay a move if you can", lang, br=br, day_br=day_br))
     elif br in yima:
-        movement = dim("window", f"驛馬 year ({br}) — relocation, travel and job moves carry momentum")
+        movement = dim("window", T("windows._year_row.29", f"驛馬 year ({br}) — relocation, travel and job moves carry momentum", lang, br=br))
     elif HE_MAP.get(br) == day_br:
-        movement = dim("window", f"年支{br} 合 day branch — a move with support: settling somewhere new lands well")
+        movement = dim("window", T("windows._year_row.30", f"年支{br} 合 day branch — a move with support: settling somewhere new lands well", lang, br=br))
     else:
-        movement = dim("quiet", "no movement activation")
+        movement = dim("quiet", T("windows._year_row.31", "no movement activation", lang))
     # overall — climate (decade) × weather (year elements)
-    elem = year_element_read(chart, ys["favourable"], y)["explanation"]
+    elem = year_element_read(chart, ys["favourable"], y)["explanation"]       # scored on the English text
     yr_score = elem.count("favourable") - elem.count("unfavourable")
     n_caution = sum(1 for d in (career, wealth, rel, health) if d["flag"] == "caution")
     overall, zh = (("peak", "峰值窗口") if decade_score > 0 and yr_score > 0 else
@@ -201,36 +203,36 @@ def _year_row(chart, ys, hm_excess, hm_weak, y, decade_score) -> dict:
             "health": health, "study": study, "movement": movement}
 
 
-def timing_windows(chart, ys: dict, dayun: list[dict], year_now: int) -> dict:
+def timing_windows(chart, ys: dict, dayun: list[dict], year_now: int, lang: str = "en") -> dict:
     """The full Windows payload for one person."""
-    decades = [_decade_phase(chart, ys, d) for d in dayun]
+    decades = [_decade_phase(chart, ys, d, lang=lang) for d in dayun]
     cur = next((d for d in decades if d["current"]), None)
     hm = health_map(chart)
     hm_excess = {h["element"] for h in hm if "excess" in h["status"]}
     hm_weak = {h["element"] for h in hm if "weak" in h["status"]}
     years = [_year_row(chart, ys, hm_excess, hm_weak, y,
-                       cur["score"] if cur else 0)
+                       cur["score"] if cur else 0, lang=lang)
              for y in range(year_now, year_now + 10)]
     th = _TAOHUA[chart.pillars["year"].branch]
     where = [p for p in ("year", "month", "day", "hour")
              if chart.pillars[p].branch == th]
-    th_type = ("牆內 within walls — stable affection" if {"year", "month"} & set(where)
-               else "牆外 outside walls — variable attraction" if where
-               else "not in the natal chart — activated only in 桃花 years")
+    th_type = (T("windows.timing_windows.01", "牆內 within walls — stable affection", lang) if {"year", "month"} & set(where)
+               else T("windows.timing_windows.02", "牆外 outside walls — variable attraction", lang) if where
+               else T("windows.timing_windows.03", "not in the natal chart — activated only in 桃花 years", lang))
     # life-arc headline: element runs + the 祿 decade (structural turning point)
     dm = chart.day_master
     lu = LU_BRANCH[dm]
     lu_dec = next((d for d in decades if d["gz"][1] == lu), None)
     def _dec_el(d):
         return "/".join(sorted({STEM_ELEMENT[d["gz"][0]], BRANCH_ELEMENT[d["gz"][1]]}))
-    runs = " → ".join(f'{d["ages"]} {_dec_el(d)}' for d in decades[:4])
-    arc = (f"Element arc: {runs} …"
-           + (f' — 祿 ({lu}, the Day Master\'s own station) arrives in the {lu_dec["gz"]} '
+    runs = ("→" if lang == "zh" else " → ").join((f'{d["ages"]}岁{_dec_el(d)}' if lang == "zh" else f'{d["ages"]} {_dec_el(d)}') for d in decades[:4])
+    arc = (T("windows.timing_windows.04", f"Element arc: {runs} …", lang, runs=runs)
+           + (T("windows.timing_windows.05", f' — 祿 ({lu}, the Day Master\'s own station) arrives in the {lu_dec["gz"]} '
               f'decade (ages {lu_dec["ages"]}): the structural turning point where the chart '
-              "finally stands on its own element." if lu_dec else ""))
+              "finally stands on its own element.", lang, lu=lu, lu_dec_gz=lu_dec["gz"], lu_dec_ages=lu_dec["ages"]) if lu_dec else ""))
     return {"decades": decades, "years": years, "arc": arc,
             "taohua": {"branch": th, "pillars": where, "type": th_type},
-            "source_ref": "timing cross-layer — 大運/流年 × natal pillars × 用神 "
+            "source_ref": T("windows.timing_windows.06", "timing cross-layer — 大運/流年 × natal pillars × 用神 "
                           "(month pillar = career, 財星+財庫 = wealth, 日支+桃花 = "
                           "relationship, element imbalance = health; decade = "
-                          "climate, year = weather)"}
+                          "climate, year = weather)", lang)}

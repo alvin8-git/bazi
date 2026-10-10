@@ -18,6 +18,7 @@ CLOCK, TRUE_SOLAR = "clock", "true_solar"
 
 TEN_GOD_ORDER = ["比肩", "劫財", "食神", "傷官", "偏財", "正財", "七殺", "正官", "偏印", "正印"]
 from .glossary import english as _english
+from .i18n import ELEM, L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
 TEN_GOD_EN = {k: _english(k) for k in TEN_GOD_ORDER}
 
@@ -74,35 +75,48 @@ class Chart:
         return y if STEMS[stem_idx] == self.pillars["year"].stem else y - 1
 
 
-def build_chart(person: str, sex: str, birth_local: datetime, policy: str, place: dict | None = None) -> Chart:
+def build_chart(person: str, sex: str, birth_local: datetime, policy: str, place: dict | None = None, lang: str = "en") -> Chart:
     """`place` (engine.places.place) sets longitude and time zone; None or Singapore keeps the Singapore path."""
     if policy == TRUE_SOLAR and place and place.get("cc") != "SG":
         off = cal.utc_offset_hours(birth_local, place["tz"])
-        how = "time zone " + place["tz"]
+        how = T("bazi.build_chart.01", "time zone ", lang).rstrip() + " " + place["tz"]
         if off is None:   # no zone database on this host: standard time from longitude, to the half hour
-            off, how = round(place["lon"] / 15 * 2) / 2, "standard time estimated from longitude"
+            off, how = round(place["lon"] / 15 * 2) / 2, T("bazi.build_chart.02", "standard time estimated from longitude", lang)
         eff = cal.true_solar_datetime(birth_local, lon=place["lon"], utc_offset_hours=off)
         lon = place["lon"]
-        note = (f"true solar time: clock {birth_local:%H:%M} → {eff:%H:%M} "
+        note = (T("bazi.build_chart.03", f"true solar time: clock {birth_local:%H:%M} → {eff:%H:%M} "
                 f"({place['name']}, {place['country']}: UTC{off:+g} by {how}, lon {abs(lon)}°{'E' if lon >= 0 else 'W'}, "
-                f"equation of time {cal.equation_of_time_minutes(birth_local.date()):+.1f} min)")
+                f"equation of time {cal.equation_of_time_minutes(birth_local.date()):+.1f} min)", lang, birth_local=birth_local, eff=eff, place_name=place['name'], place_country=place['country'], off=off, how=how, abs_lon=abs(lon), E_W='E' if lon >= 0 else 'W', equation_of_time_minutes_dat=cal.equation_of_time_minutes(birth_local.date())))
     elif policy == TRUE_SOLAR:
         eff = cal.true_solar_datetime(birth_local)
-        note = (f"true solar time: clock {birth_local:%H:%M} → {eff:%H:%M} "
+        note = (T("bazi.build_chart.04", f"true solar time: clock {birth_local:%H:%M} → {eff:%H:%M} "
                 f"(SG UTC+{cal.sg_utc_offset_hours(birth_local.date()):g}, lon {cal.SG_LON}°E, "
-                f"equation of time {cal.equation_of_time_minutes(birth_local.date()):+.1f} min)")
+                f"equation of time {cal.equation_of_time_minutes(birth_local.date()):+.1f} min)", lang, birth_local=birth_local, eff=eff, sg_utc_offset_hours_date=cal.sg_utc_offset_hours(birth_local.date()), SG_LON=cal.SG_LON, equation_of_time_minutes_dat=cal.equation_of_time_minutes(birth_local.date())))
     else:
-        eff, note = birth_local, "civil clock time, no solar correction"
+        eff, note = birth_local, T("bazi.build_chart.05", "civil clock time, no solar correction", lang)
     chart = Chart(person=person, sex=sex, birth_local=birth_local, policy=policy,
                   effective_dt=eff, pillars=cal.pillars_for(eff))
     chart.citations.append({"rule_id": "time-policy", "layer": "bazi",
-                            "source_ref": "子平 convention (design premise 2)",
+                            "source_ref": T("bazi.build_chart.06", "子平 convention (design premise 2)", lang),
                             "explanation": note})
-    analyze(chart)
+    chart.place = place          # kept so localized_chart() can rebuild the same chart's text in another language
+    analyze(chart, lang=lang)
     return chart
 
 
-def analyze(chart: Chart) -> None:
+def localized_chart(chart: Chart, lang: str = "en") -> Chart:
+    """The same chart with its display text (strength walkthrough, citations) in `lang`. The numbers are recomputed
+    by the same code, so only strings differ; every rule in the engine keeps reading the English chart."""
+    if lang != "zh":
+        return chart
+    c = chart.__dict__.get("_zh")
+    if c is None:
+        c = build_chart(chart.person, chart.sex, chart.birth_local, chart.policy, getattr(chart, "place", None), lang)
+        chart.__dict__["_zh"] = c
+    return c
+
+
+def analyze(chart: Chart, lang: str = "en") -> None:
     p = chart.pillars
     chart.day_master = p["day"].stem
     dm = chart.day_master
@@ -149,7 +163,7 @@ def analyze(chart: Chart) -> None:
     score = season_pts + 2.0 * (support - drain) / total + root_pts
     # ponytail: threshold tuned to the 身弱 golden fixture; revisit if a future
     # verified chart disagrees — upgrade path is a per-school strength model.
-    verdict = "身弱 (Weak)" if score < 0.25 else "身強 (Strong)"
+    verdict = T("bazi.analyze.01", "身弱 (Weak)", lang) if score < 0.25 else T("bazi.analyze.02", "身強 (Strong)", lang)
 
     # Tier 4 extras: auditable ratios + formation (從格) decision boundary
     root_w = sum((1.0 if k == 0 else 1 / 3)
@@ -158,18 +172,18 @@ def analyze(chart: Chart) -> None:
                  if STEM_ELEMENT[s] == dm_el)
     support_ratio = support / total
     if not roots and support_ratio < 0.12:
-        formation = {"status": "從弱 candidate (follower)",
-                     "detail": "no roots and minimal support — a specialist school may "
+        formation = {"status": T("bazi.analyze.03", "從弱 candidate (follower)", lang),
+                     "detail": T("bazi.analyze.04", "no roots and minimal support — a specialist school may "
                                "read this as a follower structure; we keep the ordinary "
-                               "扶抑 reading and flag it"}
+                               "扶抑 reading and flag it", lang)}
     elif support_ratio > 0.75:
-        formation = {"status": "專旺 candidate (dominant)",
-                     "detail": "support overwhelms all drains — may qualify as a "
-                               "dominant structure; ordinary reading kept, flagged"}
+        formation = {"status": T("bazi.analyze.05", "專旺 candidate (dominant)", lang),
+                     "detail": T("bazi.analyze.06", "support overwhelms all drains — may qualify as a "
+                               "dominant structure; ordinary reading kept, flagged", lang)}
     else:
-        formation = {"status": "正格 ordinary structure",
-                     "detail": "evidence does not support a follower/special formation "
-                               "— standard strength rules apply"}
+        formation = {"status": T("bazi.analyze.07", "正格 ordinary structure", lang),
+                     "detail": T("bazi.analyze.08", "evidence does not support a follower/special formation "
+                               "— standard strength rules apply", lang)}
 
     chart.strength = {
         "verdict": verdict,
@@ -191,29 +205,29 @@ def analyze(chart: Chart) -> None:
             ],
         },
         "steps": [
-            {"step": 1, "name": "Season 得令", "value": season_state,
-             "detail": f"month branch {p['month'].branch} is {ELEMENT_EN[month_el]}; "
-                       f"Day Master {dm} is {ELEMENT_EN[dm_el]} → {season_state} "
+            {"step": 1, "name": T("bazi.analyze.09", "Season 得令", lang), "value": zs(season_state, lang),
+             "detail": T("bazi.analyze.10", f"month branch {p['month'].branch} is {ELEM(lang)[month_el]}; "
+                       f"Day Master {dm} is {ELEM(lang)[dm_el]} → {season_state} "
                        "(branch-element reading; the seasonal-qi 旺相休囚死 school "
                        "reads the month by its SEASON's element and can differ — "
-                       "e.g. early-辰月 metal is 囚 under the lingering 木令)"},
-            {"step": 2, "name": "Support count", "value": round(support, 2),
-             "detail": f"比劫 {ELEMENT_EN[dm_el]} {round(w[dm_el], 2)} + "
-                       f"印 {ELEMENT_EN[SHENG_REV[dm_el]]} {round(w[SHENG_REV[dm_el]], 2)}"},
-            {"step": 3, "name": "Drain count", "value": round(drain, 2),
-             "detail": "食傷 + 財 + 官殺 weights combined"},
-            {"step": 4, "name": "Root check", "value": "有根 " + "、".join(roots) if roots else "無根",
-             "detail": f"branches whose hidden stems carry {ELEMENT_EN[dm_el]}"},
+                       "e.g. early-辰月 metal is 囚 under the lingering 木令)", lang, branch=p['month'].branch, month_el_element_en=ELEM(lang)[month_el], dm=dm, dm_el_element_en=ELEM(lang)[dm_el], season_state=season_state)},
+            {"step": 2, "name": T("bazi.analyze.11", "Support count", lang), "value": round(support, 2),
+             "detail": f"比劫 {ELEM(lang)[dm_el]} {round(w[dm_el], 2)} + "
+                       f"印 {ELEM(lang)[SHENG_REV[dm_el]]} {round(w[SHENG_REV[dm_el]], 2)}"},
+            {"step": 3, "name": T("bazi.analyze.12", "Drain count", lang), "value": round(drain, 2),
+             "detail": T("bazi.analyze.13", "食傷 + 財 + 官殺 weights combined", lang)},
+            {"step": 4, "name": T("bazi.analyze.14", "Root check", lang), "value": zs("有根 " + "、".join(roots) if roots else "無根", lang),
+             "detail": T("bazi.analyze.15", f"branches whose hidden stems carry {ELEM(lang)[dm_el]}", lang, dm_el_element_en=ELEM(lang)[dm_el])},
         ],
     }
     chart.citations.append({"rule_id": "strength-4step", "layer": "bazi",
-                            "source_ref": "扶抑 framework (旺相休囚死 + 通根)",
-                            "explanation": f"{verdict}, score {score:+.2f}"})
+                            "source_ref": T("bazi.analyze.16", "扶抑 framework (旺相休囚死 + 通根)", lang),
+                            "explanation": T("bazi.analyze.17", f"{verdict}, score {score:+.2f}", lang, verdict=verdict, score=score)})
 
-    _compute_dayun(chart)
+    _compute_dayun(chart, lang=lang)
 
 
-def _compute_dayun(chart: Chart, to_age: int = 100) -> None:
+def _compute_dayun(chart: Chart, to_age: int = 100, lang: str = "en") -> None:
     """大運: yang-year male / yin-year female run forward; otherwise backward.
     Decades run until they cover age `to_age` (owner 2026-10-10: up to 100; it was a fixed 8, which left
     anyone past the eighth decade, about 84, with no current one)."""
@@ -232,11 +246,13 @@ def _compute_dayun(chart: Chart, to_age: int = 100) -> None:
         luck.append(DaYun(gz=gz, start_age=round(age, 1), end_age=round(age + 10, 1)))
         age += 10
     chart.dayun = luck
+    direction = (T("bazi._compute_dayun.02", "forward 順行", lang) if forward
+                 else T("bazi._compute_dayun.03", "backward 逆行", lang))
     chart.citations.append({
         "rule_id": "dayun-direction", "layer": "bazi",
-        "source_ref": "陽男陰女順行, 陰男陽女逆行; 起運 = 距節日數/3",
-        "explanation": f"{'forward 順行' if forward else 'backward 逆行'} from month pillar "
-                       f"{m}; start age {start_age:.1f} (to 節 {jie})"})
+        "source_ref": zs("陽男陰女順行, 陰男陽女逆行; 起運 = 距節日數/3", lang),
+        "explanation": T("bazi._compute_dayun.01", f"{direction} from month pillar {m}; start age {start_age:.1f} (to 節 {jie})",
+                         lang, forward_backward=direction, m=m, start_age=start_age, jie=jie)})
 
 
 def favourable_colours(fav_elements: list[str]) -> list[str]:

@@ -39,6 +39,7 @@ from engine.extras import placements as person_placements
 from engine.interpret import STRUCTURE_TEXT
 from engine.glossary import english as _gl_english
 from engine.htmlreport import _tosimp, gloss_html
+from engine.i18n import T
 from engine.household import assign_roles, default_assignment
 from engine.jianchu import movein_dates, sitting_branches
 from engine.liunian import BRANCH_PALACE, annual_afflictions, dayun_detail
@@ -55,6 +56,7 @@ from scripts.bazi_report import build_person, family_section
 import os
 
 ROOT = Path(__file__).resolve().parent
+SITE_URL = "https://bazifor.me"
 # Overridable so deploys that replace the code tree never wipe workspaces.
 # On Vercel (read-only bundle) default to /tmp — ephemeral: workspaces live
 # only while a lambda stays warm; durable serverless storage = Supabase later.
@@ -201,7 +203,7 @@ def _dominant_god(c) -> list:
     return [_tosimp(g), TEN_GOD_EN.get(g, ""), el]
 
 
-def _summary(p: dict) -> dict:
+def _summary(p: dict, lang: str = "en") -> dict:
     """Compact card payload for the workspace page."""
     m, c = _chart_of(p)
     ys = yong_shen(c)
@@ -226,28 +228,35 @@ def _summary(p: dict) -> dict:
         "industries": [{"element": it["element"], "en": it["en"], "industries": it["industries"]}
                        for it in industry_map(ys).get("favourable", [])],
         "sharpest_axis": _sharpest_axis(c),
-        "card": _card(m, c, ys),
+        "card": _card(m, c, ys, lang),
     }
 
 
-def _card(m, c, ys) -> dict:
+def _card(m, c, ys, lang: str = "en") -> dict:
     """Character-card facts (Round B 2026-10-10), all read from the reading's own layers: opening line,
     personality traits, strongest and weakest life area for the age voice, and the current decade."""
     from engine.report import chart_payload
     from engine.plain import POLE
     from engine.story import AREAS_FOR
-    p = chart_payload(_tosimp(m.name), c, ys, YEAR)
+    p = chart_payload(_tosimp(m.name), c, ys, YEAR, lang)
     pl, v = p["plain"], p["story"]["voice"]
-    doms = sorted((d for d in p["domains"] if d["key"] in AREAS_FOR[v]), key=lambda d: -d["score"])
-    pick = lambda d: {"key": d["key"], "score": d["score"],   # band: the engine's own word (prominent / balanced / needs support)
-                      "band": " ".join(w for w in d["band"].split() if w.isascii())} if d else None
+    from engine.area_reference import standing_key
+    doms = sorted((d for d in p["domains"] if d["key"] in AREAS_FOR[v]), key=standing_key, reverse=True)   # Layer 2: strongest and weakest by standing among charts
+    band = lambda d: " ".join(w for w in d["band"].split() if w.isascii())   # the engine's own word (prominent / balanced / needs support)
+    pick = lambda d: ({"key": d["key"], "score": d["score"], "band": band(d), "percentile": d.get("percentile")} if lang != "zh" else
+                      {"key": d["key"], "score": d["score"], "band": T(f"card.band.{band(d).replace(' ', '_')}", band(d), lang),
+                       "band_key": band(d), "percentile": d.get("percentile")}) if d else None   # zh: the label shows, the English word stays the colour key
     cur = next((d for d in pl.get("decades") or [] if d.get("current")), None)
     poles = [a["poles"][a["zone"]]["en"] for a in p.get("personality") or [] if a.get("zone") in ("left", "right")]
-    traits = [POLE[x][0].capitalize() for x in poles if x in POLE][:3]   # axis order, so the first two match the reading
-    return {"head": pl["identity"]["head"], "voice": v,
-            "traits": traits,
-            "strongest": pick(doms[0] if doms else None), "weakest": pick(doms[-1] if len(doms) > 1 else None),
-            "decade": {k: cur[k] for k in ("phase", "word", "ages")} if cur else None}
+    traits = [(POLE[x][0].capitalize() if lang != "zh" else T(f"plain.POLE.{x.replace(' ', '_')}.trait", POLE[x][0], lang))
+              for x in poles if x in POLE][:3]   # axis order, so the first two match the reading
+    out = {"head": pl["identity"]["head"], "voice": v,
+           "traits": traits,
+           "strongest": pick(doms[0] if doms else None), "weakest": pick(doms[-1] if len(doms) > 1 else None),
+           "decade": {k: cur[k] for k in ("phase", "word", "ages")} if cur else None}
+    if lang == "zh":   # the full opening sentence, since a Chinese head cannot be rebuilt from "You are ..."
+        out["line"] = T("card.line.you_are", "", lang, name=_tosimp(m.name), head=pl["identity"]["head"].rstrip("。"))
+    return out
 
 
 def _sharpest_axis(c) -> dict | None:
@@ -271,7 +280,8 @@ def _sharpest_axis(c) -> dict | None:
 
 
 def _ws_payload(token: str, ws: dict) -> dict:
-    people = [_summary(p) for p in ws["people"]]
+    lang = ws.get("lang") if ws.get("lang") in ("en", "zh") else "en"
+    people = [_summary(p, lang) for p in ws["people"]]
     harmony = None
     if len(ws["people"]) >= 2:
         charts, ys_map = {}, {}
@@ -287,7 +297,7 @@ def _ws_payload(token: str, ws: dict) -> dict:
         harmony = hm
     return {"token": token, "people": people, "harmony": harmony,
             "max_people": MAX_PEOPLE, "has_floorplan": bool(ws.get("floorplan")),
-            "lang": ws.get("lang") if ws.get("lang") in ("en", "zh") else "en",
+            "lang": lang,
             "pairs": ws.get("pairs") or {}}
 
 
@@ -426,7 +436,7 @@ def remove_person(token: str, idx: int):
 
 
 @router.get("/api/pub/w/{token}/person/{idx}/chart")
-def person_chart(token: str, idx: int, year: int = YEAR):
+def person_chart(token: str, idx: int, year: int = YEAR, lang: str = "en"):
     """Full Reading 命书 payload (13 sections) for a workspace person —
     identical shape to the family /api/chart route."""
     from engine.report import chart_payload
@@ -434,14 +444,14 @@ def person_chart(token: str, idx: int, year: int = YEAR):
     if not 0 <= idx < len(ws["people"]):
         raise HTTPException(404, "no such person")
     m, c = _chart_of(ws["people"][idx])
-    return chart_payload(_tosimp(m.name), c, yong_shen(c), year)
+    return chart_payload(_tosimp(m.name), c, yong_shen(c), year, lang if lang in ("en", "zh") else "en")
 
 
 _STEM_SLUG = dict(zip("甲乙丙丁戊己庚辛壬癸", "jia yi bing ding wu ji geng xin ren gui".split()))
 _SEASON = dict(zip("寅卯辰巳午未申酉戌亥子丑", ["spring"] * 3 + ["summer"] * 3 + ["autumn"] * 3 + ["winter"] * 3))
 
 
-def _opening_shell(c) -> tuple[str, str]:
+def _opening_shell(c, hint: str = "computing…") -> tuple[str, str]:
     """The opening painting, sent with the page so it paints on first load (it is the largest thing on a
     phone screen); app.js keeps this same <img> when it fills in the words. Returns (head links, body shell)."""
     art = f"/static/img/reading/bg/{_STEM_SLUG[c.pillars['day'].stem]}-{_SEASON[c.pillars['month'].branch]}"
@@ -451,23 +461,41 @@ def _opening_shell(c) -> tuple[str, str]:
             f'<source media="(max-width:640px)" type="image/webp" srcset="{art}-p-600.webp 600w, {art}-p-900.webp 900w" sizes="100vw">'
             f'<source media="(max-width:640px)" srcset="{art}-p-600.jpg 600w, {art}-p-900.jpg 900w" sizes="100vw">'
             f'<img src="{art}-1200.jpg" srcset="{art}-600.jpg 600w, {art}-1200.jpg 1200w" sizes="(max-width:1180px) 100vw, 1180px" '
-            f'alt="" fetchpriority="high" decoding="async"></picture><div class="rp-idtext"><p class="hint">computing…</p></div></section></div>')
+            f'alt="" fetchpriority="high" decoding="async"></picture><div class="rp-idtext"><p class="hint">{hint}</p></div></section></div>')
     return head, body
+
+
+def _reading_page(token: str, idx: int, lang: str):
+    """The personal reading page for one workspace person, in English or Simplified Chinese (the /zh twin is built
+    by scripts/build_zh.py into web/zh/reading.html). Both carry hreflang and canonical links to each other."""
+    ws = _load(token)
+    if not 0 <= idx < len(ws["people"]):
+        raise HTTPException(404, "no such person")
+    zh = lang == "zh"
+    html = (ROOT / ("web/zh/reading.html" if zh else "web/reading.html")).read_text("utf8")
+    en_url = f"{SITE_URL}/w/{token}/person/{idx}/reading"
+    zh_url = f"{SITE_URL}/zh/w/{token}/person/{idx}/reading"
+    links = (f'<link rel="canonical" href="{zh_url if zh else en_url}">'
+             f'<link rel="alternate" hreflang="en" href="{en_url}"><link rel="alternate" hreflang="zh-CN" href="{zh_url}">'
+             f'<link rel="alternate" hreflang="x-default" href="{en_url}">')
+    html = html.replace("</head>", links + "</head>", 1)
+    try:
+        head, body = _opening_shell(_chart_of(ws["people"][idx])[1], "计算中…" if zh else "computing…")
+    except Exception:   # the page still works without the early painting
+        return HTMLResponse(html)
+    return HTMLResponse(html.replace("</head>", head + "</head>", 1)
+                        .replace(f'<section id="tab-person" class="tabpane active"><p class="hint">{"计算中…" if zh else "computing…"}</p></section>',
+                                 f'<section id="tab-person" class="tabpane active">{body}</section>', 1))
 
 
 @router.get("/w/{token}/person/{idx}/reading")
 def person_reading_page(token: str, idx: int):
-    ws = _load(token)
-    if not 0 <= idx < len(ws["people"]):
-        raise HTTPException(404, "no such person")
-    html = (ROOT / "web/reading.html").read_text("utf8")
-    try:
-        head, body = _opening_shell(_chart_of(ws["people"][idx])[1])
-    except Exception:   # the page still works without the early painting
-        return HTMLResponse(html)
-    return HTMLResponse(html.replace("</head>", head + "</head>", 1)
-                        .replace('<section id="tab-person" class="tabpane active"><p class="hint">computing…</p></section>',
-                                 f'<section id="tab-person" class="tabpane active">{body}</section>', 1))
+    return _reading_page(token, idx, "en")
+
+
+@router.get("/zh/w/{token}/person/{idx}/reading")
+def zh_person_reading_page(token: str, idx: int):
+    return _reading_page(token, idx, "zh")
 
 
 @router.get("/w/{token}/pair/{a}/{b}")
