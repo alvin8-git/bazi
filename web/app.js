@@ -995,16 +995,19 @@ function pBudget(c, compact) {
     <span class="rp-bd${r.band === "about right" ? "" : " rp-strong"}">${r.band}</span>${r.medicine || (!compact && r.note)
       ? `<span class="rp-note">${r.medicine ? '<span class="rp-tag">helps you most</span> ' : ""}${compact ? "" : r.note}</span>` : ""}`).join("")}</div>`;
 }
+/* each answer card's "?" opens the evidence panel that proves it (owner 2026-10-10); keys in EV_OWNER */
+const ANS_EV = { balance: ["elements", "strength"], helps: ["medicine"], year: ["years"], acts: ["medicine", "placements"] };
+const ansQ = (k, name) => `<button type="button" class="rp-q" data-ev="${ANS_EV[k].join(" ")}" aria-label="Why: ${name}">?</button>`;
 function pAnswers(c) {
   const P = c.plain, H = P.helps, Y = P.year;
   const heavy = Object.entries(c.element_weights).sort((a, b) => b[1] - a[1])[0][0];
   return `<div class="rp-answers">
-    <div class="rp-ans rp-bal"><p class="rp-k">Your balance</p><h3>${heavy} is heaviest; ${EL_EN[H.el]} is what you need.</h3>${pBudget(c, true)}</div>
+    <div class="rp-ans rp-bal"><p class="rp-k">Your balance</p><h3>${heavy} is heaviest; ${EL_EN[H.el]} is what you need.</h3>${pBudget(c, true)}${ansQ("balance", "your balance")}</div>
     <div class="rp-ans"><p class="rp-k">What helps you</p><h3>${H.head}</h3><div class="rp-sw" aria-hidden="true" style="--blot:url('/static/img/reading/sw/${EL_SLUG[H.el]}-128.webp')">${(SWATCH[H.el] || []).map((x) =>
-      `<i style="background-color:${x}"></i>`).join("")}</div><p>${H.means}</p></div>
+      `<i style="background-color:${x}"></i>`).join("")}</div><p>${H.means}</p>${ansQ("helps", "what helps you")}</div>
     ${Y ? `<div class="rp-ans"><p class="rp-k">This year</p><p class="rp-year"><span class="rp-ybig">${Y.y}</span> <span class="rp-gz keepzh" data-notip>${Y.gz}</span></p>
-      <h3>${Y.word}</h3><p>${Y.means}</p></div>` : ""}
-    <div class="rp-ans rp-wide"><p class="rp-k">Two things to do</p><ul class="rp-acts">${P.actions.map((a) => `<li>${a}</li>`).join("")}</ul></div></div>`;
+      <h3>${Y.word}</h3><p>${Y.means}</p>${ansQ("year", "this year")}</div>` : ""}
+    <div class="rp-ans rp-wide"><p class="rp-k">Two things to do</p><ul class="rp-acts">${P.actions.map((a) => `<li>${a}</li>`).join("")}</ul>${ansQ("acts", "two things to do")}</div></div>`;
 }
 /* luck decades as rows: a painted phase mark, the ages, the phase, one plain line; the next turn named (owner 2026-10-10) */
 const PHASE_LINE = { growth: "Conditions favour building.", consolidation: "Build reserves rather than leap.",
@@ -1061,7 +1064,7 @@ const EV_OWNER = { pillars: "makeup", stars: "makeup", interactions: "makeup", p
 function pStory(id, S, ev, proofs, chart) {
   const num = {}; let n = 0;
   const mk = (e) => `<button type="button" class="mk" aria-expanded="false" aria-controls="ev-${id}-${num[e]}"><span class="vh">Evidence </span>${num[e]}</button>`;
-  const panel = (e) => `<div class="ev" id="ev-${id}-${num[e]}" hidden><p class="evh">${num[e]}. ${ev[e].label}</p>${ev[e].why ? ev[e].why.split("\n").map((x) => `<p>${x}</p>`).join("") : ""}${(proofs[e] || []).join("")}</div>`;
+  const panel = (e) => `<div class="ev" id="ev-${id}-${num[e]}" data-ev="${e}" tabindex="-1" hidden><p class="evh">${num[e]}. ${ev[e].label}</p>${ev[e].why ? ev[e].why.split("\n").map((x) => `<p>${x}</p>`).join("") : ""}${(proofs[e] || []).join("")}</div>`;
   // a run of sentences resting on the same evidence shows its markers once, at the end of the run
   const para = (ss, cls) => { const fresh = [];
     const html = ss.map((s, k) => s.t.replace(/^If you do one thing:/, "<b>$&</b>") + (ss[k + 1] && ss[k + 1].ev.join() === s.ev.join() ? "" : s.ev.map((e) => {
@@ -1797,6 +1800,15 @@ function wireReading(root) {
   root.addEventListener("toggle", markOverflow, true);
   // evidence markers: every marker with the same number opens and closes the one proof panel
   root.addEventListener("click", (ev) => {
+    const q = ev.target.closest(".rp-q");
+    if (q) {   // open the first proof panel for this answer, or fall back to its chapter
+      const keys = q.dataset.ev.split(" ");   // the panel in the key's own chapter carries its figures and citations
+      const ps = keys.map((k) => root.querySelector(`#ch-${EV_OWNER[k]} .ev[data-ev="${k}"]`) || root.querySelector(`.ev[data-ev="${k}"]`)).filter(Boolean), p = ps[0];
+      ps.forEach((x) => { x.hidden = false; root.querySelectorAll(`.mk[aria-controls="${x.id}"]`).forEach((m) => m.setAttribute("aria-expanded", "true")); });
+      if (p) { markOverflow(); p.scrollIntoView({ block: "start", behavior: "smooth" }); p.focus({ preventScroll: true }); }
+      else { const ch = document.getElementById("ch-" + EV_OWNER[keys[0]]); if (ch) ch.scrollIntoView({ block: "start", behavior: "smooth" }); }
+      return;
+    }
     const b = ev.target.closest(".mk"); if (!b) return;
     const p = document.getElementById(b.getAttribute("aria-controls")); if (!p) return;
     const open = p.hidden; p.hidden = !open;

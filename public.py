@@ -234,15 +234,18 @@ def _card(m, c, ys) -> dict:
     """Character-card facts (Round B 2026-10-10), all read from the reading's own layers: opening line,
     personality traits, strongest and weakest life area for the age voice, and the current decade."""
     from engine.report import chart_payload
+    from engine.plain import POLE
     from engine.story import AREAS_FOR
     p = chart_payload(_tosimp(m.name), c, ys, YEAR)
     pl, v = p["plain"], p["story"]["voice"]
     doms = sorted((d for d in p["domains"] if d["key"] in AREAS_FOR[v]), key=lambda d: -d["score"])
-    pick = lambda d: {"key": d["key"], "score": d["score"]} if d else None
+    pick = lambda d: {"key": d["key"], "score": d["score"],   # band: the engine's own word (prominent / balanced / needs support)
+                      "band": " ".join(w for w in d["band"].split() if w.isascii())} if d else None
     cur = next((d for d in pl.get("decades") or [] if d.get("current")), None)
-    pers = pl["personality"]["head"].removeprefix("You are ").rstrip(".")
+    poles = [a["poles"][a["zone"]]["en"] for a in p.get("personality") or [] if a.get("zone") in ("left", "right")]
+    traits = [POLE[x][0].capitalize() for x in poles if x in POLE][:3]   # axis order, so the first two match the reading
     return {"head": pl["identity"]["head"], "voice": v,
-            "traits": [t.strip().capitalize() for t in pers.split(" and ") if t.strip()],
+            "traits": traits,
             "strongest": pick(doms[0] if doms else None), "weakest": pick(doms[-1] if len(doms) > 1 else None),
             "decade": {k: cur[k] for k in ("phase", "word", "ages")} if cur else None}
 
@@ -1295,11 +1298,11 @@ stored by this page.</div>
 _EL_HEX = {"木": "#1e8e3e", "火": "#c5221f", "土": "#8a6d1f", "金": "#8a6500", "水": "#1a56b0"}
 
 
-def _name_chart(sex: str, dob: str, birth_time: str):
+def _name_chart(sex: str, dob: str, birth_time: str, place: int | None = None):
     if sex not in ("M", "F"):
         raise HTTPException(400, "sex must be M or F")
     try:
-        _, c = _chart_of({"name": "宝宝", "sex": sex, "dob": dob, "birth_time": birth_time})
+        _, c = _chart_of({"name": "宝宝", "sex": sex, "dob": dob, "birth_time": birth_time, "place": place})
     except (ValueError, KeyError) as e:
         raise HTTPException(400, f"bad birth data: {e}")
     return c, yong_shen(c)
@@ -1317,11 +1320,11 @@ def _parse_trad(trad: str) -> dict:
 
 
 @router.get("/api/pub/name/chart")
-def name_chart(sex: str, dob: str, birth_time: str = "12:00", surname: str = ""):
+def name_chart(sex: str, dob: str, birth_time: str = "12:00", surname: str = "", place: int | None = None):
     """Four pillars with elements + 用神 for the name builder strip."""
     from engine.naming import char_info
     from engine.wuxing import BRANCH_ELEMENT, STEM_ELEMENT
-    c, ys = _name_chart(sex, dob, birth_time)
+    c, ys = _name_chart(sex, dob, birth_time, place)
     total = sum(c.element_weights.values()) or 1
     out = {"pillars": [{"k": k, "zh": zh, "en": en, "stem": c.pillars[k].stem,
                         "branch": c.pillars[k].branch,
@@ -1332,6 +1335,8 @@ def name_chart(sex: str, dob: str, birth_time: str = "12:00", surname: str = "")
            "day_master": c.day_master, "strength": c.strength["verdict"],
            "weights": {el: round(w / total * 100) for el, w in c.element_weights.items()},
            "fav": ys["favourable"], "unfav": ys["unfavourable"]}
+    tp = next((x for x in c.citations if x.get("rule_id") == "time-policy"), {})   # names the birth city used
+    out["solar"] = {"time": c.effective_dt.strftime("%H:%M"), "note": tp.get("explanation", "")}
     from engine.naming import meaning_categories
     out["categories"] = meaning_categories()
     surname = _tosimp(surname.strip())
@@ -1348,11 +1353,11 @@ def name_chart(sex: str, dob: str, birth_time: str = "12:00", surname: str = "")
 @router.get("/api/pub/name/chars")
 def name_chars(surname: str, sex: str, dob: str, birth_time: str = "12:00",
                given: str = "__", slot: int = 0, el: str | None = None,
-               strokes: str = "", py: str = "", page: int = 1, trad: str = "", mean: str = ""):
+               strokes: str = "", py: str = "", page: int = 1, trad: str = "", mean: str = "", place: int | None = None):
     """Candidate tiles for one empty box. `given` uses '_' for an empty box ('禄_');
     `el` = comma list, omitted = the 用神 elements, 'all' = no element filter."""
     from engine.naming import slot_candidates
-    _, ys = _name_chart(sex, dob, birth_time)
+    _, ys = _name_chart(sex, dob, birth_time, place)
     boxes = [None if ch == "_" else ch for ch in given][:2]
     els = None if el is None else [] if el == "all" else [e for e in el.split(",") if e]
     try:
@@ -1366,11 +1371,11 @@ def name_chars(surname: str, sex: str, dob: str, birth_time: str = "12:00",
 
 @router.get("/api/pub/name/optimise")
 def name_optimise(surname: str, sex: str, dob: str, birth_time: str = "12:00",
-                  given: str = "__", el: str | None = None, trad: str = "", mean: str = ""):
+                  given: str = "__", el: str | None = None, trad: str = "", mean: str = "", place: int | None = None):
     """Best completions of a partly chosen name, or one-character improvements of a
     complete one, ranked by the quantitative score. `given` uses '_' for an empty box."""
     from engine.naming import optimise_name
-    _, ys = _name_chart(sex, dob, birth_time)
+    _, ys = _name_chart(sex, dob, birth_time, place)
     boxes = [None if ch == "_" else ch for ch in given][:2]
     els = None if el in (None, "", "all") else [e for e in el.split(",") if e]
     try:
@@ -1383,10 +1388,10 @@ def name_optimise(surname: str, sex: str, dob: str, birth_time: str = "12:00",
 
 @router.get("/api/pub/name/score")
 def name_score(surname: str, given: str, sex: str, dob: str,
-               birth_time: str = "12:00", trad: str = ""):
+               birth_time: str = "12:00", trad: str = "", place: int | None = None):
     """Name-card payload for one complete name: characters, 五格, 三才."""
     from engine.naming import name_card
-    _, ys = _name_chart(sex, dob, birth_time)
+    _, ys = _name_chart(sex, dob, birth_time, place)
     try:
         return name_card(ys, _tosimp(surname.strip()), given, _parse_trad(trad), sex=sex)
     except (ValueError, TypeError) as e:
@@ -1441,7 +1446,7 @@ def kua(dob: str, sex: str):
 # ---------------------------------------------------------------- baby shortlist (per workspace)
 MAX_BABY_LISTS = 8          # keys (babies) per workspace; the oldest is dropped
 MAX_BABY_NAMES = 8          # names per list
-_BABY_KEY = re.compile(r"^[^|]{1,2}\|[MF]\|\d{4}-\d{2}-\d{2}\|\d{2}:\d{2}$")
+_BABY_KEY = re.compile(r"^[^|]{1,2}\|[MF]\|\d{4}-\d{2}-\d{2}\|\d{2}:\d{2}(\|\d{1,9})?$")   # optional |city id
 
 
 class BabyNameIn(BaseModel):
@@ -1456,8 +1461,8 @@ def _baby_lists(ws: dict) -> dict:
 def _baby_list_view(key: str, items: list) -> dict:
     """Rescore the stored (given, trad) pairs so the list never shows scores from older weights."""
     from engine.naming import name_card
-    surname, sex, dob, birth_time = key.split("|")
-    _, ys = _name_chart(sex, dob, birth_time)
+    surname, sex, dob, birth_time, *pl = key.split("|")
+    _, ys = _name_chart(sex, dob, birth_time, int(pl[0]) if pl else None)
     out = []
     for it in items:
         try:
@@ -1507,7 +1512,7 @@ def put_baby_shortlist(token: str, key: str, items: list[BabyNameIn]):
 # ---------------------------------------------------------------- certificate
 @router.get("/api/pub/certificate", response_class=HTMLResponse)
 def certificate(surname: str, given: str, sex: str, dob: str,
-                birth_time: str = "12:00", trad: str = ""):
+                birth_time: str = "12:00", trad: str = "", place: int | None = None):
     """命名證書 — certificate-grade printable for one chosen name.
 
     Stateless: recomputes the full working from birth data + the name.
@@ -1530,7 +1535,7 @@ def certificate(surname: str, given: str, sex: str, dob: str,
             raise HTTPException(400, f"character {ch} not in the dataset")
         infos.append((ch, e))
     m, c = _chart_of({"name": given, "sex": sex, "dob": dob,
-                      "birth_time": birth_time})
+                      "birth_time": birth_time, "place": place})
     ys = yong_shen(c)
     lp = _lp(c)
     s_ks = [e["ks"] for ch, e in infos[:len(surname)]]

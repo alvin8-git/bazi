@@ -291,8 +291,34 @@ header nav.top a:hover,header a#back:hover{background:#f3ecdd;border-color:var(-
 header a#back{background:#fff;color:var(--ink)}
 @media(min-width:760px){header h1{font-size:30px}}
 :root{--wood:#187a35;--fire:#c5221f;--earth:#7a601b;--metal:#8a6500;--water:#1a56b0}.el-wood{color:var(--wood)}.el-fire{color:var(--fire)}.el-earth{color:var(--earth)}.el-metal{color:var(--metal)}.el-water{color:var(--water)}.zh[data-tip]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;border-radius:2px}.zh[data-tip]:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}.gl-tip{position:fixed;z-index:9999;max-width:calc(100vw - 32px);width:max-content;background:#2b2620;color:#fff;font:500 14px/1.45 system-ui,sans-serif;padding:6px 10px;border-radius:8px;box-shadow:0 4px 14px rgba(43,38,32,.25);opacity:0;transition:opacity .15s;pointer-events:none;text-align:left;white-space:normal}.gl-tip.on{opacity:1}@media (prefers-reduced-motion:reduce){.gl-tip{transition:none}}
-</style><link rel="preload" as="image" href="/static/img/tools/baby-intro-600.jpg" media="(max-width: 759px)">
-<link rel="preload" as="image" href="/static/img/tools/baby-intro.jpg" media="(min-width: 760px)">
+
+/* watercolour pass (owner 2026-10-10): paper ground, serif headings, painted intro and brush, ink rules instead of boxes */
+body{background:#faf7f2}header{background:transparent;border:none;padding:28px 0 6px}
+header h1{font:600 34px/1.15 Georgia,"Noto Serif SC",serif;color:var(--ink)}header .sub{font-size:15px;color:#5f574e}
+.intro{position:relative;display:block;min-height:440px;padding:0;border:none;border-radius:0;background:none;overflow:hidden;margin:0 0 8px}
+.intro img{position:absolute;right:0;top:0;height:100%;width:62%;object-fit:cover;object-position:right center;max-width:none;border:none;border-radius:0;
+  -webkit-mask:linear-gradient(to right,transparent 0,#000 30%,#000 92%,transparent),linear-gradient(to bottom,transparent,#000 10%,#000 90%,transparent);-webkit-mask-composite:source-in;
+  mask:linear-gradient(to right,transparent 0,#000 30%,#000 92%,transparent),linear-gradient(to bottom,transparent,#000 10%,#000 90%,transparent);mask-composite:intersect}
+.intro>div{position:relative;max-width:40%;padding:56px 0 40px 4px}
+.intro p{margin:0 0 12px;font-size:17px;color:var(--ink)}.intro p:first-child{font:600 27px/1.3 Georgia,"Noto Serif SC",serif;margin-bottom:18px}
+.sec{background:transparent;border:none;border-top:1px solid #d9d0c1;border-radius:0;padding:30px 2px;box-shadow:none}
+.sec h2{font:600 24px/1.25 Georgia,"Noto Serif SC",serif;color:var(--ink)}
+#formcard,#card{background:#fff;border:1px solid #e3dccf;border-radius:14px;padding:24px}
+@media(max-width:640px){#formcard,#card{padding:16px 14px}}
+.emptystate{background:transparent;border:none;padding:24px 0}
+#emptystate .eswrap{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.3fr);gap:28px;align-items:center}
+#emptystate .esill{width:100%;height:auto;border:none;border-radius:0;max-width:none;-webkit-mask:radial-gradient(closest-side,#000 70%,transparent);mask:radial-gradient(closest-side,#000 70%,transparent)}
+.esprev{border-radius:10px;border:1px solid #e3dccf;box-shadow:0 6px 24px rgba(43,38,32,.08)}
+.emptystate figcaption{font:italic 15px/1.5 Georgia,serif;color:#5f574e;margin-top:10px}
+.nextstrip{background:transparent;border:none;border-top:1px solid #d9d0c1;border-radius:0}.nextstrip img{width:64px;height:64px;border-radius:0}
+@media(max-width:640px){
+  header h1{font-size:28px}
+  .intro{min-height:0}.intro img{position:static;width:100%;height:auto;display:block;
+    -webkit-mask:linear-gradient(to bottom,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(to bottom,transparent,#000 12%,#000 88%,transparent)}
+  .intro>div{max-width:none;padding:8px 0 4px}.intro p:first-child{font-size:23px}
+  #emptystate .eswrap{grid-template-columns:1fr;gap:12px}
+}
+</style><link rel="preload" as="image" type="image/webp" imagesrcset="/static/img/tools/baby-plum-600.webp 600w, /static/img/tools/baby-plum-1200.webp 1200w" imagesizes="(max-width:640px) 100vw, 640px" fetchpriority="high">
 </head><body>
 <span class="verbadge" id="ver"></span>
 <script>fetch("/api/pub/version").then(r=>r.json())
@@ -309,7 +335,7 @@ header a#back{background:#fff;color:var(--ink)}
     <p>You need the surname character, sex, and the birth or due date and time.</p>
     <p>You get useful elements, five grids, a ranked shortlist and a printable name card.</p>
   </div>
-  <img src="/static/img/tools/baby-intro-600.jpg" srcset="/static/img/tools/baby-intro-600.jpg 600w, /static/img/tools/baby-intro.jpg 1200w" sizes="(max-width:640px) 100vw, 280px" width="600" height="400" alt="Illustration of a baby cot with a calligraphy brush and a Chinese name card" fetchpriority="high">
+  <picture><source type="image/webp" srcset="/static/img/tools/baby-plum-600.webp 600w, /static/img/tools/baby-plum-1200.webp 1200w" sizes="(max-width:640px) 100vw, 640px"><img src="/static/img/tools/baby-plum-600.jpg" srcset="/static/img/tools/baby-plum-600.jpg 600w, /static/img/tools/baby-plum-1200.jpg 1200w" sizes="(max-width:640px) 100vw, 640px" width="1200" height="800" alt="Watercolour of a plum branch in blossom over a folded swaddling cloth with a small jade longevity lock" fetchpriority="high"></picture>
 </section>
   <div class="sec" id="formcard">
     <h2>Step 1 · The baby</h2>
@@ -323,7 +349,9 @@ header a#back{background:#fff;color:var(--ink)}
         <div><label for="i-dob">Birth or due date</label>
           <input id="i-dob" name="dob" type="date" required aria-describedby="h-dob"><span class="help" id="h-dob">An expected date gives a provisional chart. Run it again after the birth.</span></div>
         <div><label for="i-time">Time (12:00 if unknown)</label>
-          <input id="i-time" name="birth_time" type="time" value="12:00" aria-describedby="h-time"><span class="help" id="h-time">Singapore time. Use 12:00 if you do not know it.</span></div>
+          <input id="i-time" name="birth_time" type="time" value="12:00" aria-describedby="h-time"><span class="help" id="h-time">Clock time where the baby is born. Use 12:00 if you do not know it.</span></div>
+        <div id="b-place" style="display:contents"><div><label for="bp-cc">Country of birth</label><select id="bp-cc"><option value="SG" selected>Singapore</option></select></div>
+          <div><label for="bp-city">City of birth</label><input id="bp-city" value="Singapore" autocomplete="off"><span class="help">Pick the nearest city: its longitude and time zone set true solar time.</span></div></div>
         <div><label for="i-given">Given name (optional, 1–2 characters)</label>
           <input id="i-given" name="given" maxlength="2" placeholder="evaluate a chosen name" autocomplete="off" aria-describedby="h-given"><span class="help" id="h-given">Optional: score a name you already have in mind.</span></div>
       </div>
@@ -334,12 +362,12 @@ header a#back{background:#fff;color:var(--ink)}
       </div>
       <div class="err" id="err" role="alert"></div>
       <div class="note">For a due date the chart is provisional, recalculate after birth with the exact time.
-        Singapore time assumed; true-solar correction applied. Birth data is not stored by this page.</div>
+        The clock time is turned into true solar time for the birth city. Birth data is not stored by this page.</div>
     </form>
   </div>
   <section class="emptystate" id="emptystate" aria-label="What you will get">
     <div class="eswrap">
-      <img class="esill" src="/static/img/tools/baby-empty-600.jpg" width="600" height="400" alt="Illustration of a blank name card waiting to be filled in" loading="lazy">
+      <picture><source type="image/webp" srcset="/static/img/tools/baby-brush-600.webp"><img class="esill" src="/static/img/tools/baby-brush-600.jpg" width="600" height="400" alt="Watercolour of a calligraphy brush resting beside an inkstone and a pine sprig" loading="lazy" decoding="async"></picture>
       <figure>
         <img class="esprev" src="/static/img/shots/baby-card-desktop.jpg" alt="Example baby name card for the fictional name 王禄婷 with the seven-part score bars" width="955" height="650" loading="lazy">
         <figcaption>What you will get: the baby's useful elements, a ranked shortlist, and a name card you can print. The card shown is fictional.</figcaption>
@@ -355,9 +383,9 @@ header a#back{background:#fff;color:var(--ink)}
   </div>
   <div class="sec" id="explainer2">
     <h2>How Singapore and Malaysia names are handled</h2>
-    <p class="subhead">Romanised surnames, Kangxi strokes and Singapore time.</p>
+    <p class="subhead">Romanised surnames, Kangxi strokes and true solar time.</p>
     <p>Families in Singapore and Malaysia usually know their surname by a Hokkien, Teochew or Cantonese romanisation such as Tan, Lim, Lee, Ng or Wong, while the scoring needs the Chinese character. Enter the Chinese surname you choose in the surname box (for example <span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span>, <span class="zh" lang="zh-Hant" tabindex="0" title="lín" data-tip="lín">林</span>, <span class="zh" lang="zh-Hant" tabindex="0" title="lǐ" data-tip="lǐ">李</span> or <span class="zh" lang="zh-Hant" tabindex="0" title="wú" data-tip="wú">吴</span>) and the builder uses that character for the stroke count and the grids. The romanised spelling on a passport is a spelling of the character, not a different surname, so pick the character your family writes.</p>
-    <p>The Five Grids use the <b>Kangxi</b> stroke count from the Kangxi dictionary, which counts the traditional form of each character. The traditional <span class="zh" lang="zh-Hant" tabindex="0" title="lù" data-tip="lù">祿</span> has more strokes than the simplified <span class="zh" lang="zh-Hans" tabindex="0" title="lù" data-tip="lù">禄</span>, so the builder counts the traditional form and shows you the strokes it used. The chart is calculated for Singapore time with a true-solar correction, and a due date gives a provisional chart that you can recalculate after birth. Read <a href="/learn/how-chinese-baby-names-are-scored">how Chinese baby names are scored</a> for the full method.</p>
+    <p>The Five Grids use the <b>Kangxi</b> stroke count from the Kangxi dictionary, which counts the traditional form of each character. The traditional <span class="zh" lang="zh-Hant" tabindex="0" title="lù" data-tip="lù">祿</span> has more strokes than the simplified <span class="zh" lang="zh-Hans" tabindex="0" title="lù" data-tip="lù">禄</span>, so the builder counts the traditional form and shows you the strokes it used. The chart is calculated in true solar time for the birth city (Singapore unless you pick another), and a due date gives a provisional chart that you can recalculate after birth. Read <a href="/learn/how-chinese-baby-names-are-scored">how Chinese baby names are scored</a> for the full method.</p>
   </div>
   <div class="sec" id="example">
     <h2>Example output</h2>
@@ -371,9 +399,10 @@ header a#back{background:#fff;color:var(--ink)}
     </table>
   </div>
   <div id="app"></div>
-  <nav class="nextstrip" aria-label="Next steps"><img src="/static/img/tools/motif-next-600.jpg" width="48" height="48" alt="" loading="lazy"><b>Next step</b><a href="/learn/how-chinese-baby-names-are-scored">How Chinese baby names are scored</a><a href="/start">Open the people workspace</a></nav>
+  <nav class="nextstrip" aria-label="Next steps"><picture><source type="image/webp" srcset="/static/img/tools/baby-shoot-96.webp 1x, /static/img/tools/baby-shoot-192.webp 2x"><img src="/static/img/tools/baby-shoot-96.jpg" width="64" height="64" alt="" loading="lazy" decoding="async"></picture><b>Next step</b><a href="/learn/how-chinese-baby-names-are-scored">How Chinese baby names are scored</a><a href="/start">Open the people workspace</a></nav>
 </main>
 <script src="/static/glossary.js"></script>
+<script src="/static/place-picker.js"></script>
 <script>
 const $ = s => document.querySelector(s);
 const EL = ["木", "火", "土", "金", "水"];
@@ -422,6 +451,7 @@ function pillarsBlock() {
       <div class="lab">${L(p.en, p.zh)}</div>
       <div class="gz"><span class="el-${p.sel}">${zs(p.stem)}</span><span class="el-${p.bel}">${zs(p.branch)}</span></div>
       <div class="elx">${[pg(p.stem), pg(p.branch)].filter(Boolean).join(" · ") || p.sel + " / " + p.bel}${p.k === "day" ? " · " + zs("日主") : ""}</div></div>`).join("")}</div>
+    ${P.solar && P.solar.note ? `<p class="help solarnote">${esc(P.solar.note.charAt(0).toUpperCase() + P.solar.note.slice(1))}</p>` : ""}
     <div class="bars">${EL.map(e => `<div class="bar"><b class="el-${e}">${zs(e)}</b><div class="track"><div class="fill f-${e}" style="width:${P.weights[e] || 0}%"></div></div><span>${P.weights[e] || 0}%</span></div>`).join("")}</div>
     <div class="ysline">${Li("Day Master", "日主")} <b class="el-${P.pillars[2].sel} keepzh">${zs(P.day_master)}</b> <small>${pg(P.day_master)}</small> · ${esc(gt(P.strength))}</div>
     <div class="ysbox">
@@ -539,7 +569,7 @@ function sancaiPanel(sc) {
     <div class="scd">${(sc.detail || []).map(d => `<div><b>${esc(String(d.pair || "").replace("天", "heaven ").replace("人", "person ").replace("地", "earth ").replace(/ →/, " →").trim())}</b> ${esc(d.text_en && window.GL ? GL.pair(d.text, d.text_en) : gt(d.text))} <span class="luck ${d.factor >= 0.8 ? "ji" : d.factor >= 0.4 ? "ping" : "xiong"}">×${d.factor}</span></div>`).join("")}</div>`;
 }
 function certUrl(c) {
-  return "/api/pub/certificate?" + new URLSearchParams({surname: c.surname, given: c.given, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, trad: tradParam()});
+  return "/api/pub/certificate?" + new URLSearchParams({surname: c.surname, given: c.given, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, ...PL(), trad: tradParam()});
 }
 function cardBlock() {
   if (!complete()) return "";
@@ -582,7 +612,8 @@ function cardBlock() {
    the page was opened from one (?ws=token), otherwise kept in this browser. ---------- */
 const SL_MAX = 8;
 S.ws = (m => m && /^[A-Za-z0-9_-]{8,64}$/.test(m) ? m : null)(new URLSearchParams(location.search).get("ws"));
-const slKeyRaw = () => [S.q.surname, S.q.sex, S.q.dob, S.q.birth_time].join("|");
+const slKeyRaw = () => [S.q.surname, S.q.sex, S.q.dob, S.q.birth_time].concat(S.q.place ? [S.q.place] : []).join("|");
+const PL = () => (S.q.place ? {place: S.q.place} : {});
 const slKey = () => "baby.shortlist.v1:" + slKeyRaw();
 const slWsUrl = () => `/api/pub/w/${S.ws}/baby/shortlist?key=${encodeURIComponent(slKeyRaw())}`;
 function slLocalSave() { try { localStorage.setItem(slKey(), JSON.stringify(S.shortlist)); } catch (e) { /* private mode: memory only */ } }
@@ -612,13 +643,13 @@ async function slLoad() {
   try { saved = JSON.parse(localStorage.getItem(slKey()) || "[]"); } catch (e) { saved = []; }
   S.shortlist = (Array.isArray(saved) ? saved : []).filter(x => x && x.name && x.given).slice(0, SL_MAX);
   const key = slKey();                       // rescore, so a stored list never shows scores from older weights
-  const fresh = await Promise.all(S.shortlist.map((x, i) => api("/api/pub/name/score", {surname: S.q.surname, given: x.given, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time,
+  const fresh = await Promise.all(S.shortlist.map((x, i) => api("/api/pub/name/score", {surname: S.q.surname, given: x.given, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, ...PL(),
     trad: Object.entries(x.trad || {}).map(([k, v]) => k + ":" + v).join(",")}, "sl" + i).then(c => slEntry(c, x.trad || {})).catch(() => null)));
   if (key !== slKey()) return;
   S.shortlist = fresh.filter(Boolean).sort((a, b) => b.score - a.score); slLocalSave();
   const el = $("#shortlist"); if (el) el.outerHTML = shortlistBlock();
 }
-const slCertUrl = (given, trad) => "/api/pub/certificate?" + new URLSearchParams({surname: S.q.surname, given, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, trad: Object.entries(trad || {}).map(([k, v]) => k + ":" + v).join(",")});
+const slCertUrl = (given, trad) => "/api/pub/certificate?" + new URLSearchParams({surname: S.q.surname, given, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, ...PL(), trad: Object.entries(trad || {}).map(([k, v]) => k + ":" + v).join(",")});
 function shortlistBlock() {
   if (!S.shortlist.length) return `<div id="shortlist"></div>`;
   return `<div class="sec" id="shortlist"><h2>${Lh("Shortlist")} <span class="count">${S.shortlist.length}/${SL_MAX} · ${S.ws && S.wsSaved !== false ? Li("saved to your workspace") : S.ws ? Li("workspace unreachable — kept in this browser for now") : Li("kept in this browser for this baby")}</span></h2>
@@ -666,7 +697,7 @@ async function loadTiles(append) {
 }
 async function loadCard() {
   try {
-    S.card = await api("/api/pub/name/score", {surname: S.q.surname, given: S.slots.slice(0, S.mode).join(""), sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, trad: tradParam()});
+    S.card = await api("/api/pub/name/score", {surname: S.q.surname, given: S.slots.slice(0, S.mode).join(""), sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, ...PL(), trad: tradParam()});
     for (const x of S.card.chars) if (!S.info[x.ch]) S.info[x.ch] = {py: x.py, el: x.el};
     render(); $("#card").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest"});
   } catch (e) { if (e.name !== "AbortError") $("#err").textContent = e.message; }
@@ -711,6 +742,7 @@ document.addEventListener("keydown", e => {
 });
 $("#start").addEventListener("click", async () => {
   const f = $("#f"), q = {surname: f.surname.value.trim(), sex: f.sex.value, dob: f.dob.value, birth_time: f.birth_time.value || "12:00"};
+  const pid = bPlace ? bPlace() : null; if (pid && pid !== 1880252) q.place = pid;   // Singapore sends nothing: same requests as before
   $("#err").textContent = "";
   if (!q.surname) { $("#err").textContent = "Enter the family surname to build a name"; f.surname.focus(); return; }
   if (!q.dob) { $("#err").textContent = "Enter the birth (or due) date"; f.dob.focus(); return; }
@@ -728,8 +760,12 @@ $("#start").addEventListener("click", async () => {
   } catch (e) { if (e.name !== "AbortError") $("#err").textContent = e.message; }
   $("#start").disabled = false;
 });
-/* deep link: /baby?surname=王&sex=F&dob=2026-03-15&time=09:30[&given=禄婷] restores the builder */
-(() => {
+/* deep link: /baby?surname=王&sex=F&dob=2026-03-15&time=09:30[&place=<city id>][&given=禄婷] restores the builder */
+let bPlace = null;   // the city list (86 KB) loads after the page, so it never competes with the first paint
+const initPlace = () => placePicker($("#b-place"), new URLSearchParams(location.search).get("place"), "bp").then((g) => (bPlace = g));
+(async () => {
+  if (new URLSearchParams(location.search).get("place")) await initPlace();
+  else addEventListener("load", () => (window.requestIdleCallback || setTimeout)(initPlace));
   const u = new URLSearchParams(location.search);
   if (!u.get("surname") || !u.get("dob")) return;
   const f = $("#f");
