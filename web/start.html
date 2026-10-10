@@ -2,7 +2,7 @@
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Free BaZi Calculator (八字) with Every Rule Cited | bazifor.me</title>
-<meta name="description" content="Enter a birth date and time: four pillars, day master, useful element and luck cycles, each citing its classical rule. Singapore and Malaysia times handled.">
+<meta name="description" content="Enter a birth date, time and city: four pillars, day master, useful element and luck cycles, each citing its classical rule. True solar time for any city.">
 <link rel="canonical" href="https://bazifor.me/start">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -14,14 +14,14 @@
 <meta name="apple-mobile-web-app-title" content="bazifor.me">
 <meta name="msapplication-TileColor" content="#c7301d">
 <meta property="og:title" content="Free BaZi Calculator (八字) with Every Rule Cited | bazifor.me">
-<meta property="og:description" content="Enter a birth date and time: four pillars, day master, useful element and luck cycles, each citing its classical rule. Singapore and Malaysia times handled.">
+<meta property="og:description" content="Enter a birth date and time: four pillars, day master, useful element and luck cycles, each citing its classical rule. True solar time for any birth place.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bazifor.me/start">
 <meta property="og:image" content="https://bazifor.me/static/og/start.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "image": "https://bazifor.me/static/og/start.png", "name": "bazifor.me BaZi calculator", "url": "https://bazifor.me/start", "description": "Enter a birth date and time: four pillars, day master, useful element and luck cycles, each citing its classical rule. Singapore and Malaysia times handled.", "applicationCategory": "LifestyleApplication", "operatingSystem": "Web", "inLanguage": ["en", "zh-Hans"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SGD"}, "featureList": ["Four pillars with hidden stems", "Day master strength", "Useful element (用神) and colours", "Luck cycles and timing windows", "Up to 8 people with harmony comparison"], "publisher": {"@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "image": "https://bazifor.me/static/og/start.png", "name": "bazifor.me BaZi calculator", "url": "https://bazifor.me/start", "description": "Enter a birth date and time: four pillars, day master, useful element and luck cycles, each citing its classical rule. True solar time for any birth place.", "applicationCategory": "LifestyleApplication", "operatingSystem": "Web", "inLanguage": ["en", "zh-Hans"], "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SGD"}, "featureList": ["Four pillars with hidden stems", "Day master strength", "Useful element (用神) and colours", "Luck cycles and timing windows", "Up to 8 people with harmony comparison"], "publisher": {"@type": "Organization", "name": "bazifor.me", "url": "https://bazifor.me"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "bazifor.me", "item": "https://bazifor.me"}, {"@type": "ListItem", "position": 2, "name": "BaZi calculator", "item": "https://bazifor.me/start"}]}</script>
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;
@@ -48,37 +48,18 @@ button:disabled{opacity:.5;cursor:default}
 .hint{color:var(--muted);font-size:12.5px}
 .err{color:var(--accent);font-size:13px;margin-top:6px;min-height:1em}
 .people{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
-.pcard{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fff}
-/* element-affinity tints (用神 favourable[0]) — matches the reading page's charcard themes */
-/* element artwork behind a heavy wash so text keeps contrast */
-.pcard.elth-木{background:linear-gradient(160deg,rgba(243,249,239,.84),rgba(226,239,216,.8)),url(/static/img/elements/wood.jpg) center/cover;border-color:#b9d3ab}
-.pcard.elth-火{background:linear-gradient(160deg,rgba(253,241,236,.84),rgba(249,222,212,.8)),url(/static/img/elements/fire.jpg) center/cover;border-color:#e8c0b1}
-.pcard.elth-土{background:linear-gradient(160deg,rgba(250,244,230,.84),rgba(240,227,198,.8)),url(/static/img/elements/earth.jpg) center/cover;border-color:#d9c395}
-.pcard.elth-金{background:linear-gradient(160deg,rgba(251,249,241,.84),rgba(244,236,212,.8)),url(/static/img/elements/metal.jpg) center/cover;border-color:#d6bf72}
-.pcard.elth-水{background:linear-gradient(160deg,rgba(239,245,250,.84),rgba(220,233,244,.8)),url(/static/img/elements/water.jpg) center/cover;border-color:#b4cde2}
-.pcard.elth2-木{box-shadow:inset 0 0 0 2px rgba(63,135,70,.18)}
-.pcard.elth2-火{box-shadow:inset 0 0 0 2px rgba(214,58,82,.15)}
-.pcard.elth2-土{box-shadow:inset 0 0 0 2px rgba(138,84,16,.18)}
-.pcard.elth2-金{box-shadow:inset 0 0 0 2px rgba(201,155,46,.25)}
-.pcard.elth2-水{box-shadow:inset 0 0 0 2px rgba(48,89,168,.16)}
 .share-sec{border:0;background:transparent;padding:0}
 .share-sec .st{font-weight:800;color:var(--accent)}
 .share-sec .kv2{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0}
 .share-sec .url{font-size:13px;background:#fff;border:1px solid var(--line);border-radius:8px;
  padding:6px 10px;word-break:break-all;flex:1;min-width:200px}
 .share-sec #btn-copy{white-space:nowrap}
-.pcard h3{margin:0 0 4px;font-size:16px}
-.pzrow{display:flex;justify-content:center;gap:6px;margin:4px 0 8px;flex-wrap:wrap}
-.pz{display:inline-flex;flex-direction:column;align-items:center;border:1.5px solid rgba(43,38,32,.42);border-radius:8px;
-  padding:3px 9px 2px;background:rgba(255,255,255,.9);font-size:17px;font-weight:700;line-height:1.15;min-width:38px}
-.pz small{font-size:9px;font-weight:600;color:var(--muted);letter-spacing:.3px;margin-top:1px}
 .editf{grid-column:1/-1;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0}
 .editf .row{grid-template-columns:2fr 1fr 1fr 1fr;gap:6px}.editf label{margin:2px 0 1px;font-size:11.5px}
 .editf input,.editf select{padding:5px 7px;font-size:14px}.editf .row2{margin-top:6px;gap:8px}.editf button{padding:6px 12px;font-size:13.5px}
 .kv{font-size:12.5px;color:var(--ink);margin:4px 0}
 .kv b.cat{color:#8a6d00;font-size:11px;letter-spacing:.3px;margin-right:1px}
 .kv .unit{display:inline-block;white-space:nowrap}
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin:8px 0 2px}
 .fcell{display:grid;grid-template-columns:auto 1fr;gap:0 8px;align-items:center;min-width:0}
 .fcell .fl,.fcareer .fl{min-width:58px}
 .fcell .dz,.fcareer .dz,.dhead2{display:block;font-size:11.5px;font-weight:700;line-height:1.2;color:#8a6d00}
@@ -93,26 +74,6 @@ button:disabled{opacity:.5;cursor:default}
 .fcareer .cchip small{display:block;font-size:8.5px;color:var(--muted);line-height:1.1}
 .fcareer .fv.find{font-size:11px;line-height:1.35}.fcareer .fv.find b{font-weight:600}
 .fcareer .fv.fpers{font-size:12.5px;line-height:1.3}.fcareer .fv.fpers small{display:block;font-size:9px;color:var(--muted)}
-.hcell{cursor:pointer;border-radius:6px;padding:5px 8px}
-.hcell:hover{filter:brightness(.96)}
-.hcell .hband{display:block;font-size:9.5px;font-weight:700;line-height:1.2}
-.hcell .hgo{display:block;font-size:8.5px;color:var(--muted)}
-.dhead{color:#8a6d00;font-size:11px;font-weight:700;letter-spacing:.3px;margin:8px 0 2px}
-.doms2{display:grid;grid-template-columns:1fr;gap:6px;margin-top:2px}
-.doms2 .dr{display:grid;grid-template-columns:118px 1fr 26px;gap:0 8px;
-  align-items:center;font-size:11.5px;min-width:0}
-.doms2 .dl{min-width:0}
-.doms2 .dz{display:block;font-weight:700;line-height:1.2}
-.doms2 .den{display:block;font-size:9px;color:var(--muted);white-space:nowrap;
-  overflow:hidden;text-overflow:ellipsis;line-height:1.2}
-.doms2 .db{height:5px;border-radius:3px;background:rgba(0,0,0,.08);overflow:hidden}
-.doms2 .db i{display:block;height:100%;border-radius:3px;background:var(--gold,#b8860b)}
-.doms2 .db i.g{background:var(--good,#1e8e3e)}.doms2 .db i.b{background:var(--bad,#c5221f)}
-.doms2 .dv{font-weight:800;text-align:right}.doms2 .dv.g{color:var(--good,#1e8e3e)}.doms2 .dv.b{color:var(--bad,#c5221f)}
-.cardops{float:right;display:flex;gap:2px}
-.ic{background:none;border:none;padding:0 3px;font-size:15px;cursor:pointer;
-  color:#b9b0a4;line-height:1}
-.ic:hover{color:var(--accent)}
 .elb{display:inline-block;width:24px;height:24px;border-radius:50%;font-weight:700;
   font-size:14px;border:2px solid;margin:0 2px;line-height:20px;text-align:center;
   vertical-align:middle;box-sizing:border-box;padding:0}
@@ -127,9 +88,6 @@ button:disabled{opacity:.5;cursor:default}
 .doms span{background:#f3efe7;border:1px solid var(--line);border-radius:6px;
   padding:1px 6px;font-size:11.5px}
 .doms .den{font-size:9.5px;color:var(--muted)}
-.pcard .acts{margin-top:8px;display:flex;gap:8px}
-.pcard a{color:var(--accent);font-size:13px}
-.pcard .del{color:#999;font-size:12px;cursor:pointer;background:none;border:none;padding:0}
 table{border-collapse:collapse;width:100%;font-size:13px;background:#fff}
 th,td{border:1px solid var(--line);padding:5px 9px;text-align:left}
 th{background:#f6f1e8}
@@ -147,8 +105,6 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
   border-radius:7px;padding:3px 10px;background:#fff}
 .badge{font-size:11px;background:#fff6df;border:1px solid #eedc9a;color:#8a6d00;
   border-radius:6px;padding:1px 6px;margin-left:6px}
-.pcard{cursor:pointer;transition:box-shadow .15s,border-color .15s}
-.pcard:hover{box-shadow:0 3px 14px rgba(0,0,0,.10);border-color:var(--accent)}
 .hwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .hwrap table{min-width:max-content}
 @media(max-width:720px){
@@ -160,7 +116,6 @@ nav.top a{color:var(--accent);text-decoration:none;border:1px solid var(--line);
 }
 [hidden]{display:none!important}
 <style>.sitefoot{padding:18px 22px 28px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:30px}.sitefoot a{color:var(--accent)}.sitefoot .fnav{display:inline-block;margin-top:6px}.learnstrip{max-width:980px;margin:18px auto 0;padding:0 22px;font-size:14px;color:var(--muted)}.learnstrip a{color:var(--accent);margin-right:12px;white-space:nowrap}.pz .pzpy{font-size:9.5px;color:var(--muted);font-weight:500;letter-spacing:0}
-.fgrid{grid-template-columns:1fr}.fv{overflow:visible;white-space:normal}
 
 /* shared header pass (design reference: home page) */
 header h1{font:700 26px/1.25 Georgia,"Noto Serif SC","Songti SC",serif;color:var(--ink);letter-spacing:-.01em}
@@ -228,12 +183,8 @@ body.has-people .empty-state{display:none}
 #people-sec .hint,#harmony-sec .hint{font-size:14px}
 .subhead{color:var(--muted);font-size:16px;margin:0 0 14px}
 .howto{font-size:14px;color:var(--ink);background:var(--soft);border-radius:10px;padding:8px 12px;margin:10px 0 12px}
-.howto b{color:var(--gold)}
+.howto b{color:#6b5414}
 .people{gap:16px}
-.pcard{border-radius:14px;padding:16px 18px}
-.pcard>.kv:last-child{display:flex;align-items:center;justify-content:center;min-height:44px;margin:12px 0 0!important;border:1.5px solid var(--accent);border-radius:10px;background:rgba(255,255,255,.92);color:var(--accent)!important;font-size:15px;font-weight:700}
-.pcard:hover>.kv:last-child{background:var(--accent);color:#fff!important}
-.ic{min-width:32px;min-height:32px}
 #share-sec{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:18px 22px}
 .keep{display:flex;gap:14px;align-items:center;margin-bottom:10px}
 .keep img{width:48px;height:48px;border-radius:10px;flex:none;object-fit:cover}
@@ -258,6 +209,39 @@ nav.top a{min-height:44px;display:inline-flex;align-items:center}
   .nextstrip{flex-direction:column;align-items:flex-start}
   .people{grid-template-columns:1fr}
 }
+/* character card, design B (2026-10-10): painting at the side, facts on paper */
+.people{grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr))}
+.ccard{display:flex;padding:0;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;transition:box-shadow .15s,border-color .15s}
+.ccard:hover{box-shadow:0 3px 14px rgba(0,0,0,.10);border-color:var(--accent)}
+.cside{flex:0 0 30%}.cside img{width:100%;height:100%;object-fit:cover;display:block}
+.cin{flex:1;min-width:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px}
+.ico{width:var(--s);height:var(--s);flex:none;display:inline-grid;place-items:center;background:center/cover no-repeat;border-radius:50%}
+.ico b{color:#fff;font:700 calc(var(--s)*.5)/1 Georgia,"Noto Serif SC",serif;text-shadow:0 0 2px rgba(0,0,0,.7),0 0 5px rgba(0,0,0,.45)}
+.ctag{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.cnum{font-size:13px;font-weight:600;color:var(--muted)}
+.cnm{margin:0;font:600 19px/1.2 Georgia,"Noto Serif SC",serif;color:var(--ink)}
+.cseal{display:inline-grid;grid-template-columns:repeat(4,1fr);border:1px solid #cfc6b6;border-radius:6px;width:max-content}
+.cpz{display:grid;justify-items:center;padding:4px 9px 3px;font:700 19px/1.05 Georgia,"Noto Serif SC",serif}.cpz+.cpz{border-left:1px solid #e6dfd2}
+.cpz.me{outline:2px solid #c5221f;outline-offset:-2px;border-radius:4px}.cpz small{font:500 11px/1.6 system-ui,sans-serif;color:var(--muted)}
+.cidl{margin:0;font:600 20px/1.3 Georgia,"Noto Serif SC",serif;color:var(--ink);text-wrap:balance}.cidl .nm{white-space:nowrap}
+.ctraits{margin:0;font-size:15px;color:var(--muted);font-style:italic}
+.cels{display:grid;grid-template-columns:1fr 1fr;gap:10px}.cels ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 10px}
+.cels li{display:flex;align-items:center;gap:5px;font-size:14px}.cels li.av .ico{filter:saturate(.35) brightness(1.05)}
+.ck{margin:0 0 4px;font-size:12.5px;font-weight:600;color:var(--muted)}.car .ck{margin:0;font-weight:400}
+.careas{display:grid;gap:6px}.car{display:grid;grid-template-columns:1fr 84px 26px;align-items:center;gap:8px;font-size:14px}
+.car i{height:7px;background:#eee8dc;border-radius:4px;overflow:hidden}.car em{display:block;height:100%;background:#4f8a5b}
+.car.lo em{background:#b8742d}.car b{text-align:right;font-variant-numeric:tabular-nums}
+.cdec{display:flex;align-items:center;gap:10px}.cdec p{margin:0;display:grid;font-size:14px;line-height:1.3}.cdec span{color:var(--muted)}
+.cgo{margin-top:auto;display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:8px;border:1.5px solid var(--accent);color:var(--accent);font-weight:700;text-decoration:none}
+.cgo:hover{background:var(--accent);color:#fff}
+.cops{display:flex;gap:8px;justify-content:center}.cops button{min-height:44px;min-width:88px;border:none;background:none;color:var(--muted);font-size:14px;text-decoration:underline;text-underline-offset:3px}.cops button:hover{color:var(--accent)}
+.hmx{border-collapse:separate;border-spacing:6px;width:auto;background:none}.hmx td,.hmx th{border:none;padding:0}.hmx th{font-weight:400;text-align:left;padding:2px 4px;background:none}
+.mtag{display:flex;align-items:center;gap:6px}.mtag .cnm{font-size:16px}
+.hcell{display:grid;place-items:center;min-width:104px;min-height:64px;border-radius:8px;text-decoration:none;padding:6px}
+.hcell b{font:700 22px/1 Georgia,serif}.hcell .hband{font-size:12.5px;font-weight:600}.hcell:hover{filter:brightness(.96)}
+@media(max-width:640px){
+  .ccard{flex-direction:column}.cside{flex:none;height:150px}
+  .mtag .cnm{display:none}.hmx{border-spacing:4px}.hcell{min-width:56px;min-height:52px}.hcell .hband{display:none}
+}
 </style>
 <section class="intro" aria-labelledby="intro-h">
   <div>
@@ -273,16 +257,18 @@ nav.top a{min-height:44px;display:inline-flex;align-items:center}
   <div class="sec" id="add-sec">
     <p class="stepl">Step 1 · Birth details</p>
     <h2 id="add-title">Start: enter a birth chart</h2>
-    <div class="hint">Date + time of birth is all the engine needs. Singapore/Malaysia
-      time assumed (pre-1982 UTC+7:30 handled); true-solar correction applied
-      automatically. Nothing here requires an account.</div>
+    <div class="hint">Date, time and city of birth are all the engine needs. The clock time is turned into
+      true solar time for that city automatically. Nothing here requires an account.</div>
     <div class="row">
       <div><label for="f-name">Name</label><input id="f-name" maxlength="40" placeholder="name"></div>
       <div><label for="f-sex">Sex</label><select id="f-sex"><option value="M">M (male)</option><option value="F">F (female)</option></select></div>
       <div><label for="f-dob">Date of birth</label><input id="f-dob" type="date"><span class="help">The civil date on the birth certificate.</span></div>
       <div><label for="f-time">Time of birth</label><input id="f-time" type="time" value="12:00"><span class="help">Clock time; true solar time is computed for you.</span></div>
     </div>
-    <p class="policy"><b>Time policy:</b> Singapore and Malaysia time is assumed. Keep the default unless born elsewhere.</p>
+    <div class="row" id="f-place"></div>
+    <p class="policy"><b>Time policy:</b> the clock time on the birth certificate is converted to true solar time
+      for the birth city: its time zone on that date (daylight saving and past changes included), its longitude, and
+      the equation of time. Singapore is the default.</p>
     <div class="row2">
       <label style="margin:0;display:flex;gap:6px;align-items:center;font-size:13px">
         <input type="checkbox" id="f-unknown" style="width:auto"> birth time unknown (uses 12:00, so the hour pillar is approximate)</label>
@@ -331,6 +317,7 @@ nav.top a{min-height:44px;display:inline-flex;align-items:center}
   </nav>
 </main>
 <script src="/static/glossary.js"></script>
+<script src="/static/place-picker.js"></script>
 <script>
 const $ = s => document.querySelector(s);
 fetch("/api/pub/version").then(r => r.json())
@@ -353,26 +340,13 @@ async function api(path, opts) {
 const elb = e => `<span class="elb el-${e} keepzh" title="${EL_EN[e] || e}">${e}</span>`;
 const elbs = a => (a || []).map(elb).join("");
 
-const ZODIAC = { 鼠: ["🐭", "Rat"], 牛: ["🐮", "Ox"], 虎: ["🐯", "Tiger"], 兔: ["🐰", "Rabbit"],
-  龙: ["🐲", "Dragon"], 蛇: ["🐍", "Snake"], 马: ["🐴", "Horse"], 羊: ["🐑", "Goat"],
-  猴: ["🐵", "Monkey"], 鸡: ["🐔", "Rooster"], 狗: ["🐶", "Dog"], 猪: ["🐷", "Pig"],
-  龍: ["🐲", "Dragon"], 馬: ["🐴", "Horse"], 雞: ["🐔", "Rooster"], 豬: ["🐷", "Pig"] };
-
 const STEM_EL = { 甲: "木", 乙: "木", 丙: "火", 丁: "火", 戊: "土", 己: "土",
   庚: "金", 辛: "金", 壬: "水", 癸: "水" };
 const BR_EL = { 子: "水", 丑: "土", 寅: "木", 卯: "木", 辰: "土", 巳: "火", 午: "火", 未: "土", 申: "金", 酉: "金", 戌: "土", 亥: "水" };
-const PZ_LAB = { year: "year", month: "month", day: "day", hour: "hour" };
 const EL_EN = { 木: "Wood", 火: "Fire", 土: "Earth", 金: "Metal", 水: "Water" };
 const EL_COL = { 木: "#1e8e3e", 火: "#c5221f", 土: "#8a6d1f", 金: "#a67c00", 水: "#1a56b0" };
-const STAR_EN = { 一白: "1 White", 二黑: "2 Black", 三碧: "3 Jade", 四绿: "4 Green",
-  五黄: "5 Yellow", 六白: "6 White", 七赤: "7 Red", 八白: "8 White", 九紫: "9 Purple" };
-const STAR_EL = { 一白: "水", 二黑: "土", 三碧: "木", 四绿: "木", 五黄: "土",
-  六白: "金", 七赤: "金", 八白: "土", 九紫: "火" };
-const GUA_EL = { 坎: "水", 艮: "土", 震: "木", 巽: "木", 离: "火", 離: "火",
-  坤: "土", 兑: "金", 兌: "金", 乾: "金" };
-const BAND_COL = (s) => s >= 70 ? ["#1e7d32", "#e9f7ee"] : s >= 55 ? ["#5f8a3e", "#eef3e3"]
-  : s >= 45 ? ["#b8860b", "#faf3dd"] : ["#b03a2e", "#fdecea"];
-const vv = (en, zh) => `<span class="vz">${en || ""}</span><span class="ve">${zh || ""}</span>`;
+const BAND_COL = (s) => s >= 70 ? ["#1e7a3a", "#e9f4ec"] : s >= 55 ? ["#5c4d0f", "#f6f0dc"]
+  : s >= 45 ? ["#8a4b0f", "#f9ebdc"] : ["#a3221d", "#f8e3e1"];   // text on its own tint, all 4.5:1 or better
 
 /* English-first pass: each person card stands alone, so it gets its own glossary context
    (Chinese once in parentheses at first use inside the card, English after) */
@@ -388,100 +362,80 @@ function glossCards(root) {
   root.querySelectorAll(".pcard").forEach((c) => { walk(c, new GL.Ctx()); GL.tipify(c, true); });   // card is clickable: title tooltips
 }
 
+/* Character card, design B (owner pick 2026-10-10): the stem × season painting at the side, then the
+   seal, the opening line, two traits, helping and avoided elements, strongest and weakest life area for the
+   age voice, and the current decade. Every label lives in CARD_TEXT for future languages. */
+const CARD_TEXT = { helps: "Helps", avoid: "Go easy on", strongest: "Strongest", weakest: "Weakest",
+  decade: (w) => `${w} decade`, ages: (a) => `ages ${a.replace("–", " to ")}`, open: "Open the reading",
+  edit: "Edit", remove: "Remove", hourApprox: "hour approximate", you: "you",
+  pillars: { year: "year", month: "month", day: "you", hour: "hour" },
+  areas: { attraction: "Love and attraction", stability: "Steady relationships", career: "Career",
+           wealth: "Money", learning: "Learning", health: "Health" },
+  pair: (a, b, s, w) => `${a} and ${b}: ${s}, ${w}. Open the pair report` };
+const EL_TXT = { 木: "#187a35", 火: "#c5221f", 土: "#7a601b", 金: "#5f6b7a", 水: "#1a56b0" };
+const EL_SW = { 木: "wood", 火: "fire", 土: "earth", 金: "metal", 水: "water" };
+const STEM_SLUG = { 甲: "jia", 乙: "yi", 丙: "bing", 丁: "ding", 戊: "wu", 己: "ji", 庚: "geng", 辛: "xin", 壬: "ren", 癸: "gui" };
+const SEASON = Object.fromEntries([..."寅卯辰"].map((b) => [b, "spring"]).concat([..."巳午未"].map((b) => [b, "summer"]),
+  [..."申酉戌"].map((b) => [b, "autumn"]), [..."亥子丑"].map((b) => [b, "winter"])));
+/* element icon: the character in a painted circle */
+const ico = (ch, el, s) => `<span class="ico keepzh" data-notip aria-hidden="true" style="--s:${s}px;background-image:url(/static/img/reading/sw/${EL_SW[el] || "earth"}-64.webp)"><b>${ch}</b></span>`;
+const ctag = (p, i, tagName) => `<span class="cnum">${i + 1}</span>${ico(p.day_master, STEM_EL[p.day_master], 30)}<${tagName} class="cnm nm">${p.name}</${tagName}>`;
+
 function personCard(p, i) {
-  const doms = (p.domains || []).map((d) => { if (!Array.isArray(d)) return "";
-    const cls = d[2] >= 70 ? "g" : d[2] < 45 ? "b" : "";
-    return `<div class="dr"><div class="dl"><span class="dz">${d[1]}</span></div>
-      <div class="db"><i class="${cls}" style="width:${d[2]}%"></i></div>
-      <b class="dv ${cls}">${d[2]}</b></div>`; }).join("");
-  const z = ZODIAC[p.animal] || ["", ""];
-  const tk = p.time_known === false
-    ? ' <span class="badge">hour approximate</span>' : "";
-  return `<div class="pcard elth-${STEM_EL[p.day_master] || ""}${(p.favourable || [])[0]
-      ? " elth2-" + p.favourable[0] : ""}" data-i="${i}" title="open the full Reading">
-    <h3>${p.name}${tk}
-      <span class="cardops">
-        <button class="ic edit" data-i="${i}" title="edit name, sex, birth date and time">✏️</button>
-        <button class="ic del" data-i="${i}" title="remove">🗑</button>
-      </span></h3>
-    <div class="pzrow">${["year","month","day","hour"].map(k => { const gz = p.pillars[k] || "", st = gz[0] || "", br = gz[1] || "";
-      return `<span class="pz keepzh"><span><b style="color:${EL_COL[STEM_EL[st]] || "inherit"}">${window.GL ? GL.zhSpan(st, false) : st}</b><b style="color:${EL_COL[BR_EL[br]] || "inherit"}">${window.GL ? GL.zhSpan(br, false) : br}</b></span><small>${PZ_LAB[k]}</small></span>`; }).join("")}</div>
-    <form class="editf" data-i="${i}" hidden>
-      <div class="row">
-        <div><label>Name</label><input name="name" maxlength="40" value="${(p.name || "").replace(/"/g, "&quot;")}"></div>
-        <div><label>Sex</label><select name="sex"><option value="M" ${p.sex === "M" ? "selected" : ""}>M (male)</option><option value="F" ${p.sex === "F" ? "selected" : ""}>F (female)</option></select></div>
-        <div><label>Date of birth</label><input name="dob" type="date" value="${p.dob || ""}"></div>
-        <div><label>Time of birth</label><input name="birth_time" type="time" value="${p.birth_time || "12:00"}"></div>
-      </div>
-      <div class="row2"><button type="submit">Save</button><button type="button" class="ghost cancel">Cancel</button><span class="err"></span></div>
-    </form>
-    <div class="fgrid">
-      ${(() => {
-        const stEl = STEM_EL[p.day_master] || "";
-        const [sZh, sEn] = (p.strength || "").match(/^(.*?)\s*\((.*)\)\s*$/)?.slice(1)
-          || [p.strength, ""];
-        const grp = (p.group || "").replace(/[()]/g, "");
-        const grpEn = (grp.match(/[A-Za-z]+/) || [""])[0];
-        const dom = p.dominant || ["—", "", ""];
-        const star2 = (p.life_star || "").slice(0, 2);
-        const elZh = (a) => `<span class="keepzh">${(a || []).map((e) =>
-          (window.GL ? GL.zhSpan(e, false) : e)).join(" · ")}</span>`;
-        const elEn = (a) => (a || []).map((e) =>
-          `<b style="color:${EL_COL[e]}">${EL_EN[e]}</b>`).join(" · ");
-        return [
-          ["日主", "Day Master", vv(EL_EN[stEl], `<b style="color:${EL_COL[stEl] || "inherit"}">${p.day_master} ${stEl}</b>`)],
-          ["生肖", "Zodiac", vv(z[1], z[0] || p.animal)],
-          ["强弱", "Strength", vv(sEn, sZh)],
-          ["主导", "Dominant God", vv(dom[1] + (dom[2] ? ` · ${EL_EN[dom[2]]}` : ""),
-            `<b style="color:${EL_COL[dom[2]] || "inherit"}">${dom[0]}</b>`)],
-          ["命卦", "Kua number", vv(grpEn ? grpEn + " group" : "",
-            `<b style="color:${EL_COL[GUA_EL[p.gua]] || "inherit"}">${p.gua}</b> ${grp.replace(/[A-Za-z ]+/g, "").trim()}`)],
-          ["命星", "Natal star", vv(STAR_EN[star2] || "",
-            `<b style="color:${EL_COL[STAR_EL[star2]] || "inherit"}">${p.life_star}</b>`)],
-          ["用神", "Useful god", vv(elEn(p.favourable), elZh(p.favourable))],
-          ["避", "Avoid", vv(elEn(p.unfavourable), elZh(p.unfavourable))],
-        ];
-      })().map(([zh, en, v]) => `
-        <div class="fcell"><div class="fl"><span class="dz">${en}</span></div>
-          <div class="fv">${v}</div></div>`).join("")}
-    </div>
-    <div class="fcareer"><div class="fl"><span class="dz">Industries</span></div>
-      <div class="fv find">${(() => { const I = p.industries || [], k = Math.ceil(6 / Math.max(I.length, 1));
-        return I.map((it) => `<b style="color:${EL_COL[it.element] || "inherit"}">${it.industries.split(",").slice(0, k).map((x) => x.trim()).join(", ")}</b>`).join(" · ") || "<span class='sub'>—</span>"; })()}</div></div>
-    ${p.sharpest_axis ? `<div class="fcareer"><div class="fl"><span class="dz">Personality</span></div>
-      <div class="fv fpers"><b>${p.sharpest_axis.verdict}</b> — <b style="color:${EL_COL[p.sharpest_axis.element] || "inherit"}">${p.sharpest_axis.label}</b><small>${p.sharpest_axis.axis}</small></div></div>` : ""}
-    <div class="dhead">Life domains</div>
-    <div class="doms2">${doms}</div>
-    <div class="kv" style="margin-top:7px;color:var(--accent);font-weight:700">Open the full Reading →</div>
-    </div>`;
+  const T = CARD_TEXT, C = p.card || {}, el = STEM_EL[p.day_master] || "";
+  const art = `/static/img/reading/bg/${STEM_SLUG[p.day_master]}-${SEASON[(p.pillars.month || "")[1]] || "spring"}-p-600.webp`;
+  const seal = ["year", "month", "day", "hour"].map((k) => { const gz = p.pillars[k] || "";
+    return `<span class="cpz${k === "day" ? " me" : ""}"><b style="color:${EL_TXT[STEM_EL[gz[0]]] || "inherit"}">${gz[0] || ""}</b><b style="color:${EL_TXT[BR_EL[gz[1]]] || "inherit"}">${gz[1] || ""}</b><small>${T.pillars[k]}</small></span>`; }).join("");
+  const els = (a, cls) => (a || []).map((e) => `<li class="${cls}">${ico(e, e, 30)}<span>${EL_EN[e]}</span></li>`).join("");
+  const area = (d, cls, lab) => d ? `<div class="car ${cls}"><span><span class="ck">${lab}:</span> ${T.areas[d.key] || d.key}</span><i><em style="width:${d.score}%"></em></i><b>${d.score}</b></div>` : "";
+  const head = (C.head || "").replace(/^You are /, "").replace(/\.$/, "");
+  const tk = p.time_known === false ? `<span class="badge">${T.hourApprox}</span>` : "";
+  return `<article class="pcard ccard" data-i="${i}">
+    <div class="cside"><img src="${art}" alt="" width="600" height="750" loading="lazy" decoding="async"></div>
+    <div class="cin">
+      <div class="ctag">${ctag(p, i, "h3")}${tk}</div>
+      <div class="cseal keepzh" lang="zh-Hans">${seal}</div>
+      ${head ? `<p class="cidl"><span class="nm">${p.name}</span>, you are ${head}.</p>` : ""}
+      ${(C.traits || []).length ? `<p class="ctraits">${C.traits.join(" · ")}</p>` : ""}
+      <div class="cels"><div><p class="ck">${T.helps}</p><ul>${els(p.favourable, "")}</ul></div>
+        <div><p class="ck">${T.avoid}</p><ul>${els(p.unfavourable, "av")}</ul></div></div>
+      <div class="careas">${area(C.strongest, "hi", T.strongest)}${area(C.weakest, "lo", T.weakest)}</div>
+      ${C.decade ? `<div class="cdec"><img src="/static/img/reading/mk/${C.decade.phase}-96.png" alt="" width="40" height="40" loading="lazy">
+        <p><b>${T.decade(C.decade.word)}</b><span>${T.ages(C.decade.ages)}</span></p></div>` : ""}
+      <a class="cgo" href="/w/${token}/person/${i}/reading">${T.open}</a>
+      <div class="cops"><button type="button" class="ghost edit" data-i="${i}">${T.edit}</button><button type="button" class="ghost del" data-i="${i}">${T.remove}</button></div>
+      <form class="editf" data-i="${i}" hidden>
+        <div class="row">
+          <div><label>Name</label><input name="name" maxlength="40" value="${(p.name || "").replace(/"/g, "&quot;")}"></div>
+          <div><label>Sex</label><select name="sex"><option value="M" ${p.sex === "M" ? "selected" : ""}>M (male)</option><option value="F" ${p.sex === "F" ? "selected" : ""}>F (female)</option></select></div>
+          <div><label>Date of birth</label><input name="dob" type="date" value="${p.dob || ""}"></div>
+          <div><label>Time of birth</label><input name="birth_time" type="time" value="${p.birth_time || "12:00"}"></div>
+        </div>
+        <div class="row" data-place="${i}"></div>
+        <div class="row2"><button type="submit">Save</button><button type="button" class="ghost cancel">Cancel</button><span class="err"></span></div>
+      </form>
+    </div></article>`;
 }
 
+/* the harmony matrix in the cards' order, with the same number and painted circle per person; numbers unchanged */
 function harmonyTable(h) {
   if (!h) return "";
-  const names = h.names, cell = {};
+  const names = h.names, cell = {}, P = (ws && ws.people) || [];
   h.pairs.forEach(p => { cell[p.a + "|" + p.b] = p; cell[p.b + "|" + p.a] = p; });
-  const head = `<tr><th></th>${names.slice(1).map(n => `<th>${n}</th>`).join("")}</tr>`;
+  const tag = (k) => P[k] ? `<span class="mtag">${ctag(P[k], k, "span")}</span>` : names[k];
+  const head = `<tr><td></td>${names.slice(1).map((n, j) => `<th scope="col">${tag(j + 1)}</th>`).join("")}</tr>`;
   const rows = names.slice(0, -1).map((a, i) =>
-    `<tr><th>${a}</th>${names.slice(1).map((b, j) => {
+    `<tr><th scope="row">${tag(i)}</th>${names.slice(1).map((b, j) => {
       if (j < i) return "<td></td>";
-      const p = cell[a + "|" + b];
-      const [bc, bg] = BAND_COL(p.score);
-      return `<td class="hcell" role="button" tabindex="0" data-a="${i}" data-b="${j + 1}"
-        style="background:${bg};border-left:3px solid ${bc}"
-        title="Tap for the pair breakdown">
-        <b style="color:${bc};font-size:15px">${p.score}</b>
-        <span class="hband" style="color:${bc}">${String(p.band).replace(/\s*[\u3400-\u9fff]+\s*$/, "")}</span>
-        <span class="hgo">tap ▸</span></td>`;
+      const p = cell[a + "|" + b], [fg, bg] = BAND_COL(p.score), word = String(p.band).replace(/\s*[㐀-鿿]+\s*$/, "");
+      return `<td><a class="hcell" href="/w/${token}/pair/${i}/${j + 1}" style="background:${bg};color:${fg}"
+        aria-label="${CARD_TEXT.pair(a, b, p.score, word)}"><b>${p.score}</b><span class="hband">${word}</span></a></td>`;
     }).join("")}</tr>`).join("");
-  return `<div class="hwrap"><table>${head}${rows}</table></div>
-    <div class="kv" style="color:var(--muted)">Tap any score to open the pair-wise report</div>`;
+  return `<div class="hwrap"><table class="hmx">${head}${rows}</table></div>
+    <div class="kv" style="color:var(--muted)">Same order as the cards. Tap a score for the pair report.</div>`;
 }
 
 const openPair = (a, b) => { location.href = `/w/${token}/pair/${a}/${b}`; };
-document.addEventListener("click", (e) => {
-  const td = e.target.closest(".hcell");
-  if (td) openPair(td.dataset.a, td.dataset.b);
-});
 window.addEventListener("load", () => {          // legacy deep-link: #pair-0-1
   const m = location.hash.match(/^#pair-(\d+)-(\d+)$/);
   if (m && token) openPair(m[1], m[2]);
@@ -533,12 +487,15 @@ function render() {
     if (f) { f.hidden = !f.hidden; if (!f.hidden) f.querySelector("input[name=name]").focus(); }
   }));
   document.querySelectorAll("form.editf").forEach(f => {
+    const ph = f.querySelector("[data-place]");
+    if (ph) placePicker(ph, ws.people[f.dataset.i].place, "ep" + f.dataset.i).then((g) => (f._place = g));
     f.querySelector(".cancel").addEventListener("click", () => { f.hidden = true; });
     f.addEventListener("submit", async (ev) => {
       ev.preventDefault();
       const fd = new FormData(f), err = f.querySelector(".err"); err.textContent = "";
       const body = { name: (fd.get("name") || "").trim() || "Person", sex: fd.get("sex"), dob: fd.get("dob"),
-        birth_time: fd.get("birth_time") || "12:00", time_known: ws.people[f.dataset.i].time_known !== false };
+        birth_time: fd.get("birth_time") || "12:00", time_known: ws.people[f.dataset.i].time_known !== false,
+        place: f._place ? f._place() : (ws.people[f.dataset.i].place ?? null) };
       if (!body.dob) { err.textContent = "date of birth is required"; return; }
       try {
         ws = await api(`/api/pub/w/${token}/person/${f.dataset.i}`, {method: "PUT",
@@ -553,6 +510,8 @@ function render() {
   }));
 }
 
+let addPlace = null;
+placePicker($("#f-place"), null, "fp").then((g) => (addPlace = g));
 $("#btn-add").addEventListener("click", async () => {
   $("#add-err").textContent = "";
   const body = {
@@ -561,6 +520,7 @@ $("#btn-add").addEventListener("click", async () => {
     dob: $("#f-dob").value,
     birth_time: $("#f-unknown").checked ? "12:00" : ($("#f-time").value || "12:00"),
     time_known: !$("#f-unknown").checked,
+    place: addPlace ? addPlace() : null,
   };
   if (!body.dob) { $("#add-err").textContent = "date of birth is required"; return; }
   try {

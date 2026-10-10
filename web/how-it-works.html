@@ -70,7 +70,7 @@ Each section shows three things: the computed data, a plain-language interpretat
 a strategy — and <b>every line names the classical rule that produced it</b>. You can
 disagree with a rule; you can never be left wondering where a claim came from.</div>
 
-<p>Clock time in, true solar time out. The engine assumes Singapore/Malaysia clock time (UTC+8, and UTC+7:30 before 1982), then converts it to true solar time using your longitude and the equation of time: 09:30 on the clock becomes 08:16 true solar time at 103.85°E. The BaZi year changes at Start of Spring, not on 1 January; Start of Spring 2027 falls on 2027-02-04.</p>
+<p>Clock time in, true solar time out. The engine takes the clock time and the birth city, finds that city's offset from UTC on that date (daylight saving and past changes included, such as Singapore's UTC+7:30 before 1982), then converts to true solar time using the city's longitude and the equation of time: 09:30 on the clock in Singapore becomes 08:16 true solar time at 103.85°E. The time zone alone is not solar time; longitude is what moves the sun. The BaZi year changes at Start of Spring, not on 1 January; Start of Spring 2027 falls on 2027-02-04.</p>
 
 <details class="zhver"><summary>This section in Chinese (<span class="zh" lang="zh-Hant" title="zhōng wén">中文</span>)</summary><div lang="zh-Hans"><p>引擎按新加坡/马来西亚钟表时间（UTC+8，1982年前为UTC+7:30）换算为真太阳时；八字的年柱以立春为界，而非1月1日。</p></div></details>
 

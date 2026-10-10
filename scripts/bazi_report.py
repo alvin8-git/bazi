@@ -405,8 +405,8 @@ def people_compat(chart, pct, ys, others):
     return {"allies": allies, "clash": clash, "boost": boost, "drain": drain,
             "partner": PARTNER_SUPPLY[weakest], "weak_group": weakest,
             "boss": boss,
-            "el_line": (f"people whose charts run rich in {'·'.join(fav)} "
-                        f"energize you; heavy-{'·'.join(unfav)} people are fine "
+            "el_line": (f"people whose charts run rich in {'·'.join(ys['favourable'])} "   # ranked lists, not sets
+                        f"energize you; heavy-{'·'.join(ys['unfavourable'])} people are fine "
                         "in small doses but tiring as daily fixtures")}
 
 

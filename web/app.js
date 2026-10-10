@@ -958,6 +958,8 @@ function sideNow(c) {
   return (c.plain.sides || []).find((s) => { const [a, b] = String(s.ages).replace("+", "–999").split("–").map(Number);
     return age >= a && age <= (b || 999); }) || null;
 }
+/* the opening line speaks to the person by name (owner 2026-10-10): "王大明, you are garden soil in spring." */
+const nameLine = (who, head) => who ? `<span class="rp-hname keepzh" data-notip>${who},</span> ${head.replace(/^You\b/, "you")}` : head;
 function pIdentity(c, name) {
   const I = c.plain.identity, now = sideNow(c);
   const where = now ? `This is your day pillar: you, at every age. Each stage of life has its own side, shown below; you are now in ${{ year: "your roots", month: "your working years", day: "your home years", hour: "your later years" }[now.key]}.`
@@ -969,7 +971,7 @@ function pIdentity(c, name) {
     <picture class="rp-bgimg"><source media="(max-width:640px)" type="image/webp" srcset="${art}-p-600.webp 600w, ${art}-p-900.webp 900w" sizes="100vw">
       <source media="(max-width:640px)" srcset="${art}-p-600.jpg 600w, ${art}-p-900.jpg 900w" sizes="100vw">
       <img src="${art}-1200.jpg" srcset="${art}-600.jpg 600w, ${art}-1200.jpg 1200w" sizes="(max-width:1180px) 100vw, 1180px" alt="" fetchpriority="high" decoding="async"></picture><div class="rp-idtext"><p class="rp-name">${dn(name || c.name)}</p>${pSeal(c)}
-      <h2 class="rp-h">${I.head}</h2><p class="rp-sub">${I.sub}</p><p class="rp-sub rp-where">${where}</p>${pWhy(I.why)}</div>
+      <h2 class="rp-h">${nameLine(dn(name || c.name), I.head)}</h2><p class="rp-sub">${I.sub}</p><p class="rp-sub rp-where">${where}</p>${pWhy(I.why)}</div>
   </section>`;   // the Day Master image now lives on the "you at home" card in the four sides
 }
 /* the four pillars as four life characters (owner pick 2026-10-10); replaces the Four Palaces chart */

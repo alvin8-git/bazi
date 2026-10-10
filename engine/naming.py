@@ -198,7 +198,7 @@ def suggest_names(ys: dict, surname: str, top: int = 20,
             return None                      # 三才相剋 combinations dropped
         reasons = [
             f"用神: {'/'.join(c['ch'] + '=' + c['el'] for c in chars)} "
-            f"(favourable {'·'.join(fav)})",
+            f"(favourable {'·'.join(sorted(fav, key="木火土金水".index))})",
             f"五格: {lucky}/5 吉 "
             + " ".join(f"{k}{v['num']}{v['luck']}" for k, v in grids.items()),
             f"三才{''.join(sc['elements'])} {sc['verdict']} — {sc['explanation']}",

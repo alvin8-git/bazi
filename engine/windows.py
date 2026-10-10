@@ -112,18 +112,18 @@ def _year_row(chart, ys, hm_excess, hm_weak, y, decade_score) -> dict:
             career = dim("window", f"年支{br} 合 month pillar — career pillar activated, leverage window")
     elif gods & OFFICER_GODS:
         if gods & SUPPORT_GODS or not weak:
-            career = dim("window", f"{'/'.join(gods & OFFICER_GODS)} arrives with support — authority spotlight")
+            career = dim("window", f"{'/'.join(sorted(gods & OFFICER_GODS))} arrives with support — authority spotlight")
         else:
-            career = dim("caution", f"{'/'.join(gods & OFFICER_GODS)} arrives on a weak chart — pressure year, deliver quietly")
+            career = dim("caution", f"{'/'.join(sorted(gods & OFFICER_GODS))} arrives on a weak chart — pressure year, deliver quietly")
     else:
         career = dim("quiet", "no career-pillar activation")
     # wealth — wealth god arrival, vault, carry check
     if gods & WEALTH_GODS:
         if weak and wealth_el in unfav:
-            wealth = dim("caution", f"{'/'.join(gods & WEALTH_GODS)} arrives but the chart can't hold it — "
+            wealth = dim("caution", f"{'/'.join(sorted(gods & WEALTH_GODS))} arrives but the chart can't hold it — "
                                     "wealth passes through; strengthen first, don't overreach")
         else:
-            wealth = dim("window", f"{'/'.join(gods & WEALTH_GODS)} arrives — income moves possible")
+            wealth = dim("window", f"{'/'.join(sorted(gods & WEALTH_GODS))} arrives — income moves possible")
     elif CHONG_MAP.get(br) == VAULT[wealth_el]:
         wealth = dim("window", f"年支{br} 沖開財庫 {VAULT[wealth_el]} — the vault OPENS: "
                                "a classical accumulation year")
@@ -168,7 +168,7 @@ def _year_row(chart, ys, hm_excess, hm_weak, y, decade_score) -> dict:
     elif g_st == "傷官" and pct.get("正官", 0) >= 15:
         study = dim("caution", "傷官 year meets a chart with prominent 正官 — exams and credentials contested; verify before you rely")
     elif gods & RESOURCE_GODS:
-        study = dim("window", f"{'/'.join(gods & RESOURCE_GODS)} arrives — learning, mentors and credentials favoured")
+        study = dim("window", f"{'/'.join(sorted(gods & RESOURCE_GODS))} arrives — learning, mentors and credentials favoured")
     elif br in wc or br == xt:
         study = dim("window", f"年支{br} is a {'文昌' if br in wc else '學堂'} year — scholar star active")
     elif HE_MAP.get(br) == month_br:

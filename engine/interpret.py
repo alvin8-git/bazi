@@ -164,7 +164,7 @@ def element_relations(chart) -> dict:
                     f"{a} ({share[a]}%) bears down on weak {b} "
                     f"({share[b]}%) — {KE_META[(a, b)]}.")
     heavies = {el for el, s in share.items() if s >= 20}
-    for a in heavies:
+    for a in sorted(heavies, key="木火土金水".index):   # fixed order: a set's order changes between processes
         b = KE_C[a]
         if b in heavies:
             if [a, b] not in afflictions:

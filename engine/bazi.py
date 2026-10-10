@@ -74,8 +74,19 @@ class Chart:
         return y if STEMS[stem_idx] == self.pillars["year"].stem else y - 1
 
 
-def build_chart(person: str, sex: str, birth_local: datetime, policy: str) -> Chart:
-    if policy == TRUE_SOLAR:
+def build_chart(person: str, sex: str, birth_local: datetime, policy: str, place: dict | None = None) -> Chart:
+    """`place` (engine.places.place) sets longitude and time zone; None or Singapore keeps the Singapore path."""
+    if policy == TRUE_SOLAR and place and place.get("cc") != "SG":
+        off = cal.utc_offset_hours(birth_local, place["tz"])
+        how = "time zone " + place["tz"]
+        if off is None:   # no zone database on this host: standard time from longitude, to the half hour
+            off, how = round(place["lon"] / 15 * 2) / 2, "standard time estimated from longitude"
+        eff = cal.true_solar_datetime(birth_local, lon=place["lon"], utc_offset_hours=off)
+        lon = place["lon"]
+        note = (f"true solar time: clock {birth_local:%H:%M} → {eff:%H:%M} "
+                f"({place['name']}, {place['country']}: UTC{off:+g} by {how}, lon {abs(lon)}°{'E' if lon >= 0 else 'W'}, "
+                f"equation of time {cal.equation_of_time_minutes(birth_local.date()):+.1f} min)")
+    elif policy == TRUE_SOLAR:
         eff = cal.true_solar_datetime(birth_local)
         note = (f"true solar time: clock {birth_local:%H:%M} → {eff:%H:%M} "
                 f"(SG UTC+{cal.sg_utc_offset_hours(birth_local.date()):g}, lon {cal.SG_LON}°E, "

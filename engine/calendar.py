@@ -29,6 +29,21 @@ def sg_utc_offset_hours(d: date) -> float:
     return 7.5 if d < date(1982, 1, 1) else 8.0
 
 
+def utc_offset_hours(local: datetime, tz: str) -> float | None:
+    """Clock offset from UTC for a civil time in an IANA zone (daylight saving and history included).
+    None when the zone database is missing on this host."""
+    try:
+        from zoneinfo import ZoneInfo
+        off = ZoneInfo(tz).utcoffset(local)
+    except Exception:
+        return None
+    return off.total_seconds() / 3600 if off is not None else None
+
+
+def tz_database_available() -> bool:
+    return utc_offset_hours(datetime(2020, 7, 1, 12), "America/New_York") == -4.0
+
+
 def equation_of_time_minutes(d: date) -> float:
     """Approximate equation of time (minutes, positive = sundial ahead)."""
     n = d.timetuple().tm_yday

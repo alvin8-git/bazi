@@ -163,6 +163,7 @@ class PersonIn(BaseModel):
     dob: str = Field(pattern=r"^\d{4}-\d{2}-\d{2}$")
     birth_time: str = Field(default="12:00", pattern=r"^\d{2}:\d{2}$")
     time_known: bool = True
+    place: int | None = None   # GeoNames city id (web/geo/cities.json); None keeps Singapore
 
 
 def _member(p: dict) -> SimpleNamespace:
@@ -173,12 +174,18 @@ def _member(p: dict) -> SimpleNamespace:
         raise HTTPException(400, "invalid date or time")
     if not 1900 <= dt.year <= datetime.now().year + 1:
         raise HTTPException(400, "year out of supported range (1900–next year)")
-    return SimpleNamespace(name=p["name"].strip(), sex=p["sex"], birth_dt=dt)
+    pl = None
+    if p.get("place") is not None:
+        from engine.places import place
+        pl = place(p["place"])
+        if pl is None:
+            raise HTTPException(400, "unknown birth place")
+    return SimpleNamespace(name=p["name"].strip(), sex=p["sex"], birth_dt=dt, place=pl)
 
 
 def _chart_of(p: dict):
     m = _member(p)
-    return m, build_chart(m.name, m.sex, m.birth_dt, TRUE_SOLAR)
+    return m, build_chart(m.name, m.sex, m.birth_dt, TRUE_SOLAR, m.place)
 
 
 def _dominant_god(c) -> list:
@@ -204,6 +211,7 @@ def _summary(p: dict) -> dict:
         "name": _tosimp(m.name), "sex": m.sex, "dob": p["dob"],
         "birth_time": p.get("birth_time", "12:00"),
         "time_known": p.get("time_known", True),
+        "place": p.get("place"), "place_name": (f"{m.place['name']}, {m.place['country']}" if m.place else "Singapore"),
         "pillars": {k: str(v) for k, v in c.pillars.items()},
         "day_master": c.day_master,
         "strength": _tosimp(c.strength["verdict"]),
@@ -218,7 +226,25 @@ def _summary(p: dict) -> dict:
         "industries": [{"element": it["element"], "en": it["en"], "industries": it["industries"]}
                        for it in industry_map(ys).get("favourable", [])],
         "sharpest_axis": _sharpest_axis(c),
+        "card": _card(m, c, ys),
     }
+
+
+def _card(m, c, ys) -> dict:
+    """Character-card facts (Round B 2026-10-10), all read from the reading's own layers: opening line,
+    personality traits, strongest and weakest life area for the age voice, and the current decade."""
+    from engine.report import chart_payload
+    from engine.story import AREAS_FOR
+    p = chart_payload(_tosimp(m.name), c, ys, YEAR)
+    pl, v = p["plain"], p["story"]["voice"]
+    doms = sorted((d for d in p["domains"] if d["key"] in AREAS_FOR[v]), key=lambda d: -d["score"])
+    pick = lambda d: {"key": d["key"], "score": d["score"]} if d else None
+    cur = next((d for d in pl.get("decades") or [] if d.get("current")), None)
+    pers = pl["personality"]["head"].removeprefix("You are ").rstrip(".")
+    return {"head": pl["identity"]["head"], "voice": v,
+            "traits": [t.strip().capitalize() for t in pers.split(" and ") if t.strip()],
+            "strongest": pick(doms[0] if doms else None), "weakest": pick(doms[-1] if len(doms) > 1 else None),
+            "decade": {k: cur[k] for k in ("phase", "word", "ages")} if cur else None}
 
 
 def _sharpest_axis(c) -> dict | None:
@@ -1638,8 +1664,10 @@ _VER = os.environ.get("VERCEL_GIT_COMMIT_SHA", "")[:7] or "dev"
 
 @router.get("/api/pub/version")
 def version():
+    from engine.calendar import tz_database_available
     return {"version": _VER,
-            "env": "prod" if os.environ.get("VERCEL") else "local"}
+            "env": "prod" if os.environ.get("VERCEL") else "local",
+            "tz": tz_database_available()}   # birth places outside Singapore need the IANA zone database
 
 
 @router.get("/google3ab49b3ef7e728f9.html", response_class=PlainTextResponse)

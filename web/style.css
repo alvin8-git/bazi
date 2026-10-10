@@ -903,8 +903,8 @@ details.zhver>div{margin-top:8px}
     padding:28px 18px 58vw;   /* the whole section is the painting; its subject shows below the words */
     background:#faf7ed}
   #tab-person .rp-bgimg img{inset:0;width:100%;height:100%;object-fit:cover;object-position:center bottom}
-  #tab-person .rp-bgart::before{background:linear-gradient(to bottom,rgba(250,247,237,.80) 0,rgba(250,247,237,.62) 52%,rgba(250,247,237,0) 78%)}
-  #tab-person .rp-bgart .rp-sub.rp-where{font-size:15px}
+  #tab-person .rp-bgart::before{background:linear-gradient(to bottom,rgba(250,247,237,.84) 0,rgba(250,247,237,.76) 58%,rgba(250,247,237,0) 80%)}
+  #tab-person .rp-bgart .rp-sub.rp-where{font-size:15px;color:#2b2620}
   #tab-person .rp-bgart .rp-idtext{max-width:none;text-align:center}
   #tab-person .rp-bgart .rp-h{font-size:clamp(32px,9.4vw,40px)}
   #tab-person .rp-bgart .rp-sub{font-size:18px;margin-left:auto;margin-right:auto}
@@ -974,3 +974,11 @@ details.zhver>div{margin-top:8px}
 #tab-person .rp-ssr{min-height:520px}
 #tab-person .rp-ssr .hint{opacity:0}
 @media (max-width:640px){#tab-person .rp-bgart.rp-ssr{min-height:calc(58vw + 470px)}}
+/* phones: the "why" link sits at the foot of the painting (owner 2026-10-10); the text box dissolves into a grid
+   so the link can drop below the words without moving it out of place in the HTML */
+@media (max-width:640px){
+  #tab-person .rp-bgart{display:grid;text-align:center;padding-bottom:18px}
+  #tab-person .rp-bgart .rp-idtext{display:contents}
+  #tab-person .rp-bgart details.rp-why{margin:calc(58vw - 26px) auto 0;justify-self:center;text-align:left}
+  #tab-person .rp-bgart.rp-ssr{min-height:calc(58vw + 470px)}}
+#tab-person .rp-hname{white-space:nowrap}
