@@ -702,4 +702,6 @@ def floorplan():
 from public import router as public_router  # noqa: E402  (bazifor.me surfaces)
 app.include_router(public_router)
 
+import mimetypes   # some hosts' MIME tables lack WebP; the reading art is served as image/webp
+mimetypes.add_type("image/webp", ".webp")
 app.mount("/static", StaticFiles(directory=ROOT / "web"), name="static")
