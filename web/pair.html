@@ -218,6 +218,10 @@ h2 .scorechip{float:right;margin-top:-2px}
 .frc{display:grid;gap:12px}.frc3{grid-template-columns:repeat(3,1fr)}.frc2{grid-template-columns:repeat(2,1fr)}
 .frc>div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px}.frc h3{margin:2px 0 4px}.frc p{margin:4px 0}
 .tline{margin-top:10px}.todo{margin:4px 0 0;padding-left:22px}.todo li{margin:5px 0;padding-left:2px}
+.relctl{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:10px 0 6px;font-size:13.5px}.relctl label{font-weight:700}
+.relctl select{min-height:44px;font:inherit;font-size:14px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+.relctl .relmsg{color:var(--muted);font-size:12.5px}
+@media print{.relctl{display:none}}
 @media screen and (max-width:640px){.ptop{grid-template-columns:1fr}.pmid{order:-1}.hw,.roles,.frc3,.frc2{grid-template-columns:1fr}
   .br{grid-template-columns:1fr 100px 30px;font-size:13px}.dp{font-size:24px}}
 @media print{@page{size:A4;margin:9mm}
@@ -232,7 +236,8 @@ h2 .scorechip{float:right;margin-top:-2px}
   .br{font-size:8.5px;grid-template-columns:1fr 80px 22px;gap:4px}.bars{gap:1px;margin:2px 0}.track{height:9px}.br>b{font-size:9.5px}
   .frc{gap:4px}.frc3{grid-template-columns:1fr 1fr 1fr}.psec details>summary::after{content:""}
   .tline{margin-top:3px}.todo{padding-left:14px;margin:0}.todo li{margin:1px 0;font-size:8.2px;line-height:1.25}
-  .pitem{font-size:8.2px;line-height:1.25}.foot{font-size:7px;margin-top:2px;padding-top:1px}.swtable th{padding:2px 1px}.swlegend{margin:2px 0}}
+  .pitem{font-size:8.2px;line-height:1.25}.foot{font-size:7px;margin-top:2px;padding-top:1px}.swtable th{padding:2px 1px}.swlegend{margin:2px 0}
+  .swlegend~.pitem{display:none}.bars .br{margin:0;padding:1px 0;font-size:8px;line-height:1.2}}
 </style></head><body>
 <div class="page">
   <div class="pair-band" aria-label="Pair compatibility">
@@ -401,6 +406,14 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
     ]);
     const pa = ws.people[A] || {}, pb = ws.people[B] || {};
     const voice = d.voice || "adult", kid = voice === "child", teen = voice === "teen";
+    /* batch 2: the owner-set relationship (wording only; the score is the same for every value) */
+    const REL = [["", "Not set"], ["couple", "Couple"], ["parent-child", "Parent and child"], ["grandparent-grandchild", "Grandparent and grandchild"], ["siblings", "Siblings"], ["colleagues", "Colleagues"], ["friends", "Friends"], ["other", "Other"]];
+    const rel = d.rel || "", relLabel = (REL.find(([k]) => k === rel) || ["", ""])[1], family = ["parent-child", "grandparent-grandchild", "siblings"].includes(rel), work = rel === "colleagues";
+    const showHome = !work, showWork = !kid && !family;
+    const needSenior = rel === "parent-child" || rel === "grandparent-grandchild";
+    const relctl = `<div class="relctl"><label for="relsel">How are they related?</label><select id="relsel">${REL.map(([k, l]) => `<option value="${k}"${k === rel ? " selected" : ""}>${l}</option>`).join("")}</select>
+      <span id="senwrap"${needSenior ? "" : " hidden"}><label for="sensel">${rel === "grandparent-grandchild" ? "Who is the grandparent?" : "Who is the parent?"}</label><select id="sensel"><option value="">Choose</option>${[[A, d.a], [B, d.b]].map(([i, n]) => `<option value="${i}"${d.senior_idx === Number(i) ? " selected" : ""}>${esc(n)}</option>`).join("")}</select></span>
+      <span id="relmsg" class="relmsg" role="status"></span></div>`;
     const SLUG = { 甲: "jia", 乙: "yi", 丙: "bing", 丁: "ding", 戊: "wu", 己: "ji", 庚: "geng", 辛: "xin", 壬: "ren", 癸: "gui" };
     const SEASON = { 寅: "spring", 卯: "spring", 辰: "spring", 巳: "summer", 午: "summer", 未: "summer", 申: "autumn", 酉: "autumn", 戌: "autumn", 亥: "winter", 子: "winter", 丑: "winter" };
     const TXT = { 木: "#187a35", 火: "#c5221f", 土: "#7a601b", 金: "#5f6b7a", 水: "#1a56b0" };
@@ -466,7 +479,7 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
     const watch = d.frictions.map((f, i) => `<li><b class="neg">${f.delta}</b> ${bi(f.chip_label)}<span class="x">${bi(f.element.why)}</span>${f.behaviour && f.behaviour.en ? `<span class="x act">${bi(f.behaviour)}</span>` : ""}${i === 0 && f.timing && /\w/.test(bi(f.timing)) ? `<span class="x act">${bi(f.timing)}</span>` : ""}</li>`).join("");
     /* how they see each other: one card per direction; under-13s get no "at work" line */
     const role = (who, r) => `<div class="role"><p class="rk"><b class="g" style="color:${TXT[r.element] || "inherit"}">${r.god}</b> <span>${esc(who)}</span></p><p>${bi(r)}</p>
-      ${r.modern_home ? `<p><b>At home.</b> ${bi(r.modern_home).replace(/^At home:\s*/i, "")}</p>` : ""}${!kid && r.modern_work ? `<p><b>At work.</b> ${bi(r.modern_work).replace(/^At work:\s*/i, "")}</p>` : ""}</div>`;
+      ${showHome && r.modern_home ? `<p><b>At home.</b> ${bi(r.modern_home).replace(/^At home:\s*/i, "")}</p>` : ""}${showWork && r.modern_work ? `<p><b>At work.</b> ${bi(r.modern_work).replace(/^At work:\s*/i, "")}</p>` : ""}</div>`;
     const PZ = kid || teen ? { year: ["Year", "family roots"], month: ["Month", "parents and growing up"], day: ["Day", "the core of each chart"], hour: ["Hour", "later years"] }
       : { year: ["Year", "elders & roots"], month: ["Month", "career & parents"], day: ["Day", "self & spouse"], hour: ["Hour", "children & later"] };
     const bcol = (e) => EL_COL[e] || "inherit";
@@ -474,10 +487,12 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
       <tr><th class="corner"><small>${esc(d.a)} ↓ · ${esc(d.b)} →</small></th>${d.sweep_matrix[0].map((c) =>
         `<th><b style="color:${bcol(c.element_b)}">${c.branch_b}</b><small>${PZ[c.pillar_b][0]}<br>${PZ[c.pillar_b][1]}</small></th>`).join("")}</tr>
       ${d.sweep_matrix.map((row) => `<tr><th><b style="color:${bcol(row[0].element_a)}">${row[0].branch_a}</b><small>${PZ[row[0].pillar_a][0]}<br>${PZ[row[0].pillar_a][1]}</small></th>
-        ${row.map((c) => `<td class="${c.relation ? (c.bond ? "sw-bond" : "sw-fric") : "sw-none"}${c.scored ? " sw-scored" : ""}">${c.relation ? `<b>${c.relation}</b>${c.scored ? `<i>scored</i>` : ""}` : "·"}</td>`).join("")}</tr>`).join("")}</table></div>
-      <div class="swlegend"><span class="sw-bond">Bond: Six Harmony (六合), Half Three Harmony (半三合)</span><span class="sw-fric">Friction: Six Clash (六冲), Punishment (刑), Six Harm (六害)</span><span class="sw-none">Dot: no link</span><span>"Scored": counted in the points (day with day, year with year)</span></div>
+        ${row.map((c) => `<td class="${c.relation ? (c.bond ? "sw-bond" : "sw-fric") : "sw-none"}${c.scored ? " sw-scored" : ""}">${c.relation ? `<b>${c.relation}</b>${c.scored ? `<i>${c.points ? `${c.points > 0 ? "+" : ""}${c.points}` : "scored"}</i>` : ""}` : "·"}</td>`).join("")}</tr>`).join("")}</table></div>
+      <div class="swlegend"><span class="sw-bond">Bond: Six Harmony (六合), Half Three Harmony (半三合)</span><span class="sw-fric">Friction: Six Clash (六冲), Punishment (刑), Six Harm (六害)</span><span class="sw-none">Dot: no link</span><span>"Scored": counted in the points (day with day and year with year in full; the other cells lightly, capped)</span></div>
       ${d.sweep_reading ? `<p class="pitem">${bi(d.sweep_reading)}</p>` : ""}` : "";
-    const F = d.framings_table, cols = [["family", "Family"], kid || teen ? null : ["couple", "Couple"], kid ? null : ["colleagues", teen ? "Working together" : "Colleagues"]].filter(Boolean);
+    const F = d.framings_table, cols = (rel === "couple" ? [["couple", "Couple"]] : family ? [["family", "Family"]] : work ? [["colleagues", "Colleagues"]]
+      : rel ? [["family", "Family"], ["colleagues", teen ? "Working together" : "Colleagues"]]
+      : [["family", "Family"], kid || teen ? null : ["couple", "Couple"], kid ? null : ["colleagues", teen ? "Working together" : "Colleagues"]]).filter(Boolean);
     const framings = F ? `<div class="frc frc${cols.length}">${cols.map(([k, lab]) => `<div><h3>${lab}</h3>${[["What it means", "meaning"], ["What helps", "lean_on"], ["What to watch", "watch"]]
       .map(([l, key]) => F[k] && F[k][key] && bi(F[k][key]) ? `<p><b>${l}.</b> ${bi(F[k][key])}</p>` : "").join("")}</div>`).join("")}</div>
       <p class="cite2">Same score for all three. "What helps" and "What to watch" pick the factor that fits each view best.</p>` : "";
@@ -486,8 +501,9 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
     const gzKeep = (t) => esc(t).replace(/([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥])/g, '<span class="keepzh" data-notip>$1</span>');
     rep.innerHTML = `
       <div class="rhead"><h1>${esc(d.a)} and ${esc(d.b)}</h1>
-        <div class="rmeta">${new Date().toISOString().slice(0, 10)}<span id="verline"></span><br>Same birth details always give the same result. Every number names the classical rule behind it.</div></div>
+        <div class="rmeta">${new Date().toISOString().slice(0, 10)}<span id="verline"></span>${rel ? ` · ${relLabel}` : ""}<br>Same birth details always give the same result. Every number names the classical rule behind it.</div></div>
       <div class="ptop">${pcard(pa, d.a, A)}<div class="pmid">${ring(d.score)}<b class="band" style="color:${BAND_COL(d.score)[0]}">${esc(d.band.en)}</b></div>${pcard(pb, d.b, B)}</div>
+      ${relctl}
       ${d.report ? `<p class="prep-lede">${esc(d.report.summary)}</p>` : ""}
       <div class="pcols">
       ${sec("What helps, what to watch", `<div class="hw"><div><h3 class="pos">What helps</h3><ul class="fl">${helps || "<li>Nothing scored here.</li>"}</ul></div>
@@ -497,7 +513,7 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
         `<ol class="todo">${d.report.actions.map((a) => `<li>${gzKeep(a)}</li>`).join("")}</ol>`) : ""}
       ${sec("Who supplies what", giveTake)}
       ${sec("How they see each other", `<div class="roles">${role(`${d.a} sees ${d.b}`, d.relation.a_sees_b)}${role(`${d.b} sees ${d.a}`, d.relation.b_sees_a)}</div>
-        <p class="cite2">First line: the traditional meaning. At home${kid ? "" : " and At work"}: modern readings of it.</p>`)}
+        <p class="cite2">First line: the traditional meaning. ${showHome && showWork ? "At home and At work" : showHome ? "At home" : "At work"}: modern readings of it.</p>`)}
       ${sec("Where the charts touch", `${meet}${sweep}`)}
       <section class="psec"><details class="printable" open><summary><h2>The score working</h2></summary>${bars}${extra}</details></section>
       ${sec("Three ways to read it", framings)}
@@ -506,6 +522,17 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
     colorizeRep(rep);
     colorizeColoursRep(rep);
     glossifyRep(rep);
+    /* the relationship control saves to the workspace, then the page re-renders with the new wording */
+    const relsel = document.getElementById("relsel"), sensel = document.getElementById("sensel"), senwrap = document.getElementById("senwrap"), relmsg = document.getElementById("relmsg");
+    const saveRel = async () => { const v = relsel.value, ns = v === "parent-child" || v === "grandparent-grandchild";
+      senwrap.hidden = !ns; senwrap.querySelector("label").textContent = v === "grandparent-grandchild" ? "Who is the grandparent?" : "Who is the parent?";
+      if (ns && sensel.value === "") { relmsg.textContent = "Choose who is the elder."; return; }
+      relmsg.textContent = "Saving…";
+      try { const r = await fetch(`/api/pub/workspace/${token}/pair/${A}/${B}/rel`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ rel: v, senior: ns ? Number(sensel.value) : null }) });
+        if (!r.ok) throw Error((await r.json()).detail || r.status);
+        relmsg.textContent = "Saved"; location.reload(); }
+      catch (e) { relmsg.textContent = `Not saved: ${e.message}`; } };
+    relsel.addEventListener("change", saveRel); sensel.addEventListener("change", saveRel);
     const pd = () => Array.from(rep.querySelectorAll("details.printable"));
     let wasOpen = [];
     window.addEventListener("beforeprint", () => { wasOpen = pd().map((x) => x.open); pd().forEach((x) => (x.open = true)); });

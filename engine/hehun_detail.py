@@ -18,8 +18,7 @@ PALACE_ZH = {"year": ("年柱", "祖辈根基", "elders and family roots"),
              "hour": ("时柱", "子女晚年", "children and later years")}
 # child / teen wording: no partner or spouse framing
 PALACE_EN_KID = {"day": "self"}
-KIND_EN = {"六合": "Six Harmony", "半三合": "Half Three Harmony", "六沖": "Six Clash",
-           "刑": "Punishment", "六害": "Six Harm"}
+from .hehun import KIND_EN, relation_additions  # noqa: E402  (batch 2 rows live beside the score)
 
 
 def _pal_en(p: str, kid: bool = False) -> str:
@@ -400,6 +399,8 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
             skind="year合" if pts > 0 else None,
             fr=_friction(kind, "year", ya, yb, na, nb, kid) if pts < 0 else None,
             kind="year", plain=pl, plain_cn=plc, relation=kind, relation_en=KIND_EN[kind])
+    adds = relation_additions(ca, cb)                    # batch 2 rows, listed after the supply rows (same order as the score)
+    scored_cells = {(r["pillar_a"], r["pillar_b"]): r["delta"] for r in adds if r["kind"] == "cell"}
     wa, wb = ca.element_weights, cb.element_weights
     ta, tb = sum(wa.values()) or 1, sum(wb.values()) or 1
     for giver, gw, gt, taker, tys, gys in ((ca, wa, ta, cb, ys_b, ys_a), (cb, wb, tb, ca, ys_a, ys_b)):
@@ -442,6 +443,11 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
                                   "zh": f"共处空间少用{dom}色系，多用{taker.person}的用神色",
                                   "en": ""},          # B4: colour advice lives in the one rooms line
                     "timing": _bi("——", "")})
+    for r in adds:                                       # the same rows pair_compatibility() summed (capped cells show 0)
+        extra = {k: r[k] for k in ("relation", "pillar_a", "pillar_b", "raw", "capped", "giver", "receiver") if k in r}
+        if r["kind"] == "cell":
+            extra["relation_en"] = KIND_EN[r["relation"]]
+        add(r["zh"], r["en"], r["delta"], r["pillars"], kind=r["kind"], plain=r["plain"], plain_cn=r["plain"], **extra)
 
     # §2b descriptive sweep — never summed
     sweep = []
@@ -456,7 +462,7 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
                 "pillar_a": pa, "pillar_b": pb,
                 "branch_a": ca.pillars[pa].branch, "branch_b": cb.pillars[pb].branch,
                 "relation": _bi(kind, ge),
-                "already_scored": (pa == pb == "day") or (pa == pb == "year"),
+                "already_scored": (pa == pb == "day") or (pa == pb == "year") or bool(scored_cells.get((pa, pb))),
                 "meaning": _bi(
                     f"{na}的{PALACE_ZH[pa][1]}遇{nb}的{PALACE_ZH[pb][1]}——{gz}",
                     f"{na}'s {_pal_en(pa, kid)} meets {nb}'s {_pal_en(pb, kid)}: {ge}.")})
@@ -479,7 +485,7 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
             "arithmetic": ledger,
             "summary_parts": _summary_parts(ledger),
             "pillar_sweep": sweep,
-            "sweep_matrix": sweep_matrix(ca, cb),
+            "sweep_matrix": sweep_matrix(ca, cb, scored_cells),
             "sweep_reading": sweep_reading(ca, cb, sweep, voice),
             "relation": {"a_sees_b": _rel(da.stem, g_ab), "b_sees_a": _rel(db.stem, g_ba)},
             "strengths": strengths, "frictions": frictions,
@@ -700,8 +706,15 @@ def _rooms_line(arith) -> str | None:
     return ("Rooms: " + "; ".join(bits) + ".") if bits else None
 
 
+_THINGS_REL = {"couple": "weddings, moves, purchases or signings",
+               "colleagues": "big commitments such as contracts or hires"}
+_AREA_WORK = {"year": "team traditions and the shared calendar", "hour": "late hours and long-term plans"}
+
+
 def _timing_and_actions(pair: dict, pa: dict, pb: dict, m: dict) -> tuple[str, list[str]]:
     na, nb, voice = pair["a"], pair["b"], pair.get("voice", "adult")
+    rel, senior = pair.get("rel") or "", pair.get("senior") or ""
+    work = rel == "colleagues"
     ages = pair.get("ages") or [40, 40]
     dp = pair.get("day_pillars") or ["", ""]
     pillars = {na: pa.get("pillars") or {}, nb: pb.get("pillars") or {}}
@@ -728,8 +741,9 @@ def _timing_and_actions(pair: dict, pa: dict, pb: dict, m: dict) -> tuple[str, l
         return " and ".join(bits) if bits else "both charts mark it for care"
     tl = []
     if gentle:
+        things = _THINGS.get(voice, _THINGS["adult"]) if voice != "adult" else _THINGS_REL.get(rel, _THINGS["adult"])
         tl.append("Years to go gently: " + _semi([f"{y}, when {why(y)}" for y in gentle], cap=4)
-                  + f". Keep {_THINGS.get(voice, _THINGS['adult'])} out of {'it' if len(gentle) == 1 else 'them'}.")
+                  + f". Keep {things} out of {'it' if len(gentle) == 1 else 'them'}.")
     if good:
         tl.append(f"Good {'year' if len(good) == 1 else 'years'} for the two of them: {', '.join(map(str, good))}.")
     timing = ("Timing, 2026 to 2031. " + " ".join(tl)) if tl else "Timing, 2026 to 2031: no year stands out for the two of them."
@@ -742,13 +756,16 @@ def _timing_and_actions(pair: dict, pa: dict, pb: dict, m: dict) -> tuple[str, l
             acts.append((9, f"In {y}, keep {w}'s routine steady and avoid big changes for them."))
         elif age < 18:
             acts.append((9, f"In {y}, keep {w}'s school year steady and avoid big changes for them."))
+        elif work:
+            acts.append((9, f"In {y}, check {w}'s workload before agreeing deadlines."))
         else:
             acts.append((9, f"In {y}, let {w} set the pace" + (" and book a health check-up." if age >= 65 else " and plan lighter commitments.")))
     cells = [x for row in (pair.get("sweep_matrix") or []) for x in row if x["relation"] and not x["bond"]]
     cells.sort(key=lambda x: (not x["scored"], x["pillar_a"] != "day"))
     if cells and cells[0]["relation"] in _HABIT:                        # A2
         x = cells[0]
-        area = _AREA["day" if "day" in (x["pillar_a"], x["pillar_b"]) else x["pillar_a"]]
+        ak = "day" if "day" in (x["pillar_a"], x["pillar_b"]) else x["pillar_a"]
+        area = (_AREA_WORK.get(ak) if work else None) or _AREA[ak]
         habit = (_HABIT_KID if voice == "child" else _HABIT)[x["relation"]].format(a=area)
         acts.append((8 if x["scored"] else 5,
                      f"Because of the {KIND_EN[x['relation']]} between {na}'s {x['pillar_a']} pillar and {nb}'s {x['pillar_b']} pillar, {habit}."))
@@ -761,14 +778,24 @@ def _timing_and_actions(pair: dict, pa: dict, pb: dict, m: dict) -> tuple[str, l
         press = tg(kidp).get("七殺", 0) + tg(kidp).get("傷官", 0)
         if press >= 15:
             acts.append((7, f"With {kidn}, keep rules few, steady and explained: pressure lands hard on this chart (七殺 and 傷官 together {press:.0f}%)."))
-    elif min(ya, yb) >= 18 and max(ya, yb) >= 65 and abs(ya - yb) >= 18:   # A4 (rel slot: family; age alone today)
-        acts.append((7, "Talk through support, health and household plans together"
-                     + (f" before {gentle[0]}." if gentle else " while things are calm.")))
+    elif voice == "adult":                                              # A4: care planning
+        if rel in ("parent-child", "grandparent-grandchild"):           # the named elder, 65 or over
+            elder_age = ya if senior == na else yb if senior == nb else 0
+            fire = elder_age >= 65
+        elif rel:                                                       # any other set relationship: never
+            fire = False
+        else:                                                           # unset: age alone, as batch 1
+            fire = min(ya, yb) >= 18 and max(ya, yb) >= 65 and abs(ya - yb) >= 18
+        if fire:
+            acts.append((7, "Talk through support, health and household plans together"
+                         + (f" before {gentle[0]}." if gentle else " while things are calm.")))
     rows = m.get("rows") or []
     if voice == "adult" and any(r.get("kind") == "peers" for r in rows):   # A6
-        acts.append((5, "Write down who owns what: money, decisions and time."))
+        acts.append((5, "Write down who owns what: " + ("budget, credit and decisions." if work else "money, decisions and time.")))
     wp = next((r for r in rows if r.get("kind") == "wealth_peers"), None)
-    if voice == "adult" and wp:                                         # A7
+    if voice == "adult" and work and gentle:                            # A7, colleagues
+        acts.append((4, f"Decide roles in writing before {gentle[0]}."))
+    elif voice == "adult" and wp and not work:                          # A7
         acts.append((4, f"Keep money matters explicit: agree in writing who pays for what, since {wp['giver']}'s chart is strong in wealth and {wp['receiver']}'s is heavy in peers."))
     rooms = _rooms_line(pair.get("arithmetic") or [])
     if rooms:                                                           # A8
@@ -776,9 +803,17 @@ def _timing_and_actions(pair: dict, pa: dict, pb: dict, m: dict) -> tuple[str, l
     return timing, [a for _, a in sorted(acts, key=lambda t: -t[0])[:3]]
 
 
-def pair_full(ca, cb, ys_a, ys_b, pa: dict, pb: dict) -> dict:
-    """breakdown + modern layers + the clinical report, for the public pair route."""
+REL_VALUES = ("couple", "parent-child", "grandparent-grandchild", "siblings", "colleagues", "friends", "other")
+REL_FAMILY = ("parent-child", "grandparent-grandchild", "siblings")
+
+
+def pair_full(ca, cb, ys_a, ys_b, pa: dict, pb: dict, rel: str | None = None, senior: str | None = None) -> dict:
+    """breakdown + modern layers + the clinical report, for the public pair route.
+    `rel` (batch 2) is the owner-set relationship, wording only: the score is the same for every value.
+    `senior` names the parent or grandparent for the two family types."""
     out = pair_breakdown(ca, cb, ys_a, ys_b)
+    out["rel"] = rel if rel in REL_VALUES else ""
+    out["senior"] = senior if out["rel"] in ("parent-child", "grandparent-grandchild") and senior in (out["a"], out["b"]) else ""
     out["modern"] = modern_layers(ca, cb, ys_a, ys_b)
     out["modern"]["score_with_modern"] = _clamp(out["score"] + out["modern"]["delta"])
     out["report"] = pair_clinical_report(out, pa, pb, out["modern"])
@@ -797,18 +832,24 @@ _KIND_DAY = {"六合": ("日常习惯自然对上", "Daily habits line up on the
              "六害": ("小的耗损来自各自的假设——多交代背景", "Small drains come from mismatched assumptions, so explain the background")}
 
 
-def sweep_matrix(ca, cb) -> list[list[dict]]:
-    """rows = A's pillars (year/month/day/hour), cols = B's."""
+def sweep_matrix(ca, cb, scored_cells: dict | None = None) -> list[list[dict]]:
+    """rows = A's pillars (year/month/day/hour), cols = B's. `scored` marks the cells that count in
+    the score: day-day and year-year (frozen rules) and, since batch 2, the other cells whose
+    points survived the dedupe, 拱合 filter and cap; `points` carries what they added."""
+    if scored_cells is None:
+        scored_cells = {(r["pillar_a"], r["pillar_b"]): r["delta"] for r in relation_additions(ca, cb) if r["kind"] == "cell"}
     out = []
     for pa in PALACES:
         row = []
         for pb in PALACES:
             ba, bb = ca.pillars[pa].branch, cb.pillars[pb].branch
             r = _branch_rel(ba, bb)
+            frozen = (pa == pb == "day") or (pa == pb == "year")
+            pts = scored_cells.get((pa, pb), 0)
             row.append({"pillar_a": pa, "pillar_b": pb, "branch_a": ba, "branch_b": bb,
                         "element_a": BRANCH_ELEMENT.get(ba, ""), "element_b": BRANCH_ELEMENT.get(bb, ""),
                         "relation": r[0] if r else None, "bond": bool(r and r[1] > 0),
-                        "scored": (pa == pb == "day") or (pa == pb == "year")})
+                        "scored": frozen or bool(pts), "points": pts if not frozen else None})
         out.append(row)
     return out
 

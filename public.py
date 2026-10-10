@@ -287,7 +287,8 @@ def _ws_payload(token: str, ws: dict) -> dict:
         harmony = hm
     return {"token": token, "people": people, "harmony": harmony,
             "max_people": MAX_PEOPLE, "has_floorplan": bool(ws.get("floorplan")),
-            "lang": ws.get("lang") if ws.get("lang") in ("en", "zh") else "en"}
+            "lang": ws.get("lang") if ws.get("lang") in ("en", "zh") else "en",
+            "pairs": ws.get("pairs") or {}}
 
 
 @router.post("/api/pub/workspace")
@@ -308,6 +309,41 @@ def get_workspace(token: str):
 
 class LangIn(BaseModel):
     lang: str = Field(max_length=8)
+
+
+class PairRelIn(BaseModel):
+    rel: str = Field(max_length=24)            # one of REL_VALUES, or "" to clear
+    senior: int | None = None                  # member index of the parent or grandparent (the two family types)
+
+
+def _pair_key(a: int, b: int) -> str:
+    return f"{min(a, b)}-{max(a, b)}"
+
+
+@router.put("/api/pub/workspace/{token}/pair/{a}/{b}/rel")
+def set_pair_rel(token: str, a: int, b: int, body: PairRelIn):
+    """Batch 2: the owner-set relationship of two members. Wording only; the score never reads it.
+    Never inferred from names or ages. Additive: ws["pairs"][key] = {"rel", "senior"}."""
+    from engine.hehun_detail import REL_VALUES
+    ws = _load(token)
+    ppl = ws["people"]
+    if not (0 <= a < len(ppl) and 0 <= b < len(ppl)) or a == b:
+        raise HTTPException(404, "no such pair")
+    key = _pair_key(a, b)
+    pairs = ws.setdefault("pairs", {})
+    if body.rel == "":
+        pairs.pop(key, None)
+    else:
+        if body.rel not in REL_VALUES:
+            raise HTTPException(400, "rel must be one of " + ", ".join(REL_VALUES) + ", or empty to clear")
+        entry = {"rel": body.rel}
+        if body.rel in ("parent-child", "grandparent-grandchild"):
+            if body.senior not in (a, b):
+                raise HTTPException(400, "senior must name the parent or grandparent: one of the two members")
+            entry["senior"] = body.senior
+        pairs[key] = entry
+    _save(token, ws)
+    return {"key": key, **pairs.get(key, {"rel": "", "senior": None})}
 
 
 @router.put("/api/pub/workspace/{token}/lang")
@@ -334,7 +370,10 @@ def get_pair(token: str, a: int, b: int):
     mb, cb = _chart_of(ppl[b])
     ya, yb = yong_shen(ca), yong_shen(cb)
     pa_, pb_ = chart_payload(_tosimp(ma.name), ca, ya, YEAR), chart_payload(_tosimp(mb.name), cb, yb, YEAR)
-    out = pair_full(ca, cb, ya, yb, pa_, pb_)
+    rel = (ws.get("pairs") or {}).get(_pair_key(a, b)) or {}
+    senior = {a: ca.person, b: cb.person}.get(rel.get("senior"))
+    out = pair_full(ca, cb, ya, yb, pa_, pb_, rel=rel.get("rel"), senior=senior)
+    out["senior_idx"] = rel.get("senior") if out["senior"] else None
     out["shares"] = [{h["element"]: h["share"] for h in p.get("health") or []} for p in (pa_, pb_)]   # for the element give-and-take figure
     return json.loads(_tosimp(json.dumps(out, ensure_ascii=False)))
 
