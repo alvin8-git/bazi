@@ -912,7 +912,7 @@ function bazhaiCompass(c) {
    and the proof behind "Why the chart says this". The plain view sits beside the classical
    chart. All plain copy comes from c.plain (engine/plain.py, owner-approved templates). */
 const CHAPTERS = [
-  ["makeup", "Make-up", "What are you made of?", "Pillars", "what-is-bazi", "the four pillars"],
+  ["makeup", "Make-up", "What are you made of?", "Four pillars", "what-is-bazi", "the four pillars"],
   ["balance", "Balance", "What do you have too much or too little of?", "Elements", "five-elements-cycles", "the five elements"],
   ["drives", "Drives", "What drives you?", "Ten gods", "ten-gods-guide", "the ten gods"],
   ["timing", "Timing", "What is coming, and when?", "Luck cycles", "luck-cycles-and-windows", "luck cycles"],
@@ -921,15 +921,12 @@ const EL_SLUG = { 木: "wood", 火: "fire", 土: "earth", 金: "metal", 水: "wa
 const STEM_SLUG = { 甲: "jia", 乙: "yi", 丙: "bing", 丁: "ding", 戊: "wu", 己: "ji", 庚: "geng", 辛: "xin", 壬: "ren", 癸: "gui" };
 const SWATCH = { 火: ["#c5221f", "#7b2d8e", "#e07b1f"], 水: ["#1b1f2a", "#1a56b0"], 木: ["#187a35", "#6aa84f"],
   土: ["#c9a227", "#d8c8a4", "#7a601b"], 金: ["#ffffff", "#c9a227", "#b8bec6"] };
-const SIG_N = { strong: 3, moderate: 2, faint: 1 };
 const GLYPH = {   // life-weather marks: one per engine decade phase
   sun: '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="16" cy="16" r="6"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M6.8 6.8l2.8 2.8M22.4 22.4l2.8 2.8M6.8 25.2l2.8-2.8M22.4 9.6l2.8-2.8"/></svg>',
   partsun: '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 3v2.5M3 12h2.5M5.6 5.6l1.8 1.8M18.4 5.6l-1.8 1.8"/><path d="M10 25h14a5 5 0 0 0-1-9.9 7 7 0 0 0-13 2.4A3.8 3.8 0 0 0 10 25z" fill="#fff"/></svg>',
   wind: '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15a4 4 0 1 0-4-4M4 18h20a4 4 0 1 1-4 4M4 24h9"/></svg>',
   rain: '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 19h15a5 5 0 0 0-1-9.9 7 7 0 0 0-13 2.4A3.8 3.8 0 0 0 9 19z"/><path d="M11 23l-1.5 4M17 23l-1.5 4M23 23l-1.5 4"/></svg>' };
 
-const pSignal = (s) => s ? `<span class="rp-sig"><span class="rp-bars" aria-hidden="true">${[0, 1, 2].map((k) =>
-  `<i${k < SIG_N[s] ? ' class="f"' : ""}></i>`).join("")}</span>${s} signal</span>` : "";
 const pWhy = (txt, html, label = "Why the chart says this") => txt || html
   ? `<details class="rp-why"><summary>${label}</summary><div class="rp-whyb">${txt ? `<p>${txt}</p>` : ""}${html || ""}</div></details>` : "";
 const PILLAR_KEYS = [["year", "year"], ["month", "month"], ["day", "you"], ["hour", "hour"]];
@@ -938,18 +935,26 @@ function pSeal(c) {
   return `<div class="rp-seal keepzh" data-notip role="img" aria-label="Your four pillars, year to hour: ${PILLAR_KEYS.map(([k]) => P[k]).join(" ")}">${PILLAR_KEYS.map(([k, lab]) =>
     `<div${k === "day" ? ' class="me"' : ""}><span style="color:${EL_TXT[STEM_EL[P[k][0]]]}">${P[k][0]}</span><span style="color:${EL_TXT[BR_EL[P[k][1]]]}">${P[k][1]}</span><small>${lab}</small></div>`).join("")}</div>`;
 }
+/* the side of life the reader is in now: the four sides' age ranges against the reader's age */
+function sideNow(c) {
+  const age = (c.story || {}).age; if (age == null) return null;
+  return (c.plain.sides || []).find((s) => { const [a, b] = String(s.ages).replace("+", "–999").split("–").map(Number);
+    return age >= a && age <= (b || 999); }) || null;
+}
 function pIdentity(c, name) {
-  const I = c.plain.identity;
+  const I = c.plain.identity, now = sideNow(c);
+  const where = now ? `This is your day pillar: you, at every age. Each stage of life has its own side, shown below; you are now in ${{ year: "your roots", month: "your working years", day: "your home years", hour: "your later years" }[now.key]}.`
+    : "This is your day pillar: you, at every age. Each stage of life has its own side, shown below.";
   return `<section class="rp-ident"><div class="rp-idtext"><p class="rp-name">${dn(name || c.name)}</p>${pSeal(c)}
-      <h2 class="rp-h">${I.head}</h2><p class="rp-sub">${I.sub}</p>${pSignal(I.signal)}${pWhy(I.why)}</div>
+      <h2 class="rp-h">${I.head}</h2><p class="rp-sub">${I.sub}</p><p class="rp-sub rp-where">${where}</p>${pWhy(I.why)}</div>
   </section>`;   // the Day Master image now lives on the "you at home" card in the four sides
 }
 /* the four pillars as four life characters (owner pick 2026-10-10); replaces the Four Palaces chart */
 function pSides(c) {
   const S = c.plain.sides || []; if (!S.length) return "";
-  const kids = ((c.palaces || {}).children || {}).line;
+  const kids = ((c.palaces || {}).children || {}).line, now = sideNow(c);
   return `<section class="rp-sides" aria-labelledby="h-sides"><h3 id="h-sides">Your four sides</h3><div class="rp-sidegrid">${S.map((s) =>
-    `<article class="rp-side${s.key === "day" ? " me" : ""}"><img src="/static/img/reading/dm-${STEM_SLUG[s.stem]}-600.jpg" alt="" width="600" height="400" loading="lazy" decoding="async">
+    `<article class="rp-side${s.key === "day" ? " me" : ""}${now === s ? " here" : ""}"${now === s ? ' aria-current="true"' : ""}>${now === s ? '<span class="rp-here">You are here</span>' : ""}<img src="/static/img/reading/dm-${STEM_SLUG[s.stem]}-600.jpg" alt="" width="600" height="400" loading="lazy" decoding="async">
       <p class="rp-k">${s.area.charAt(0).toUpperCase() + s.area.slice(1)}${s.ages ? `, <span class="rp-nw">ages ${s.ages}</span>` : ""}</p><h4>${s.head}</h4><p>${s.role}</p></article>`).join("")}</div>
     ${pWhy("", S.map((s) => `<p>${s.why}</p>`).join("") + (kids ? `<p><b>Children palace:</b> ${kids}</p>` : ""))}</section>`;
 }
@@ -1025,7 +1030,7 @@ const EV_OWNER = { pillars: "makeup", stars: "makeup", interactions: "makeup", p
 function pStory(id, S, ev, proofs, chart) {
   const num = {}; let n = 0;
   const mk = (e) => `<button type="button" class="mk" aria-expanded="false" aria-controls="ev-${id}-${num[e]}"><span class="vh">Evidence </span>${num[e]}</button>`;
-  const panel = (e) => `<div class="ev" id="ev-${id}-${num[e]}" hidden><p class="evh">${num[e]}. ${ev[e].label}</p>${ev[e].why ? `<p>${ev[e].why}</p>` : ""}${(proofs[e] || []).join("")}</div>`;
+  const panel = (e) => `<div class="ev" id="ev-${id}-${num[e]}" hidden><p class="evh">${num[e]}. ${ev[e].label}</p>${ev[e].why ? ev[e].why.split("\n").map((x) => `<p>${x}</p>`).join("") : ""}${(proofs[e] || []).join("")}</div>`;
   // a run of sentences resting on the same evidence shows its markers once, at the end of the run
   const para = (ss, cls) => { const fresh = [];
     const html = ss.map((s, k) => s.t.replace(/^If you do one thing:/, "<b>$&</b>") + (ss[k + 1] && ss[k + 1].ev.join() === s.ev.join() ? "" : s.ev.map((e) => {
@@ -1076,7 +1081,7 @@ const COLOUR_WORDS = { 红: "#c5221f", 紅: "#c5221f", 紫: "#7b3fa0",
   青: "#17702f", 蓝: "#1a56b0", 藍: "#1a56b0", 黑: "#22242a", 灰: "#4b5563",
   金: "#7d5c00", 白: "#4b5563" };
 const COLOUR_EN = { red: "#c5221f", purple: "#7b3fa0", yellow: "#7d5800",
-  brown: "#8a5a2b", green: "#17702f", blue: "#1a56b0", black: "#22242a",
+  brown: "#8a5a2b", orange: "#a84a06", green: "#17702f", blue: "#1a56b0", black: "#22242a",
   grey: "#4b5563", gray: "#4b5563", white: "#4b5563" };
 // only standalone colour words / dot-separated colour lists — never 明白, 黄金,
 // 青年, 红包, 黑马 … (a colour char followed or preceded by another CJK char)
@@ -1187,42 +1192,24 @@ function rdFig(o) {
 /* --- shared pieces ----------------------------------------------------------- */
 /* chart-grid glyphs stay Chinese (the glyph IS the chart) with their pinyin in the tooltip
    span; the small line under each carries the short gloss on first sight, nothing after */
-const PG_SEEN = new Set();
-function pgSmall(g) {
-  if (!window.GL || PG_SEEN.has(g)) return "";
-  PG_SEEN.add(g);
-  return GL.gloss(g) || "";
-}
 const zhs = (g) => (window.GL ? GL.zhSpan(g) : g);
-function pillarGrid(c) {
-  PG_SEEN.clear();
-  const lp = c.life_palaces;
-  const order = ["hour", "day", "month", "year"];
-  const labels = { hour: "Hour", day: "Day", month: "Month", year: "Year" };
-  const pcols = order.map((p) => {
-    const gz = c.pillars[p], st = gz[0], br = gz[1];
-    return `<div class="ccol${p === "day" ? " dm" : ""}">
-      <div class="cclab">${labels[p]}</div>
-      <div class="ccgod">${c.ten_gods[p] === "日主" ? "Day Master" : c.ten_gods[p]}</div>
-      <div class="ccstem keepzh" style="color:${EL_TXT[STEM_EL[st]]}">${zhs(st)}<span>${pgSmall(st)}</span></div>
-      <div class="ccbranch keepzh" style="color:${EL_TXT[BR_EL[br]]}">${zhs(br)}<span>${pgSmall(br)}</span></div>
-      <div class="ccstage">${c.pillar_extras[p].stage} · ${c.pillar_extras[p].nayin}</div>
-      <div class="cchid">${c.hidden_gods[p].join("<br>")}</div>
-    </div>`;
-  }).join("");
+function pillarGrid(c) {   // owner pick 2026-10-10: characters only, English in each tooltip
+  const lp = c.life_palaces, order = ["hour", "day", "month", "year"], head = { hour: "时", day: "日", month: "月", year: "年" };
+  const col = (z, el) => `<span style="color:${EL_TXT[el]}">${zhs(z)}</span>`;
+  const row = (lab, f, cls = "") => `<tr class="${cls}"><th scope="row">${zhs(lab)}</th>${order.map((p) => `<td${p === "day" ? ' class="dm"' : ""}>${f(p)}</td>`).join("")}</tr>`;
+  const hid = (p) => c.hidden_gods[p].map((x) => `<span class="cghid">${col(x[0], STEM_EL[x[0]])}<small>${zhs(x.slice(2, -1))}</small></span>`).join("");
   const tp = (c.citations || []).find((x) => x.rule_id === "time-policy") || {};
   const clock = (tp.explanation || "").match(/clock (\S+)/);
-  return `<div class="cchead">
-    <div class="ccbig"><div class="ccgua">${c.gua}</div>
-      <div>Kua number ${c.gua} (<b style="color:${EL_TXT[GUA_EL[c.gua]] || "inherit"}">${c.group}</b>) · Natal star ${lp.life_star_zh} ${elc(lp.life_star_element)}</div></div>
-    <div class="ccfacts">
-      <div><span>Zodiac</span><i class="zoi">${(ZODIAC[lp.animal] || [""])[0]}</i>${lp.animal}</div>
-      <div><span>Day Master</span>${elc(c.day_master)} ${elc(STEM_EL[c.day_master])} · ${c.strength.verdict}</div>
-      <div><span>Life Palace</span>${lp.ming_gong}</div>
-      <div><span>Conception Pillar</span>${lp.tai_yuan}</div>
-      <div><span>True solar time</span>${(c.effective_time || "").slice(11)}${clock ? ` <em>clock ${clock[1]}</em>` : ""}</div>
-    </div></div>
-    <div class="ccpillars">${pcols}</div>`;
+  return `<div class="cgwrap keepzh"><table class="cgrid">
+    <thead><tr><th></th>${order.map((p) => `<th scope="col"${p === "day" ? ' class="dm"' : ""}>${zhs(head[p])}</th>`).join("")}</tr></thead>
+    <tbody>${row("十神", (p) => zhs(c.ten_gods[p]), "cggod")}
+      ${row("天干", (p) => col(c.pillars[p][0], STEM_EL[c.pillars[p][0]]), "cgbig")}
+      ${row("地支", (p) => col(c.pillars[p][1], BR_EL[c.pillars[p][1]]), "cgbig")}
+      ${row("藏干", hid, "cghids")}
+      ${row("长生", (p) => zhs(c.pillar_extras[p].stage))}
+      ${row("纳音", (p) => zhs(c.pillar_extras[p].nayin))}</tbody></table>
+    <p class="cgfacts">${zhs("命卦")} ${col(c.gua, GUA_EL[c.gua])} · ${zhs("生肖")} ${zhs(lp.animal)} · ${zhs("命宫")} ${zhs(lp.ming_gong)} · ${zhs("胎元")} ${zhs(lp.tai_yuan)} · ${zhs("年命星")} ${zhs(lp.life_star_zh)} · ${zhs("真太阳时")} ${(c.effective_time || "").slice(11)}${clock ? ` (clock ${clock[1]})` : ""}</p></div>
+    <p class="cgcap">Read each column top to bottom: the role the stem plays for you, the stem, the branch, the stems hidden in the branch, its life stage and its sound element. Year is on the right, as in a classical chart; your own column, 日, is outlined. Tap any character for its meaning.</p>`;
 }
 const GLOSS_IX = { 六害: "harms", 害: "harms", 冲: "clashes with", 六冲: "clashes with", 刑: "punishes",
   破: "breaks", 六合: "combines with", 三合: "combines with", 半合: "half-combines with" };
@@ -1318,6 +1305,15 @@ const isWeak = (c) => /弱|weak/i.test(c.strength.verdict);
 const topGod = (c) => Object.entries(c.tengods_pct).sort((a, b) => b[1] - a[1])[0] || ["—", 0];
 
 /* --- 四柱 Pillars ------------------------------------------------------------- */
+/* 格局 in plain English, the classical terms in brackets (owner 2026-10-10); falls back to the engine line */
+function gejuPlain(g) {
+  const m = /月令\s*(\S),\s*本[氣气]\s*(\S)\s*\((\S+?)\)\s*司令\s*·\s*(.*?)[.。](?:\s|$)/.exec(g);
+  if (!m) return `<b>Chart structure (格局)</b> ${g.replace(/^格局[:：]\s*/, "").split(/[.。] /)[0]}`;
+  const [, br, st, god, rest] = m, tou = /^(\S+?格)\s*\(月支藏干\s*(\S)\s*透干\)/.exec(rest);
+  const lead = `<b>Chart structure (格局).</b> Your month branch (月令) is ${br}, and its main stem (本气) is ${st}, ${god}. `;
+  return lead + (tou ? `${tou[2]} also shows among your visible stems (透干), so the chart works as a ${god} structure (${tou[1]}).`
+    : `None of the month's hidden stems shows among your visible stems (透干), so the chart works from that ruling stem (司令), with the visible stems as the actors.`);
+}
 function buildPillars(c, R) {
   const dm = c.day_master, dmEl = STEM_EL[dm], fav = c.yongshen.favourable, weak = isWeak(c);
   const sp = (c.strength.parts || {}).season_pts || 0;
@@ -1325,8 +1321,7 @@ function buildPillars(c, R) {
   const p1 = rdFig({ tier: "hero", span: 12, label: "Four-Pillar Grid", learn: "chart",
     chart: pillarGrid(c),
     line: `A ${weak ? "weak" : "strong"} ${elc(dm)} ${elw(dmEl)} day master, ${season} — ${fav.map(elw).join(" and ")} ${fav.length > 1 ? "are" : "is"} your medicine.`,
-    facts: [[c.strength.verdict.split(" ")[0], `score ${c.strength.score}`],
-      c.geju ? ["格局", clip(c.geju.replace(/^格局[:：]\s*/, "").split(/[.。] /)[0], 40)] : null].filter(Boolean),
+    facts: [[c.strength.verdict.split(" ")[0], `score ${c.strength.score}`]],   // 格局 is explained in plain words under the structure check
     legend: legendList("chart") });
   const its = c.interactions || [], kinds = {};
   its.forEach((it) => (kinds[it.kind] = (kinds[it.kind] || 0) + 1));
@@ -1454,7 +1449,7 @@ function buildGods(c, R) {
     legend: legendList(10) });
   const ti = c.tengod_insights; let g5 = "";
   if (ti) {
-    const geju = c.geju ? `<div class="geju"><b>格局</b> ${c.geju.replace(/^格局[:：]\s*/, "").split(/[.。] /)[0]}</div>` : "";
+    const geju = c.geju ? `<div class="geju">${gejuPlain(c.geju)}</div>` : "";
     const chart = geju + ti.favor.map((f) => `<div class="cite structrow"><b>${f.god} ${f.pct}%</b> ${elb(f.el)}
         <span class="dirchip ${f.status === "favourable" ? "good" : f.status === "unfavourable" ? "bad" : ""}">${f.status}</span> — ${f.note}</div>`).join("")
       + `<div class="cite" style="margin-top:6px"><b>Visible stems:</b> ${ti.rooted.map((r) => `<span class="dirchip ${r.state === "rooted" ? "good" : "bad"}">${r.god} ${r.state === "rooted" ? "rooted" : "floating"}</span>`).join(" ")}</div>`
@@ -1619,7 +1614,7 @@ function buildCompass(c, R) {
   const colEn = cols.map((z) => COLOUR_ZH_EN[z] || z).slice(0, 2).join("/");
   const chart = `${c.medicine_rank ? `<p class="cite" style="margin:0 0 6px"><b>Medicine, ranked:</b> ${c.medicine_rank.replace(/^Medicine, ranked:\s*/, "")}</p>` : ""}
     <p class="cite" style="margin:0 0 8px">Favourable ${elbs(fav)} · avoid ${elbs(unf)} · colours <b>${cols.join("、")}</b></p>
-    ${c.xiji ? `<div class="scrollx"><table class="xiji htable">${c.xiji.map((r) => `<tr><th>${r.band} <span class="sub">${r.zh}</span></th>
+    ${c.xiji ? `<div class="scrollx"><table class="xiji htable">${c.xiji.map((r) => `<tr><th>${r.zh}</th>
       <td>${r.elements.map((e) => elb(e)).join(" ")}</td><td class="sub">${r.gods.join("·")}</td></tr>`).join("")}</table></div>` : ""}`;
   const EL_DIR = { 木: ["东 E", "震·巽"], 火: ["南 S", "離"], 土: ["西南·东北 SW/NE", "坤·艮 (centre)"], 金: ["西 W", "乾·兌"], 水: ["北 N", "坎"] };
   const EL_ROOM = { 木: "east wall, plants and timber, green accents", 火: "south wall, warm light, red/orange accent",
@@ -1628,7 +1623,7 @@ function buildCompass(c, R) {
     ${fav.map((e) => `<tr><td>${elb(e)}</td><td><b>${EL_DIR[e][0]}</b></td><td>${EL_DIR[e][1]}</td><td class="sub">${EL_ROOM[e]}</td></tr>`).join("")}</table></div>`;
   const chart2 = dirTable + chart;
   const c34 = rdFig({ tier: "hero", span: 7, extra: "rd-pair2", label: "Where the medicine sits", learn: 5, chart: chart2,
-    line: `Add ${elw(fav[0])} ${elc(fav[0])}${colEn ? ` (${colEn})` : ""} through lighting or an accent wall; keep ${unf.map((e) => EL_EN[e]).join("/")} ${unf.map(elc).join("")} out of your main room.`,
+    line: `Add ${elw(fav[0])} (${elc(fav[0])})${colEn ? `, in ${colEn},` : ""} through lighting or an accent wall; keep ${unf.map((e) => EL_EN[e]).join("/")} (${unf.map(elc).join("")}) out of your main room.`,
     facts: [["Useful god", elbs(fav)], ["Avoid", elbs(unf)], c.tiaohou ? ["Seasonal adjustment", c.tiaohou.verdict] : null].filter(Boolean),
     legend: `<div><b>Technique:</b> 扶抑 supports a weak chart or restrains a strong one; 调候 corrects its season — for this chart, add ${fav.map((e) => EL_EN[e]).join(" and ")}, keep ${unf.map((e) => EL_EN[e]).join(", ")} light.</div>
       ${c.tiaohou && c.tiaohou.line ? `<div class="cite">${c.tiaohou.line}</div>` : ""}
@@ -1657,6 +1652,29 @@ function buildCompass(c, R) {
   return { figs: { grid: c1, medicine: c34, placements: c2, afflictions: c5 }, tail: [R.stb(5), R.narr(5), R.narr(7)] };
 }
 
+/* Evidence panels (owner 2026-10-10): the charts' conclusions lead as "What this shows", and folds inside a
+   panel open flat, so a panel never hides a second dropdown. Runs before the English pass. */
+function tidyEvidence(root) {
+  root.querySelectorAll(".ev").forEach((p) => {
+    const lines = [...p.querySelectorAll(".rd-line")];
+    if (lines.length) {
+      const lead = document.createElement("div"); lead.className = "ev-lead";
+      lead.innerHTML = `<p class="ev-k">What this shows</p>${lines.map((l) => `<p>${l.innerHTML}</p>`).join("")}`;
+      (p.querySelector(".evh") || p.firstChild).after(lead);
+      lines.forEach((l) => { const row = l.closest(".rd-line-row"); l.remove();
+        if (row) { const lg = row.querySelector(".rd-legend"); if (lg) row.before(lg); row.remove(); } });
+    }
+    p.querySelectorAll("details").forEach((d) => {
+      const sum = d.querySelector(":scope > summary"), sec = document.createElement("section");
+      const title = sum ? (sum.getAttribute("aria-label") === "how to read this" ? "How to read this chart" : sum.textContent.trim()) : "";
+      sec.className = "ev-sub"; if (sum) sum.remove();
+      sec.innerHTML = (title ? `<h5>${title.charAt(0).toUpperCase() + title.slice(1)}</h5>` : "") + d.innerHTML;
+      sec.querySelectorAll(".rd-legend-body").forEach((x) => (x.className = "ev-legend"));   // a popover no longer: it reads in place
+      d.replaceWith(sec);
+    });
+  });
+}
+
 /* English-first pass: rewrite every text node through the shared glossary
    (window.GL, /static/glossary.js) in document order, so the first use of a term
    carries its Chinese once in parentheses and later uses are English only.
@@ -1664,13 +1682,25 @@ function buildCompass(c, R) {
 function glossifyDom(root, fresh = true) {
   if (!root || !window.GL) return;
   if (fresh) GL.reset();
+  // "<b>劫財</b> Rob Wealth" in chart legends: the term and its English sit in separate nodes, so the
+  // pass below would write the English twice. Fold each pair into "Rob Wealth (劫財)" (owner rule).
+  root.querySelectorAll(".ev b, .ev strong, .rd-synth-body b").forEach((el) => {   // where the legends put them
+    const nx = el.nextSibling; if (!nx || nx.nodeType !== 3 || el.firstElementChild) return;
+    const zh = el.textContent.trim(); if (!/^[㐀-鿿]{1,4}$/.test(zh)) return;
+    const en = GL.english(zh); if (!en || en === zh) return;
+    const m = new RegExp(`^\\s+${en.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").exec(nx.nodeValue); if (!m) return;
+    nx.nodeValue = nx.nodeValue.slice(m[0].length); el.textContent = `${en} (${zh})`; el.classList.add("keepzh");
+  });
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: (n) => n.parentElement
       && /[\u3400-\u9fff]/.test(n.nodeValue)
       && !n.parentElement.closest("script,style,svg,input,textarea,.keepzh,.zh,[lang='zh-Hans']")
       ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
   const nodes = []; let t; while ((t = w.nextNode())) nodes.push(t);
-  for (const n of nodes) { const v = GL.text(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; }
+  let box = null;   // each evidence panel and the full report start fresh: their first mention reads "English (漢字)"
+  for (const n of nodes) {
+    const b = n.parentElement.closest(".ev, .rd-synth-body"); if (b !== box) { box = b; if (b) GL.reset(); }
+    const v = GL.text(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; }
   GL.tipify(root);                     // Chinese runs -> tooltip spans (pinyin there only), element colours
 }
 
@@ -1711,10 +1741,10 @@ function synthNote(sy) {
   if (!sy) return "";
   const body = Array.isArray(sy) ? (sy.length ? `<p class="rd-synth-p">${sy.join(" ")}</p>` : "")
     : `${sy.summary ? `<p class="rd-synth-lede">${sy.summary}</p>` : ""}
-      ${(sy.findings || []).length ? `<h4>Findings</h4>${sy.findings.map((f) => `<p class="rd-synth-p"><b>${f.label}.</b> ${f.text}</p>`).join("")}` : ""}
+      ${(sy.findings || []).length ? `<h4>Findings</h4><dl class="rd-synth-dl">${sy.findings.map((f) => `<dt>${f.label}</dt><dd>${f.text}</dd>`).join("")}</dl>` : ""}
       ${sy.assessment ? `<h4>Assessment</h4><p class="rd-synth-p">${sy.assessment}</p>` : ""}
-      ${(sy.plan || []).length ? `<h4>Plan</h4><ul class="rd-synth-plan">${sy.plan.map((x) => `<li>${x}</li>`).join("")}</ul>` : ""}
-      ${sy.confidence ? `<p class="rd-synth-conf">${sy.confidence}</p>` : ""}`;
+      ${(sy.plan || []).length ? `<h4>Plan</h4><ol class="rd-synth-plan">${sy.plan.map((x) => `<li>${x}</li>`).join("")}</ol>` : ""}
+      ${sy.confidence ? `<p class="rd-synth-conf"><b>How this was worked out.</b> ${sy.confidence}</p>` : ""}`;
   return body ? `<details class="rp-more rp-report"><summary>The full report, in classical terms</summary><div class="rd-synth-body">${body}</div></details>` : "";
 }
 
@@ -1753,9 +1783,12 @@ async function renderPerson(name) {
     document.title = `${who}: your BaZi reading`;
     const own = $("#tab-person .rp-name"); if (own) own.remove();
   }
+  tidyEvidence($("#tab-person"));
+  // English first, then colour: colouring splits 劫財 into its own node, and the English pass must see
+  // "劫財 Rob Wealth" whole or it writes the English twice
+  glossifyDom($("#tab-person"));
   colorizeTerms($("#tab-person"), c.day_master);
   colorizeColours($("#tab-person"));
-  glossifyDom($("#tab-person"));
 }
 
 /* ---------- House tab ---------- */

@@ -329,8 +329,8 @@ EVIDENCE_LABEL = {
 def _why(p, plain):
     st = p["strength"]; V = (p.get("palaces") or {}).get("vault") or {}
     return {
-        "gods": plain["drives"]["why"], "pillars": " ".join(s["why"] for s in plain["sides"]),
-        "personality": (plain.get("personality") or {}).get("why", ""), "stars": " ".join(s["why"] for s in plain["stars"]),
+        "gods": plain["drives"]["why"], "pillars": "\n".join(s["why"] for s in plain["sides"]),   # one note per line
+        "personality": (plain.get("personality") or {}).get("why", ""), "stars": "\n".join(s["why"] for s in plain["stars"]),
         "interactions": plain["makeup"]["why"],
         "elements": "Weighted element shares: " + ", ".join(f"{h['en']} {h['share']}% ({h['status']})" for h in p.get("health") or []) + ".",
         "strength": (f"Strength verdict {st['verdict']}, score {st['score']}; support {st.get('support_ratio')}%, roots "

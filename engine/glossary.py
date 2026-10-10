@@ -729,6 +729,12 @@ class Gloss:
             else:
                 key = None
             if key is not None:
+                # "辛 Metal day master": the element already follows, so "辛 (yin Metal) Metal" would say it twice
+                ew = re.match(r"\s+(Wood|Fire|Earth|Metal|Water)\b", after) if gl else None
+                if ew and gl.endswith(ew.group(1)):
+                    self.seen.add(key)
+                    out += run
+                    continue
                 n = self._own(after, py, gl)
                 if n:
                     first = key not in self.seen

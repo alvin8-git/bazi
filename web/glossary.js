@@ -149,6 +149,9 @@
       else if (!h && isPillar(run)) { key = run; kpy = T[run[0]][1] + " " + T[run[1]][1]; kgl = pgl(run); }
       else if (!h && isYear(run)) { key = run; kpy = T[run[0]][1] + " " + T[run[1]][1] + " nián"; kgl = pgl(run) + " year"; }
       if (key !== null) {
+        // "辛 Metal day master": the element already follows, so "辛 (yin Metal) Metal" would say it twice
+        var ew = kgl && /^\s+(Wood|Fire|Earth|Metal|Water)\b/.exec(after);
+        if (ew && kgl.slice(-ew[1].length) === ew[1]) { this.seen.add(key); out += run; continue; }
         var n = own(after, kpy, kgl);
         if (n) {
           var kf = !this.seen.has(key);
