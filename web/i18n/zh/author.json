@@ -1,0 +1,210 @@
+{
+ "author.001": {
+  "en": "BaziMaster — author of the bazifor.me guides | bazifor.me",
+  "zh": "BaziMaster：bazifor.me 指南的作者 / bazifor.me"
+ },
+ "author.002": {
+  "en": "BaziMaster writes the bazifor.me guides and built the deterministic BaZi, feng shui and naming engine behind the site: classical rules, cited, no guesswork.",
+  "zh": "BaziMaster 撰写 bazifor.me 的指南，并搭建了本站背后确定性的八字、风水与起名引擎：古法规则，逐条注明出处，不靠猜测。"
+ },
+ "author.003": {
+  "en": "BaziMaster — author of the bazifor.me guides",
+  "zh": "BaziMaster：bazifor.me 指南的作者"
+ },
+ "author.004": {
+  "en": "Who writes the bazifor.me guides, how the engine was built and checked, and what it does not claim.",
+  "zh": "谁在撰写 bazifor.me 的指南，引擎是怎么搭建和核对的，以及它不宣称什么。"
+ },
+ "author.005": {
+  "en": "profile",
+  "zh": "(same)"
+ },
+ "author.006": {
+  "en": "https://bazifor.me/author",
+  "zh": "(same)"
+ },
+ "author.007": {
+  "en": "https://bazifor.me/static/og/author.png",
+  "zh": "(same)"
+ },
+ "author.008": {
+  "en": "summary_large_image",
+  "zh": "(same)"
+ },
+ "author.009": {
+  "en": "bazifor.me",
+  "zh": "八字为我"
+ },
+ "author.010": {
+  "en": "Your Reading",
+  "zh": "你的解读"
+ },
+ "author.011": {
+  "en": "Home Fengshui",
+  "zh": "家居风水"
+ },
+ "author.012": {
+  "en": "Baby Names",
+  "zh": "宝宝起名"
+ },
+ "author.013": {
+  "en": "Learn",
+  "zh": "学习"
+ },
+ "author.014": {
+  "en": "BaziMaster",
+  "zh": "BaziMaster"
+ },
+ "author.015": {
+  "en": "Author of the bazifor.me guides · builder of the engine",
+  "zh": "bazifor.me 指南的作者 · 引擎的搭建者"
+ },
+ "author.016": {
+  "en": "BaziMaster writes the guides on this site and built the engine behind it. The engine turns a birth moment into a BaZi chart with the traditional solar calendar and true-solar time, reads a traced floor plan into flying-star and Eight House (",
+  "zh": "BaziMaster 撰写本站的指南，也搭建了背后的引擎。引擎依传统节气历和真太阳时，把一个出生时刻排成八字命盘；把描摹好的户型图读成飞星与八宅"
+ },
+ "author.017": {
+  "en": ") maps, and scores Chinese baby names by useful element (",
+  "zh": "图；并按用神"
+ },
+ "author.018": {
+  "en": "), Five Grids (",
+  "zh": "、五格"
+ },
+ "author.019": {
+  "en": ") strokes, Three Talents (",
+  "zh": "笔画、三才"
+ },
+ "author.020": {
+  "en": "), meaning and sound. Every line of output names the classical rule it applies, so a reader, or a practitioner, can check it.",
+  "zh": "、字义与读音给中文名字打分。输出的每一行都注明所依据的古法规则，读者或专业人士都能核对。"
+ },
+ "author.021": {
+  "en": "The method is deterministic on purpose. The same birth data always gives the same chart; the same floor plan always gives the same stars. Where schools disagree, for example on a character's element or a stroke count, the engine records the choice it made and marks it as disputed rather than hiding it. The flying-star work was checked against a paid professional audit of a real home and matched it star for star.",
+  "zh": "这套方法是有意做成确定的。同样的出生数据总是排出同样的命盘，同样的户型图总是得出同样的飞星。各流派有分歧时，比如某个字的五行归属或笔画数，引擎会记下自己的取舍，并标注为有争议，而不是藏起来。飞星部分曾与一份真实住宅的付费专业风水评估报告对照，逐颗星相符。"
+ },
+ "author.022": {
+  "en": "What this site does not claim",
+  "zh": "本站不宣称的事"
+ },
+ "author.023": {
+  "en": "It does not predict events. It computes classical structures and states the traditional reading of them.",
+  "zh": "不预测事件。只推算经典结构，并给出它们的传统解读。"
+ },
+ "author.024": {
+  "en": "It does not replace a practitioner for decisions with real consequences; it gives you the working to bring to one.",
+  "zh": "不能代替专业人士做有实际后果的决定；它给你的是可以带去请教专业人士的推算依据。"
+ },
+ "author.025": {
+  "en": "It does not use generative AI for any reading. The text you see is rule output and hand-written guides.",
+  "zh": "不用生成式 AI 写任何解读。你看到的文字是规则输出和人工撰写的指南。"
+ },
+ "author.026": {
+  "en": "Sources the guides and the engine cite",
+  "zh": "引擎与指南所引用的典籍"
+ },
+ "author.027": {
+  "en": "Sanming Tonghui (",
+  "zh": "八字：《三命通会》"
+ },
+ "author.028": {
+  "en": "), Di Tian Sui (",
+  "zh": "、《滴天髓》"
+ },
+ "author.029": {
+  "en": ") and Ziping Zhenquan (",
+  "zh": "与《子平真诠》"
+ },
+ "author.030": {
+  "en": ") for BaZi; Shen's Xuan Kong Xue (",
+  "zh": "；飞星：《沈氏玄空学》"
+ },
+ "author.031": {
+  "en": ") for flying stars; Bazhai Mingjing (",
+  "zh": "；八宅：《八宅明镜》"
+ },
+ "author.032": {
+  "en": ") and Yangzhai Sanyao (",
+  "zh": "与《阳宅三要》"
+ },
+ "author.033": {
+  "en": ") for Eight House; Xieji Bianfang Shu (",
+  "zh": "；择日：《协纪辨方书》"
+ },
+ "author.034": {
+  "en": ") for date selection; the Kangxi Dictionary (",
+  "zh": "；字的笔画：《康熙字典》"
+ },
+ "author.035": {
+  "en": ") for character strokes. See",
+  "zh": "。方法及其局限请看"
+ },
+ "author.036": {
+  "en": "how it works",
+  "zh": "运作原理"
+ },
+ "author.037": {
+  "en": "for the method and its limits, and the",
+  "zh": "，规则的讲解请看"
+ },
+ "author.038": {
+  "en": "guides",
+  "zh": "指南"
+ },
+ "author.039": {
+  "en": "for the rules explained.",
+  "zh": "。"
+ },
+ "author.040": {
+  "en": "This page in Chinese (",
+  "zh": "本页中文版"
+ },
+ "author.041": {
+  "en": "BaziMaster 撰写本站全部指南，并构建了背后的确定性引擎：八字排盘、宅运飞星与八宅、以及按用神、五格、三才、字义与音韵评分的起名工具。每一条结论都注明所依据的古典规则。",
+  "zh": "BaziMaster 撰写本站全部指南，并搭建了背后的确定性引擎：八字排盘、飞星与八宅，以及按用神、五格、三才、字义与读音评分的起名工具。每一条结论都注明所依据的古法规则。"
+ },
+ "author.042": {
+  "en": "© bazifor.me — deterministic BaZi & fengshui readings.",
+  "zh": "© bazifor.me，按固定规则推算的八字与风水解读。"
+ },
+ "author.043": {
+  "en": "BaZi",
+  "zh": "八字"
+ },
+ "author.044": {
+  "en": "Home fengshui",
+  "zh": "家居风水"
+ },
+ "author.045": {
+  "en": "Baby names",
+  "zh": "宝宝起名"
+ },
+ "author.046": {
+  "en": "Kua number",
+  "zh": "命卦"
+ },
+ "author.047": {
+  "en": "Guides in Chinese (",
+  "zh": "中文指南"
+ },
+ "author.048": {
+  "en": "How it works",
+  "zh": "运作原理"
+ },
+ "author.049": {
+  "en": "About",
+  "zh": "关于"
+ },
+ "author.050": {
+  "en": "FAQ",
+  "zh": "常见问题"
+ },
+ "author.051": {
+  "en": "Method",
+  "zh": "方法"
+ },
+ "author.052": {
+  "en": "Author",
+  "zh": "作者"
+ }
+}

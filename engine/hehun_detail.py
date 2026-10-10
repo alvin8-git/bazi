@@ -298,6 +298,24 @@ def _and(items) -> str:
     return ", ".join(items[:-1]) + " and " + items[-1]
 
 
+def _semi(items, cap=3) -> str:
+    """Tied items joined with semicolons, at most `cap` named (batch 1, B8)."""
+    items = list(items)
+    more = len(items) - cap
+    items = items[:cap]
+    body = items[0] if len(items) == 1 else "; ".join(items[:-1]) + "; and " + items[-1]
+    return body + (f"; and {more} more, listed below" if more > 0 else "")
+
+
+def _need(weights: dict, e: str) -> str:
+    """B1: how much the receiver's chart has of an element, in words. One function feeds the row
+    label, its explanation and the summary so they can never disagree."""
+    tot = sum(weights.values()) or 1
+    s = {x: weights.get(x, 0) / tot * 100 for x in "木火土金水"}
+    v = s[e]
+    return "is short of" if v < 12 else "could use more of" if v < 16 and v == min(s.values()) else "benefits from"
+
+
 def _summary_parts(arith) -> dict:
     """Top positive rows and most negative rows, EVERY tie included."""
     pos = [r for r in arith if r["delta"] > 0]
@@ -353,7 +371,7 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
 
     rel = _branch_rel(da.branch, db.branch)
     if rel is None:
-        add("日支中性", "Day branches: no link (0)", 0, "day-day", kind="day",
+        add("日支中性", "Day branches: no link", 0, "day-day", kind="day",
             plain="their day branches show no link", relation="", relation_en="no link")
     else:
         kind, _ = rel
@@ -384,25 +402,25 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
             kind="year", plain=pl, plain_cn=plc, relation=kind, relation_en=KIND_EN[kind])
     wa, wb = ca.element_weights, cb.element_weights
     ta, tb = sum(wa.values()) or 1, sum(wb.values()) or 1
-    for giver, gw, gt, taker, tys in ((ca, wa, ta, cb, ys_b), (cb, wb, tb, ca, ys_a)):
+    for giver, gw, gt, taker, tys, gys in ((ca, wa, ta, cb, ys_b, ys_a), (cb, wb, tb, ca, ys_a, ys_b)):
         n = 0
         for e in tys["favourable"]:
             if gw.get(e, 0) / gt >= 0.2 and n < 2:
+                w = _need(taker.element_weights, e)
+                tires = e in gys["unfavourable"]          # the giver's own chart avoids it (B2)
                 add(f"{giver.person}五行{e}旺，补{taker.person}所需",
                     f"{giver.person} has plenty of {ELEMENT_EN[e]}, which "
-                    f"{taker.person}'s chart needs", 6, "chart-wide",
-                    element=e, kind="supply", giver=giver.person, receiver=taker.person,
+                    f"{taker.person}'s chart {w}", 6, "chart-wide",
+                    element=e, kind="supply", giver=giver.person, receiver=taker.person, tires=tires,
                     sdyn={
                         "explanation": _bi(
                             "一方五行充沛，恰是对方八字所需的用神——同住同色即有扶持之效",
-                            f"{giver.person} naturally brings the {ELEMENT_EN[e]} that "
-                            f"{taker.person}'s chart is short of. Spending time together, "
-                            f"in rooms that lean toward {EL_PALETTE[e]}, quietly helps "
-                            f"{taker.person}."),
+                            f"{ELEMENT_EN[e]} helps {taker.person} but tires {giver.person}. "
+                            f"Keep it in {taker.person}'s own space rather than shared rooms." if tires else
+                            f"{giver.person} brings the {ELEMENT_EN[e]} that {taker.person}'s chart {w}."),
                         "action": _bi(
                             f"共处空间多用{e}系配色，多安排共同活动即可",
-                            f"Lean shared rooms toward {EL_PALETTE[e]}, and give "
-                            f"{taker.person} relaxed time with {giver.person}."),
+                            f"Give {taker.person} relaxed, unhurried time with {giver.person}."),
                         "source_ref": "Classical useful-element method (用神, 子平法). "
                                       "Using one chart's supply for the other is our own "
                                       "modern addition."})
@@ -422,8 +440,7 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
                                 "colour_material": AVOID_LEVER[dom], "direction": ""},
                     "behaviour": {"axis": "环境 environment",
                                   "zh": f"共处空间少用{dom}色系，多用{taker.person}的用神色",
-                                  "en": f"Decorate shared rooms in {taker.person}'s "
-                                        f"helpful colours, not in more {ELEMENT_EN[dom]} tones."},
+                                  "en": ""},          # B4: colour advice lives in the one rooms line
                     "timing": _bi("——", "")})
 
     # §2b descriptive sweep — never summed
@@ -572,18 +589,15 @@ def pair_clinical_report(pair: dict, pa: dict, pb: dict, modern: dict | None = N
     # summary
     pl, wt = sp["plus_plain"], sp["watch_plain"]
     parts = [f"{score} out of 100: {band}."]
-    if pl:
-        parts.append((f"Biggest plus: {pl[0]} ({sp['plus_delta']:+d})." if len(pl) == 1 else
-                      f"Biggest pluses: {_and(pl)} ({sp['plus_delta']:+d} each).")
-                     )
+    if pl:                                                   # B8: ties with semicolons, at most three named
+        parts.append(f"Biggest plus: {pl[0]} ({sp['plus_delta']:+d})." if len(pl) == 1 else
+                     f"Biggest pluses: {_semi(pl)} ({sp['plus_delta']:+d} each).")
     if wt:
-        lead = ("To watch" if pl else "Biggest watch-out" if len(wt) == 1 else "Biggest watch-outs")
-        parts.append(f"{lead}: {_and(wt)} ({sp['watch_delta']:+d}" + (")." if len(wt) == 1 else " each)."))
+        parts.append(f"To watch: {wt[0]} ({sp['watch_delta']:+d})." if len(wt) == 1 else
+                     f"To watch: {_semi(wt)} ({sp['watch_delta']:+d} each).")
     if not pl and not wt:
         parts.append("No single factor stands out; the day branches show no link.")
-    if m["delta"]:
-        parts.append(f"Counting the extra checks, the figure is {score2}.")
-    summary = " ".join(parts)
+    summary = " ".join(parts)                                # B9: one number in the headline
     F = []
     dp = pair.get("day_pillars") or ["", ""]
     dayrow = arith[0] if arith else {}
@@ -644,9 +658,122 @@ def pair_clinical_report(pair: dict, pa: dict, pb: dict, modern: dict | None = N
         plan.append(f"Keep {c_plan} out of {', '.join(map(str, both_c))}.")
     if not plan:
         plan.append("With no strong link either way, invest in shared time rather than shared assets until a favourable year comes.")
+    timing_line, actions = _timing_and_actions(pair, pa, pb, m)
     return {"summary": summary, "findings": [{"label": l, "text": t.strip()} for l, t in F],
             "assessment": " ".join(A), "plan": plan[:5], "confidence": "",
-            "score_with_modern": score2}
+            "score_with_modern": score2, "timing_line": timing_line, "actions": actions}
+
+
+# ---------------------------------------------------------------------------
+# 2026-10-10 batch 1: the dated timing line and up to three actions. Wording only: every
+# sentence reads a field already in the payload; the score is untouched.
+# ---------------------------------------------------------------------------
+_CHONG = {frozenset(x) for x in ("子午", "丑未", "寅申", "卯酉", "辰戌", "巳亥")}
+_AREA = {"day": "daily routines and personal time", "year": "family gatherings and traditions",
+         "month": "work or school schedules", "hour": "evenings and plans for later years"}
+_HABIT = {"六沖": "agree a fixed routine for {a}, so a clash never turns into a snap decision",
+          "刑": "set a short weekly check-in about {a}, so friction does not build in silence",
+          "六害": "explain the background before changing anything about {a}"}
+_HABIT_KID = {"六沖": "keep a steady routine for {a}",
+              "刑": "keep a calm end-of-day chat, so small frictions are said out loud",
+              "六害": "explain changes before they happen"}
+_THINGS = {"child": "moving home or school", "teen": "moves, school changes or big family purchases",
+           "adult": "big shared decisions such as moves, purchases or signings"}
+
+
+def _rooms_line(arith) -> str | None:
+    """B4: one rooms line per pair. An element is never both leaned toward and limited."""
+    shared, own, limit = [], [], []
+    for r in arith:
+        if r.get("kind") == "supply":
+            (own if r.get("tires") else shared).append((r["element"], r["receiver"]))
+        elif r.get("kind") == "clash":
+            limit.append(r["element"])
+    shared = [e for e in dict.fromkeys(e for e, _ in shared) if e not in limit]
+    bits = []
+    if shared:
+        bits.append("lean shared rooms toward " + " and ".join(EL_PALETTE[e] for e in shared))
+    for e, t in dict.fromkeys(own):
+        bits.append(f"keep {EL_PALETTE[e]} in {t}'s own space")
+    if limit:
+        bits.append("go easy on " + " and ".join(f"{ELEMENT_EN[e]} tones" for e in dict.fromkeys(limit)) + " in common rooms")
+    return ("Rooms: " + "; ".join(bits) + ".") if bits else None
+
+
+def _timing_and_actions(pair: dict, pa: dict, pb: dict, m: dict) -> tuple[str, list[str]]:
+    na, nb, voice = pair["a"], pair["b"], pair.get("voice", "adult")
+    ages = pair.get("ages") or [40, 40]
+    dp = pair.get("day_pillars") or ["", ""]
+    pillars = {na: pa.get("pillars") or {}, nb: pb.get("pillars") or {}}
+    yrs = lambda p: {y["y"]: y for y in ((p.get("windows") or {}).get("years") or []) if 2026 <= y["y"] <= 2031}
+    YA, YB = yrs(pa), yrs(pb)
+    clashed, fuyin, anyclash = {}, {}, set()
+    for y, row in YA.items():
+        gz = row.get("gz") or ""
+        for who, day in ((na, dp[0]), (nb, dp[1])):
+            if gz and day and frozenset(gz[1] + day[1]) in _CHONG:
+                clashed.setdefault(y, []).append((who, gz))
+            if gz and gz == day:                                        # 伏吟: the year repeats a day pillar
+                fuyin.setdefault(y, []).append((who, gz))
+            if gz and any(frozenset(gz[1] + p[1]) in _CHONG for p in pillars[who].values() if p):
+                anyclash.add(y)
+    flag = lambda Y, f: {y for y in Y if (Y[y].get("relationship") or {}).get("flag") == f}
+    care = sorted(flag(YA, "caution") & flag(YB, "caution"))
+    good = sorted((flag(YA, "window") & flag(YB, "window")) - anyclash)   # never a good year that clashes a pillar
+    gentle = sorted(set(care) | set(clashed) | set(fuyin))
+
+    def why(y):
+        bits = ([f"{w}'s day pillar is clashed by {g}" for w, g in clashed.get(y, [])]
+                + [f"the year repeats {w}'s day pillar {g} (伏吟)" for w, g in fuyin.get(y, [])])
+        return " and ".join(bits) if bits else "both charts mark it for care"
+    tl = []
+    if gentle:
+        tl.append("Years to go gently: " + _semi([f"{y}, when {why(y)}" for y in gentle], cap=4)
+                  + f". Keep {_THINGS.get(voice, _THINGS['adult'])} out of {'it' if len(gentle) == 1 else 'them'}.")
+    if good:
+        tl.append(f"Good {'year' if len(good) == 1 else 'years'} for the two of them: {', '.join(map(str, good))}.")
+    timing = ("Timing, 2026 to 2031. " + " ".join(tl)) if tl else "Timing, 2026 to 2031: no year stands out for the two of them."
+
+    acts = []
+    if clashed:                                                         # A1
+        y = min(clashed); w, _ = clashed[y][0]
+        age = (ages[0] if w == na else ages[1]) + (y - 2026)            # age in that year
+        if age < 13:
+            acts.append((9, f"In {y}, keep {w}'s routine steady and avoid big changes for them."))
+        elif age < 18:
+            acts.append((9, f"In {y}, keep {w}'s school year steady and avoid big changes for them."))
+        else:
+            acts.append((9, f"In {y}, let {w} set the pace" + (" and book a health check-up." if age >= 65 else " and plan lighter commitments.")))
+    cells = [x for row in (pair.get("sweep_matrix") or []) for x in row if x["relation"] and not x["bond"]]
+    cells.sort(key=lambda x: (not x["scored"], x["pillar_a"] != "day"))
+    if cells and cells[0]["relation"] in _HABIT:                        # A2
+        x = cells[0]
+        area = _AREA["day" if "day" in (x["pillar_a"], x["pillar_b"]) else x["pillar_a"]]
+        habit = (_HABIT_KID if voice == "child" else _HABIT)[x["relation"]].format(a=area)
+        acts.append((8 if x["scored"] else 5,
+                     f"Because of the {KIND_EN[x['relation']]} between {na}'s {x['pillar_a']} pillar and {nb}'s {x['pillar_b']} pillar, {habit}."))
+    tg = lambda p: p.get("tengods_pct") or {}
+    if any(tg(p).get("傷官", 0) >= 20 for p in (pa, pb)) or any(x["relation"] == "刑" and x["scored"] for x in cells):   # A5
+        acts.append((6, "Agree a pause rule in advance: when voices rise, stop and come back to it after an hour."))
+    ya, yb = ages
+    if voice == "child":                                                # A3, only on a chart fact
+        kidn, kidp = (na, pa) if ya < yb else (nb, pb)
+        press = tg(kidp).get("七殺", 0) + tg(kidp).get("傷官", 0)
+        if press >= 15:
+            acts.append((7, f"With {kidn}, keep rules few, steady and explained: pressure lands hard on this chart (七殺 and 傷官 together {press:.0f}%)."))
+    elif min(ya, yb) >= 18 and max(ya, yb) >= 65 and abs(ya - yb) >= 18:   # A4 (rel slot: family; age alone today)
+        acts.append((7, "Talk through support, health and household plans together"
+                     + (f" before {gentle[0]}." if gentle else " while things are calm.")))
+    rows = m.get("rows") or []
+    if voice == "adult" and any(r.get("kind") == "peers" for r in rows):   # A6
+        acts.append((5, "Write down who owns what: money, decisions and time."))
+    wp = next((r for r in rows if r.get("kind") == "wealth_peers"), None)
+    if voice == "adult" and wp:                                         # A7
+        acts.append((4, f"Keep money matters explicit: agree in writing who pays for what, since {wp['giver']}'s chart is strong in wealth and {wp['receiver']}'s is heavy in peers."))
+    rooms = _rooms_line(pair.get("arithmetic") or [])
+    if rooms:                                                           # A8
+        acts.append((2, rooms))
+    return timing, [a for _, a in sorted(acts, key=lambda t: -t[0])[:3]]
 
 
 def pair_full(ca, cb, ys_a, ys_b, pa: dict, pb: dict) -> dict:
@@ -664,7 +791,7 @@ def pair_full(ca, cb, ys_a, ys_b, pa: dict, pb: dict) -> dict:
 # ---------------------------------------------------------------------------
 _BONDS = ("六合", "半三合")
 _KIND_DAY = {"六合": ("日常习惯自然对上", "Daily habits line up on their own"),
-             "半三合": ("同频，容易并肩做事", "A shared current: easy to work alongside"),
+             "半三合": ("同频，容易并肩做事", "A shared current: easy to move in step"),
              "六沖": ("反应来得快、来得热——大事慢半拍再定", "Reactions run hot and fast, so take your time with big decisions"),
              "刑": ("摩擦在沉默里积累——早说", "Friction builds quietly when nobody speaks, so talk early"),
              "六害": ("小的耗损来自各自的假设——多交代背景", "Small drains come from mismatched assumptions, so explain the background")}
@@ -696,28 +823,32 @@ def sweep_reading(ca, cb, sweep: list[dict], voice: str = "adult") -> dict:
     if not sweep:
         return _bi("两盘四柱之间没有合冲刑害——这对关系靠五行与十神运转，不靠地支的化学反应。",
                    "No part of one chart links with any part of the other. This pair runs on the elements and the Ten Gods, not on branch links.")
-    # prefer a cell that is counted in the score; otherwise say plainly it is descriptive
-    key = (next((x for x in sweep if x["pillar_a"] == x["pillar_b"] == "day"), None)
-           or next((x for x in sweep if x["already_scored"]), None)
-           or (fric[0] if fric else bonds[0]))
-    kind = key["relation"]["zh"]
-    pal = lambda x: f"{na}'s {_pal_en(x['pillar_a'], kid)} with {nb}'s {_pal_en(x['pillar_b'], kid)}"
-    palz = lambda x: f"{na}的{PALACE_ZH[x['pillar_a']][1]}对{nb}的{PALACE_ZH[x['pillar_b']][1]}"
-    if key["pillar_a"] == key["pillar_b"] == "day":
-        where = "their day pillars, the core of each chart" if kid else "their day pillars"
-    else:
-        where = pal(key)
-    en = (f"{len(bonds)} bond{'s' if len(bonds) != 1 else ''} and {len(fric)} friction{'s' if len(fric) != 1 else ''} across the sixteen pairings. "
-          + (f"Bonds: {'; '.join(pal(x) for x in bonds[:2])}. " if bonds else "")
-          + (f"Frictions: {'; '.join(pal(x) for x in fric[:2])}. " if fric else "")
-          + f"The clearest pairing is {where}: {KIND_EN[kind]}, {key['relation']['en']}. "
-          + ("Already counted in the score." if key["already_scored"] else "Not counted in the score.")
-          + f" Day to day: {_KIND_DAY[kind][1][0].lower() + _KIND_DAY[kind][1][1:]}.")
+    # B5: every pairing named with its palaces and kind; ", scored" only on day-day and year-year
+    pal = lambda x: (f"{na}'s {x['pillar_a']} pillar with {nb}'s {x['pillar_b']} pillar "
+                     f"({KIND_EN[x['relation']['zh']]}{', scored' if x['already_scored'] else ''})")
+    palz = lambda x: (f"{na}的{PALACE_ZH[x['pillar_a']][0]}对{nb}的{PALACE_ZH[x['pillar_b']][0]}"
+                      f"（{x['relation']['zh']}{'，已计分' if x['already_scored'] else ''}）")
+    en = (f"{len(bonds)} bond{'s' if len(bonds) != 1 else ''} and {len(fric)} friction{'s' if len(fric) != 1 else ''} across the sixteen pairings."
+          + (f" Bonds: {'; '.join(pal(x) for x in bonds)}." if bonds else "")
+          + (f" Frictions: {'; '.join(pal(x) for x in fric)}." if fric else ""))
     zh = (f"十六组地支中有{len(bonds)}处相合、{len(fric)}处相冲刑害。"
-          + (f"相合落在{'；'.join(palz(x) for x in bonds[:2])}。" if bonds else "")
-          + (f"冲刑害落在{'；'.join(palz(x) for x in fric[:2])}。" if fric else "")
-          + f"最要紧的一格是{palz(key)}——{kind}，{REL_GLOSS[kind][0]}"
-          + ("（已计分）" if key["already_scored"] else "（描述性，不计分）") + f"。日常表现：{_KIND_DAY[kind][0]}。")
+          + (f"相合：{'；'.join(palz(x) for x in bonds)}。" if bonds else "")
+          + (f"冲刑害：{'；'.join(palz(x) for x in fric)}。" if fric else ""))
+    # B6: a Day Master combining with a non-day stem of the partner, when the Day Masters themselves do not
+    sa = {k: ca.pillars[k].stem for k in PALACES}
+    sb = {k: cb.pillars[k].stem for k in PALACES}
+    cross, crossz = [], []
+    for k, s in sb.items():
+        if k != "day" and WUHE.get(sa["day"]) == s:
+            cross.append(f"{na}'s Day Master {sa['day']} combines with {nb}'s {k} stem {s}")
+            crossz.append(f"{na}日主{sa['day']}合{nb}{PALACE_ZH[k][0]}天干{s}")
+    for k, s in sa.items():
+        if k != "day" and WUHE.get(sb["day"]) == s:
+            cross.append(f"{nb}'s Day Master {sb['day']} combines with {na}'s {k} stem {s}")
+            crossz.append(f"{nb}日主{sb['day']}合{na}{PALACE_ZH[k][0]}天干{s}")
+    if cross and WUHE.get(sa["day"]) != sb["day"]:
+        en += f" Stems: {_semi(cross)} (Five Combination, 五合); a pull between them, not counted in the score."
+        zh += f"天干：{'；'.join(crossz)}（五合），有牵引之力，不计分。"
     return _bi(zh, en)
 
 
@@ -765,13 +896,21 @@ def framings_table(pair: dict, modern: dict) -> dict:
                 used.add(c["en"])
                 return c
         return cands[0] if cands else fallback
+    # B10: one hint so a framing never contradicts the scored factors
+    scored = [r for r in arith if r.get("kind") in ("day", "year", "stem") and r["delta"]]
+    neg = min(scored, key=lambda r: r["delta"], default=None)
+    pos = max(scored, key=lambda r: r["delta"], default=None)
+    hi = pair.get("score", 0) >= 55
+    hint = (f" One thing to manage: {neg['plain']}." if hi and neg and neg["delta"] < 0 else
+            f" One real strength: {pos['plain']}." if not hi and pos and pos["delta"] > 0 else "")
     ul, uw = set(), set()
     out = {}
     for ctx, lean, watch in (
             ("family", [yearb, *supply], [yearf, *domf, conf]),
             ("couple", [dayb, *supply, ws], [dayf, conf, *domf]),
             ("colleagues", [comp, ws, *supply], [coll, *domf, conf])):
-        out[ctx] = {"meaning": fr.get(ctx, _bi("", "")),
+        mean = fr.get(ctx, _bi("", ""))
+        out[ctx] = {"meaning": {"zh": mean["zh"], "en": (mean["en"] + hint) if mean["en"] else mean["en"]},
                     "lean_on": pick(lean, ul, none_lean),
                     "watch": pick(watch, uw, none_watch)}
     return out

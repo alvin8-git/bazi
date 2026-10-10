@@ -4,6 +4,9 @@
 <title>BaZi Calculator, Home Feng Shui and Baby Names | bazifor.me</title>
 <meta name="description" content="Free BaZi (八字) chart, home feng shui from your floor plan and Chinese baby names, each citing its classical rule. Any birth city, converted to true solar time.">
 <link rel="canonical" href="https://bazifor.me/">
+<link rel="alternate" hreflang="en" href="https://bazifor.me/">
+<link rel="alternate" hreflang="zh-CN" href="https://bazifor.me/zh">
+<link rel="alternate" hreflang="x-default" href="https://bazifor.me/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/static/img/brand/icon-32.png">
@@ -120,7 +123,7 @@ footer a{color:var(--accent)}
 footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 6px}
 .verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#6b6359;z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
 :root{--wood:#187a35;--fire:#c5221f;--earth:#7a601b;--metal:#8a6500;--water:#1a56b0}.el-wood{color:var(--wood)}.el-fire{color:var(--fire)}.el-earth{color:var(--earth)}.el-metal{color:var(--metal)}.el-water{color:var(--water)}.zh[data-tip]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;border-radius:2px}.zh[data-tip]:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}.gl-tip{position:fixed;z-index:9999;max-width:calc(100vw - 32px);width:max-content;background:#2b2620;color:#fff;font:500 14px/1.45 system-ui,sans-serif;padding:6px 10px;border-radius:8px;box-shadow:0 4px 14px rgba(43,38,32,.25);opacity:0;transition:opacity .15s;pointer-events:none;text-align:left;white-space:normal}.gl-tip.on{opacity:1}@media (prefers-reduced-motion:reduce){.gl-tip{transition:none}}
-</style></head><body>
+/*langtoggle*/a.langtoggle{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:44px;height:44px;flex:none;margin:0 0 0 8px;padding:0;border:1px solid var(--line,#e5ded2);border-radius:50%;background:transparent;color:var(--ink,#2b2620);font:600 14px/1 system-ui,"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;text-decoration:none;vertical-align:middle}a.langtoggle::before{content:attr(data-l)}.top .topnav{margin-left:auto}a.langtoggle:hover{background:rgba(0,0,0,.05)}a.langtoggle:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}/*/langtoggle*/</style></head><body>
 <a class="skip" href="#main">Skip to content</a>
 <span class="verbadge" id="ver"></span>
 <script>fetch("/api/pub/version").then(r=>r.json())
@@ -130,7 +133,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
     <a class="logo" href="/" aria-label="bazifor.me home"><img src="/static/img/brand/icon-64.png" width="32" height="32" alt="">bazifor.me</a>
     <nav class="topnav" aria-label="Tools">
       <a href="/start">BaZi reading</a><a href="/fengshui">Home feng shui</a><a href="/kua">Kua number</a><a href="/baby">Baby names</a><a href="/learn">Guides</a>
-    </nav>
+    </nav><a class="langtoggle" href="/zh" hreflang="zh-CN" lang="zh-CN" aria-label="中文版" data-l="中文" onclick="try{localStorage.setItem('lang','zh')}catch(e){}"></a>
   </div>
   <div class="hero">
     <div>

@@ -1,0 +1,222 @@
+{
+ "about.001": {
+  "en": "About bazifor.me — Classical Methods, Checkable Answers",
+  "zh": "关于 bazifor.me：古法为本，答案可查"
+ },
+ "about.002": {
+  "en": "bazifor.me is a deterministic BaZi and fengshui engine: classical rules encoded and cited, validated against a paid professional audit, built for families making real decisions.",
+  "zh": "bazifor.me 是一个确定性的八字与风水引擎：古法规则编码成程序并注明出处，对照一份付费专业风水评估报告做过验证，为需要做实际决定的家庭而建。"
+ },
+ "about.003": {
+  "en": "About bazifor.me",
+  "zh": "关于 bazifor.me"
+ },
+ "about.004": {
+  "en": "Classical methods, checkable answers. A deterministic engine that cites every rule it applies.",
+  "zh": "古法为本，答案可查。一个会为所用的每条规则注明出处的确定性引擎。"
+ },
+ "about.005": {
+  "en": "https://bazifor.me/static/og/about.png",
+  "zh": "(same)"
+ },
+ "about.006": {
+  "en": "summary_large_image",
+  "zh": "(same)"
+ },
+ "about.007": {
+  "en": "bazifor.me",
+  "zh": "八字为我"
+ },
+ "about.008": {
+  "en": "Your Reading",
+  "zh": "你的解读"
+ },
+ "about.009": {
+  "en": "Home Fengshui",
+  "zh": "家居风水"
+ },
+ "about.010": {
+  "en": "Learn",
+  "zh": "学习"
+ },
+ "about.011": {
+  "en": "How It Works",
+  "zh": "运作原理"
+ },
+ "about.012": {
+  "en": "FAQ",
+  "zh": "常见问题"
+ },
+ "about.013": {
+  "en": "About bazifor.me (",
+  "zh": "关于 bazifor.me（"
+ },
+ "about.014": {
+  "en": "bazifor.me began with a family question and an engineer's irritation. The question: which bedroom should each child sleep in, which way should the beds point, when should we move? The irritation: every answer available was either a paid consultation you had to take on faith, or an AI chatbot that produced different answers each time you asked.",
+  "zh": "bazifor.me 起于一个家庭的疑问，和一位工程师的恼火。疑问是：每个孩子该睡哪间房，床头朝哪个方向，什么时候搬家？恼火的是：能找到的答案，要么是只能凭信任的付费咨询，要么是每问一次就换一个答案的 AI 聊天机器人。"
+ },
+ "about.015": {
+  "en": "The classical literature — BaZi (",
+  "zh": "古典文献中的"
+ },
+ "about.016": {
+  "en": ") four pillars, Eight House (",
+  "zh": "四柱、"
+ },
+ "about.017": {
+  "en": "), Flying Stars (",
+  "zh": "、"
+ },
+ "about.018": {
+  "en": "), date selection (",
+  "zh": "、"
+ },
+ "about.019": {
+  "en": ") — turns out to be far more",
+  "zh": "，其实比它神秘的名声让人以为的更"
+ },
+ "about.020": {
+  "en": "procedural",
+  "zh": "有章可循"
+ },
+ "about.021": {
+  "en": "than its mystique suggests. Rules, tables, precedence orders. So we did what engineers do:",
+  "zh": "。有规则，有表格，有先后次序。所以我们做了工程师会做的事："
+ },
+ "about.022": {
+  "en": "encoded the procedures, tested them against benchmarks, and made every output cite its source.",
+  "zh": "把流程编成代码，用基准来检验，并让每一项输出都注明来源。"
+ },
+ "about.023": {
+  "en": "What we believe (",
+  "zh": "我们的信念（"
+ },
+ "about.024": {
+  "en": "1 · Computation before interpretation.",
+  "zh": "1 · 先计算，后解读。"
+ },
+ "about.025": {
+  "en": "The calendar math has one right answer; get it exactly right (Start of Spring (",
+  "zh": "历法推算只有一个正确答案，要先算得分毫不差，才能谈论任何人的人生（"
+ },
+ "about.026": {
+  "en": ") boundaries, true solar time, historical clock regimes) before saying anything about a life.",
+  "zh": "的交接时刻、真太阳时、历史上的各种时制）。"
+ },
+ "about.027": {
+  "en": "2 · Every claim carries its citation.",
+  "zh": "2 · 每个结论都附有出处。"
+ },
+ "about.028": {
+  "en": "A reading you cannot check is a performance. Each line of a bazifor.me reading names the classical rule that produced it — so you can look the rule up, disagree with the school, or verify the arithmetic.",
+  "zh": "无法核对的解读，只是一场表演。bazifor.me 解读里的每一句话，都会写明所依据的古法规则，所以你可以查证规则、不认同某个流派的说法，也可以自己验算。"
+ },
+ "about.029": {
+  "en": "3 · No AI guesswork at reading time.",
+  "zh": "3 · 解读时不靠 AI 猜测。"
+ },
+ "about.030": {
+  "en": "No large language model generates your results. The engine is deterministic: same input, same output, forever — which is what makes validation possible at all.",
+  "zh": "没有任何大语言模型生成你的结果。引擎是确定性的：输入相同，输出永远相同，这正是验证得以成立的前提。"
+ },
+ "about.031": {
+  "en": "The benchmark test:",
+  "zh": "基准测试："
+ },
+ "about.032": {
+  "en": "we reproduced a professionally produced, paid fengshui audit to the digit — 27/27 flying-star palaces, 32/32 directional assignments — and match commercial chart products character-for-character on the calendar layer. That standard is only meetable by a system that computes.",
+  "zh": "我们复现了一份专业出具的付费风水评估报告，精确到每一个数字：27/27 个飞星宫位、32/32 项方位判定全部吻合；在历法层面，与商业排盘产品逐字一致。只有真正在计算的系统，才达得到这个标准。"
+ },
+ "about.033": {
+  "en": "Who it's for (",
+  "zh": "适合谁用"
+ },
+ "about.034": {
+  "en": "Families making real decisions: choosing between homes, allocating bedrooms, pointing beds and desks, naming a baby, picking a renovation window or a moving date. The tools handle up to eight people and six homes in one private workspace, in English and Simplified Chinese (",
+  "zh": "面向需要做实际决定的家庭：在几处房子之间选择、分配卧室、摆放床和书桌、给宝宝起名、挑装修时机或搬家日期。工具在一个个人空间里最多可容纳八个人、六处住宅，支持英文和简体中文"
+ },
+ "about.035": {
+  "en": "), with historical calendar handling for any birth city (yes, including Singapore's pre-1982 UTC+7:30 clock).",
+  "zh": "），并对任何出生城市做历史历法处理（是的，包括新加坡 1982 年前的 UTC+7:30 钟表时间）。"
+ },
+ "about.036": {
+  "en": "What it costs (",
+  "zh": "费用"
+ },
+ "about.037": {
+  "en": "Everything on the site is",
+  "zh": "本站所有内容在"
+ },
+ "about.038": {
+  "en": "free during early access",
+  "zh": "早期体验期间免费"
+ },
+ "about.039": {
+  "en": ". If paid tiers arrive later, the free chart and the citation-first principle stay.",
+  "zh": "。日后如果推出付费版本，免费命盘和“出处优先”的原则都会保留。"
+ },
+ "about.040": {
+  "en": "Data we use",
+  "zh": "我们用到的数据"
+ },
+ "about.041": {
+  "en": "Birth cities, their coordinates and time zones come from",
+  "zh": "出生城市及其坐标、时区来自"
+ },
+ "about.042": {
+  "en": "GeoNames",
+  "zh": "GeoNames"
+ },
+ "about.043": {
+  "en": "(cities15000, CC BY 4.0). Historical clock offsets come from the IANA time zone database.",
+  "zh": "（cities15000，CC BY 4.0）。历史上的钟表时差来自 IANA 时区数据库。"
+ },
+ "about.044": {
+  "en": "The best introduction is your own chart.",
+  "zh": "最好的介绍，就是你自己的命盘。"
+ },
+ "about.045": {
+  "en": "Get your free reading →",
+  "zh": "免费获取你的解读 →"
+ },
+ "about.046": {
+  "en": "© bazifor.me — deterministic BaZi & fengshui readings.",
+  "zh": "© bazifor.me，按固定规则推算的八字与风水解读。"
+ },
+ "about.047": {
+  "en": "BaZi",
+  "zh": "八字"
+ },
+ "about.048": {
+  "en": "Home fengshui",
+  "zh": "家居风水"
+ },
+ "about.049": {
+  "en": "Baby names",
+  "zh": "宝宝起名"
+ },
+ "about.050": {
+  "en": "Kua number",
+  "zh": "命卦"
+ },
+ "about.051": {
+  "en": "Guides in Chinese (",
+  "zh": "中文指南"
+ },
+ "about.052": {
+  "en": "How it works",
+  "zh": "运作原理"
+ },
+ "about.053": {
+  "en": "About",
+  "zh": "关于"
+ },
+ "about.054": {
+  "en": "Method",
+  "zh": "方法"
+ },
+ "about.055": {
+  "en": "Author",
+  "zh": "作者"
+ }
+}

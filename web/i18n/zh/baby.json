@@ -1,0 +1,502 @@
+{
+ "baby.001": {
+  "en": "Chinese Baby Name Generator by Birth Date | bazifor.me",
+  "zh": "宝宝起名：按出生日期生成名字 / bazifor.me"
+ },
+ "baby.002": {
+  "en": "Build a Chinese baby name from the birth chart: 用神 elements, 五格 strokes, 三才, meaning, sound and gender fit scored, plus a printable certificate. Free to use.",
+  "zh": "依据宝宝的八字起名：用神五行、五格笔画、三才、字义、读音和性别契合度逐项打分，并可打印起名证书。免费使用。"
+ },
+ "baby.003": {
+  "en": "website",
+  "zh": "(same)"
+ },
+ "baby.004": {
+  "en": "https://bazifor.me/baby",
+  "zh": "(same)"
+ },
+ "baby.005": {
+  "en": "https://bazifor.me/static/og/baby.png",
+  "zh": "(same)"
+ },
+ "baby.006": {
+  "en": "summary_large_image",
+  "zh": "(same)"
+ },
+ "baby.007": {
+  "en": "Baby name builder (",
+  "zh": "宝宝起名工具"
+ },
+ "baby.008": {
+  "en": "The chart, its useful god (",
+  "zh": "命盘、用神"
+ },
+ "baby.009": {
+  "en": "), and a name you build character by character, every rule cited.",
+  "zh": "，以及逐字组合、每条规则都注明出处的名字。"
+ },
+ "baby.010": {
+  "en": "← people workspace",
+  "zh": "← 人物空间"
+ },
+ "baby.011": {
+  "en": "About this tool",
+  "zh": "关于此工具"
+ },
+ "baby.012": {
+  "en": "Get a scored Chinese name for your baby, built from the baby's own chart.",
+  "zh": "依据宝宝自己的八字，生成带评分的中文名字。"
+ },
+ "baby.013": {
+  "en": "You need the surname character, sex, and the birth or due date and time.",
+  "zh": "需要提供姓氏用字、性别，以及出生或预产日期和时间。"
+ },
+ "baby.014": {
+  "en": "You get useful elements, five grids, a ranked shortlist and a printable name card.",
+  "zh": "你会得到用神五行、五格、按分数排序的候选名单，以及可打印的名字卡。"
+ },
+ "baby.015": {
+  "en": "Watercolour of a plum branch in blossom over a folded swaddling cloth with a small jade longevity lock",
+  "zh": "水彩画：一枝盛开的梅花，下方是折起的襁褓布和一枚小小的长命玉锁"
+ },
+ "baby.016": {
+  "en": "Step 1 · The baby",
+  "zh": "第一步 · 宝宝信息"
+ },
+ "baby.017": {
+  "en": "Five details give the chart. Only the date is required.",
+  "zh": "填写五项信息即可排盘，只有日期必填。"
+ },
+ "baby.018": {
+  "en": "Family surname",
+  "zh": "姓氏"
+ },
+ "baby.019": {
+  "en": "Enter the Chinese character. Tan, Lim, Lee, Ng and Wong are spellings of a character.",
+  "zh": "请输入汉字姓氏。Tan、Lim、Lee、Ng、Wong 这类写法只是汉字的拼写，并非汉字本身。"
+ },
+ "baby.020": {
+  "en": "Sex",
+  "zh": "性别"
+ },
+ "baby.021": {
+  "en": "M (male)",
+  "zh": "男"
+ },
+ "baby.022": {
+  "en": "F (female)",
+  "zh": "女"
+ },
+ "baby.023": {
+  "en": "Birth or due date",
+  "zh": "出生或预产日期"
+ },
+ "baby.024": {
+  "en": "An expected date gives a provisional chart. Run it again after the birth.",
+  "zh": "预产期排出的是暂定命盘，宝宝出生后请重新计算。"
+ },
+ "baby.025": {
+  "en": "Time (12:00 if unknown)",
+  "zh": "时间（不知道就填 12:00）"
+ },
+ "baby.026": {
+  "en": "Clock time where the baby is born. Use 12:00 if you do not know it.",
+  "zh": "出生地当地的钟表时间。不清楚就填 12:00。"
+ },
+ "baby.027": {
+  "en": "Country of birth",
+  "zh": "出生国家"
+ },
+ "baby.028": {
+  "en": "Singapore",
+  "zh": "新加坡"
+ },
+ "baby.029": {
+  "en": "City of birth",
+  "zh": "出生城市"
+ },
+ "baby.030": {
+  "en": "Pick the nearest city: its longitude and time zone set true solar time.",
+  "zh": "请选最近的城市：系统按它的经度和时区换算真太阳时。"
+ },
+ "baby.031": {
+  "en": "Given name (optional, 1–2 characters)",
+  "zh": "名字（选填，1–2 个字）"
+ },
+ "baby.032": {
+  "en": "evaluate a chosen name",
+  "zh": "为已选好的名字打分"
+ },
+ "baby.033": {
+  "en": "Optional: score a name you already have in mind.",
+  "zh": "选填：为你已经想好的名字打分。"
+ },
+ "baby.034": {
+  "en": "Start naming",
+  "zh": "开始起名"
+ },
+ "baby.035": {
+  "en": "Full BaZi report",
+  "zh": "完整八字报告"
+ },
+ "baby.036": {
+  "en": "For a due date the chart is provisional, recalculate after birth with the exact time. The clock time is turned into true solar time for the birth city. Birth data is not stored by this page.",
+  "zh": "若为预产期，命盘只是暂定，宝宝出生后请按准确时间重新计算。钟表时间会按出生城市换算为真太阳时。本页不会保存出生数据。"
+ },
+ "baby.037": {
+  "en": "What you will get",
+  "zh": "你将得到什么"
+ },
+ "baby.038": {
+  "en": "Watercolour of a calligraphy brush resting beside an inkstone and a pine sprig",
+  "zh": "水彩画：一支毛笔搁在砚台旁，边上有一枝松枝"
+ },
+ "baby.039": {
+  "en": "Example baby name card for the fictional name 王禄婷 with the seven-part score bars",
+  "zh": "虚构名字王禄婷的示例名字卡，带七项评分条"
+ },
+ "baby.040": {
+  "en": "What you will get: the baby's useful elements, a ranked shortlist, and a name card you can print. The card shown is fictional.",
+  "zh": "你将得到什么：宝宝的用神五行、按分数排序的候选名单，以及可打印的名字卡。图中的名字卡为虚构。"
+ },
+ "baby.041": {
+  "en": "What the name builder returns",
+  "zh": "起名工具会给出什么"
+ },
+ "baby.042": {
+  "en": "The seven scoring parts, the grades and the sound check.",
+  "zh": "七项评分、等级和读音检查。"
+ },
+ "baby.043": {
+  "en": "Every name you build is scored out of 100 in seven parts, and each part has a fixed weight:",
+  "zh": "你组合出的每个名字都按 100 分制、分七项评分，每项权重固定："
+ },
+ "baby.044": {
+  "en": "Useful god",
+  "zh": "用神"
+ },
+ "baby.045": {
+  "en": "30 (does each character carry an element your baby's BaZi chart needs:",
+  "zh": "30（每个字是否带有宝宝八字所需的五行："
+ },
+ "baby.046": {
+  "en": "Wood",
+  "zh": "木"
+ },
+ "baby.047": {
+  "en": "Fire",
+  "zh": "火"
+ },
+ "baby.048": {
+  "en": "Earth",
+  "zh": "土"
+ },
+ "baby.049": {
+  "en": "Metal",
+  "zh": "金"
+ },
+ "baby.050": {
+  "en": "or",
+  "zh": "或"
+ },
+ "baby.051": {
+  "en": "Water",
+  "zh": "水"
+ },
+ "baby.052": {
+  "en": "Five Grids (",
+  "zh": "五格"
+ },
+ "baby.053": {
+  "en": "25 (the five stroke-count grids),",
+  "zh": "25（由笔画数算出的五个格），"
+ },
+ "baby.054": {
+  "en": "Three Talents (",
+  "zh": "三才"
+ },
+ "baby.055": {
+  "en": "15 (whether the elements of the heaven, person and earth grids support each other),",
+  "zh": "15（天格、人格、地格的五行是否相生），"
+ },
+ "baby.056": {
+  "en": "character meaning (",
+  "zh": "字义"
+ },
+ "baby.057": {
+  "en": "10 (what the characters mean, in 16 meaning categories),",
+  "zh": "10（字的含义，分为 16 个含义类别），"
+ },
+ "baby.058": {
+  "en": "sound (",
+  "zh": "读音"
+ },
+ "baby.059": {
+  "en": "5 (tones, repeated sounds and unlucky homophones),",
+  "zh": "5（声调、重复的音和不吉利的谐音），"
+ },
+ "baby.060": {
+  "en": "gender fit (",
+  "zh": "性别契合"
+ },
+ "baby.061": {
+  "en": "5 (whether the characters suit a boy or a girl) and",
+  "zh": "5（这些字更适合男孩还是女孩），以及"
+ },
+ "baby.062": {
+  "en": "confidence (",
+  "zh": "可信度"
+ },
+ "baby.063": {
+  "en": "10 (how far the engine can trust the data behind the other parts). The weights add up to 100.",
+  "zh": "10（引擎对其他各项所依据数据的可信程度）。各项权重相加为 100。"
+ },
+ "baby.064": {
+  "en": "The total maps to a grade:",
+  "zh": "总分对应的等级："
+ },
+ "baby.065": {
+  "en": "excellent (",
+  "zh": "上佳"
+ },
+ "baby.066": {
+  "en": "at 90 and above,",
+  "zh": "90 分及以上，"
+ },
+ "baby.067": {
+  "en": "good (",
+  "zh": "佳"
+ },
+ "baby.068": {
+  "en": "at 80 and above,",
+  "zh": "80 分及以上，"
+ },
+ "baby.069": {
+  "en": "fair (",
+  "zh": "可"
+ },
+ "baby.070": {
+  "en": "at 65 and above, and",
+  "zh": "65 分及以上，"
+ },
+ "baby.071": {
+  "en": "needs a second look (",
+  "zh": "待斟酌"
+ },
+ "baby.072": {
+  "en": "below 65. A strong sound hit caps the grade at needs a second look whatever the total.",
+  "zh": "低于 65 分。读音一旦命中严重问题，无论总分多少，等级最高只到“待斟酌”。"
+ },
+ "baby.073": {
+  "en": "The sound layer checks two things. It looks for Mandarin sound-alikes, characters that sound like an unlucky or rude word, and it checks the English reading of the pinyin, since many Singapore and Malaysia families raise children who will be addressed in English at school and at work. Beside the score you also get the Five Grids with their auspicious (",
+  "zh": "读音检查分两部分。一是找普通话里的谐音，即听起来像不吉利或粗俗词语的字；二是检查拼音的英文读法，因为不少新加坡和马来西亚的家庭，孩子在学校和工作中都会被人用英文称呼。除了分数，你还会看到五格的"
+ },
+ "baby.074": {
+  "en": ") or adverse (",
+  "zh": "或"
+ },
+ "baby.075": {
+  "en": ") verdicts, the element of every character, its Kangxi (",
+  "zh": "判断，每个字的五行，其"
+ },
+ "baby.076": {
+  "en": ") stroke count, a short reading of what the name suggests, and a shortlist of up to eight names you can compare.",
+  "zh": "笔画数，一段简短的名字寓意解读，以及最多八个名字的候选名单，方便你比较。"
+ },
+ "baby.077": {
+  "en": "How Singapore and Malaysia names are handled",
+  "zh": "新加坡和马来西亚的名字如何处理"
+ },
+ "baby.078": {
+  "en": "Romanised surnames, Kangxi strokes and true solar time.",
+  "zh": "罗马字母拼写的姓氏、康熙笔画与真太阳时。"
+ },
+ "baby.079": {
+  "en": "Families in Singapore and Malaysia usually know their surname by a Hokkien, Teochew or Cantonese romanisation such as Tan, Lim, Lee, Ng or Wong, while the scoring needs the Chinese character. Enter the Chinese surname you choose in the surname box (for example",
+  "zh": "新加坡和马来西亚的家庭，通常只知道姓氏的闽南话、潮州话或粤语拼写，如 Tan、Lim、Lee、Ng、Wong，而评分需要的是汉字。请在姓氏框里输入你选定的汉字姓氏（例如"
+ },
+ "baby.080": {
+  "en": ") and the builder uses that character for the stroke count and the grids. The romanised spelling on a passport is a spelling of the character, not a different surname, so pick the character your family writes.",
+  "zh": "），起名工具会用这个字计算笔画和五格。护照上的罗马字母拼写只是汉字的一种拼写，并不是另一个姓，所以请选你们家实际书写的那个字。"
+ },
+ "baby.081": {
+  "en": "The Five Grids use the",
+  "zh": "五格采用"
+ },
+ "baby.082": {
+  "en": "Kangxi",
+  "zh": "康熙"
+ },
+ "baby.083": {
+  "en": "stroke count from the Kangxi dictionary, which counts the traditional form of each character. The traditional",
+  "zh": "笔画数，出自《康熙字典》，按每个字的繁体字形计数。繁体的"
+ },
+ "baby.084": {
+  "en": "has more strokes than the simplified",
+  "zh": "笔画比简体的"
+ },
+ "baby.085": {
+  "en": ", so the builder counts the traditional form and shows you the strokes it used. The chart is calculated in true solar time for the birth city (Singapore unless you pick another), and a due date gives a provisional chart that you can recalculate after birth. Read",
+  "zh": "多，所以起名工具按繁体字形计数，并把所用的笔画数显示给你。命盘按出生城市的真太阳时计算（不选其他城市就默认新加坡），预产期给出的是暂定命盘，出生后可以重新计算。请阅读"
+ },
+ "baby.086": {
+  "en": "how Chinese baby names are scored",
+  "zh": "宝宝名字如何评分"
+ },
+ "baby.087": {
+  "en": "for the full method.",
+  "zh": "，了解完整方法。"
+ },
+ "baby.088": {
+  "en": "Example output",
+  "zh": "示例结果"
+ },
+ "baby.089": {
+  "en": "Three fictional names for one fictional chart.",
+  "zh": "同一个虚构命盘的三个虚构名字。"
+ },
+ "baby.090": {
+  "en": "Fictional example, computed by the engine.",
+  "zh": "虚构示例，由引擎计算得出。"
+ },
+ "baby.091": {
+  "en": "A fictional baby girl born 2026-03-15 09:30 Singapore time, surname",
+  "zh": "一位虚构的女宝宝，出生于 2026-03-15 09:30（新加坡时间），姓氏"
+ },
+ "baby.092": {
+  "en": ". The three names below are real engine output for that chart; each scores good or better.",
+  "zh": "。下面三个名字是该命盘的真实引擎输出，评分均为佳或以上。"
+ },
+ "baby.093": {
+  "en": "Fictional example, computed by the engine",
+  "zh": "虚构示例，由引擎计算得出"
+ },
+ "baby.094": {
+  "en": "Name",
+  "zh": "名字"
+ },
+ "baby.095": {
+  "en": "Elements",
+  "zh": "五行"
+ },
+ "baby.096": {
+  "en": "Kangxi strokes",
+  "zh": "康熙笔画"
+ },
+ "baby.097": {
+  "en": "Meaning",
+  "zh": "含义"
+ },
+ "baby.098": {
+  "en": "Score",
+  "zh": "得分"
+ },
+ "baby.099": {
+  "en": "Grade",
+  "zh": "等级"
+ },
+ "baby.100": {
+  "en": "(example name)",
+  "zh": "（示例名字）"
+ },
+ "baby.101": {
+  "en": "bright and harmonious; happy and content",
+  "zh": "明亮和谐；快乐知足"
+ },
+ "baby.102": {
+  "en": "excellent",
+  "zh": "上佳"
+ },
+ "baby.103": {
+  "en": "warm-hearted; fine jade, a guiding star",
+  "zh": "热忱；美玉，指路之星"
+ },
+ "baby.104": {
+  "en": "the hope of dawn; bright and open",
+  "zh": "晨曦的希望；明朗开阔"
+ },
+ "baby.105": {
+  "en": "Next steps",
+  "zh": "下一步"
+ },
+ "baby.106": {
+  "en": "Next step",
+  "zh": "下一步"
+ },
+ "baby.107": {
+  "en": "How Chinese baby names are scored",
+  "zh": "宝宝名字如何评分"
+ },
+ "baby.108": {
+  "en": "Open the people workspace",
+  "zh": "打开人物空间"
+ },
+ "baby.109": {
+  "en": "Learn:",
+  "zh": "学习："
+ },
+ "baby.110": {
+  "en": "What is BaZi?",
+  "zh": "什么是八字？"
+ },
+ "baby.111": {
+  "en": "Useful element colours",
+  "zh": "用神五行的颜色"
+ },
+ "baby.112": {
+  "en": "The five elements",
+  "zh": "五行"
+ },
+ "baby.113": {
+  "en": "© bazifor.me, deterministic BaZi & fengshui readings.",
+  "zh": "© bazifor.me，按固定规则推算的八字与风水解读。"
+ },
+ "baby.114": {
+  "en": "BaZi",
+  "zh": "八字"
+ },
+ "baby.115": {
+  "en": "Home fengshui",
+  "zh": "家居风水"
+ },
+ "baby.116": {
+  "en": "Baby names",
+  "zh": "宝宝起名"
+ },
+ "baby.117": {
+  "en": "Kua number",
+  "zh": "命卦"
+ },
+ "baby.118": {
+  "en": "Learn",
+  "zh": "学习"
+ },
+ "baby.119": {
+  "en": "Guides in Chinese (",
+  "zh": "中文指南"
+ },
+ "baby.120": {
+  "en": "How it works",
+  "zh": "运作原理"
+ },
+ "baby.121": {
+  "en": "About",
+  "zh": "关于"
+ },
+ "baby.122": {
+  "en": "FAQ",
+  "zh": "常见问题"
+ },
+ "baby.123": {
+  "en": "Method",
+  "zh": "方法"
+ },
+ "baby.124": {
+  "en": "Author",
+  "zh": "作者"
+ },
+ "baby.notice": {
+  "en": "A Chinese version of this page is coming soon.",
+  "zh": "此页面的中文版本即将推出"
+ }
+}

@@ -217,6 +217,7 @@ h2 .scorechip{float:right;margin-top:-2px}
 .role p{margin:4px 0}.role .rk span{font-size:12.5px;color:#5f574e}.role b.g{font:700 22px Georgia,"Noto Serif SC",serif}
 .frc{display:grid;gap:12px}.frc3{grid-template-columns:repeat(3,1fr)}.frc2{grid-template-columns:repeat(2,1fr)}
 .frc>div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px}.frc h3{margin:2px 0 4px}.frc p{margin:4px 0}
+.tline{margin-top:10px}.todo{margin:4px 0 0;padding-left:22px}.todo li{margin:5px 0;padding-left:2px}
 @media screen and (max-width:640px){.ptop{grid-template-columns:1fr}.pmid{order:-1}.hw,.roles,.frc3,.frc2{grid-template-columns:1fr}
   .br{grid-template-columns:1fr 100px 30px;font-size:13px}.dp{font-size:24px}}
 @media print{@page{size:A4;margin:9mm}
@@ -229,7 +230,9 @@ h2 .scorechip{float:right;margin-top:-2px}
   .psec h3{font-size:10px;margin:3px 0 2px}.hw,.roles{gap:6px}.fl{gap:2px}.fl li,.role,.frc>div{padding:2px 5px;font-size:8.2px;line-height:1.25}.ptop .ppc{max-height:96px}
   .gt{max-width:200px}.fig figcaption{font-size:7.5px}.dp{font-size:16px;padding:2px 6px}.rel i{width:60px}.rel span{font-size:8.5px}
   .br{font-size:8.5px;grid-template-columns:1fr 80px 22px;gap:4px}.bars{gap:1px;margin:2px 0}.track{height:9px}.br>b{font-size:9.5px}
-  .frc{gap:4px}.frc3{grid-template-columns:1fr 1fr 1fr}.psec details>summary::after{content:""}}
+  .frc{gap:4px}.frc3{grid-template-columns:1fr 1fr 1fr}.psec details>summary::after{content:""}
+  .tline{margin-top:3px}.todo{padding-left:14px;margin:0}.todo li{margin:1px 0;font-size:8.2px;line-height:1.25}
+  .pitem{font-size:8.2px;line-height:1.25}.foot{font-size:7px;margin-top:2px;padding-top:1px}.swtable th{padding:2px 1px}.swlegend{margin:2px 0}}
 </style></head><body>
 <div class="page">
   <div class="pair-band" aria-label="Pair compatibility">
@@ -460,7 +463,7 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
         <tr class="tot"><td>Score with the extra checks. The main score above does not change.</td><td></td><td class="pts">${d.modern.score_with_modern}</td></tr></table></div>` : "";
     /* what helps, what to watch: every scored plus with its action, every minus with its fix (the old factor drawer, merged) */
     const helps = d.strengths.map((s) => `<li><b class="pos">+${s.delta}</b> ${bi(s.chip_label)}<span class="x">${bi(s.explanation)}</span>${s.action ? `<span class="x act">${bi(s.action)}</span>` : ""}</li>`).join("");
-    const watch = d.frictions.map((f, i) => `<li><b class="neg">${f.delta}</b> ${bi(f.chip_label)}<span class="x">${bi(f.element.why)}</span>${f.behaviour ? `<span class="x act">${bi(f.behaviour)}</span>` : ""}${i === 0 && f.timing && /\w/.test(bi(f.timing)) ? `<span class="x act">${bi(f.timing)}</span>` : ""}</li>`).join("");
+    const watch = d.frictions.map((f, i) => `<li><b class="neg">${f.delta}</b> ${bi(f.chip_label)}<span class="x">${bi(f.element.why)}</span>${f.behaviour && f.behaviour.en ? `<span class="x act">${bi(f.behaviour)}</span>` : ""}${i === 0 && f.timing && /\w/.test(bi(f.timing)) ? `<span class="x act">${bi(f.timing)}</span>` : ""}</li>`).join("");
     /* how they see each other: one card per direction; under-13s get no "at work" line */
     const role = (who, r) => `<div class="role"><p class="rk"><b class="g" style="color:${TXT[r.element] || "inherit"}">${r.god}</b> <span>${esc(who)}</span></p><p>${bi(r)}</p>
       ${r.modern_home ? `<p><b>At home.</b> ${bi(r.modern_home).replace(/^At home:\s*/i, "")}</p>` : ""}${!kid && r.modern_work ? `<p><b>At work.</b> ${bi(r.modern_work).replace(/^At work:\s*/i, "")}</p>` : ""}</div>`;
@@ -479,6 +482,8 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
       .map(([l, key]) => F[k] && F[k][key] && bi(F[k][key]) ? `<p><b>${l}.</b> ${bi(F[k][key])}</p>` : "").join("")}</div>`).join("")}</div>
       <p class="cite2">Same score for all three. "What helps" and "What to watch" pick the factor that fits each view best.</p>` : "";
     const sec = (h, body, cls = "") => body ? `<section class="psec ${cls}"><h2>${h}</h2>${body}</section>` : "";
+    /* a year pillar such as 辛亥 stays two bare characters; the glossary must not expand it mid-sentence */
+    const gzKeep = (t) => esc(t).replace(/([甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥])/g, '<span class="keepzh" data-notip>$1</span>');
     rep.innerHTML = `
       <div class="rhead"><h1>${esc(d.a)} and ${esc(d.b)}</h1>
         <div class="rmeta">${new Date().toISOString().slice(0, 10)}<span id="verline"></span><br>Same birth details always give the same result. Every number names the classical rule behind it.</div></div>
@@ -486,7 +491,10 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
       ${d.report ? `<p class="prep-lede">${esc(d.report.summary)}</p>` : ""}
       <div class="pcols">
       ${sec("What helps, what to watch", `<div class="hw"><div><h3 class="pos">What helps</h3><ul class="fl">${helps || "<li>Nothing scored here.</li>"}</ul></div>
-        <div><h3 class="neg">What to watch</h3><ul class="fl">${watch || "<li>Nothing in the two charts works against the pair.</li>"}</ul></div></div>`)}
+        <div><h3 class="neg">What to watch</h3><ul class="fl">${watch || "<li>Nothing in the two charts works against the pair.</li>"}</ul></div></div>
+        ${d.report && d.report.timing_line ? `<p class="pitem tline">${gzKeep(d.report.timing_line)}</p>` : ""}`)}
+      ${d.report && d.report.actions && d.report.actions.length ? sec(`${["One thing", "Two things", "Three things"][d.report.actions.length - 1]} to do`,
+        `<ol class="todo">${d.report.actions.map((a) => `<li>${gzKeep(a)}</li>`).join("")}</ol>`) : ""}
       ${sec("Who supplies what", giveTake)}
       ${sec("How they see each other", `<div class="roles">${role(`${d.a} sees ${d.b}`, d.relation.a_sees_b)}${role(`${d.b} sees ${d.a}`, d.relation.b_sees_a)}</div>
         <p class="cite2">First line: the traditional meaning. At home${kid ? "" : " and At work"}: modern readings of it.</p>`)}

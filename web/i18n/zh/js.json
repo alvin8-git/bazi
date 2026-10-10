@@ -1,0 +1,390 @@
+{
+ "place.country": {
+  "en": "Country of birth",
+  "zh": "出生国家"
+ },
+ "place.city": {
+  "en": "City of birth",
+  "zh": "出生城市"
+ },
+ "place.cityHelp": {
+  "en": "Pick the nearest city: its longitude and time zone set true solar time.",
+  "zh": "请选最近的城市：它的经度和时区决定真太阳时。"
+ },
+ "card.helps": {
+  "en": "Helps",
+  "zh": "助益"
+ },
+ "card.avoid": {
+  "en": "Go easy on",
+  "zh": "宜少用"
+ },
+ "card.strongest": {
+  "en": "Strongest",
+  "zh": "最强"
+ },
+ "card.weakest": {
+  "en": "Weakest",
+  "zh": "最弱"
+ },
+ "card.decade": {
+  "en": "{0} decade",
+  "zh": "{0}大运"
+ },
+ "card.ages": {
+  "en": "ages {0}",
+  "zh": "{0} 岁"
+ },
+ "card.open": {
+  "en": "Open the reading",
+  "zh": "打开解读"
+ },
+ "card.edit": {
+  "en": "Edit",
+  "zh": "编辑"
+ },
+ "card.remove": {
+  "en": "Remove",
+  "zh": "删除"
+ },
+ "card.hourApprox": {
+  "en": "hour approximate",
+  "zh": "时辰为大致推算"
+ },
+ "card.you": {
+  "en": "you",
+  "zh": "你"
+ },
+ "card.pillars.year": {
+  "en": "year",
+  "zh": "年"
+ },
+ "card.pillars.month": {
+  "en": "month",
+  "zh": "月"
+ },
+ "card.pillars.day": {
+  "en": "you",
+  "zh": "你"
+ },
+ "card.pillars.hour": {
+  "en": "hour",
+  "zh": "时"
+ },
+ "card.areas.attraction": {
+  "en": "Love and attraction",
+  "zh": "爱情与吸引力"
+ },
+ "card.areas.stability": {
+  "en": "Steady relationships",
+  "zh": "稳定的感情关系"
+ },
+ "card.areas.career": {
+  "en": "Career",
+  "zh": "事业"
+ },
+ "card.areas.wealth": {
+  "en": "Money",
+  "zh": "财运"
+ },
+ "card.areas.learning": {
+  "en": "Learning",
+  "zh": "学习"
+ },
+ "card.areas.health": {
+  "en": "Health",
+  "zh": "健康"
+ },
+ "card.pair": {
+  "en": "{0} and {1}: {2}, {3}. Open the pair report",
+  "zh": "{0}与{1}：{2}，{3}。打开合婚报告"
+ },
+ "card.of100": {
+  "en": "{0} of 100",
+  "zh": "{0} 分（满分 100）"
+ },
+ "t.001": {
+  "en": "Four Pillars",
+  "zh": "四柱"
+ },
+ "t.002": {
+  "en": "Day Master",
+  "zh": "日主"
+ },
+ "t.003": {
+  "en": "Choose names with these elements",
+  "zh": "选用这些五行取名"
+ },
+ "t.004": {
+  "en": "Avoid these elements",
+  "zh": "避开这些五行"
+ },
+ "t.005": {
+  "en": "loading…",
+  "zh": "加载中…"
+ },
+ "t.006": {
+  "en": "No character matches these filters",
+  "zh": "没有符合筛选条件的字"
+ },
+ "t.007": {
+  "en": "characters",
+  "zh": "个字"
+ },
+ "t.008": {
+  "en": "Pick character 1",
+  "zh": "选第 1 个字"
+ },
+ "t.009": {
+  "en": "Pick character 2",
+  "zh": "选第 2 个字"
+ },
+ "t.010": {
+  "en": "Meaning — choose one",
+  "zh": "字义（单选）"
+ },
+ "t.011": {
+  "en": "Element",
+  "zh": "五行"
+ },
+ "t.012": {
+  "en": "Pinyin, no tones",
+  "zh": "拼音（不带声调）"
+ },
+ "t.013": {
+  "en": "Strokes (Kangxi): best reachable auspicious of 4",
+  "zh": "康熙笔画：最多可达到的吉数（共 4 项）"
+ },
+ "t.014": {
+  "en": "Strokes (Kangxi): auspicious of 4 with this stroke count",
+  "zh": "康熙笔画：该笔画数下的吉数（共 4 项）"
+ },
+ "t.015": {
+  "en": "Build the name",
+  "zh": "组合名字"
+ },
+ "t.016": {
+  "en": "optimising…",
+  "zh": "优化中…"
+ },
+ "t.017": {
+  "en": "Better alternatives — one character changed, the other kept",
+  "zh": "更好的备选：只换一个字，另一个保留"
+ },
+ "t.018": {
+  "en": "Best characters for the empty box",
+  "zh": "空格的最佳用字"
+ },
+ "t.019": {
+  "en": "Best characters for the empty boxes",
+  "zh": "两个空格的最佳用字"
+ },
+ "t.020": {
+  "en": "ranked by score: useful god 30 + Five Grids 25 + Three Talents 15 + character meaning 10 + sound 5 + gender fit 5 + confidence 10",
+  "zh": "按分数排序：用神 30 + 五格 25 + 三才 15 + 字义 10 + 读音 5 + 性别契合 5 + 可信度 10"
+ },
+ "t.021": {
+  "en": "elements",
+  "zh": "五行"
+ },
+ "t.022": {
+  "en": "meaning",
+  "zh": "字义"
+ },
+ "t.023": {
+  "en": "dropped for sounding like a rude or unlucky word",
+  "zh": "个字因读音像粗俗或不吉利的词而剔除"
+ },
+ "t.024": {
+  "en": "No single-character change scores higher with these filters",
+  "zh": "按当前筛选，换任何一个字都不会得分更高"
+ },
+ "t.025": {
+  "en": "No character matches — widen the element filter or clear a meaning choice",
+  "zh": "没有符合的字：请放宽五行筛选，或取消字义选择"
+ },
+ "t.026": {
+  "en": "Grid",
+  "zh": "五格"
+ },
+ "t.027": {
+  "en": "Number",
+  "zh": "数"
+ },
+ "t.028": {
+  "en": "Verdict",
+  "zh": "吉凶"
+ },
+ "t.029": {
+  "en": "scoring…",
+  "zh": "评分中…"
+ },
+ "t.030": {
+  "en": "Name card",
+  "zh": "名字卡"
+ },
+ "t.031": {
+  "en": "A possible reading of the name",
+  "zh": "这个名字的一种解读"
+ },
+ "t.032": {
+  "en": "score",
+  "zh": "得分"
+ },
+ "t.033": {
+  "en": "gender mismatch — lowers the gender-fit score",
+  "zh": "性别不符：会拉低性别契合分"
+ },
+ "t.034": {
+  "en": "sounds like a rude or unlucky word — grade capped at needs a second look",
+  "zh": "读音像粗俗或不吉利的词：评级最高只到“待斟酌”"
+ },
+ "t.035": {
+  "en": "adverse meaning — not recommended in a name",
+  "zh": "字义不利：不建议用于名字"
+ },
+ "t.036": {
+  "en": "traditional form",
+  "zh": "繁体字形"
+ },
+ "t.037": {
+  "en": "Three Talents: heaven · person · earth",
+  "zh": "三才：天 · 人 · 地"
+ },
+ "t.038": {
+  "en": "Shortlist",
+  "zh": "候选名单"
+ },
+ "t.039": {
+  "en": "saved to your workspace",
+  "zh": "已保存到你的空间"
+ },
+ "t.040": {
+  "en": "workspace unreachable — kept in this browser for now",
+  "zh": "无法连接你的空间：暂存在本浏览器"
+ },
+ "t.041": {
+  "en": "kept in this browser for this baby",
+  "zh": "这位宝宝的名单保存在本浏览器"
+ },
+ "t.042": {
+  "en": "Name",
+  "zh": "名字"
+ },
+ "t.043": {
+  "en": "Score",
+  "zh": "得分"
+ },
+ "t.044": {
+  "en": "Auspicious grids of 5",
+  "zh": "五格中的吉格数（共 5 项）"
+ },
+ "t.045": {
+  "en": "Three Talents",
+  "zh": "三才"
+ },
+ "t.046": {
+  "en": "Traditional form",
+  "zh": "繁体字形"
+ },
+ "t.047": {
+  "en": "useful element",
+  "zh": "用神"
+ },
+ "t.048": {
+  "en": "five grids (strokes)",
+  "zh": "五格（笔画）"
+ },
+ "t.049": {
+  "en": "heaven · person · earth",
+  "zh": "天 · 人 · 地"
+ },
+ "t.050": {
+  "en": "sound",
+  "zh": "读音"
+ },
+ "t.051": {
+  "en": "gender fit",
+  "zh": "性别契合"
+ },
+ "t.052": {
+  "en": "element confidence",
+  "zh": "五行可信度"
+ },
+ "t.053": {
+  "en": "heaven · ancestry",
+  "zh": "天格 · 祖荫"
+ },
+ "t.054": {
+  "en": "person · core",
+  "zh": "人格 · 核心"
+ },
+ "t.055": {
+  "en": "earth · youth",
+  "zh": "地格 · 早年"
+ },
+ "t.056": {
+  "en": "outer · social",
+  "zh": "外格 · 人际"
+ },
+ "t.057": {
+  "en": "total · later life",
+  "zh": "总格 · 后半生"
+ },
+ "t.058": {
+  "en": "Enter the family surname to build a name",
+  "zh": "请输入家族姓氏，才能起名"
+ },
+ "t.059": {
+  "en": "Enter the birth (or due) date",
+  "zh": "请输入出生日期（或预产期）"
+ },
+ "t.060": {
+  "en": "Clear the whole shortlist?",
+  "zh": "清空整个候选名单？"
+ },
+ "t.061": {
+  "en": "Optimise",
+  "zh": "优化"
+ },
+ "t.062": {
+  "en": "1 char",
+  "zh": "单字名"
+ },
+ "t.063": {
+  "en": "2 chars",
+  "zh": "双字名"
+ },
+ "t.064": {
+  "en": "clear",
+  "zh": "清除"
+ },
+ "t.065": {
+  "en": "close",
+  "zh": "关闭"
+ },
+ "t.066": {
+  "en": "reset filters",
+  "zh": "重置筛选"
+ },
+ "t.067": {
+  "en": "clear the meaning filter",
+  "zh": "取消字义筛选"
+ },
+ "t.068": {
+  "en": "Start over",
+  "zh": "重新开始"
+ },
+ "t.069": {
+  "en": "Naming certificate →",
+  "zh": "起名证书 →"
+ },
+ "t.070": {
+  "en": "clear all",
+  "zh": "全部清空"
+ },
+ "t.071": {
+  "en": "delete ✕",
+  "zh": "删除 ✕"
+ }
+}

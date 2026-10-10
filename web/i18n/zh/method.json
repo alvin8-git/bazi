@@ -1,0 +1,182 @@
+{
+ "method.001": {
+  "en": "How bazifor.me computes a reading — ten claims | bazifor.me",
+  "zh": "bazifor.me 如何推算解读：十条说明 / bazifor.me"
+ },
+ "method.002": {
+  "en": "Ten plain claims on how bazifor.me computes a BaZi, feng shui or naming reading: deterministic, rule-cited, true solar time, no generative AI, disputes marked.",
+  "zh": "十条直白的说明：bazifor.me 如何推算八字、风水或起名解读。结果确定、规则有出处、用真太阳时、不用生成式 AI、有争议处会标明。"
+ },
+ "method.003": {
+  "en": "How bazifor.me computes a reading — ten claims",
+  "zh": "bazifor.me 如何推算解读：十条说明"
+ },
+ "method.004": {
+  "en": "website",
+  "zh": "(same)"
+ },
+ "method.005": {
+  "en": "https://bazifor.me/method",
+  "zh": "(same)"
+ },
+ "method.006": {
+  "en": "https://bazifor.me/static/og/method.png",
+  "zh": "(same)"
+ },
+ "method.007": {
+  "en": "summary_large_image",
+  "zh": "(same)"
+ },
+ "method.008": {
+  "en": "bazifor.me",
+  "zh": "八字为我"
+ },
+ "method.009": {
+  "en": "Your Reading",
+  "zh": "你的解读"
+ },
+ "method.010": {
+  "en": "Home Fengshui",
+  "zh": "家居风水"
+ },
+ "method.011": {
+  "en": "Baby Names",
+  "zh": "宝宝起名"
+ },
+ "method.012": {
+  "en": "Learn",
+  "zh": "学习"
+ },
+ "method.013": {
+  "en": "How bazifor.me computes a reading",
+  "zh": "bazifor.me 如何推算解读"
+ },
+ "method.014": {
+  "en": "Ten claims, stated plainly",
+  "zh": "十条说明，直白交代"
+ },
+ "method.015": {
+  "en": "These are the ten things this site commits to about how its engine works and what it does not do; each can be checked against the rule ids printed in every reading.",
+  "zh": "关于引擎如何运作、不做什么，本站作出以下十条承诺；每一条都能对照每份解读里印有的规则编号来核查。"
+ },
+ "method.016": {
+  "en": "Every reading is deterministic: the same birth data or floor plan always produces the same result.",
+  "zh": "每份解读的结果都是确定的：同样的出生数据或户型图，永远得出同样的结果。"
+ },
+ "method.017": {
+  "en": "Every line of output names the classical rule it applies, with a rule id a practitioner can check.",
+  "zh": "输出的每一行都注明所依据的古法规则，并附规则编号，专业人士可以逐条核对。"
+ },
+ "method.018": {
+  "en": "Birth times are converted to true solar time using the birth city's time zone on that date, its longitude and the equation of time; Singapore and Malaysia clock times before 1982 use the UTC+7:30 offset of that era.",
+  "zh": "出生时间按出生城市当天的时区、经度和均时差换算为真太阳时；新加坡和马来西亚 1982 年前的钟表时间采用当时的 UTC+7:30 时差。"
+ },
+ "method.019": {
+  "en": "Character strokes for naming follow the Kangxi Dictionary (",
+  "zh": "起名的汉字笔画依据《康熙字典》"
+ },
+ "method.020": {
+  "en": ") count on the traditional form.",
+  "zh": "，按繁体字形计数。"
+ },
+ "method.021": {
+  "en": "The 81-number stroke verdicts use a two-state scale, auspicious or not, until a cited finer table is adopted.",
+  "zh": "81 数理的吉凶判断只分吉与不吉两档，待采用有出处的更细分档表后再调整。"
+ },
+ "method.022": {
+  "en": "Sound-alike checks run at three strengths: same syllables and tones, same syllables with different tones, and merged consonants; severe words cap the grade.",
+  "zh": "谐音检查分三档强度：音节与声调都相同、音节相同而声调不同、声母合并后相同；出现严重的谐音词时，评级设有上限。"
+ },
+ "method.023": {
+  "en": "The engine does not predict events; it computes classical structures and states their traditional reading.",
+  "zh": "引擎不预测事件，只推算经典结构，并给出它们的传统解读。"
+ },
+ "method.024": {
+  "en": "No generative AI writes any reading; the text is rule output and hand-written guides.",
+  "zh": "没有任何一份解读由生成式 AI 撰写，文字都是规则输出和人工撰写的指南。"
+ },
+ "method.025": {
+  "en": "Workspaces live behind an unguessable link, are never listed, and are not used for anything else.",
+  "zh": "个人空间放在一个猜不到的链接后面，不会被列出，也不作他用。"
+ },
+ "method.026": {
+  "en": "Where schools disagree on an element or a stroke count, the engine records its choice and marks it as disputed.",
+  "zh": "各流派对某个字的五行归属或笔画数有分歧时，引擎会记下自己的取舍，并标注为有争议。"
+ },
+ "method.027": {
+  "en": "The ten claims in Chinese (",
+  "zh": "十条说明"
+ },
+ "method.028": {
+  "en": "出生时间按经度与均时差换算为真太阳时；1982年前新加坡和马来西亚的钟表时间采用当时的UTC+7:30。",
+  "zh": "出生时间按经度与均时差换算为真太阳时；1982 年前新加坡和马来西亚的钟表时间采用当时的 UTC+7:30。"
+ },
+ "method.029": {
+  "en": "For the full pipeline read",
+  "zh": "完整流程请看"
+ },
+ "method.030": {
+  "en": "how it works",
+  "zh": "运作原理"
+ },
+ "method.031": {
+  "en": ", for who stands behind it see the",
+  "zh": "，想知道背后是谁，请看"
+ },
+ "method.032": {
+  "en": "author",
+  "zh": "作者"
+ },
+ "method.033": {
+  "en": ", and for the rules explained see the",
+  "zh": "，想了解规则，请看"
+ },
+ "method.034": {
+  "en": "guides",
+  "zh": "指南"
+ },
+ "method.035": {
+  "en": "© bazifor.me — deterministic BaZi & fengshui readings.",
+  "zh": "© bazifor.me，按固定规则推算的八字与风水解读。"
+ },
+ "method.036": {
+  "en": "BaZi",
+  "zh": "八字"
+ },
+ "method.037": {
+  "en": "Home fengshui",
+  "zh": "家居风水"
+ },
+ "method.038": {
+  "en": "Baby names",
+  "zh": "宝宝起名"
+ },
+ "method.039": {
+  "en": "Kua number",
+  "zh": "命卦"
+ },
+ "method.040": {
+  "en": "Guides in Chinese (",
+  "zh": "中文指南"
+ },
+ "method.041": {
+  "en": "How it works",
+  "zh": "运作原理"
+ },
+ "method.042": {
+  "en": "About",
+  "zh": "关于"
+ },
+ "method.043": {
+  "en": "FAQ",
+  "zh": "常见问题"
+ },
+ "method.044": {
+  "en": "Method",
+  "zh": "方法"
+ },
+ "method.045": {
+  "en": "Author",
+  "zh": "作者"
+ }
+}

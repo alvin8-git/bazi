@@ -1,0 +1,270 @@
+{
+ "start.001": {
+  "en": "Free BaZi Calculator (八字) with Every Rule Cited | bazifor.me",
+  "zh": "免费八字排盘，每条规则都有出处 / bazifor.me"
+ },
+ "start.002": {
+  "en": "Enter a birth date, time and city: four pillars, day master, useful element and luck cycles, each citing its classical rule. True solar time for any city.",
+  "zh": "输入出生日期、时间和城市，得到四柱、日主、用神和大运，每一项都注明所依据的古法规则。任何城市都按真太阳时计算。"
+ },
+ "start.003": {
+  "en": "Enter a birth date and time: four pillars, day master, useful element and luck cycles, each citing its classical rule. True solar time for any birth place.",
+  "zh": "输入出生日期和时间，得到四柱、日主、用神和大运，每一项都注明所依据的古法规则。任何出生地都按真太阳时计算。"
+ },
+ "start.004": {
+  "en": "website",
+  "zh": "(same)"
+ },
+ "start.005": {
+  "en": "https://bazifor.me/start",
+  "zh": "(same)"
+ },
+ "start.006": {
+  "en": "https://bazifor.me/static/og/start.png",
+  "zh": "(same)"
+ },
+ "start.007": {
+  "en": "summary_large_image",
+  "zh": "(same)"
+ },
+ "start.008": {
+  "en": "Free BaZi calculator (",
+  "zh": "免费"
+ },
+ "start.009": {
+  "en": "Deterministic readings that show every classical rule they cite. No generative AI writes them.",
+  "zh": "结果固定的解读，列出所引用的每一条古法规则。没有生成式 AI 代写。"
+ },
+ "start.010": {
+  "en": "Home",
+  "zh": "首页"
+ },
+ "start.011": {
+  "en": "People",
+  "zh": "人物"
+ },
+ "start.012": {
+  "en": "Home fengshui",
+  "zh": "家居风水"
+ },
+ "start.013": {
+  "en": "Baby",
+  "zh": "宝宝"
+ },
+ "start.014": {
+  "en": "How this works",
+  "zh": "使用说明"
+ },
+ "start.015": {
+  "en": "A BaZi reading (",
+  "zh": "(empty)"
+ },
+ "start.016": {
+  "en": ") turns a birth date and time into a chart.",
+  "zh": "排盘，就是把出生日期和时间排成一张命盘。"
+ },
+ "start.017": {
+  "en": "You need the date, the time, the sex and the time policy.",
+  "zh": "需要填写日期、时间、性别和时间规则。"
+ },
+ "start.018": {
+  "en": "You get four pillars, Day Master, useful elements, luck cycles, every line with its rule.",
+  "zh": "得到四柱、日主、用神、大运，每一行都附上规则。"
+ },
+ "start.019": {
+  "en": "Four pillars of a BaZi chart drawn as ink and brush columns",
+  "zh": "水墨笔触绘成的八字四柱柱列"
+ },
+ "start.020": {
+  "en": "Step 1 · Birth details",
+  "zh": "第一步 · 出生信息"
+ },
+ "start.021": {
+  "en": "Start: enter a birth chart",
+  "zh": "开始：输入出生信息"
+ },
+ "start.022": {
+  "en": "Date, time and city of birth are all the engine needs. The clock time is turned into true solar time for that city automatically. Nothing here requires an account.",
+  "zh": "引擎只需要出生日期、时间和城市。钟表时间会自动换算成该城市的真太阳时。全程无需注册账号。"
+ },
+ "start.023": {
+  "en": "Name",
+  "zh": "姓名"
+ },
+ "start.024": {
+  "en": "name",
+  "zh": "姓名"
+ },
+ "start.025": {
+  "en": "Sex",
+  "zh": "性别"
+ },
+ "start.026": {
+  "en": "M (male)",
+  "zh": "男"
+ },
+ "start.027": {
+  "en": "F (female)",
+  "zh": "女"
+ },
+ "start.028": {
+  "en": "Date of birth",
+  "zh": "出生日期"
+ },
+ "start.029": {
+  "en": "The civil date on the birth certificate.",
+  "zh": "出生证明上的公历日期。"
+ },
+ "start.030": {
+  "en": "Time of birth",
+  "zh": "出生时间"
+ },
+ "start.031": {
+  "en": "Clock time; true solar time is computed for you.",
+  "zh": "填钟表时间即可，真太阳时由系统为你换算。"
+ },
+ "start.032": {
+  "en": "Time policy:",
+  "zh": "时间规则："
+ },
+ "start.033": {
+  "en": "the clock time on the birth certificate is converted to true solar time for the birth city: its time zone on that date (daylight saving and past changes included), its longitude, and the equation of time. Singapore is the default.",
+  "zh": "出生证明上的钟表时间会换算成出生城市的真太阳时：依据该城市当日的时区（含夏令时和历史变更）、经度和均时差。默认城市为新加坡。"
+ },
+ "start.034": {
+  "en": "birth time unknown (uses 12:00, so the hour pillar is approximate)",
+  "zh": "出生时间不详（按 12:00 计，时柱只是大致推算）"
+ },
+ "start.035": {
+  "en": "Calculate",
+  "zh": "排盘"
+ },
+ "start.036": {
+  "en": "What you will get",
+  "zh": "你将得到什么"
+ },
+ "start.037": {
+  "en": "Your chart appears here as a card, with a full reading one tap away.",
+  "zh": "你的命盘会以卡片形式出现在这里，轻点一下即可查看完整解读。"
+ },
+ "start.038": {
+  "en": "An empty workspace waiting for the first person",
+  "zh": "空白的个人空间，等待添加第一个人"
+ },
+ "start.039": {
+  "en": "Example reading for the fictional person 王大明: the four pillars as a seal, the opening line and a watercolour of garden soil in spring",
+  "zh": "虚构人物王大明的示例解读：以印章呈现的四柱、开头一句话，以及一幅春日园中泥土的水彩画"
+ },
+ "start.040": {
+  "en": "Example reading, fictional data. Four pillars and Day Master first, then useful elements and luck cycles.",
+  "zh": "示例解读，数据为虚构。先看四柱和日主，再看用神与大运。"
+ },
+ "start.041": {
+  "en": "Keep your link",
+  "zh": "保存你的链接"
+ },
+ "start.042": {
+  "en": "The link is unguessable, never listed, and used for nothing else.",
+  "zh": "这个链接别人猜不到，不会公开列出，也不会用于其他任何用途。"
+ },
+ "start.043": {
+  "en": "Open a card for the full reading. Add up to eight.",
+  "zh": "点开卡片可查看完整解读，最多可添加八位。"
+ },
+ "start.044": {
+  "en": "Harmony matrix",
+  "zh": "合婚矩阵"
+ },
+ "start.045": {
+  "en": "2+ people",
+  "zh": "2 人及以上"
+ },
+ "start.046": {
+  "en": "Appears with two or more people.",
+  "zh": "有两人或以上时显示。"
+ },
+ "start.047": {
+  "en": "Day-pillar compatibility, scored 0–100 with the contributing rules. Full pair remedies and family-strategy timing are part of each person's report.",
+  "zh": "日柱合婚，按 0–100 分打分，并列出计分规则。完整的两人化解建议和家庭择时策略，见每个人各自的报告。"
+ },
+ "start.048": {
+  "en": "How to read this.",
+  "zh": "怎么看："
+ },
+ "start.049": {
+  "en": "Scores are engine output; higher is smoother.",
+  "zh": "分数由引擎算出，分数越高，关系越顺。"
+ },
+ "start.050": {
+  "en": "Where next",
+  "zh": "接下来看什么"
+ },
+ "start.051": {
+  "en": "What is BaZi?",
+  "zh": "什么是八字？"
+ },
+ "start.052": {
+  "en": "Kua number",
+  "zh": "命卦"
+ },
+ "start.053": {
+  "en": "Learn:",
+  "zh": "学习："
+ },
+ "start.054": {
+  "en": "How to read a four pillars chart",
+  "zh": "如何读懂四柱命盘"
+ },
+ "start.055": {
+  "en": "The ten day masters",
+  "zh": "十种日主"
+ },
+ "start.056": {
+  "en": "Useful element colours",
+  "zh": "用神五行的颜色"
+ },
+ "start.057": {
+  "en": "© bazifor.me, deterministic BaZi & fengshui readings.",
+  "zh": "© bazifor.me，按固定规则推算的八字与风水解读。"
+ },
+ "start.058": {
+  "en": "BaZi",
+  "zh": "八字"
+ },
+ "start.059": {
+  "en": "Baby names",
+  "zh": "宝宝起名"
+ },
+ "start.060": {
+  "en": "Learn",
+  "zh": "学习"
+ },
+ "start.061": {
+  "en": "Guides in Chinese (",
+  "zh": "中文指南"
+ },
+ "start.062": {
+  "en": "How it works",
+  "zh": "运作原理"
+ },
+ "start.063": {
+  "en": "About",
+  "zh": "关于"
+ },
+ "start.064": {
+  "en": "FAQ",
+  "zh": "常见问题"
+ },
+ "start.065": {
+  "en": "Method",
+  "zh": "方法"
+ },
+ "start.066": {
+  "en": "Author",
+  "zh": "作者"
+ },
+ "start.notice": {
+  "en": "A Chinese version of this page is coming soon.",
+  "zh": "此页面的中文版本即将推出"
+ }
+}

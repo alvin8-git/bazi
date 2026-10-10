@@ -1,0 +1,334 @@
+{
+ "how-it-works.001": {
+  "en": "How It Works — Deterministic BaZi & Fengshui | bazifor.me",
+  "zh": "运作原理：确定性计算的八字与风水 / bazifor.me"
+ },
+ "how-it-works.002": {
+  "en": "How bazifor.me computes a reading: exact four-pillar calendar math, Eight House and Flying Star layers, and an interpretive layer where every line cites its classical rule. No AI guesswork.",
+  "zh": "bazifor.me 如何得出一份解读：精确的四柱历法计算，八宅与飞星两个层面，以及每一句都注明古法规则出处的解读层。不靠 AI 猜测。"
+ },
+ "how-it-works.003": {
+  "en": "How It Works — Deterministic BaZi & Fengshui",
+  "zh": "运作原理：确定性计算的八字与风水"
+ },
+ "how-it-works.004": {
+  "en": "Exact calendar math, three classical layers, every line rule-cited. No AI guesswork.",
+  "zh": "精确的历法计算，三层经典体系，每一句都注明规则出处。不靠 AI 猜测。"
+ },
+ "how-it-works.005": {
+  "en": "https://bazifor.me/static/og/how-it-works.png",
+  "zh": "(same)"
+ },
+ "how-it-works.006": {
+  "en": "summary_large_image",
+  "zh": "(same)"
+ },
+ "how-it-works.007": {
+  "en": "bazifor.me",
+  "zh": "八字为我"
+ },
+ "how-it-works.008": {
+  "en": "Your Reading",
+  "zh": "你的解读"
+ },
+ "how-it-works.009": {
+  "en": "Home Fengshui",
+  "zh": "家居风水"
+ },
+ "how-it-works.010": {
+  "en": "Learn",
+  "zh": "学习"
+ },
+ "how-it-works.011": {
+  "en": "About",
+  "zh": "关于"
+ },
+ "how-it-works.012": {
+  "en": "FAQ",
+  "zh": "常见问题"
+ },
+ "how-it-works.013": {
+  "en": "How it works (",
+  "zh": "运作原理"
+ },
+ "how-it-works.014": {
+  "en": "Most \"AI fortune telling\" sites feed your birthday to a chatbot and hope the prose sounds wise. bazifor.me does the opposite:",
+  "zh": "多数“AI 算命”网站，是把你的生日丢给聊天机器人，再指望文字听上去有智慧。bazifor.me 的做法正相反："
+ },
+ "how-it-works.015": {
+  "en": "everything is computed by a rules engine",
+  "zh": "一切都由规则引擎计算得出"
+ },
+ "how-it-works.016": {
+  "en": "— the same classical procedures a careful practitioner runs by hand, encoded and tested. No large language model touches your reading. Here is the pipeline, step by step.",
+  "zh": "：用的是严谨的从业者手工推演的那套古法步骤，只是编成了程序并经过测试。没有任何大语言模型参与你的解读。下面按步骤说明整个流程。"
+ },
+ "how-it-works.017": {
+  "en": "You enter birth details.",
+  "zh": "输入出生信息。"
+ },
+ "how-it-works.018": {
+  "en": "Date, time, and sex — for yourself, or a family of up to 8. No account, no email: your workspace lives behind an unguessable private link that only you hold. Unsure of the birth time? Mark it, and time-dependent sections are flagged rather than faked.",
+  "zh": "填写出生日期、时间和性别，可以只填自己，也可以填全家，最多 8 人。无需账号，无需邮箱：你的个人空间藏在一条无法猜到的私密链接后面，只有你持有。不确定出生时间？标注一下，与时辰有关的部分会如实标出，而不会硬编一个结果。"
+ },
+ "how-it-works.019": {
+  "en": "The engine casts the chart — exactly.",
+  "zh": "引擎精确排出命盘。"
+ },
+ "how-it-works.020": {
+  "en": "Four pillars with the Start of Spring (",
+  "zh": "四柱以立春"
+ },
+ "how-it-works.021": {
+  "en": ") year boundary, solar-term months, the unbroken 60-day Jia Zi (",
+  "zh": "为年界，节气分月，六十日一轮的甲子"
+ },
+ "how-it-works.022": {
+  "en": ") cycle, and",
+  "zh": "循环连续不断，再加上"
+ },
+ "how-it-works.023": {
+  "en": "true solar time",
+  "zh": "真太阳时"
+ },
+ "how-it-works.024": {
+  "en": "correction (including historical clock regimes — a pre-1982 Singapore birth is adjusted for the old UTC+7:30 standard). Then the derived layers: Day Master (",
+  "zh": "校正（包括历史上的时制：1982 年前在新加坡出生的，要按当时的 UTC+7:30 标准调整）。接着是推导出来的各个层面：日主"
+ },
+ "how-it-works.025": {
+  "en": ") strength, useful god (",
+  "zh": "强弱、用神"
+ },
+ "how-it-works.026": {
+  "en": ") favourable elements, Ten Gods (",
+  "zh": "喜用五行、十神"
+ },
+ "how-it-works.027": {
+  "en": "), luck cycles (",
+  "zh": "、大运"
+ },
+ "how-it-works.028": {
+  "en": "), Eight House kua number (",
+  "zh": "、八宅命卦"
+ },
+ "how-it-works.029": {
+  "en": ") and direction maps, Wenchang (",
+  "zh": "与方位图、文昌"
+ },
+ "how-it-works.030": {
+  "en": ") study positions.",
+  "zh": "学习方位。"
+ },
+ "how-it-works.031": {
+  "en": "The reading assembles itself from cited rules.",
+  "zh": "解读由有出处的规则自动组成。"
+ },
+ "how-it-works.032": {
+  "en": "Each section shows three things: the computed data, a plain-language interpretation (",
+  "zh": "每个部分呈现三样东西：计算出的数据、通俗易懂的解读"
+ },
+ "how-it-works.033": {
+  "en": ") narrative, and a strategy — and",
+  "zh": "文字，以及一套应对策略，并且"
+ },
+ "how-it-works.034": {
+  "en": "every line names the classical rule that produced it",
+  "zh": "每一句都写明产生它的古法规则"
+ },
+ "how-it-works.035": {
+  "en": ". You can disagree with a rule; you can never be left wondering where a claim came from.",
+  "zh": "。你可以不认同某条规则，但永远不会不知道一个结论从哪里来。"
+ },
+ "how-it-works.036": {
+  "en": "Clock time in, true solar time out. The engine takes the clock time and the birth city, finds that city's offset from UTC on that date (daylight saving and past changes included, such as Singapore's UTC+7:30 before 1982), then converts to true solar time using the city's longitude and the equation of time: 09:30 on the clock in Singapore becomes 08:16 true solar time at 103.85°E. The time zone alone is not solar time; longitude is what moves the sun. The BaZi year changes at Start of Spring, not on 1 January; Start of Spring 2027 falls on 2027-02-04.",
+  "zh": "输入钟表时间，得出真太阳时。引擎取你填写的钟表时间和出生城市，查出该城市当日与 UTC 的时差（含夏令时和历史上的变动，例如新加坡 1982 年前的 UTC+7:30），再用城市经度和均时差换算成真太阳时：新加坡钟表时间 09:30，在东经 103.85° 处是真太阳时 08:16。时区本身并不等于太阳时，决定太阳时的是经度。八字的年份在立春而不是 1 月 1 日更替；2027 年的立春落在 2027-02-04。"
+ },
+ "how-it-works.037": {
+  "en": "This section in Chinese (",
+  "zh": "本节中文版"
+ },
+ "how-it-works.038": {
+  "en": "引擎按新加坡/马来西亚钟表时间（UTC+8，1982年前为UTC+7:30）换算为真太阳时；八字的年柱以立春为界，而非1月1日。",
+  "zh": "引擎按出生城市当日的钟表时间（含夏令时和历史变动，例如新加坡 1982 年前为 UTC+7:30）换算为真太阳时；八字的年柱以立春为界，而非 1 月 1 日。"
+ },
+ "how-it-works.039": {
+  "en": "The home fengshui pipeline (",
+  "zh": "家居风水分析流程"
+ },
+ "how-it-works.040": {
+  "en": "Upload a floor plan and set the facing.",
+  "zh": "上传户型图并设定朝向。"
+ },
+ "how-it-works.041": {
+  "en": "Any photo or PDF page of your plan; enter the compass facing you measured at the main window. If your facing sits near a chart boundary (mixed facing,",
+  "zh": "户型图的照片或 PDF 页均可；填入你在主窗处用罗盘量得的朝向。如果朝向靠近飞星盘的分界线，即兼向"
+ },
+ "how-it-works.042": {
+  "en": "/ straddling a boundary,",
+  "zh": "或骑线"
+ },
+ "how-it-works.043": {
+  "en": "), the engine computes",
+  "zh": "，引擎会计算"
+ },
+ "how-it-works.044": {
+  "en": "both",
+  "zh": "两张"
+ },
+ "how-it-works.045": {
+  "en": "candidate charts and says so, instead of silently picking one.",
+  "zh": "候选飞星盘，并如实说明，而不是悄悄选定其中一张。"
+ },
+ "how-it-works.046": {
+  "en": "Trace rooms — and optionally doors and windows.",
+  "zh": "描出房间，门窗可选。"
+ },
+ "how-it-works.047": {
+  "en": "Draw each room over the plan; zoom in to mark where doors and windows sit. Doors unlock the form-school audit: entry-line checks (door facing bed,",
+  "zh": "在户型图上逐个画出房间；放大后标出门窗的位置。标了门，就能进行形势派检查：入户检查，如门冲床"
+ },
+ "how-it-works.048": {
+  "en": "), commanding position, door-facing-door pairs.",
+  "zh": "；掌控位；门对门。"
+ },
+ "how-it-works.049": {
+  "en": "Analyze.",
+  "zh": "分析。"
+ },
+ "how-it-works.050": {
+  "en": "One click computes the Flying Star chart for your building's period and facing, scores every person against every bedroom (three layers: Eight House + Flying Stars + useful god, each contribution cited), proposes bed and desk placement wall by wall, generates room colour guidance, a renovation-timing table against this year's and next year's afflictions, and a move-in date finder (",
+  "zh": "一键按你所在建筑的元运和朝向排出飞星盘，为每个人对照每间卧室打分（三层：八宅、飞星、用神，每一项贡献都注明出处），逐面墙给出床和书桌的摆放建议，生成房间用色建议，对照今年和明年的不利飞星生成装修时机表，以及一个入宅"
+ },
+ "how-it-works.051": {
+  "en": ") for your household. Add up to six homes and compare them side by side.",
+  "zh": "日期查找工具，供全家使用。最多可添加六处住宅，并排比较。"
+ },
+ "how-it-works.052": {
+  "en": "What a reading looks like (",
+  "zh": "解读长什么样"
+ },
+ "how-it-works.053": {
+  "en": "Example reading for the fictional person 王大明: the four pillars as a seal, the opening line and a watercolour of garden soil in spring",
+  "zh": "示例解读（虚构人物王大明）：以印章呈现的四柱、开头一句话，以及一幅春日园中泥土的水彩画"
+ },
+ "how-it-works.054": {
+  "en": "The reading: four pillars, Day Master and useful god, every number citing its rule.",
+  "zh": "解读页：四柱、日主与用神，每个数字都注明所依据的规则。"
+ },
+ "how-it-works.055": {
+  "en": "Example pair compatibility report for two fictional people with a component score table",
+  "zh": "两位虚构人物的合婚报告示例，附分项得分表"
+ },
+ "how-it-works.056": {
+  "en": "The pair report: a scored, printable compatibility sheet.",
+  "zh": "合婚报告：带评分、可打印的合婚分析单。"
+ },
+ "how-it-works.057": {
+  "en": "Example home fengshui result for a sample condo with room and aspect scores",
+  "zh": "样板公寓的家居风水结果示例，含各房间及各方面得分"
+ },
+ "how-it-works.058": {
+  "en": "The home view: room and aspect scores for a sample condo.",
+  "zh": "家居页面：示例公寓的各房间及各方面得分。"
+ },
+ "how-it-works.059": {
+  "en": "Example naming certificate for the fictional baby name 王禄婷",
+  "zh": "虚构宝宝名字王禄婷的起名证书示例"
+ },
+ "how-it-works.060": {
+  "en": "The naming certificate: pillars, Five Grids and the name's elements.",
+  "zh": "起名证书：四柱、五格，以及名字的五行。"
+ },
+ "how-it-works.061": {
+  "en": "Example screens use fictional data.",
+  "zh": "示例画面均使用虚构数据。"
+ },
+ "how-it-works.062": {
+  "en": "Why you can trust the numbers (",
+  "zh": "为什么数字可信"
+ },
+ "how-it-works.063": {
+  "en": "The engine reproduced a professionally produced, paid fengshui audit",
+  "zh": "引擎复现了一份专业出具的付费风水评估报告，做到了"
+ },
+ "how-it-works.064": {
+  "en": "to the digit",
+  "zh": "精确到每一个数字"
+ },
+ "how-it-works.065": {
+  "en": "— 27/27 flying-star palaces and 32/32 directional assignments — and matches commercial BaZi chart products character-for-character on the calendar layer. Determinism makes that test possible: run it twice, get the same answer, compare against a benchmark. A chatbot can pass no such test.",
+  "zh": "，27/27 个飞星宫位和 32/32 项方位判定全部吻合；在历法层面，与商业八字排盘产品逐字一致。确定性让这样的检验成为可能：同样的输入跑两次，得到同样的答案，再与基准对照。聊天机器人通不过这样的检验。"
+ },
+ "how-it-works.066": {
+  "en": "Curious about the methods themselves? The",
+  "zh": "想了解方法本身？"
+ },
+ "how-it-works.067": {
+  "en": "Learn library",
+  "zh": "学习库"
+ },
+ "how-it-works.068": {
+  "en": "explains each layer — four pillars, useful god, Eight House, flying stars, date selection — in plain language, in",
+  "zh": "用通俗的语言逐层讲解：四柱、用神、八宅、飞星、择日，提供"
+ },
+ "how-it-works.069": {
+  "en": "English",
+  "zh": "英文版"
+ },
+ "how-it-works.070": {
+  "en": "and",
+  "zh": "和"
+ },
+ "how-it-works.071": {
+  "en": "Chinese (",
+  "zh": "中文版"
+ },
+ "how-it-works.072": {
+  "en": "See it on your own chart.",
+  "zh": "看看你自己的命盘。"
+ },
+ "how-it-works.073": {
+  "en": "Free, no account, under a minute.",
+  "zh": "免费，无需账号，不到一分钟。"
+ },
+ "how-it-works.074": {
+  "en": "Get your reading →",
+  "zh": "获取你的解读 →"
+ },
+ "how-it-works.075": {
+  "en": "© bazifor.me — deterministic BaZi & fengshui readings.",
+  "zh": "© bazifor.me，按固定规则推算的八字与风水解读。"
+ },
+ "how-it-works.076": {
+  "en": "BaZi",
+  "zh": "八字"
+ },
+ "how-it-works.077": {
+  "en": "Home fengshui",
+  "zh": "家居风水"
+ },
+ "how-it-works.078": {
+  "en": "Baby names",
+  "zh": "宝宝起名"
+ },
+ "how-it-works.079": {
+  "en": "Kua number",
+  "zh": "命卦"
+ },
+ "how-it-works.080": {
+  "en": "Guides in Chinese (",
+  "zh": "中文指南"
+ },
+ "how-it-works.081": {
+  "en": "How it works",
+  "zh": "运作原理"
+ },
+ "how-it-works.082": {
+  "en": "Method",
+  "zh": "方法"
+ },
+ "how-it-works.083": {
+  "en": "Author",
+  "zh": "作者"
+ }
+}

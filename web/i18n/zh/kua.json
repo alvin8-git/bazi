@@ -1,0 +1,478 @@
+{
+ "kua.001": {
+  "en": "Kua Number Calculator (八宅 Eight Mansions) | bazifor.me",
+  "zh": "命卦计算器（八宅）/ bazifor.me"
+ },
+ "kua.002": {
+  "en": "Free Kua number calculator: enter your birth date and sex to get your 命卦, East or West group, and best bed and desk directions.",
+  "zh": "免费命卦计算器：输入出生日期和性别，即可得到你的命卦、东四命或西四命，以及最佳的床头和书桌朝向。"
+ },
+ "kua.003": {
+  "en": "website",
+  "zh": "(same)"
+ },
+ "kua.004": {
+  "en": "https://bazifor.me/kua",
+  "zh": "(same)"
+ },
+ "kua.005": {
+  "en": "https://bazifor.me/static/og/kua.png",
+  "zh": "(same)"
+ },
+ "kua.006": {
+  "en": "summary_large_image",
+  "zh": "(same)"
+ },
+ "kua.007": {
+  "en": "bazifor.me",
+  "zh": "八字为我"
+ },
+ "kua.008": {
+  "en": "Home fengshui",
+  "zh": "家居风水"
+ },
+ "kua.009": {
+  "en": "BaZi",
+  "zh": "八字"
+ },
+ "kua.010": {
+  "en": "Kua number calculator (",
+  "zh": "命卦计算器（"
+ },
+ "kua.011": {
+  "en": "This page works out your Kua number, the Eight Mansions label for you.",
+  "zh": "本页为你算出命卦，也就是八宅为你定的专属标签。"
+ },
+ "kua.012": {
+  "en": "You need only your birth date and sex.",
+  "zh": "你只需要出生日期和性别。"
+ },
+ "kua.013": {
+  "en": "You get your number, East or West group and eight directions.",
+  "zh": "你会得到命卦、东四命或西四命，以及八个方位。"
+ },
+ "kua.014": {
+  "en": "Illustration of a bedroom with a compass showing the eight directions around a bed and desk",
+  "zh": "卧室示意图：罗盘标出床和书桌周围的八个方位"
+ },
+ "kua.015": {
+  "en": "Step 1 · Birth date and sex",
+  "zh": "第一步 · 出生日期和性别"
+ },
+ "kua.016": {
+  "en": "Birth date",
+  "zh": "出生日期"
+ },
+ "kua.017": {
+  "en": "Counted from the start of spring (",
+  "zh": "从"
+ },
+ "kua.018": {
+  "en": "), so a January birth may belong to the previous year.",
+  "zh": "起算，所以一月出生的人，可能要按上一年算。"
+ },
+ "kua.019": {
+  "en": "Sex",
+  "zh": "性别"
+ },
+ "kua.020": {
+  "en": "Male",
+  "zh": "男"
+ },
+ "kua.021": {
+  "en": "Female",
+  "zh": "女"
+ },
+ "kua.022": {
+  "en": "Calculate",
+  "zh": "计算"
+ },
+ "kua.023": {
+  "en": "Sketch of a compass with eight sectors",
+  "zh": "分成八个方位的罗盘草图"
+ },
+ "kua.024": {
+  "en": "What you will get:",
+  "zh": "你会得到："
+ },
+ "kua.025": {
+  "en": "your Kua number, East or West group,",
+  "zh": "你的命卦、东四命或西四命，"
+ },
+ "kua.026": {
+  "en": "and the eight directions on a compass.",
+  "zh": "以及罗盘上的八个方位。"
+ },
+ "kua.027": {
+  "en": "How to read this",
+  "zh": "怎么看"
+ },
+ "kua.028": {
+  "en": "Green sectors are favourable and red sectors are to avoid. The headboard direction is the direction the top of your head points when you lie in bed. The",
+  "zh": "绿色方位为吉，红色方位宜避。床头朝向，指躺在床上时头顶所指的方向。"
+ },
+ "kua.029": {
+  "en": "whole-home audit",
+  "zh": "全屋风水评估"
+ },
+ "kua.030": {
+  "en": "also weighs the sector each room sits in.",
+  "zh": "还会结合每个房间所在的方位。"
+ },
+ "kua.031": {
+  "en": "Your Kua number",
+  "zh": "你的命卦"
+ },
+ "kua.032": {
+  "en": "Your eight directions",
+  "zh": "你的八个方位"
+ },
+ "kua.033": {
+  "en": "North is at the top of the compass.",
+  "zh": "罗盘上方为北。"
+ },
+ "kua.034": {
+  "en": "Eight-sector compass with North at the top",
+  "zh": "八方位罗盘，上方为北"
+ },
+ "kua.035": {
+  "en": "Good direction",
+  "zh": "吉方"
+ },
+ "kua.036": {
+  "en": "Direction to avoid",
+  "zh": "凶方"
+ },
+ "kua.037": {
+  "en": "Best headboard directions",
+  "zh": "最佳床头朝向"
+ },
+ "kua.038": {
+  "en": "Best desk facing",
+  "zh": "最佳书桌朝向"
+ },
+ "kua.039": {
+  "en": "How to use it",
+  "zh": "怎么用"
+ },
+ "kua.040": {
+  "en": "Put the head of the bed on one of your good directions, against a solid wall, not under a window or in line with the door.",
+  "zh": "床头放在你的某个吉方，靠实墙，不要在窗下，也不要正对房门。"
+ },
+ "kua.041": {
+  "en": "Face a good direction when you sit at your desk, with a solid wall or support behind your chair.",
+  "zh": "坐在书桌前，脸朝一个吉方，椅背后要有实墙或靠托。"
+ },
+ "kua.042": {
+  "en": "Your Kua is one input. The",
+  "zh": "命卦只是其中一项依据。"
+ },
+ "kua.043": {
+  "en": "also weighs the sector each room falls in.",
+  "zh": "还会结合每个房间所在的方位。"
+ },
+ "kua.044": {
+  "en": "What is a Kua number?",
+  "zh": "什么是命卦？"
+ },
+ "kua.045": {
+  "en": "The idea behind the calculator, in two paragraphs and a table.",
+  "zh": "计算器背后的原理，两段话加一张表。"
+ },
+ "kua.046": {
+  "en": "The Kua number (\"life trigram\") is the Eight Mansions (",
+  "zh": "命卦（也叫“本命卦”）是"
+ },
+ "kua.047": {
+  "en": ") label for a person. It is one of eight trigrams, numbered 1 to 9 with 5 skipped, taken from the birth year counted from Start of Spring and from the person's sex. Each trigram belongs to the East group (",
+  "zh": "体系中给每个人定的标签。它是八个卦中的一个，数字为 1 至 9（跳过 5），由按立春起算的出生年份和性别得出。每个卦归入"
+ },
+ "kua.048": {
+  "en": "(north) 1,",
+  "zh": "（北）1，"
+ },
+ "kua.049": {
+  "en": "(east) 3,",
+  "zh": "（东）3，"
+ },
+ "kua.050": {
+  "en": "(south-east) 4,",
+  "zh": "（东南）4，"
+ },
+ "kua.051": {
+  "en": "(south) 9) or the West group (",
+  "zh": "（南）9，或归入"
+ },
+ "kua.052": {
+  "en": "(south-west) 2,",
+  "zh": "（西南）2，"
+ },
+ "kua.053": {
+  "en": "(north-west) 6,",
+  "zh": "（西北）6，"
+ },
+ "kua.054": {
+  "en": "(west) 7,",
+  "zh": "（西）7，"
+ },
+ "kua.055": {
+  "en": "(north-east) 8).",
+  "zh": "（东北）8。"
+ },
+ "kua.056": {
+  "en": "The trigram fixes eight directions around you: four favourable (Vitality (",
+  "zh": "这个卦在你周围划出八个方位：四个吉方，即"
+ },
+ "kua.057": {
+  "en": "), Heavenly Doctor (",
+  "zh": "、"
+ },
+ "kua.058": {
+  "en": "), Longevity (",
+  "zh": "、"
+ },
+ "kua.059": {
+  "en": "), Stability (",
+  "zh": "、"
+ },
+ "kua.060": {
+  "en": ")) and four to avoid (Mishap (",
+  "zh": "；另有四个凶方，即"
+ },
+ "kua.061": {
+  "en": "), Six Killings (",
+  "zh": "、"
+ },
+ "kua.062": {
+  "en": "), Five Ghosts (",
+  "zh": "、"
+ },
+ "kua.063": {
+  "en": "), Severed Fate (",
+  "zh": "、"
+ },
+ "kua.064": {
+  "en": ")), by the Eight Mansions wandering-year line-change rule (",
+  "zh": "。以上都按"
+ },
+ "kua.065": {
+  "en": "). The calculator applies the same table the",
+  "zh": "的变爻规则推出。本计算器使用的对照表，和"
+ },
+ "kua.066": {
+  "en": "home audit",
+  "zh": "全屋评估"
+ },
+ "kua.067": {
+  "en": "uses, so the two always agree.",
+  "zh": "所用的完全相同，所以两边的结果始终一致。"
+ },
+ "kua.068": {
+  "en": "Group",
+  "zh": "分组"
+ },
+ "kua.069": {
+  "en": "Trigrams",
+  "zh": "卦"
+ },
+ "kua.070": {
+  "en": "Favourable directions",
+  "zh": "吉方"
+ },
+ "kua.071": {
+  "en": "East group",
+  "zh": "东四命"
+ },
+ "kua.072": {
+  "en": "N, E, SE, S",
+  "zh": "北、东、东南、南"
+ },
+ "kua.073": {
+  "en": "West group",
+  "zh": "西四命"
+ },
+ "kua.074": {
+  "en": "NE, SW, W, NW",
+  "zh": "东北、西南、西、西北"
+ },
+ "kua.075": {
+  "en": "Worked example and lookup table",
+  "zh": "算例与速查表"
+ },
+ "kua.076": {
+  "en": "Check the result by hand.",
+  "zh": "可以自己手算验证一下。"
+ },
+ "kua.077": {
+  "en": "A fictional man born 15 March 1988 in Singapore: the year 1988 counts in full because Start of Spring fell on 4 February 1988. Its digits add to 26, then to 8; for a man the number is 11 minus 8, so his Kua is 3, the trigram",
+  "zh": "一位虚构的男性，1988 年 3 月 15 日生于新加坡：按 1988 年计算，因为 1988 年的立春在 2 月 4 日。各位数相加得 26，再相加得 8；男性的命卦数是 11 减去 8，所以他的命卦是 3，即"
+ },
+ "kua.078": {
+  "en": "(east), East group. His best headboard directions are south (Vitality), north (Heavenly Doctor) and south-east (Longevity). The number 5 is never assigned: a man who computes 5 takes 2 (",
+  "zh": "（东），属东四命。他最好的床头朝向是南（生气）、北（天医）和东南（延年）。命卦数不会是 5：男性算出 5 则取 2（"
+ },
+ "kua.079": {
+  "en": ") and a woman takes 8 (",
+  "zh": "），女性算出 5 则取 8（"
+ },
+ "kua.080": {
+  "en": "Kua lookup table",
+  "zh": "命卦速查表"
+ },
+ "kua.081": {
+  "en": "Kua",
+  "zh": "命卦"
+ },
+ "kua.082": {
+  "en": "Trigram",
+  "zh": "卦"
+ },
+ "kua.083": {
+  "en": "Vitality",
+  "zh": "生气"
+ },
+ "kua.084": {
+  "en": "Heavenly Doctor",
+  "zh": "天医"
+ },
+ "kua.085": {
+  "en": "Longevity",
+  "zh": "延年"
+ },
+ "kua.086": {
+  "en": "Stability",
+  "zh": "伏位"
+ },
+ "kua.087": {
+  "en": "Kan",
+  "zh": "卦"
+ },
+ "kua.088": {
+  "en": "East",
+  "zh": "东四命"
+ },
+ "kua.089": {
+  "en": "SE",
+  "zh": "东南"
+ },
+ "kua.090": {
+  "en": "Kun",
+  "zh": "卦"
+ },
+ "kua.091": {
+  "en": "West",
+  "zh": "西四命"
+ },
+ "kua.092": {
+  "en": "NE",
+  "zh": "东北"
+ },
+ "kua.093": {
+  "en": "NW",
+  "zh": "西北"
+ },
+ "kua.094": {
+  "en": "SW",
+  "zh": "西南"
+ },
+ "kua.095": {
+  "en": "Zhen",
+  "zh": "卦"
+ },
+ "kua.096": {
+  "en": "Xun",
+  "zh": "卦"
+ },
+ "kua.097": {
+  "en": "Qian",
+  "zh": "卦"
+ },
+ "kua.098": {
+  "en": "Dui",
+  "zh": "卦"
+ },
+ "kua.099": {
+  "en": "Gen",
+  "zh": "卦"
+ },
+ "kua.100": {
+  "en": "Li",
+  "zh": "卦"
+ },
+ "kua.101": {
+  "en": "The four directions not listed for your number are the ones to avoid: Mishap, Six Killings, Five Ghosts and Severed Fate. In Singapore and Malaysia an HDB flat or condominium bedroom usually offers only two solid walls, so pick the better of the two available directions rather than the best on paper.",
+  "zh": "你的命卦没有列出的另外四个方向，就是要避开的：祸害、六煞、五鬼和绝命。在新加坡和马来西亚，组屋（HDB）或公寓的卧室通常只有两面实墙可靠，所以在能选的两个方向里挑好的那个，不必强求纸面上的最佳。"
+ },
+ "kua.102": {
+  "en": "Bed direction guide",
+  "zh": "床头朝向指南"
+ },
+ "kua.103": {
+  "en": "Eight House directions",
+  "zh": "八宅方位"
+ },
+ "kua.104": {
+  "en": "Home fengshui audit",
+  "zh": "家居风水评估"
+ },
+ "kua.105": {
+  "en": "Next steps",
+  "zh": "下一步"
+ },
+ "kua.106": {
+  "en": "Audit your whole home",
+  "zh": "评估你的整个家"
+ },
+ "kua.107": {
+  "en": "Full BaZi reading",
+  "zh": "完整八字解读"
+ },
+ "kua.108": {
+  "en": "Learn more:",
+  "zh": "了解更多："
+ },
+ "kua.109": {
+  "en": "What is BaZi?",
+  "zh": "什么是八字？"
+ },
+ "kua.110": {
+  "en": "© bazifor.me, deterministic BaZi & fengshui readings.",
+  "zh": "© bazifor.me，按固定规则推算的八字与风水解读。"
+ },
+ "kua.111": {
+  "en": "Baby names",
+  "zh": "宝宝起名"
+ },
+ "kua.112": {
+  "en": "Kua number",
+  "zh": "命卦"
+ },
+ "kua.113": {
+  "en": "Learn",
+  "zh": "学习"
+ },
+ "kua.114": {
+  "en": "Guides in Chinese (",
+  "zh": "中文指南"
+ },
+ "kua.115": {
+  "en": "How it works",
+  "zh": "运作原理"
+ },
+ "kua.116": {
+  "en": "About",
+  "zh": "关于"
+ },
+ "kua.117": {
+  "en": "FAQ",
+  "zh": "常见问题"
+ },
+ "kua.118": {
+  "en": "Method",
+  "zh": "方法"
+ },
+ "kua.119": {
+  "en": "Author",
+  "zh": "作者"
+ }
+}

@@ -1,0 +1,278 @@
+{
+ "faq.001": {
+  "en": "FAQ — bazifor.me | Method, Accuracy & Privacy",
+  "zh": "常见问题：方法、准确性与隐私 / bazifor.me"
+ },
+ "faq.002": {
+  "en": "Frequently asked questions about bazifor.me: how readings are computed, what accuracy means, what data is stored, workspace privacy, and what is free.",
+  "zh": "bazifor.me 常见问题：解读如何计算、准确性意味着什么、存储了哪些数据、个人空间的隐私，以及哪些内容免费。"
+ },
+ "faq.003": {
+  "en": "bazifor.me FAQ",
+  "zh": "bazifor.me 常见问题"
+ },
+ "faq.004": {
+  "en": "Method, accuracy and privacy questions, answered plainly.",
+  "zh": "方法、准确性和隐私问题，直接作答。"
+ },
+ "faq.005": {
+  "en": "https://bazifor.me/static/og/faq.png",
+  "zh": "(same)"
+ },
+ "faq.006": {
+  "en": "summary_large_image",
+  "zh": "(same)"
+ },
+ "faq.007": {
+  "en": "bazifor.me",
+  "zh": "八字为我"
+ },
+ "faq.008": {
+  "en": "Your Reading",
+  "zh": "你的解读"
+ },
+ "faq.009": {
+  "en": "Home Fengshui",
+  "zh": "家居风水"
+ },
+ "faq.010": {
+  "en": "Learn",
+  "zh": "学习"
+ },
+ "faq.011": {
+  "en": "How It Works",
+  "zh": "运作原理"
+ },
+ "faq.012": {
+  "en": "About",
+  "zh": "关于"
+ },
+ "faq.013": {
+  "en": "Frequently asked questions (",
+  "zh": "常见问题"
+ },
+ "faq.014": {
+  "en": "Method & accuracy (",
+  "zh": "方法与准确性"
+ },
+ "faq.015": {
+  "en": "Is this AI fortune telling?",
+  "zh": "这是 AI 算命吗？"
+ },
+ "faq.016": {
+  "en": "No. Readings come from a deterministic rules engine that encodes classical procedures — no large language model writes your results, and every line names the classical rule behind it. See",
+  "zh": "不是。解读来自一个确定性的规则引擎，里面编码的是古法步骤：没有大语言模型撰写你的结果，每一句也都注明了背后的古法规则。详见"
+ },
+ "faq.017": {
+  "en": "How accurate is the computation?",
+  "zh": "计算有多准确？"
+ },
+ "faq.018": {
+  "en": "The engine reproduced a professionally produced, paid fengshui audit to the digit — 27/27 flying-star palaces, 32/32 directional assignments — and matches commercial chart products character-for-character on the calendar layer. Deterministic output is what makes that test possible: run it twice, compare against a benchmark.",
+  "zh": "引擎复现了一份专业出具的付费风水评估报告，精确到每一个数字：27/27 个飞星宫位、32/32 项方位判定全部吻合；在历法层面，与商业排盘产品逐字一致。正是确定性的输出让这样的检验成为可能：跑两次，再与基准对照。"
+ },
+ "faq.019": {
+  "en": "Which classical systems are used?",
+  "zh": "用到了哪些经典体系？"
+ },
+ "faq.020": {
+  "en": "BaZi (",
+  "zh": "八字"
+ },
+ "faq.021": {
+  "en": ") four pillars (Day Master strength, useful god (",
+  "zh": "四柱，含日主强弱、用神"
+ },
+ "faq.022": {
+  "en": ") selection by support-and-restrain (",
+  "zh": "选取：扶抑"
+ },
+ "faq.023": {
+  "en": "), seasonal adjustment (",
+  "zh": "、调候"
+ },
+ "faq.024": {
+  "en": "), illness-and-medicine (",
+  "zh": "、病药"
+ },
+ "faq.025": {
+  "en": ") and mediation (",
+  "zh": "、通关"
+ },
+ "faq.026": {
+  "en": "), Ten Gods, luck cycles (",
+  "zh": "，以及十神、大运"
+ },
+ "faq.027": {
+  "en": ")), Eight House (",
+  "zh": "；八宅"
+ },
+ "faq.028": {
+  "en": ") personal directions, Flying Stars (",
+  "zh": "个人方位；玄空飞星"
+ },
+ "faq.029": {
+  "en": ") for buildings with annual overlays, Wenchang (",
+  "zh": "用于建筑并叠加流年；文昌"
+ },
+ "faq.030": {
+  "en": ") study positions, and day-officer (",
+  "zh": "学习方位；以及建除"
+ },
+ "faq.031": {
+  "en": ") date selection. Each is explained in the",
+  "zh": "择日。每一项的讲解见"
+ },
+ "faq.032": {
+  "en": "Learn library",
+  "zh": "学习库"
+ },
+ "faq.033": {
+  "en": "Does an exact chart mean my life is fixed?",
+  "zh": "命盘算得精确，是不是说明命运就定了？"
+ },
+ "faq.034": {
+  "en": "No — \"deterministic\" describes the computation, not your future. The tradition itself ranks fate as one factor among several (\"first fate, second luck, third fengshui\",",
+  "zh": "不是。“确定性”说的是计算过程，不是你的未来。传统本身也把命运看作几个因素之一，所谓“一命二运三风水”"
+ },
+ "faq.035": {
+  "en": "). Precision matters so the actionable layers — colours, directions, dates, rooms — rest on solid ground.",
+  "zh": "。精确的意义在于，让颜色、方位、日期、房间这些可以动手去做的层面，建立在可靠的依据上。"
+ },
+ "faq.036": {
+  "en": "Why do I sometimes see two charts for one home?",
+  "zh": "为什么同一处住宅有时会看到两张盘？"
+ },
+ "faq.037": {
+  "en": "Your measured facing sits near a chart boundary (mixed facing,",
+  "zh": "你量得的朝向靠近飞星盘的分界线，即兼向"
+ },
+ "faq.038": {
+  "en": "/ straddling a boundary,",
+  "zh": "或骑线"
+ },
+ "faq.039": {
+  "en": "). A fraction of a degree decides which flying-star chart rules the house, so the engine computes both candidates and tells you to re-measure on site — instead of silently picking one.",
+  "zh": "。只差零点几度，就可能换成另一张飞星盘，所以引擎会把两种可能都算出来，并提示你到现场重新测量，而不是悄悄替你选一个。"
+ },
+ "faq.040": {
+  "en": "My birth time is uncertain — can I still get a reading?",
+  "zh": "我的出生时间不确定，还能得到解读吗？"
+ },
+ "faq.041": {
+  "en": "Yes. Mark the time as unknown and the engine computes everything that does not need the hour pillar, flagging the sections that do rather than faking them.",
+  "zh": "可以。把时间标为“不详”，引擎会算出所有不依赖时柱的内容，凡是需要时柱的部分会明确标出，而不是硬编一个结果。"
+ },
+ "faq.042": {
+  "en": "Privacy & data (",
+  "zh": "隐私与数据"
+ },
+ "faq.043": {
+  "en": "What do you store, and where?",
+  "zh": "你的哪些信息会被保存，存在哪里？"
+ },
+ "faq.044": {
+  "en": "Only what you enter: names or labels, birth data, and any floor plans you upload. It lives in a workspace behind an unguessable private link — no account, no email, no password. Anyone you give the link to can view the workspace, so treat it like a key.",
+  "zh": "只保存你填写的内容：姓名或代号、出生数据，以及你上传的户型图。它们放在一个猜不到的私密链接后面的个人空间里，无需注册账号、邮箱或密码。拿到链接的人都能查看这个个人空间，所以请像对待钥匙一样保管。"
+ },
+ "faq.045": {
+  "en": "How long is my workspace kept?",
+  "zh": "个人空间会保存多久？"
+ },
+ "faq.046": {
+  "en": "Workspaces expire automatically after about six months of inactivity. Revisiting your link keeps it alive.",
+  "zh": "个人空间如果约六个月没人使用，会自动过期。再次打开你的链接，就会续期。"
+ },
+ "faq.047": {
+  "en": "Do you sell or share my data?",
+  "zh": "你们会出售或分享我的数据吗？"
+ },
+ "faq.048": {
+  "en": "No. Your data exists to compute your readings, full stop.",
+  "zh": "不会。你的数据只用来推算你的解读，仅此而已。"
+ },
+ "faq.049": {
+  "en": "Using the site (",
+  "zh": "使用本站"
+ },
+ "faq.050": {
+  "en": "Is it free?",
+  "zh": "免费吗？"
+ },
+ "faq.051": {
+  "en": "Yes — everything is free during early access. If paid tiers arrive later, the free chart and the citation-first principle stay.",
+  "zh": "免费。早期体验期间一切功能免费。日后若推出付费版本，免费的命盘和“出处优先”的原则不变。"
+ },
+ "faq.052": {
+  "en": "How many people and homes can one workspace hold?",
+  "zh": "一个个人空间能放多少人和住宅？"
+ },
+ "faq.053": {
+  "en": "Up to 8 people and up to 6 homes — enough for a family comparing properties, with a side-by-side battlecard across every analyzed home.",
+  "zh": "最多 8 人、6 处住宅，足够一家人比较房子，并可对所有已分析的住宅生成并排对比卡。"
+ },
+ "faq.054": {
+  "en": "Is there a Chinese version?",
+  "zh": "有中文版吗？"
+ },
+ "faq.055": {
+  "en": "Readings are bilingual throughout (English + Simplified Chinese), and the",
+  "zh": "解读全程为中英双语（英文加简体中文），而"
+ },
+ "faq.056": {
+  "en": "Chinese guides (",
+  "zh": "中文指南"
+ },
+ "faq.057": {
+  "en": "mirror the Learn library in Chinese.",
+  "zh": "是“学习”库的中文版。"
+ },
+ "faq.058": {
+  "en": "Fastest way to judge us: your own chart.",
+  "zh": "最快的判断办法：看你自己的命盘。"
+ },
+ "faq.059": {
+  "en": "Get your free reading →",
+  "zh": "免费获取你的解读 →"
+ },
+ "faq.060": {
+  "en": "© bazifor.me — deterministic BaZi & fengshui readings.",
+  "zh": "© bazifor.me，按固定规则推算的八字与风水解读。"
+ },
+ "faq.061": {
+  "en": "BaZi",
+  "zh": "八字"
+ },
+ "faq.062": {
+  "en": "Home fengshui",
+  "zh": "家居风水"
+ },
+ "faq.063": {
+  "en": "Baby names",
+  "zh": "宝宝起名"
+ },
+ "faq.064": {
+  "en": "Kua number",
+  "zh": "命卦"
+ },
+ "faq.065": {
+  "en": "Guides in Chinese (",
+  "zh": "中文指南"
+ },
+ "faq.066": {
+  "en": "How it works",
+  "zh": "运作原理"
+ },
+ "faq.067": {
+  "en": "FAQ",
+  "zh": "常见问题"
+ },
+ "faq.068": {
+  "en": "Method",
+  "zh": "方法"
+ },
+ "faq.069": {
+  "en": "Author",
+  "zh": "作者"
+ }
+}

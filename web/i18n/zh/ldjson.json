@@ -1,0 +1,74 @@
+{
+ "ld.01": {
+  "en": "Author of the bazifor.me guides and builder of its deterministic engine",
+  "zh": "bazifor.me 指南的作者，也是这套确定性引擎的搭建者"
+ },
+ "ld.02": {
+  "en": "Author of the bazifor.me BaZi, feng shui and Chinese naming guides and builder of its deterministic engine.",
+  "zh": "bazifor.me 八字、风水与中文起名指南的作者，也是这套确定性引擎的搭建者。"
+ },
+ "ld.03": {
+  "en": "Feng shui",
+  "zh": "风水"
+ },
+ "ld.04": {
+  "en": "Chinese naming",
+  "zh": "中文起名"
+ },
+ "ld.05": {
+  "en": "bazifor.me Chinese baby name builder",
+  "zh": "八字为我 宝宝起名工具"
+ },
+ "ld.06": {
+  "en": "Character picker by element, strokes, pinyin and meaning",
+  "zh": "按五行、笔画、拼音和字义挑字"
+ },
+ "ld.07": {
+  "en": "Sound-alike and gender checks",
+  "zh": "谐音与性别检查"
+ },
+ "ld.08": {
+  "en": "Name card and printable certificate",
+  "zh": "名字卡与可打印证书"
+ },
+ "ld.09": {
+  "en": "Baby name builder",
+  "zh": "宝宝起名工具"
+ },
+ "ld.10": {
+  "en": "bazifor.me Kua number calculator",
+  "zh": "八字为我 命卦计算器"
+ },
+ "ld.11": {
+  "en": "Best headboard and desk directions",
+  "zh": "最佳床头与书桌朝向"
+ },
+ "ld.12": {
+  "en": "Kua number calculator",
+  "zh": "命卦计算器"
+ },
+ "ld.13": {
+  "en": "bazifor.me BaZi calculator",
+  "zh": "八字为我 八字排盘"
+ },
+ "ld.14": {
+  "en": "Four pillars with hidden stems",
+  "zh": "四柱与藏干"
+ },
+ "ld.15": {
+  "en": "Day master strength",
+  "zh": "日主强弱"
+ },
+ "ld.16": {
+  "en": "Luck cycles and timing windows",
+  "zh": "大运与时间窗口"
+ },
+ "ld.17": {
+  "en": "Up to 8 people with harmony comparison",
+  "zh": "最多 8 人，可比较彼此的契合度"
+ },
+ "ld.18": {
+  "en": "BaZi calculator",
+  "zh": "八字排盘"
+ }
+}
