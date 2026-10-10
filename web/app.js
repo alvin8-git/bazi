@@ -747,7 +747,7 @@ function tenGodsWheel(c, opts = {}) {
   const G = i => GROUPS[i];
   const SHENGI = [[2, 3], [3, 4], [4, 0], [0, 1], [1, 2]];   // 比劫→食傷→財→官殺→印→比劫
   const KEI = [[2, 4], [3, 0], [4, 1], [0, 2], [1, 3]];      // 剋 star
-  let s = `<svg viewBox="${opts.groupsOnly ? "45 45 250 265" : "0 0 340 345"}" class="ewheel tgwheel${opts.groupsOnly ? " tgwheel-groups" : ""}"><defs>
+  let s = `<svg viewBox="${opts.groupsOnly ? "45 45 250 265" : "0 0 340 345"}" class="ewheel tgwheel${opts.groupsOnly ? " tgwheel-groups" : ""}${opts.zh ? " keepzh" : ""}"${opts.zh ? ' data-notip role="img" aria-label="' + GROUPS.map((g) => `${g.en} (${g.zh}) ${g.sum}%`).join(", ") + '"' : ""}><defs>
     <marker id="tS" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5"
       orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7aa87f"/></marker>
     <marker id="tK" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5"
@@ -775,7 +775,7 @@ function tenGodsWheel(c, opts = {}) {
   GROUPS.forEach(g => {
     s += `<g><title>${g.en} ${g.sum}% (${g.zh})</title>
       <circle cx="${g.x}" cy="${g.y}" r="${g.r}" fill="${EL_COL[g.el]}" opacity=".92"/>
-      ${nodeLines(g.en, g.x, g.y, g.r, 10.5)}</g>
+      ${opts.zh ? `<text x="${g.x}" y="${g.y + 5.5}" text-anchor="middle" font-size="${Math.min(16, g.r * 0.62).toFixed(1)}" font-weight="700" fill="#fff" font-family="Noto Serif SC, serif">${g.zh}</text>` : nodeLines(g.en, g.x, g.y, g.r, 10.5)}</g>
       <text x="${g.x}" y="${g.y + g.r + 11}" text-anchor="middle" font-size="9.5"
         paint-order="stroke" stroke="#faf7f2" stroke-width="3" stroke-linejoin="round" fill="#6b6357">${g.sum}%</text>`;
     if (!opts.groupsOnly) g.sat.forEach(t => {
@@ -867,6 +867,13 @@ const LEGENDS = {
 const ALLGODS = ["比肩", "劫財", "食神", "傷官", "正財", "偏財", "正官", "七殺", "正印", "偏印"];
 /* the chart carries its own legend; fall back to the table below when it does not */
 const godEn = (c, g) => ((c.tengods_legend || {})[g] || {}).en || TG_EN_FALLBACK[g] || g;
+const WHEEL_KEY = [["比劫", "peers", "比肩", "劫財"], ["食傷", "output", "食神", "傷官"], ["財星", "wealth", "正財", "偏財"],
+  ["官殺", "authority", "正官", "七殺"], ["印星", "resource", "正印", "偏印"]];
+const TG_GIST = Object.fromEntries(Object.entries({   // one line per role, from the engine's TEN_GOD_MEANING
+  比肩: "peers and self-reliance", 劫財: "rivals and boldness", 食神: "gentle output, enjoyment and ease", 傷官: "sharp output and a will to challenge",
+  偏財: "windfall wealth and opportunity", 正財: "steady wealth, salary and savings", 七殺: "raw pressure and ambition", 正官: "proper authority, rules and status",
+  偏印: "unconventional learning and solitary study", 正印: "nurturing support, study and protection" }).flatMap(([k, v]) =>
+  [[k, v], [k.replace("財", "财").replace("殺", "杀").replace("傷", "伤"), v]]));
 const TG_EN_FALLBACK = { 比肩: "Friend", 劫財: "Rob Wealth", 食神: "Eating God",
   傷官: "Hurting Officer", 正財: "Direct Wealth", 偏財: "Indirect Wealth",
   正官: "Direct Officer", 七殺: "Seven Killings", 正印: "Direct Resource", 偏印: "Indirect Resource" };
@@ -945,7 +952,10 @@ function pIdentity(c, name) {
   const I = c.plain.identity, now = sideNow(c);
   const where = now ? `This is your day pillar: you, at every age. Each stage of life has its own side, shown below; you are now in ${{ year: "your roots", month: "your working years", day: "your home years", hour: "your later years" }[now.key]}.`
     : "This is your day pillar: you, at every age. Each stage of life has its own side, shown below.";
-  return `<section class="rp-ident"><div class="rp-idtext"><p class="rp-name">${dn(name || c.name)}</p>${pSeal(c)}
+  const season = { 寅: "spring", 卯: "spring", 辰: "spring", 巳: "summer", 午: "summer", 未: "summer",
+    申: "autumn", 酉: "autumn", 戌: "autumn", 亥: "winter", 子: "winter", 丑: "winter" }[c.pillars.month[1]];
+  const art = `/static/img/reading/bg/${STEM_SLUG[c.day_master]}-${season}`;   // the identity line, drawn: stem × season
+  return `<section class="rp-ident rp-bgart" data-art="${STEM_SLUG[c.day_master]}-${season}" style="--bg6:url('${art}-600.jpg');--bg12:url('${art}-1200.jpg')"><div class="rp-idtext"><p class="rp-name">${dn(name || c.name)}</p>${pSeal(c)}
       <h2 class="rp-h">${I.head}</h2><p class="rp-sub">${I.sub}</p><p class="rp-sub rp-where">${where}</p>${pWhy(I.why)}</div>
   </section>`;   // the Day Master image now lives on the "you at home" card in the four sides
 }
@@ -1081,7 +1091,7 @@ const COLOUR_WORDS = { 红: "#c5221f", 紅: "#c5221f", 紫: "#7b3fa0",
   青: "#17702f", 蓝: "#1a56b0", 藍: "#1a56b0", 黑: "#22242a", 灰: "#4b5563",
   金: "#7d5c00", 白: "#4b5563" };
 const COLOUR_EN = { red: "#c5221f", purple: "#7b3fa0", yellow: "#7d5800",
-  brown: "#8a5a2b", orange: "#a84a06", green: "#17702f", blue: "#1a56b0", black: "#22242a",
+  brown: "#8a5a2b", orange: "#a84a06", gold: "#7d5f08", silver: "#4b5563", beige: "#6f6046", green: "#17702f", blue: "#1a56b0", black: "#22242a",
   grey: "#4b5563", gray: "#4b5563", white: "#4b5563" };
 // only standalone colour words / dot-separated colour lists — never 明白, 黄金,
 // 青年, 红包, 黑马 … (a colour char followed or preceded by another CJK char)
@@ -1143,7 +1153,7 @@ function colorizeColours(root) {
       if (idx < last) continue;                       // no overlapping repaint
       frag.appendChild(document.createTextNode(s.slice(last, idx)));
       const b = document.createElement("b");
-      b.className = "cw" + (/^(白|white)$/i.test(txt) ? " cw-white" : "");
+      b.className = "cw" + (/^(白|white|silver)$/i.test(txt) ? " cw-white" : "");   // pale colours: ink on a thin chip
       b.style.color = col;
       b.textContent = txt;
       frag.appendChild(b);
@@ -1405,13 +1415,16 @@ function buildGods(c, R) {
   const dm = c.day_master, en = (g) => (c.tengods_legend[g] || {}).en || TG_EN_FALLBACK[g] || "";
   const gs = groupSums(c).sort((a, b) => b[1] - a[1]);
   const g2 = rdFig({ tier: "hero", span: 5, label: "The god wheel", learn: 4,
-    chart: `<div class="tgwrap svg-plate">${tenGodsWheel(c, { groupsOnly: true })}</div>`,
+    chart: `<div class="tgwrap svg-plate">${tenGodsWheel(c, { groupsOnly: true, zh: true })}</div>`,
     line: `${gs[0][0]} ${GRP_EN[gs[0][0]]} lead your wheel at ${gs[0][1]}%, ${gs[1][0]} ${GRP_EN[gs[1][0]]} ${gs[0][1] - gs[1][1] < 12 ? "close behind" : "behind"} at ${gs[1][1]}%.`,
-    facts: gs.slice(0, 2).map(([z, v]) => [z, `${v}%`]), legend: legendList(4) });
+    facts: gs.slice(0, 2).map(([z, v]) => [z, `${v}%`]),
+    legend: `<div>The five circles are the ten roles in five groups; a bigger circle is a bigger share of your chart. The centre is you, the Day Master (日元).</div>
+      ${WHEEL_KEY.map(([zh, name, a, b]) => `<div><b class="keepzh">${zh}</b> <b>${name}</b>: ${en(a)} (${a}) and ${en(b)} (${b})</div>`).join("")}
+      <div>Solid green arrows: each group feeds the next. Dashed red arrows: each group checks the one it points at.</div>${legendList(4)}` });
   const rows = ALLGODS.map((g) => [g, c.tengods_pct[g] || 0]), pmax = Math.max(...rows.map(([, v]) => v)) || 1;
   const [g1, p1] = topGod(c), absent = ALLGODS.filter((g) => !(c.tengods_pct[g] > 0));
   const bars = `<div class="bars tgbars">${rows.map(([g, p]) => `<div class="bar-row tg-row2${p ? "" : " tg-zero"}">
-      <span><b style="color:${EL_TXT[godEl(dm, g)]}">${en(g)}</b> <span class="sub keepzh">${g}</span></span>
+      <span><b style="color:${EL_TXT[godEl(dm, g)]}">${en(g)}</b> <span class="sub keepzh">(${g})</span></span>
       <div class="bar">${p ? `<i style="width:${(p / pmax * 100).toFixed(0)}%;background:${EL_COL[godEl(dm, g)]}"></i>` : ""}</div>
       <b>${p ? p + "%" : "0% (absent)"}</b></div>`).join("")}</div>`;
   const sex = c.sex, grp = (gods) => Math.round(gods.reduce((a, g) => a + (c.tengods_pct[g] || 0), 0) * 10) / 10;
@@ -1420,18 +1433,14 @@ function buildGods(c, R) {
     ["Wealth stars", "正財+偏財", ["正財", "偏財"]], ["Authority stars", "正官+七殺", ["正官", "七殺"]],
     ["Resource stars", "正印+偏印", ["正印", "偏印"]], ["Output stars", "食神+傷官", ["食神", "傷官"]],
     ["Peer stars", "比肩+劫財", ["比肩", "劫財"]]];
-  const bystem0 = {};
-  Object.keys(STEM_YANG).forEach((st) => { const g = godOfStem(dm, st); (bystem0[g] = bystem0[g] || []).push(st); });
-  const keyRow = `<div class="tgkey"><span class="tgkey-l">key · what each stem is to a ${elc(dm)} day master</span><div class="tgmap">${ALLGODS.map((g) =>
-    `<span class="tgm"><b style="color:${EL_TXT[godEl(dm, g)]}">${g}</b>${(bystem0[g] || []).map((st) =>
-      `<i class="stemchip" style="color:${EL_TXT[STEM_EL[st]]};border-color:${EL_TXT[STEM_EL[st]]}">${st}</i>`).join("")}</span>`).join("")}</div></div>`;
   const g1f = rdFig({ tier: "hero", span: 7, extra: "rd-pair2", label: "Ten-god bars", learn: 4, chart: bars,
     line: `Your chart runs on ${godc(dm, g1)} ${en(g1)} (${Math.round(p1)}%) — ${(c.tengods_legend[g1] || {}).meaning || GRP_THEME[grpOfGod(g1)]}.`,
     facts: [[g1, `${p1}%`], ["absent", `${absent.length} of 10 gods`]],
-    legend: `<div><b>Bands</b> ≥20% prominent · ≥8% present · &lt;8% faint · 0% absent.</div>${keyRow}<div class="sub">Whenever one of these stems arrives in a luck pillar or year (时运 tab), it brings that god's themes with it. The full stem-by-stem classification is the Pillars grid.</div>
-      <table class="tgsides"><tr><th>Term</th><th>Gods</th><th>This chart</th></tr>${starRows.map(([t, d, gods]) => { const p = grp(gods);
-        return `<tr><td><b>${t}</b></td><td class="sub">${d}</td><td>${p}% — ${band(p)}</td></tr>`; }).join("")}</table>
-      ${Object.entries(c.tengods_pct).map(([g]) => `<div><b style="color:${EL_TXT[godEl(dm, g)]}">●</b> <b>${g}</b> ${en(g)} — ${(c.tengods_legend[g] || {}).meaning || ""}</div>`).join("")}` });
+    legend: `<div>Each bar is how much of your chart one role takes up. A role is what a character is to you, the Day Master.</div>
+      <div><b>Bands:</b> 20% or more is prominent, 8% or more is present, under 8% is faint, 0% is absent.</div>
+      <div class="tgkey2">${ALLGODS.map((g) => `<div><b style="color:${EL_TXT[godEl(dm, g)]}">${en(g)}</b> <span class="keepzh">(${g})</span>: ${TG_GIST[g] || ""}</div>`).join("")}</div>
+      <table class="tgsides"><tr><th>Group</th><th>This chart</th></tr>${starRows.map(([t, , gods]) => { const p = grp(gods);
+        return `<tr><td><b>${t}</b> <span class="sub">${gods.map(en).join(" and ")}</span></td><td>${p}%, ${band(p)}</td></tr>`; }).join("")}</table>` });
   const axes = c.personality || [];
   const pax = `<div class="paxchips">${axes.map((a) => { if (!a.zone) return `<div class="pax"><b>${a.axis}</b> ${a.verdict}<div class="sub">${a.basis}</div></div>`;
     const pos = a.zone === "left" ? 16 : a.zone === "right" ? 84 : 50;
@@ -1493,7 +1502,7 @@ function buildGods(c, R) {
       line: `${top.en} leads at ${top.score}; your heaviest signal is ${heavyName.toLowerCase()} — ${heavy[1][1]}%, ${inPal(heavy[1][2], heavy[1][3]) ? "seated in" : "from"} ${heavy[1][4]}.`,
       facts: [["strongest", `${top.en} ${top.score}`], ["weakest", `${low.en} ${low.score}`], ["domains", `${doms.length + extra.length}`]],
       legend: `<div><b>Score</b> starts at a neutral 50; every chip is a rule that moved it. <b>Signal gods</b> govern the domain; <b>seat</b> is the pillar they sit in and whether that is the domain's own palace (得位).</div>
-        ${doms.map((d) => `<div class="cite"><b>${d.zh} ${d.en}</b> · ${d.band} — ${d.evidence.map(chip).join(" ")}</div>`).join("")}
+        ${doms.map((d) => `<div class="cite"><b>${d.en} (${d.zh})</b> · ${d.band.replace(/^(.*?)\s+([㐀-鿿]+)$/, "$1 ($2)")}: ${d.evidence.map(chip).join(" ")}</div>`).join("")}
         ${c.spouse_reading ? `<div class="cite"><b>Marriage:</b> ${c.spouse_reading.star_line} ${c.spouse_reading.palace_line}</div>` : ""}${legendList(8)}` });
   }
   // raw pillar data (G7) retired 2026-09-27: the Pillars grid carries every stem/hidden stem; its key lives in the bars' legend. Gods = 7 figures.
@@ -1505,7 +1514,7 @@ function buildGods(c, R) {
     const f0 = F[0];
     k1 = rdFig({ tier: "reference", span: 12, label: "Favourable industries", learn: 12, chart,
       line: f0 ? `${elw(f0.element)} suits you best — ${f0.industries.split(",").slice(0, 3).map((s) => s.trim()).join(", ")} top the list.` : "No favourable field is listed for this chart.",
-      facts: [["宜", elbs(F.map((it) => it.element))], ["慎", elbs(A.map((it) => it.element))]], legend: legendList(12) });
+      facts: [['Favourable <span class="keepzh">(宜)</span>', elbs(F.map((it) => it.element))], ['Go carefully <span class="keepzh">(慎)</span>', elbs(A.map((it) => it.element))]], legend: legendList(12) });
   }
   if (c.careers) {
     const R = (c.career_roles || {}).top || [], rmx = Math.max(...R.map((x) => Math.abs(x.score)), 1);
@@ -1701,6 +1710,17 @@ function glossifyDom(root, fresh = true) {
   for (const n of nodes) {
     const b = n.parentElement.closest(".ev, .rd-synth-body"); if (b !== box) { box = b; if (b) GL.reset(); }
     const v = GL.text(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; }
+  // in panels and the report: a band word's bare characters go in brackets ("excess 過旺" → "excess (過旺)"),
+  // and the engine's all-caps phrases read in sentence case
+  const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: (n) => n.parentElement
+    && n.parentElement.closest(".ev, .rd-synth-body") && !n.parentElement.closest("svg,.keepzh,.zh") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+  const tn = []; while ((t = tw.nextNode())) tn.push(t);
+  for (const n of tn) {
+    const v = n.nodeValue.replace(/\b(prominent|present|faint|absent|balanced|balanced centre|needs support|excess|weak|deficient|strong|favourable|unfavourable) ([㐀-鿿]{1,3})(?![㐀-鿿(（])/g, "$1 ($2)")
+      .replace(/([A-Za-z]) ([㐀-鿿]{2,6})(?=$|[\s,;.:·—)])(?!\s?[(（](?!\d))/g, "$1 ($2)")   // "structure 学习文昌" → "structure (学习文昌)"
+      .replace(/(^|[.:;—]\s*|\s)([A-Z]{4,}(?:[ -][A-Z]{2,})*)\b/g, (m, pre, caps) => pre + (/^$|[.:;—]\s*$/.test(pre) ? caps[0] + caps.slice(1).toLowerCase() : caps.toLowerCase()));
+    if (v !== n.nodeValue) n.nodeValue = v;
+  }
   GL.tipify(root);                     // Chinese runs -> tooltip spans (pinyin there only), element colours
 }
 

@@ -875,3 +875,15 @@ details.zhver>div{margin-top:8px}
 /* Balance: the pentagon fills its card */
 #tab-person .rp-chart .ewrap{display:block}
 #tab-person .rp-chart .svg-plate svg{display:block;width:100%;max-width:560px;height:auto;margin:0 auto}
+/* drives round (2026-10-10): the god wheel in characters, centred, filling its card; the ten-role key */
+#tab-person .rp-chart .tgwrap{display:block}
+#tab-person .rp-chart .tgwrap svg{display:block;width:100%;max-width:520px;height:auto;margin:0 auto}
+#tab-person .tgkey2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px;margin:8px 0}
+@media (max-width:560px){#tab-person .tgkey2{grid-template-columns:1fr}}
+/* the opening sits on its own picture: Day Master × season, under a paper-coloured veil for legibility */
+#tab-person .rp-bgart{position:relative;border-radius:16px;padding:28px 16px 22px;margin-top:6px;
+  background:linear-gradient(rgba(250,247,242,.12),rgba(250,247,242,.12)),var(--bg6) center 70%/cover no-repeat}
+@media (min-width:700px){#tab-person .rp-bgart{padding:40px 28px 34px;background-image:linear-gradient(rgba(250,247,242,.08),rgba(250,247,242,.08)),var(--bg12)}}
+/* the words sit on a paper panel so every colour keeps 4.5:1 whatever the picture does behind them */
+#tab-person .rp-bgart .rp-idtext{background:rgba(250,247,242,.93);border-radius:14px;padding:18px 16px 8px;max-width:640px;margin:0 auto;box-shadow:0 1px 0 rgba(0,0,0,.04)}
+@media (max-width:640px){#tab-person .rp-bgart{border-radius:0;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);padding:18px 14px 46vw;background-size:100% auto;background-position:center bottom;background-color:#f6f1e7}}

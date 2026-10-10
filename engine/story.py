@@ -326,6 +326,18 @@ EVIDENCE_LABEL = {
 }
 
 
+def _vault_why(V):
+    """The wealth store in one plain line (the engine's state string repeats 'vault' once glossed)."""
+    if not V.get("present"):
+        return "No wealth store (财库) in the chart: money flows rather than stays."
+    br = V.get("branch", "")
+    if V.get("open"):
+        return f"Wealth store (财库): the {br} ({ANIMAL.get(br, br)}) branch, already open."
+    opens = V.get("state", "").split(" opens in ")[-1][:1]
+    return (f"Wealth store (财库): the {br} ({ANIMAL.get(br, br)}) branch, sealed; it opens in {ANIMAL.get(opens, opens)} ({opens}) years, "
+            "which the timing windows mark as years to save and build.")
+
+
 def _why(p, plain):
     st = p["strength"]; V = (p.get("palaces") or {}).get("vault") or {}
     return {
@@ -337,7 +349,7 @@ def _why(p, plain):
                      f"{st.get('root_ratio')}%, season points {(st.get('parts') or {}).get('season_pts')}. {(p.get('synthesis') or {}).get('assessment', '')}"),
         "flows": (plain.get("flows") or {}).get("why", ""), "medicine": plain["helps"]["why"],
         "health": plain["health"]["why"], "domains": "; ".join(f"{d['en']} {d['score']} ({d['band']})" for d in p.get("domains") or []) + ".",
-        "work": (plain.get("work") or {}).get("why", ""), "money": f"Vault: {V.get('state', 'absent')}.",
+        "work": (plain.get("work") or {}).get("why", ""), "money": _vault_why(V),
         "decades": (p.get("windows") or {}).get("arc", ""), "years": (plain.get("next_ten") or {}).get("why", ""),
         "months": (plain.get("months") or {}).get("why", ""), "days": (plain.get("days") or {}).get("why", ""),
         "placements": (plain.get("space") or {}).get("why", ""), "afflict": (plain.get("afflict") or {}).get("why", ""),
