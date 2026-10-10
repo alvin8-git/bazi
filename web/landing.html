@@ -2,7 +2,7 @@
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BaZi Calculator, Home Feng Shui and Baby Names | bazifor.me</title>
-<meta name="description" content="Free BaZi (八字) chart, home feng shui from your floor plan and Chinese baby names, each citing its classical rule. Made for Singapore and Malaysia birth times.">
+<meta name="description" content="Free BaZi (八字) chart, home feng shui from your floor plan and Chinese baby names, each citing its classical rule. Any birth city, converted to true solar time.">
 <link rel="canonical" href="https://bazifor.me/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="bazifor.me">
 <meta name="msapplication-TileColor" content="#c7301d">
 <meta property="og:title" content="BaZi Calculator, Home Feng Shui and Baby Names | bazifor.me">
-<meta property="og:description" content="Free BaZi (八字) chart, home feng shui from your floor plan and Chinese baby names, each citing its classical rule. Made for Singapore and Malaysia birth times.">
+<meta property="og:description" content="Free BaZi (八字) chart, home feng shui from your floor plan and Chinese baby names, each citing its classical rule. Any birth city, converted to true solar time.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bazifor.me/">
 <meta property="og:image" content="https://bazifor.me/static/og/home.png">
@@ -30,7 +30,7 @@
 {"@type": "Question", "name": "Do I need an account to keep my results?", "acceptedAnswer": {"@type": "Answer", "text": "No. Your workspace lives behind an unguessable private link. Keep the link to come back to it; nothing is listed or shared."}},
 {"@type": "Question", "name": "Is the reading written by AI?", "acceptedAnswer": {"@type": "Answer", "text": "No. Every line is the output of a fixed classical rule, and the guides are hand-written. No generative AI writes any reading, and the same inputs always give the same result."}},
 {"@type": "Question", "name": "Does it predict events?", "acceptedAnswer": {"@type": "Answer", "text": "No. The engine computes classical structures such as the four pillars, the useful elements and the Flying Stars of a home, and states their traditional reading. It does not forecast events."}},
-{"@type": "Question", "name": "Why is it built for Singapore and Malaysia?", "acceptedAnswer": {"@type": "Answer", "text": "Birth times are converted to true solar time for the longitude, and clock times before 1982 use the UTC+7:30 offset of that era. The home tool is written for HDB flats and condominiums, and every term appears in English with the Chinese once."}}
+{"@type": "Question", "name": "Does it work for births outside Singapore?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Pick the birth country and city, and the engine uses that city's time zone on the birth date, daylight saving and past changes included, and its longitude to compute true solar time. Singapore is only the default."}}
 ]}</script>
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;--seal:#c7301d;
@@ -138,7 +138,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
       <p class="lead">Enter a birth date and time, a floor plan, or a surname. The engine runs the traditional rules and shows which rule produced each line, so you can check it.</p>
       <a class="cta" href="/start">Start your free reading</a>
       <a class="cta ghost" href="#how">See how it works</a>
-      <p class="free">Free, no account, built for Singapore and Malaysia.</p>
+      <p class="free">Free, no account, any birth city.</p>
       <nav class="chips" aria-label="Jump to a tool"><a href="#card-bazi">BaZi (<span class="zh" lang="zh-Hant" title="bā zì · BaZi">八字</span>) reading</a><a href="#card-fengshui">Home feng shui (<span class="zh" lang="zh-Hant" title="fēng shuǐ · feng shui">風水</span>)</a><a href="#card-kua">Kua number (<span class="zh" lang="zh-Hant" title="mìng guà · Kua number">命卦</span>)</a><a href="#card-baby">Baby names (<span class="zh" lang="zh-Hant" title="qǐ míng · baby naming">起名</span>)</a></nav>
     </div>
     <img class="hero-img" src="/static/img/hero-landing.jpg" srcset="/static/img/hero-landing-600.jpg 600w, /static/img/hero-landing.jpg 1200w" sizes="(min-width: 760px) 480px, 100vw" width="1200" height="800" fetchpriority="high" alt="Ink-wash illustration of a compass, a folded floor plan, a red seal and a jade pendant on a scholar's desk">
@@ -207,12 +207,12 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
   </section>
 
   <section id="who" aria-labelledby="h-who">
-    <h2 class="sec-h" id="h-who">Built for Singapore and Malaysia</h2>
+    <h2 class="sec-h" id="h-who">Built for any birth city</h2>
     <div class="who">
-      <p>The rules are classical. The defaults are local.</p>
+      <p>The rules are classical. The time is yours.</p>
       <ul>
-        <li>Birth times are converted to true solar time for the longitude, and clock times before 1982 use the UTC+7:30 offset of that era.</li>
-        <li>The home tool is written for HDB flats and condominiums: main-door facing, lift lobbies, bay windows and shared walls.</li>
+        <li>Pick the birth country and city. The engine uses that city's time zone on the birth date, daylight saving and past changes included, and its longitude to compute true solar time.</li>
+        <li>The home tool works from your floor plan, whether a flat, a condominium or a house: main-door facing, lift lobbies, bay windows and shared walls.</li>
         <li>English first, with the Chinese term shown once, so a bilingual family can read the same page together. Sixteen guides are available in English and Chinese.</li>
       </ul>
     </div>
@@ -224,7 +224,7 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
     <details><summary>Do I need an account to keep my results?</summary><p>No. Your workspace lives behind an unguessable private link. Keep the link to come back to it; nothing is listed or shared.</p></details>
     <details><summary>Is the reading written by AI?</summary><p>No. Every line is the output of a fixed classical rule, and the guides are hand-written. No generative AI writes any reading, and the same inputs always give the same result.</p></details>
     <details><summary>Does it predict events?</summary><p>No. The engine computes classical structures such as the four pillars, the useful elements and the Flying Stars of a home, and states their traditional reading. It does not forecast events.</p></details>
-    <details><summary>Why is it built for Singapore and Malaysia?</summary><p>Birth times are converted to true solar time for the longitude, and clock times before 1982 use the UTC+7:30 offset of that era. The home tool is written for HDB flats and condominiums, and every term appears in English with the Chinese once.</p></details>
+    <details><summary>Does it work for births outside Singapore?</summary><p>Yes. Pick the birth country and city, and the engine uses that city's time zone on the birth date, daylight saving and past changes included, and its longitude to compute true solar time. Singapore is only the default.</p></details>
   </section>
 
   <section id="learn" aria-labelledby="h-learn">
