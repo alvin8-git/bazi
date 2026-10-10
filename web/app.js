@@ -615,6 +615,19 @@ const BR_ANIMAL = { 子: "鼠", 丑: "牛", 寅: "虎", 卯: "兔", 辰: "龙", 
 const swatchDisc = (x, y, r, el) => `<image href="/static/img/reading/sw/${EL_SLUG[el]}-128.webp" x="${(x - r * 1.14).toFixed(1)}" y="${(y - r * 1.14).toFixed(1)}" width="${(r * 2.28).toFixed(1)}" height="${(r * 2.28).toFixed(1)}" preserveAspectRatio="none"/>`;
 const swatchInk = (el) => el === "金" ? 'fill="#22242a" paint-order="stroke" stroke="rgba(250,247,242,.7)" stroke-width="2.4"'
   : 'fill="#fff" paint-order="stroke" stroke="rgba(28,20,12,.55)" stroke-width="2.6" stroke-linejoin="round"';
+/* painted brush arrows (owner pick A, 2026-10-10): a brush shaft, a painted head that keeps its own shape however long
+   the arrow is, and ink dabs for the controlling cycle. The masks are luminance images; each arrow is filled in its colour. */
+let INK_N = 0;
+const inkDefs = () => { const u = "ink" + (++INK_N);
+  return [u, ["shaft", "head", "dab"].map((k) => `<mask id="${u}-${k}" maskContentUnits="objectBoundingBox"><image href="/static/img/reading/ink/${k}-mask.png" width="1" height="1" preserveAspectRatio="none"/></mask>`).join("")]; };
+function inkArrow(u, x1, y1, x2, y2, col, sw, dotted, op = 1) {
+  const L = Math.hypot(x2 - x1, y2 - y1), ang = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI, t = Math.max(3, sw * 2.6);
+  const hw = t * 3, hh = hw * 0.77, r = (x, y, w, h, k) => `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${col}" mask="url(#${u}-${k})"/>`;
+  let g = "";
+  if (dotted) for (let d = t; d < L - hw * 0.6; d += t * 1.9) g += r(d - t * 0.6, -t * 0.48, t * 1.2, t * 0.96, "dab");
+  else g += r(0, -t / 2, Math.max(t, L - hw * 0.55), t, "shaft");
+  return `<g transform="translate(${x1.toFixed(1)} ${y1.toFixed(1)}) rotate(${ang.toFixed(1)})" opacity="${op}">${g}${r(L - hw, -hh / 2, hw, hh, "head")}</g>`;
+}
 function elementWheel(er) {
   const ORDER = ["火", "土", "金", "水", "木"];
   const cx = 170, cy = 170, R = 115;
@@ -633,24 +646,15 @@ function elementWheel(er) {
   const SHENG_P = [["木", "火"], ["火", "土"], ["土", "金"], ["金", "水"], ["水", "木"]];
   const KE_P = [["木", "土"], ["土", "水"], ["水", "火"], ["火", "金"], ["金", "木"]];
   const aff = new Set((er.afflictions || []).map(p => p.join()));
-  let s = `<svg viewBox="0 0 340 350" class="ewheel"><defs>
-    <marker id="mS" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5"
-      orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7aa87f"/></marker>
-    <marker id="mK" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5"
-      orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d5b3b0"/></marker>
-    <marker id="mKa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6"
-      orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#b03a2e"/></marker></defs>`;
+  const [u, defs] = inkDefs();
+  let s = `<svg viewBox="0 0 340 350" class="ewheel"><defs>${defs}</defs>`;
   KE_P.forEach(([a, b]) => {
     const [x1, y1, x2, y2] = seg(a, b), bad = aff.has(a + "," + b);
-    s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"
-      stroke="${bad ? "#b03a2e" : "#d5b3b0"}" stroke-width="${bad ? 3 : 1.3}"
-      ${bad ? "" : 'stroke-dasharray="4 3"'} marker-end="url(#${bad ? "mKa" : "mK"})"/>`;
+    s += inkArrow(u, x1, y1, x2, y2, bad ? "#b03a2e" : "#d5b3b0", bad ? 3 : 1.3, !bad);
   });
   SHENG_P.forEach(([a, b]) => {
     const [x1, y1, x2, y2] = seg(a, b);
-    s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#7aa87f"
-      stroke-width="${Math.max(1.2, Math.min(4, (er.share[a] || 0) / 9))}"
-      opacity="${(er.share[a] || 0) < 6 ? 0.35 : 0.9}" marker-end="url(#mS)"/>`;
+    s += inkArrow(u, x1, y1, x2, y2, "#7aa87f", Math.max(1.2, Math.min(4, (er.share[a] || 0) / 9)), false, (er.share[a] || 0) < 6 ? 0.35 : 0.9);
   });
   ORDER.forEach(el => {
     const [x, y] = pos[el], r = rOf(el);
@@ -751,26 +755,20 @@ function tenGodsWheel(c, opts = {}) {
   };
   const G = i => GROUPS[i];
   const SHENGI = [[2, 3], [3, 4], [4, 0], [0, 1], [1, 2]];   // 比劫→食傷→財→官殺→印→比劫
+  const inkD = inkDefs(), u = inkD[0];
   const KEI = [[2, 4], [3, 0], [4, 1], [0, 2], [1, 3]];      // 剋 star
-  let s = `<svg viewBox="${opts.groupsOnly ? "45 45 250 265" : "0 0 340 345"}" class="ewheel tgwheel${opts.groupsOnly ? " tgwheel-groups" : ""}${opts.zh ? " keepzh" : ""}"${opts.zh ? ' data-notip role="img" aria-label="' + GROUPS.map((g) => `${g.en} (${g.zh}) ${g.sum}%`).join(", ") + '"' : ""}><defs>
-    <marker id="tS" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5"
-      orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7aa87f"/></marker>
-    <marker id="tK" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5"
-      orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c98a86"/></marker></defs>`;
+  let s = `<svg viewBox="${opts.groupsOnly ? "45 45 250 265" : "0 0 340 345"}" class="ewheel tgwheel${opts.groupsOnly ? " tgwheel-groups" : ""}${opts.zh ? " keepzh" : ""}"${opts.zh ? ' data-notip role="img" aria-label="' + GROUPS.map((g) => `${g.en} (${g.zh}) ${g.sum}%`).join(", ") + '"' : ""}><defs>${inkD[1]}</defs>`;
   if (!opts.groupsOnly) GROUPS.forEach(g => g.sat.forEach(t => {   // connectors first
     s += `<line x1="${g.x}" y1="${g.y}" x2="${t.x}" y2="${t.y}"
       stroke="#cbc2b4" stroke-width="1" stroke-dasharray="2 3"/>`;
   }));
   KEI.forEach(([a, b]) => {
     const [x1, y1, x2, y2] = seg(G(a).x, G(a).y, G(a).r, G(b).x, G(b).y, G(b).r);
-    s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#d5b3b0"
-      stroke-width="1.3" stroke-dasharray="4 3" marker-end="url(#tK)"/>`;
+    s += inkArrow(u, x1, y1, x2, y2, "#d5b3b0", 1.3, true);
   });
   SHENGI.forEach(([a, b]) => {
     const [x1, y1, x2, y2] = seg(G(a).x, G(a).y, G(a).r, G(b).x, G(b).y, G(b).r);
-    s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#7aa87f"
-      stroke-width="${Math.max(1.2, Math.min(4, G(a).sum / 10))}"
-      opacity="${G(a).sum < 5 ? 0.35 : 0.85}" marker-end="url(#tS)"/>`;
+    s += inkArrow(u, x1, y1, x2, y2, "#7aa87f", Math.max(1.2, Math.min(4, G(a).sum / 10)), false, G(a).sum < 5 ? 0.35 : 0.85);
   });
   s += `<circle cx="${cx}" cy="${cy}" r="20" fill="${EL_COL[dmEl]}"/>
     <circle cx="${cx}" cy="${cy}" r="23.5" fill="none" stroke="var(--gold)" stroke-width="2.5"/>
@@ -909,14 +907,32 @@ function strengthGauge(st) {
   </svg>`;
 }
 
+/* the eight directions as a painted compass ring (owner pick A, 2026-10-10): north at the top, green washes where the
+   house stars help, red-ochre where they harm, the person's season painting at the centre; characters in the ring, English in the key */
 function bazhaiCompass(c) {
-  const cell = (pal, dir) => { const s = c.youxing[pal];
-    const good = ["生氣", "天醫", "延年", "伏位"].includes(s);
-    return `<div class="${good ? "g" : "b"}"><b>${dir} ${pal}</b>${s}</div>`; };
-  return `<div class="cmpx">
-    ${cell("乾", "NW")}${cell("坎", "N")}${cell("艮", "NE")}
-    ${cell("兌", "W")}<div class="c"><b class="dmark" style="color:${EL_TXT[STEM_EL[c.day_master]]}">${c.day_master}</b>${dn(c.name)}</div>${cell("震", "E")}
-    ${cell("坤", "SW")}${cell("離", "S")}${cell("巽", "SE")}</div>`;
+  const ANG = { N: -90, NE: -45, E: 0, SE: 45, S: 90, SW: 135, W: 180, NW: -135 }, R0 = 64, R1 = 158, C = 170;
+  const pt = (r, a) => [C + r * Math.cos(a * Math.PI / 180), C + r * Math.sin(a * Math.PI / 180)];
+  const season = { 寅: "spring", 卯: "spring", 辰: "spring", 巳: "summer", 午: "summer", 未: "summer", 申: "autumn", 酉: "autumn", 戌: "autumn", 亥: "winter", 子: "winter", 丑: "winter" }[c.pillars.month[1]];
+  const GOOD = ["生氣", "天醫", "延年", "伏位"], rows = Object.entries(PALACE_DIR).map(([pal, dir]) => ({ pal, dir, s: c.youxing[pal], good: GOOD.includes(c.youxing[pal]) }));
+  let svg = `<svg viewBox="0 0 340 340" class="cring keepzh" data-notip role="img" aria-label="Eight directions, north at the top: ${rows.map((r) => `${r.dir} ${BAZHAI_EN[r.s] ? BAZHAI_EN[r.s][0] : r.s}, ${r.good ? "use" : "avoid"}`).join("; ")}">
+    <circle cx="${C}" cy="${C}" r="${R1 + 8}" fill="#fdfbf6" stroke="#d9d0c1"/>`;
+  rows.forEach((r, i) => {
+    const a = ANG[r.dir], [x1, y1] = pt(R1, a - 22.5), [x2, y2] = pt(R1, a + 22.5), [x3, y3] = pt(R0, a + 22.5), [x4, y4] = pt(R0, a - 22.5);
+    const d = `M${x1.toFixed(1)} ${y1.toFixed(1)}A${R1} ${R1} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}L${x3.toFixed(1)} ${y3.toFixed(1)}A${R0} ${R0} 0 0 0 ${x4.toFixed(1)} ${y4.toFixed(1)}Z`;
+    const [mx, my] = pt((R0 + R1) / 2 + 4, a), id = `cr${++INK_N}`;
+    svg += `<clipPath id="${id}"><path d="${d}"/></clipPath><path d="${d}" fill="${r.good ? "#e6f0e4" : "#f7e6e1"}"/>
+      <image href="/static/img/reading/sw/${r.good ? "wood" : "fire"}-128.webp" x="${(mx - 70).toFixed(1)}" y="${(my - 70).toFixed(1)}" width="140" height="140" opacity="${r.good ? 0.5 : 0.38}" clip-path="url(#${id})"/>
+      <path d="${d}" fill="none" stroke="#faf7f2" stroke-width="3"/>
+      <text x="${mx.toFixed(1)}" y="${(my - 4).toFixed(1)}" text-anchor="middle" font-size="15" font-weight="700" fill="#2b2620" font-family="Georgia,'Noto Serif SC',serif">${r.dir} ${toSimp(r.pal)} ${r.good ? "✓" : "✗"}</text>
+      <text x="${mx.toFixed(1)}" y="${(my + 15).toFixed(1)}" text-anchor="middle" font-size="14" fill="#2b2620" font-family="'Noto Serif SC',serif">${toSimp(r.s)}</text>`;
+  });
+  const cid = `cc${++INK_N}`;
+  svg += `<clipPath id="${cid}"><circle cx="${C}" cy="${C}" r="${R0 - 4}"/></clipPath>
+    <image href="/static/img/reading/bg/${STEM_SLUG[c.day_master]}-${season}-600.jpg" x="${C - R0}" y="${C - R0}" width="${2 * R0}" height="${2 * R0}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${cid})"/>
+    <circle cx="${C}" cy="${C}" r="${R0 - 4}" fill="none" stroke="#8a7f72" stroke-width="1.5"/>
+    <text x="${C}" y="9" text-anchor="middle" font-size="11" fill="#5f574e">north</text></svg>`;
+  const key = zhKey(rows.map((r) => [toSimp(r.s), BAZHAI_EN[r.s] ? BAZHAI_EN[r.s][0] : ""]).concat(rows.map((r) => [toSimp(r.pal), DIR_WORD_EN[r.dir] || r.dir])).concat([["✓", "use"], ["✗", "avoid"]]));
+  return `${svg}${key}`;
 }
 
 /* ---- Reading layout A (owner pick 2026-10-10) -------------------------------------------
@@ -1019,6 +1035,17 @@ function pWeather(c) {
       <span class="rp-dage">${d.ages}</span><b>${d.word}</b><span class="rp-dline">${PHASE_LINE[d.phase] || ""}</span>${d.current ? '<em class="rp-dnow">now</em>' : ""}</li>`).join("")}</ol>
     ${nx ? `<p class="rp-dnext"><b>Next turn:</b> ${nx.word.toLowerCase()}, from age ${String(nx.ages).split(/[–-]/)[0]}.</p>` : ""}`;
 }
+/* the wealth store (財庫): the four storage branches, this chart's store outlined with its state (round D) */
+const VAULTS = [["辰", "水"], ["戌", "火"], ["丑", "金"], ["未", "木"]];
+function pVault(c) {
+  const V = (c.palaces || {}).vault || {}, want = V.present ? V.branch : (VAULTS.find((v) => v[1] === V.element) || [])[0];
+  const opens = ((V.state || "").match(/opens in (\S)/) || [])[1];
+  const st = V.present ? (V.open ? "开" : "闭") : "无";
+  return `<div class="rp-vault keepzh" data-notip>${VAULTS.map(([br, el]) => `<div class="${br === want ? "me" : ""}">
+      <b style="color:${EL_TXT[el]}">${br}</b><small>${el}库</small>${br === want ? `<em>${st}</em>` : ""}</div>`).join("")}</div>
+    ${zhKey([...VAULTS.map(([br, el]) => [br, `${(ZODIAC[BR_ANIMAL[br]] || ["", br])[1]}, the ${EL_EN[el]} store`]),
+      ["开", "open"], ["闭", "sealed"], ["无", "not in your chart"]].concat(opens ? [[opens, `${(ZODIAC[BR_ANIMAL[opens]] || ["", opens])[1]} years open it`]] : []))}`;
+}
 const pYears = (c) => `<div class="rp-yrs">${c.plain.years.map((y) => `<div class="${y.overall}"><b>${y.y}</b>${y.word.split(" ")[0]}</div>`).join("")}</div>`;
 const pDrives = (c) => `<div class="rp-drv">${c.plain.drives.groups.map((g) => `<b>${g.name}</b><span class="rp-tr"><i style="width:${Math.max(1, g.pct).toFixed(0)}%"></i></span>
   <span>${Math.round(g.pct)}%</span><small>${g.gloss} (${g.zh})</small>`).join("")}</div>`;
@@ -1064,7 +1091,7 @@ const EV_OWNER = { pillars: "makeup", stars: "makeup", interactions: "makeup", p
 function pStory(id, S, ev, proofs, chart) {
   const num = {}; let n = 0;
   const mk = (e) => `<button type="button" class="mk" aria-expanded="false" aria-controls="ev-${id}-${num[e]}"><span class="vh">Evidence </span>${num[e]}</button>`;
-  const panel = (e) => `<div class="ev" id="ev-${id}-${num[e]}" data-ev="${e}" tabindex="-1" hidden><p class="evh">${num[e]}. ${ev[e].label}</p>${ev[e].why ? ev[e].why.split("\n").map((x) => `<p>${x}</p>`).join("") : ""}${(proofs[e] || []).join("")}</div>`;
+  const panel = (e) => `<div class="ev" id="ev-${id}-${num[e]}" data-ev="${e}" tabindex="-1" hidden><button type="button" class="ev-x" aria-label="Close evidence">×</button><p class="evh">${num[e]}. ${ev[e].label}</p>${ev[e].why ? ev[e].why.split("\n").map((x) => `<p>${x}</p>`).join("") : ""}${(proofs[e] || []).join("")}<button type="button" class="ev-back">Back to the text</button></div>`;
   // a run of sentences resting on the same evidence shows its markers once, at the end of the run
   const para = (ss, cls) => { const fresh = [];
     const html = ss.map((s, k) => s.t.replace(/^If you do one thing:/, "<b>$&</b>") + (ss[k + 1] && ss[k + 1].ev.join() === s.ev.join() ? "" : s.ev.map((e) => {
@@ -1086,7 +1113,7 @@ function readingChapters(c, R) {
     strength: [E.figs.gauge, R.narr(2), R.stb(2)], flows: [], medicine: [K.figs.medicine, R.stb(5), R.narr(5)],
     health: [E.figs.health, R.narr(11), R.stb(11)], gods: [pDrives(c), G.figs.structure, G.figs.bars, R.narr(4), R.narr(3)],
     domains: [G.figs.domains, R.stb(8), R.narr(8)], work: [G.figs.industries, R.stb(12), R.narr(12)],   // one work figure (roles and archetypes merged in)
-    money: [], decades: [pWeather(c), R.narr(6)], years: [pYears(c), T.figs.thisyear, R.stb(13), R.narr(13)],
+    money: [pVault(c)], decades: [pWeather(c), R.narr(6)], years: [pYears(c), T.figs.thisyear, R.stb(13), R.narr(13)],
     months: [T.figs.rhythm], days: [T.figs.daily], placements: [pRoom(c), K.figs.placements, R.narr(7)], afflict: [K.figs.afflictions] };
   const uses = (id) => new Set(ST.chapters[id].paras.flat().concat(ST.chapters[id].one || []).flatMap((s) => s.ev));
   const U = Object.fromEntries(CHAPTERS.map(([id]) => [id, uses(id)]));
@@ -1797,24 +1824,45 @@ function wireReading(root) {
   const markOverflow = () => root.querySelectorAll(".rd-fig .scrollx").forEach((w) =>
     w.classList.toggle("has-overflow", w.scrollWidth > w.clientWidth + 2));
   markOverflow(); window.addEventListener("resize", markOverflow);
+  // the decade strip opens centred on the decade you are in now (or the first), without moving the page (round D)
+  const centreNow = () => root.querySelectorAll(".ccdayun").forEach((s) => {
+    const n = s.querySelector(".ccdy.now") || s.querySelector(".ccdy"); let sc = s;
+    while (sc && sc !== root && sc.scrollWidth <= sc.clientWidth + 2) sc = sc.parentElement;
+    if (!n || !sc || sc === root) return;
+    const nr = n.getBoundingClientRect(), sr = sc.getBoundingClientRect();
+    sc.scrollLeft += nr.left + nr.width / 2 - (sr.left + sr.width / 2); });
+  centreNow(); window.addEventListener("resize", centreNow);
   root.addEventListener("toggle", markOverflow, true);
-  // evidence markers: every marker with the same number opens and closes the one proof panel
+  // evidence panels open where you tapped (owner 2026-10-10): the one panel moves under the tapped marker's paragraph
+  // (or under the answer cards for a "?"), shows its top without jumping, and × / Back / Escape close it and return focus
+  const sync = (p, open) => root.querySelectorAll(`.mk[aria-controls="${p.id}"]`).forEach((m) => m.setAttribute("aria-expanded", String(open)));
+  const reveal = (p) => { markOverflow(); const r = p.getBoundingClientRect();
+    if (r.top > innerHeight - 120 || r.top < 0) scrollBy({ top: r.top - innerHeight * 0.3, behavior: "smooth" }); p.focus({ preventScroll: true }); };
+  const close = (p) => { const o = p._opener;   // panels a "?" opened together close together
+    (o && o.classList.contains("rp-q") ? [...root.querySelectorAll(".ev")].filter((x) => x._opener === o) : [p])
+      .forEach((x) => { x.hidden = true; sync(x, false); x._opener = null; });
+    if (o && o.isConnected) o.focus(); };
   root.addEventListener("click", (ev) => {
+    const x = ev.target.closest(".ev-x,.ev-back");
+    if (x) { close(x.closest(".ev")); return; }
     const q = ev.target.closest(".rp-q");
-    if (q) {   // open the first proof panel for this answer, or fall back to its chapter
+    if (q) {   // open every proof panel for this answer just below the answer cards, or fall back to its chapter
       const keys = q.dataset.ev.split(" ");   // the panel in the key's own chapter carries its figures and citations
-      const ps = keys.map((k) => root.querySelector(`#ch-${EV_OWNER[k]} .ev[data-ev="${k}"]`) || root.querySelector(`.ev[data-ev="${k}"]`)).filter(Boolean), p = ps[0];
-      ps.forEach((x) => { x.hidden = false; root.querySelectorAll(`.mk[aria-controls="${x.id}"]`).forEach((m) => m.setAttribute("aria-expanded", "true")); });
-      if (p) { markOverflow(); p.scrollIntoView({ block: "start", behavior: "smooth" }); p.focus({ preventScroll: true }); }
-      else { const ch = document.getElementById("ch-" + EV_OWNER[keys[0]]); if (ch) ch.scrollIntoView({ block: "start", behavior: "smooth" }); }
-      return;
+      const ps = keys.map((k) => root.querySelector(`#ch-${EV_OWNER[k]} .ev[data-ev="${k}"]`) || root.querySelector(`.ev[data-ev="${k}"]`)).filter(Boolean);
+      if (!ps.length) { const ch = document.getElementById("ch-" + EV_OWNER[keys[0]]); if (ch) ch.scrollIntoView({ block: "start", behavior: "smooth" }); return; }
+      let at = q.closest(".rp-answers") || q.closest(".rp-ans");
+      ps.forEach((p) => { at.after(p); at = p; p.hidden = false; p._opener = q; sync(p, true); });
+      reveal(ps[0]); return;
     }
     const b = ev.target.closest(".mk"); if (!b) return;
     const p = document.getElementById(b.getAttribute("aria-controls")); if (!p) return;
-    const open = p.hidden; p.hidden = !open;
-    root.querySelectorAll(`.mk[aria-controls="${p.id}"]`).forEach((x) => x.setAttribute("aria-expanded", String(open)));
-    if (open) { markOverflow(); const r = p.getBoundingClientRect(); if (r.top < 0 || r.top > innerHeight - 80) p.scrollIntoView({ block: "nearest" }); }
+    if (!p.hidden && p._opener === b) { close(p); return; }
+    const para = b.closest("p, li") || b.parentElement;
+    if (para.nextElementSibling !== p) para.after(p);
+    p.hidden = false; p._opener = b; sync(p, true); reveal(p);
   });
+  root.addEventListener("keydown", (ev) => { if (ev.key !== "Escape") return;
+    const p = ev.target.closest && ev.target.closest(".ev"); if (p && !p.hidden) close(p); });
 }
 
 /* The geomancer's report (summary, findings, assessment, plan, method note) behind one fold under

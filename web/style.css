@@ -765,6 +765,10 @@ details.zhver>div{margin-top:8px}
 #tab-person .rp-wx b{font-size:13px;margin-top:2px}#tab-person .rp-wx small{font-size:12px;color:var(--muted)}
 #tab-person .rp-wx span{font:15px/1.2 "Noto Serif SC",serif;color:var(--muted)}
 #tab-person .rp-yrs{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+#tab-person .rp-vault{display:grid;grid-template-columns:repeat(4,minmax(0,64px));gap:8px;margin:8px 0}
+#tab-person .rp-vault>div{display:grid;justify-items:center;border:1px solid var(--line);border-radius:8px;padding:6px 2px;background:#fff}
+#tab-person .rp-vault>div.me{outline:2px solid #c5221f;outline-offset:-2px}#tab-person .rp-vault b{font:700 22px/1.1 Georgia,"Noto Serif SC",serif}
+#tab-person .rp-vault small{font-size:12px;color:var(--muted)}#tab-person .rp-vault em{font-style:normal;font-weight:700;font-size:13px;color:var(--ink)}
 #tab-person .rp-yrs>div{border-radius:8px;padding:6px 2px;text-align:center;font-size:12px;border:1px solid var(--line);background:#fff}
 #tab-person .rp-yrs .peak{background:#e9f4ea;border-color:#b9d6bd}#tab-person .rp-yrs .careful{background:#fbeceb;border-color:#e8bdb8}
 #tab-person .rp-yrs b{display:block;font-size:13px}
@@ -987,3 +991,13 @@ details.zhver>div{margin-top:8px}
   #tab-person .rp-bgart details.rp-why{margin:calc(58vw - 26px) auto 0;justify-self:center;text-align:left}
   #tab-person .rp-bgart.rp-ssr{min-height:calc(58vw + 470px)}}
 #tab-person .rp-hname{white-space:nowrap}
+
+/* evidence panel controls (round D): close at the top right, back to the text at the foot */
+#tab-person .ev{position:relative}
+#tab-person .ev-x{position:absolute;top:4px;right:4px;width:44px;height:44px;border:none;background:none;font:400 26px/1 Georgia,serif;color:var(--ink);cursor:pointer;border-radius:50%}
+#tab-person .ev-x:hover{background:rgba(43,38,32,.06)}#tab-person .ev .evh{padding-right:44px}
+#tab-person .ev-back{display:inline-flex;align-items:center;min-height:44px;margin-top:8px;padding:0 4px;border:none;background:none;color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+#tab-person .ev-x:focus-visible,#tab-person .ev-back:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* compass ring (round D) */
+#tab-person .cring{width:100%;max-width:440px;display:block;margin:0 auto 6px}

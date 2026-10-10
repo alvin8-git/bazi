@@ -317,8 +317,9 @@ def get_pair(token: str, a: int, b: int):
     ma, ca = _chart_of(ppl[a])
     mb, cb = _chart_of(ppl[b])
     ya, yb = yong_shen(ca), yong_shen(cb)
-    out = pair_full(ca, cb, ya, yb, chart_payload(_tosimp(ma.name), ca, ya, YEAR),
-                    chart_payload(_tosimp(mb.name), cb, yb, YEAR))
+    pa_, pb_ = chart_payload(_tosimp(ma.name), ca, ya, YEAR), chart_payload(_tosimp(mb.name), cb, yb, YEAR)
+    out = pair_full(ca, cb, ya, yb, pa_, pb_)
+    out["shares"] = [{h["element"]: h["share"] for h in p.get("health") or []} for p in (pa_, pb_)]   # for the element give-and-take figure
     return json.loads(_tosimp(json.dumps(out, ensure_ascii=False)))
 
 

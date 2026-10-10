@@ -12,7 +12,7 @@
 <meta name="robots" content="noindex">
 <title>合婚配对报告 Pair Compatibility Report | bazifor.me</title>
 <style>
-:root{--bg:#f6f2ea;--card:#fffdf7;--ink:#22242a;--muted:#8b8f9a;--line:#e4ddcc;
+:root{--bg:#f6f2ea;--card:#fffdf7;--ink:#22242a;--muted:#5f574e;--line:#e4ddcc;
   --accent:#a63d2f;--gold:#8a6d00;--good:#1e7d32;--bad:#b03a2e}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);
@@ -64,9 +64,9 @@ h2 small{color:var(--muted);font-weight:600;font-size:10px;margin-left:6px}
 .elb{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;
   border-radius:50%;border:1.5px solid;font-size:10.5px;font-weight:700;margin:0 2px;
   vertical-align:-3px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.elb.el-木{color:#1e8e3e;border-color:#1e8e3e;background:#e9f7ee}
+.elb.el-木{color:#187a35;border-color:#187a35;background:#e9f7ee}
 .elb.el-火{color:#c5221f;border-color:#c5221f;background:#fdecea}
-.elb.el-土{color:#8a6d1f;border-color:#8a6d1f;background:#f6efdc}
+.elb.el-土{color:#7a601b;border-color:#7a601b;background:#f6efdc}
 .elb.el-金{color:#a67c00;border-color:#c9a227;background:#faf3dd}
 .elb.el-水{color:#1a56b0;border-color:#1a56b0;background:#e8f0fe}
 .frame3 .pitem{border-left:4px solid var(--fb,#b8860b);
@@ -100,8 +100,8 @@ details{margin:8px 0}summary{font-size:11.5px;font-weight:700;cursor:pointer;col
 .swtable th.corner{text-align:left;font-weight:500}.swtable th.corner small{font-size:10px}
 .swtable td{text-align:center;padding:7px 4px;border-bottom:1px solid #efe9da;border-left:1px solid #efe9da;color:var(--muted)}
 .swtable td b{display:block;font-size:13px}.swtable td i{display:block;font-style:normal;font-size:8.5px;color:var(--muted)}
-.swtable td.sw-bond{background:#e6f2ef;color:#0e7a6a}.swtable td.sw-fric{background:#f9efe0;color:#b45309}.swtable td.sw-scored{outline:2px solid var(--gold);outline-offset:-2px}
-.swlegend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:10px;color:var(--muted);margin:4px 0 6px}.swlegend .sw-bond{color:#0e7a6a;font-weight:700}.swlegend .sw-fric{color:#b45309;font-weight:700}
+.swtable td.sw-bond{background:#e6f2ef;color:#0e7a6a}.swtable td.sw-fric{background:#f9efe0;color:#8a4b0f}.swtable td.sw-scored{outline:2px solid var(--gold);outline-offset:-2px}
+.swlegend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:10px;color:var(--muted);margin:4px 0 6px}.swlegend .sw-bond{color:#0e7a6a;font-weight:700}.swlegend .sw-fric{color:#8a4b0f;font-weight:700}
 .frtable td{vertical-align:top;width:31%}.frtable td.nb{width:7%;white-space:nowrap}
 h2 .scorechip{float:right;margin-top:-2px}
 .prep-lede{margin:0 0 4px;font-size:13px;font-weight:600;line-height:1.5;color:var(--ink)}
@@ -146,7 +146,7 @@ h2 .scorechip{float:right;margin-top:-2px}
   .pair-band::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(250,247,242,.95) 0%,rgba(250,247,242,.8) 50%,rgba(250,247,242,.15) 100%)}
   .pair-band h1{position:absolute;z-index:2;left:20px;top:50%;transform:translateY(-50%);margin:0;max-width:62%;
     font:700 30px/1.15 Georgia,"Noto Serif SC","Songti SC",serif;color:#2b2620;letter-spacing:-.01em}
-  .pair-band h1 small{display:block;margin-top:4px;font:500 15px/1.2 Georgia,"Noto Serif SC",serif;color:#8a6d1f;letter-spacing:0}
+  .pair-band h1 small{display:block;margin-top:4px;font:500 15px/1.2 Georgia,"Noto Serif SC",serif;color:#7a601b;letter-spacing:0}
   .toolbar a,.toolbar button{min-height:44px;display:inline-flex;align-items:center;font-size:15px;border-radius:22px;padding:0 18px;background:#fff;border-color:#e5ded2}
   .pair-howto,.pair-next{background:#fff;border:1px solid #e5ded2;border-radius:14px;padding:18px 20px;margin:0 0 14px}
   .pair-howto h2,.pair-next h2{margin:0 0 8px;padding:0;border:0;font:700 22px/1.25 Georgia,"Noto Serif SC","Songti SC",serif;color:#2b2620}
@@ -182,6 +182,54 @@ h2 .scorechip{float:right;margin-top:-2px}
   .report{padding:18px 14px}
 }
 :root{--wood:#187a35;--fire:#c5221f;--earth:#7a601b;--metal:#8a6500;--water:#1a56b0}.el-wood{color:var(--wood)}.el-fire{color:var(--fire)}.el-earth{color:var(--earth)}.el-metal{color:var(--metal)}.el-water{color:var(--water)}.zh[data-tip]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;border-radius:2px}.zh[data-tip]:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}.gl-tip{position:fixed;z-index:9999;max-width:calc(100vw - 32px);width:max-content;background:#2b2620;color:#fff;font:500 14px/1.45 system-ui,sans-serif;padding:6px 10px;border-radius:8px;box-shadow:0 4px 14px rgba(43,38,32,.25);opacity:0;transition:opacity .15s;pointer-events:none;text-align:left;white-space:normal}.gl-tip.on{opacity:1}@media (prefers-reduced-motion:reduce){.gl-tip{transition:none}}
+
+/* pair report, round D design (owner-approved): design-B person cards, painted ring, three graphics, de-duplicated sections */
+.rhead h1{font:600 24px/1.2 Georgia,"Noto Serif SC",serif;color:var(--ink)}.rmeta,.cite2,.swtable small,.swtable small .zh,.swlegend .sw-none{color:#5f574e!important}
+.ptop{display:grid;grid-template-columns:1fr 130px 1fr;gap:12px;align-items:center;margin:12px 0 4px}
+.ppc{display:flex;min-height:150px;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;color:var(--ink);text-decoration:none}
+.ppc:hover{border-color:var(--accent)}.ppc .side{width:30%;height:auto;object-fit:cover}
+.ppc .in{display:grid;align-content:start;gap:5px;padding:10px 12px}.ppc .nm{font:600 17px/1.2 Georgia,"Noto Serif SC",serif}
+.ppc .seal{display:inline-grid;grid-template-columns:repeat(4,1fr);border:1px solid #cfc6b6;border-radius:6px;width:max-content}
+.ppc .pz{display:grid;justify-items:center;padding:3px 6px 2px;font:700 15px/1.05 Georgia,"Noto Serif SC",serif}.ppc .pz+.pz{border-left:1px solid #e6dfd2}
+.ppc .pz.me{outline:2px solid #c5221f;outline-offset:-2px;border-radius:4px}.ppc .pz small{font:500 10px/1.5 system-ui,sans-serif;color:#5f574e}
+.ppc .idl{font:600 14px/1.3 Georgia,serif}.ppc .tr{font-size:12.5px;color:#5f574e;font-style:italic}
+.pmid{display:grid;justify-items:center;text-align:center}.ring{width:120px;height:120px}.band{font:600 15px Georgia,serif}
+.prep-lede{font:600 17px/1.45 Georgia,"Noto Serif SC",serif;margin:14px 0 4px}
+.psec{border-top:1px solid #d9d0c1;margin-top:18px;padding-top:4px}.psec h2{border:none}.psec h3{font:600 15px Georgia,serif;margin:10px 0 4px}
+.psec details>summary{list-style:none;cursor:pointer}.psec details>summary::-webkit-details-marker{display:none}
+.psec details>summary h2{display:inline}.psec details>summary::after{content:" ›";color:var(--accent);font-weight:700}
+.hw{display:grid;grid-template-columns:1fr 1fr;gap:16px}.hw h3.pos{color:#1e7a3a}.hw h3.neg{color:#8a4b0f}
+.fl{list-style:none;margin:0;padding:0;display:grid;gap:8px}.fl li{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.fl li>.x{display:block;color:#3d3a34;margin-top:3px}.fl .act{color:#3d3a34;font-style:italic}.fl b.pos{color:#1e7a3a}.fl b.neg{color:#a3221d}
+.fig{margin:6px 0}.gt{width:100%;max-width:420px;display:block;margin:0 auto}.fig figcaption{font-size:12.5px;color:#5f574e;margin-top:4px}
+.meet{display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0}
+.dp{display:grid;font:700 30px/1.05 Georgia,"Noto Serif SC",serif;border:1px solid #cfc6b6;border-radius:8px;padding:5px 11px;background:#fff}
+.rel{display:grid;justify-items:center;min-width:120px;max-width:260px;text-align:center}
+.rel i{width:110px;height:10px;background:#8a7f72;-webkit-mask:url(/static/img/reading/ink/shaft-mask.png) center/100% 100%;mask:url(/static/img/reading/ink/shaft-mask.png) center/100% 100%}
+.rel span{font-size:13px;color:#5f574e;margin-top:4px}
+.swwrap{overflow-x:auto}
+.bars{display:grid;gap:6px;margin:8px 0}.br{display:grid;grid-template-columns:1fr 150px 34px;gap:10px;align-items:center;font-size:13.5px}
+.track{position:relative;height:14px;background:linear-gradient(to right,transparent calc(50% - 1px),#cfc6b6 calc(50% - 1px),#cfc6b6 calc(50% + 1px),transparent calc(50% + 1px))}
+.track i{position:absolute;top:0;height:100%;-webkit-mask:url(/static/img/reading/ink/shaft-mask.png) center/100% 100%;mask:url(/static/img/reading/ink/shaft-mask.png) center/100% 100%}
+.track i.pos{background:#4f8a5b}.track i.neg{background:#b03a2e;transform:scaleX(-1)}.br>b{text-align:right;font:700 15px Georgia,serif}
+.br.tot{border-top:1px solid #d9d0c1;padding-top:6px}
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:14px}.role{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.role p{margin:4px 0}.role .rk span{font-size:12.5px;color:#5f574e}.role b.g{font:700 22px Georgia,"Noto Serif SC",serif}
+.frc{display:grid;gap:12px}.frc3{grid-template-columns:repeat(3,1fr)}.frc2{grid-template-columns:repeat(2,1fr)}
+.frc>div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px}.frc h3{margin:2px 0 4px}.frc p{margin:4px 0}
+@media screen and (max-width:640px){.ptop{grid-template-columns:1fr}.pmid{order:-1}.hw,.roles,.frc3,.frc2{grid-template-columns:1fr}
+  .br{grid-template-columns:1fr 100px 30px;font-size:13px}.dp{font-size:24px}}
+@media print{@page{size:A4;margin:9mm}
+  .rhead h1{font-size:16px}.ptop{grid-template-columns:1fr 84px 1fr;gap:8px;margin:4px 0}.ppc{min-height:0}.ppc .side{width:20%}
+  .ppc .nm{font-size:12px}.ppc .pz{font-size:11px;padding:2px 4px}.ppc .idl{font-size:10px}.ppc .tr{font-size:9px}
+  .ring{width:70px;height:70px}.band{font-size:10.5px}.prep-lede{font-size:10.5px;margin:5px 0 2px}
+  .pcols{display:block;column-count:2;column-gap:14px}.psec{break-inside:avoid;margin-top:5px;padding-top:2px}
+  .fl li>.x:not(.act),.fig figcaption,.cite2,.swlegend span:last-child{display:none}
+  .xchk,.role p:last-child,.swtable small,.frc p:not(:first-of-type){display:none}.role b.g{font-size:13px}.swtable th b{font-size:11px}.pitem{font-size:8.5px}
+  .psec h3{font-size:10px;margin:3px 0 2px}.hw,.roles{gap:6px}.fl{gap:2px}.fl li,.role,.frc>div{padding:2px 5px;font-size:8.2px;line-height:1.25}.ptop .ppc{max-height:96px}
+  .gt{max-width:200px}.fig figcaption{font-size:7.5px}.dp{font-size:16px;padding:2px 6px}.rel i{width:60px}.rel span{font-size:8.5px}
+  .br{font-size:8.5px;grid-template-columns:1fr 80px 22px;gap:4px}.bars{gap:1px;margin:2px 0}.track{height:9px}.br>b{font-size:9.5px}
+  .frc{gap:4px}.frc3{grid-template-columns:1fr 1fr 1fr}.psec details>summary::after{content:""}}
 </style></head><body>
 <div class="page">
   <div class="pair-band" aria-label="Pair compatibility">
@@ -192,18 +240,18 @@ h2 .scorechip{float:right;margin-top:-2px}
   <div class="toolbar"><a id="back" href="#">← Back to workspace</a>
     <button onclick="print()">🖨 Print</button></div>
   <section class="pair-howto" aria-labelledby="ph-h"><h2 id="ph-h">How to read this</h2>
-    <p>The score runs from 5 to 95 and starts at 50. Each comparison adds or removes points, and the table sums exactly to the total.</p>
+    <p>The score starts at 50. Each comparison adds or removes points, and the table adds up to the total. It always stays between 5 and 95.</p>
     <ul>
-      <li><b>Component table:</b> one row per factor, drawn against its own range.</li>
-      <li><b>How they see each other:</b> the Ten Gods (<span class="zh" lang="zh-Hant" tabindex="0" title="shí shén · Ten Gods" data-tip="shí shén · Ten Gods">十神</span>) each person is to the other.</li>
-      <li><b>Pillar interactions:</b> every branch of one chart set against every branch of the other.</li>
-      <li><b>Three framings:</b> the same score read for family, couple and colleagues.</li>
+      <li><b>The score working:</b> one row per factor, with its points.</li>
+      <li><b>How they see each other:</b> the role each person plays for the other, using the Ten Gods (<span class="zh" lang="zh-Hant" tabindex="0" title="shí shén · Ten Gods" data-tip="shí shén · Ten Gods">十神</span>).</li>
+      <li><b>Where the charts touch:</b> each part of one chart compared with each part of the other.</li>
+      <li><b>Three ways to read it:</b> the same score seen as family, as a couple, and as colleagues.</li>
     </ul>
-    <p class="note">This is a traditional reading, not a prediction. Every number cites the classical rule behind it.</p>
+    <p class="note">This is a traditional reading, not a prediction.</p>
   </section>
   <div class="report" id="rep">loading…</div>
   <aside class="pair-next" aria-labelledby="pn-h"><h2 id="pn-h">Next steps</h2>
-    <ul><li><a href="../../">&larr; Back to workspace</a></li>
+    <ul><li><a href="../../">Back to your workspace</a></li>
       <li><a href="/start">Add or compare another person</a></li></ul>
   </aside>
 </div>
@@ -219,7 +267,7 @@ const ELB_EN = {木:"Wood", 火:"Fire", 土:"Earth", 金:"Metal", 水:"Water"};
 const elb = (e) => e ? `<span class="elb el-${e} keepzh" title="${ELB_EN[e] || e}">${e}</span>` : "";
 const STEM_EL = { 甲: "木", 乙: "木", 丙: "火", 丁: "火", 戊: "土", 己: "土",
   庚: "金", 辛: "金", 壬: "水", 癸: "水" };
-const EL_COL = { 木: "#1e8e3e", 火: "#c5221f", 土: "#8a6d1f", 金: "#7d5c00", 水: "#1a56b0" };
+const EL_COL = { 木: "#187a35", 火: "#c5221f", 土: "#7a601b", 金: "#7d5c00", 水: "#1a56b0" };   // text colours, 4.5:1 on white
 const ZODIAC = { 鼠: ["🐭", "Rat"], 牛: ["🐮", "Ox"], 虎: ["🐯", "Tiger"], 兔: ["🐰", "Rabbit"],
   龙: ["🐲", "Dragon"], 蛇: ["🐍", "Snake"], 马: ["🐴", "Horse"], 羊: ["🐑", "Goat"],
   猴: ["🐵", "Monkey"], 鸡: ["🐔", "Rooster"], 狗: ["🐶", "Dog"], 猪: ["🐷", "Pig"],
@@ -233,8 +281,8 @@ const ELTH = { 木: "linear-gradient(160deg,rgba(243,249,239,.84),rgba(226,239,2
 const elthBg = (el) => ELTH[el]
   ? `background:${ELTH[el]},url(/static/img/elements/${ELIMG[el]}.jpg) center/cover`
   : "";
-const BAND_COL = (s) => s >= 70 ? ["#1e7d32", "#e9f7ee"] : s >= 55 ? ["#5f8a3e", "#eef3e3"]
-  : s >= 45 ? ["#b8860b", "#faf3dd"] : ["#b03a2e", "#fdecea"];
+const BAND_COL = (s) => s >= 70 ? ["#1e7a3a", "#e9f4ec"] : s >= 55 ? ["#5c4d0f", "#f6f0dc"]
+  : s >= 45 ? ["#8a4b0f", "#f9ebdc"] : ["#a3221d", "#f8e3e1"];   // same as the workspace matrix, 4.5:1 or better
 const COLOUR_WORDS = { 红: "#c5221f", 紅: "#c5221f", 紫: "#7b3fa0", 黄: "#7d5800",
   黃: "#7d5800", 棕: "#8a5a2b", 绿: "#17702f", 綠: "#17702f", 青: "#17702f",
   蓝: "#1a56b0", 藍: "#1a56b0", 黑: "#22242a", 灰: "#4b5563", 金: "#7d5c00",
@@ -349,112 +397,104 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
       fetch(`/api/pub/w/${token}`).then((r) => r.json()),
     ]);
     const pa = ws.people[A] || {}, pb = ws.people[B] || {};
-    const idc = (p, n, idx) => { const fav = STEM_EL[p.day_master];
-      const z = ZODIAC[p.animal] || ["", p.animal || "—"];
-      return `<a class="idchip" href="/w/${token}/person/${idx}/reading"
-        title="Open this reading" style="${elthBg(fav)}"><b>${esc(n)}</b><span class="idgo">›</span>
-      <div class="sub"><span class="gf">Day Master</span> ${p.day_master || "—"}${elb(STEM_EL[p.day_master])} ·
-        <span class="gf">Zodiac</span> ${z[0]} ${z[1]} ·
-        <span class="gf">Strength</span> ${esc(p.strength || "")}</div></a>`; };
-    const cls = (dl) => dl > 0 ? "pos" : dl < 0 ? "neg" : "neu";
-    const rows = d.arithmetic.map((r) => `<tr>
-      <td>${bi(r.label)}</td>
-      <td>${rangeBar(r.delta)}</td>
-      <td class="pts ${cls(r.delta)}">${r.delta > 0 ? "+" : ""}${r.delta}</td></tr>`).join("");
-    // mutual view as a 2-row table
-    const seeTable = `<table class="dtable seetable">
-      <tr><th>View</th><th>Ten God</th><th>Classical</th><th>At home</th><th>At work</th></tr>
-      ${[[`${d.a} → ${d.b}`, d.relation.a_sees_b], [`${d.b} → ${d.a}`, d.relation.b_sees_a]]
-        .map(([who, r]) => `<tr><td class="nb">${esc(who)}</td>
-          <td class="nb"><b style="color:${EL_COL[r.element] || "inherit"}">${r.god}</b>${elb(r.element)}</td>
-          <td>${bi(r)}</td>
-          <td>${r.modern_home ? bi(r.modern_home) : "—"}</td>
-          <td>${r.modern_work ? bi(r.modern_work) : "—"}</td></tr>`).join("")}</table>
-      <div class="cite2">Classical column = the ten-god relation; home/work = modern readings</div>`;
-    // strengths + frictions merged: one factor-detail table in component order
-    const lmap = {};                            // ledger label → element (for badges)
-    d.arithmetic.forEach((r) => { if (r.element) lmap[r.label.zh] = r.element; });
-    const fbadge = (lbl) => elb(lmap[lbl.zh]);
-    const rowsS = d.strengths.map((s) => ({
-      cite: s.source_ref,
-      f: `<b class="pos">+${s.delta}</b> ${fbadge(s.chip_label)}${bi(s.chip_label)}`,
-      why: `${bi(s.explanation)}`,
-      how: s.action ? `✓ ${bi(s.action)}`
-                    : `✓ ${esc(s.explanation.zh.split("——").pop())}`,
-    }));
-    const rowsF = d.frictions.map((f) => ({
-      cite: f.source_ref,
-      f: `<b class="neg">${f.delta}</b> ${fbadge(f.chip_label)}${bi(f.chip_label)}`,
-      why: `${bi(f.element.why)} (${esc(f.mechanism)})`,
-      how: `<div>Element: ${elb(f.element.zh.length === 1 ? f.element.zh : "")}<b>${esc(f.element.zh)}</b>${f.element.colour_material ? " — " + esc(f.element.colour_material) : ""}${f.element.direction ? " · " + esc(f.element.direction) : ""}
-              <small class="be">${esc(f.element.why.en)}</small></div>
-            <div>Approach: ${bi(f.behaviour)}</div>
-            <div>Timing: ${bi(f.timing)}</div>`,
-    }));
-    const factorRows = [...rowsS, ...rowsF];
-    const factorTable = factorRows.length ? `<table class="dtable">
-      <tr><th style="width:26%">Factor</th><th style="width:34%">Reason</th><th>Action</th></tr>
-      ${factorRows.map((r) => `<tr><td class="nb">${r.f}</td><td>${r.why}</td><td>${r.how}</td></tr>
-        <tr class="citer"><td colspan="3">${esc(r.cite)}</td></tr>`).join("")}</table>`
-      : `<div class="pitem">No scored bonds or frictions — see the pillar sweep and mutual reading.</div>`;
-    const PZ = { year: ["Year", "elders & roots"], month: ["Month", "career & parents"], day: ["Day", "self & spouse"], hour: ["Hour", "children & later"] };
+    const voice = d.voice || "adult", kid = voice === "child", teen = voice === "teen";
+    const SLUG = { 甲: "jia", 乙: "yi", 丙: "bing", 丁: "ding", 戊: "wu", 己: "ji", 庚: "geng", 辛: "xin", 壬: "ren", 癸: "gui" };
+    const SEASON = { 寅: "spring", 卯: "spring", 辰: "spring", 巳: "summer", 午: "summer", 未: "summer", 申: "autumn", 酉: "autumn", 戌: "autumn", 亥: "winter", 子: "winter", 丑: "winter" };
+    const TXT = { 木: "#187a35", 火: "#c5221f", 土: "#7a601b", 金: "#5f6b7a", 水: "#1a56b0" };
+    const SW = { 木: "wood", 火: "fire", 土: "earth", 金: "metal", 水: "water" };
+    /* the two people as the workspace's design-B card: season painting, seal, opening line, traits */
+    const pcard = (p, n, idx) => { const C = p.card || {}, pl = p.pillars || {};
+      const art = `/static/img/reading/bg/${SLUG[p.day_master]}-${SEASON[(pl.month || "")[1]] || "spring"}-p-600.webp`;
+      const seal = [["year", "year"], ["month", "month"], ["day", "you"], ["hour", "hour"]].map(([k, lab]) => { const gz = pl[k] || "";
+        return `<span class="pz${k === "day" ? " me" : ""}"><b style="color:${TXT[STEM_EL[gz[0]]] || "inherit"}">${gz[0] || ""}</b><b style="color:${TXT[BR_EL[gz[1]]] || "inherit"}">${gz[1] || ""}</b><small>${lab}</small></span>`; }).join("");
+      const head = (C.head || "").replace(/^You are /, "").replace(/\.$/, "");
+      return `<a class="ppc" href="/w/${token}/person/${idx}/reading" title="Open this reading"><img class="side" src="${art}" alt="" width="600" height="750" decoding="async">
+        <span class="in"><b class="nm nocolor">${esc(n)}</b><span class="seal keepzh nocolor" data-notip>${seal}</span>
+        ${head ? `<span class="idl">you are ${esc(head)}.</span>` : ""}${(C.traits || []).length ? `<span class="tr">${C.traits.map(esc).join(" · ")}</span>` : ""}</span></a>`; };
+    const ring = (score) => { const a = 2 * Math.PI * score / 100, x = 60 + 48 * Math.sin(a), y = 60 - 48 * Math.cos(a);
+      return `<svg class="ring" viewBox="0 0 120 120" role="img" aria-label="Score ${score} of 100, ${esc(d.band.en)}">
+        <defs><filter id="rough"><feTurbulence baseFrequency="1.1" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="2.2"/></filter></defs>
+        <circle cx="60" cy="60" r="48" fill="none" stroke="#eee6d8" stroke-width="10"/>
+        <path d="M60 12A48 48 0 ${score > 50 ? 1 : 0} 1 ${x.toFixed(1)} ${y.toFixed(1)}" fill="none" stroke="#5c4d0f" stroke-width="10" stroke-linecap="round" filter="url(#rough)"/>
+        <text x="60" y="66" text-anchor="middle" font-size="30" font-weight="700" font-family="Georgia,serif" fill="#22242a">${score}</text>
+        <text x="60" y="84" text-anchor="middle" font-size="10" fill="#5f574e">of 100</text></svg>`; };
+    /* painted brush arrows, the same masks as the reading's charts */
+    const ink = (x1, y1, x2, y2, col, sw, dotted) => { const L = Math.hypot(x2 - x1, y2 - y1), ang = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI, t = Math.max(3, sw * 2.6), hw = t * 3, hh = hw * .77;
+      const r = (x, y, w, h, k) => `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="${col}" mask="url(#pk-${k})"/>`;
+      let g = ""; if (dotted) for (let q = t; q < L - hw * .6; q += t * 1.9) g += r(q - t * .6, -t * .48, t * 1.2, t * .96, "dab"); else g += r(0, -t / 2, Math.max(t, L - hw * .55), t, "shaft");
+      return `<g transform="translate(${x1} ${y1}) rotate(${ang.toFixed(1)})">${g}${r(L - hw, -hh / 2, hw, hh, "head")}</g>`; };
+    /* who supplies what: five element blots per person, sized by share; arrows only where the score counted a supply or a clash */
+    const EN2 = { Wood: "木", Fire: "火", Earth: "土", Metal: "金", Water: "水" };
+    const flows = d.arithmetic.map((r) => { if (r.kind === "supply" || r.kind === "clash") return r;
+      const en = (r.label && r.label.en) || "", m1 = en.match(/^(.+?) (?:carries|has) plenty of (?:the )?(\w+)/), m2 = en.match(/^(.+?)'s strongest element, (\w+)|^(\w+) is (.+?)'s strongest element/);
+      if (m1) return { kind: "supply", element: EN2[m1[2]], giver: m1[1] };
+      if (m2) return { kind: "clash", element: EN2[m2[2] || m2[3]], giver: m2[1] || m2[4] };
+      return null; }).filter((x) => x && x.element);
+    const shares = (idx) => (d.shares && d.shares[idx]) || null;
+    const giveTake = (() => { const SA = shares(0), SB = shares(1); if (!flows.length) return "";
+      const xs = { 木: 50, 火: 120, 土: 190, 金: 260, 水: 330 };
+      let s = `<svg viewBox="0 0 380 270" class="gt keepzh" data-notip role="img" aria-label="${esc(flows.map((f) => `${f.giver} ${f.kind === "supply" ? "supplies" : "presses with"} ${ELB_EN[f.element]}`).join("; "))}"><defs>${["shaft", "head", "dab"].map((k) => `<mask id="pk-${k}" maskContentUnits="objectBoundingBox"><image href="/static/img/reading/ink/${k}-mask.png" width="1" height="1" preserveAspectRatio="none"/></mask>`).join("")}</defs>`;
+      [[62, d.a, SA], [208, d.b, SB]].forEach(([row, nm, sh]) => Object.entries(xs).forEach(([e, x]) => {
+        const v = sh ? (sh[e] || 0) : 20, r = 8 + v * .45;
+        s += `<image href="/static/img/reading/sw/${SW[e]}-128.webp" x="${(x - r).toFixed(0)}" y="${(row - r).toFixed(0)}" width="${(2 * r).toFixed(0)}" height="${(2 * r).toFixed(0)}"/>
+          <text x="${x}" y="${row + 5}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" stroke="rgba(0,0,0,.45)" stroke-width="2" style="paint-order:stroke">${e}</text>
+          ${sh ? `<text x="${x}" y="${(row + (row > 100 ? r + 14 : -r - 6)).toFixed(0)}" text-anchor="middle" font-size="10" fill="#5f574e">${Math.round(v)}%</text>` : ""}`; }));
+      flows.forEach((f) => { const down = f.giver === d.a, x = xs[f.element] + (f.kind === "supply" ? -6 : 12), [y1, y2] = down ? [92, 180] : [180, 92];
+        s += ink(x, y1, x, y2, f.kind === "supply" ? "#4f8a5b" : "#b03a2e", f.kind === "supply" ? 2.4 : 2.2, f.kind !== "supply"); });
+      return `<figure class="fig">${s}<text x="4" y="14" font-size="11" font-weight="700" fill="#22242a">${esc(d.a)}</text><text x="4" y="266" font-size="11" font-weight="700" fill="#22242a">${esc(d.b)}</text></svg>
+        <figcaption>Each blot is one element, sized by how much of it the person carries. Green arrow: one person carries plenty of what the other needs. Red dots: one person's strongest element works against the other.</figcaption></figure>`; })();
+    /* the two day pillars and how they meet */
+    const dayRow = d.arithmetic.find((r) => r.kind === "day") || d.arithmetic[0] || {};
+    const dp = (gz) => `<span class="dp keepzh nocolor" data-notip><b style="color:${TXT[STEM_EL[gz[0]]]}">${gz[0]}</b><b style="color:${TXT[BR_EL[gz[1]]]}">${gz[1]}</b></span>`;
+    const meet = d.day_pillars && d.day_pillars.length === 2 ? `<div class="meet">${dp(d.day_pillars[0])}<span class="rel"><i></i><span>${bi(dayRow.label)}</span></span>${dp(d.day_pillars[1])}</div>` : "";
+    /* the score working as painted bars from the starting 50 */
+    const bars = `<div class="bars"><div class="br"><span class="bl">Starting point</span><span></span><b>50</b></div>${d.arithmetic.map((r) => {
+      const w = Math.min(Math.abs(r.delta), 15) / 15 * 50;
+      return `<div class="br"><span class="bl">${bi(r.label)}</span><span class="track" role="img" aria-label="${r.delta} points"><i class="${r.delta > 0 ? "pos" : r.delta < 0 ? "neg" : "zero"}" style="width:${w.toFixed(0)}%;${r.delta >= 0 ? "left:50%" : "right:50%"}"></i></span><b>${r.delta > 0 ? "+" : ""}${r.delta}</b></div>`; }).join("")}
+      <div class="br tot"><span class="bl">Total (never below 5 or above 95)</span><span></span><b>${d.score}</b></div></div>`;
+    const extra = d.modern && d.modern.rows && d.modern.rows.length ? `<div class="xchk"><h3>Extra checks <small>further classical principles applied to the two readings, counted separately</small></h3>
+      <table class="ctable"><tr><th>Check</th><th>Source</th><th>Points</th></tr>
+        ${d.modern.rows.map((r) => `<tr><td>${bi(r.label)}${r.note ? `<small class="be">${esc(r.note)}</small>` : ""}</td>
+          <td><span class="basis ${r.basis}">${r.basis === "classical" ? "classical" : "modern"}</span></td>
+          <td class="pts ${r.delta > 0 ? "pos" : r.delta < 0 ? "neg" : "neu"}">${r.delta > 0 ? "+" : ""}${r.delta}</td></tr>`).join("")}
+        <tr class="tot"><td>Score with the extra checks. The main score above does not change.</td><td></td><td class="pts">${d.modern.score_with_modern}</td></tr></table></div>` : "";
+    /* what helps, what to watch: every scored plus with its action, every minus with its fix (the old factor drawer, merged) */
+    const helps = d.strengths.map((s) => `<li><b class="pos">+${s.delta}</b> ${bi(s.chip_label)}<span class="x">${bi(s.explanation)}</span>${s.action ? `<span class="x act">${bi(s.action)}</span>` : ""}</li>`).join("");
+    const watch = d.frictions.map((f, i) => `<li><b class="neg">${f.delta}</b> ${bi(f.chip_label)}<span class="x">${bi(f.element.why)}</span>${f.behaviour ? `<span class="x act">${bi(f.behaviour)}</span>` : ""}${i === 0 && f.timing && /\w/.test(bi(f.timing)) ? `<span class="x act">${bi(f.timing)}</span>` : ""}</li>`).join("");
+    /* how they see each other: one card per direction; under-13s get no "at work" line */
+    const role = (who, r) => `<div class="role"><p class="rk"><b class="g" style="color:${TXT[r.element] || "inherit"}">${r.god}</b> <span>${esc(who)}</span></p><p>${bi(r)}</p>
+      ${r.modern_home ? `<p><b>At home.</b> ${bi(r.modern_home).replace(/^At home:\s*/i, "")}</p>` : ""}${!kid && r.modern_work ? `<p><b>At work.</b> ${bi(r.modern_work).replace(/^At work:\s*/i, "")}</p>` : ""}</div>`;
+    const PZ = kid || teen ? { year: ["Year", "family roots"], month: ["Month", "parents and growing up"], day: ["Day", "the core of each chart"], hour: ["Hour", "later years"] }
+      : { year: ["Year", "elders & roots"], month: ["Month", "career & parents"], day: ["Day", "self & spouse"], hour: ["Hour", "children & later"] };
     const bcol = (e) => EL_COL[e] || "inherit";
-    const sweep = d.sweep_matrix ? `<table class="swtable">
+    const sweep = d.sweep_matrix ? `<div class="swwrap"><table class="swtable">
       <tr><th class="corner"><small>${esc(d.a)} ↓ · ${esc(d.b)} →</small></th>${d.sweep_matrix[0].map((c) =>
         `<th><b style="color:${bcol(c.element_b)}">${c.branch_b}</b><small>${PZ[c.pillar_b][0]}<br>${PZ[c.pillar_b][1]}</small></th>`).join("")}</tr>
       ${d.sweep_matrix.map((row) => `<tr><th><b style="color:${bcol(row[0].element_a)}">${row[0].branch_a}</b><small>${PZ[row[0].pillar_a][0]}<br>${PZ[row[0].pillar_a][1]}</small></th>
-        ${row.map((c) => `<td class="${c.relation ? (c.bond ? "sw-bond" : "sw-fric") : "sw-none"}${c.scored ? " sw-scored" : ""}">${c.relation ? `<b>${c.relation}</b>${c.scored ? `<i>scored</i>` : ""}` : "·"}</td>`).join("")}</tr>`).join("")}</table>
-      <div class="swlegend"><span class="sw-bond">Six Combination · Half Three Combination: bond</span><span class="sw-fric">Clash · Punishment · Harm: friction</span><span class="sw-none">· none</span><span>scored = counted in the score (day-day, year-year)</span></div>
-      ${d.sweep_reading ? `<div class="pitem">${bi(d.sweep_reading)}</div>` : ""}` : "";
+        ${row.map((c) => `<td class="${c.relation ? (c.bond ? "sw-bond" : "sw-fric") : "sw-none"}${c.scored ? " sw-scored" : ""}">${c.relation ? `<b>${c.relation}</b>${c.scored ? `<i>scored</i>` : ""}` : "·"}</td>`).join("")}</tr>`).join("")}</table></div>
+      <div class="swlegend"><span class="sw-bond">Bond: Six Harmony (六合), Half Three Harmony (半三合)</span><span class="sw-fric">Friction: Six Clash (六冲), Punishment (刑), Six Harm (六害)</span><span class="sw-none">Dot: no link</span><span>"Scored": counted in the points (day with day, year with year)</span></div>
+      ${d.sweep_reading ? `<p class="pitem">${bi(d.sweep_reading)}</p>` : ""}` : "";
+    const F = d.framings_table, cols = [["family", "Family"], kid || teen ? null : ["couple", "Couple"], kid ? null : ["colleagues", teen ? "Working together" : "Colleagues"]].filter(Boolean);
+    const framings = F ? `<div class="frc frc${cols.length}">${cols.map(([k, lab]) => `<div><h3>${lab}</h3>${[["What it means", "meaning"], ["What helps", "lean_on"], ["What to watch", "watch"]]
+      .map(([l, key]) => F[k] && F[k][key] && bi(F[k][key]) ? `<p><b>${l}.</b> ${bi(F[k][key])}</p>` : "").join("")}</div>`).join("")}</div>
+      <p class="cite2">Same score for all three. "What helps" and "What to watch" pick the factor that fits each view best.</p>` : "";
+    const sec = (h, body, cls = "") => body ? `<section class="psec ${cls}"><h2>${h}</h2>${body}</section>` : "";
     rep.innerHTML = `
-      <div class="rhead"><h1>Pair Compatibility Report<small>bazifor.me</small></h1>
-        <div class="rmeta">${new Date().toISOString().slice(0, 10)}<span id="verline"></span><br>deterministic · every number cites its rule</div></div>
-      <div class="idrow">${idc(pa, d.a, A)}<div class="vs">✕</div>${idc(pb, d.b, B)}</div>
-      ${d.report ? (() => { const [fb] = BAND_COL(d.score);
-        const lede = esc(d.report.summary).replace(/^(\d+\/100\s*—\s*[^.]+\.)/, (m0) => `<span style="color:${fb}">${m0}</span>`);
-        return `<div class="prep"><div class="prep-k"><span class="be-in">The Synthesis — the geomancer's pair report</span></div>
-        <p class="prep-lede">${lede}</p>
-        <details class="prep-more printable"><summary>read the full report ›</summary>
-        <div class="prep-body"><h4>Findings</h4>${d.report.findings.map((f) => `<p><b>${esc(f.label)}.</b> ${esc(f.text)}</p>`).join("")}
-          <h4>Assessment</h4><p>${esc(d.report.assessment)}</p>
-          <h4>Plan</h4><ul>${d.report.plan.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
-          <p class="prep-conf">${esc(d.report.confidence)}</p></div></details></div>`; })() : ""}
-      <h2>Overall reading</h2>
-      ${gauge(d.score)}
-      ${(() => { const [fb] = BAND_COL(d.score);
-        return `<div style="font-size:12.5px"><b style="color:${fb}">${d.score}/100 · ${esc(d.band.en)}</b></div>`; })()}
-      <h2>Component table <small>each factor against its reference range</small></h2>
-      <table class="ctable"><tr><th>Factor</th><th>Range (−15 ⟵ 0 ⟶ +15)</th><th>Pts</th></tr>
-        <tr><td>Baseline</td><td>${rangeBar(0)}</td><td class="pts neu">50</td></tr>
-        ${rows}
-        <tr class="tot"><td>Total (clamped to 5–95)</td><td></td>
-          <td class="pts">${d.score}</td></tr></table>
-      ${d.modern && d.modern.rows && d.modern.rows.length ? `<h2>Modern reading <small>classical principles on the two readings, own ledger</small></h2>
-      <table class="ctable"><tr><th>Layer</th><th>Basis</th><th>Pts</th></tr>
-        ${d.modern.rows.map((r) => `<tr><td>${bi(r.label)}${r.note ? `<small class="be">${esc(r.note)}</small>` : ""}</td>
-          <td><span class="basis ${r.basis}">${r.basis === "classical" ? "classical" : "modern"}</span></td>
-          <td class="pts ${cls(r.delta)}">${r.delta > 0 ? "+" : ""}${r.delta}</td></tr>`).join("")}
-        <tr class="tot"><td>Reading with the modern layers <small class="be">the classical score above is unchanged</small></td><td></td>
-          <td class="pts">${d.modern.score_with_modern}</td></tr></table>
-      <div class="cite2">${esc(d.modern.source_ref)}</div>` : ""}
-      <h2>How they see each other</h2>
-      ${seeTable}
-      <details class="printable"><summary>Factor detail — reason &amp; action per scored factor ›</summary>${factorTable}</details>
-      <h2>Pillar interactions <small>every branch of one chart against every branch of the other</small></h2>
-      ${sweep}
-      <h2>Three relationship framings <small>the same pair, three views</small>
-        ${(() => { const [fb] = BAND_COL(d.score); return `<span class="scorechip" style="--fb:${fb}">${d.score} · ${esc(d.band.en)}</span>`; })()}</h2>
-      ${(() => {
-        const F = d.framings_table; if (!F) return "";
-        const cellf = (o) => `${bi(o)}`;
-        return `<table class="dtable frtable">
-          <tr><th></th><th>Family</th><th>Couple</th><th>Colleagues</th></tr>
-          ${[["Meaning", "meaning"], ["Lean on", "lean_on"], ["Watch", "watch"]].map(([lab, k]) =>
-            `<tr><td class="nb">${lab}</td><td>${cellf(F.family[k])}</td><td>${cellf(F.couple[k])}</td><td>${cellf(F.colleagues[k])}</td></tr>`).join("")}</table>
-        <div class="cite2">One frozen score; lean-on / watch pick the factor most relevant to each context</div>`;
-      })()}
-      <div class="foot">${esc(d.source_ref)} · the component table sums exactly to
-        the harmony-matrix score · bazifor.me/w/${esc(token).slice(0, 3)}····</div>`;
+      <div class="rhead"><h1>${esc(d.a)} and ${esc(d.b)}</h1>
+        <div class="rmeta">${new Date().toISOString().slice(0, 10)}<span id="verline"></span><br>Same birth details always give the same result. Every number names the classical rule behind it.</div></div>
+      <div class="ptop">${pcard(pa, d.a, A)}<div class="pmid">${ring(d.score)}<b class="band" style="color:${BAND_COL(d.score)[0]}">${esc(d.band.en)}</b></div>${pcard(pb, d.b, B)}</div>
+      ${d.report ? `<p class="prep-lede">${esc(d.report.summary)}</p>` : ""}
+      <div class="pcols">
+      ${sec("What helps, what to watch", `<div class="hw"><div><h3 class="pos">What helps</h3><ul class="fl">${helps || "<li>Nothing scored here.</li>"}</ul></div>
+        <div><h3 class="neg">What to watch</h3><ul class="fl">${watch || "<li>Nothing in the two charts works against the pair.</li>"}</ul></div></div>`)}
+      ${sec("Who supplies what", giveTake)}
+      ${sec("How they see each other", `<div class="roles">${role(`${d.a} sees ${d.b}`, d.relation.a_sees_b)}${role(`${d.b} sees ${d.a}`, d.relation.b_sees_a)}</div>
+        <p class="cite2">First line: the traditional meaning. At home${kid ? "" : " and At work"}: modern readings of it.</p>`)}
+      ${sec("Where the charts touch", `${meet}${sweep}`)}
+      <section class="psec"><details class="printable" open><summary><h2>The score working</h2></summary>${bars}${extra}</details></section>
+      ${sec("Three ways to read it", framings)}
+      </div>
+      <div class="foot">${esc(d.source_ref)} · bazifor.me/w/${esc(token).slice(0, 3)}····</div>`;
     colorizeRep(rep);
     colorizeColoursRep(rep);
     glossifyRep(rep);

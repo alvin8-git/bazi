@@ -36,22 +36,21 @@ def pair_compatibility(ca, cb, ys_a: dict, ys_b: dict) -> dict:
     # 1. spouse palaces (day branches) — the heart of classical 合婚
     rel = _branch_rel(da.branch, db.branch)
     if rel is None:
-        chips.append(("day branches (spouse palaces) neutral", 0))
+        chips.append(("Day branches: no link", 0))
     else:
         kind, sign = rel
         pts = {"六合": 15, "半三合": 10, "六沖": -15, "刑": -8, "六害": -8}[kind]
-        chips.append((f"day branches {da.branch}{db.branch} {kind} — "
-                      + ("spouse palaces bond" if sign > 0 else "spouse palaces clash"),
-                      pts))
+        chips.append((f"Day branches {da.branch} and {db.branch}: {kind}, "
+                      + ("a bond." if sign > 0 else "a clash."), pts))
     if WUHE.get(da.stem) == db.stem:
-        chips.append((f"day stems {da.stem}{db.stem} 五合 — classic stem bond", 10))
+        chips.append((f"Day stems {da.stem} and {db.stem}: Five Combination, a classic stem bond.", 10))
 
     # 2. year branches (生肖 relation)
     yrel = _branch_rel(ca.pillars["year"].branch, cb.pillars["year"].branch)
     if yrel:
         kind, _ = yrel
         pts = {"六合": 8, "半三合": 8, "六沖": -8, "刑": -4, "六害": -4}[kind]
-        chips.append((f"year branches (生肖) {kind}", pts))
+        chips.append((f"Zodiac years: {kind}", pts))
 
     # 3. mutual 用神 supply — does one chart carry what the other needs?
     wa, wb = ca.element_weights, cb.element_weights
@@ -60,13 +59,13 @@ def pair_compatibility(ca, cb, ys_a: dict, ys_b: dict) -> dict:
         n = 0
         for e in tys["favourable"]:
             if gw.get(e, 0) / gt >= 0.2 and n < 2:
-                chips.append((f"{giver.person} is rich in {ELEMENT_EN[e]}{e} — "
-                              f"an element {taker.person} needs", 6))
+                chips.append((f"{giver.person} has plenty of {ELEMENT_EN[e]}, "
+                              f"which {taker.person} needs.", 6))
                 n += 1
         dom = max(gw, key=gw.get)
         if dom in tys["unfavourable"]:
-            chips.append((f"{giver.person}'s dominant {ELEMENT_EN[dom]}{dom} is an "
-                          f"element {taker.person} avoids", -6))
+            chips.append((f"{ELEMENT_EN[dom]} is {giver.person}'s strongest element, "
+                          f"and {taker.person} does better with less of it.", -6))
 
     score = max(5, min(95, 50 + sum(d for _, d in chips)))
     band = ("very compatible 上等" if score >= 70 else
@@ -75,28 +74,26 @@ def pair_compatibility(ca, cb, ys_a: dict, ys_b: dict) -> dict:
 
     rel_ab = ten_god(da.stem, db.stem)
     rel_ba = ten_god(db.stem, da.stem)
-    notes.append(f"In {ca.person}'s chart, {cb.person}'s Day Master {db.stem} appears "
-                 f"as {rel_ab} ({TEN_GOD_EN[rel_ab]}); seen the other way, "
-                 f"{ca.person} appears to {cb.person} as {rel_ba} "
-                 f"({TEN_GOD_EN[rel_ba]}).")
+    notes.append(f"To {ca.person}, {cb.person} comes across as {TEN_GOD_EN[rel_ab]} "
+                 f"({rel_ab}). To {cb.person}, {ca.person} comes across "
+                 f"as {TEN_GOD_EN[rel_ba]} ({rel_ba}).")
 
     paras = [
-        f"Overall: {score}/100 — {band}. The score adds the cited factors below to a "
-        "neutral 50; classical 合婚 weighs the day pillars (the 'spouse palaces') "
-        "heaviest, then the year branches, then whether each chart supplies elements "
-        "the other needs.",
-        notes[0] + " These relations describe the natural dynamic (who energises, "
-        "who steadies whom), not the quality of the relationship.",
-        "Element supply is the practical lever: when one person is rich in an element "
-        "the other needs, simply spending time together, sharing rooms and colours "
-        "aligned to that element, tends to feel supportive. A clash factor, if any, "
-        "is managed the usual ways — separate work corners, calmer decor, and dates "
-        "picked to avoid days clashing either person.",
+        f"{score} out of 100: {band}. The score adds the factors below to a neutral 50. "
+        "The classical method weighs the day pillars most, then the year branches, "
+        "then whether each chart supplies elements the other needs.",
+        notes[0] + " These roles describe the natural dynamic, who energises and who "
+        "steadies, not how good the relationship is.",
+        "Element supply is the practical lever. When one person has plenty of an element "
+        "the other needs, spending time together in rooms and colours that match it "
+        "tends to feel supportive. If there is a clash, the usual fixes help: separate "
+        "work corners, calmer decor, and dates that avoid clashing days for either person.",
     ]
     return {"a": ca.person, "b": cb.person,
             "day_pillars": [str(da), str(db)], "score": score, "band": band,
             "chips": [{"label": l, "delta": d} for l, d in chips],
             "relation": {"a_sees_b": rel_ab, "b_sees_a": rel_ba},
             "interpretation": {"paragraphs": paras},
-            "source_ref": "合婚 pairwise tables (day/year branch relations + 五合 + "
-                          "用神 supply — MODERN SYNTHESIS weights)"}
+            "source_ref": "Method: day and year branch relations, the Day Master Five "
+                          "Combination, and element supply. The element-supply weights "
+                          "are our own modern choice."}

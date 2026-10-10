@@ -443,9 +443,11 @@ def _why(p, plain):
                      f"{st.get('root_ratio')}%, season points {(st.get('parts') or {}).get('season_pts')}. {(p.get('synthesis') or {}).get('assessment', '')}"),
         "flows": (plain.get("flows") or {}).get("why", ""), "medicine": plain["helps"]["why"],
         "health": plain["health"]["why"], "domains": "",   # the life-areas table and its key carry every score
-        "work": "",   # the work figure lists every field, role and reason once "money": _vault_why(V),
+        "work": "",   # the work figure lists every field, role and reason once
+        "money": _vault_why(V),
         "decades": (p.get("windows") or {}).get("arc", ""), "years": (plain.get("next_ten") or {}).get("why", ""),
-        "months": "",   # the month rhythm figure shows every month's branch, element and rating; no word wall "days": (plain.get("days") or {}).get("why", ""),
+        "months": "",   # the month rhythm figure shows every month's branch, element and rating; no word wall
+        "days": (plain.get("days") or {}).get("why", ""),
         "placements": (plain.get("space") or {}).get("why", ""), "afflict": (plain.get("afflict") or {}).get("why", ""),
     }
 
