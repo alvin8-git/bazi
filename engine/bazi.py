@@ -202,8 +202,10 @@ def analyze(chart: Chart) -> None:
     _compute_dayun(chart)
 
 
-def _compute_dayun(chart: Chart, count: int = 8) -> None:
-    """大運: yang-year male / yin-year female run forward; otherwise backward."""
+def _compute_dayun(chart: Chart, to_age: int = 100) -> None:
+    """大運: yang-year male / yin-year female run forward; otherwise backward.
+    Decades run until they cover age `to_age` (owner 2026-10-10: up to 100; it was a fixed 8, which left
+    anyone past the eighth decade, about 84, with no current one)."""
     year_yang = STEM_YANG[chart.pillars["year"].stem]
     forward = (year_yang and chart.sex == "M") or (not year_yang and chart.sex == "F")
     start_age, jie = cal.dayun_start_age(chart.effective_dt.date(), forward)
@@ -213,7 +215,8 @@ def _compute_dayun(chart: Chart, count: int = 8) -> None:
     step = 1 if forward else -1
     luck = []
     age = start_age
-    for k in range(1, count + 1):
+    count = max(8, -(-(to_age - start_age) // 10))   # ceil: the last decade reaches to_age
+    for k in range(1, int(count) + 1):
         gz = cal.GZ(STEMS[(stem_i + step * k) % 10], cal.BRANCHES[(branch_i + step * k) % 12])
         luck.append(DaYun(gz=gz, start_age=round(age, 1), end_age=round(age + 10, 1)))
         age += 10

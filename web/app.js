@@ -610,6 +610,11 @@ const BR_ANIMAL = { 子: "鼠", 丑: "牛", 寅: "虎", 卯: "兔", 辰: "龙", 
 
 /* personalised 生剋 wheel: node size = element share, gold ring = Day Master,
    green arrows = generating cycle, red = controlling (solid when afflicted) */
+/* watercolour discs (owner 2026-10-10): each element circle is its painted swatch, a touch larger than the circle
+   so the blot's soft edge shows; the character is white with a dark halo, or ink on the pale Metal wash */
+const swatchDisc = (x, y, r, el) => `<image href="/static/img/reading/sw/${EL_SLUG[el]}-128.webp" x="${(x - r * 1.14).toFixed(1)}" y="${(y - r * 1.14).toFixed(1)}" width="${(r * 2.28).toFixed(1)}" height="${(r * 2.28).toFixed(1)}" preserveAspectRatio="none"/>`;
+const swatchInk = (el) => el === "金" ? 'fill="#22242a" paint-order="stroke" stroke="rgba(250,247,242,.7)" stroke-width="2.4"'
+  : 'fill="#fff" paint-order="stroke" stroke="rgba(28,20,12,.55)" stroke-width="2.6" stroke-linejoin="round"';
 function elementWheel(er) {
   const ORDER = ["火", "土", "金", "水", "木"];
   const cx = 170, cy = 170, R = 115;
@@ -649,13 +654,13 @@ function elementWheel(er) {
   });
   ORDER.forEach(el => {
     const [x, y] = pos[el], r = rOf(el);
-    s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${EL_COL[el]}" opacity=".92"/>`;
+    s += swatchDisc(x, y, r, el);
     if (el === er.dm) s += `<circle cx="${x}" cy="${y}" r="${r + 3.5}" fill="none"
       stroke="var(--gold)" stroke-width="2.5"/>`;
     const fs = Math.max(11, Math.min(22, r * 0.62));
     s += `<title>${EL_EN[el]} ${er.share[el]}%${el === er.dm ? ", your day master" : ""}</title>
       <text x="${x}" y="${y + fs * 0.35}" text-anchor="middle" font-size="${fs.toFixed(1)}"
-      font-weight="700" fill="#fff">${el}</text>
+      font-weight="700" ${swatchInk(el)}>${el}</text>
       <text x="${x}" y="${y + r + 13}" text-anchor="middle" font-size="10.5"
       paint-order="stroke" stroke="#faf7f2" stroke-width="3" stroke-linejoin="round" fill="#6b6357">${er.share[el]}%${el === er.dm ? " 日主" : ""}</text>`;
   });
@@ -774,8 +779,8 @@ function tenGodsWheel(c, opts = {}) {
     <text x="${cx}" y="${cy + 13}" text-anchor="middle" font-size="8.5" fill="#fff">日元</text>`;
   GROUPS.forEach(g => {
     s += `<g><title>${g.en} ${g.sum}% (${g.zh})</title>
-      <circle cx="${g.x}" cy="${g.y}" r="${g.r}" fill="${EL_COL[g.el]}" opacity=".92"/>
-      ${opts.zh ? `<text x="${g.x}" y="${g.y + 5.5}" text-anchor="middle" font-size="${Math.min(16, g.r * 0.62).toFixed(1)}" font-weight="700" fill="#fff" font-family="Noto Serif SC, serif">${g.zh}</text>` : nodeLines(g.en, g.x, g.y, g.r, 10.5)}</g>
+      ${opts.zh ? swatchDisc(g.x, g.y, g.r, g.el) : `<circle cx="${g.x}" cy="${g.y}" r="${g.r}" fill="${EL_COL[g.el]}" opacity=".92"/>`}
+      ${opts.zh ? `<text x="${g.x}" y="${g.y + 5.5}" text-anchor="middle" font-size="${Math.min(16, g.r * 0.62).toFixed(1)}" font-weight="700" ${swatchInk(g.el)} font-family="Noto Serif SC, serif">${g.zh}</text>` : nodeLines(g.en, g.x, g.y, g.r, 10.5)}</g>
       <text x="${g.x}" y="${g.y + g.r + 11}" text-anchor="middle" font-size="9.5"
         paint-order="stroke" stroke="#faf7f2" stroke-width="3" stroke-linejoin="round" fill="#6b6357">${g.sum}%</text>`;
     if (!opts.groupsOnly) g.sat.forEach(t => {
@@ -928,12 +933,6 @@ const EL_SLUG = { 木: "wood", 火: "fire", 土: "earth", 金: "metal", 水: "wa
 const STEM_SLUG = { 甲: "jia", 乙: "yi", 丙: "bing", 丁: "ding", 戊: "wu", 己: "ji", 庚: "geng", 辛: "xin", 壬: "ren", 癸: "gui" };
 const SWATCH = { 火: ["#c5221f", "#7b2d8e", "#e07b1f"], 水: ["#1b1f2a", "#1a56b0"], 木: ["#187a35", "#6aa84f"],
   土: ["#c9a227", "#d8c8a4", "#7a601b"], 金: ["#ffffff", "#c9a227", "#b8bec6"] };
-const GLYPH = {   // life-weather marks: one per engine decade phase
-  sun: '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="16" cy="16" r="6"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M6.8 6.8l2.8 2.8M22.4 22.4l2.8 2.8M6.8 25.2l2.8-2.8M22.4 9.6l2.8-2.8"/></svg>',
-  partsun: '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 3v2.5M3 12h2.5M5.6 5.6l1.8 1.8M18.4 5.6l-1.8 1.8"/><path d="M10 25h14a5 5 0 0 0-1-9.9 7 7 0 0 0-13 2.4A3.8 3.8 0 0 0 10 25z" fill="#fff"/></svg>',
-  wind: '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 12h15a4 4 0 1 0-4-4M4 18h20a4 4 0 1 1-4 4M4 24h9"/></svg>',
-  rain: '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 19h15a5 5 0 0 0-1-9.9 7 7 0 0 0-13 2.4A3.8 3.8 0 0 0 9 19z"/><path d="M11 23l-1.5 4M17 23l-1.5 4M23 23l-1.5 4"/></svg>' };
-
 const pWhy = (txt, html, label = "Why the chart says this") => txt || html
   ? `<details class="rp-why"><summary>${label}</summary><div class="rp-whyb">${txt ? `<p>${txt}</p>` : ""}${html || ""}</div></details>` : "";
 const PILLAR_KEYS = [["year", "year"], ["month", "month"], ["day", "you"], ["hour", "hour"]];
@@ -955,7 +954,7 @@ function pIdentity(c, name) {
   const season = { 寅: "spring", 卯: "spring", 辰: "spring", 巳: "summer", 午: "summer", 未: "summer",
     申: "autumn", 酉: "autumn", 戌: "autumn", 亥: "winter", 子: "winter", 丑: "winter" }[c.pillars.month[1]];
   const art = `/static/img/reading/bg/${STEM_SLUG[c.day_master]}-${season}`;   // the identity line, drawn: stem × season
-  return `<section class="rp-ident rp-bgart" data-art="${STEM_SLUG[c.day_master]}-${season}" style="--bg6:url('${art}-600.jpg');--bg12:url('${art}-1200.jpg')"><div class="rp-idtext"><p class="rp-name">${dn(name || c.name)}</p>${pSeal(c)}
+  return `<section class="rp-ident rp-bgart" data-art="${STEM_SLUG[c.day_master]}-${season}" style="--bg6:url('${art}-600.jpg');--bg12:url('${art}-1200.jpg');--bgp6:url('${art}-p-600.jpg');--bgp9:url('${art}-p-900.jpg')"><div class="rp-idtext"><p class="rp-name">${dn(name || c.name)}</p>${pSeal(c)}
       <h2 class="rp-h">${I.head}</h2><p class="rp-sub">${I.sub}</p><p class="rp-sub rp-where">${where}</p>${pWhy(I.why)}</div>
   </section>`;   // the Day Master image now lives on the "you at home" card in the four sides
 }
@@ -985,15 +984,21 @@ function pAnswers(c) {
   const heavy = Object.entries(c.element_weights).sort((a, b) => b[1] - a[1])[0][0];
   return `<div class="rp-answers">
     <div class="rp-ans rp-bal"><p class="rp-k">Your balance</p><h3>${heavy} is heaviest; ${EL_EN[H.el]} is what you need.</h3>${pBudget(c, true)}</div>
-    <div class="rp-ans"><p class="rp-k">What helps you</p><h3>${H.head}</h3><div class="rp-sw" aria-hidden="true">${(SWATCH[H.el] || []).map((x) =>
-      `<i style="background:${x}"></i>`).join("")}</div><p>${H.means}</p></div>
+    <div class="rp-ans"><p class="rp-k">What helps you</p><h3>${H.head}</h3><div class="rp-sw" aria-hidden="true" style="--blot:url('/static/img/reading/sw/${EL_SLUG[H.el]}-128.webp')">${(SWATCH[H.el] || []).map((x) =>
+      `<i style="background-color:${x}"></i>`).join("")}</div><p>${H.means}</p></div>
     ${Y ? `<div class="rp-ans"><p class="rp-k">This year</p><p class="rp-year"><span class="rp-ybig">${Y.y}</span> <span class="rp-gz keepzh" data-notip>${Y.gz}</span></p>
       <h3>${Y.word}</h3><p>${Y.means}</p></div>` : ""}
     <div class="rp-ans rp-wide"><p class="rp-k">Two things to do</p><ul class="rp-acts">${P.actions.map((a) => `<li>${a}</li>`).join("")}</ul></div></div>`;
 }
+/* luck decades as rows: a painted phase mark, the ages, the phase, one plain line; the next turn named (owner 2026-10-10) */
+const PHASE_LINE = { growth: "Conditions favour building.", consolidation: "Build reserves rather than leap.",
+  transition: "Expect change at home or work.", corrective: "Protect health, money and close ties." };
 function pWeather(c) {
-  return `<div class="rp-wx" role="list" aria-label="Your decades">${c.plain.decades.map((d) =>
-    `<div role="listitem"${d.current ? ' class="now" aria-current="true"' : ""}>${GLYPH[d.glyph]}<b>${d.word}</b><small>ages ${d.ages}</small><span class="keepzh" data-notip>${d.gz}</span></div>`).join("")}</div>`;
+  const D = c.plain.decades || [], i = D.findIndex((d) => d.current), nx = i >= 0 ? D[i + 1] : D[0];
+  return `<ol class="rp-dec" aria-label="Your luck decades">${D.map((d, k) => `<li class="${d.current ? "now" : i >= 0 && k < i ? "past" : ""}"${d.current ? ' aria-current="true"' : ""}>
+      <img src="/static/img/reading/mk/${d.phase}-96.png" alt="" width="40" height="40" decoding="async">
+      <span class="rp-dage">${d.ages}</span><b>${d.word}</b><span class="rp-dline">${PHASE_LINE[d.phase] || ""}</span>${d.current ? '<em class="rp-dnow">now</em>' : ""}</li>`).join("")}</ol>
+    ${nx ? `<p class="rp-dnext"><b>Next turn:</b> ${nx.word.toLowerCase()}, from age ${String(nx.ages).split(/[–-]/)[0]}.</p>` : ""}`;
 }
 const pYears = (c) => `<div class="rp-yrs">${c.plain.years.map((y) => `<div class="${y.overall}"><b>${y.y}</b>${y.word.split(" ")[0]}</div>`).join("")}</div>`;
 const pDrives = (c) => `<div class="rp-drv">${c.plain.drives.groups.map((g) => `<b>${g.name}</b><span class="rp-tr"><i style="width:${Math.max(1, g.pct).toFixed(0)}%"></i></span>
@@ -1537,13 +1542,22 @@ function buildGods(c, R) {
 /* --- 时运 Timing ---------------------------------------------------------------- */
 function buildTiming(c, R) {
   const W = c.windows; if (!W) return { figs: {}, tail: [R.narr(6), R.narr(13)] };
-  const dd = c.dayun_detail || [];
-  const strip = `<div class="ccdayun">${W.decades.map((d) => { const x = dd.find((y) => y.gz === d.gz) || {};
+  const dd = c.dayun_detail || [], dm = c.day_master;
+  // owner 2026-10-10: the classical strip in characters only, element-coloured; English lives in the "?" key
+  const gzc = (gz) => `<span style="color:${EL_TXT[STEM_EL[gz[0]]]}">${gz[0]}</span><span style="color:${EL_TXT[BR_EL[gz[1]]]}">${gz[1]}</span>`;
+  const godz = (g) => g ? `<span style="color:${EL_TXT[godEl(dm, tgCanon(g))]}">${g}</span>` : "";
+  const strip = `<div class="ccdayun keepzh">${W.decades.map((d) => { const x = dd.find((y) => y.gz === d.gz) || {};
     return `<div class="ccdy${d.current ? " now" : ""}" title="${(d.notes || []).join("; ")}">
-      <div class="ccdyage">${d.ages}</div><div class="ccdygz">${d.gz}</div>
-      <div class="wphase w-${d.phase}">${d.phase_zh}<span class="wp-en"> ${d.phase}</span></div>
-      <div class="dygods">${x.stem_god ? `${x.stem_god}/${x.branch_god}` : ""}</div>
+      <div class="ccdyage">${d.ages}</div><div class="ccdygz">${gzc(d.gz)}</div>
+      <div class="wphase w-${d.phase}">${d.phase_zh}</div>
+      <div class="dygods">${godz(x.stem_god)}${x.stem_god ? "·" : ""}${godz(x.branch_god)}</div>
       ${x.keywords ? `<div class="dykw">${x.keywords}</div>` : ""}${d.current ? `<div class="ccdyhere">▲ now</div>` : ""}</div>`; }).join("")}</div>`;
+  const gods = [...new Set(dd.flatMap((x) => [x.stem_god, x.branch_god]).filter(Boolean))];
+  const phases = [...new Map(W.decades.map((d) => [d.phase, d.phase_zh])).entries()];
+  const stripKey = `<div class="tkey"><p><b>Each card:</b> the ages, the decade's pillar (stem over branch), its phase, the two roles it brings, and what those roles mean.</p>
+    <p><b>Phases:</b> ${phases.map(([en, zh]) => `<span class="keepzh">${zh}</span> ${PHASE_EN[en] || en}`).join(" · ")}</p>
+    <p><b>Pillars:</b> ${W.decades.map((d) => `<span class="keepzh">${gzc(d.gz)}</span> ${STEM_YANG[d.gz[0]] ? "yang" : "yin"} ${EL_EN[STEM_EL[d.gz[0]]]} over ${(ZODIAC[BR_ANIMAL[d.gz[1]]] || ["", d.gz[1]])[1]} (${EL_EN[BR_EL[d.gz[1]]]})`).join("; ")}</p>
+    <p><b>Roles:</b> ${gods.map((g) => `<span class="keepzh">${godz(g)}</span> ${TG_EN_FALLBACK[tgCanon(g)] || TG_EN_FALLBACK[g] || ""}`).join(" · ")}</p></div>`;
   const ci = W.decades.findIndex((d) => d.current), cur = W.decades[ci], nxt = W.decades[ci + 1];
   const arc = ((W.arc || "").match(/Element arc: (.*?) —/) || [])[1];
   const t1 = rdFig({ tier: "hero", span: 12, label: "Decade strip", learn: 6, chart: strip,
@@ -1551,7 +1565,7 @@ function buildTiming(c, R) {
       : `Before the first decade — ${W.decades[0] ? `${W.decades[0].gz} begins at age ${String(W.decades[0].ages).split(/[–-]/)[0]}.` : ""}`,
     facts: [cur ? ["Luck cycle", `${cur.gz} · ${cur.ages}`] : null, nxt ? ["next", `${nxt.gz} · ${nxt.ages}`] : null,
       c.dayun && c.dayun[0] ? ["Starts at age", `${String(c.dayun[0].ages).split(/[–-]/)[0]}`] : null, arc ? ["arc", arc] : null].filter(Boolean),
-    legend: `${legendList(6)}${W.arc ? `<div class="cite"><b>Life arc:</b> ${W.arc}</div>` : ""}
+    legend: `${stripKey}${legendList(6)}${W.arc ? `<div class="cite"><b>Life arc:</b> ${W.arc}</div>` : ""}
       ${W.taohua ? `<div class="cite"><b>Peach blossom:</b> ${W.taohua.branch} — ${W.taohua.type}${W.taohua.pillars.length ? ` (in the ${W.taohua.pillars.join("/")} pillar)` : ""}</div>` : ""}` });
   const T = c.transit || {}, L = T.luck || {};
   const gDec = [grpOfGod(L.stem_god || ""), grpOfGod(L.branch_god || "")], gYr = [grpOfGod(T.year_stem_god || ""), grpOfGod(T.year_branch_god || "")];
@@ -1566,13 +1580,13 @@ function buildTiming(c, R) {
   const RH = ((c.strategy || {}).s5 || {}).rhythm; let t6 = "";
   if (RH && RH.length) {
     const nowBr = (c.daily || {}).now_month_branch;
-    const cells = RH.map((r) => `<div class="rcell ${r.cls}${r.br === nowBr ? " now" : ""}"><small>${r.mon}</small><b style="color:${EL_TXT[r.el]}">${r.br}</b><span>${elc(r.el)}</span>${r.br === nowBr ? `<em class="rnow">▲ now</em>` : ""}</div>`).join("");
+    const cells = RH.map((r) => `<div class="rcell ${r.cls}${r.br === nowBr ? " now" : ""}"><small>${r.mon}</small><b style="color:${EL_TXT[r.el]}">${r.br}</b><span class="rel" style="color:${EL_TXT[r.el]}">${r.el}</span><span class="rrate">${r.cls === "good" ? "good" : "pace"}</span>${r.br === nowBr ? `<em class="rnow">▲ now</em>` : ""}</div>`).join("");
     const order = RH.map((r) => r.mon), ranges = (ms) => { const idx = ms.map((m) => order.indexOf(m)).sort((a, b) => a - b), out = []; let i = 0;
       while (i < idx.length) { let j = i; while (j + 1 < idx.length && idx[j + 1] === idx[j] + 1) j++;
         out.push(i === j ? order[idx[i]] : `${order[idx[i]]}–${order[idx[j]]}`); i = j + 1; } return out.join(", "); };
     const good = RH.filter((r) => r.cls === "good"), bad = RH.filter((r) => r.cls !== "good");
     const gel = [...new Set(good.map((r) => r.el))].map(elw).join(" and ");
-    t6 = rdFig({ tier: "secondary", span: 7, label: "Monthly rhythm", learn: 13, chart: `<div class="rhy">${cells}</div>`,
+    t6 = rdFig({ tier: "secondary", span: 7, label: "Monthly rhythm", learn: 13, chart: `<div class="rhy keepzh">${cells}</div>`,
       line: good.length ? `Good months: ${ranges(good.map((r) => r.mon))} (${gel}). Pace ${ranges(bad.map((r) => r.mon))}.` : "No month carries your medicine — pace the whole year evenly.",
       facts: [["good", `${good.length}`], ["pace", `${bad.length}`]],
       legend: "Each solar month carries a branch and its element. Months whose element is your medicine are marked good; months carrying a 忌神 element are marked to pace. The rhythm is the same every year — the 流年 table says which years lift or lower it." });
@@ -1582,6 +1596,11 @@ function buildTiming(c, R) {
 }
 
 /* 流日 daily fortune — the next 30 days, six activities, from the engine's daily layer */
+const OFFICER_EN = { 建: "Establish", 除: "Remove", 满: "Full", 滿: "Full", 平: "Neutral", 定: "Settle", 执: "Hold", 執: "Hold", 破: "Destruction",
+  危: "Danger", 成: "Completion", 收: "Receive", 开: "Open", 開: "Open", 闭: "Close", 閉: "Close" };
+const TAG_EN = { 合日支: "combines with your day branch", 冲日支: "clashes your day branch", 沖日支: "clashes your day branch", 害日支: "harms your day branch",
+  冲生肖: "clashes your zodiac animal", 沖生肖: "clashes your zodiac animal", 刑日支: "punishes your day branch" };
+const PHASE_EN = { growth: "growth", consolidation: "gathering (building reserves)", transition: "changing", corrective: "repairing" };
 const ACT_EN = { moving: "moving", signing: "signing", marriage: "marriage", travel: "travel", medical: "medical", launch: "launch" };
 function dailyFig(c) {
   const D = c.daily; if (!D || !(D.rows || []).length) return "";
@@ -1589,13 +1608,15 @@ function dailyFig(c) {
   const mark = (f) => f.verdict === "good" ? "◉" : f.verdict === "avoid" ? "⚠" : "·";
   const rows = D.rows.map((r) => `<tr class="${r.today ? "today" : ""}${r.officer === "破" || r.interactions.some((x) => x.startsWith("沖")) ? " dclash" : ""}">
       <th>${r.date.slice(5)} <small>${r.weekday}</small>${r.today ? '<em class="rnow">▲ now</em>' : ""}</th>
-      <td><b>${elc(r.gz[0])}${elc(r.gz[1])}</b> <small class="sub">${r.officer} day</small></td>
-      <td class="sub">${godc(dm, r.stem_god)}/${godc(dm, r.branch_god)}${r.interactions.length ? ` <span class="tag${r.interactions.some((x) => x.startsWith("沖") || x.startsWith("害")) ? " warn" : ""}">${r.interactions.join(" ")}</span>` : ""}</td>
-      <td>${elb(r.element)} <small class="sub">${r.medicine === "favourable" ? "useful god" : r.medicine === "against" ? "avoid" : ""}</small></td>
+      <td><b class="dgz"><span style="color:${EL_TXT[STEM_EL[r.gz[0]]]}">${r.gz[0]}</span><span style="color:${EL_TXT[BR_EL[r.gz[1]]]}">${r.gz[1]}</span></b> <small class="sub">${r.officer}</small></td>
+      <td class="sub"><span style="color:${EL_TXT[godEl(dm, tgCanon(r.stem_god))]}">${r.stem_god}</span>·<span style="color:${EL_TXT[godEl(dm, tgCanon(r.branch_god))]}">${r.branch_god}</span>${r.interactions.length ? ` <span class="tag${r.interactions.some((x) => x.startsWith("沖") || x.startsWith("害")) ? " warn" : ""}">${r.interactions.join(" ")}</span>` : ""}</td>
+      <td><b style="color:${EL_TXT[r.element]}">${r.element}</b><small class="sub">${r.medicine === "favourable" ? "用" : r.medicine === "against" ? "忌" : ""}</small></td>
       ${acts.map(([k]) => { const f = r.flags[k]; return `<td class="wf-${f.verdict === "good" ? "window" : f.verdict === "avoid" ? "caution" : "quiet"}" title="${f.why}"><b>${mark(f)}</b>${f.verdict !== "neutral" && f.short ? `<span class="wshort">${f.short}</span>` : ""}</td>`; }).join("")}</tr>`).join("");
-  const th2 = (en) => `<th><span class="th-en">${en}</span></th>`;
-  const table = `<div class="scrollx"><table class="wtable dtable-daily"><tr>${th2("Date")}${th2("Day pillar")}${th2("Gods")}${th2("Element")}
-    ${acts.map(([, lab]) => { const [zh, ...en] = lab.split(" "); return th2(en.join(" ") || zh); }).join("")}</tr>${rows}</table></div>`;
+  const th2 = (zh) => `<th scope="col">${zh}</th>`;
+  const actZh = acts.map(([k, lab]) => [k, lab.split(" ")[0], lab.split(" ").slice(1).join(" ") || ACT_EN[k] || k]);
+  const table = `<div class="scrollx keepzh"><table class="wtable dtable-daily"><tr>${th2("日期")}${th2("日柱")}${th2("十神")}${th2("五行")}
+    ${actZh.map(([, zh]) => th2(zh)).join("")}</tr>${rows}</table></div>`;
+  const officers = [...new Set(D.rows.map((r) => r.officer))], tags = [...new Set(D.rows.flatMap((r) => r.interactions))];
   const B = D.best, W = D.worst;
   const line = (B ? `Best day this month for ${B.for.slice(0, 2).map((k) => ACT_EN[k]).join(" or ")}: ${B.date.slice(5)} ${B.gz} (${B.officer} day).` : "No clear best day this month.")
     + (W && W.avoid.length ? ` Avoid ${W.avoid.slice(0, 2).map((k) => ACT_EN[k]).join(" and ")} on ${W.date.slice(5)} ${W.gz} — ${W.why}.` : "");
@@ -1603,7 +1624,10 @@ function dailyFig(c) {
   const nAvoid = D.rows.filter((r) => Object.values(r.flags).some((f) => f.verdict === "avoid")).length;
   return rdFig({ tier: "secondary", span: 12, label: "Daily fortune, next 30 days", learn: 13, chart: table, line,
     facts: [["from", D.start], ["good days", `${nGood}`], ["days with a caution", `${nAvoid}`]],
-    legend: `<div><b>◉ good · ⚠ avoid · · neutral</b> — per activity, hover a cell for the deciding rule.</div>
+    legend: `<div class="tkey"><p><b>Columns:</b> <span class="keepzh">日期</span> date · <span class="keepzh">日柱</span> day pillar (with its day officer) · <span class="keepzh">十神</span> the roles the day brings you · <span class="keepzh">五行</span> the day's element (<span class="keepzh">用</span> useful to you, <span class="keepzh">忌</span> to avoid) · ${actZh.map(([, zh, en]) => `<span class="keepzh">${zh}</span> ${en}`).join(" · ")}</p>
+      <p><b>Day officers:</b> ${officers.map((o) => `<span class="keepzh">${o}</span> ${OFFICER_EN[o] || ""}`).join(" · ")}</p>
+      ${tags.length ? `<p><b>Tags:</b> ${tags.map((x) => `<span class="keepzh">${x}</span> ${TAG_EN[x] || ""}`).join(" · ")}</p>` : ""}</div>
+      <div><b>◉ good · ⚠ avoid · · neutral</b> — per activity, hover a cell for the deciding rule.</div>
       <div><b>Twelve day officers</b> Completion, Open and Settle are good for most acts; Remove suits treatment; Close and Danger hold back travel and moving; Break (and any day that clashes the month) is avoided for everything.</div>
       <div><b>Your branches</b> a day branch that clashes your day branch (${elc(c.pillars.day[1])}) or year branch (${elc(c.pillars.year[1])}) is avoided for marriage, moving and launches; a Six Combination with your day branch favours marriage and signing; a Harm holds back medical.</div>
       <div><b>Element of the day</b> a day stem carrying your primary useful god favours launches and signing; one carrying your chief avoided element is avoided for banking and launches.</div>

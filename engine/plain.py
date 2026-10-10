@@ -464,9 +464,9 @@ def _afflictions(p):
         return None
     ts, sp, ss = A["taisui"]["dir"], A["suipo"]["dir"], A["sansha"]["dirs"]
     hits = A.get("collisions") or []
-    return {"head": f"Leave the {DIR_WORD[ts]} and {DIR_WORD[sp]} undisturbed this year.",
-            "means": f"Do not renovate or dig there, do not face the {DIR_WORD[ts]} for long, and do not sit facing the {and_join([DIR_WORD[d] for d in ss])}.",
-            "todo": "This year's afflictions touch some of your good sectors, so move long sitting elsewhere for now." if hits else None,
+    return {"head": f"Leave the {DIR_WORD[ts]} and {DIR_WORD[sp]} undisturbed this year.",   # owner 2026-10-10: chart directions win
+            "means": f"Do not renovate or dig there, and take the same care on the {and_join([DIR_WORD[d] for d in ss])}.",
+            "todo": "Your bed and desk directions still hold; this year only asks you not to build or dig on those sides." if hits else None,
             "why": " ".join(h["note"] for h in hits) or "None of this year's afflictions sits on your four favourable sectors."}
 
 

@@ -17,6 +17,7 @@ the two stay in sync.
 from __future__ import annotations
 
 import re
+_EL_EN = {"木": "Wood", "火": "Fire", "土": "Earth", "金": "Metal", "水": "Water"}   # a stem followed by its own element
 
 # term -> (English, pinyin, gloss, category).  English "" = no accepted English rendering:
 # the term is shown as Chinese + pinyin + gloss on first use, pinyin after.
@@ -383,7 +384,7 @@ _add("core", [
     ("十二建除", "twelve day officers", "shí èr jiàn chú", ""),
     ("平星", "neutral star", "píng xīng", ""), ("吉白星", "auspicious white star", "jí bái xīng", ""),
     ("當運旺星", "current-period star", "dāng yùn wàng xīng", ""), ("生氣星", "rising star", "shēng qì xīng", ""),
-    ("成長", "growth", "chéng zhǎng", ""), ("蓄勢", "build-up", "xù shì", ""), ("修整", "consolidation", "xiū zhěng", ""),
+    ("成長", "growth", "chéng zhǎng", ""), ("蓄勢", "build-up", "xù shì", ""), ("修整", "repairing", "xiū zhěng", ""), ("轉換", "transition", "zhuǎn huàn", ""),
     ("表達", "expression", "biǎo dá", ""), ("行動", "action", "xíng dòng", ""), ("權威", "authority", "quán wēi", ""),
     ("思維", "thinking", "sī wéi", ""), ("情感", "feelings", "qíng gǎn", ""),
     ("待斟酌", "needs a second look", "dài zhēn zhuó", ""), ("未定", "undetermined", "wèi dìng", ""),
@@ -730,8 +731,8 @@ class Gloss:
                 key = None
             if key is not None:
                 # "辛 Metal day master": the element already follows, so "辛 (yin Metal) Metal" would say it twice
-                ew = re.match(r"\s+(Wood|Fire|Earth|Metal|Water)\b", after) if gl else None
-                if ew and gl.endswith(ew.group(1)):
+                ew = re.match(r"\s+(Wood|Fire|Earth|Metal|Water|[木火土金水])(?![\u3400-\u9fff])", after) if gl else None
+                if ew and gl.endswith(_EL_EN.get(ew.group(1), ew.group(1))):
                     self.seen.add(key)
                     out += run
                     continue

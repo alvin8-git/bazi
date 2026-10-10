@@ -68,17 +68,14 @@ def pillars_for(dt: datetime) -> dict:
     """Four pillars for an exact (already policy-adjusted) datetime.
 
     Year pillar changes at 立春; month pillars at the 12 節 — both via sxtwl.
-    早/晚子時: hour 23 uses the NEXT day's stem for the 子 hour (子時換日 on the
-    hour pillar only; day pillar stays with the civil date — 早晚子 school).
+    晚子時 (owner 2026-10-10): from 23:00 the 子 hour takes the SAME day's stem (乙 day → 丙子), and the
+    day pillar stays with the civil date. sxtwl's getHourGZ(23) already rolls to the next day's 子, so
+    the late 子 hour is read as hour 0 of the same day. (The old code shifted twice: 乙 day gave 庚子.)
     ponytail: single school implemented; add a policy flag when another school is wanted.
     """
     day = sxtwl.fromSolar(dt.year, dt.month, dt.day)
     ygz, mgz, dgz = _gz(day.getYearGZ()), _gz(day.getMonthGZ()), _gz(day.getDayGZ())
-    hour_day = day
-    if dt.hour == 23:
-        nxt = dt + timedelta(hours=2)
-        hour_day = sxtwl.fromSolar(nxt.year, nxt.month, nxt.day)
-    hgz = _gz(hour_day.getHourGZ(dt.hour))
+    hgz = _gz(day.getHourGZ(0 if dt.hour == 23 else dt.hour))
     return {"year": ygz, "month": mgz, "day": dgz, "hour": hgz}
 
 

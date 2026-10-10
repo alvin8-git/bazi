@@ -33,6 +33,18 @@ PRIORITY = {   # lowest life area, when it trails the strongest by 40 points or 
     "learning": "So learn by doing, in short steps, rather than long courses.",
 }
 HEALTH_EV = "health"
+STAR_GIST = {   # one plain line per common star; the engine's own gloss is the fallback
+    "天乙貴人": "so helpful people appear at the moments that matter", "天乙贵人": "so helpful people appear at the moments that matter",
+    "太極貴人": "a pull toward philosophy and deep study", "太极贵人": "a pull toward philosophy and deep study",
+    "華蓋": "a taste for solitude, depth and the arts", "华盖": "a taste for solitude, depth and the arts",
+    "文昌": "so study and exams tend to go well", "學堂": "the mark of a natural learner", "学堂": "the mark of a natural learner",
+    "桃花": "charm that draws people in", "驛馬": "movement, travel and relocation", "驿马": "movement, travel and relocation",
+    "將星": "natural authority among others", "将星": "natural authority among others", "祿神": "the means to a steady income", "禄神": "the means to a steady income",
+    "天德": "protection that softens hard years", "月德": "protection that softens hard years", "金輿": "comfort and support from others", "金舆": "comfort and support from others",
+    "空亡": "so the part of life it sits in can feel empty until a year wakes it", "劫煞": "so guard what you own and avoid needless risk",
+    "羊刃": "a strong will that needs a check on impulsiveness", "災煞": "so take care with accidents and hasty moves", "灾煞": "so take care with accidents and hasty moves",
+    "亡神": "so keep plans and money matters private", "孤辰": "a streak of independence and solitude", "寡宿": "a streak of independence and solitude",
+}
 
 
 def S(t, *ev):
@@ -48,10 +60,14 @@ def ljoin(xs):   # names that already contain "and" take an Oxford comma so the 
 
 
 def _age(p, year):
+    """Age on today's date in the reading year (a birthday not yet reached this year counts one less)."""
+    import datetime as _dt
     try:
-        return year - int(str(p.get("effective_time", ""))[:4])
+        b = _dt.date.fromisoformat(str(p.get("effective_time", ""))[:10])
     except ValueError:
         return None
+    today = _dt.date.today(); ref = today if today.year == year else _dt.date(year, 7, 1)
+    return year - b.year - ((ref.month, ref.day) < (b.month, b.day))
 
 
 def _year_now(p):
@@ -72,8 +88,12 @@ def _makeup(p, kid):
         p1.append(S("Your chart is unusually even: no single role leads, and you carry a little of everything.", "gods"))
     elif ranked:
         (g1, v1), *rest = ranked
-        tail = f", followed by {GOD_NOUN.get(rest[0][0], rest[0][0])} at {rest[0][1]:g}%" if rest else ""
-        p1.append(S(f"{cap(GOD_NOUN.get(g1, g1))} lead your chart at {v1:g}%{tail}.", "gods"))
+        n1 = GOD_NOUN.get(g1, g1)
+        if rest and rest[0][1] == v1:   # a tie is a shared lead, not "followed by"
+            p1.append(S(f"{cap(n1)} and {GOD_NOUN.get(rest[0][0], rest[0][0])} share the lead in your chart, at {v1:g}% each.", "gods"))
+        else:
+            tail = f", followed by {GOD_NOUN.get(rest[0][0], rest[0][0])} at {rest[0][1]:g}%" if rest else ""
+            p1.append(S(f"{cap(n1)} {'lead' if ' and ' in n1 else 'leads'} your chart at {v1:g}%{tail}.", "gods"))
     pal = {x["key"]: x for x in (p.get("palaces") or {}).get("pillars") or []}
     y, m = (pal.get("year") or {}).get("stem_god"), (pal.get("month") or {}).get("stem_god")
     if y in GOD_NOUN and m in GOD_NOUN:
@@ -90,7 +110,8 @@ def _makeup(p, kid):
     for s, lead in ((good, "A helpful star sits in your chart"), (bad, "One star asks for care")):
         if s:
             name, _, gist = s["meaning"].partition(" — ")
-            p3.append(S(f"{lead}: {name}, {(gist or s['meaning']).split(';')[0]}.", "stars"))
+            gist = STAR_GIST.get(s["star"], (gist or s["meaning"]).split(";")[0])
+            p3.append(S(f"{lead}: the {name}, {gist}.", "stars"))
     ia = p.get("interactions") or []
     hard = sum(1 for x in ia if any(k in x["kind"] for k in ("沖", "冲", "刑")))
     if hard >= 3:
@@ -98,6 +119,10 @@ def _makeup(p, kid):
                     "steady routines are worth more to you than to most people.", "interactions"))
     elif any(any(k in x["kind"] for k in ("沖", "冲")) for x in ia):
         p3.append(S("Some of your pillars clash, so change tends to arrive through friction between home, work and family.", "interactions"))
+    elif any("刑" in x["kind"] for x in ia):
+        p3.append(S("Some of your pillars punish one another, so strain tends to build slowly inside your own circle; name it early.", "interactions"))
+    elif ia and all("合" in x["kind"] for x in ia):
+        p3.append(S("Your pillars mostly combine, so the parts of your life tend to back each other up.", "interactions"))
     elif ia:
         p3.append(S("Your pillars rub quietly against each other: small frictions, but no open clash.", "interactions"))
     else:
@@ -121,6 +146,9 @@ def _balance(p, kid):
                     "which is why the reading calls you weak.", "flows", "strength"))
     elif sk == "weak":
         p1.append(S("The reading calls you weak.", "strength"))
+    elif sk == "strong" and pr and rs and pr["share"] > rs["share"]:
+        p1.append(S(f"The reading calls you strong, even though the pressure from {EN[pr['el']]} outweighs the support from "
+                    f"{EN[rs['el']]}: your own element carries the load.", "strength", "flows"))
     elif sk == "strong":
         p1.append(S("You have more support than you spend, which is why the reading calls you strong.", "strength"))
     elif sk == "balanced":
@@ -132,7 +160,8 @@ def _balance(p, kid):
     if sk == "weak" and season < 0:
         p2.append(S(f"You were born in {SEASON[p['pillars']['month'][1]]}, a season that works against {EN[dm_el]}, "
                     f"so the {EN[dm_el]} you have gives you less strength than the number suggests.", "strength"))
-        if (st.get("support_ratio") or 0) >= 50:
+        med_high = any(h["element"] == med and h["status"].startswith("excess") for h in H)
+        if (st.get("support_ratio") or 0) >= 50 and not med_high:
             p2.append(S(f"You are not short of backing; you are short of {MEDICINE[med]['need']}.", "strength", "medicine"))
     elif sk == "weak" and (st.get("root_ratio") or 0) < 10:
         p2.append(S("You were born in a helpful season, but your own element has few roots in the branches, "
@@ -237,13 +266,13 @@ def _timing(p, kid):
         elif i == b:
             lead = f"You are in the last of {NUM.get(n, n)} {word} decades in a row, ages {d['ages']}."
         elif i == a:
-            lead = f"You are at the start of {NUM.get(n, n)} {word} decades in a row; this one runs through ages {d['ages']}."
+            lead = f"You are in the first of {NUM.get(n, n)} {word} decades in a row, ages {d['ages']}."
         else:
             lead = f"You are in the middle of {NUM.get(n, n)} {word} decades in a row, ages {d['ages']}."
         from .plain import PHASE
         p1.append(S(lead + " " + PHASE[ph]["means"], "decades"))
         lu = next((k for k, x in enumerate(decs) if x["gz"][1] == LU[p["day_master"]]), None)
-        if lu is not None:
+        if lu is not None and decs[lu]["phase"] in ("growth", "consolidation"):
             if lu < i:
                 p1.append(S(f"Your chart's turning point came at ages {decs[lu]['ages']}, when your own element arrived.", "decades"))
             elif lu == i:
@@ -252,13 +281,14 @@ def _timing(p, kid):
                 p1.append(S(f"Your own element arrives at ages {decs[lu]['ages']}, the turning point of your chart.", "decades"))
         if i + 1 < len(decs) and age is not None:
             nx = decs[i + 1]; start = _ages(nx)[0]; left = max(start - age, 1)
-            yrs = "year" if left == 1 else "years"; left = NUM.get(left, left); dn, up = PHASE_RANK[nx["phase"]], PHASE_RANK[ph]
+            one = left == 1; yrs = "year" if one else "years"; left = NUM.get(left, left); dn, up = PHASE_RANK[nx["phase"]], PHASE_RANK[ph]
             if dn > up:
-                p2.append(S(f"In about {left} {yrs} the climate turns: the next decade, from {start}, is a {PHASE_ADJ[nx['phase']]} one, "
-                            f"so the next {left} {yrs} are the run-up.", "decades"))
+                p2.append(S((f"Within a year the climate turns: the next decade, from {start}, is a {PHASE_ADJ[nx['phase']]} one, so this year is the run-up."
+                             if one else f"In about {left} {yrs} the climate turns: the next decade, from {start}, is a {PHASE_ADJ[nx['phase']]} one, "
+                             f"so the next {left} {yrs} are the run-up."), "decades"))
             elif dn < up:
-                p2.append(S(f"From {start} the climate cools into a {PHASE_ADJ[nx['phase']]} decade, so what you start in the next "
-                            f"{left} {yrs} has the best weather behind it.", "decades"))
+                p2.append(S(f"From {start} the climate cools into a {PHASE_ADJ[nx['phase']]} decade, so what you start "
+                            + ("this year" if one else f"in the next {left} {yrs}") + " has the best weather behind it.", "decades"))
             else:
                 p2.append(S(f"The next decade, from {start}, is also a {PHASE_ADJ[nx['phase']]} one.", "decades"))
             if ph in ("consolidation", "corrective") and nx["phase"] in ("consolidation", "corrective", "transition"):
@@ -276,8 +306,10 @@ def _timing(p, kid):
         p3.append(S(lead + tail + ".", "years"))
         dims = [k for k in AREA if k in y0]
         rest = Y[1:] or Y
-        best = max(rest, key=lambda y: sum((y.get(k) or {}).get("flag") == "window" for k in dims))
-        worst = max(rest, key=lambda y: sum((y.get(k) or {}).get("flag") == "caution" for k in dims))
+        rank = {"peak": 2, "steady": 1, "careful": 0}
+        best = max(rest, key=lambda y: (rank[y["overall"]], sum((y.get(k) or {}).get("flag") == "window" for k in dims)))
+        careful = [y for y in rest if y["overall"] == "careful"]
+        worst = max(careful, key=lambda y: sum((y.get(k) or {}).get("flag") == "caution" for k in dims)) if careful else best
         cw = [AREA[k] for k in dims if (worst.get(k) or {}).get("flag") == "caution"]
         bw = [AREA[k] for k in dims if (best.get(k) or {}).get("flag") == "window"]
         line = f"Looking further ahead, push in {best['y']}{turn(best['y'])}" + (f", a window for {and_join(bw)}" if bw else "")
@@ -299,20 +331,23 @@ def _timing(p, kid):
 def _space(p, kid):
     med = p["yongshen"]["favourable"][0]; m = MEDICINE[med]; side, what = EL_ROOM[med]
     pl = {x["key"]: x for x in p.get("placements") or []}
+    A = p.get("afflictions") or {}
+    hit = {DIR_WORD.get(A[k]["dir"]) for k in ("taisui", "suipo") if A.get(k)}
     p1 = [S(f"Bring {m['colours']} into the rooms where you spend hours: they carry {EN[med]}, the element you need.", "medicine"),
-          S(f"Put {EN[med]} on the {side} side of your main room, with {what}.", "medicine")]
+          S(f"Put {EN[med]} on the {side} side of your main room, with {what}" + (", using objects rather than building work this year." if side in hit else "."), "medicine")]
     p2 = []
     if "bed" in pl and "desk" in pl:   # owner convention: say which way each thing faces
         p2.append(S(f"Point your bed head {DIR_WORD[pl['bed']['dir']]}, and face {DIR_WORD[pl['desk']['dir']]} at your desk.", "placements"))
     if "door" in pl:
         p2.append(S(f"Your best door faces {DIR_WORD[pl['door']['dir']]}.", "placements"))
-    A = p.get("afflictions") or {}; p3 = []
+    p3 = []   # owner 2026-10-10: the chart's own directions always win; a year's afflictions only govern building work
     if A:
         ts, sp = A["taisui"]["dir"], A["suipo"]["dir"]
-        p3.append(S(f"This year, leave the {DIR_WORD[ts]} and {DIR_WORD[sp]} undisturbed: no renovation or digging there, "
-                    f"and do not sit facing the {and_join([DIR_WORD[d] for d in A['sansha']['dirs']])}.", "afflict"))
+        ss = [DIR_WORD[d] for d in A["sansha"]["dirs"] if d not in (ts, sp)]
+        p3.append(S(f"This year, leave the {DIR_WORD[ts]} and {DIR_WORD[sp]} sides of your home undisturbed: no renovation or digging there"
+                    + (f", and the same care on the {and_join(ss)}." if ss else "."), "afflict"))
         if A.get("collisions"):
-            p3.append(S("Some of this year's disturbances fall on your good directions, so move long sitting elsewhere for now.", "afflict"))
+            p3.append(S("Your bed and desk directions above still hold; this year only asks you not to build or dig on those sides.", "afflict"))
     return {"paras": [x for x in (p1, p2, p3) if x], "chart_after": 1 if p2 else 0}
 
 
@@ -351,7 +386,7 @@ def _why(p, plain):
         "health": plain["health"]["why"], "domains": "; ".join(f"{d['en']} {d['score']} ({d['band']})" for d in p.get("domains") or []) + ".",
         "work": (plain.get("work") or {}).get("why", ""), "money": _vault_why(V),
         "decades": (p.get("windows") or {}).get("arc", ""), "years": (plain.get("next_ten") or {}).get("why", ""),
-        "months": (plain.get("months") or {}).get("why", ""), "days": (plain.get("days") or {}).get("why", ""),
+        "months": "",   # the month rhythm figure shows every month's branch, element and rating; no word wall "days": (plain.get("days") or {}).get("why", ""),
         "placements": (plain.get("space") or {}).get("why", ""), "afflict": (plain.get("afflict") or {}).get("why", ""),
     }
 
