@@ -883,8 +883,12 @@ details.zhver>div{margin-top:8px}
 /* the opening is one painting (owner 2026-10-10): the words sit on the art itself, no card. Wide art from 641 px,
    tall art on phones whose open paper carries the words; a paper-coloured halo keeps every letter at 4.5:1 */
 #tab-person .rp-bgart{position:relative;margin-top:6px;border-radius:18px;overflow:hidden;min-height:520px;padding:52px 6% 40px;
-  background:linear-gradient(to right,#faf7ed 0,#faf7ed 34%,rgba(250,247,237,.85) 44%,rgba(250,247,237,0) 60%),
-    #faf7ed var(--bg12) right bottom/auto 112% no-repeat;display:flex;align-items:flex-start}
+  background:#faf7ed;display:flex;align-items:flex-start;isolation:isolate}
+/* the painting is a real image (fetched first, high priority); a paper veil sits between it and the words */
+#tab-person .rp-bgimg{position:absolute;inset:0;z-index:-2}
+#tab-person .rp-bgimg img{position:absolute;right:0;bottom:0;height:112%;width:auto;max-width:none}
+#tab-person .rp-bgart::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(to right,#faf7ed 0,#faf7ed 34%,rgba(250,247,237,.85) 44%,rgba(250,247,237,0) 60%)}
 #tab-person .rp-bgart .rp-idtext{text-align:left;max-width:min(540px,46%);margin:0;background:none;padding:0;box-shadow:none}
 #tab-person .rp-bgart .rp-h,#tab-person .rp-bgart .rp-sub,#tab-person .rp-bgart summary{
   text-shadow:0 0 2px #f7f2e8,0 0 6px #f7f2e8,0 0 12px #f7f2e8,0 0 22px rgba(247,242,232,.9)}
@@ -896,14 +900,16 @@ details.zhver>div{margin-top:8px}
 #tab-person .rp-bgart details.rp-why>summary{color:#6b4f06}
 @media (max-width:640px){
   #tab-person .rp-bgart{border-radius:0;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);min-height:0;display:block;
-    padding:26px 18px 112vw;background:linear-gradient(to bottom,#faf7ed 0,#faf7ed calc(100% - 125vw),rgba(250,247,237,0) calc(100% - 96vw)),
-      #faf7ed var(--bgp6) center bottom/100% auto no-repeat}
+    padding:28px 18px 58vw;   /* the whole section is the painting; its subject shows below the words */
+    background:#faf7ed}
+  #tab-person .rp-bgimg img{inset:0;width:100%;height:100%;object-fit:cover;object-position:center bottom}
+  #tab-person .rp-bgart::before{background:linear-gradient(to bottom,rgba(250,247,237,.80) 0,rgba(250,247,237,.62) 52%,rgba(250,247,237,0) 78%)}
   #tab-person .rp-bgart .rp-sub.rp-where{font-size:15px}
   #tab-person .rp-bgart .rp-idtext{max-width:none;text-align:center}
   #tab-person .rp-bgart .rp-h{font-size:clamp(32px,9.4vw,40px)}
   #tab-person .rp-bgart .rp-sub{font-size:18px;margin-left:auto;margin-right:auto}
   #tab-person .rp-bgart details.rp-why{margin-left:auto;margin-right:auto;text-align:left}}
-@media (min-width:420px) and (max-width:640px){#tab-person .rp-bgart{background-image:linear-gradient(to bottom,#faf7ed 0,#faf7ed calc(100% - 125vw),rgba(250,247,237,0) calc(100% - 96vw)),var(--bgp9)}}
+
 /* "What helps you": each colour is a brushed blot, the painted swatch's texture tinted to that colour */
 #tab-person .rp-sw i{width:34px;height:34px;border:0;border-radius:0;background-image:var(--blot);background-size:cover;background-blend-mode:luminosity;
   -webkit-mask:var(--blot) center/contain no-repeat;mask:var(--blot) center/contain no-repeat}
@@ -932,3 +938,39 @@ details.zhver>div{margin-top:8px}
 #tab-person .dtable-daily .dgz{font:700 18px/1.2 "Noto Serif SC",serif}
 #tab-person .dtable-daily td{white-space:nowrap}
 #tab-person .dtable-daily td span:not(.wshort):not(.tag){display:inline;margin:0;font-size:inherit}   /* .wtable stacks spans; characters stay on one line */
+/* the "why" link sits on the painting: a paper pill keeps it at 4.5:1 over any subject */
+#tab-person .rp-bgart details.rp-why>summary{display:inline-flex;background:rgba(250,247,237,.92);border-radius:99px;padding:0 16px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+#tab-person .rp-bgart details.rp-why[open]{background:rgba(250,247,237,.94);border-radius:14px;padding:4px 12px 10px}
+/* citations in characters (owner 2026-10-10): compact character tables, the English once in a key below */
+#tab-person .ev table.keepzh td,#tab-person .ev table.keepzh th,#tab-person .ev .keepzh table td,#tab-person .ev .keepzh table th{font-family:"Noto Serif SC",Georgia,serif;font-size:15px;white-space:nowrap}
+#tab-person .ev .tkey{font-size:13px;color:var(--muted);margin:8px 0}
+#tab-person .ev .tkey-list{margin:8px 0;padding-left:20px;font-size:14px;color:var(--ink)}
+#tab-person .ev .tkey-list li{margin:4px 0}
+#tab-person .ev ul.tkey-list{list-style:disc}
+#tab-person .ev li.cite{background:none;border:0;padding:0}
+#tab-person .ldtable td,#tab-person .ldtable th{padding:6px 8px}
+#tab-person .ldtable .ldscore{min-width:110px}
+#tab-person .wkfig h5{font:600 14px/1.4 system-ui,sans-serif;color:var(--ink);margin:12px 0 6px}
+#tab-person .wkfig ol,#tab-person .wkfig ul{margin:0 0 6px;padding-left:20px;font-size:14px;color:var(--ink)}
+#tab-person .wkfig li{margin:5px 0}
+#tab-person .wk-why{display:block;font-size:13px;color:var(--muted)}
+#tab-person .wk-roles{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0}
+#tab-person .wk-roles li{margin:0;padding:4px 10px;border:1px solid var(--line);border-radius:99px;background:#fff}
+#tab-person .wk-indrow{font-size:14px;margin:4px 0}
+#tab-person .ldtable .ldscore{min-width:0;width:64px}#tab-person .ldtable .dbar{width:48px;height:5px;margin-top:3px}
+#tab-person .ldtable .ldpct{display:block;font-size:12px;color:var(--muted)}
+#tab-person .ldtable td,#tab-person .ldtable th{padding:6px 6px}
+#tab-person .ldtable{min-width:0}#tab-person .ldtable .seat{min-width:0;text-align:center}
+#tab-person .ev .xiji td{white-space:normal}
+#tab-person .cgrid{border-spacing:2px 0}#tab-person .cgrid td{white-space:normal;padding:4px 1px}
+#tab-person .cghid{margin:0 1px;font-size:15px}#tab-person .cghid small{font-size:10px}
+#tab-person .cgrid th[scope=row]{padding-right:3px;font-size:12px}
+#tab-person .ev .keepzh .xiji td,#tab-person .ev .keepzh .xiji th{white-space:normal}
+#tab-person .cgrid .cgbig td{font-size:clamp(24px,6.6vw,40px)}
+@media (max-width:360px){#tab-person .ev .keepzh table td,#tab-person .ev .keepzh table th,#tab-person .ev table.keepzh td{font-size:13.5px}
+  #tab-person .ldtable td,#tab-person .ldtable th{padding:5px 3px}}
+#tab-person .ev .keepzh .cgrid td{white-space:normal}
+/* the server's opening shell holds the painting before the words arrive; its height matches the finished opening */
+#tab-person .rp-ssr{min-height:520px}
+#tab-person .rp-ssr .hint{opacity:0}
+@media (max-width:640px){#tab-person .rp-bgart.rp-ssr{min-height:calc(58vw + 470px)}}

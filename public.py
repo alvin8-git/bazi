@@ -352,12 +352,37 @@ def person_chart(token: str, idx: int, year: int = YEAR):
     return chart_payload(_tosimp(m.name), c, yong_shen(c), year)
 
 
+_STEM_SLUG = dict(zip("甲乙丙丁戊己庚辛壬癸", "jia yi bing ding wu ji geng xin ren gui".split()))
+_SEASON = dict(zip("寅卯辰巳午未申酉戌亥子丑", ["spring"] * 3 + ["summer"] * 3 + ["autumn"] * 3 + ["winter"] * 3))
+
+
+def _opening_shell(c) -> tuple[str, str]:
+    """The opening painting, sent with the page so it paints on first load (it is the largest thing on a
+    phone screen); app.js keeps this same <img> when it fills in the words. Returns (head links, body shell)."""
+    art = f"/static/img/reading/bg/{_STEM_SLUG[c.pillars['day'].stem]}-{_SEASON[c.pillars['month'].branch]}"
+    head = (f'<link rel="preload" as="image" type="image/webp" media="(max-width:640px)" imagesrcset="{art}-p-600.webp 600w, {art}-p-900.webp 900w" imagesizes="100vw" fetchpriority="high">'
+            f'<link rel="preload" as="image" media="(min-width:641px)" imagesrcset="{art}-600.jpg 600w, {art}-1200.jpg 1200w" imagesizes="(max-width:1180px) 100vw, 1180px" fetchpriority="high">')
+    body = (f'<div class="rp-open"><section class="rp-ident rp-bgart rp-ssr"><picture class="rp-bgimg">'
+            f'<source media="(max-width:640px)" type="image/webp" srcset="{art}-p-600.webp 600w, {art}-p-900.webp 900w" sizes="100vw">'
+            f'<source media="(max-width:640px)" srcset="{art}-p-600.jpg 600w, {art}-p-900.jpg 900w" sizes="100vw">'
+            f'<img src="{art}-1200.jpg" srcset="{art}-600.jpg 600w, {art}-1200.jpg 1200w" sizes="(max-width:1180px) 100vw, 1180px" '
+            f'alt="" fetchpriority="high" decoding="async"></picture><div class="rp-idtext"><p class="hint">computing…</p></div></section></div>')
+    return head, body
+
+
 @router.get("/w/{token}/person/{idx}/reading")
 def person_reading_page(token: str, idx: int):
     ws = _load(token)
     if not 0 <= idx < len(ws["people"]):
         raise HTTPException(404, "no such person")
-    return FileResponse(ROOT / "web/reading.html")
+    html = (ROOT / "web/reading.html").read_text("utf8")
+    try:
+        head, body = _opening_shell(_chart_of(ws["people"][idx])[1])
+    except Exception:   # the page still works without the early painting
+        return HTMLResponse(html)
+    return HTMLResponse(html.replace("</head>", head + "</head>", 1)
+                        .replace('<section id="tab-person" class="tabpane active"><p class="hint">computing…</p></section>',
+                                 f'<section id="tab-person" class="tabpane active">{body}</section>', 1))
 
 
 @router.get("/w/{token}/pair/{a}/{b}")

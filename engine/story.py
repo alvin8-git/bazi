@@ -33,6 +33,53 @@ PRIORITY = {   # lowest life area, when it trails the strongest by 40 points or 
     "learning": "So learn by doing, in short steps, rather than long courses.",
 }
 HEALTH_EV = "health"
+
+
+def voice_of(age):
+    """Four voices (owner 2026-10-10): child under 13, teen 13 to 17, adult, senior 65 and over."""
+    if age is None: return "adult"
+    return "child" if age < 13 else "teen" if age < 18 else "senior" if age >= 65 else "adult"
+
+
+AREAS_FOR = {"child": {"learning", "health"}, "teen": {"learning", "health", "career"},
+             "adult": {"attraction", "stability", "career", "wealth", "learning", "health"},
+             "senior": {"stability", "wealth", "learning", "health"}}
+PRIORITY_BY_VOICE = {
+    "child": {"health": "So protect sleep, food and play first.", "learning": "So keep learning playful and in short steps."},
+    "teen": {"health": "So protect sleep and exercise before anything else.", "career": "So build steady study habits before adding more."},
+    "senior": {"health": "So health comes first now: pace yourself and keep regular check-ups.",
+               "wealth": "So keep what you have safe rather than chasing more.",
+               "stability": "So time with the people closest to you pays off most."},
+}
+ACTS_CHILD = {"火": "sunlight, outdoor play and active games", "水": "good sleep, swimming and quiet time",
+              "木": "time outdoors, growing things and trying new skills", "土": "regular meals, routine and a calm home",
+              "金": "tidy routines, music practice and finishing tasks"}
+ACTS_SENIOR = {"火": "morning sunlight, gentle exercise and good company", "水": "rest, warmth and time near water",
+               "木": "walks among trees, light stretching and learning something new", "土": "regular meals, routine and home comforts",
+               "金": "order, calm breathing and finishing what you start"}
+ONE_THING = {
+    "child": {"weak": "If you do one thing: protect sleep and downtime, and keep the schedule light.",
+              "strong": "If you do one thing: give that energy a sport, an instrument or a project."},
+    "teen": {"weak": "If you do one thing: protect sleep, and do not overload the timetable.",
+             "strong": "If you do one thing: give that energy a sport, a craft or a team."},
+    "adult": {"weak": "If you do one thing: guard your recovery time, and drop a commitment before you add one.",
+              "strong": "If you do one thing: keep a demanding project running, so your strength has somewhere to go."},
+    "senior": {"weak": "If you do one thing: pace your days, and rest before you are tired.",
+               "strong": "If you do one thing: keep a steady purpose, such as a craft, a garden or helping family."},
+}
+PHASE_BY_VOICE = {
+    "child": {"growth": "A good decade to grow, learn and try new things.", "consolidation": "A steady decade: routines and good habits pay off.",
+              "transition": "Expect changes at home or school; keep routines steady.", "corrective": "A decade for care: protect health and keep home calm."},
+    "teen": {"growth": "A good decade to learn and try new things.", "consolidation": "A steady decade: good habits pay off.",
+             "transition": "Expect changes at home or school; keep routines steady.", "corrective": "A decade for care: protect health and keep habits steady."},
+    "senior": {"growth": "A kind decade: good for health, family and the things you care about.",
+               "consolidation": "A steady decade: keep routines and reserves.",
+               "transition": "Expect change at home; keep things simple and close.",
+               "corrective": "A decade for care: protect health and keep close ties near."},
+}
+AREA_BY_VOICE = {"child": {"career": "schoolwork", "wealth": None, "relationship": None},
+                 "teen": {"career": "school and work", "wealth": None, "relationship": None},
+                 "senior": {"career": "commitments"}}
 STAR_GIST = {   # one plain line per common star; the engine's own gloss is the fallback
     "天乙貴人": "so helpful people appear at the moments that matter", "天乙贵人": "so helpful people appear at the moments that matter",
     "太極貴人": "a pull toward philosophy and deep study", "太极贵人": "a pull toward philosophy and deep study",
@@ -130,7 +177,7 @@ def _makeup(p, kid):
     return {"paras": [x for x in (p1, p2, p3) if x], "chart_after": 0}
 
 
-def _balance(p, kid):
+def _balance(p, v):
     dm_el = STEM_EL[p["day_master"]]; st = p["strength"]; sk = strength_key(st["verdict"])
     fav, unfav = p["yongshen"]["favourable"], p["yongshen"]["unfavourable"]; med = fav[0]
     H = sorted(p.get("health") or [], key=lambda h: -h["share"])
@@ -181,8 +228,8 @@ def _balance(p, kid):
             p2.append(S("Your personality reading says you hold your output back, so what you most need is a way "
                         "for your energy to come out.", "personality"))
 
-    m = MEDICINE[med]
-    p3.append(S(f"In practice: {m['acts']}, with {m['colours']} in the rooms where you spend hours.", "medicine"))
+    m = MEDICINE[med]; acts = (ACTS_CHILD if v == "child" else ACTS_SENIOR if v == "senior" else {}).get(med, m["acts"])
+    p3.append(S(f"In practice: {acts}, with {m['colours']} in the rooms where you spend hours.", "medicine"))
     if unfav:
         p3.append(S(f"{and_join([EN[e] for e in unfav])} take more than they give, so go easy on them.", "medicine"))
     hi = next((h for h in H if h["status"].startswith("excess")), None)
@@ -192,45 +239,49 @@ def _balance(p, kid):
         organs = and_join([(hi or lo[0])["organs"].split(", ")[0]] + [h["organs"].split(", ")[0] for h in lo if h is not (hi or lo[0])])
         p3.append(S(f"Your body follows the same shape: {' and '.join(bits)}, so look after your {organs}. "
                     "This is a traditional pairing, not medical advice.", HEALTH_EV))
-    one = (S("If you do one thing: guard your recovery time, and drop a commitment before you add one.", "strength") if sk == "weak"
-           else S("If you do one thing: keep a demanding project running, so your strength has somewhere to go.", "strength") if sk == "strong"
-           else None)
+    one = S(ONE_THING[v][sk], "strength") if sk in ONE_THING[v] else None
     return {"paras": [x for x in (p1, p2, p3) if x], "chart_after": 1, "one": one}
 
 
-def _drives(p, kid):
-    D = sorted(p.get("domains") or [], key=lambda d: -d["score"])
+def _drives(p, v):
+    kid = v in ("child", "teen")
+    D = sorted([d for d in p.get("domains") or [] if d["key"] in AREAS_FOR[v]], key=lambda d: -d["score"])
     p1, p2, p3 = [], [], []
     one = None
     if D:
         top, low = D[0], D[-1]
         nm = lambda d: DOMAIN.get(d["key"], d["en"].lower())
         p1.append(S(f"Your strongest life area is {nm(top)} ({top['score']} of 100); your weakest is {nm(low)} ({low['score']}).", "domains"))
-        if top["score"] - low["score"] >= 40 and low["key"] in PRIORITY and not (kid and low["key"] in ("stability", "attraction")):
-            p1.append(S(PRIORITY[low["key"]], "domains"))
+        pri = {**PRIORITY, **PRIORITY_BY_VOICE.get(v, {})}
+        if top["score"] - low["score"] >= 40 and low["key"] in pri:
+            p1.append(S(pri[low["key"]], "domains"))
     C = (p.get("careers") or {})
     top3 = [c["en"].lower().replace("&", "and") for c in (C.get("top") or [])[:3]]
     if top3:
-        lead = "Later on, the work that suits you best is" if kid else "You do best in"
+        lead = {"child": "Strengths to grow into later point toward", "teen": "Later on, the work that suits you best is",
+                "senior": "For work, volunteering or mentoring, you suit"}.get(v, "You do best in")
         p2.append(S(f"{lead} {top3[0]}" + (f", then {ljoin(top3[1:])}." if top3[1:] else "."), "work"))
     av = [c["en"].lower().replace("&", "and") for c in C.get("avoid") or []]
-    if av:
+    if av and v != "child":
         p2.append(S(f"{cap(ljoin(av))}{',' if len(av) > 1 else ''} {'is' if len(av) == 1 else 'are'} harder going for this chart, not off limits.", "work"))
     V = (p.get("palaces") or {}).get("vault") or {}
     ys = {y["y"]: y for y in (p.get("windows") or {}).get("years") or []}
-    if V.get("present") and not V.get("open"):
+    if v in ("child", "teen"):
+        pass   # no money advice under 18 (owner 2026-10-10)
+    elif V.get("present") and not V.get("open"):
         br = V.get("state", "").split(" opens in ")[-1][:1]
         nxt = next((y for y in range(_year_now(p), _year_now(p) + 13) if "子丑寅卯辰巳午未申酉戌亥"[(y - 4) % 12] == br), None)
         if nxt:
-            also = ", which is also a window for money" if (ys.get(nxt, {}).get("wealth") or {}).get("flag") == "window" else ""
+            also = (", a good year to put your affairs in order" if v == "senior"
+                    else ", which is also a window for money" if (ys.get(nxt, {}).get("wealth") or {}).get("flag") == "window" else "")
             p2.append(S(f"You have a store of wealth that opens in {ANIMAL.get(br, br)} years; the next is {nxt}{also}.", "money", "years"))
     elif V.get("present"):
         p2.append(S("Your wealth store is open, so money moves freely; keep a buffer.", "money"))
     else:
-        when = "when you start earning, " if kid else ""
-        p2.append(S(f"Your chart has no store for wealth, so money flows rather than stays: {when}save automatically "
-                    "rather than counting on windfalls.", "money"))
-    dom = {d["key"]: d for d in D}
+        p2.append(S("Your chart has no store for wealth, so keep savings simple and safe rather than chasing returns." if v == "senior" else
+                    "Your chart has no store for wealth, so money flows rather than stays: " + ("when you start earning, " if kid else "")
+                    + "save automatically rather than counting on windfalls.", "money"))
+    dom = {d["key"]: d for d in p.get("domains") or []}
     if not kid and "stability" in dom:
         st = BAND_KEY(dom["stability"]["band"])
         p3.append(S({"strong": "Your relationships hold steady.", "even": "Your relationships stay steady when tended.",
@@ -241,12 +292,13 @@ def _drives(p, kid):
             p3.append(S(f"Your partner tends to bring {GOD_NOUN[g]}.", "domains"))
         if st == "weak":
             p3.append(S("Keep shared routines, and say the quiet things out loud.", "domains"))
-    elif kid:
+    elif v == "teen":
         p3.append(S("Relationships are a theme for later in life, so this reading leaves them for now.", "domains"))
     return {"paras": [x for x in (p1, p2, p3) if x], "chart_after": 0, "one": one}
 
 
-def _timing(p, kid):
+def _timing(p, v):
+    AREA_V = {**AREA, **AREA_BY_VOICE.get(v, {})}
     W = p.get("windows") or {}; decs = W.get("decades") or []; Y = W.get("years") or []
     now = _year_now(p); age = _age(p, now)
     turn = lambda y: f" (the year you turn {y - (now - age)})" if age is not None and age < 30 else ""
@@ -270,7 +322,7 @@ def _timing(p, kid):
         else:
             lead = f"You are in the middle of {NUM.get(n, n)} {word} decades in a row, ages {d['ages']}."
         from .plain import PHASE
-        p1.append(S(lead + " " + PHASE[ph]["means"], "decades"))
+        p1.append(S(lead + " " + PHASE_BY_VOICE.get(v, {}).get(ph, PHASE[ph]["means"]), "decades"))
         lu = next((k for k, x in enumerate(decs) if x["gz"][1] == LU[p["day_master"]]), None)
         if lu is not None and decs[lu]["phase"] in ("growth", "consolidation"):
             if lu < i:
@@ -282,38 +334,45 @@ def _timing(p, kid):
         if i + 1 < len(decs) and age is not None:
             nx = decs[i + 1]; start = _ages(nx)[0]; left = max(start - age, 1)
             one = left == 1; yrs = "year" if one else "years"; left = NUM.get(left, left); dn, up = PHASE_RANK[nx["phase"]], PHASE_RANK[ph]
-            if dn > up:
+            if dn > up and v == "senior":
+                p2.append(S(f"{'Within a year' if one else f'In about {left} {yrs}'} the climate turns: the next decade, from {start}, "
+                            f"is a {PHASE_ADJ[nx['phase']]} one, a kinder stretch ahead.", "decades"))
+            elif dn > up:
                 p2.append(S((f"Within a year the climate turns: the next decade, from {start}, is a {PHASE_ADJ[nx['phase']]} one, so this year is the run-up."
                              if one else f"In about {left} {yrs} the climate turns: the next decade, from {start}, is a {PHASE_ADJ[nx['phase']]} one, "
                              f"so the next {left} {yrs} are the run-up."), "decades"))
             elif dn < up:
-                p2.append(S(f"From {start} the climate cools into a {PHASE_ADJ[nx['phase']]} decade, so what you start "
-                            + ("this year" if one else f"in the next {left} {yrs}") + " has the best weather behind it.", "decades"))
+                when = "this year" if one else f"the next {left} {yrs}"
+                p2.append(S(f"From {start} the climate cools into a {PHASE_ADJ[nx['phase']]} decade, so "
+                            + {"senior": f"use {when} for what matters most to you.", "child": f"{when} are a good time to learn and build habits.",
+                               "teen": f"{when} are a good time to learn and build habits."}.get(v, f"what you start {'this year' if one else f'in the next {left} {yrs}'} has the best weather behind it."), "decades"))
             else:
                 p2.append(S(f"The next decade, from {start}, is also a {PHASE_ADJ[nx['phase']]} one.", "decades"))
             if ph in ("consolidation", "corrective") and nx["phase"] in ("consolidation", "corrective", "transition"):
                 peaks = [y["y"] for y in Y if y["overall"] == "peak"]
                 inside = f" The strong years inside them, such as {and_join([str(y) for y in peaks[:2]])}, are where to move." if peaks else ""
-                p2.append(S("These are years for holding structure, not for expansion." + inside, "decades", "years"))
+                hold = {"child": "These are years for steady habits rather than big changes.", "teen": "These are years for steady habits rather than big changes.",
+                        "senior": "These are years for keeping things steady and close."}.get(v, "These are years for holding structure, not for expansion.")
+                p2.append(S(hold + ("" if v in ("child", "senior") else inside), "decades", "years"))
     if Y:
         y0 = Y[0]
-        win = [AREA[k] for k in AREA if (y0.get(k) or {}).get("flag") == "window"]
-        cau = [AREA[k] for k in AREA if (y0.get(k) or {}).get("flag") == "caution"]
+        win = [AREA_V[k] for k in AREA_V if AREA_V[k] and (y0.get(k) or {}).get("flag") == "window"]
+        cau = [AREA_V[k] for k in AREA_V if AREA_V[k] and (y0.get(k) or {}).get("flag") == "caution"]
         lead = {"peak": f"{y0['y']} is one of your strongest years", "steady": f"{y0['y']} is a steady year",
                 "careful": f"{y0['y']} asks for care"}[y0["overall"]]
-        tail = (f", with a window for {and_join(win)}" if win else "") + \
-               ((", but go carefully with " if y0["overall"] == "peak" else "; go carefully with ") + and_join(cau) if cau else "")
+        tail = (f", with a window for {ljoin(win)}" if win else "") + \
+               ((", but go carefully with " if y0["overall"] == "peak" else "; go carefully with ") + ljoin(cau) if cau else "")
         p3.append(S(lead + tail + ".", "years"))
-        dims = [k for k in AREA if k in y0]
+        dims = [k for k in AREA_V if k in y0 and AREA_V[k]]
         rest = Y[1:] or Y
         rank = {"peak": 2, "steady": 1, "careful": 0}
         best = max(rest, key=lambda y: (rank[y["overall"]], sum((y.get(k) or {}).get("flag") == "window" for k in dims)))
         careful = [y for y in rest if y["overall"] == "careful"]
         worst = max(careful, key=lambda y: sum((y.get(k) or {}).get("flag") == "caution" for k in dims)) if careful else best
-        cw = [AREA[k] for k in dims if (worst.get(k) or {}).get("flag") == "caution"]
-        bw = [AREA[k] for k in dims if (best.get(k) or {}).get("flag") == "window"]
-        line = f"Looking further ahead, push in {best['y']}{turn(best['y'])}" + (f", a window for {and_join(bw)}" if bw else "")
-        line += f"; protect {worst['y']}{turn(worst['y'])}, which asks for care with {and_join(cw)}." if cw and worst is not best else "."
+        cw = [AREA_V[k] for k in dims if (worst.get(k) or {}).get("flag") == "caution"]
+        bw = [AREA_V[k] for k in dims if (best.get(k) or {}).get("flag") == "window"]
+        line = f"Looking further ahead, push in {best['y']}{turn(best['y'])}" + (f", a window for {ljoin(bw)}" if bw else "")
+        line += f"; protect {worst['y']}{turn(worst['y'])}, which asks for care with {ljoin(cw)}." if cw and worst is not best else "."
         p3.append(S(line, "years"))
     RH = ((p.get("strategy") or {}).get("s5") or {}).get("rhythm") or []
     if RH:
@@ -377,14 +436,14 @@ def _why(p, plain):
     st = p["strength"]; V = (p.get("palaces") or {}).get("vault") or {}
     return {
         "gods": plain["drives"]["why"], "pillars": "\n".join(s["why"] for s in plain["sides"]),   # one note per line
-        "personality": (plain.get("personality") or {}).get("why", ""), "stars": "\n".join(s["why"] for s in plain["stars"]),
+        "personality": (plain.get("personality") or {}).get("why", ""), "stars": "",   # the stars figure lists each star once
         "interactions": plain["makeup"]["why"],
         "elements": "Weighted element shares: " + ", ".join(f"{h['en']} {h['share']}% ({h['status']})" for h in p.get("health") or []) + ".",
         "strength": (f"Strength verdict {st['verdict']}, score {st['score']}; support {st.get('support_ratio')}%, roots "
                      f"{st.get('root_ratio')}%, season points {(st.get('parts') or {}).get('season_pts')}. {(p.get('synthesis') or {}).get('assessment', '')}"),
         "flows": (plain.get("flows") or {}).get("why", ""), "medicine": plain["helps"]["why"],
-        "health": plain["health"]["why"], "domains": "; ".join(f"{d['en']} {d['score']} ({d['band']})" for d in p.get("domains") or []) + ".",
-        "work": (plain.get("work") or {}).get("why", ""), "money": _vault_why(V),
+        "health": plain["health"]["why"], "domains": "",   # the life-areas table and its key carry every score
+        "work": "",   # the work figure lists every field, role and reason once "money": _vault_why(V),
         "decades": (p.get("windows") or {}).get("arc", ""), "years": (plain.get("next_ten") or {}).get("why", ""),
         "months": "",   # the month rhythm figure shows every month's branch, element and rating; no word wall "days": (plain.get("days") or {}).get("why", ""),
         "placements": (plain.get("space") or {}).get("why", ""), "afflict": (plain.get("afflict") or {}).get("why", ""),
@@ -392,12 +451,12 @@ def _why(p, plain):
 
 
 def compose_story(p: dict, plain: dict) -> dict:
-    age = _age(p, _year_now(p)); kid = age is not None and age < 18
-    ch = {"makeup": _makeup(p, kid), "balance": _balance(p, kid), "drives": _drives(p, kid),
-          "timing": _timing(p, kid), "space": _space(p, kid)}
+    age = _age(p, _year_now(p)); v = voice_of(age); kid = v in ("child", "teen")
+    ch = {"makeup": _makeup(p, kid), "balance": _balance(p, v), "drives": _drives(p, v),
+          "timing": _timing(p, v), "space": _space(p, kid)}
     why = _why(p, plain)
     used = {e for c in ch.values() for para in c["paras"] + [[c["one"]] if c.get("one") else []] for s in para for e in s["ev"]}
-    return {"age": age, "young": kid, "chapters": ch,
+    return {"age": age, "young": kid, "voice": v, "chapters": ch,
             "evidence": {k: {"label": EVIDENCE_LABEL[k], "why": why.get(k, "")} for k in EVIDENCE_LABEL if k in used}}
 
 
