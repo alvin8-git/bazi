@@ -52,6 +52,7 @@ STRENGTH = {
                      todo="Lean into the element that dominates your chart."),
 }
 BAND = {"weak 不足": "too little", "balanced": "about right", "excess 過旺": "too much"}
+band_word = lambda status: next((v for k, v in BAND.items() if status.startswith(k.split()[0])), "a little thin" if status.startswith("watch") else status)
 PHASE = {
     "growth": dict(word="Expanding", glyph="sun", means="Conditions favour building. What you start now tends to take root."),
     "consolidation": dict(word="Gathering", glyph="partsun", means="A decade for building reserves rather than big leaps."),
@@ -93,9 +94,14 @@ def signal(score) -> str:
 
 def _identity(p):
     dm = p["day_master"]; img, trait = STEM_IMAGE[dm]
-    sk = strength_key(p["strength"]["verdict"]); med = p["yongshen"]["favourable"][0]
+    sk = strength_key(p["strength"]["verdict"]); med = p["yongshen"]["favourable"][0]; st = p["strength"]
+    short = STRENGTH[sk]["short"]
+    if sk == "weak" and ((st.get("parts") or {}).get("season_pts") or 0) < 0 and (st.get("support_ratio") or 0) >= 50:
+        short = "are well backed but born out of season"   # the season, not a lack of support, sets the verdict
+    elif sk == "weak" and ((st.get("parts") or {}).get("season_pts") or 0) > 0 and (st.get("root_ratio") or 0) < 10:
+        short = "are in season but have few roots"
     return {"head": f"You are {img} in {SEASON[p['pillars']['month'][1]]}.",
-            "sub": f"{trait}. You {STRENGTH[sk]['short']}, and what you need most is {MEDICINE[med]['need']}.",
+            "sub": f"{trait}. You {short}, and what you need most is {MEDICINE[med]['need']}.",
             "signal": signal(p["strength"]["score"]),
             "why": (f"Day Master {dm} ({EN[STEM_EL[dm]]}) born in the {p['pillars']['month'][1]} month; strength "
                     f"{p['strength']['verdict']} (score {p['strength']['score']}); medicine {med} ({EN[med]}).")}
@@ -138,7 +144,7 @@ def _balance(p):
     dm_el = STEM_EL[p["day_master"]]; fav = set(p["yongshen"]["favourable"]); med = p["yongshen"]["favourable"][0]
     weak = strength_key(p["strength"]["verdict"]) == "weak"; rows = []
     for h in sorted(p.get("health") or [], key=lambda h: -h["share"]):
-        band = BAND.get(h["status"], h["status"]); note = ""
+        band = band_word(h["status"]); note = ""
         if h["element"] == dm_el and band == "too much" and weak:
             note = "Your own element, and plentiful, but out of season, so it gives less strength than the number suggests."
         elif band == "too little" and h["element"] in fav:

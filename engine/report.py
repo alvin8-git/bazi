@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 
 from .plain import plain_reading
+from .story import compose_story
 from .bazi import CLOCK, TRUE_SOLAR, build_chart
 from .import_family import import_family, load_family
 from .interpret import interpret_house
@@ -96,6 +97,7 @@ def chart_payload(name: str, c, ys: dict, year: int) -> dict:
     p["placements"] = placements(c)
     p["afflictions"] = compass_afflictions(c, year)
     p["plain"] = plain_reading(p)              # plain-language layer, read from the assembled payload
+    p["story"] = compose_story(p, p["plain"])  # story layer: chapter paragraphs, each sentence tagged with its evidence
     return p
 
 

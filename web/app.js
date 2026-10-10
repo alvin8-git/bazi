@@ -932,11 +932,6 @@ const pSignal = (s) => s ? `<span class="rp-sig"><span class="rp-bars" aria-hidd
   `<i${k < SIG_N[s] ? ' class="f"' : ""}></i>`).join("")}</span>${s} signal</span>` : "";
 const pWhy = (txt, html, label = "Why the chart says this") => txt || html
   ? `<details class="rp-why"><summary>${label}</summary><div class="rp-whyb">${txt ? `<p>${txt}</p>` : ""}${html || ""}</div></details>` : "";
-function pCard(o) {
-  return `<article class="rp-card">${o.pre || ""}<h3>${o.head}</h3>${o.means ? `<p class="rp-means">${o.means}</p>` : ""}${o.extra || ""}
-    ${o.todo ? `<p class="rp-todo"><b>Do this:</b> ${o.todo}</p>` : ""}${o.signal ? `<div class="rp-meta">${pSignal(o.signal)}</div>` : ""}
-    ${pWhy(o.why, o.whyHtml)}</article>`;
-}
 const PILLAR_KEYS = [["year", "year"], ["month", "month"], ["day", "you"], ["hour", "hour"]];
 function pSeal(c) {
   const P = c.pillars;
@@ -959,7 +954,6 @@ function pSides(c) {
     ${pWhy("", S.map((s) => `<p>${s.why}</p>`).join("") + (kids ? `<p><b>Children palace:</b> ${kids}</p>` : ""))}</section>`;
 }
 const DRIVE_IMG = { 比劫: "peers", 食傷: "expression", 財: "money", 官殺: "duty", 印: "support" };
-const pImg = (src) => `<img class="rp-medimg" src="/static/img/reading/${src}-600.jpg" alt="" width="600" height="400" loading="lazy" decoding="async">`;
 function pCareers(c) {
   const C = c.careers || {}, row = (a) => `<li><b>${a.en}</b> (${a.score} pts): ${a.reasons.join("; ")}</li>`;
   return (C.top || []).length ? `<p><b>Career archetypes, ranked.</b></p><ul class="rp-list">${C.top.map(row).join("")}${(C.avoid || []).map((a) =>
@@ -1013,58 +1007,59 @@ function pSlimGrid(c) {
       <span class="rp-hid">${(hid[k] || []).map((x) => `<span title="${godEn(c, x.slice(2, -1))}">${x[0]}</span>`).join(" ")}</span></div>`; }).join("")}</div>
     <p class="rp-cap">Top: the role each stem plays for you. Bottom: the stems hidden in each branch.</p>`;
 }
-const pPair = (plain, cap1, classical, cap2) => plain || classical ? `<div class="rp-pair">
-  ${plain ? `<div class="rp-pane"><p class="rp-cap"><b>The plain view.</b> ${cap1}</p>${plain}</div>` : ""}
-  ${classical ? `<div class="rp-pane rp-classic"><p class="rp-cap"><b>The classical chart.</b> ${cap2}</p>${classical}</div>` : ""}</div>` : "";
-const pSupport = (figs) => { figs = figs.filter(Boolean); return figs.length ? `<div class="rp-support">${figs.join("")}</div>` : ""; };
-const pMore = (title, figs) => { figs = figs.filter(Boolean);
-  return figs.length ? `<details class="rp-more"><summary>More detail: ${title}</summary><div>${figs.join("")}</div></details>` : ""; };
-function pChapter([id, , q, tech, img, what], body, ownImage) {
+function pChapter([id, , q, tech, img, what], body, src) {
   return `<section class="rp-chap" id="ch-${id}" aria-labelledby="h-${id}"><div class="rp-chead"><div><h2 id="h-${id}">${q}</h2>
       <p class="rp-tech">The classical name for this: ${tech}.</p></div>
-      ${ownImage ? "" : `<img src="/static/learn/img/hero/${img}-600.jpg" alt="" width="600" height="400" loading="lazy" decoding="async">`}</div>
+      <img src="${src || `/static/learn/img/hero/${img}-600.jpg`}" alt="" width="600" height="400" loading="lazy" decoding="async"></div>
     ${body}
     <p class="rp-learn"><a href="/learn/${img}">Learn more about ${what}</a></p></section>`;
 }
+/* Story layout (round 3, 2026-10-10). Each chapter reads as paragraphs from c.story (engine/story.py).
+   Every sentence carries evidence ids; each id becomes a numbered marker that opens its proof in place,
+   right under the paragraph that first cites it. A proof's figures render once, in the chapter that owns it. */
+const CHART_CAP = { makeup: "Your eight characters.", balance: "Your five elements, and how they feed and check each other.",
+  drives: "The ten classical roles, grouped.", timing: "Your luck pillars, decade by decade.", space: "The eight directions for your Kua number." };
+const EV_OWNER = { pillars: "makeup", stars: "makeup", interactions: "makeup", personality: "makeup", elements: "balance", strength: "balance",
+  flows: "balance", medicine: "balance", health: "balance", gods: "drives", domains: "drives", work: "drives", money: "drives",
+  decades: "timing", years: "timing", months: "timing", days: "timing", placements: "space", afflict: "space" };
+function pStory(id, S, ev, proofs, chart) {
+  const num = {}; let n = 0;
+  const mk = (e) => `<button type="button" class="mk" aria-expanded="false" aria-controls="ev-${id}-${num[e]}"><span class="vh">Evidence </span>${num[e]}</button>`;
+  const panel = (e) => `<div class="ev" id="ev-${id}-${num[e]}" hidden><p class="evh">${num[e]}. ${ev[e].label}</p>${ev[e].why ? `<p>${ev[e].why}</p>` : ""}${(proofs[e] || []).join("")}</div>`;
+  // a run of sentences resting on the same evidence shows its markers once, at the end of the run
+  const para = (ss, cls) => { const fresh = [];
+    const html = ss.map((s, k) => s.t.replace(/^If you do one thing:/, "<b>$&</b>") + (ss[k + 1] && ss[k + 1].ev.join() === s.ev.join() ? "" : s.ev.map((e) => {
+      if (!num[e]) { num[e] = ++n; fresh.push(e); } return mk(e); }).join(""))).join(" ");
+    return `<p${cls ? ` class="${cls}"` : ""}>${html}</p>${fresh.map(panel).join("")}`; };
+  let out = "";
+  S.paras.forEach((p, k) => { out += para(p);
+    if (k === S.chart_after && chart) out += `<figure class="rp-chart"><figcaption><b>The classical chart.</b> ${CHART_CAP[id]}</figcaption>${chart}</figure>`; });
+  if (S.one) out += para([S.one], "rp-one");
+  return `<div class="rp-story">${out}</div>`;
+}
 function readingChapters(c, R) {
-  const P = c.plain, H = P.helps, w = (...xs) => xs.filter(Boolean).join("");
+  const P = c.plain, ST = c.story;
   const A = buildPillars(c, R), E = buildElements(c, R), G = buildGods(c, R), T = buildTiming(c, R), K = buildCompass(c, R);
   const cur = (P.decades || []).find((d) => d.current), top = (P.drives.groups || [])[0] || {};
-  const stars = (P.stars || []).map((s, k) => pCard({ ...s, whyHtml: k ? "" : w(A.figs.stars, R.narr(9)) })).join("")
-    || pWhy("", w(A.figs.stars, R.narr(9)), "The symbolic stars");
-  const body = {
-    makeup: pCard({ ...P.makeup, whyHtml: A.figs.interactions })
-      + pPair(pRelations(c), "How the parts of your life pull on each other.", pSlimGrid(c), "Your eight characters.")
-      + stars
-      + pMore("the full four-pillar grid", [A.figs.grid]),
-    balance: pCard({ ...P.strength, whyHtml: w(E.figs.gauge, R.narr(2), R.stb(2)) })
-      + pPair(pBudget(c) + pWhy("", w(E.units, R.narr(1)), "How these numbers are counted"), "How much of each element you carry.",
-        E.figs.pentagon, "The same five elements and how they feed and check each other.")
-      + pCard({ head: H.head, todo: H.todo, why: H.why, pre: pImg(EL_SLUG[H.el]) })   // what it brings is said once, in the opening
-      + (P.flows ? pCard(P.flows) : "")
-      + pCard({ ...P.health, whyHtml: w(E.figs.health, R.narr(11), R.stb(11)) }),
-    drives: pCard({ head: P.drives.head, means: P.drives.means, why: P.drives.why, pre: DRIVE_IMG[top.zh] ? pImg("drive-" + DRIVE_IMG[top.zh]) : "",
-        whyHtml: w(G.figs.structure, G.figs.bars, R.narr(4), R.narr(3)) })
-      + pPair(pDrives(c), "Where your attention goes, in five plain groups.", G.figs.wheel, "The ten classical roles, grouped.")
-      + (P.personality ? pCard({ ...P.personality, whyHtml: w(G.figs.axes, R.stb(10), R.narr(10)) }) : G.figs.axes)
-      + (P.work ? pCard({ ...P.work, whyHtml: w(G.figs.industries, G.figs.roles, pCareers(c), R.stb(12), R.narr(12)) }) : "")
-      + (P.money ? pCard(P.money) : "")
-      + (P.love ? pCard({ ...P.love, whyHtml: w(G.figs.domains, R.stb(8), R.narr(8)) }) : G.figs.domains),
-    timing: (P.decade_now ? pCard({ ...P.decade_now, pre: cur ? pImg("phase-" + cur.phase) : "", whyHtml: R.narr(6) }) : "")
-      + pPair(pWeather(c), "Your life in ten-year seasons.", T.figs.strip, "Your luck pillars, decade by decade.")
-      + (P.year ? pCard({ head: P.year.head, means: P.year.means, why: P.year.why, whyHtml: T.figs.thisyear }) : "")
-      + (P.next_ten ? pCard({ ...P.next_ten, extra: pYears(c), whyHtml: w(R.stb(13), R.narr(13)) }) : "")
-      + (P.months ? pCard({ ...P.months, whyHtml: T.figs.rhythm }) : T.figs.rhythm)
-      + (P.days ? pCard({ ...P.days, whyHtml: T.figs.daily }) : T.figs.daily),
-    space: (P.space ? pCard({ head: P.space.head, means: P.space.means, why: P.space.why, whyHtml: w(K.figs.placements, R.narr(7)) }) : K.figs.placements)
-      + pPair(pRoom(c), "Where things go, north at the top.", K.figs.grid, "The eight directions for your Kua number.")
-      + pCard({ ...P.room, whyHtml: w(K.figs.medicine, R.stb(5), R.narr(5)) })
-      + (P.afflict ? pCard({ ...P.afflict, whyHtml: K.figs.afflictions }) : K.figs.afflictions) };
-  // Four Palaces is replaced by the four sides; Which Way to Face repeats the 3×3 grid. Both cut 2026-10-10 (no citations).
-  // What is left of the Pillars tail (the general interpretation and every rule cited) closes the page.
-  const rest = A.tail.filter((x) => x && x !== R.narr(9));
-  const ownImage = { drives: !!DRIVE_IMG[top.zh], timing: !!cur };
-  return CHAPTERS.map((ch) => pChapter(ch, body[ch[0]], ownImage[ch[0]])).join("")
+  const figs = {   // every figure and citation the card layout carried, keyed by the evidence it proves
+    pillars: [A.figs.grid], stars: [A.figs.stars, R.narr(9)], interactions: [pRelations(c), A.figs.interactions],
+    personality: [G.figs.axes, R.stb(10), R.narr(10)], elements: [pBudget(c), E.units, R.narr(1)],
+    strength: [E.figs.gauge, R.narr(2), R.stb(2)], flows: [], medicine: [K.figs.medicine, R.stb(5), R.narr(5)],
+    health: [E.figs.health, R.narr(11), R.stb(11)], gods: [pDrives(c), G.figs.structure, G.figs.bars, R.narr(4), R.narr(3)],
+    domains: [G.figs.domains, R.stb(8), R.narr(8)], work: [G.figs.industries, G.figs.roles, pCareers(c), R.stb(12), R.narr(12)],
+    money: [], decades: [pWeather(c), R.narr(6)], years: [pYears(c), T.figs.thisyear, R.stb(13), R.narr(13)],
+    months: [T.figs.rhythm], days: [T.figs.daily], placements: [pRoom(c), K.figs.placements, R.narr(7)], afflict: [K.figs.afflictions] };
+  const uses = (id) => new Set(ST.chapters[id].paras.flat().concat(ST.chapters[id].one || []).flatMap((s) => s.ev));
+  const U = Object.fromEntries(CHAPTERS.map(([id]) => [id, uses(id)]));
+  const owner = (e) => U[EV_OWNER[e]] && U[EV_OWNER[e]].has(e) ? EV_OWNER[e] : (CHAPTERS.find(([id]) => U[id].has(e)) || [])[0];
+  const proofsFor = (id) => Object.fromEntries(Object.keys(figs).map((e) => [e, owner(e) === id ? figs[e].filter(Boolean) : []]));
+  const charts = { makeup: pSlimGrid(c), balance: E.figs.pentagon, drives: G.figs.wheel, timing: T.figs.strip, space: K.figs.grid };
+  const orphan = Object.keys(figs).filter((e) => !owner(e)).flatMap((e) => figs[e]).filter(Boolean);   // nothing cites them: keep them reachable
+  const rest = A.tail.filter((x) => x && x !== R.narr(9)).concat(orphan);
+  const img = { balance: `/static/img/reading/${EL_SLUG[P.helps.el]}-600.jpg`,
+    drives: DRIVE_IMG[top.zh] ? `/static/img/reading/drive-${DRIVE_IMG[top.zh]}-600.jpg` : "",
+    timing: cur ? `/static/img/reading/phase-${cur.phase}-600.jpg` : "" };
+  return CHAPTERS.map((ch) => pChapter(ch, pStory(ch[0], ST.chapters[ch[0]], ST.evidence, proofsFor(ch[0]), charts[ch[0]]), img[ch[0]])).join("")
     + (rest.length ? `<details class="rp-more rp-sources"><summary>Sources and the full interpretation</summary><div class="rd-tail">${rest.join("")}</div></details>` : "");
 }
 const pChapBar = () => `<nav class="rp-bar" aria-label="Chapters"><div>${CHAPTERS.map(([id, lab]) =>
@@ -1700,6 +1695,14 @@ function wireReading(root) {
     w.classList.toggle("has-overflow", w.scrollWidth > w.clientWidth + 2));
   markOverflow(); window.addEventListener("resize", markOverflow);
   root.addEventListener("toggle", markOverflow, true);
+  // evidence markers: every marker with the same number opens and closes the one proof panel
+  root.addEventListener("click", (ev) => {
+    const b = ev.target.closest(".mk"); if (!b) return;
+    const p = document.getElementById(b.getAttribute("aria-controls")); if (!p) return;
+    const open = p.hidden; p.hidden = !open;
+    root.querySelectorAll(`.mk[aria-controls="${p.id}"]`).forEach((x) => x.setAttribute("aria-expanded", String(open)));
+    if (open) { markOverflow(); const r = p.getBoundingClientRect(); if (r.top < 0 || r.top > innerHeight - 80) p.scrollIntoView({ block: "nearest" }); }
+  });
 }
 
 /* The geomancer's report (summary, findings, assessment, plan, method note) behind one fold under
