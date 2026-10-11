@@ -107,6 +107,13 @@ MEANING = {
 }
 
 
+def star_name_en(en: str, star: str) -> str:
+    """A symbolic star's English name with its characters beside it, for the first mention: "Tai Ji noble (太極貴人)".
+    The characters carry keepzh + data-notip, so the glossary pass and the tooltip script leave them as they are.
+    Chinese output never calls this: there the characters stand alone."""
+    return f'{en} (<span class="keepzh" lang="zh-Hans" data-notip>{star}</span>)'
+
+
 ANIMALS = {"子": "鼠", "丑": "牛", "寅": "虎", "卯": "兔", "辰": "龍", "巳": "蛇",
            "午": "馬", "未": "羊", "申": "猴", "酉": "雞", "戌": "狗", "亥": "豬"}
 _LIFE_STAR = {1: ("一白", "水"), 2: ("二黑", "土"), 3: ("三碧", "木"),

@@ -19,6 +19,8 @@ from zoneinfo import ZoneInfo
 SG = ZoneInfo("Asia/Singapore")
 
 from .bazi import ten_god
+from .calendar import pillars_for
+from .liunian import taisui_tiers
 from .wuxing import CHONG_MAP, HAI_MAP, HE_MAP, HIDDEN_STEMS, STEM_ELEMENT
 from .zeri import day_info, rate_day
 from .i18n import L, T, and_l, cap, dot, jn, zs  # noqa: F401
@@ -28,6 +30,11 @@ ACTIVITIES = [("moving", "搬家 moving house"), ("signing", "签约 signing & b
               ("medical", "医疗 medical & surgery"), ("launch", "开业 launching & starting")]
 _GOOD_OFFICERS = {"成": "成日 success", "開": "開日 open", "定": "定日 settled"}
 _RANK = {"avoid": 2, "good": 1, "neutral": 0}
+# Year against day (round A, integration.md rule 2): a person who meets the year's 太歲 as 值, 沖 or 刑 (犯太歲) is not sent to a day for these three
+# activities. The veto never deletes a day: every row keeps its verdicts; only the recommendation (`best`) leaves the three activities out, and
+# the date block carries one caution line. Source: 《淵海子平》〈論太歲吉凶〉 "太歲乃年中天子，故不可犯，犯之則凶". A veto beats a favour.
+TAISUI_VETO_TIERS = ("值太歲", "沖太歲", "刑太歲")
+TAISUI_VETO_ACTIVITIES = ("marriage", "moving", "launch")
 
 
 def _set(flags: dict, key: str, verdict: str, why: str, short: str = "") -> None:
@@ -62,7 +69,9 @@ def daily_fortune(c, ys: dict, start: date | None = None, days: int = 30, lang: 
         off = r["officer"]
         # ① officer layer
         if off in L("daily._GOOD_OFFICERS", _GOOD_OFFICERS, lang):
-            for k in ("moving", "signing", "marriage", "travel", "launch"):
+            # 協紀辨方書 卷十〈宜忌〉建除十二神: 嫁娶 (結婚姻納采問名嫁娶) is listed under 成日 only (as 天喜); the 開日 and 定日 lists carry no
+            # 嫁娶 line. Round A correction: 開 and 定 were wrongly good for marriage here. 開日 does list 般移 and 行幸遣使, so the rest stand.
+            for k in ("moving", "signing", "travel", "launch") + (("marriage",) if off == "成" else ()):
                 _set(flags, k, "good", L("daily._GOOD_OFFICERS", _GOOD_OFFICERS, lang)[off], f"{off}日")
             if off == "成": _set(flags, "medical", "good", T("daily.daily_fortune.01", "成日 success", lang), "成日")
         if off == "除": _set(flags, "medical", "good", T("daily.daily_fortune.02", "除日 removal — treatment and cleansing", lang), "除日")
@@ -87,18 +96,30 @@ def daily_fortune(c, ys: dict, start: date | None = None, days: int = 30, lang: 
             for k in ("launch", "signing"): _set(flags, k, "good", T("daily.daily_fortune.12", f"{el} day carries your primary 用神", lang, el=el), "用神日")
         if unfav and el == unfav[0]:
             for k in ("signing", "launch"): _set(flags, k, "avoid", T("daily.daily_fortune.13", f"{el} day carries your chief 忌神", lang, el=el), "忌神日")
+        tb = pillars_for(datetime(d.year, d.month, d.day, 12))["year"].branch      # the 太歲 branch on that day (年柱 turns at 立春)
+        vet = [t for t in taisui_tiers(natal_yb, tb) if t in TAISUI_VETO_TIERS]
         rows.append({"date": d.isoformat(), "weekday": T(f"daily.WEEKDAY.{d.strftime('%a')}", d.strftime("%a"), lang), "gz": gz, "officer": off,
                      "stem_god": stem_god, "branch_god": branch_god, "element": el, "medicine": med,
-                     "interactions": ix, "score": r["score"], "flags": flags, "today": i == 0})
-    goods = [(sum(1 for f in r["flags"].values() if f["verdict"] == "good"), -sum(1 for f in r["flags"].values() if f["verdict"] == "avoid"), r) for r in rows]
+                     "interactions": ix, "score": r["score"], "flags": flags, "today": i == 0, "taisui": vet})
+
+    def recommended(r):          # the activities a day may be recommended for: good, and not held back by the 太歲 check
+        return [k for k, f in r["flags"].items() if f["verdict"] == "good" and not (r["taisui"] and k in TAISUI_VETO_ACTIVITIES)]
+    goods = [(len(recommended(r)), -sum(1 for f in r["flags"].values() if f["verdict"] == "avoid"), r) for r in rows]
     best = max(goods, key=lambda t: (t[1] == 0, t[0], t[1]))[2] if rows else None
+    if best is not None and not recommended(best):
+        best = None                                  # nothing left to recommend: say nothing rather than recommend a vetoed day
+    held = next((r["taisui"] for r in rows if r["taisui"]), None)
     worst = max(rows, key=lambda r: sum(1 for f in r["flags"].values() if f["verdict"] == "avoid")) if rows else None
     return {"start": start.isoformat(), "days": days, "rows": rows,
             "now_month_branch": day_info(start)["month_branch"],   # the 月令 in force today (節-bounded)
             "best": {"date": best["date"], "gz": best["gz"], "officer": best["officer"],
-                     "for": [k for k, f in best["flags"].items() if f["verdict"] == "good"]} if best else None,
+                     "for": recommended(best)} if best else None,
             "worst": {"date": worst["date"], "gz": worst["gz"],
                       "avoid": [k for k, f in worst["flags"].items() if f["verdict"] == "avoid"],
                       "why": next((f["why"] for f in worst["flags"].values() if f["verdict"] == "avoid"), "")} if worst else None,
+            "taisui_caution": ({"tiers": held, "held_back": list(TAISUI_VETO_ACTIVITIES),
+                                "text": T("daily.daily_fortune.15", f"A 犯太歲 year ({jn(held, lang)}) holds marriage, moving and launching back: the days below stay on the list, "
+                                          "but none is recommended for those three", lang, join_held=jn(held, lang)),
+                                "source_ref": T("daily.daily_fortune.16", "《淵海子平》〈論太歲吉凶〉 太歲乃年中天子，故不可犯，犯之則凶", lang)} if held else None),
             "activities": L("daily.ACTIVITIES", ACTIVITIES, lang),
             "source_ref": T("daily.daily_fortune.14", "十二建除 + 月破 (zeri) · day branch 沖/合/害 vs natal day & year branch · day stem element vs 用神/忌神", lang)}

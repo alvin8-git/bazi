@@ -1,4 +1,4 @@
-"""M1 CLI: full-family engine report as JSON + terminal summary.
+"""CLI: full-family engine report as JSON + terminal summary.
 
 Usage: .venv/bin/python -m engine.report [--year 2026]
 Emits data/out/m1_report.json. Period is a runtime parameter; both Period 8
@@ -177,7 +177,7 @@ def main() -> None:
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2), "utf8")
 
     # terminal summary
-    print(f"=== FengShui Family Compass — M1 engine report ({args.year}) ===")
+    print(f"=== FengShui Family Compass: engine report ({args.year}) ===")
     print(f"House: facing {facing_deg}° → {facing_mtn}山向 | periods {house['periods']}"
           f" | annual center star {annual_star(args.year)}"
           + (" | PROVISIONAL facing/period" if report['house']['provisional'] else ""))

@@ -8,6 +8,7 @@ and the citation behind it say the same thing.
 from __future__ import annotations
 
 from .i18n import T, zh_join
+from .shensha import star_name_en
 
 EN = {"木": "Wood", "火": "Fire", "土": "Earth", "金": "Metal", "水": "Water"}
 STEM_EL = dict(zip("甲乙丙丁戊己庚辛壬癸", "木木火火土土金金水水"))
@@ -409,6 +410,8 @@ def _star_parts(s, lang):
         from .i18n.zh import ZH
         name = _tosimp(s["star"])
         gist = ZH.get(f"story.STAR_GIST.{s['star']}", gist)
+    else:
+        name = star_name_en(name, s["star"])
     return name, gist
 
 
@@ -574,8 +577,13 @@ def _next_ten(p, lang="en"):
     first = T("plain._next_ten.03", f"{by} opens windows for {and_join(win)}.", lang, best_y=by, and_join_win=_join(win, lang)) if win \
         else T("plain._next_ten.04", f"{by} is your strongest year ahead.", lang, best_y=by)
     second = T("plain._next_ten.05", f" {wy} asks for care with {and_join(cau)}.", lang, worst_y=wy, and_join_cau=_join(cau, lang)) if cau else ""
-    return {"head": head, "means": first + second,
-            "why": f"{best['y']} {best['gz']}: {best['overall']}; {worst['y']} {worst['gz']}: {worst['overall']}."}
+    why = f"{best['y']} {best['gz']}: {best['overall']}; {worst['y']} {worst['gz']}: {worst['overall']}."
+    # round A: this year's 犯太歲 rows (刑, and 合 read as 晦), each with its classical source, as one more paragraph of the same panel
+    cites = (Y[0].get("taisui") or {}).get("cites") or []
+    if cites:
+        lines = [T("plain._next_ten.07", f"{c['explanation']}. Source: {c['source_ref']}", lang, explanation=c["explanation"], source_ref=c["source_ref"]) for c in cites]
+        why += "\n" + T("plain._next_ten.06", f"太歲 check for {Y[0]['y']}: " + " ".join(lines), lang, y=Y[0]["y"], lines="".join(lines) if lang == "zh" else " ".join(lines))
+    return {"head": head, "means": first + second, "why": why}
 
 
 def _month_runs(p):

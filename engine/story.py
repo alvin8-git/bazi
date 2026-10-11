@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from .area_reference import standing_key
 from .i18n import T, an, num_word, zh_join
+from .shensha import star_name_en
 from .plain import (ANIMAL, AREA, BAND_KEY, DIR_WORD, EL_ROOM, EN, MEDICINE, NEG_STARS, POLE, SEASON,
                     STEM_EL, _day_label, _month_runs, _run_words, and_join, strength_key)
 
@@ -186,6 +187,8 @@ def _makeup(p, kid, lang="en"):
                 from .htmlreport import _tosimp
                 from .i18n.zh import ZH
                 name, gist = _tosimp(s["star"]), ZH.get(f"story.STAR_GIST.{s['star']}", gist)
+            else:
+                name = star_name_en(name, s["star"])
             lead_l = T(lid, lead, lang)
             p3.append(S(T("story._makeup.12", f"{lead_l}: the {name}, {gist}.", lang, lead=lead_l, name=name, gist=gist), "stars"))
     ia = p.get("interactions") or []
@@ -263,6 +266,17 @@ def _balance(p, v, lang="en"):
         if role == "output" and exp and exp.get("zone") == "left":
             p2.append(S(T("story._balance.16", "Your personality reading says you hold your output back, so what you most need is a way "
                           "for your energy to come out.", lang), "personality"))
+
+    # 病藥 (round A): at most one sentence, only when the chart carries a classical built-in strain. The balance reading (扶抑) leads: when the
+    # medicine is an element it avoids, the sentence says to treat the medicine as a short-term fix. Money strains are not told to children or teens.
+    by = (p.get("yongshen") or {}).get("bingyao") or {}
+    if by.get("pattern") and (by["pattern"] == "傷官見官" or v not in ("child", "teen")):
+        base = {"傷官見官": ("story._balance.22", "Your chart has one built-in strain: sharp expression meets rules and responsibility, so candour can cost you standing; the classical remedy is mentors and learning"),
+                "比劫奪財": ("story._balance.23", "Your chart has one built-in strain: peers and rivals draw off what you earn, so money tends to leak to people close to you; the classical remedy is rules and responsibility"),
+                "財多身弱": ("story._balance.24", "Your chart has one built-in strain: more opportunity than you can carry, so money passes through without staying; the classical remedy is mentors and learning")}[by["pattern"]]
+        tail = {"agrees": T("story._balance.25", ", which your balance reading also favours.", lang),
+                "parts": T("story._balance.26", ", but your balance reading points elsewhere, so treat that remedy as a short-term fix.", lang)}.get(by["status"], "。" if lang == "zh" else ".")
+        p2.append(S(T(base[0], base[1], lang) + tail, "medicine"))
 
     m = MEDICINE[med]; acts = _acts(med, v, lang); colours = T(f"plain.MEDICINE.{med}.colours", m["colours"], lang)
     p3.append(S(T("story._balance.17", f"In practice: {acts}, with {m['colours']} in the rooms where you spend hours.", lang, acts=acts, m_colours=colours), "medicine"))
@@ -447,6 +461,13 @@ def _timing(p, v, lang="en"):
         tail = (T("story._timing.33", f", with a window for {ljoin(win)}", lang, ljoin_win=jn(win)) if win else "") + \
                ((T("story._timing.34", ", but go carefully with ", lang) if y0["overall"] == "peak" else T("story._timing.35", "; go carefully with ", lang)) + jn(cau) if cau else "")
         p3.append(S(lead + tail + ("。" if zh else "."), "years"))
+        # 犯太歲 (round A): one sentence when the YEAR branch punishes the 太歲 (刑) or itself (自刑); the sourced tiers only (liunian.taisui_finding).
+        # 沖 is the travel caution already, and 值 and 害 have no classical source in hand, so they get no sentence. Adults and seniors only.
+        tz = (y0.get("taisui") or {}).get("sentence")
+        if tz and v in ("adult", "senior"):
+            an_ = T(f"plain.ANIMAL.{y0['taisui']['branch']}", ANIMAL[y0["taisui"]["branch"]], lang)
+            p3.append(S(T("story._timing.40", f"It is also a punishment year for the {an_}: strain tends to build slowly, so put big commitments in writing.", lang, an_=an_) if tz == "刑" else
+                        T("story._timing.41", f"It is also a self-punishment year for the {an_}: the strain tends to be self-made, so pace yourself and check things twice.", lang, an_=an_), "years"))
         dims = [k for k in AREA_V if k in y0 and AREA_V[k]]
         rest = Y[1:] or Y
         rank = {"peak": 2, "steady": 1, "careful": 0}

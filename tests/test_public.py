@@ -298,8 +298,9 @@ def test_baby_certificate_links():
 
 
 def test_pages_served():
-    for path in ("/start", "/fengshui", "/baby", "/app"):
+    for path in ("/start", "/fengshui", "/baby"):
         assert client.get(path).status_code == 200
+    assert client.get("/app").status_code == 404     # retired 2026-10-11 (owner); /snapshot still exports the classic app
     assert "Sitemap:" in client.get("/robots.txt").text
     assert "<urlset" in client.get("/sitemap.xml").text
     v = client.get("/api/pub/version").json()

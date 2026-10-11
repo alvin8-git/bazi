@@ -198,6 +198,7 @@ def timing_remedies(year: int, annual: dict[str, int],
     out = []
     af = annual_afflictions(year)
     afflicted = {af["taisui"]["palace"]: "太歲", af["suipo"]["palace"]: "歲破"}
+    afflicted.setdefault(af["suixing"]["palace"], "歲刑")      # 協紀 卷三: 歲刑之地 動土興工亦須迴避; setdefault keeps one line per palace
     for p in af["sansha"]["palaces"]:
         afflicted.setdefault(p, "三煞")
     for p, s in annual.items():

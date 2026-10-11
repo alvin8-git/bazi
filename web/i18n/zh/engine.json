@@ -5336,16 +5336,16 @@
 "zh": "病药法（四法之三）"
 },
 "yongshen.yong_shen.10": {
-"en": "advisory in M1 — full pillar-interaction pass planned (M4)",
-"zh": "目前仅供参考：完整的柱间冲合刑害分析将在后续版本加入"
+"en": "(retired: replaced by yongshen.yong_shen.14 to 20)",
+"zh": "（已停用，由 yongshen.yong_shen.14 至 20 取代）"
 },
 "yongshen.yong_shen.11": {
 "en": "通關法 (technique 4 of 4)",
 "zh": "通关法（四法之四）"
 },
 "yongshen.yong_shen.12": {
-"en": "advisory in M1 — applied when two camps deadlock (M4)",
-"zh": "目前仅供参考：两方对峙时的完整处理将在后续版本加入"
+"en": "(retired: replaced by yongshen.yong_shen.21)",
+"zh": "（已停用，由 yongshen.yong_shen.21 取代）"
 },
 "zeri.rate_day.01": {
 "en": "十二建除 — {info_officer}日 (simplified 宜忌)",
@@ -5474,6 +5474,130 @@
 "domains.life_domains.63": {
 "en": "one element holds 45% or more (偏枯)",
 "zh": "单一五行占四成五以上（偏枯）"
+},
+"liunian.taisui_interactions.01": {
+"en": "strain builds slowly rather than breaking at once, so put big commitments in writing",
+"zh": "压力是慢慢累积的，不会一下子爆发，所以重大承诺要落到纸面上"
+},
+"liunian.taisui_interactions.02": {
+"en": "自刑, the branch punishes itself: the strain is self-made, so pace yourself and check things twice",
+"zh": "自刑，地支自己刑自己：压力多半是自己造成的，所以放慢节奏，事事多核对一遍"
+},
+"liunian.taisui_interactions.03": {
+"en": "六合 with the year branch, which 淵海子平 reads as 晦: a dulled year of reversals, so go slowly and do not expect a lift",
+"zh": "与年支六合，《渊海子平》把它看作“晦”：这一年容易沉闷、反复，所以放慢脚步，别指望有助力"
+},
+"liunian.taisui_interactions.04": {
+"en": "太歲 {ys}{yb} vs {where} {b} ({wt}) · 《淵海子平》〈論征太歲〉 and 《協紀辨方書》卷三〈義例一〉歲刑表",
+"zh": "太岁 {ys}{yb} 对{where} {b}（{wt}）·《渊海子平》〈论征太岁〉与《协纪辨方书》卷三〈义例一〉岁刑表"
+},
+"liunian.taisui_interactions.05": {
+"en": "太歲 {ys}{yb} vs {where} {b} ({wt}) · 《淵海子平》〈論征太歲〉 日干支合太歲干支曰晦",
+"zh": "太岁 {ys}{yb} 对{where} {b}（{wt}）·《渊海子平》〈论征太岁〉“日干支合太岁干支曰晦”"
+},
+"liunian.taisui_interactions.06": {
+"en": "太歲 {ys}{yb} vs {where} {b} ({wt}) · 《協紀辨方書》卷三〈義例一〉歲刑表 辰午酉亥為自刑",
+"zh": "太岁 {ys}{yb} 对{where} {b}（{wt}）·《协纪辨方书》卷三〈义例一〉岁刑表“辰午酉亥为自刑”"
+},
+"liunian.taisui_interactions.07": {
+"en": "year branch",
+"zh": "年支"
+},
+"liunian.taisui_interactions.08": {
+"en": "day branch",
+"zh": "日支"
+},
+"liunian.taisui_interactions.09": {
+"en": "primary",
+"zh": "主要"
+},
+"liunian.taisui_interactions.10": {
+"en": "secondary",
+"zh": "次要"
+},
+"liunian.annual_afflictions.04": {
+"en": "歲刑 (the sector the 太歲 punishes): do not break ground or run heavy works here; 《協紀辨方書》卷三 says 動土興工亦須迴避，犯之多鬬爭",
+"zh": "岁刑（太岁所刑的方位）：这个方位不要动土，也不要做大工程；《协纪辨方书》卷三说“动土兴工亦须回避，犯之多斗争”"
+},
+"daily.daily_fortune.15": {
+"en": "A 犯太歲 year ({join_held}) holds marriage, moving and launching back: the days below stay on the list, but none is recommended for those three",
+"zh": "犯太岁年（{join_held}）会压住结婚、搬家和开业：下面的日子仍然列在表里，但这三件事都不推荐"
+},
+"daily.daily_fortune.16": {
+"en": "《淵海子平》〈論太歲吉凶〉 太歲乃年中天子，故不可犯，犯之則凶",
+"zh": "《渊海子平》〈论太岁吉凶〉“太岁乃年中天子，故不可犯，犯之则凶”"
+},
+"yongshen.yong_shen.13": {
+"en": "病藥法 (《滴天髓》〈中和〉: 格中如去病，財祿兩相隨)",
+"zh": "病药法（《滴天髓》〈中和〉：“格中如去病，财禄两相随”）"
+},
+"yongshen.yong_shen.14": {
+"en": "no built-in strain found: 傷官見官, 比劫奪財 and 財多身弱 are each below the usual cut, so 病藥 adds nothing and 扶抑 stands alone",
+"zh": "没有发现先天的偏弊：伤官见官、比劫夺财、财多身弱都没有达到通常的判定线，所以病药不再补充什么，只按扶抑来看"
+},
+"yongshen.yong_shen.15": {
+"en": "傷官見官: sharp expression meets rules and authority, which 《淵海子平》〈論傷官〉 calls 為禍百端. The medicine is 印 ({el}): 〈傷官說〉 says 傷官見官，印運不妨.",
+"zh": "伤官见官：锋利的表达遇上规矩和权威，《渊海子平》〈论伤官〉称之为“为祸百端”。药是印（{el}）：〈伤官说〉说“伤官见官，印运不妨”。"
+},
+"yongshen.yong_shen.16": {
+"en": "比劫奪財: peers and rivals take the wealth the chart earns (《淵海子平》〈論劫財〉). The medicine is 官殺 ({el}), the check on 比劫 (〈論陽刃〉 喜偏官七殺).",
+"zh": "比劫夺财：同辈和对手会分走命盘赚到的财（《渊海子平》〈论劫财〉）。药是官杀（{el}），它是对比劫的制约（〈论阳刃〉“喜偏官七杀”）。"
+},
+"yongshen.yong_shen.17": {
+"en": "財多身弱: more wealth than the Day Master can carry, so it does not stay (《三命通會》卷六〈論正財〉: 財多身弱，柱無印助，皆不為福). The medicine is 印 ({el}): 身衰逢印資助.",
+"zh": "财多身弱：财多过日主能承载的量，所以留不住（《三命通会》卷六〈论正财〉：“财多身弱，柱无印助，皆不为福”）。药是印（{el}）：“身衰逢印资助”。"
+},
+"yongshen.yong_shen.18": {
+"en": "Your 扶抑 reading also favours {el}, so the two readings agree.",
+"zh": "你的扶抑判断同样偏好{el}，两种判断一致。"
+},
+"yongshen.yong_shen.19": {
+"en": "Your 扶抑 reading avoids {el}, so 扶抑 leads and this medicine is a short-term aid, not a lasting choice.",
+"zh": "你的扶抑判断要避开{el}，所以以扶抑为准，这味药只是短期的辅助，不是长久之计。"
+},
+"yongshen.yong_shen.20": {
+"en": "Your 扶抑 reading neither favours nor avoids {el}, so treat this medicine as secondary: 扶抑 leads.",
+"zh": "你的扶抑判断对{el}既不偏好也不回避，所以这味药只作次要参考，以扶抑为准。"
+},
+"yongshen.yong_shen.21": {
+"en": "not used on a single chart: 通關 is applied only between two charts, in the pair report",
+"zh": "单张命盘不用这一法：通关只用在两张命盘之间，也就是合婚报告里"
+},
+"plain._next_ten.06": {
+"en": "太歲 check for {y}: {lines}",
+"zh": "太岁检查（{y}年）：{lines}"
+},
+"plain._next_ten.07": {
+"en": "{explanation}. Source: {source_ref}",
+"zh": "{explanation}。出处：{source_ref}"
+},
+"story._balance.22": {
+"en": "Your chart has one built-in strain: sharp expression meets rules and responsibility, so candour can cost you standing; the classical remedy is mentors and learning",
+"zh": "你的命盘有一处先天的偏弊：表达太锋利，撞上规矩和责任，直言容易折损你的口碑；古法的对治是贵人和学习"
+},
+"story._balance.23": {
+"en": "Your chart has one built-in strain: peers and rivals draw off what you earn, so money tends to leak to people close to you; the classical remedy is rules and responsibility",
+"zh": "你的命盘有一处先天的偏弊：同辈和对手会分走你赚到的钱，钱容易流向身边的人；古法的对治是规矩和责任"
+},
+"story._balance.24": {
+"en": "Your chart has one built-in strain: more opportunity than you can carry, so money passes through without staying; the classical remedy is mentors and learning",
+"zh": "你的命盘有一处先天的偏弊：机会多过你扛得住的量，钱只是路过、留不下；古法的对治是贵人和学习"
+},
+"story._balance.25": {
+"en": ", which your balance reading also favours.",
+"zh": "，你的平衡判断也认同这一点。"
+},
+"story._balance.26": {
+"en": ", but your balance reading points elsewhere, so treat that remedy as a short-term fix.",
+"zh": "，但你的平衡判断指向别处，所以只把它当作短期的补救。"
+},
+"story._timing.40": {
+"en": "It is also a punishment year for the {an_}: strain tends to build slowly, so put big commitments in writing.",
+"zh": "这一年对属{an_}的人也是刑太岁年：压力往往慢慢累积，所以重大承诺要落到纸面上。"
+},
+"story._timing.41": {
+"en": "It is also a self-punishment year for the {an_}: the strain tends to be self-made, so pace yourself and check things twice.",
+"zh": "这一年对属{an_}的人也是自刑年：压力多半是自己造成的，所以放慢节奏，事事多核对一遍。"
 },
 "plain.EL_ROOM.水.side": {
 "en": "north",

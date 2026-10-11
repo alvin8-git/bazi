@@ -32,34 +32,96 @@ def monthly_chart(lichun_year: int, month_index: int) -> dict[str, int]:
     return _fly(monthly_center_star(lichun_year, month_index), forward=True)
 
 
-def taisui_interactions(chart: Chart, lichun_year: int) -> list[dict]:
-    """Person vs 太歲: 值/沖/合/害 on the YEAR branch (classical 犯太歲 basis),
-    plus the same checks on the day branch as secondary notes."""
+# 歲刑: who punishes whom, from 《欽定協紀辨方書》卷三〈義例一〉考原 (曾門經): 子刑夘 丑刑戌 寅刑巳 夘刑子 巳刑申 未刑丑 申刑寅 戌刑未,
+# and 辰午酉亥 punish themselves (自刑). The same table gives the 歲刑 sector (the branch the year's 太歲 punishes) and, read as unordered
+# pairs, the personal 刑太歲 test: a branch that punishes the 太歲 or is punished by it. 《淵海子平》〈論征太歲〉 marks the same pairs for a
+# person ("又忌寅刑巳、巳刑申、申刑寅"). shensha._XING_PAIRS holds the unordered pairs; a test pins the two tables to each other.
+XING_TARGET = {"子": "卯", "丑": "戌", "寅": "巳", "卯": "子", "辰": "辰", "巳": "申",
+               "午": "午", "未": "丑", "申": "寅", "酉": "酉", "戌": "未", "亥": "亥"}
+SELF_XING = frozenset("辰午酉亥")
+# 破 (六破: 子酉 丑辰 寅亥 卯午 巳申 未戌) is deliberately NOT emitted: no text we could read (協紀辨方書 卷三 to 卷十, 三命通會, 淵海子平)
+# states it, so naming a source for it would be inventing one. Add it when a verified source is in hand.
+
+
+def taisui_tiers(b: str, t: str) -> list[str]:
+    """How branch `b` meets the year's 太歲 branch `t`, as rule names, in the fixed order 值 沖 合 害 刑 (三合 is added by the caller,
+    which needs the trine's element). 刑 is 'b and t punish each other' (b != t) or the 自刑 of 辰午酉亥 when b == t."""
+    from .shensha import _XING_PAIRS
+    out = []
+    if b == t:
+        out.append("值太歲")
+    if CHONG_MAP.get(b) == t:
+        out.append("沖太歲")
+    if HE_MAP.get(b) == t:
+        out.append("合太歲")
+    if HAI_MAP.get(b) == t:
+        out.append("害太歲")
+    if (b != t and frozenset((b, t)) in _XING_PAIRS) or (b == t and b in SELF_XING):
+        out.append("刑太歲")
+    return out
+
+
+def taisui_interactions(chart: Chart, lichun_year: int, lang: str = "en") -> list[dict]:
+    """Person vs 太歲: 值/沖/合/害/刑 on the YEAR branch (classical 犯太歲 basis),
+    plus the same checks on the day branch as secondary notes.
+    刑太歲: 《淵海子平》〈論征太歲〉 and 《協紀辨方書》卷三 歲刑 table (XING_TARGET). 合太歲 is read as 晦, a dulled and reversing year, not
+    as support: 《淵海子平》〈論征太歲〉 "日干支合太歲干支曰晦...遇此者主晦氣，一年反覆、欲速不達" (owner correction, round A).
+    The other rules and their texts are unchanged; the new texts carry ids so the Chinese page has them."""
     ys, yb = year_ganzhi(lichun_year)
     out = []
     for pos, weight in (("year", "primary"), ("day", "secondary")):
         b = chart.pillars[pos].branch
+        tiers = taisui_tiers(b, yb)
         rels = []
-        if b == yb:
-            rels.append(("值太歲", "same branch as the year — a 本命年-type year: keep a low profile"))
-        if CHONG_MAP.get(b) == yb:
-            rels.append(("沖太歲", "clashes the year branch — expect movement/disruption; avoid major risks"))
-        if HE_MAP.get(b) == yb:
-            rels.append(("合太歲", "六合 with the year branch — harmonious, supported year"))
-        if HAI_MAP.get(b) == yb:
-            rels.append(("害太歲", "六害 with the year branch — friction with people; document agreements"))
+        where = T("liunian.taisui_interactions.07" if pos == "year" else "liunian.taisui_interactions.08", f"{pos} branch", lang)
+        wt = T("liunian.taisui_interactions.09" if pos == "year" else "liunian.taisui_interactions.10", weight, lang)
+        for name in tiers:
+            if name == "值太歲":
+                rels.append((name, "same branch as the year — a 本命年-type year: keep a low profile", None))
+            elif name == "沖太歲":
+                rels.append((name, "clashes the year branch — expect movement/disruption; avoid major risks", None))
+            elif name == "合太歲":
+                rels.append((name, T("liunian.taisui_interactions.03", "六合 with the year branch, which 淵海子平 reads as 晦: a dulled year of reversals, so go slowly and do not expect a lift", lang),
+                             T("liunian.taisui_interactions.05", f"太歲 {ys}{yb} vs {where} {b} ({wt}) · 《淵海子平》〈論征太歲〉 日干支合太歲干支曰晦", lang,
+                               ys=ys, yb=yb, where=where, b=b, wt=wt)))
+            elif name == "害太歲":
+                rels.append((name, "六害 with the year branch — friction with people; document agreements", None))
+            elif b == yb:      # 刑太歲 of a branch that punishes itself
+                rels.append((name, T("liunian.taisui_interactions.02", "自刑, the branch punishes itself: the strain is self-made, so pace yourself and check things twice", lang),
+                             T("liunian.taisui_interactions.06", f"太歲 {ys}{yb} vs {where} {b} ({wt}) · 《協紀辨方書》卷三〈義例一〉歲刑表 辰午酉亥為自刑", lang,
+                               ys=ys, yb=yb, where=where, b=b, wt=wt)))
+            else:
+                rels.append((name, T("liunian.taisui_interactions.01", "strain builds slowly rather than breaking at once, so put big commitments in writing", lang),
+                             T("liunian.taisui_interactions.04", f"太歲 {ys}{yb} vs {where} {b} ({wt}) · 《淵海子平》〈論征太歲〉 and 《協紀辨方書》卷三〈義例一〉歲刑表", lang,
+                               ys=ys, yb=yb, where=where, b=b, wt=wt)))
         for trio, el in SANHE:
             if b in trio and yb in trio and b != yb:
-                rels.append(("三合太歲", f"三合 ({''.join(trio)} → {el}) with the year — allies and momentum"))
-        for name, why in rels:
+                rels.append(("三合太歲", f"三合 ({''.join(trio)} → {el}) with the year — allies and momentum", None))
+        for name, why, src in rels:
             out.append({"rule_id": f"taisui-{name}", "layer": "liunian",
-                        "source_ref": f"太歲 {ys}{yb} vs {pos} branch {b} ({weight})",
-                        "explanation": f"{name}: {why}"})
+                        "source_ref": src or f"太歲 {ys}{yb} vs {pos} branch {b} ({weight})",
+                        "explanation": f"{zs(name, lang)}{'：' if lang == 'zh' else ': '}{why}"})
     if not out:
         out.append({"rule_id": "taisui-none", "layer": "liunian",
                     "source_ref": f"太歲 {ys}{yb}",
                     "explanation": "no 值/沖/合/害/三合 with year or day branch — a neutral 太歲 year"})
     return out
+
+
+def taisui_finding(chart: Chart, lichun_year: int, lang: str = "en") -> dict:
+    """The 犯太歲 finding the reading page uses for one year (additive; the rule texts live in taisui_interactions).
+    `sentence` is "刑" or "自刑" only when the YEAR branch punishes the 太歲 (or itself, 辰午酉亥); those are the tiers with a classical source
+    in hand (《淵海子平》〈論征太歲〉, 《協紀辨方書》卷三 歲刑表). 值 and 害 are still emitted by taisui_interactions but get no sentence: no text
+    we could read names them as a 犯太歲 type. 沖 is the travel caution already (windows._year_row). `cites` are the 刑 and 合(晦) rows, each
+    with its source, for the evidence panel."""
+    st, t = year_ganzhi(lichun_year)
+    b = chart.pillars["year"].branch
+    year_t = taisui_tiers(b, t)
+    sentence = ("自刑" if b == t else "刑") if "刑太歲" in year_t else None
+    cites = [{"rule_id": i["rule_id"], "source_ref": i["source_ref"], "explanation": i["explanation"]}
+             for i in taisui_interactions(chart, lichun_year, lang) if i["rule_id"] in ("taisui-刑太歲", "taisui-合太歲")]
+    return {"year": lichun_year, "taisui": st + t, "branch": b, "tiers": year_t,
+            "day_tiers": taisui_tiers(chart.pillars["day"].branch, t), "sentence": sentence, "cites": cites}
 
 
 def year_element_read(chart: Chart, ys_fav: list[str], lichun_year: int, lang: str = "en") -> dict:
@@ -226,4 +288,8 @@ def annual_afflictions(lichun_year: int, lang: str = "en") -> dict:
                    "palaces": sorted({BRANCH_PALACE[b] for b in sansha_branches}),
                    "rule": T("liunian.annual_afflictions.03", "三煞 可向不可坐 — facing it is acceptable; avoid SITTING "
                            "toward it and avoid renovation in its sectors", lang)},
+        # additive (round A): 歲刑, the branch this year's 太歲 punishes. 《協紀辨方書》卷三〈義例一〉廣聖曆: "歲刑之地…動土興工亦須迴避，犯之多鬬爭".
+        "suixing": {"branch": XING_TARGET[yb], "palace": BRANCH_PALACE[XING_TARGET[yb]], "self_xing": XING_TARGET[yb] == yb,
+                    "rule": T("liunian.annual_afflictions.04", "歲刑 (the sector the 太歲 punishes): do not break ground or run heavy works here; "
+                            "《協紀辨方書》卷三 says 動土興工亦須迴避，犯之多鬬爭", lang)},
     }

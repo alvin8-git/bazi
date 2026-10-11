@@ -34,8 +34,8 @@ class Member(BaseModel):
             raise ValueError("empty name")
         if not all("一" <= c <= "鿿" for c in v):
             raise ValueError(f"name {v!r} contains non-CJK characters")
-        # ponytail: full 康熙 fan-ti stroke validation lands with 姓名學 (M4);
-        # M1 guarantees CJK-only names so the stroke DB has valid input.
+        # ponytail: full 康熙 fan-ti stroke validation belongs to 姓名學; this check only
+        # guarantees CJK-only names so the stroke DB has valid input.
         return v
 
     @field_validator("sex")

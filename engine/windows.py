@@ -18,7 +18,7 @@ from __future__ import annotations
 from .bazi import ten_god
 from .shensha import TRINE_STARS, WENCHANG, XUETANG, ten_god_pct
 from .domains import VAULT, health_map
-from .liunian import year_element_read, year_ganzhi
+from .liunian import taisui_finding, year_element_read, year_ganzhi
 from .wuxing import (BRANCH_ELEMENT, CHONG_MAP, HE_MAP, HIDDEN_STEMS, KE,
                      SANHE, STEM_ELEMENT)
 from .i18n import L, T, and_l, cap, dot, jn, zs  # noqa: F401
@@ -200,7 +200,8 @@ def _year_row(chart, ys, hm_excess, hm_weak, y, decade_score, lang: str = "en") 
                    ("steady", "平穩"))
     return {"y": y, "gz": st + br, "overall": overall, "overall_zh": zh,
             "career": career, "wealth": wealth, "relationship": rel,
-            "health": health, "study": study, "movement": movement}
+            "health": health, "study": study, "movement": movement,
+            "taisui": taisui_finding(chart, y, lang)}      # additive (round A): the 犯太歲 finding, sourced; see liunian.taisui_finding
 
 
 def timing_windows(chart, ys: dict, dayun: list[dict], year_now: int, lang: str = "en") -> dict:

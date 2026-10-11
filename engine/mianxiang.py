@@ -182,8 +182,8 @@ def analyze(descriptors: dict) -> dict:
             "面相 is one lens. The classical cross-check is agreement with "
             "the BaZi chart — e.g. a 金形 face on a person whose 用神 is "
             "metal is reinforcement; on one whose 忌神 is metal it flags "
-            "tension worth reading closely. This cross-reference is the "
-            "planned bazifor.me integration."),
+            "tension worth reading closely. This proportions reading does not "
+            "compute that cross-reference; compare the two by hand."),
         "disclaimer": (
             "PoC scope: proportions only, from a single front-facing photo. "
             "Classical practice also reads colour/qi (气色), moles, and "

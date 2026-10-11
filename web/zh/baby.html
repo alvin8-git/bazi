@@ -35,7 +35,7 @@
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,"Noto Sans SC",sans-serif}
 main{max-width:980px;margin:0 auto;padding:16px 16px 80px}
 header{background:#fff;border-bottom:1px solid var(--line);padding:14px 16px}
-header .sub a{color:var(--accent)}
+header .sub a{color:var(--accent)}header .sub a:not(.langtoggle){display:inline-flex;align-items:center;min-height:44px;padding:0 8px;vertical-align:middle}
 h1{font-size:20px;color:var(--accent);margin:8px 0 2px}
 .sub{color:var(--muted);font-size:13px;margin-bottom:12px}
 .sec{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
@@ -330,7 +330,7 @@ header h1{font:600 34px/1.15 Georgia,"Noto Serif SC","Songti SC","Noto Serif CJK
   .then(v=>{document.getElementById("ver").textContent="v "+v.version}).catch(()=>{});</script>
 <header>
   <h1>宝宝起名工具</h1>
-  <div class="sub">命盘、用神，以及逐字组合、每条规则都注明出处的名字。<a href="/zh/start">← 人物空间</a><a class="langtoggle" href="/baby" hreflang="en" lang="en" aria-label="English version" data-l="EN" onclick="try{localStorage.setItem('lang','en')}catch(e){}"></a></div>
+  <div class="sub">命盘、用神，以及逐字组合、每条规则都注明出处的名字。<a href="/zh/start">← 人物空间</a> <a href="/zh/learn">指南</a><a class="langtoggle" href="/baby" hreflang="en" lang="en" aria-label="English version" data-l="EN" onclick="try{localStorage.setItem('lang','en')}catch(e){}"></a></div>
 </header>
 <main>
 <section class="intro" aria-label="关于此工具">
@@ -782,5 +782,5 @@ const initPlace = () => placePicker($("#b-place"), new URLSearchParams(location.
 <script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 <div class="learnstrip"><b>学习：</b> <a href="/zh/learn/how-chinese-baby-names-are-scored">宝宝名字如何评分</a> <a href="/zh/learn/what-is-bazi">什么是八字？</a> <a href="/zh/learn/useful-god-colors">用神五行的颜色</a> <a href="/zh/learn/five-elements-cycles">五行</a></div>
 <footer class="sitefoot">© bazifor.me，按固定规则推算的八字与风水解读。<br>
-<span class="fnav"><a href="/zh/start">八字</a> · <a href="/fengshui">家居风水</a> · <a href="/zh/baby">宝宝起名</a> · <a href="/zh/kua">命卦</a> · <a href="/zh/learn">学习</a> · <a href="/zh/learn">中文指南</a> · <a href="/zh/how-it-works">运作原理</a> · <a href="/zh/about">关于</a> · <a href="/zh/faq">常见问题</a> · <a href="/zh/method">方法</a> · <a href="/zh/author">作者</a></span></footer>
+<span class="fnav"><a href="/zh/start">八字</a> · <a href="/fengshui">家居风水</a> · <a href="/zh/baby">宝宝起名</a> · <a href="/zh/kua">命卦</a> · <a href="/zh/learn">指南</a> · <a href="/zh/learn">中文指南</a> · <a href="/zh/how-it-works">运作原理</a> · <a href="/zh/about">关于</a> · <a href="/zh/faq">常见问题</a> · <a href="/zh/method">方法</a> · <a href="/zh/author">作者</a></span></footer>
 </body></html>

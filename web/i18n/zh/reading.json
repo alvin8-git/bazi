@@ -39,10 +39,6 @@
 "en": "Kua number calculator",
 "zh": "命卦计算器"
 },
-"reading.011": {
-"en": "Baby name builder",
-"zh": "宝宝起名工具"
-},
 "appjs.CHAPTERS.makeup.title": {
 "en": "Make-up",
 "zh": "构成"
@@ -1131,26 +1127,6 @@
 "en": "Strategy: {SEC_ZH_n} — what this asks of you",
 "zh": "策略：{SEC_ZH_n}，它对你的要求"
 },
-"appjs.renderPerson.009": {
-"en": "<b>What this page is.</b> A BaZi reading built from the birth moment. The top answers four questions in plain words: who you are, what helps you, what this year holds and what to do.",
-"zh": "<b>这一页是什么。</b>一份由出生时刻排出的八字解读。开头用大白话回答四个问题：你是怎样的人，什么对你有帮助，今年会怎样，该怎么做。"
-},
-"appjs.renderPerson.010": {
-"en": "<b>Five chapters follow</b>, each a question: what you are made of, what you have too much or too little of, what drives you, what is coming and when, and where to sit, sleep and work.",
-"zh": "<b>后面有五章</b>，每章回答一个问题：你由什么构成，什么太多或太少，什么在驱动你，接下来有什么、什么时候来，以及在哪里坐、睡、工作。"
-},
-"appjs.renderPerson.011": {
-"en": "<b>Every answer</b> leads with a plain sentence. Open \"Why the chart says this\" for the pillars, the rule and the citation behind it. <b>The plain view and the classical chart</b> sit side by side; the <b>?</b> on a chart opens its legend.",
-"zh": "<b>每个答案</b>都先用一句大白话开头。点开“为什么命盘这样说”，可以看到对应的四柱、规则和出处。<b>白话视图和经典命盘</b>并排呈现；命盘上的<b>?</b>会打开它的图例。"
-},
-"appjs.renderPerson.012": {
-"en": "<b>Colour key.</b> Wood, Fire, Earth, Metal and Water each keep one colour across the page.",
-"zh": "<b>颜色对照。</b>木、火、土、金、水在整页里各用固定的一种颜色。"
-},
-"appjs.renderPerson.013": {
-"en": "<b>Timing is climate and weather, not prediction:</b> the decade sets the climate, the year the weather; ◉ marks a window, ⚠ a caution.",
-"zh": "<b>时间是气候和天气，不是预言：</b>大运定气候，流年定天气；◉ 标窗口，⚠ 标需要留意的地方。"
-},
 "appjs.renderPerson.015": {
 "en": "{who} <small class=\"rp-sub1\">Your reading (<span class=\"zh\" lang=\"zh-Hans\" tabindex=\"0\" title=\"mìng shū · the reading\">命书</span>)</small>",
 "zh": "{who} <small class=\"rp-sub1\">你的命书</small>"
@@ -1238,14 +1214,6 @@
 "appjs.stratBlock.019": {
 "en": "<b>Exam-year overlay:</b>",
 "zh": "<b>考试年的叠加影响：</b>"
-},
-"appjs.explain.001": {
-"en": "FengShui/BaZi 101 — {p_title}",
-"zh": "风水与八字入门：{p_title}"
-},
-"appjs.explain.002": {
-"en": "ℹ️ How to read this page — FengShui/BaZi 101",
-"zh": "ℹ️ 怎么读这一页：风水与八字入门"
 },
 "appjs.pIdentity.001": {
 "en": "This is your day pillar: you, at every age. Each stage of life has its own side, shown below; you are now in {year_your}.",
@@ -2450,5 +2418,13 @@
 "appjs.buildGods.061": {
 "en": "standing {p}",
 "zh": "位次 {p}"
+},
+"appjs.buildCompass.047": {
+"en": "<b>Year Punishment</b>: {AF_suixing_rule}",
+"zh": "<b>岁刑</b>：{AF_suixing_rule}"
+},
+"appjs.buildCompass.048": {
+"en": "Year Punishment",
+"zh": "岁刑"
 }
 }

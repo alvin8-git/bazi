@@ -207,6 +207,21 @@ def _group_el(dm_el: str, grp: str) -> str:
             "authority": inv_k[dm_el], "resource": inv_s[dm_el]}[grp]
 
 
+def pattern_hits(pct: dict, weak: bool) -> dict:
+    """Which named structures fire, from the weighted ten-god shares (the cuts live here once; yongshen.bing_yao reads them too, with no text
+    and no language involved)."""
+    def g(*names):
+        return round(sum(pct.get(n, 0) for n in names), 1)
+    shi, shang = g("食神"), g("傷官", "伤官")
+    sha, guan = g("七殺", "七杀"), g("正官")
+    yin, pyin = g("正印"), g("偏印")
+    bj = g("比肩", "劫財", "劫财")
+    cai = g("正財", "正财", "偏財", "偏财")
+    return {"食神制殺": shi >= 8 and sha >= 8, "傷官見官": shang >= 8 and guan >= 5, "殺印相生": sha >= 8 and (yin + pyin) >= 8,
+            "傷官配印": shang >= 8 and yin >= 8, "官印相生": guan >= 8 and yin >= 8, "比劫奪財": bj >= 20 and cai <= 8,
+            "財多身弱": cai >= 25 and weak}
+
+
 def ten_god_insights(chart, ys: dict, lang: str = "en") -> dict:
     """Structure over percentages (the Sean-Chan critique, applied): 用神
     alignment of the heavy gods, rooted-vs-floating for visible stems, and
@@ -282,45 +297,45 @@ def ten_god_insights(chart, ys: dict, lang: str = "en") -> dict:
                                            "component — the pattern activates then", lang, dec_gz=dec['gz'], dec_ages=dec['ages']))
         patterns.append(entry)
 
-    shi, shang = g("食神"), g("傷官", "伤官")
-    sha, guan = g("七殺", "七杀"), g("正官")
-    yin, pyin = g("正印"), g("偏印")
-    bj = g("比肩", "劫財", "劫财")
-    cai = g("正財", "正财", "偏財", "偏财")
-    weak = chart.strength["verdict"].startswith("身弱")
-    if shi >= 8 and sha >= 8:
+    hits = pattern_hits(pct, chart.strength["verdict"].startswith("身弱"))
+    if hits["食神制殺"]:
         add("食神制殺", T("interpret.ten_god_insights.09", "refined skill tames force", lang),
             T("interpret.ten_god_insights.10", "the advisor pattern — influence through mastery, not dominance; "
             "demanding roles suit you when you bring craft to them", lang),
             comps=("食神", "七殺"))
-    if shang >= 8 and guan >= 5:
+    if hits["傷官見官"]:
         add("傷官見官", T("interpret.ten_god_insights.11", "talent chafes against authority", lang),
             T("interpret.ten_god_insights.12", "the classic friction pattern — candour collides with hierarchy; "
             "choose environments that price honesty as an asset, and document "
             "wins before challenging rules", lang), comps=("傷官", "正官"))
-    if sha >= 8 and (yin + pyin) >= 8:
+    if hits["殺印相生"]:
         add("殺印相生", T("interpret.ten_god_insights.13", "pressure converts to growth", lang),
             T("interpret.ten_god_insights.14", "stress becomes study: credentials, mentors and frameworks turn "
             "七殺 pressure into rank — the high-stakes professional pattern", lang),
             comps=("七殺", "正印"))
-    if shang >= 8 and yin >= 8:
+    if hits["傷官配印"]:
         add("傷官配印", T("interpret.ten_god_insights.15", "talent under discipline", lang),
             T("interpret.ten_god_insights.16", "raw output with built-in quality control — creative work that "
             "survives editing; protect the learning time that powers it", lang),
             comps=("傷官", "正印"))
-    if guan >= 8 and yin >= 8:
+    if hits["官印相生"]:
         add("官印相生", T("interpret.ten_god_insights.17", "authority feeds learning", lang),
             T("interpret.ten_god_insights.18", "the steady-ascent pattern — institutions reward you; rank comes "
             "through credentials rather than risk", lang), comps=("正官", "正印"))
-    if bj >= 20 and cai <= 8:
+    if hits["比劫奪財"]:
         add("比劫奪財", T("interpret.ten_god_insights.19", "peers crowd the wealth", lang),
             T("interpret.ten_god_insights.20", "partnerships and 'friends' bleed money faster than rivals do — "
             "keep finances separate, put agreements in writing", lang))
-    if cai >= 25 and weak:
+    if hits["財多身弱"]:
         add("財多身弱", T("interpret.ten_god_insights.21", "wealth outweighs the carrier", lang),
             T("interpret.ten_god_insights.22", "opportunities exceed carrying capacity — strengthen the self "
             "(rest, support, focus) before chasing more, or money passes "
             "through without staying", lang))
+    by = ys.get("bingyao")            # the 病藥 finding (yongshen.bing_yao), attached to the pattern it names; additive
+    if by and by.get("pattern"):
+        for e in patterns:
+            if e["name"] == by["pattern"]:
+                e["bingyao"] = by
     return {"favor": favor, "rooted": rooted, "patterns": patterns,
             "source_ref": T("interpret.ten_god_insights.23", "structure over percentages: 用神 alignment of the "
                           "heavy gods, rooting of visible stems, classical "
@@ -807,6 +822,12 @@ def interpret_forecast(f: dict, ys: dict, year: int) -> dict:
     elif "害" in refs:
         mood = ("a 害 (harm) interaction with the 太歲 — minor frictions; double-check "
                 "agreements and dates.")
+    elif any(t["rule_id"] == "taisui-刑太歲" for t in f.get("taisui", [])):
+        mood = ("a 刑 (punishment) interaction with the 太歲 — strain that builds slowly; put big "
+                "commitments in writing (《淵海子平》〈論征太歲〉, 《協紀辨方書》卷三 歲刑表).")
+    elif any(t["rule_id"] == "taisui-合太歲" for t in f.get("taisui", [])):
+        mood = ("a combining (合) year with the 太歲, which 《淵海子平》〈論征太歲〉 reads as 晦: a dulled year of "
+                "reversals, so go slowly rather than expecting a lift.")
     elif "合" in refs:
         mood = ("a combining (合) year with the 太歲 — allies, support and momentum; a "
                 "good year to advance plans.")

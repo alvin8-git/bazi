@@ -35,7 +35,7 @@
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,"Noto Sans SC",sans-serif}
 main{max-width:980px;margin:0 auto;padding:16px 16px 80px}
 header{background:#fff;border-bottom:1px solid var(--line);padding:14px 16px}
-header .sub a{color:var(--accent)}
+header .sub a{color:var(--accent)}header .sub a:not(.langtoggle){display:inline-flex;align-items:center;min-height:44px;padding:0 8px;vertical-align:middle}
 h1{font-size:20px;color:var(--accent);margin:8px 0 2px}
 .sub{color:var(--muted);font-size:13px;margin-bottom:12px}
 .sec{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
@@ -329,7 +329,7 @@ header h1{font:600 34px/1.15 Georgia,"Noto Serif SC",serif;color:var(--ink)}head
 <header>
   <h1>Baby name builder (<span class="zh" lang="zh-Hans" tabindex="0" title="bǎo bǎo qǐ míng · baby name builder" data-tip="bǎo bǎo qǐ míng · baby name builder">宝宝起名</span>)</h1>
   <div class="sub">The chart, its useful god (<span class="zh" lang="zh-Hant" tabindex="0" title="yòng shén · useful god" data-tip="yòng shén · useful god">用神</span>), and a name you build character by character, every rule cited.
-    <a href="/start">← people workspace</a><a class="langtoggle" href="/zh/baby" hreflang="zh-CN" lang="zh-CN" aria-label="中文版" data-l="中文" onclick="try{localStorage.setItem('lang','zh')}catch(e){}"></a></div>
+    <a href="/start">← people workspace</a> <a href="/learn">Learn</a><a class="langtoggle" href="/zh/baby" hreflang="zh-CN" lang="zh-CN" aria-label="中文版" data-l="中文" onclick="try{localStorage.setItem('lang','zh')}catch(e){}"></a></div>
 </header>
 <main>
 <section class="intro" aria-label="About this tool">

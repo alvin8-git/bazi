@@ -570,7 +570,7 @@ def _snapshot_baked(year: int) -> dict:
     """Every API response the UI can request, keyed by the exact fetch path."""
     policies, periods, methods = (TRUE_SOLAR, CLOCK), (8, 9), ("pie", "grid")
     names = [m.name for m in _family()]
-    get: dict = {"/api/names": api_names(), "/api/primer": PRIMERS}
+    get: dict = {"/api/names": api_names()}
     for pol in policies:
         for per in periods:
             get[f"/api/family?year={year}&period={per}&policy={pol}"] = \
@@ -689,9 +689,9 @@ def index():
     return FileResponse(ROOT / "web/landing.html")
 
 
-@app.get("/app")
-def classic_app():
-    return FileResponse(ROOT / "web/index.html")
+# /app (the classic tabbed app over web/index.html) was retired on 2026-10-11 at the owner's
+# request: it was the last public door to the sample-data demo. web/index.html stays, and
+# /snapshot still bakes it into a single offline file, so restoring the route is one function.
 
 
 @app.get("/floorplan.jpeg")

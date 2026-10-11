@@ -25,7 +25,7 @@ ROLE_PALACE = {"乾": "father 父", "坤": "mother 母", "震": "eldest son 長�
                "兌": "youngest daughter 少女"}
 WET_IDS = {"bath", "bath2", "bath3", "mbath", "jrbath", "wc", "yard"}
 BAD_BAZHAI = {"五鬼", "絕命", "六煞", "禍害"}
-BAD_TAISUI = {"值太歲", "沖太歲", "刑太歲", "害太歲"}
+BAD_TAISUI = {"值太歲", "沖太歲", "刑太歲", "害太歲"}   # 刑太歲 is emitted by liunian.taisui_interactions since round A
 
 
 def _year_chip(chart, fav, y: int) -> dict:
@@ -35,7 +35,10 @@ def _year_chip(chart, fav, y: int) -> dict:
     good, bad = elem.count("favourable"), elem.count("unfavourable")
     bad_rel = any(r in BAD_TAISUI for r in rels)
     good_rel = any(("三合" in r or "六合" in r) for r in rels)
-    cls = ("bad" if bad_rel else "good" if good_rel or good > bad
+    # 合太歲 is 晦 (a dulled, reversing year), not support: 《淵海子平》〈論征太歲〉. A caution beats a favour, so it holds the chip at "watch"
+    # unless a true 犯 (bad) is already on it; it is not "bad" because the source names no harm, only dullness.
+    hui = "合太歲" in rels
+    cls = ("bad" if bad_rel else "watch" if hui else "good" if good_rel or good > bad
            else "watch" if bad > good else "steady")
     return {"y": y, "gz": "".join(year_ganzhi(y)), "rels": rels,
             "good": good, "bad": bad, "cls": cls}
@@ -219,8 +222,10 @@ def compass_afflictions(chart, lichun_year: int, lang: str = "en") -> dict:
     a = annual_afflictions(lichun_year, lang=lang)
     stars = youxing_stars(ming_gua(chart.lichun_year, chart.sex))
     hits = []
-    for key, zh in (("taisui", "太歲"), ("suipo", "歲破")):
+    for key, zh in (("taisui", "太歲"), ("suipo", "歲破"), ("suixing", "歲刑")):
         pal = a[key]["palace"]
+        if key == "suixing" and pal in (a["taisui"]["palace"], a["suipo"]["palace"]):
+            continue                                       # the sector is already named under 太歲 or 歲破: one line per palace
         if stars[pal] in _GOOD_STARS:
             hits.append({"affliction": zh, "palace": pal, "dir": PALACE_DIR[pal], "star": stars[pal],
                          "note": T("extras.compass_afflictions.01", f"your {stars[pal]} sector carries {zh} this year — ", lang, stars_pal=stars[pal], zh=zh)
@@ -232,7 +237,7 @@ def compass_afflictions(chart, lichun_year: int, lang: str = "en") -> dict:
                          "note": T("extras.compass_afflictions.04", f"your {stars[pal]} sector carries 三煞 this year — facing it is fine, avoid sitting toward it or renovating", lang, stars_pal=stars[pal])})
     a["year"] = lichun_year
     a["collisions"] = hits
-    for k in ("taisui", "suipo"):
+    for k in ("taisui", "suipo", "suixing"):
         a[k]["dir"] = PALACE_DIR[a[k]["palace"]]
     a["sansha"]["dirs"] = [PALACE_DIR[x] for x in a["sansha"]["palaces"]]
     return a

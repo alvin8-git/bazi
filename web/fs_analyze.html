@@ -308,9 +308,9 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
 /* shared header pass (design reference: home page) */
 header h1{font:700 26px/1.25 Georgia,"Noto Serif SC","Songti SC",serif;color:var(--ink);letter-spacing:-.01em}
 header .sub,header .hint{color:var(--muted);font-size:14px}
-header nav.top a,header a#back{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-size:14px;font-weight:600;margin:6px 6px 0 0}
-header nav.top a:hover,header a#back:hover{background:#f3ecdd;border-color:var(--gold)}
-header a#back{background:#fff;color:var(--ink)}
+header nav.top a,header a#back,header a#learn-link{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);text-decoration:none;font-size:14px;font-weight:600;margin:6px 6px 0 0}
+header nav.top a:hover,header a#back:hover,header a#learn-link:hover{background:#f3ecdd;border-color:var(--gold)}
+header a#back,header a#learn-link{background:#fff;color:var(--ink)}
 @media(min-width:760px){header h1{font-size:30px}}
 :root{--wood:#187a35;--fire:#c5221f;--earth:#7a601b;--metal:#8a6500;--water:#1a56b0}.el-wood{color:var(--wood)}.el-fire{color:var(--fire)}.el-earth{color:var(--earth)}.el-metal{color:var(--metal)}.el-water{color:var(--water)}.zh[data-tip]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;border-radius:2px}.zh[data-tip]:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}.gl-tip{position:fixed;z-index:9999;max-width:calc(100vw - 32px);width:max-content;background:#2b2620;color:#fff;font:500 14px/1.45 system-ui,sans-serif;padding:6px 10px;border-radius:8px;box-shadow:0 4px 14px rgba(43,38,32,.25);opacity:0;transition:opacity .15s;pointer-events:none;text-align:left;white-space:normal}.gl-tip.on{opacity:1}@media (prefers-reduced-motion:reduce){.gl-tip{transition:none}}
 </style><link rel="preload" as="image" href="/static/img/tools/fengshui-intro-600.jpg" media="(max-width: 759px)">
@@ -322,6 +322,7 @@ header a#back{background:#fff;color:var(--ink)}
       <div class="hint" style="font-size:13px">every star and score cites its classical rule</div>
     <a href="/start" id="back" style="display:inline-block;margin-top:9px">← Back to
       workspace</a>
+    <a href="/learn" id="learn-link" style="display:inline-block;margin-top:9px">Learn</a>
   </div>
   <span class="verbadge" id="ver"></span>
 </header>

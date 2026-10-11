@@ -274,11 +274,6 @@ const READING_EN = {
   "appjs.renderPerson.006": "timing windows",
   "appjs.renderPerson.007": "Interpretation: {SEC_ZH_n} — the numbers read out",
   "appjs.renderPerson.008": "Strategy: {SEC_ZH_n} — what this asks of you",
-  "appjs.renderPerson.009": "<b>What this page is.</b> A BaZi reading built from the birth moment. The top answers four questions in plain words: who you are, what helps you, what this year holds and what to do.",
-  "appjs.renderPerson.010": "<b>Five chapters follow</b>, each a question: what you are made of, what you have too much or too little of, what drives you, what is coming and when, and where to sit, sleep and work.",
-  "appjs.renderPerson.011": "<b>Every answer</b> leads with a plain sentence. Open \"Why the chart says this\" for the pillars, the rule and the citation behind it. <b>The plain view and the classical chart</b> sit side by side; the <b>?</b> on a chart opens its legend.",
-  "appjs.renderPerson.012": "<b>Colour key.</b> Wood, Fire, Earth, Metal and Water each keep one colour across the page.",
-  "appjs.renderPerson.013": "<b>Timing is climate and weather, not prediction:</b> the decade sets the climate, the year the weather; ◉ marks a window, ⚠ a caution.",
   "appjs.renderPerson.015": "{who} <small class=\"rp-sub1\">Your reading (<span class=\"zh\" lang=\"zh-Hans\" tabindex=\"0\" title=\"mìng shū · the reading\">命书</span>)</small>",
   "appjs.renderPerson.016": "{who}: your BaZi reading",
   "appjs.bootReading.001": "load failed: {e_message}",
@@ -301,8 +296,6 @@ const READING_EN = {
   "appjs.stratBlock.017": "⚠ hold-back years: {s_cautions}",
   "appjs.stratBlock.018": "<b>Next-decade handoff:</b> {dnAll_s}",
   "appjs.stratBlock.019": "<b>Exam-year overlay:</b>",
-  "appjs.explain.001": "FengShui/BaZi 101 — {p_title}",
-  "appjs.explain.002": "ℹ️ How to read this page — FengShui/BaZi 101",
   "appjs.pIdentity.001": "This is your day pillar: you, at every age. Each stage of life has its own side, shown below; you are now in {year_your}.",
   "appjs.pIdentity.002": "your roots",
   "appjs.pIdentity.003": "your working years",
@@ -513,6 +506,8 @@ const READING_EN = {
   "appjs.buildCompass.044": "<b>Year Breaker</b> — {AF_suipo_rule}",
   "appjs.buildCompass.045": "<b>Three Killings</b> — {AF_sansha_rule}",
   "appjs.buildCompass.046": "{h_affliction} on your {h_star} ({h_dir}): {h_note}.",
+  "appjs.buildCompass.047": "<b>Year Punishment</b>: {AF_suixing_rule}",
+  "appjs.buildCompass.048": "Year Punishment",
   "appjs.pRelations.001": "<b>{x_a}</b> and <b>{x_b}</b>: {x_note} ({x_kind})",
   "appjs.pRelations.002": "No strong pulls between your pillars.",
   "appjs.pBudget.001": "<span class=\"rp-tag\">helps you most</span>",
@@ -658,14 +653,6 @@ const BAZHAI_EN = {
 };
 const layerZh = (l) => LAYER_ZH[l] || l;
 
-function explain(t, tab) {
-  const p = state.primer && state.primer[tab];
-  const primer = p ? `<h5 class="primer-head">${RS("appjs.explain.001", {p_title: p.title})}</h5>
-    ${zhNote()}<div class="primer-grid">${p.items.map(([h, x]) =>
-      `<div class="pcard"><h5>${h}</h5><p>${x}</p></div>`).join("")}</div>` : "";
-  return `<details class="explain"><summary>${RS("appjs.explain.002")}</summary>
-    <div class="lede">${t}</div>${primer}</details>`;
-}
 const narrBlock = (i) => !i ? "" : `<div class="section interp">
     <h3>Interpretation <span class="tag">rule-based · auto-generated · no AI</span></h3>
     ${i.paragraphs.map((t) => `<p>${dnAll(t)}</p>`).join("")}</div>`;
@@ -684,8 +671,12 @@ function splitNarr(i) {
 }
 const legendBlock = (pairs) => !pairs ? "" : `<div class="legend">
   <b>Legend</b>${pairs.map(([t, d]) => `<span><b>${t}</b> — ${d}</span>`).join("")}</div>`;
-const elb = (e) => `<span class="elb el-${e} keepzh" title="${EL_EN[e] || e}">${e}</span>`;
-const elbs = (a) => (a || []).map(elb).join("");
+/* the one element icon, site wide: the painted swatch with its character on it (the same disc as the wheel and the character
+   cards). Decorative, so the name reaches a screen reader as hidden text; silent when the element's name is printed beside it.
+   keepzh + data-notip keep the glossary from expanding the character. Width and height come from --s, so nothing shifts; the 128 px file is the one the wheel and answer cards already
+   load, so the icons add no request. */
+const eli = (e, { s = 24, silent = false } = {}) => `<span class="eli el-${e} keepzh" data-notip title="${EL_EN[e] || e}" style="--s:${s}px;background-image:url(/static/img/reading/sw/${EL_SLUG[e]}-128.webp)"><b aria-hidden="true">${e}</b>${silent ? "" : `<span class="vh">${EL_EN[e] || e}</span>`}</span>`;
+const elis = (a) => (a || []).map((e) => eli(e)).join("");
 const sadv = (items, title = RS("appjs.sadv.001")) => !items || !items.length ? "" :
   `<div class="sadv"><b>${title}</b>${items.map((x) => `<div>· ${dnAll(x)}</div>`).join("")}</div>`;
 
@@ -855,7 +846,6 @@ function jsOptimize(body) {
 }
 
 async function refresh() {
-  if (!state.primer) state.primer = await api("/api/primer");
   const q = `year=${state.year}&period=${state.period}&policy=${state.policy}`;
   [state.family, state.house] = await Promise.all([
     api(`/api/family?${q}`),
@@ -1033,20 +1023,7 @@ async function renderForMe() {
       <div class="agrid">${cards.map(aspectCard).join("")}</div></div>`;
   }).join("");
   const harmony = extras ? harmonyHtml(extras.harmony) : "";
-  el.innerHTML = jt(explain(
-    `Everything personal on one page. Each card answers one question — <b>is this
-     aspect of life supported, for this person, in this home, this year?</b> The
-     <b>band word</b> (旺 strong · 优 good · 平 fair · 弱 weak · 忌 poor) is the
-     reading; the number beside it only exists so cards can be compared and sorted —
-     a 3-point gap is noise, a band gap is signal. Under it: what it means, the
-     single biggest driver, and up to three concrete actions, each citing the rule
-     that triggered it. Each person's <b>八字 profile 命理档案</b> dropdown adds
-     their chart-level readings — temperament, favourable industries, organ watch,
-     神煞 stars, a five-year 流年 outlook and where their 文昌/贵人 palaces fall in
-     this house. At the bottom: the <b>family harmony matrix</b> — pair
-     compatibility from the day pillars, identical in every home. Whole-house
-     cards live on the Home tab; room assignment on the Rooms tab.`, "forme"))
-    + note + people + harmony;
+  el.innerHTML = note + people + harmony;
 }
 
 /* ---------- Our Home tab (M2 — home cards + room suitability) ------------- */
@@ -1065,17 +1042,7 @@ async function renderOurHome() {
       <div class="cmp-cols">${cmpCols(cmp)}</div></div>`;
   } catch (e) { /* compare not available in this snapshot */ }
   const roomCards = Object.entries(d.rooms || {}).map(([name, c]) => aspectCard(c)).join("");
-  el.innerHTML = jt(explain(
-    `Property suitability on one page. Top: the eight home cards — six family-mean
-     aspects (the driver line always names the weakest member and their top fix),
-     plus the structure and this-year timing cards. Then the <b>placement audit
-     宅内布局</b> — 缺角 missing corners, entry, stove, wet-room pressure and the
-     財位 wealth spots, each judged against the classical rules. Below: <b>one
-     suitability card per person for their assigned room</b> — the same
-     three-layer fit (八宅 40% · 飞星 40% · 用神 20%) as the Rooms tab. At the
-     bottom, the candidate homes side by side, each on its own optimal
-     arrangement — the live battlecard.`, "ourhome"))
-    + `<div class="section"><h3>${jt("Our Home 我们的家")}
+  el.innerHTML = `<div class="section"><h3>${jt("Our Home 我们的家")}
         <span class="tag">${state.period === 9 ? "P9" : "P8"} · ${state.year}</span></h3>
        <div class="agrid">${d.home.map(aspectCard).join("")}</div></div>`
     + (extras ? jt(auditHtml(extras.audit)) : "")
@@ -1107,15 +1074,7 @@ async function renderCompare() {
       ${people.map((n) => `<option ${n === person ? "selected" : ""}>${n}</option>`).join("")}
     </select></div>`;
   const cols = cmpCols(d);
-  el.innerHTML = jt(explain(
-    `Pick a comparison and read the SAME cards side by side — bands compare
-     directly across columns. <b>三宅 Homes</b> puts the three homes' family-mean
-     cards next to each other, each on its own optimal arrangement (the live
-     version of the battlecard). <b>一人各房 Rooms</b> shows one person's
-     suitability in every bedroom of this house. <b>配房方案 Arrangements</b>
-     shows everyone's room card under the current vs the optimizer's best
-     assignment.`, "compare"))
-    + controls + `<div class="cmp-cols">${cols}</div>`;
+  el.innerHTML = controls + `<div class="cmp-cols">${cols}</div>`;
   el.querySelectorAll(".cmp-kind").forEach((b) =>
     b.addEventListener("click", () => { state.cmpKind = b.dataset.kind; renderCompare(); }));
   const sel = el.querySelector("#cmp-person");
@@ -1137,15 +1096,7 @@ async function renderPlanner() {
     ? `<div class="section"><h3>${jt("Avoid 忌用")} <span class="tag warn">${d.avoid.length} day(s)</span></h3>
        ${d.avoid.map((a) => `<p class="cite">✗ <b>${a.date}</b> ${a.day_gz}日 — ${jt(a.why)}</p>`).join("")}</div>`
     : "";
-  el.innerHTML = jt(explain(
-    `Planning something — a move, a signing, a renovation? Top: the <b>修造
-     renovation-window card</b> for the year — which traced rooms sit on this
-     year's afflicted zones (fine to occupy, bad to drill) and until when. Then
-     the month's <b>best days as cards</b>, rated by the classical 十二建除 day
-     officers, minus 破日 and any day that clashes a family member's chart —
-     each with its 吉時 best hours as actions. Small print names who, if anyone,
-     should not lead an event that day.`, "planner"))
-    + `<div class="cmp-bar"><label>Month 月份
+  el.innerHTML = `<div class="cmp-bar"><label>Month 月份
         <select id="pl-month">${Array.from({length: 12}, (_, i) =>
           `<option value="${i + 1}" ${i + 1 === month ? "selected" : ""}>${i + 1}月</option>`).join("")}
        </select></label></div>`
@@ -1164,15 +1115,7 @@ async function renderPlanner() {
 /* ---------- Family tab ---------- */
 function renderFamily() {
   const el = $("#tab-family");
-  el.innerHTML = jt(explain(
-    "<b>What this page shows:</b> one card per family member, computed from their birth " +
-    "date &amp; time. The four chips are the BaZi <b>Four Pillars</b> (year·month·day·hour). " +
-    "日主 is the Day Master — the element that represents the person — with a verdict on " +
-    "whether it is strong or weak. 用神 lists the elements (and colours) that help balance " +
-    "the chart. The trigram tag (e.g. 乾命) is the personal <b>Life Gua</b> used for lucky " +
-    "directions, and “best sectors” are the compass directions of the house that score " +
-    "highest for this person. <b>Click a card</b> for the full reading.", "family") +
-    narrBlock(state.family.interpretation) +
+  el.innerHTML = jt(narrBlock(state.family.interpretation) +
     `<div class="cards">` + state.family.people.map((p) => `
     <div class="card" data-name="${p.name}">
       <h3>${dn(p.name)} <span class="sub">${p.sex} · ${p.birth}</span></h3>
@@ -1610,7 +1553,7 @@ function pCareers(c) {
     `<li>Harder going: <b>${a.en}</b> (${a.score} pts): ${a.reasons.join("; ")}</li>`).join("")}</ul>` : "";
 }
 function pBudget(c, compact) {
-  return `<div class="rp-bud">${c.plain.balance.map((r) => `${elb(r.el)}<span>${r.en}</span>
+  return `<div class="rp-bud">${c.plain.balance.map((r) => `${eli(r.el, { silent: true })}<span>${r.en}</span>
     <span class="rp-tr"><i style="width:${Math.min(100, Math.max(2, r.share / 60 * 100)).toFixed(0)}%;background:${EL_COL[r.el]}"></i></span>
     <span class="rp-bd${(r.band_key || r.band) === "about right" ? "" : " rp-strong"}">${r.band}</span>${r.medicine || (!compact && r.note)
       ? `<span class="rp-note">${r.medicine ? (RS("appjs.pBudget.001") + ' ') : ""}${compact ? "" : r.note}</span>` : ""}`).join("")}</div>`;
@@ -1757,18 +1700,23 @@ const TG_GRP_EN = { 比劫: RS("appjs.GRP_EN.比劫"), 印: RS("appjs.GRP_EN.印
   財: RS("appjs.GRP_EN.財星"), 财: RS("appjs.GRP_EN.財星"), 官殺: RS("appjs.GRP_EN.官殺"), 官杀: RS("appjs.GRP_EN.官殺") };
 function colorizeTerms(root, dm) {
   if (!root) return;
-  const re = new RegExp(`(${GOD_LIST.join("|")})|(?<![\u4e00-\u9fff])(木|火(?!车|車)|土(?!豆)|金(?!额|額)|水(?!平|准|準))|\\b(Wood|Fire|Earth|Metal|Water)\\b`, "g");
+  /* an element character inside Chinese prose, away from the compounds that merely contain it (水平, 金额, 火车, 土豆) */
+  const mk = (el) => new RegExp(`(${GOD_LIST.join("|")})|${el}|\\b(Wood|Fire|Earth|Metal|Water)\\b`, "g");
+  const re = mk("(?<![\u4e00-\u9fff])(木|火(?!车|車)|土(?!豆)|金(?!额|額)|水(?!平|准|準))");
+  /* "your balance", "what helps you" and the balance chapter write the element in the middle of a sentence (对水日主, 是金) */
+  const reSec = mk("(木(?!头|頭|材)|火(?!车|車|锅|鍋|灾|災)|土(?!豆|地|壤)|金(?!额|額|钱|錢|融)|水(?!平|准|準|分|果))");
+  const SEC = ".rp-ans,#ch-balance", reOf = (n) => (n.parentElement.closest(SEC) ? reSec : re);
   const EN2EL = { Wood: "木", Fire: "火", Earth: "土", Metal: "金", Water: "水" };
   const nodes = [];
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: (n) => n.parentElement
-      && !n.parentElement.closest("script,style,svg,input,textarea,.nocolor,h1,h2,h3,a,button,summary")
+      && !n.parentElement.closest("script,style,svg,input,textarea,.nocolor,.eli,h1,h2,h3:not(.rp-ans h3),a,button,summary")
       ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
-  let t; while ((t = w.nextNode())) { re.lastIndex = 0; if (re.test(t.nodeValue)) nodes.push(t); }
+  let t; while ((t = w.nextNode())) { const r = reOf(t); r.lastIndex = 0; if (r.test(t.nodeValue)) nodes.push(t); }
   for (const node of nodes) {
-    const s = node.nodeValue, frag = document.createDocumentFragment();
-    let last = 0, m; re.lastIndex = 0;
-    while ((m = re.exec(s))) {
+    const s = node.nodeValue, frag = document.createDocumentFragment(), rx = reOf(node);
+    let last = 0, m; rx.lastIndex = 0;
+    while ((m = rx.exec(s))) {
       frag.appendChild(document.createTextNode(s.slice(last, m.index)));
       const el = m[1] ? godEl(dm, tgCanon(m[1])) : (EN2EL[m[0]] || m[0]);
       const b = document.createElement("b");
@@ -1789,7 +1737,7 @@ function colorizeColours(root) {
   const nodes = [];
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: (n) => n.parentElement
-      && !n.parentElement.closest("script,style,svg,input,textarea,.nocolor,.tcol,.elb")
+      && !n.parentElement.closest("script,style,svg,input,textarea,.nocolor,.tcol,.eli")
       ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
   let t; while ((t = w.nextNode())) {
     COLOUR_RE.lastIndex = 0; enRe.lastIndex = 0;
@@ -1922,11 +1870,11 @@ function interactionsLine(c) {
 }
 function eflowsList(c) {
   const er = c.element_relations; if (!er) return "";
-  return `<div class="eflows"><div class="cite" style="margin:0 0 6px">${RS("appjs.eflowsList.001", {elb_er: elb(er.dm)})}</div>
+  return `<div class="eflows"><div class="cite" style="margin:0 0 6px">${RS("appjs.eflowsList.001", {elb_er: eli(er.dm)})}</div>
     ${["resource", "output", "wealth", "pressure", "peer"].map((k) => { const f = er.flows[k];
       const peerNote = (k === "peer" && !((c.tengods_pct["比肩"] || 0) + (c.tengods_pct["劫財"] || 0)))
         ? ` ${RS("appjs.eflowsList.002")}` : "";
-      return `<div class="eflow"><span class="efr">${f.role}</span> ${elb(f.el)} <b>${f.share}%</b>
+      return `<div class="eflow"><span class="efr">${f.role}</span> ${eli(f.el)} <b>${f.share}%</b>
         <span class="efb ef-${f.band}">${f.band}</span> <span class="sub">${f.meaning}</span>${peerNote}</div>`; }).join("")}</div>`;
 }
 function supportDrain(c) {
@@ -1997,6 +1945,7 @@ function buildPillars(c, R) {
     const NEG = ["劫煞", "空亡", "災煞", "亡神", "羊刃", "孤辰", "寡宿"];
     const PZH = { year: "年", month: "月", day: "日", hour: "时" }, PEN = { year: "year", month: "month", day: "day", hour: "hour" };
     const part = (s) => { const [en, ...g] = s.meaning.split(" — "); return [en, (g.join(" — ") || s.meaning).split(";")[0]]; };
+    const named = (s) => IS_ZH ? part(s)[0] : `${part(s)[0]} (<span class="keepzh" lang="zh-Hans" data-notip>${s.star}</span>)`;   // English first, the characters beside it
     const chart = `<table class="htable shentable keepzh"><tr><th scope="col"></th><th scope="col">神煞</th><th scope="col">柱</th><th scope="col">吉忌</th></tr>
       ${c.shensha.map((s, i) => { const neg = NEG.includes(s.star); return `<tr><td>${i + 1}</td><td><b class="${neg ? "shen-neg" : "shen-pos"}">${s.star}</b></td>
         <td>${s.pillars.map((p) => PZH[p] || p).join("·")}</td><td>${neg ? "忌" : "吉"}</td></tr>`; }).join("")}</table>
@@ -2004,8 +1953,8 @@ function buildPillars(c, R) {
         return `<li class="cite">${RS("appjs.buildPillars.010", {en: en, s_star: s.star, s_pillars: s.pillars.map((p) => PEN[p] || p).join(" and "), s_pillars_2: s.pillars.length > 1 ? "s" : "", gist: gist, neg_Asks: neg ? RS("appjs.buildPillars.011") : RS("appjs.buildPillars.012")})}</li>`; }).join("")}</ol>
       <p class="tkey">${RS("appjs.buildPillars.009")}</p>`;
     const pos = c.shensha.find((s) => !NEG.includes(s.star)), neg = c.shensha.find((s) => NEG.includes(s.star));
-    const line = (pos ? `${RS("appjs.buildPillars.013", {part_pos: part(pos)[0], part_pos_2: part(pos)[1]})}` : RS("appjs.buildPillars.014"))
-      + (neg ? `${RS("appjs.buildPillars.015", {part_neg: part(neg)[0], PEN_neg: PEN[neg.pillars[0]], part_neg_2: part(neg)[1]})}` : RS("appjs.buildPillars.016"));
+    const line = (pos ? `${RS("appjs.buildPillars.013", {part_pos: named(pos), part_pos_2: part(pos)[1]})}` : RS("appjs.buildPillars.014"))
+      + (neg ? `${RS("appjs.buildPillars.015", {part_neg: named(neg), PEN_neg: PEN[neg.pillars[0]], part_neg_2: part(neg)[1]})}` : RS("appjs.buildPillars.016"));
     p5 = rdFig({ tier: "reference", span: 7, label: RS("appjs.LEGENDS.chart.12.term"), learn: 9, chart, line,
       legend: ("<div>" + RS("appjs.buildPillars.018") + "</div>") });
   }
@@ -2027,7 +1976,7 @@ function buildElements(c, R) {
     const pr = er.flows.pressure, rs = er.flows.resource;
     e2 = rdFig({ tier: "hero", span: 5, extra: "rd-pair2", label: RS("appjs.buildElements.002"), learn: 1,
       chart: `<div class="ewrap"><div class="svg-plate">${elementWheel(er)}</div></div>`,
-      line: `${RS("appjs.buildElements.003", {elb_pr: elb(pr.el), elw_pr: elw(pr.el), pr_share: pr.share, elb_rs: elb(rs.el), elw_rs: elw(rs.el), pr_share_2: pr.share > rs.share ? "only " : "", rs_share: rs.share, pr_share_3: pr.share > rs.share ? RS("appjs.buildElements.004") : RS("appjs.buildElements.005")})}`,
+      line: `${RS("appjs.buildElements.003", {elb_pr: eli(pr.el, { silent: true }), elw_pr: elw(pr.el), pr_share: pr.share, elb_rs: eli(rs.el, { silent: true }), elw_rs: elw(rs.el), pr_share_2: pr.share > rs.share ? "only " : "", rs_share: rs.share, pr_share_3: pr.share > rs.share ? RS("appjs.buildElements.004") : RS("appjs.buildElements.005")})}`,
       facts: [[RS("appjs.buildElements.006"), `${elc(pr.el)} ${pr.share}%`], [RS("appjs.buildElements.007"), `${elc(rs.el)} ${rs.share}%`]],
       legend: `${RS("appjs.buildElements.008", {eflowsList_c: eflowsList(c)})}` });
   }
@@ -2039,7 +1988,7 @@ function buildElements(c, R) {
       <p class="rd-tags">${RS("appjs.buildElements.010", {st_support_ratio: st.support_ratio, st_root_ratio: st.root_ratio, st_formation_status: st.formation.status})}</p>
       ${supportDrain(c)}${tiaohouStrip(c)}`,
     line: `${RS("appjs.buildElements.011", {weak_Weak: weak ? "Weak" : "Strong", st_score: st.score, sp_the: sp < 0 ? RS("appjs.buildElements.014") : sp > 0 ? RS("appjs.buildElements.015") : RS("appjs.buildElements.016"), stage_stage: stage ? ` (${stage})` : ""})}`,
-    line2: topSup ? `${RS("appjs.buildElements.017", {elb_topSup: elb(topSup.el), topSup_zh: topSup.zh, elw_topSup: elw(topSup.el), topSup_w: topSup.w, pt_support: pt.support, pt_support_2: pt.support > pt.drain ? "beats" : "trails", pt_drain: pt.drain, weak_pt: weak && pt.support > pt.drain ? RS("appjs.buildElements.018") : !weak && pt.support < pt.drain ? RS("appjs.buildElements.019") : RS("appjs.buildElements.020")})}` : "",
+    line2: topSup ? `${RS("appjs.buildElements.017", {elb_topSup: eli(topSup.el, { silent: true }), topSup_zh: topSup.zh, elw_topSup: elw(topSup.el), topSup_w: topSup.w, pt_support: pt.support, pt_support_2: pt.support > pt.drain ? "beats" : "trails", pt_drain: pt.drain, weak_pt: weak && pt.support > pt.drain ? RS("appjs.buildElements.018") : !weak && pt.support < pt.drain ? RS("appjs.buildElements.019") : RS("appjs.buildElements.020")})}` : "",
     facts: [[st.verdict.split(" ")[0], `${st.score}`], [RS("appjs.buildElements.021"), `${pt.support}`], [RS("appjs.buildElements.022"), `${pt.drain}`],
       c.tiaohou ? [RS("appjs.LEGENDS.5.04.term"), c.tiaohou.verdict] : null].filter(Boolean),
     legend: `<div class="cite">${RS("appjs.buildElements.024", {st_formation_detail: st.formation.detail})}</div>
@@ -2048,13 +1997,13 @@ function buildElements(c, R) {
   const H = c.health || [];
   const stZh = (s) => (s.match(/[㐀-鿿]+/) || [s.startsWith("balanced") ? "平" : s])[0];
   const table = `<div class="scrollx keepzh"><table class="htable hltable"><tr><th scope="col">五行</th><th scope="col">脏腑</th><th scope="col">状态</th><th scope="col">%</th></tr>
-    ${H.map((h) => `<tr><td>${elb(h.element)}</td><td>${ORGAN_ZH[h.element] || ""}</td>
+    ${H.map((h) => `<tr><td>${eli(h.element)}</td><td>${ORGAN_ZH[h.element] || ""}</td>
       <td class="${h.status.startsWith("balanced") ? "" : "bad"}">${stZh(h.status)}</td><td>${h.share}</td></tr>`).join("")}</table></div>
     ${zhKey([["五行", "element"], ["脏腑", RS("appjs.buildElements.025")], ["状态", "status"], ["过旺", RS("appjs.buildElements.026")], ["不足", RS("appjs.buildElements.027")], ["平", "balanced"]])}
     <ul class="tkey-list">${H.map((h) => `<li>${RS("appjs.buildElements.028", {h_en: h.en, h_element: h.element, h_organs: h.organs, h_aspects: h.aspects})}</li>`).join("")}</ul>`;
   const excess = H.find((h) => /excess|過旺|过旺/i.test(h.status)), weakEl = H.find((h) => /weak|不足/i.test(h.status));
-  const hline = excess ? `${RS("appjs.buildElements.029", {elb_excess: elb(excess.element), elw_excess: elw(excess.element), excess_share: excess.share, excess_organs: excess.organs, excess_aspects: (excess.aspects.split(";").pop() || "").trim()})}`
-    : weakEl ? `${RS("appjs.buildElements.030", {elb_weakEl: elb(weakEl.element), elw_weakEl: elw(weakEl.element), weakEl_share: weakEl.share, weakEl_organs: weakEl.organs, weakEl_aspects: weakEl.aspects})}`
+  const hline = excess ? `${RS("appjs.buildElements.029", {elb_excess: eli(excess.element, { silent: true }), elw_excess: elw(excess.element), excess_share: excess.share, excess_organs: excess.organs, excess_aspects: (excess.aspects.split(";").pop() || "").trim()})}`
+    : weakEl ? `${RS("appjs.buildElements.030", {elb_weakEl: eli(weakEl.element, { silent: true }), elw_weakEl: elw(weakEl.element), weakEl_share: weakEl.share, weakEl_organs: weakEl.organs, weakEl_aspects: weakEl.aspects})}`
     : RS("appjs.buildElements.031");
   const h1 = rdFig({ tier: "secondary", span: 7, label: RS("appjs.buildElements.032"), learn: 11, chart: table, line: hline,
     facts: [[RS("appjs.buildElements.033"), H.filter((h) => /excess|過旺|过旺/i.test(h.status)).map((h) => elc(h.element)).join("·") || "—"],
@@ -2113,7 +2062,7 @@ function buildGods(c, R) {
   const ti = c.tengod_insights; let g5 = "";
   if (ti) {
     const geju = c.geju ? `<div class="geju">${gejuPlain(c.geju)}</div>` : "";
-    const chart = geju + ti.favor.map((f) => `<div class="cite structrow"><b>${f.god} ${f.pct}%</b> ${elb(f.el)}
+    const chart = geju + ti.favor.map((f) => `<div class="cite structrow"><b>${f.god} ${f.pct}%</b> ${eli(f.el)}
         <span class="dirchip ${f.status === "favourable" ? "good" : f.status === "unfavourable" ? "bad" : ""}">${f.status === "favourable" ? RS("appjs.buildGods.favourable") : f.status === "unfavourable" ? RS("appjs.buildGods.unfavourable") : f.status}</span> — ${f.note}</div>`).join("")
       + `<div class="cite" style="margin-top:6px">${RS("appjs.buildGods.023", {ti_rooted: ti.rooted.map((r) => `<span class="dirchip ${r.state === "rooted" ? "good" : "bad"}">${r.god} ${r.state === "rooted" ? RS("appjs.buildGods.rooted") : RS("appjs.buildGods.floating")}</span>`).join(" ")})}</div>`
       + (ti.patterns.length ? `<details class="deep pairpat"><summary>${RS("appjs.buildGods.024", {ti_patterns_length: ti.patterns.length})}</summary><div class="deepbody">${ti.patterns.map((p) => `<div class="ninline"><b>${p.name} — ${p.zh}</b> ${p.state ? `<span class="dirchip ${/^(formed|已成)/.test(p.state) ? "good" : ""}">${p.state}</span>` : ""}<div>${p.note}${p.activation ? ` <b>${p.activation}${IS_ZH ? "。" : "."}</b>` : ""}</div></div>`).join("")}</div></details>`
@@ -2169,10 +2118,10 @@ function buildGods(c, R) {
     const Rl = ((c.career_roles || {}).top || []).slice(0, 6), AV = C.avoid || [];
     const chart = `<div class="wkfig">
       <h5>${RS("appjs.buildGods.050")}</h5><ol class="wk-top">${T.map((x) => `<li><b>${x.en}</b> <span class="sub">${x.score} pts</span><span class="wk-why">${x.reasons.join("; ")}</span></li>`).join("")}</ol>
-      ${F.length ? `<p class="wk-ind">${RS("appjs.buildGods.051")}</p>${F.map((it) => `<div class="cite wk-indrow">${elb(it.element)} ${it.industries}</div>`).join("")}` : ""}
+      ${F.length ? `<p class="wk-ind">${RS("appjs.buildGods.051")}</p>${F.map((it) => `<div class="cite wk-indrow">${eli(it.element)} ${it.industries}</div>`).join("")}` : ""}
       ${Rl.length ? `<h5>${RS("appjs.buildGods.052")}</h5><ul class="wk-roles">${Rl.map((x) => `<li>${x.role} <span class="sub">${x.score}</span></li>`).join("")}</ul>` : ""}
       ${AV.length || A.length ? `<h5>${RS("appjs.buildGods.053")}</h5><ul class="wk-av">${AV.map((x) => `<li><b>${x.en}</b>: ${x.reasons.join("; ")}</li>`).join("")}
-        ${A.length ? `<li class="cite">${RS("appjs.buildGods.054", {A_map: A.map((it) => `${elb(it.element)} ${it.industries.split(",").slice(0, 3).join(",")}`).join("; ")})}</li>` : ""}</ul>` : ""}</div>`;
+        ${A.length ? `<li class="cite">${RS("appjs.buildGods.054", {A_map: A.map((it) => `${eli(it.element)} ${it.industries.split(",").slice(0, 3).join(",")}`).join("; ")})}</li>` : ""}</ul>` : ""}</div>`;
     k1 = rdFig({ tier: "reference", span: 12, label: RS("appjs.buildGods.055"), learn: 12, chart,
       line: T[0] ? `${RS("appjs.buildGods.056", {T_en: T[0].en, Rl_the: Rl[0] ? `${RS("appjs.buildGods.057", {Rl_role: Rl[0].role.toLowerCase()})}` : ""})}` : RS("appjs.buildGods.058"),
       legend: `<div>${RS("appjs.buildGods.059")}</div>` });
@@ -2293,25 +2242,25 @@ function buildCompass(c, R) {
   const fav = c.yongshen.favourable, unf = c.yongshen.unfavourable, cols = c.yongshen.colours || [];
   const colEn = cols.map((z) => COLOUR_ZH_EN[z] || z).slice(0, 2).join("/");
   const chart = `${c.medicine_rank ? `<p class="cite" style="margin:0 0 6px">${RS("appjs.buildCompass.006", {c_medicine_rank: c.medicine_rank.replace(/^(?:Medicine, ranked:|用神排序：)\s*/, "")})}</p>` : ""}
-    <p class="cite" style="margin:0 0 8px">${RS("appjs.buildCompass.005", {elbs_fav: elbs(fav), elbs_unf: elbs(unf), cols_join: cols.join("、")})}</p>
+    <p class="cite" style="margin:0 0 8px">${RS("appjs.buildCompass.005", {elbs_fav: elis(fav), elbs_unf: elis(unf), cols_join: cols.join("、")})}</p>
     ${c.xiji ? `<div class="scrollx keepzh"><table class="xiji htable">${c.xiji.map((r) => `<tr><th scope="row">${r.zh.split(" ")[0]}</th>
-      <td>${r.elements.map((e) => elb(e)).join(" ")}</td><td>${r.gods.join("·")}</td></tr>`).join("")}</table></div>
+      <td>${r.elements.map((e) => eli(e)).join(" ")}</td><td>${r.gods.join("·")}</td></tr>`).join("")}</table></div>
       ${zhKey(c.xiji.map((r) => [r.zh.split(" ")[0], r.zh.split(" ").slice(1).join(" ")]))}` : ""}`;
   const EL_DIR = { 木: ["东 E", "震·巽"], 火: ["南 S", "離"], 土: [RS("appjs.buildCompass.007") + (IS_ZH ? " SW/NE" : ""), RS("appjs.buildCompass.008")], 金: ["西 W", "乾·兌"], 水: ["北 N", "坎"] };
   const EL_ROOM = { 木: RS("appjs.buildCompass.009"), 火: RS("appjs.buildCompass.010"),
     土: RS("appjs.buildCompass.011"), 金: RS("appjs.buildCompass.012"), 水: RS("appjs.buildCompass.013") };
   const dirTable = `<div class="scrollx keepzh"><table class="htable eldir"><tr><th scope="col">用神</th><th scope="col">方位</th><th scope="col">宫</th></tr>
-    ${fav.map((e) => `<tr><td>${elb(e)}</td><td><b>${EL_DIR[e][0].split(" ")[0]}</b></td><td>${EL_DIR[e][1]}</td></tr>`).join("")}</table></div>
+    ${fav.map((e) => `<tr><td>${eli(e)}</td><td><b>${EL_DIR[e][0].split(" ")[0]}</b></td><td>${EL_DIR[e][1]}</td></tr>`).join("")}</table></div>
     ${zhKey([["用神", RS("appjs.buildCompass.014")], ["方位", "direction"], ["宫", RS("appjs.buildCompass.015")]])}
     <ul class="tkey-list">${fav.map((e) => `<li><b>${EL_EN[e]}</b> (<span class="keepzh">${e}</span>): ${EL_DIR[e][0].split(" ").slice(1).join(" ")}; ${EL_ROOM[e]}.</li>`).join("")}</ul>`;
   const chart2 = dirTable + chart;
   const c34 = rdFig({ tier: "hero", span: 7, extra: "rd-pair2", label: RS("appjs.buildCompass.016"), learn: 5, chart: chart2,
     line: `${RS("appjs.buildCompass.017", {elw_fav: elw(fav[0]), elc_fav: elc(fav[0]), colEn_in: colEn ? `${RS("appjs.buildCompass.018", {colEn: colEn})}` : "", unf_map: unf.map((e) => EL_EN[e]).join("/"), unf_map_2: unf.map(elc).join("")})}`,
-    facts: [[RS("appjs.LEGENDS.chart.11.term"), elbs(fav)], [RS("appjs.LEGENDS.5.02.term"), elbs(unf)], c.tiaohou ? [RS("appjs.LEGENDS.5.04.term"), c.tiaohou.verdict] : null].filter(Boolean),
+    facts: [[RS("appjs.LEGENDS.chart.11.term"), elis(fav)], [RS("appjs.LEGENDS.5.02.term"), elis(unf)], c.tiaohou ? [RS("appjs.LEGENDS.5.04.term"), c.tiaohou.verdict] : null].filter(Boolean),
     legend: `<div>${RS("appjs.buildCompass.022", {fav_map: fav.map((e) => EL_EN[e]).join(" and "), unf_map: unf.map((e) => EL_EN[e]).join(", ")})}</div>
       ${c.tiaohou && c.tiaohou.line ? `<div class="cite">${c.tiaohou.line}</div>` : ""}
       ${c.element_relations ? `<div class="cite">${RS("appjs.buildCompass.023", {fav_map: fav.map((el) => { const f = Object.values(c.element_relations.flows).find((x) => x.el === el);
-        return `${RS("appjs.buildCompass.024", {elb_el: elb(el), f_f: f ? f.role : "—"})}`; }).join(" · ")})}</div>` : ""}
+        return `${RS("appjs.buildCompass.024", {elb_el: eli(el), f_f: f ? f.role : "—"})}`; }).join(" · ")})}</div>` : ""}
       ${(c.yongshen.citations || []).map((x) => `<div class="cite"><b>${x.source_ref}:</b> ${x.explanation}</div>`).join("")}${legendList(5)}` });
   const PL = c.placements || [], AF = c.afflictions;
   const bed = PL.find((r) => r.key === "bed"), desk = PL.find((r) => r.key === "desk");
@@ -2328,12 +2277,13 @@ function buildCompass(c, R) {
     chart: `<table class="htable aftable keepzh">
       <tr><th scope="row">太岁</th><td><b class="pdir">${DIR_ZH[AF.taisui.dir] || AF.taisui.dir}</b> ${AF.taisui.palace} · ${AF.taisui.branch}</td></tr>
       <tr><th scope="row">岁破</th><td><b class="pdir">${DIR_ZH[AF.suipo.dir] || AF.suipo.dir}</b> ${AF.suipo.palace} · ${AF.suipo.branch}</td></tr>
-      <tr><th scope="row">三煞</th><td><b class="pdir">${AF.sansha.dirs.map((d) => DIR_ZH[d] || d).join("·")}</b> ${AF.sansha.palaces.join("·")} · ${AF.sansha.branches}</td></tr></table>
-      ${zhKey([["太岁", RS("appjs.buildCompass.036")], ["岁破", RS("appjs.buildCompass.037")], ["三煞", RS("appjs.buildCompass.038")]])}
+      <tr><th scope="row">三煞</th><td><b class="pdir">${AF.sansha.dirs.map((d) => DIR_ZH[d] || d).join("·")}</b> ${AF.sansha.palaces.join("·")} · ${AF.sansha.branches}</td></tr>
+      ${AF.suixing ? `<tr><th scope="row">岁刑</th><td><b class="pdir">${DIR_ZH[AF.suixing.dir] || AF.suixing.dir}</b> ${AF.suixing.palace} · ${AF.suixing.branch}</td></tr>` : ""}</table>
+      ${zhKey([["太岁", RS("appjs.buildCompass.036")], ["岁破", RS("appjs.buildCompass.037")], ["三煞", RS("appjs.buildCompass.038")]].concat(AF.suixing ? [["岁刑", RS("appjs.buildCompass.048")]] : []))}
       ${AF.collisions.length ? `<div class="afhits">${AF.collisions.map((h) => `<div class="tag warn">${RS("appjs.buildCompass.tag", {h_affliction: h.affliction, h_star: h.star, h_dir: IS_ZH ? DIR_ZH[h.dir] || h.dir : h.dir})}</div>`).join("")}</div>` : ""}`,
     line: AF.collisions.length ? `${AF.collisions[0].note.replace(/^your/, "Your")}${IS_ZH ? "。" : "."}` : `${RS("appjs.buildCompass.039")}`,
     facts: [[RS("appjs.buildCompass.036"), AF.taisui.dir], [RS("appjs.buildCompass.037"), AF.suipo.dir], [RS("appjs.buildCompass.038"), AF.sansha.dirs.join("/")]],
-    legend: `<div>${RS("appjs.buildCompass.043", {AF_taisui_rule: AF.taisui.rule})}</div><div>${RS("appjs.buildCompass.044", {AF_suipo_rule: AF.suipo.rule})}</div><div>${RS("appjs.buildCompass.045", {AF_sansha_rule: AF.sansha.rule})}</div>
+    legend: `<div>${RS("appjs.buildCompass.043", {AF_taisui_rule: AF.taisui.rule})}</div><div>${RS("appjs.buildCompass.044", {AF_suipo_rule: AF.suipo.rule})}</div><div>${RS("appjs.buildCompass.045", {AF_sansha_rule: AF.sansha.rule})}</div>${AF.suixing ? `<div>${RS("appjs.buildCompass.047", {AF_suixing_rule: AF.suixing.rule})}</div>` : ""}
       ${AF.collisions.map((h) => `<div class="cite">${RS("appjs.buildCompass.046", {h_affliction: h.affliction, h_star: h.star, h_dir: h.dir, h_note: h.note.split(" — ")[1] || h.note})}</div>`).join("")}` }) : "";
   return { figs: { grid: c1, medicine: c34, placements: c2, afflictions: c5 }, tail: [R.stb(5), R.narr(5), R.narr(7)] };
 }
@@ -2492,14 +2442,10 @@ async function renderPerson(name) {
     narr: (n) => deepWrap(`${RS("appjs.renderPerson.007", {SEC_ZH_n: SEC_ZH[n] || ""})}`,
       (nb.by[n] || []).map((t) => `<div class="ninline">${dnAll(t)}</div>`).join("")),
     stb: (n) => deepWrap(`${RS("appjs.renderPerson.008", {SEC_ZH_n: SEC_ZH[n] || ""})}`, stratBlock(n, c.strategy)) };
-  const howto = explain(
-    [RS("appjs.renderPerson.009"), RS("appjs.renderPerson.010"), RS("appjs.renderPerson.011"), RS("appjs.renderPerson.012"), RS("appjs.renderPerson.013")].join("<br>"),
-    "person");
   $("#tab-person").innerHTML = jt(`
     <div class="rp-open">${pIdentity(c, name)}${pSides(c)}${pAnswers(c)}${synthNote(c.synthesis)}</div>
     ${pChapBar()}
-    ${readingChapters(c, R)}
-    <div class="rd-howto">${howto}</div>`);
+    ${readingChapters(c, R)}`);
   if (keepPic) { const fresh = document.querySelector("#tab-person .rp-bgimg"); if (fresh) fresh.replaceWith(keepPic); }
   wireReading($("#tab-person"));
   const who = dn(name || c.name), h1 = document.querySelector(".pub-in h1");
@@ -2556,15 +2502,7 @@ function renderHouse() {
       <div class="stars"><span class="m">${natal.palaces[p].mountain}</span> ${base} <span class="w">${natal.palaces[p].water}</span></div>
       <div class="ann">年 ${h.annual[p]}</div></div>`;
   }).join("");
-  $("#tab-house").innerHTML = jt(explain(
-    "<b>What this page shows:</b> the home's energy map. The floorplan is cut into 8 compass " +
-    "sectors from the house centre (dashed lines), and each room is labelled with its " +
-    "<b>Flying Star</b> numbers for the chosen construction period: 山 mountain star governs " +
-    "people &amp; health, 向 water star governs wealth, and 年 is this year's visiting star " +
-    "(5 and 2 are the ones to watch). The 3×3 grid on the right is the same chart drawn the " +
-    "traditional way — red = mountain star, blue = water star, middle = period base star.",
-    "house") +
-    narrBlock(h.interpretation && h.interpretation[String(state.period)]) + `
+  $("#tab-house").innerHTML = jt(narrBlock(h.interpretation && h.interpretation[String(state.period)]) + `
     <h2>${natal.sitting}山${natal.facing}向 · Period ${state.period} → <b>${natal.structure}</b></h2>
     <div class="house-flex">
       <div id="overlay-wrap">
@@ -2603,15 +2541,7 @@ async function renderAssign() {
   </div>`;
   const byRoom = {};
   res.scores.forEach((s) => (byRoom[s.room] = byRoom[s.room] || []).push(s));
-  $("#tab-assign").innerHTML = jt(explain(
-    "<b>What this page shows:</b> who sleeps where, and how well it suits them. Each " +
-    "person-in-room score adds three layers: <b>八宅</b> (is this sector one of their four " +
-    "lucky or four unlucky directions), <b>Flying Stars</b> (quality of the sector's " +
-    "mountain/water/annual stars), and <b>用神 match</b> (does the sector's element feed " +
-    "their favourable elements). Tick the boxes to try any arrangement — scores recompute " +
-    "instantly and every line shows its rule. <b>✨ Optimize</b> searches all allowed " +
-    "arrangements (parents stay together unless you allow a split) and proposes the top 3.",
-    "assign") + `
+  $("#tab-assign").innerHTML = jt(`
     <h2>Room assignment — household total <span id="hh-total">${res.household_total.toFixed(2)}</span>
       <button class="small" id="btn-optimize">✨ Optimize</button>
       <label style="font-size:13px"><input type="checkbox" id="opt-split"> allow parents to split</label>
@@ -2675,14 +2605,7 @@ async function renderAssign() {
 /* ---------- Forecast tab ---------- */
 function renderForecastTab() {
   const people = state.family.people.map((p) => p.name);
-  $("#tab-forecast").innerHTML = jt(explain(
-    "<b>What this page shows:</b> how the chosen year treats this person and their bedroom. " +
-    "The top section checks the year's stem-branch against their chart — clashing (冲) or " +
-    "combining (合) with 太岁, the 'Grand Duke' of the year. <b>Room watch</b> warns for the " +
-    "months when the troublesome 5-yellow or 2-black monthly star flies into their bedroom " +
-    "sector (a month to avoid renovation/drilling there). The table lists each month's " +
-    "centre star and the star landing in their room — green months are supportive, red " +
-    "months deserve extra care.", "forecast") + `
+  $("#tab-forecast").innerHTML = jt(`
     <h2>流年流月 Forecast ${state.year}</h2>
     <label>Person <select id="fc-person">${people.map((n) => `<option value="${n}">${dn(n)}</option>`).join("")}</select></label>
     <div id="fc-body"></div>`);
@@ -2725,14 +2648,7 @@ function renderForecastTab() {
 /* ---------- Dates tab ---------- */
 function renderDatesTab() {
   const now = new Date();
-  $("#tab-dates").innerHTML = jt(explain(
-    "<b>What this page shows:</b> a rating for every day of the month, for picking dates " +
-    "(moving house, starting renovation, signing contracts). Each day gets its 12-officer " +
-    "(建除) day quality — 成 'Success' and 開 'Open' days score high, 破 'Destruction' days " +
-    "score low — plus a penalty on 月破 (month-clash) days. The flags column warns when a " +
-    "day clashes (冲) with a family member's zodiac year or day pillar — that person should " +
-    "avoid big moves that day — or combines (合) favourably. Green rows = the month's best " +
-    "five days; red rows = avoid.", "dates") + `
+  $("#tab-dates").innerHTML = jt(`
     <h2>擇日 Date selection</h2>
     <label>Month <input id="zr-month" type="month" value="${state.year}-${String(now.getMonth() + 1).padStart(2, "0")}"
       ${BAKED ? `min="${state.year}-01" max="${state.year}-12"` : ""}></label>
@@ -2761,12 +2677,7 @@ function renderDatesTab() {
 /* ---------- Pair 合婚 tab ---------- */
 function renderPairTab() {
   const people = state.family.people.map((p) => p.name);
-  $("#tab-pair").innerHTML = jt(explain(
-    "<b>What this page shows:</b> classical pair compatibility (合婚) between any two " +
-    "family members. It weighs the two DAY pillars (each person's 'spouse palace') " +
-    "heaviest, then the year branches (生肖 relation), the 五合 stem bond, and whether " +
-    "each chart is rich in elements the other needs. Works for couples, parent–child " +
-    "and siblings — the score reads as natural ease, not destiny.", "pair") + `
+  $("#tab-pair").innerHTML = jt(`
     <h2>合婚 Pair compatibility</h2>
     <label>A <select id="pa">${people.map((n, i) => `<option ${i === 0 ? "selected" : ""}>${n}</option>`).join("")}</select></label>
     <label>B <select id="pb">${people.map((n, i) => `<option ${i === 1 ? "selected" : ""}>${n}</option>`).join("")}</select></label>
@@ -2799,15 +2710,7 @@ async function renderNamesTab() {
   const re = new RegExp(`(${keep.join("|")})`, "g");
   const jtNames = (html) =>
     html.split(re).map((seg, i) => (i % 2 ? seg : toSimp(seg))).join("");
-  $("#tab-names").innerHTML = jtNames(explain(
-    "<b>What this page shows:</b> classical name analysis (姓名学). Each character is first " +
-    "checked against its <b>Kangxi-dictionary traditional stroke count</b> — the count BaZi " +
-    "name analysis requires (simplified forms are rejected loudly). The strokes then build " +
-    "the <b>Five Grids</b> (天 heaven, 人 person, 地 earth, 外 outer, 总 total); each grid " +
-    "number is looked up in the 81-number table as lucky 吉, neutral 半吉 or unlucky 凶, " +
-    "with its element. <b>三才</b> (Three Talents) checks whether the heaven→person→earth " +
-    "elements feed each other (generating = good) or fight (controlling = bad).", "names") +
-    narrBlock(out.interpretation) +
+  $("#tab-names").innerHTML = jtNames(narrBlock(out.interpretation) +
     `<h2>姓名學 (康熙繁體筆畫 · 三才五格)</h2>` + out.people.map((p) => {
     if (!p.valid)
       return `<div class="section"><h3>${dn(p.name)} — ⚠ invalid</h3>
@@ -2826,13 +2729,7 @@ async function renderNamesTab() {
 
 /* ---------- Unit evaluator tab ---------- */
 function renderUnitTab() {
-  $("#tab-unit").innerHTML = jt(explain(
-    "<b>What this page shows:</b> a quick screening tool for a home you might buy or rent. " +
-    "Enter the unit's facing direction in degrees (from a phone compass at the main " +
-    "door/balcony) and its construction/renovation period, and it builds the Flying-Star " +
-    "chart and scores every compass sector for each family member. Use it to shortlist " +
-    "units — it knows nothing about the actual floorplan, so it is a first filter, not a " +
-    "verdict.", "unit") + `
+  $("#tab-unit").innerHTML = jt(`
     <h2>評宅 Candidate-unit evaluator <span class="tag warn">coarse mode — approximate</span></h2>
     <label>Facing (degrees) <input id="ev-deg" type="number" value="135" min="0" max="359"></label>
     <label>Period <select id="ev-period"><option value="8">8</option><option value="9" selected>9</option></select></label>
@@ -2857,7 +2754,6 @@ function renderUnitTab() {
 if (window.__PUBLIC_READING__) {
   // standalone Reading 命书 page (bazifor.me workspace person) — no family app boot
   (async () => {
-    try { state.primer = await api("/api/primer"); } catch (e) { /* optional */ }
     window.__CHART_URL__ = window.__PUBLIC_READING__.chartUrl;
     try { await renderPerson(window.__PUBLIC_READING__.name); }
     catch (e) { $("#tab-person").innerHTML = `<p class="hint">${RS("appjs.bootReading.001", {e_message: e.message})}</p>`; return; }

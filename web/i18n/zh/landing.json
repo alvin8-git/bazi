@@ -55,10 +55,6 @@
   "en": "Baby names",
   "zh": "宝宝起名"
  },
- "landing.015": {
-  "en": "Guides",
-  "zh": "指南"
- },
  "landing.016": {
   "en": "Your BaZi chart, your home's feng shui and your baby's name, computed from the classical rules",
   "zh": "你的八字、你家的风水、宝宝的名字，全都按古法规则推算"
@@ -437,7 +433,7 @@
  },
  "landing.110": {
   "en": "Learn",
-  "zh": "学习"
+  "zh": "指南"
  },
  "landing.111": {
   "en": "About",
@@ -456,7 +452,11 @@
   "zh": "作者"
  },
  "landing.115": {
-  "en": "demo app (sample data)",
-  "zh": "演示应用（示例数据）"
+  "en": "Read",
+  "zh": "阅读"
+ },
+ "landing.116": {
+  "en": "Site links",
+  "zh": "站点链接"
  }
 }
