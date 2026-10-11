@@ -142,7 +142,11 @@ def _load(token: str) -> dict:
     with _db() as con:
         row = con.execute("SELECT created, payload FROM ws WHERE token=?",
                           (token,)).fetchone()
-    if not row or time.time() - row[0] > TTL_SECONDS:
+        if row and time.time() - row[0] > TTL_SECONDS:
+            con.execute("DELETE FROM ws WHERE token=?", (token,))   # expired: gone when next touched
+            _erase_plans(token, json.loads(row[1]))
+            row = None
+    if not row:
         raise HTTPException(404, "unknown or expired workspace")
     return json.loads(row[1])
 
@@ -152,10 +156,28 @@ def _save(token: str, ws: dict) -> None:
         _redis_cmd("SET", f"ws:{token}", json.dumps(ws, ensure_ascii=False),
                    "EX", str(TTL_SECONDS))   # every save renews the 6 months
         return
-    with _db() as con:
+    with _db() as con:                       # same rule locally: every save renews the clock
         con.execute("INSERT INTO ws(token, created, payload) VALUES(?,?,?) "
-                    "ON CONFLICT(token) DO UPDATE SET payload=excluded.payload",
+                    "ON CONFLICT(token) DO UPDATE SET created=excluded.created, "
+                    "payload=excluded.payload",
                     (token, time.time(), json.dumps(ws, ensure_ascii=False)))
+
+
+def _erase_plans(token: str, ws: dict) -> None:
+    """Every uploaded floor plan of a workspace: the Vercel Blob object and the local file."""
+    for hid, home in _homes(ws).items():     # _homes folds a legacy single home in, so its plan is found too
+        if home.get("plan_url") and _BLOB_TOKEN:
+            _blob_delete(home["plan_url"])
+        (UPLOADS / f"{token}_{hid}.img").unlink(missing_ok=True)
+    (UPLOADS / f"{token}.img").unlink(missing_ok=True)          # pre-multi-home upload
+
+
+def _delete(token: str) -> None:
+    if _REDIS_URL:
+        _redis_cmd("DEL", f"ws:{token}")
+        return
+    with _db() as con:
+        con.execute("DELETE FROM ws WHERE token=?", (token,))
 
 
 # ---------------------------------------------------------------- people
@@ -315,6 +337,16 @@ def create_workspace(person: PersonIn):
 @router.get("/api/pub/w/{token}")
 def get_workspace(token: str):
     return _ws_payload(token, _load(token))
+
+
+@router.delete("/api/pub/workspace/{token}")
+def delete_workspace(token: str):
+    """The reader erases their whole workspace: the record and every uploaded floor plan.
+    A second call finds nothing and answers 404."""
+    ws = _load(token)
+    _erase_plans(token, ws)         # plans first: a retry after a failed record delete still works
+    _delete(token)
+    return {"deleted": True}
 
 
 class LangIn(BaseModel):
@@ -1770,7 +1802,8 @@ def gsc_verification():
 # welcome — a new site needs reach. Private workspaces and the API stay out of every group.
 _ROBOTS_ALLOW = ("Allow: /$\nAllow: /start\nAllow: /fengshui\nAllow: /baby\nAllow: /kua\nAllow: /learn\n"
                  "Allow: /zh\nAllow: /how-it-works\nAllow: /about\nAllow: /faq\n"
-                 "Allow: /author\nAllow: /method\nAllow: /llms.txt\nAllow: /llms-full.txt\n"
+                 "Allow: /author\nAllow: /method\nAllow: /privacy\nAllow: /terms\nAllow: /contact\nAllow: /validation\n"
+                 "Allow: /llms.txt\nAllow: /llms-full.txt\n"
                  "Disallow: /w/\nDisallow: /api/\n"
                  "Content-Signal: search=yes, ai-input=yes, ai-train=yes\n")
 _ROBOTS_BOTS = ("Googlebot", "Bingbot", "OAI-SearchBot", "Claude-SearchBot", "PerplexityBot",
@@ -1921,6 +1954,9 @@ def llms_txt():
              "- [运作原理](https://bazifor.me/zh/how-it-works)", "- [关于](https://bazifor.me/zh/about)",
              "- [常见问题](https://bazifor.me/zh/faq)", "- [方法说明](https://bazifor.me/zh/method)",
              "- [作者](https://bazifor.me/zh/author)",
+             "- [隐私说明](https://bazifor.me/zh/privacy): 我们保存什么、保存多久、怎么删除",
+             "- [使用条款](https://bazifor.me/zh/terms)", "- [联系我们](https://bazifor.me/zh/contact)",
+             "- [验证方法](https://bazifor.me/zh/validation): 27/27、32/32 这一说法的比对方法，以及可以自己重算的表格",
              "", "## Guides (English)", ""]
     for slug, title in _learn_titles("web/learn"):
         lines.append(f"- [{title}](https://bazifor.me/learn/{slug})")
@@ -1931,6 +1967,9 @@ def llms_txt():
               "- [How it works](https://bazifor.me/how-it-works): the engine, its sources and its limits",
               "- [About](https://bazifor.me/about)", "- [Method](https://bazifor.me/method): ten claims about what the engine does and does not do",
               "- [Author](https://bazifor.me/author)",
+              "- [Privacy](https://bazifor.me/privacy): what we store, where it lives, how long we keep it, how to delete it",
+              "- [Terms of use](https://bazifor.me/terms)", "- [Contact](https://bazifor.me/contact)",
+              "- [Validation](https://bazifor.me/validation): how the 27 of 27 and 32 of 32 claim was checked, a table you can re-run, and what it does not prove",
               "- [FAQ](https://bazifor.me/faq): method, accuracy, privacy",
               "- [Full text of the English guides](https://bazifor.me/llms-full.txt)", ""]
     return "\n".join(lines)
@@ -2012,6 +2051,26 @@ def author_page():
     return PageFile(ROOT / "web/author.html")
 
 
+@router.get("/privacy")
+def privacy_page():
+    return PageFile(ROOT / "web/privacy.html")
+
+
+@router.get("/terms")
+def terms_page():
+    return PageFile(ROOT / "web/terms.html")
+
+
+@router.get("/contact")
+def contact_page():
+    return PageFile(ROOT / "web/contact.html")
+
+
+@router.get("/validation")
+def validation_page():
+    return PageFile(ROOT / "web/validation.html")
+
+
 def _learn_slugs(sub: str = "web/learn") -> list[str]:
     d = ROOT / sub
     return sorted(f.stem for f in d.glob("*.html")
@@ -2027,7 +2086,7 @@ def _lastmod() -> dict:
 @router.get("/sitemap.xml")
 def sitemap():
     pages = ["/", "/start", "/fengshui", "/baby", "/kua",
-             "/how-it-works", "/about", "/faq", "/author", "/method", "/learn"]
+             "/how-it-works", "/about", "/faq", "/author", "/method", "/privacy", "/terms", "/contact", "/validation", "/learn"]
     pages += [f"/learn/{s}" for s in _learn_slugs()]
     pages += ["/zh/learn"] + ["/zh" + p for p in ZH_PAGES]
     pages += [f"/zh/learn/{s}" for s in _learn_slugs("web/learn-zh")]
@@ -2120,7 +2179,8 @@ def kua_page():
 # Simplified Chinese twins (Phase 1): generated by scripts/build_zh.py into web/zh/, served as plain files
 # exactly like /zh/learn. Engine-driven content inside them stays English until Phase 2.
 ZH_PAGES = {"": "landing", "/start": "start", "/baby": "baby", "/kua": "kua", "/about": "about",
-            "/how-it-works": "how-it-works", "/faq": "faq", "/method": "method", "/author": "author"}
+            "/how-it-works": "how-it-works", "/faq": "faq", "/method": "method", "/author": "author",
+            "/privacy": "privacy", "/terms": "terms", "/contact": "contact", "/validation": "validation"}
 
 
 def _zh_page(name: str):
@@ -2176,3 +2236,23 @@ def zh_method():
 @router.get("/zh/author")
 def zh_author():
     return _zh_page("author")
+
+
+@router.get("/zh/privacy")
+def zh_privacy():
+    return _zh_page("privacy")
+
+
+@router.get("/zh/terms")
+def zh_terms():
+    return _zh_page("terms")
+
+
+@router.get("/zh/contact")
+def zh_contact():
+    return _zh_page("contact")
+
+
+@router.get("/zh/validation")
+def zh_validation():
+    return _zh_page("validation")

@@ -1,0 +1,934 @@
+{
+ "validation.001": {
+  "en": "How the engine was validated | bazifor.me",
+  "zh": "引擎是怎么验证的 / bazifor.me"
+ },
+ "validation.002": {
+  "en": "What the 27 of 27 flying-star and 32 of 32 Eight House claim rests on: the method, the engine's full output for an invented home, and checks against published examples.",
+  "zh": "“27/27 个飞星数字、32/32 项八宅判定吻合”这一说法的依据：比对方法、引擎对一处虚构住宅的完整输出，以及与公开例子的核对。"
+ },
+ "validation.003": {
+  "en": "How the engine was validated",
+  "zh": "引擎是怎么验证的"
+ },
+ "validation.004": {
+  "en": "website",
+  "zh": "(same)"
+ },
+ "validation.005": {
+  "en": "summary_large_image",
+  "zh": "(same)"
+ },
+ "validation.006": {
+  "en": "bazifor.me",
+  "zh": "八字为我"
+ },
+ "validation.007": {
+  "en": "Your Reading",
+  "zh": "你的解读"
+ },
+ "validation.008": {
+  "en": "Home Fengshui",
+  "zh": "家居风水"
+ },
+ "validation.009": {
+  "en": "Baby Names",
+  "zh": "宝宝起名"
+ },
+ "validation.010": {
+  "en": "Learn",
+  "zh": "指南"
+ },
+ "validation.011": {
+  "en": "The method, a table you can re-run, and what none of it proves",
+  "zh": "比对方法、可以重新运行的表格，以及这一切证明不了什么"
+ },
+ "validation.012": {
+  "en": "Last updated:",
+  "zh": "最后更新："
+ },
+ "validation.013": {
+  "en": "This site says its home engine reproduced a paid professional audit to the digit, with 27 of 27 flying-star palace numbers and 32 of 32 directional assignments. That is true. It was one home and one audit, and the audit is a private document that cannot be published. So this page shows what it can: what was compared, how a match was decided, the engine's full output for an invented home that you can re-run, and the same functions checked against examples that other people have published.",
+  "zh": "本站说，家居引擎复现了一份付费的专业风水评估报告，精确到每一个数字：27/27 个飞星宫位数字、32/32 项方位判定全部吻合。这是真的。但那只是一处住宅、一份报告，而且那份报告属于私人文件，不能公开。所以本页只展示能展示的部分：比对了什么、怎样算吻合、引擎对一处虚构住宅的完整输出（你可以自己重新运行），以及用别人公开发表的例子对同一批函数所做的核对。"
+ },
+ "validation.014": {
+  "en": "The short version",
+  "zh": "简而言之"
+ },
+ "validation.015": {
+  "en": "One home, one paid audit from 2013, one practice. This is a single comparison, not a benchmark suite.",
+  "zh": "一处住宅，一份 2013 年的付费评估，出自一家机构。这是一次比对，不是一整套基准测试。"
+ },
+ "validation.016": {
+  "en": "You cannot check that audit yourself. You can check everything else on this page.",
+  "zh": "那份评估报告你没法自己核对；本页的其余内容，你都可以核对。"
+ },
+ "validation.017": {
+  "en": "Section 4 prints the engine's 27 flying-star numbers and 32 Eight House assignments for an invented home, each with its rule. A test fails if the printed tables ever differ from a fresh run of the engine.",
+  "zh": "第 4 节列出引擎对一处虚构住宅算出的 27 个飞星数字和 32 项八宅判定，并逐项注明所依规则。只要页面上的表格与引擎重新运行的结果有出入，测试就会失败。"
+ },
+ "validation.018": {
+  "en": "Section 5 checks the same arithmetic against published sources. All 648 numbers in 24 published flying-star charts agree, and a published Eight House verse agrees in 56 of 56 places in one printing and 54 of 56 in another.",
+  "zh": "第 5 节用公开资料核对同一套运算：24 张公开发表的飞星盘共 648 个数字全部吻合；一首公开的八宅歌诀，在一个版本中 56 处全部吻合，在另一个版本中 54/56 处吻合。"
+ },
+ "validation.019": {
+  "en": "1. What was compared",
+  "zh": "1. 比对了什么"
+ },
+ "validation.020": {
+  "en": "The site's author bought a written feng shui audit of one residence from a professional practice in 2013, and compared the engine's output with it line by line. The totals were 27 flying-star numbers and 32 Eight House assignments. This page counts them as follows, and section 4 uses the same count.",
+  "zh": "2013 年，本站作者向一家专业机构购买了一份针对一处住宅的书面风水评估报告，并把引擎的输出与它逐行比对。总数是 27 个飞星数字和 32 项八宅判定。本页按下面的方式计数，第 4 节用的也是同一种数法。"
+ },
+ "validation.021": {
+  "en": "A nine-palace flying-star chart has three numbers in each palace: the period star, the mountain star and the facing star. Nine palaces times three numbers is 27.",
+  "zh": "九宫飞星盘每个宫位有三个数字：运星、山星和向星。九个宫位乘以三个数字，共 27 个。"
+ },
+ "validation.022": {
+  "en": "Eight House gives one star to each of the eight directions for a person's life trigram. Eight directions for each of four people is 32.",
+  "zh": "八宅按一个人的命卦，给八个方位各定一颗星。四个人、每人八个方位，共 32 项。"
+ },
+ "validation.023": {
+  "en": "A match means the engine printed the same number, or the same star name, as the audit for the same palace or direction. There was no tolerance, no rounding and no partial credit. One different digit would have been a miss.",
+  "zh": "“吻合”是指对同一个宫位或方位，引擎给出的数字或星名与评估报告完全相同。没有容差，不做四舍五入，也没有部分得分。差一个数字就算不吻合。"
+ },
+ "validation.024": {
+  "en": "Not published: the name of the practice, the practitioner, the property and everyone connected with it, and any page, quote or image of the document. It is a third party's paid work about a private home.",
+  "zh": "不公开的内容：机构名称、执业者、房产以及与之相关的所有人，还有这份文件的任何一页、引文或图像。这是第三方就一处私人住宅出具的付费成果。"
+ },
+ "validation.025": {
+  "en": "2. How the engine produces each number",
+  "zh": "2. 引擎怎样得出每个数字"
+ },
+ "validation.026": {
+  "en": "Each number comes from one engine function and one rule. Periods are 20 years long and count from 1864, so period 8 runs from 2004 to 2023.",
+  "zh": "每个数字都来自一个引擎函数和一条规则。每个元运 20 年，从 1864 年起算，所以八运是 2004 年至 2023 年。"
+ },
+ "validation.027": {
+  "en": "Number",
+  "zh": "数字"
+ },
+ "validation.028": {
+  "en": "Engine function",
+  "zh": "引擎函数"
+ },
+ "validation.029": {
+  "en": "Rule",
+  "zh": "规则"
+ },
+ "validation.030": {
+  "en": "Period star",
+  "zh": "运星"
+ },
+ "validation.031": {
+  "en": "The period number goes in the centre and flies forward along the Luoshu path: centre, northwest, west, northeast, south, north, southwest, east, southeast.",
+  "zh": "把元运数放进中宫，沿洛书路径顺飞：中宫、西北、西、东北、南、北、西南、东、东南。"
+ },
+ "validation.032": {
+  "en": "Mountain star",
+  "zh": "山星"
+ },
+ "validation.033": {
+  "en": "The period star in the sitting palace goes in the centre and flies forward or backward. The direction comes from the mountain, in the same yuan as the sitting mountain, in that star's own trigram.",
+  "zh": "坐宫里的运星入中宫，再顺飞或逆飞。顺逆取决于这颗星自己所属卦中、与坐山同一元的那座山。"
+ },
+ "validation.034": {
+  "en": "Facing star",
+  "zh": "向星"
+ },
+ "validation.035": {
+  "en": "The same rule, starting from the period star in the facing palace.",
+  "zh": "规则相同，只是从向宫里的运星起飞。"
+ },
+ "validation.036": {
+  "en": "Which chart",
+  "zh": "用哪张盘"
+ },
+ "validation.037": {
+  "en": "The compass bearing gives the facing mountain, one of 24 of 15 degrees each. Within 3 degrees of its centre the plain chart is used. From 3 to 6.5 degrees the replacement-star chart is used. Within 1 degree of a boundary both neighbouring charts are shown.",
+  "zh": "罗盘读数定出向山：二十四山，每山 15 度。偏离山中心 3 度以内用下卦盘；3 度到 6.5 度用替卦盘；离分界线不到 1 度时，把相邻的两张盘都列出来。"
+ },
+ "validation.038": {
+  "en": "Life trigram",
+  "zh": "命卦"
+ },
+ "validation.039": {
+  "en": "Add the digits of the birth year, counted from Start of Spring, until one digit is left. Men take 11 minus that digit, women take that digit plus 4. A result of 5 becomes 2 for men and 8 for women.",
+  "zh": "把出生年（以立春为界）的各位数字相加，直到只剩一位。男性用 11 减去这个数，女性用这个数加 4。结果为 5 时，男性改为 2，女性改为 8。"
+ },
+ "validation.040": {
+  "en": "Direction star",
+  "zh": "方位星"
+ },
+ "validation.041": {
+  "en": "Compare the three lines of the life trigram with the three lines of the trigram in each direction. The pattern of lines that differ names the star, as the table below shows.",
+  "zh": "把命卦的三爻与每个方位所属卦的三爻逐爻对比。哪几爻不同，就决定星名，见下表。"
+ },
+ "validation.042": {
+  "en": "Lines that differ",
+  "zh": "变动的爻"
+ },
+ "validation.043": {
+  "en": "Star",
+  "zh": "星"
+ },
+ "validation.044": {
+  "en": "top",
+  "zh": "变上爻"
+ },
+ "validation.045": {
+  "en": "Vitality",
+  "zh": "(empty)"
+ },
+ "validation.046": {
+  "en": "middle",
+  "zh": "变中爻"
+ },
+ "validation.047": {
+  "en": "Severed Fate",
+  "zh": "(empty)"
+ },
+ "validation.048": {
+  "en": "bottom",
+  "zh": "变下爻"
+ },
+ "validation.049": {
+  "en": "Mishap",
+  "zh": "(empty)"
+ },
+ "validation.050": {
+  "en": "top and middle",
+  "zh": "变上、中爻"
+ },
+ "validation.051": {
+  "en": "Five Ghosts",
+  "zh": "(empty)"
+ },
+ "validation.052": {
+  "en": "top and bottom",
+  "zh": "变上、下爻"
+ },
+ "validation.053": {
+  "en": "Six Killings",
+  "zh": "(empty)"
+ },
+ "validation.054": {
+  "en": "middle and bottom",
+  "zh": "变中、下爻"
+ },
+ "validation.055": {
+  "en": "Heavenly Doctor",
+  "zh": "(empty)"
+ },
+ "validation.056": {
+  "en": "all three",
+  "zh": "三爻全变"
+ },
+ "validation.057": {
+  "en": "Longevity",
+  "zh": "(empty)"
+ },
+ "validation.058": {
+  "en": "none",
+  "zh": "无"
+ },
+ "validation.059": {
+  "en": "Stability",
+  "zh": "(empty)"
+ },
+ "validation.060": {
+  "en": "3. What this does not show",
+  "zh": "3. 这些说明不了什么"
+ },
+ "validation.061": {
+  "en": "One home. A single residence tests a small part of the possible charts.",
+  "zh": "只有一处住宅。一处住宅只检验了可能出现的飞星盘中很小的一部分。"
+ },
+ "validation.062": {
+  "en": "One practice. The audit is one professional's work. Practitioners differ, and agreeing with one is not agreeing with all.",
+  "zh": "只有一家机构。这份报告是一位专业人士的成果。各家做法不尽相同，与其中一家一致，不等于与所有人一致。"
+ },
+ "validation.063": {
+  "en": "One document. Nobody outside can repeat the comparison, because nobody else can see the document.",
+  "zh": "只有一份文件。外人无法重复这次比对，因为别人看不到那份文件。"
+ },
+ "validation.064": {
+  "en": "Agreement is not proof. Two sources that print the same number show that they apply the same convention. They do not show that the convention describes anything real. Schools disagree: some lineages chart a mixed facing that stays inside one trigram with the plain chart, where this engine switches to the replacement-star chart beyond 3 degrees.",
+  "zh": "吻合不等于证明。两个来源给出同一个数字，只说明它们采用了同一套约定，并不说明这套约定描述的是真实的东西。各派之间也有分歧：有些流派对没有出卦的兼向仍然用下卦盘，而本引擎在超过 3 度后改用替卦盘。"
+ },
+ "validation.065": {
+  "en": "Arithmetic only. Matching star numbers and direction names says nothing about whether the readings built on them are right.",
+  "zh": "只涉及运算。星数和方位名称吻合，并不能说明建立在它们之上的解读是否正确。"
+ },
+ "validation.066": {
+  "en": "Not the calendar layer. The separate claim that BaZi charts match commercial chart products is not covered here.",
+  "zh": "不涉及历法层面。八字排盘与商业排盘产品一致这另一项说法，不在本页讨论范围内。"
+ },
+ "validation.067": {
+  "en": "4. Reproduce it: an invented home",
+  "zh": "4. 自己重算：一处虚构的住宅"
+ },
+ "validation.068": {
+  "en": "Nothing in this section is a real house. The home, the people and the floor plan are made up for this page. Run the same functions on your own inputs and compare.",
+  "zh": "本节中没有任何真实的房子。住宅、住户和户型都是为本页虚构的。你可以用自己的输入运行同样的函数，再对照结果。"
+ },
+ "validation.069": {
+  "en": "Input",
+  "zh": "输入项"
+ },
+ "validation.070": {
+  "en": "Value",
+  "zh": "取值"
+ },
+ "validation.071": {
+  "en": "Front of the house faces",
+  "zh": "房屋正面朝向"
+ },
+ "validation.072": {
+  "en": "Mountain faced",
+  "zh": "所朝之山"
+ },
+ "validation.073": {
+  "en": "yang Metal",
+  "zh": "(empty)"
+ },
+ "validation.074": {
+  "en": "Offset from the mountain's centre",
+  "zh": "偏离山中心"
+ },
+ "validation.075": {
+  "en": "Facing zone",
+  "zh": "朝向区间"
+ },
+ "validation.076": {
+  "en": "true facing",
+  "zh": "(empty)"
+ },
+ "validation.077": {
+  "en": "Built and first occupied",
+  "zh": "建成并入住年份"
+ },
+ "validation.078": {
+  "en": "Period",
+  "zh": "元运"
+ },
+ "validation.079": {
+  "en": "Chart used",
+  "zh": "所用飞星盘"
+ },
+ "validation.080": {
+  "en": "plain chart",
+  "zh": "(empty)"
+ },
+ "validation.081": {
+  "en": "Sitting mountain",
+  "zh": "坐山"
+ },
+ "validation.082": {
+  "en": "yang Wood",
+  "zh": "(empty)"
+ },
+ "validation.083": {
+  "en": "Facing mountain",
+  "zh": "向山"
+ },
+ "validation.084": {
+  "en": "Structure",
+  "zh": "格局"
+ },
+ "validation.085": {
+  "en": "double stars at the sitting",
+  "zh": "(empty)"
+ },
+ "validation.086": {
+  "en": "4.1 Flying stars: 27 numbers",
+  "zh": "4.1 飞星：27 个数字"
+ },
+ "validation.087": {
+  "en": "The chart is built from three flights. The mountain flight starts from the period star in the sitting palace, and the facing flight from the period star in the facing palace. The reference mountain is the one that sets the direction of each flight, as described in section 2.",
+  "zh": "这张盘由三次飞星组成。山星从坐宫里的运星起飞，向星从向宫里的运星起飞。“参照山”就是决定每次飞行顺逆的那座山，见第 2 节。"
+ },
+ "validation.088": {
+  "en": "Start palace",
+  "zh": "起飞宫位"
+ },
+ "validation.089": {
+  "en": "Start star",
+  "zh": "起飞星"
+ },
+ "validation.090": {
+  "en": "Reference mountain",
+  "zh": "参照山"
+ },
+ "validation.091": {
+  "en": "Flight",
+  "zh": "飞行方向"
+ },
+ "validation.092": {
+  "en": "centre",
+  "zh": "中宫"
+ },
+ "validation.093": {
+  "en": "forward",
+  "zh": "顺飞"
+ },
+ "validation.094": {
+  "en": "east",
+  "zh": "东"
+ },
+ "validation.095": {
+  "en": "Dog,",
+  "zh": "(empty)"
+ },
+ "validation.096": {
+  "en": "Earth",
+  "zh": "(empty)"
+ },
+ "validation.097": {
+  "en": "backward",
+  "zh": "逆飞"
+ },
+ "validation.098": {
+  "en": "west",
+  "zh": "西"
+ },
+ "validation.099": {
+  "en": "yang Water",
+  "zh": "(empty)"
+ },
+ "validation.100": {
+  "en": "Each number is the flight's start star plus or minus the palace's step along the Luoshu path. A result past 9 or below 1 is brought back into 1 to 9 by adding or subtracting 9. The steps are: centre 0, northwest 1, west 2, northeast 3, south 4, north 5, southwest 6, east 7, southeast 8.",
+  "zh": "每个数字等于这次飞行的起飞星，加上或减去该宫位在洛书路径上的步数。结果超过 9 或小于 1 时，加上或减去 9，回到 1 到 9 之间。步数依次是：中宫 0、西北 1、西 2、东北 3、南 4、北 5、西南 6、东 7、东南 8。"
+ },
+ "validation.101": {
+  "en": "Palace",
+  "zh": "宫位"
+ },
+ "validation.102": {
+  "en": "Step",
+  "zh": "步数"
+ },
+ "validation.103": {
+  "en": "northwest",
+  "zh": "西北"
+ },
+ "validation.104": {
+  "en": "northeast",
+  "zh": "东北"
+ },
+ "validation.105": {
+  "en": "south",
+  "zh": "南"
+ },
+ "validation.106": {
+  "en": "north",
+  "zh": "北"
+ },
+ "validation.107": {
+  "en": "southwest",
+  "zh": "西南"
+ },
+ "validation.108": {
+  "en": "southeast",
+  "zh": "东南"
+ },
+ "validation.109": {
+  "en": "4.2 Eight House: 32 assignments",
+  "zh": "4.2 八宅：32 项判定"
+ },
+ "validation.110": {
+  "en": "Four invented residents. Each life trigram is worked out by the life-trigram function in section 2.",
+  "zh": "四位虚构的住户。每人的命卦由第 2 节的命卦函数算出。"
+ },
+ "validation.111": {
+  "en": "Resident",
+  "zh": "住户"
+ },
+ "validation.112": {
+  "en": "Sex",
+  "zh": "性别"
+ },
+ "validation.113": {
+  "en": "Born",
+  "zh": "出生年"
+ },
+ "validation.114": {
+  "en": "Group",
+  "zh": "命组"
+ },
+ "validation.115": {
+  "en": "man",
+  "zh": "男"
+ },
+ "validation.116": {
+  "en": "East",
+  "zh": "东四命"
+ },
+ "validation.117": {
+  "en": "woman",
+  "zh": "女"
+ },
+ "validation.118": {
+  "en": "West",
+  "zh": "西四命"
+ },
+ "validation.119": {
+  "en": "Each cell below is the star that the direction-star function in section 2 gives for that direction, with the pattern of changed lines that produces it underneath.",
+  "zh": "下表每个格子是第 2 节的方位星函数在该方位给出的星，星名下面是产生它的变爻情况。"
+ },
+ "validation.120": {
+  "en": "Direction",
+  "zh": "方位"
+ },
+ "validation.121": {
+  "en": "Resident A",
+  "zh": "住户 A"
+ },
+ "validation.122": {
+  "en": "Resident B",
+  "zh": "住户 B"
+ },
+ "validation.123": {
+  "en": "Resident C",
+  "zh": "住户 C"
+ },
+ "validation.124": {
+  "en": "Resident D",
+  "zh": "住户 D"
+ },
+ "validation.125": {
+  "en": "4.3 Floor plan: which room falls in which palace",
+  "zh": "4.3 户型：各房间落在哪个宫位"
+ },
+ "validation.126": {
+  "en": "The plan is a rectangle 12 metres wide and 9 metres deep, with north at the top and the front door on the west wall. Each room goes in the palace whose 45-degree slice of the compass holds it, seen from the centre of the whole plan.",
+  "zh": "户型是一个宽 12 米、进深 9 米的长方形，上方为北，大门开在西墙上。每个房间落在罗盘上 45 度扇区包含它的那个宫位，从整个户型的中心往外看。"
+ },
+ "validation.127": {
+  "en": "Function:",
+  "zh": "函数："
+ },
+ "validation.128": {
+  "en": "Room",
+  "zh": "房间"
+ },
+ "validation.129": {
+  "en": "West edge (m)",
+  "zh": "西边（米）"
+ },
+ "validation.130": {
+  "en": "East edge (m)",
+  "zh": "东边（米）"
+ },
+ "validation.131": {
+  "en": "North edge (m)",
+  "zh": "北边（米）"
+ },
+ "validation.132": {
+  "en": "South edge (m)",
+  "zh": "南边（米）"
+ },
+ "validation.133": {
+  "en": "Bearing from the centre",
+  "zh": "距中心的方位角"
+ },
+ "validation.134": {
+  "en": "Study",
+  "zh": "书房"
+ },
+ "validation.135": {
+  "en": "Bedroom 2",
+  "zh": "卧室 2"
+ },
+ "validation.136": {
+  "en": "Master bedroom",
+  "zh": "主卧"
+ },
+ "validation.137": {
+  "en": "Living room",
+  "zh": "客厅"
+ },
+ "validation.138": {
+  "en": "Dining room",
+  "zh": "餐厅"
+ },
+ "validation.139": {
+  "en": "Bathroom",
+  "zh": "卫生间"
+ },
+ "validation.140": {
+  "en": "Kitchen",
+  "zh": "厨房"
+ },
+ "validation.141": {
+  "en": "Bedroom 3",
+  "zh": "卧室 3"
+ },
+ "validation.142": {
+  "en": "4.4 Re-run it",
+  "zh": "4.4 重新运行"
+ },
+ "validation.143": {
+  "en": "The tables above are written by a script that calls the engine functions named in section 2. A test fails if this page and a fresh run ever differ. The script ships with the engine's source code.",
+  "zh": "上面的表格由一个脚本写出，脚本调用第 2 节列出的引擎函数。只要本页与重新运行的结果有出入，测试就会失败。这个脚本随引擎源代码一起提供。"
+ },
+ "validation.144": {
+  "en": "compares this page with a fresh run.",
+  "zh": "把本页与重新运行的结果对比。"
+ },
+ "validation.145": {
+  "en": "prints the numbers it computes.",
+  "zh": "打印它算出的全部数字。"
+ },
+ "validation.146": {
+  "en": "5. Checked against published examples",
+  "zh": "5. 与公开例子核对"
+ },
+ "validation.147": {
+  "en": "These checks use public sources that print their own answers. They were added in October 2026 and are separate from the 2013 comparison. The sources are modern printings, not a classical edition, and the engine was not changed to make any of them pass.",
+  "zh": "这些核对使用的是自带答案的公开资料。它们是 2026 年 10 月补做的，与 2013 年的比对是两回事。这些资料是现代刊印本，不是古籍原本；引擎也没有为了让它们通过而做过任何改动。"
+ },
+ "validation.148": {
+  "en": "Published example",
+  "zh": "公开例子"
+ },
+ "validation.149": {
+  "en": "Engine agrees",
+  "zh": "引擎吻合"
+ },
+ "validation.150": {
+  "en": "Flying-star charts, period 8, all 24 facing mountains",
+  "zh": "飞星盘，八运，全部 24 个向山"
+ },
+ "validation.151": {
+  "en": "Eight House verse, printing 1",
+  "zh": "八宅歌诀，版本 1"
+ },
+ "validation.152": {
+  "en": "Eight House verse, printing 2",
+  "zh": "八宅歌诀，版本 2"
+ },
+ "validation.153": {
+  "en": "Two base numbers in a published sentence",
+  "zh": "公开文字中的两个运盘数字"
+ },
+ "validation.154": {
+  "en": "5.1 Flying-star charts from a public calculator",
+  "zh": "5.1 公开排盘工具给出的飞星盘"
+ },
+ "validation.155": {
+  "en": "A public feng shui calculator publishes a complete period 8 chart for each of the 24 facing mountains, with the period, mountain and facing star in all nine palaces. We compared every page with the engine's plain chart for the same facing mountain. All 648 numbers agree: 24 charts, nine palaces, three numbers each.",
+  "zh": "一个公开的风水排盘工具，为 24 个向山各给出了一张完整的八运盘，九个宫位里的运星、山星、向星都有。我们把每个页面与引擎对同一向山的下卦盘逐一对比，648 个数字全部吻合：24 张盘，每盘九个宫位，每宫三个数字。"
+ },
+ "validation.156": {
+  "en": "The limit of this check: the source is another program, not a classical text. It shows that two implementations of the same convention agree. It covers plain charts only, so it does not test the replacement-star chart for mixed facings.",
+  "zh": "这项核对的局限：来源是另一个程序，不是古籍。它只说明同一套约定的两种实现彼此一致。它只涉及下卦盘，没有检验兼向用的替卦盘。"
+ },
+ "validation.157": {
+  "en": "Page",
+  "zh": "页面"
+ },
+ "validation.158": {
+  "en": "Facing range",
+  "zh": "朝向范围"
+ },
+ "validation.159": {
+  "en": "Matching",
+  "zh": "吻合"
+ },
+ "validation.160": {
+  "en": "yang Fire",
+  "zh": "(empty)"
+ },
+ "validation.161": {
+  "en": "Horse,",
+  "zh": "(empty)"
+ },
+ "validation.162": {
+  "en": "Fire",
+  "zh": "(empty)"
+ },
+ "validation.163": {
+  "en": "double stars at the facing",
+  "zh": "(empty)"
+ },
+ "validation.164": {
+  "en": "yin Fire",
+  "zh": "(empty)"
+ },
+ "validation.165": {
+  "en": "Goat,",
+  "zh": "(empty)"
+ },
+ "validation.166": {
+  "en": "prosperous sitting and facing",
+  "zh": "(empty)"
+ },
+ "validation.167": {
+  "en": "reversed stars",
+  "zh": "(empty)"
+ },
+ "validation.168": {
+  "en": "Monkey,",
+  "zh": "(empty)"
+ },
+ "validation.169": {
+  "en": "Metal",
+  "zh": "(empty)"
+ },
+ "validation.170": {
+  "en": "Rooster,",
+  "zh": "(empty)"
+ },
+ "validation.171": {
+  "en": "yin Metal",
+  "zh": "(empty)"
+ },
+ "validation.172": {
+  "en": "Pig,",
+  "zh": "(empty)"
+ },
+ "validation.173": {
+  "en": "Water",
+  "zh": "(empty)"
+ },
+ "validation.174": {
+  "en": "Rat,",
+  "zh": "(empty)"
+ },
+ "validation.175": {
+  "en": "yin Water",
+  "zh": "(empty)"
+ },
+ "validation.176": {
+  "en": "Ox,",
+  "zh": "(empty)"
+ },
+ "validation.177": {
+  "en": "Tiger,",
+  "zh": "(empty)"
+ },
+ "validation.178": {
+  "en": "Wood",
+  "zh": "(empty)"
+ },
+ "validation.179": {
+  "en": "Rabbit,",
+  "zh": "(empty)"
+ },
+ "validation.180": {
+  "en": "yin Wood",
+  "zh": "(empty)"
+ },
+ "validation.181": {
+  "en": "Dragon,",
+  "zh": "(empty)"
+ },
+ "validation.182": {
+  "en": "Snake,",
+  "zh": "(empty)"
+ },
+ "validation.183": {
+  "en": "5.2 The Eight House verse",
+  "zh": "5.2 八宅歌诀"
+ },
+ "validation.184": {
+  "en": "The direction stars are taught as a verse, the Great Wandering Year song, with one line for each life trigram. A line names the stars of the other seven trigrams, going clockwise from north and skipping its own. One source spells this out for one line, and the table reads it out. We read every line the same way.",
+  "zh": "方位星是用一首歌诀教的，叫大游年歌，每个命卦一句。每一句依次说出其余七卦的星，从北方起顺时针，跳过它自己。有一个来源把其中一句解释得很清楚，下表把它读了出来。其余每一句我们都按同样的方式读。"
+ },
+ "validation.185": {
+  "en": "Letter in the verse",
+  "zh": "歌诀中的字"
+ },
+ "validation.186": {
+  "en": "The engine never reads this verse. It computes each row from the trigram lines, so the comparison is a real one. We compared all eight lines in two public printings, which print the verse in simplified characters.",
+  "zh": "引擎从不读这首歌诀。它是按卦的爻线算出每一行的，所以这是一次真正的比对。我们比对了两个公开版本中的全部八句，两个版本都用简体字刊印。"
+ },
+ "validation.187": {
+  "en": "Head trigram",
+  "zh": "起首卦"
+ },
+ "validation.188": {
+  "en": "Printing 1",
+  "zh": "版本 1"
+ },
+ "validation.189": {
+  "en": "Printing 2",
+  "zh": "版本 2"
+ },
+ "validation.190": {
+  "en": "Six Killings, Heavenly Doctor, Five Ghosts, Mishap, Severed Fate, Longevity, Vitality",
+  "zh": "(empty)"
+ },
+ "validation.191": {
+  "en": "Five Ghosts, Heavenly Doctor, Vitality, Longevity, Severed Fate, Mishap, Six Killings",
+  "zh": "(empty)"
+ },
+ "validation.192": {
+  "en": "Six Killings, Severed Fate, Mishap, Vitality, Longevity, Heavenly Doctor, Five Ghosts",
+  "zh": "(empty)"
+ },
+ "validation.193": {
+  "en": "Longevity, Vitality, Mishap, Severed Fate, Five Ghosts, Heavenly Doctor, Six Killings",
+  "zh": "(empty)"
+ },
+ "validation.194": {
+  "en": "Heavenly Doctor, Five Ghosts, Six Killings, Mishap, Vitality, Severed Fate, Longevity",
+  "zh": "(empty)"
+ },
+ "validation.195": {
+  "en": "Six Killings, Five Ghosts, Severed Fate, Longevity, Mishap, Vitality, Heavenly Doctor",
+  "zh": "(empty)"
+ },
+ "validation.196": {
+  "en": "Six Killings, Five Ghosts, Severed Fate, Longevity, Mishap, Heavenly Doctor, Vitality",
+  "zh": "(empty)"
+ },
+ "validation.197": {
+  "en": "Heavenly Doctor, Longevity, Severed Fate, Vitality, Mishap, Five Ghosts, Six Killings",
+  "zh": "(empty)"
+ },
+ "validation.198": {
+  "en": "Vitality, Mishap, Longevity, Severed Fate, Six Killings, Five Ghosts, Heavenly Doctor",
+  "zh": "(empty)"
+ },
+ "validation.199": {
+  "en": "Printing 1 agrees with the engine in all 56 places. Printing 2 differs in two places, both in one line, where it swaps the stars of two directions:",
+  "zh": "版本 1 与引擎在 56 处全部一致。版本 2 有两处不同，都在同一句里，它把两个方位的星对调了："
+ },
+ "validation.200": {
+  "en": "Printing",
+  "zh": "版本"
+ },
+ "validation.201": {
+  "en": "Line",
+  "zh": "句"
+ },
+ "validation.202": {
+  "en": "Verse says",
+  "zh": "歌诀所说"
+ },
+ "validation.203": {
+  "en": "Engine computes",
+  "zh": "引擎算得"
+ },
+ "validation.204": {
+  "en": "The two printings disagree with each other. The engine's row for that line comes from the line-change rule and matches printing 1. We have not checked either page against a primary edition, so we do not say which printing is the original.",
+  "zh": "两个版本彼此不一致。引擎在这一句上的结果是按变爻规则算出的，与版本 1 相同。我们没有拿任何一个页面去对照古籍原本，所以不说哪个版本才是原文。"
+ },
+ "validation.205": {
+  "en": "5.3 One published sentence",
+  "zh": "5.3 公开文字中的一句话"
+ },
+ "validation.206": {
+  "en": "The Wikipedia article on Flying Star Feng Shui says: \"In a Period-8 building that faces southwest, the number that locates in Facing Palace is number 5 whereas the number in Sitting Palace is number 2.\" The engine's period 8 base chart puts 5 in the southwest palace and 2 in the northeast palace, the palace opposite. Both numbers agree.",
+  "zh": "维基百科“Flying Star Feng Shui”条目写道：“In a Period-8 building that faces southwest, the number that locates in Facing Palace is number 5 whereas the number in Sitting Palace is number 2.”（八运的房子朝西南，向宫里的数字是 5，坐宫里的数字是 2。）引擎的八运运盘把 5 放在西南宫，把 2 放在对面的东北宫。两个数字都吻合。"
+ },
+ "validation.207": {
+  "en": "6. Sources",
+  "zh": "6. 资料来源"
+ },
+ "validation.208": {
+  "en": "All retrieved on 11 October 2026.",
+  "zh": "均于 2026 年 10 月 11 日查阅。"
+ },
+ "validation.209": {
+  "en": "Skill On, \"Feng Shui Calculator: Period 8\"",
+  "zh": "Skill On，“Feng Shui Calculator: Period 8”（英文）"
+ },
+ "validation.210": {
+  "en": ", 24 facing pages. The first column of the table in 5.1 links to each page.",
+  "zh": "，共 24 个朝向页面。5.1 节表格的第一列链接到每个页面。"
+ },
+ "validation.211": {
+  "en": "(yiqibazi.com), \"",
+  "zh": "(same)"
+ },
+ "validation.212": {
+  "en": ", 29 September 2022. This is printing 1.",
+  "zh": "，2022 年 9 月 29 日。这是版本 1。"
+ },
+ "validation.213": {
+  "en": "(nanxuzi.com), \"",
+  "zh": "(same)"
+ },
+ "validation.214": {
+  "en": ", 27 March 2020. This is printing 2, and the source of the worked reading in 5.2.",
+  "zh": "，2020 年 3 月 27 日。这是版本 2，也是 5.2 节中那句示范读法的出处。"
+ },
+ "validation.215": {
+  "en": "Wikipedia, \"Flying Star Feng Shui\"",
+  "zh": "维基百科“Flying Star Feng Shui”（英文）"
+ },
+ "validation.216": {
+  "en": ", section \"Rules and Procedures\" and the periods table.",
+  "zh": "，其中“Rules and Procedures”一节和元运表。"
+ },
+ "validation.217": {
+  "en": "Related pages",
+  "zh": "相关页面"
+ },
+ "validation.218": {
+  "en": "The ten claims about the method",
+  "zh": "关于方法的十条声明"
+ },
+ "validation.219": {
+  "en": "How it works",
+  "zh": "运作原理"
+ },
+ "validation.220": {
+  "en": "© bazifor.me, deterministic BaZi & fengshui readings.",
+  "zh": "© bazifor.me，按固定规则推算的八字与风水解读。"
+ },
+ "validation.221": {
+  "en": "BaZi",
+  "zh": "八字"
+ },
+ "validation.222": {
+  "en": "Home fengshui",
+  "zh": "家居风水"
+ },
+ "validation.223": {
+  "en": "Baby names",
+  "zh": "宝宝起名"
+ },
+ "validation.224": {
+  "en": "Kua number",
+  "zh": "命卦"
+ },
+ "validation.225": {
+  "en": "Guides in Chinese (",
+  "zh": "中文指南"
+ },
+ "validation.226": {
+  "en": "About",
+  "zh": "关于"
+ },
+ "validation.227": {
+  "en": "FAQ",
+  "zh": "常见问题"
+ },
+ "validation.228": {
+  "en": "Method",
+  "zh": "方法"
+ },
+ "validation.229": {
+  "en": "Author",
+  "zh": "作者"
+ },
+ "validation.230": {
+  "en": "Privacy",
+  "zh": "隐私说明"
+ },
+ "validation.231": {
+  "en": "Terms",
+  "zh": "使用条款"
+ },
+ "validation.232": {
+  "en": "Contact",
+  "zh": "联系我们"
+ },
+ "validation.233": {
+  "en": "Validation",
+  "zh": "验证方法"
+ }
+}

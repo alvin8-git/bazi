@@ -68,8 +68,8 @@
   "zh": "计算有多准确？"
  },
  "faq.018": {
-  "en": "The engine reproduced a professionally produced, paid fengshui audit to the digit — 27/27 flying-star palaces, 32/32 directional assignments — and matches commercial chart products character-for-character on the calendar layer. Deterministic output is what makes that test possible: run it twice, compare against a benchmark.",
-  "zh": "引擎复现了一份专业出具的付费风水评估报告，精确到每一个数字：27/27 个飞星宫位、32/32 项方位判定全部吻合；在历法层面，与商业排盘产品逐字一致。正是确定性的输出让这样的检验成为可能：跑两次，再与基准对照。"
+  "en": "The engine reproduced a professionally produced, paid fengshui audit to the digit: 27 of 27 flying-star palace numbers and 32 of 32 directional assignments. That was one home and one audit, not a benchmark suite. The",
+  "zh": "引擎复现了一份专业出具的付费风水评估报告，精确到每一个数字：27/27 个飞星宫位数字、32/32 项方位判定全部吻合。这只是一处住宅、一份评估报告，不是一整套基准测试。"
  },
  "faq.019": {
   "en": "Which classical systems are used?",
@@ -274,5 +274,29 @@
  "faq.069": {
   "en": "Author",
   "zh": "作者"
+ },
+ "faq.070": {
+  "en": "Privacy",
+  "zh": "隐私说明"
+ },
+ "faq.071": {
+  "en": "Terms",
+  "zh": "使用条款"
+ },
+ "faq.072": {
+  "en": "Contact",
+  "zh": "联系我们"
+ },
+ "faq.073": {
+  "en": "validation page",
+  "zh": "验证方法页面"
+ },
+ "faq.074": {
+  "en": "states what was compared and how, and prints the engine's full output for an invented home so you can re-run it. The engine also matches commercial chart products character-for-character on the calendar layer. Deterministic output is what makes such checks possible: run it twice and compare.",
+  "zh": "说明了比对了什么、怎么比对，并列出引擎对一处虚构住宅的完整输出，供你自己重新运行。在历法层面，引擎也与商业排盘产品逐字一致。正是确定性的输出让这样的核对成为可能：跑两次，对比一下即可。"
+ },
+ "faq.075": {
+  "en": "Validation",
+  "zh": "验证方法"
  }
 }

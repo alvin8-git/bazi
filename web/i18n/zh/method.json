@@ -186,5 +186,21 @@
  "method.047": {
   "en": ": each chip's classical basis, and what the percentile beside a score is and is not.",
   "zh": "：每条规则的古典依据，以及分数旁的百分位是什么、不是什么。"
+ },
+ "method.048": {
+  "en": "Privacy",
+  "zh": "隐私说明"
+ },
+ "method.049": {
+  "en": "Terms",
+  "zh": "使用条款"
+ },
+ "method.050": {
+  "en": "Contact",
+  "zh": "联系我们"
+ },
+ "method.051": {
+  "en": "Validation",
+  "zh": "验证方法"
  }
 }

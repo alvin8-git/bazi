@@ -263,8 +263,40 @@
   "en": "Author",
   "zh": "作者"
  },
+ "start.067": {
+  "en": "Privacy",
+  "zh": "隐私说明"
+ },
+ "start.068": {
+  "en": "Terms",
+  "zh": "使用条款"
+ },
+ "start.069": {
+  "en": "Contact",
+  "zh": "联系我们"
+ },
+ "start.070": {
+  "en": "Delete this workspace",
+  "zh": "删除这个工作区"
+ },
+ "start.071": {
+  "en": "This removes every person, home, pair setting and uploaded floor plan in this workspace from our server. It cannot be undone, and your link stops working.",
+  "zh": "这会把这个工作区里的所有人员、住宅、配对设置和已上传的户型图，从我们的服务器上删除。删除后无法撤销，你的链接也会失效。"
+ },
+ "start.072": {
+  "en": "Delete this workspace now?",
+  "zh": "现在就删除这个工作区吗？"
+ },
+ "start.073": {
+  "en": "What we keep and for how long",
+  "zh": "我们保存什么、保存多久"
+ },
  "start.notice": {
   "en": "A Chinese version of this page is coming soon.",
   "zh": "此页面的中文版本即将推出"
+ },
+ "start.074": {
+  "en": "Validation",
+  "zh": "验证方法"
  }
 }

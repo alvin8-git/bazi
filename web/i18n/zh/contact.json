@@ -1,0 +1,166 @@
+{
+ "contact.001": {
+  "en": "Contact us | bazifor.me",
+  "zh": "联系我们 / bazifor.me"
+ },
+ "contact.002": {
+  "en": "Email bazifor.me with a question, a correction, a data-deletion request or a bug. Replies are best effort, with no promised time.",
+  "zh": "有问题、要更正、要删除数据或发现故障，请发邮件给 bazifor.me。我们尽力回复，不承诺回复时间。"
+ },
+ "contact.003": {
+  "en": "Contact bazifor.me",
+  "zh": "联系 bazifor.me"
+ },
+ "contact.004": {
+  "en": "website",
+  "zh": "(same)"
+ },
+ "contact.005": {
+  "en": "https://bazifor.me/contact",
+  "zh": "(same)"
+ },
+ "contact.006": {
+  "en": "https://bazifor.me/static/og/contact.png",
+  "zh": "(same)"
+ },
+ "contact.007": {
+  "en": "summary_large_image",
+  "zh": "(same)"
+ },
+ "contact.008": {
+  "en": "bazifor.me",
+  "zh": "八字为我"
+ },
+ "contact.009": {
+  "en": "Your Reading",
+  "zh": "你的解读"
+ },
+ "contact.010": {
+  "en": "Home Fengshui",
+  "zh": "家居风水"
+ },
+ "contact.011": {
+  "en": "Baby Names",
+  "zh": "宝宝起名"
+ },
+ "contact.012": {
+  "en": "Learn",
+  "zh": "指南"
+ },
+ "contact.013": {
+  "en": "Contact",
+  "zh": "联系我们"
+ },
+ "contact.014": {
+  "en": "Questions, corrections, deletion requests and bugs",
+  "zh": "提问、更正、删除请求和故障反馈"
+ },
+ "contact.015": {
+  "en": "Last updated:",
+  "zh": "最后更新："
+ },
+ "contact.016": {
+  "en": "Email us at",
+  "zh": "请发邮件到"
+ },
+ "contact.017": {
+  "en": "baziadmin@gmail.com",
+  "zh": "(same)"
+ },
+ "contact.018": {
+  "en": "What to write about",
+  "zh": "可以写些什么"
+ },
+ "contact.019": {
+  "en": "a question about a reading or how the site works",
+  "zh": "对解读或本站运作方式的疑问"
+ },
+ "contact.020": {
+  "en": "a correction to a rule, a date or a translation",
+  "zh": "对某条规则、某个日期或某处翻译的更正"
+ },
+ "contact.021": {
+  "en": "a request to delete your data",
+  "zh": "删除你的数据的请求"
+ },
+ "contact.022": {
+  "en": "a bug (tell us the page and what you did)",
+  "zh": "发现故障（请告诉我们是哪个页面、你做了什么）"
+ },
+ "contact.023": {
+  "en": "For a deletion request, include your workspace link so we know which workspace you mean. You can also delete it yourself, in one step, from the workspace page.",
+  "zh": "提出删除请求时，请附上你的工作区链接，让我们知道你指的是哪个工作区。你也可以在工作区页面一步删除。"
+ },
+ "contact.024": {
+  "en": "How deletion works: Privacy",
+  "zh": "删除是怎么回事：隐私说明"
+ },
+ "contact.025": {
+  "en": "When to expect a reply",
+  "zh": "多久会有回复"
+ },
+ "contact.026": {
+  "en": "We answer as we can. We do not promise a reply time.",
+  "zh": "我们尽力回复，但不承诺回复时间。"
+ },
+ "contact.027": {
+  "en": "Email is the only way to reach us.",
+  "zh": "联系我们只有发邮件这一种方式。"
+ },
+ "contact.028": {
+  "en": "© bazifor.me, deterministic BaZi & fengshui readings.",
+  "zh": "© bazifor.me，按固定规则推算的八字与风水解读。"
+ },
+ "contact.029": {
+  "en": "BaZi",
+  "zh": "八字"
+ },
+ "contact.030": {
+  "en": "Home fengshui",
+  "zh": "家居风水"
+ },
+ "contact.031": {
+  "en": "Baby names",
+  "zh": "宝宝起名"
+ },
+ "contact.032": {
+  "en": "Kua number",
+  "zh": "命卦"
+ },
+ "contact.033": {
+  "en": "Guides in Chinese (",
+  "zh": "中文指南"
+ },
+ "contact.034": {
+  "en": "How it works",
+  "zh": "运作原理"
+ },
+ "contact.035": {
+  "en": "About",
+  "zh": "关于"
+ },
+ "contact.036": {
+  "en": "FAQ",
+  "zh": "常见问题"
+ },
+ "contact.037": {
+  "en": "Method",
+  "zh": "方法"
+ },
+ "contact.038": {
+  "en": "Author",
+  "zh": "作者"
+ },
+ "contact.039": {
+  "en": "Privacy",
+  "zh": "隐私说明"
+ },
+ "contact.040": {
+  "en": "Terms",
+  "zh": "使用条款"
+ },
+ "contact.041": {
+  "en": "Validation",
+  "zh": "验证方法"
+ }
+}

@@ -474,5 +474,21 @@
  "kua.119": {
   "en": "Author",
   "zh": "作者"
+ },
+ "kua.120": {
+  "en": "Privacy",
+  "zh": "隐私说明"
+ },
+ "kua.121": {
+  "en": "Terms",
+  "zh": "使用条款"
+ },
+ "kua.122": {
+  "en": "Contact",
+  "zh": "联系我们"
+ },
+ "kua.123": {
+  "en": "Validation",
+  "zh": "验证方法"
  }
 }

@@ -284,12 +284,12 @@
   "zh": "文字来自规则输出和人工撰写的指南。各流派有分歧的地方，引擎会记下它的取舍，并标注为有争议。"
  },
  "landing.073": {
-  "en": "The home engine reproduced a paid professional audit to the digit: 27 of 27 flying-star palaces and 32 of 32 directional assignments, as described on the",
-  "zh": "家居引擎复现了一份付费专业风水评估报告的全部结果，逐项吻合：27 个玄空飞星宫位对上 27 个，32 项方位判定对上 32 项。详见"
+  "en": "The home engine reproduced a paid professional audit to the digit: 27 of 27 flying-star palace numbers and 32 of 32 directional assignments. That was one home and one audit. See",
+  "zh": "家居引擎复现了一份付费专业风水评估报告，精确到每一个数字：27/27 个飞星宫位数字、32/32 项方位判定全部吻合。这只是一处住宅、一份评估报告，请看"
  },
  "landing.074": {
-  "en": "about page",
-  "zh": "关于页面"
+  "en": "how it was checked",
+  "zh": "这是怎么验证的"
  },
  "landing.075": {
   "en": ". Read the full",
@@ -458,5 +458,21 @@
  "landing.116": {
   "en": "Site links",
   "zh": "站点链接"
+ },
+ "landing.117": {
+  "en": "Privacy",
+  "zh": "隐私说明"
+ },
+ "landing.118": {
+  "en": "Terms",
+  "zh": "使用条款"
+ },
+ "landing.119": {
+  "en": "Contact",
+  "zh": "联系我们"
+ },
+ "landing.120": {
+  "en": "Validation",
+  "zh": "验证方法"
  }
 }

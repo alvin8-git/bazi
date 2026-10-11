@@ -200,6 +200,14 @@ body.has-people .empty-state{display:none}
 #share-sec .share .st{color:var(--ink);font-size:15px}
 #share-sec #btn-copy{background:#fff;color:var(--accent);border:1px solid var(--accent);min-height:44px;border-radius:10px;font-weight:600}
 .share-sec .url{font-size:13px}
+#delete-sec{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:18px 22px;margin:18px 0}
+#delete-sec>h2{font-size:22px;color:var(--ink);margin:0 0 4px}
+#delete-sec .subhead{font-size:15px;margin:0 0 12px}
+#btn-delete{min-height:44px;padding:10px 22px;border-radius:10px;border:1px solid #a82716;background:#fff;color:#a82716;font-weight:700;cursor:pointer}
+#btn-delete:hover{background:#fdecea}
+#delete-sec .dlink{margin:12px 0 0;font-size:14px}
+#delete-sec .dlink a{display:inline-flex;align-items:center;min-height:44px;color:var(--accent)}
+#del-err:not(:empty){margin-top:10px;padding:8px 12px;border-left:4px solid var(--seal);background:#fdecea;border-radius:6px}
 .nextstrip{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin:22px 0 0;display:flex;gap:16px;align-items:center}
 .nextstrip img{width:48px;height:48px;border-radius:10px;flex:none;object-fit:cover}
 .nextstrip h2{margin:0 0 6px;font-size:22px;color:var(--ink)}
@@ -315,6 +323,15 @@ nav.top a{min-height:44px;display:inline-flex;align-items:center}
     <div class="hint">日柱合婚，按 0–100 分打分，并列出计分规则。完整的两人化解建议和家庭择时策略，见每个人各自的报告。</div>
     <p class="howto"><b>怎么看：</b>分数由引擎算出，分数越高，关系越顺。</p>
     <div id="harmony"></div>
+  </div>
+
+  <div class="sec" id="delete-sec" hidden>
+    <h2>删除这个工作区</h2>
+    <p class="subhead" id="del-note">这会把这个工作区里的所有人员、住宅、配对设置和已上传的户型图，从我们的服务器上删除。删除后无法撤销，你的链接也会失效。</p>
+    <p id="del-ask" hidden>现在就删除这个工作区吗？</p>
+    <button type="button" id="btn-delete">删除这个工作区</button>
+    <div class="err" id="del-err" role="alert"></div>
+    <p class="subhead dlink"><a href="/zh/privacy">我们保存什么、保存多久</a></p>
   </div>
 
   <nav class="nextstrip" aria-labelledby="next-h">
@@ -490,6 +507,7 @@ function render() {
   $("#nav-fs").href = `/w/${token}/fengshui`;
   document.querySelectorAll("a.ws-fs").forEach(a => { a.href = `/w/${token}/fengshui`; });
   $("#harmony-sec").hidden = !ws.harmony;
+  $("#delete-sec").hidden = false;
   if (ws.harmony) $("#harmony").innerHTML = harmonyTable(ws.harmony);
   document.querySelectorAll(".del").forEach(b => b.addEventListener("click", async () => {
     if (!confirm(`Remove ${ws.people[b.dataset.i].name}?`)) return;
@@ -523,6 +541,16 @@ function render() {
     location.href = `/w/${token}/person/${cd.dataset.i}/reading`;
   }));
 }
+
+$("#btn-delete").addEventListener("click", async () => {
+  if (!token) return;
+  if (!confirm($("#del-note").textContent + "\n\n" + $("#del-ask").textContent)) return;
+  $("#del-err").textContent = "";
+  try {
+    await api(`/api/pub/workspace/${token}`, {method: "DELETE"});
+    location.replace(location.pathname.startsWith("/zh/") ? "/zh" : "/");
+  } catch (e) { $("#del-err").textContent = e.message; }
+});
 
 let addPlace = null;
 placePicker($("#f-place"), null, "fp").then((g) => (addPlace = g));
@@ -562,10 +590,10 @@ $("#btn-add").addEventListener("click", async () => {
   }
 })();
 </script>
-<script>/* Vercel Web Analytics — only on the public host */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
+<script>/* Vercel Web Analytics: only on the public host. A workspace link is a secret, so the token is replaced with a placeholder before any event is sent (vercel.com/docs/analytics/redacting-sensitive-data). */if(/(^|\.)bazifor\.me$/.test(location.hostname)){window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};var _scrub=function(u){try{var x=new URL(u,location.origin);x.pathname=x.pathname.replace(/^\/(zh\/)?w\/[^/]+/,'/$1w/[token]');if(x.searchParams.has('ws'))x.searchParams.set('ws','[token]');return x.toString()}catch(e){return u}};window.va('beforeSend',function(ev){if(!ev)return ev;if(ev.url)ev.url=_scrub(ev.url);if(ev.referrer)ev.referrer=_scrub(ev.referrer);return ev});var _vs=document.createElement('script');_vs.defer=true;_vs.src='/_vercel/insights/script.js';document.head.appendChild(_vs)}</script>
 <div class="learnstrip"><b>学习：</b> <a href="/zh/learn/four-pillars-explained">如何读懂四柱命盘</a> <a href="/zh/learn/day-masters-explained">十种日主</a> <a href="/zh/learn/useful-god-colors">用神五行的颜色</a></div>
 <footer class="sitefoot">© bazifor.me，按固定规则推算的八字与风水解读。<br>
-<span class="fnav"><a href="/zh/start">八字</a> · <a href="/fengshui">家居风水</a> · <a href="/zh/baby">宝宝起名</a> · <a href="/zh/kua">命卦</a> · <a href="/zh/learn">指南</a> · <a href="/zh/learn">中文指南</a> · <a href="/zh/how-it-works">运作原理</a> · <a href="/zh/about">关于</a> · <a href="/zh/faq">常见问题</a> · <a href="/zh/method">方法</a> · <a href="/zh/author">作者</a></span></footer>
+<span class="fnav"><a href="/zh/start">八字</a> · <a href="/fengshui">家居风水</a> · <a href="/zh/baby">宝宝起名</a> · <a href="/zh/kua">命卦</a> · <a href="/zh/learn">指南</a> · <a href="/zh/learn">中文指南</a> · <a href="/zh/how-it-works">运作原理</a> · <a href="/zh/about">关于</a> · <a href="/zh/faq">常见问题</a> · <a href="/zh/method">方法</a> · <a href="/zh/author">作者</a> · <a href="/zh/privacy">隐私说明</a> · <a href="/zh/terms">使用条款</a> · <a href="/zh/contact">联系我们</a> · <a href="/zh/validation">验证方法</a></span></footer>
 <script>/*wslang*/(() => {
   const m = location.pathname.match(/^(\/zh)?\/w\/([A-Za-z0-9_-]{8,64})/), t = document.querySelector("a.langtoggle");
   if (!m || !t) return;

@@ -206,5 +206,21 @@
  "author.052": {
   "en": "Author",
   "zh": "作者"
+ },
+ "author.053": {
+  "en": "Privacy",
+  "zh": "隐私说明"
+ },
+ "author.054": {
+  "en": "Terms",
+  "zh": "使用条款"
+ },
+ "author.055": {
+  "en": "Contact",
+  "zh": "联系我们"
+ },
+ "author.056": {
+  "en": "Validation",
+  "zh": "验证方法"
  }
 }

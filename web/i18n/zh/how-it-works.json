@@ -256,8 +256,8 @@
   "zh": "精确到每一个数字"
  },
  "how-it-works.065": {
-  "en": "— 27/27 flying-star palaces and 32/32 directional assignments — and matches commercial BaZi chart products character-for-character on the calendar layer. Determinism makes that test possible: run it twice, get the same answer, compare against a benchmark. A chatbot can pass no such test.",
-  "zh": "，27/27 个飞星宫位和 32/32 项方位判定全部吻合；在历法层面，与商业八字排盘产品逐字一致。确定性让这样的检验成为可能：同样的输入跑两次，得到同样的答案，再与基准对照。聊天机器人通不过这样的检验。"
+  "en": ": 27/27 flying-star palace numbers and 32/32 directional assignments. That was one home and one audit, not a benchmark suite, and",
+  "zh": "：27/27 个飞星宫位数字、32/32 项方位判定全部吻合。这只是一处住宅、一份评估报告，不是一整套基准测试，"
  },
  "how-it-works.066": {
   "en": "Curious about the methods themselves? The",
@@ -330,5 +330,29 @@
  "how-it-works.083": {
   "en": "Author",
   "zh": "作者"
+ },
+ "how-it-works.084": {
+  "en": "Privacy",
+  "zh": "隐私说明"
+ },
+ "how-it-works.085": {
+  "en": "Terms",
+  "zh": "使用条款"
+ },
+ "how-it-works.086": {
+  "en": "Contact",
+  "zh": "联系我们"
+ },
+ "how-it-works.087": {
+  "en": "the validation page",
+  "zh": "验证方法页面"
+ },
+ "how-it-works.088": {
+  "en": "shows how it was checked and lets you re-run the engine yourself. It also matches commercial BaZi chart products character-for-character on the calendar layer. Determinism makes such checks possible: run it twice, get the same answer. A chatbot can pass no such test.",
+  "zh": "说明了它是怎么验证的，还能让你自己重新运行引擎。在历法层面，引擎也与商业八字排盘产品逐字一致。确定性让这样的核对成为可能：同样的输入跑两次，得到同样的答案。聊天机器人通不过这样的检验。"
+ },
+ "how-it-works.089": {
+  "en": "Validation",
+  "zh": "验证方法"
  }
 }

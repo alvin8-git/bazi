@@ -495,8 +495,24 @@
   "en": "Author",
   "zh": "作者"
  },
+ "baby.125": {
+  "en": "Privacy",
+  "zh": "隐私说明"
+ },
+ "baby.126": {
+  "en": "Terms",
+  "zh": "使用条款"
+ },
+ "baby.127": {
+  "en": "Contact",
+  "zh": "联系我们"
+ },
  "baby.notice": {
   "en": "A Chinese version of this page is coming soon.",
   "zh": "此页面的中文版本即将推出"
+ },
+ "baby.128": {
+  "en": "Validation",
+  "zh": "验证方法"
  }
 }
