@@ -1787,6 +1787,120 @@ def robots():
 def _seo_file(name: str) -> Path:
     return ROOT / "data/seo" / name
 
+# --- Last-Modified for generated pages -------------------------------------------------------
+# The pages under web/ are build output, so the file mtime says nothing (it is a fixed 2018 value
+# in the deployed bundle).  Each page gets a date that means something, worked out ONCE at import:
+#   1. a guide (web/learn, web/learn-zh):  the dateModified in its own JSON-LD
+#   2. any other page under web/:          the last git commit time of its source file
+#   3. no git history in the bundle:       data/seo/lastmod.json (written by scripts/seo_build.py)
+#   4. none of the above:                  no Last-Modified header (never the meaningless mtime)
+# The ETag is still Starlette's.  PageFile also answers If-None-Match / If-Modified-Since with 304
+# (Starlette 0.37 FileResponse does not), If-None-Match winning when both are sent (RFC 9110 13.1.3).
+def _web_public_path(rel: str) -> str:
+    """web/learn-zh/x.html -> /zh/learn/x, web/zh/landing.html -> /zh, web/fs_analyze.html -> /fengshui."""
+    parts = rel.removesuffix(".html").split("/")[1:]
+    if parts[0] == "learn":
+        return "/learn" + ("" if parts[-1] == "index" else "/" + parts[-1])
+    if parts[0] == "learn-zh":
+        return "/zh/learn" + ("" if parts[-1] == "index" else "/" + parts[-1])
+    if parts[0] == "zh":
+        return "/zh" + ("" if parts[-1] == "landing" else "/" + parts[-1])
+    if parts == ["landing"]:
+        return "/"
+    return "/fengshui" if parts == ["fs_analyze"] else "/" + "/".join(parts)
+
+
+def _page_timestamps() -> dict[str, int]:
+    """{'web/about.html': unix seconds, ...} for every page-like file under web/ (see the rules above)."""
+    import calendar
+    import subprocess
+    git: dict[str, int] = {}
+    try:
+        out = subprocess.run(["git", "log", "--format=@%ct", "--name-only", "--", "web"], cwd=ROOT,
+                             capture_output=True, text=True, timeout=30).stdout
+        ts = 0
+        for line in out.splitlines():
+            if line.startswith("@"):
+                ts = int(line[1:])
+            elif line and line not in git:          # newest commit first: the first sighting wins
+                git[line] = ts
+    except (OSError, ValueError, subprocess.SubprocessError):
+        pass
+    try:
+        lm = json.loads(_seo_file("lastmod.json").read_text("utf8"))
+    except (OSError, ValueError):
+        lm = {}
+    stamps: dict[str, int] = {}
+    for f in sorted((ROOT / "web").rglob("*")):
+        if not f.is_file() or f.suffix not in (".html", ".svg", ".ico", ".png", ".webmanifest", ".xml"):
+            continue
+        rel = f.relative_to(ROOT).as_posix()
+        got = None
+        if f.suffix == ".html" and rel.startswith(("web/learn/", "web/learn-zh/")) and not rel.endswith("/index.html"):
+            m = re.search(r'"dateModified":\s*"(\d{4})-(\d\d)-(\d\d)', f.read_text("utf8"))
+            if m:
+                got = calendar.timegm((int(m[1]), int(m[2]), int(m[3]), 0, 0, 0))
+        if got is None:
+            got = git.get(rel)
+        if got is None and f.suffix == ".html":
+            m = re.fullmatch(r"(\d{4})-(\d\d)-(\d\d)", lm.get(_web_public_path(rel), ""))
+            if m:
+                got = calendar.timegm((int(m[1]), int(m[2]), int(m[3]), 0, 0, 0))
+        if got is not None:
+            stamps[rel] = got
+    return stamps
+
+
+_PAGE_TS = _page_timestamps()
+
+
+def _etag_match(header: str, etag: str) -> bool:
+    if header.strip() == "*":
+        return True
+    weak = lambda t: t.strip().removeprefix("W/")
+    return weak(etag) in {weak(t) for t in header.split(",")}
+
+
+class PageFile(FileResponse):
+    """FileResponse for a generated page: meaningful Last-Modified (or none) and real 304 answers."""
+
+    def __init__(self, path, **kw):
+        self._ts = _PAGE_TS.get(Path(path).resolve().relative_to(ROOT.resolve()).as_posix())
+        super().__init__(path, **kw)
+
+    async def __call__(self, scope, receive, send):
+        import os
+        from email.utils import formatdate, parsedate_to_datetime
+        if self.stat_result is None:
+            try:
+                self.stat_result = os.stat(self.path)
+            except FileNotFoundError:
+                raise RuntimeError(f"File at path {self.path} does not exist.")
+            self.set_stat_headers(self.stat_result)
+        if self._ts is None:
+            if "last-modified" in self.headers:
+                del self.headers["last-modified"]
+        else:
+            self.headers["last-modified"] = formatdate(self._ts, usegmt=True)
+        if scope["type"] == "http" and scope["method"] in ("GET", "HEAD"):
+            req = {k.decode("latin-1").lower(): v.decode("latin-1") for k, v in scope["headers"]}
+            fresh = False
+            if "if-none-match" in req:
+                fresh = _etag_match(req["if-none-match"], self.headers["etag"])
+            elif "if-modified-since" in req and self._ts is not None:
+                try:
+                    fresh = self._ts <= parsedate_to_datetime(req["if-modified-since"]).timestamp()
+                except (TypeError, ValueError):
+                    fresh = False
+            if fresh:
+                keep = {"etag", "last-modified", "cache-control", "content-type"}
+                hdrs = [(k, v) for k, v in self.raw_headers if k.decode("latin-1").lower() in keep]
+                await send({"type": "http.response.start", "status": 304, "headers": hdrs})
+                await send({"type": "http.response.body", "body": b"", "more_body": False})
+                return
+        await super().__call__(scope, receive, send)
+
+
 
 @router.get("/llms.txt", response_class=PlainTextResponse)
 def llms_txt():
@@ -1845,32 +1959,32 @@ def _html_unescape(s: str) -> str:
 
 @router.get("/favicon.svg")
 def favicon():
-    return FileResponse(ROOT / "web/favicon.svg", media_type="image/svg+xml",
+    return PageFile(ROOT / "web/favicon.svg", media_type="image/svg+xml",
                         headers={"Cache-Control": "public, max-age=604800"})
 
 
 @router.get("/favicon.ico")
 def favicon_ico():
-    return FileResponse(ROOT / "web/favicon.ico", media_type="image/x-icon",
+    return PageFile(ROOT / "web/favicon.ico", media_type="image/x-icon",
                         headers={"Cache-Control": "public, max-age=604800"})
 
 
 @router.get("/manifest.webmanifest")
 def web_manifest():
-    return FileResponse(ROOT / "web/manifest.webmanifest", media_type="application/manifest+json",
+    return PageFile(ROOT / "web/manifest.webmanifest", media_type="application/manifest+json",
                         headers={"Cache-Control": "public, max-age=604800"})
 
 
 @router.get("/browserconfig.xml")
 def browserconfig():
-    return FileResponse(ROOT / "web/browserconfig.xml", media_type="application/xml",
+    return PageFile(ROOT / "web/browserconfig.xml", media_type="application/xml",
                         headers={"Cache-Control": "public, max-age=604800"})
 
 
 @router.get("/apple-touch-icon.png")
 @router.get("/apple-touch-icon-precomposed.png")
 def apple_touch_icon():
-    return FileResponse(ROOT / "web/apple-touch-icon.png", media_type="image/png",
+    return PageFile(ROOT / "web/apple-touch-icon.png", media_type="image/png",
                         headers={"Cache-Control": "public, max-age=604800"})
 
 
@@ -1890,12 +2004,12 @@ def indexnow_key_file(key: str):
 
 @router.get("/method")
 def method_page():
-    return FileResponse(ROOT / "web/method.html")
+    return PageFile(ROOT / "web/method.html")
 
 
 @router.get("/author")
 def author_page():
-    return FileResponse(ROOT / "web/author.html")
+    return PageFile(ROOT / "web/author.html")
 
 
 def _learn_slugs(sub: str = "web/learn") -> list[str]:
@@ -1928,22 +2042,22 @@ def sitemap():
 
 @router.get("/how-it-works")
 def how_it_works_page():
-    return FileResponse(ROOT / "web/how-it-works.html")
+    return PageFile(ROOT / "web/how-it-works.html")
 
 
 @router.get("/about")
 def about_page():
-    return FileResponse(ROOT / "web/about.html")
+    return PageFile(ROOT / "web/about.html")
 
 
 @router.get("/faq")
 def faq_page():
-    return FileResponse(ROOT / "web/faq.html")
+    return PageFile(ROOT / "web/faq.html")
 
 
 @router.get("/learn")
 def learn_hub():
-    return FileResponse(ROOT / "web/learn/index.html")
+    return PageFile(ROOT / "web/learn/index.html")
 
 
 @router.get("/learn/{slug}")
@@ -1953,12 +2067,12 @@ def learn_article(slug: str):
     f = ROOT / "web/learn" / f"{slug}.html"
     if not f.is_file():
         raise HTTPException(404)
-    return FileResponse(f)
+    return PageFile(f)
 
 
 @router.get("/zh/learn")
 def learn_hub_zh():
-    return FileResponse(ROOT / "web/learn-zh/index.html")
+    return PageFile(ROOT / "web/learn-zh/index.html")
 
 
 @router.get("/zh/learn/{slug}")
@@ -1968,39 +2082,39 @@ def learn_article_zh(slug: str):
     f = ROOT / "web/learn-zh" / f"{slug}.html"
     if not f.is_file():
         raise HTTPException(404)
-    return FileResponse(f)
+    return PageFile(f)
 
 
 @router.get("/start")
 def start_page():
-    return FileResponse(ROOT / "web/start.html")
+    return PageFile(ROOT / "web/start.html")
 
 
 @router.get("/w/{token}")
 def workspace_page(token: str):
     _load(token)
-    return FileResponse(ROOT / "web/start.html")
+    return PageFile(ROOT / "web/start.html")
 
 
 @router.get("/fengshui")
 def fengshui_page():
-    return FileResponse(ROOT / "web/fs_analyze.html")
+    return PageFile(ROOT / "web/fs_analyze.html")
 
 
 @router.get("/w/{token}/fengshui")
 def fengshui_ws_page(token: str):
     _load(token)
-    return FileResponse(ROOT / "web/fs_analyze.html")
+    return PageFile(ROOT / "web/fs_analyze.html")
 
 
 @router.get("/baby")
 def baby_page():
-    return FileResponse(ROOT / "web/baby.html")
+    return PageFile(ROOT / "web/baby.html")
 
 
 @router.get("/kua")
 def kua_page():
-    return FileResponse(ROOT / "web/kua.html")
+    return PageFile(ROOT / "web/kua.html")
 
 
 # Simplified Chinese twins (Phase 1): generated by scripts/build_zh.py into web/zh/, served as plain files
@@ -2010,7 +2124,7 @@ ZH_PAGES = {"": "landing", "/start": "start", "/baby": "baby", "/kua": "kua", "/
 
 
 def _zh_page(name: str):
-    return FileResponse(ROOT / "web/zh" / f"{name}.html")
+    return PageFile(ROOT / "web/zh" / f"{name}.html")
 
 
 @router.get("/zh")

@@ -509,7 +509,9 @@ def test_author_page_and_article_bylines():
         t = client.get(f"/{sub}/what-is-bazi").text
         ld = [_json.loads(m) for m in _re.findall(r'<script type="application/ld\+json">(.*?)</script>', t, _re.S)]
         art = next(x for x in ld if x["@type"] == "Article")
-        assert art["author"] == {"@type": "Person", "name": "BaziMaster", "url": "https://bazifor.me/author"}
+        assert art["author"] == {"@type": "Person", "@id": "https://bazifor.me/author#person", "name": "BaziMaster", "url": "https://bazifor.me/author"}
+        assert art["@id"].endswith("#article") and art["publisher"]["@id"] == "https://bazifor.me/#org"
+        assert art["publisher"]["logo"]["url"] == "https://bazifor.me/static/img/brand/icon-512.png"
         assert _re.fullmatch(r"\d{4}-\d{2}-\d{2}", art["dateModified"]) and art["dateModified"] >= art["datePublished"]
         assert 'rel="author"' in t and "<time datetime=" in t and "/author" in t
 

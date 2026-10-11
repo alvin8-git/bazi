@@ -68,14 +68,53 @@ async def _apex_host(request, call_next):
     return await call_next(request)
 
 
+# Cache policy for /static.  Nothing under web/ has a content hash or a ?v= in its URL, so no asset can be
+# `immutable` yet: images (the reading art, brand icons, OG cards, guide heroes) get a day, because the art is
+# regenerated in place now and then; everything else (app.js, style.css, glossary*.js, place-picker.js, the i18n
+# and city JSON) keeps no-cache, because a cached old script silently renders a stale layout after a deploy.
+# If these URLs ever carry a content hash, give them `public, max-age=31536000, immutable` here.
+_IMAGE_EXT = (".png", ".jpg", ".jpeg", ".webp", ".svg", ".gif", ".ico")
+_STATIC_IMAGE_CC = "public, max-age=86400"
+
+# Sent on every response.  Permissions-Policy denies only features the site never uses (clipboard-write stays,
+# the share-link button needs it).  X-Frame-Options: no page frames another and none is meant to be framed.
+_SECURITY_HEADERS = {
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "X-Frame-Options": "SAMEORIGIN",
+    "Permissions-Policy": ("accelerometer=(), autoplay=(), camera=(), display-capture=(), encrypted-media=(), "
+                           "fullscreen=(), geolocation=(), gyroscope=(), hid=(), magnetometer=(), microphone=(), "
+                           "midi=(), payment=(), serial=(), usb=(), xr-spatial-tracking=()"),
+}
+# Sent on HTML documents only.  Deliberately NO script-src / style-src / default-src: every page ships inline
+# <script> and <style> (and the tool pages inline event handlers), so a script policy needs hashes or a nonce first.
+# These four directives restrict nothing the pages do (no plugins, no <base>, forms post same-origin, never framed).
+_HTML_CSP = "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+
+
+@app.middleware("http")
+async def _security_headers(request, call_next):
+    resp = await call_next(request)
+    for k, v in _SECURITY_HEADERS.items():
+        resp.headers.setdefault(k, v)
+    if "text/html" in resp.headers.get("content-type", ""):
+        resp.headers.setdefault("Content-Security-Policy", _HTML_CSP)
+    return resp
+
+
 @app.middleware("http")
 async def _no_stale_ui(request, call_next):
     """HTML pages and /static JS/CSS must revalidate — a cached old app.js
-    silently renders stale layouts after a deploy (ETag still gives 304s)."""
+    silently renders stale layouts after a deploy (ETag still gives 304s).
+    /static images get a short public max-age (see _IMAGE_EXT above)."""
     resp = await call_next(request)
     ct = resp.headers.get("content-type", "")
-    if "text/html" in ct or request.url.path.startswith("/static"):
+    path = request.url.path
+    if "text/html" in ct:
         resp.headers["Cache-Control"] = "no-cache"
+    elif path.startswith("/static"):
+        is_image = path.lower().endswith(_IMAGE_EXT) and resp.status_code in (200, 206, 304)
+        resp.headers["Cache-Control"] = _STATIC_IMAGE_CC if is_image else "no-cache"
     return resp
 
 
@@ -686,7 +725,8 @@ def report(year: int = 2026, period: int = 8, month: int | None = None,
 
 @app.get("/")
 def index():
-    return FileResponse(ROOT / "web/landing.html")
+    from public import PageFile
+    return PageFile(ROOT / "web/landing.html")
 
 
 # /app (the classic tabbed app over web/index.html) was retired on 2026-10-11 at the owner's
