@@ -607,6 +607,20 @@ def _compact(r: str) -> str:
     return f"{m.group(1)}, {m.group(2)}" if m else r
 
 
+# A bracket after a Chinese term is usually its gloss, but an author's aside (a "method note" bracket, or an
+# article-led phrase) is not: treating it as one hoisted the aside in place of the term and dropped the brackets.
+_NOTE = re.compile(r"(?:method note\b|an?\s|the\s)", re.I)
+
+
+def _is_note(x: str) -> bool:
+    return bool(_NOTE.match(x)) or ":" in x
+
+
+# A rendering that follows a count ("two different 時辰") takes the plural; the table holds singular forms only.
+_PLURAL = {"two-hour period": "two-hour periods"}
+_COUNTED = re.compile(r"\b(?:two|three|four|five|six|several|many)(?: different| other)?\s$", re.I)
+
+
 def _opened(out: str) -> bool:
     return out.endswith(("(", "（"))
 
@@ -814,6 +828,8 @@ class Gloss:
                         continue
                 # '中 (x)' — something already sits in the parentheses
                 ma = re.match(r"\s?[(（]\s*([A-Za-zÀ-ɏ][^()（）㐀-鿿]{0,60}?)\s*[)）]", after)
+                if ma and _is_note(ma.group(1)):
+                    ma = None        # the author's own aside, not a gloss: hoisting it dropped the term and the brackets
                 if ma:
                     x = ma.group(1)
                     if not en_:
@@ -851,6 +867,10 @@ class Gloss:
                         out = out[:-2]
                     continue
             r = self._render_run(run)
+            if r and _COUNTED.search(out):
+                for one, many in _PLURAL.items():
+                    if r.startswith(one):
+                        r = many + r[len(one):]
             out += _cap(out, r) if r is not None else run
         return out + s[pos:]
 

@@ -11,12 +11,14 @@ import datetime as _dt
 import json
 from functools import lru_cache
 from pathlib import Path
-from urllib.parse import quote
+from urllib.parse import quote, urlsplit
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.exception_handlers import http_exception_handler
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from engine.bazi import CLOCK, TRUE_SOLAR, build_chart
 from engine.careers import career_paths
@@ -62,10 +64,64 @@ async def _apex_host(request, call_next):
     """www.bazifor.me serves the same site — 308 to the apex so every page has one URL."""
     host = request.headers.get("host", "")
     if host.lower().startswith("www."):
-        from fastapi.responses import RedirectResponse
         url = request.url.replace(netloc=host[4:])
         return RedirectResponse(str(url), status_code=308)
     return await call_next(request)
+
+
+@app.middleware("http")
+async def _permanent_slash(request, call_next):
+    """A trailing-slash twin ("/learn/" for "/learn") is a permanent move: Starlette answers it 307, which tells a
+    crawler the move is temporary.  Same Location, status 308 (method and body preserved, like the 307)."""
+    resp = await call_next(request)
+    loc = resp.headers.get("location") if resp.status_code == 307 else None
+    if loc:
+        want, got = request.url.path, urlsplit(loc).path
+        if got != want and got.rstrip("/") == want.rstrip("/"):
+            return RedirectResponse(loc, status_code=308)
+    return resp
+
+
+# Unknown page: a small HTML page for a person, JSON for a program.  /api/ and /static/ keep the JSON body (clients parse
+# it), and so does any path that names a file (".txt", ".png"): only an extension-less or ".html" path is a page.
+# The Chinese words reuse the site's own labels (brand, 个人命盘 and 知识库 from the guides' nav); the "page not found"
+# line has no existing row in any string table, so both languages' headings are new copy for the owner to approve.
+_NOT_FOUND = {
+    "en": {"lang": "en", "title": "Page not found", "h1": "Page not found",
+           "links": (("/", "Home"), ("/learn", "Learn"), ("/start", "Your Reading"))},
+    "zh": {"lang": "zh-CN", "title": "找不到这个页面", "h1": "找不到这个页面",
+           "links": (("/zh", "bazifor.me"), ("/zh/learn", "知识库"), ("/zh/start", "个人命盘"))},
+}
+
+
+def _is_page_path(path: str) -> bool:
+    if path.startswith(("/api/", "/static/")):
+        return False
+    last = path.rsplit("/", 1)[-1]
+    return "." not in last or last.endswith((".html", ".htm"))
+
+
+def _not_found_page(path: str) -> str:
+    t = _NOT_FOUND["zh" if path == "/zh" or path.startswith("/zh/") else "en"]
+    links = "".join(f'<li><a href="{u}">{label}</a></li>' for u, label in t["links"])
+    return (f'<!doctype html><html lang="{t["lang"]}"><head><meta charset="utf-8">'
+            '<meta name="viewport" content="width=device-width,initial-scale=1">'
+            f'<title>{t["title"]} | bazifor.me</title><meta name="robots" content="noindex">'
+            '<link rel="icon" href="/favicon.svg" type="image/svg+xml">'
+            '<style>:root{--bg:#faf7f2;--ink:#2b2620;--accent:#b03a2e;--line:#e5ded2}'
+            '*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);'
+            'font:16px/1.6 system-ui,"Noto Sans SC","PingFang SC",sans-serif}'
+            'main{max-width:560px;margin:0 auto;padding:48px 18px}h1{font-size:26px;line-height:1.3;color:var(--accent);margin:0 0 16px}'
+            'ul{list-style:none;margin:0;padding:0}a{display:flex;align-items:center;min-height:44px;color:var(--accent);'
+            'font-weight:600;text-underline-offset:3px}a:focus-visible{outline:3px solid #8a6d1f;outline-offset:2px;border-radius:4px}'
+            f'</style></head><body><main><h1>{t["h1"]}</h1><ul>{links}</ul></main></body></html>')
+
+
+@app.exception_handler(StarletteHTTPException)
+async def _http_exception(request, exc):
+    if exc.status_code == 404 and _is_page_path(request.url.path):
+        return HTMLResponse(_not_found_page(request.url.path), status_code=404)
+    return await http_exception_handler(request, exc)
 
 
 # Cache policy for /static.  Nothing under web/ has a content hash or a ?v= in its URL, so no asset can be

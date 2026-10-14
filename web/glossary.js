@@ -41,6 +41,9 @@
     if (e[0]) return e[0] + " (" + t + ")";
     return e[2] ? t + " (" + e[2] + ")" : t;
   }
+  var NOTE = /^(?:method note\b|an?\s|the\s)/i;
+  var PLURAL = {"two-hour period": "two-hour periods"};
+  var COUNTED = /\b(?:two|three|four|five|six|several|many)(?: different| other)?\s$/i;
   function cap(prev, r) {
     if (r && r[0] !== r[0].toUpperCase() && START.test(prev.replace(/[\s*_]+$/, ""))) return r[0].toUpperCase() + r.slice(1);
     return r;
@@ -212,6 +215,7 @@
           }
         }
         ma = /^\s?[(（]\s*([A-Za-zÀ-ɏ][^()（）㐀-鿿]{0,60}?)\s*[)）]/.exec(after);
+        if (ma && (NOTE.test(ma[1]) || ma[1].indexOf(":") >= 0)) ma = null;   /* the author's aside, not a gloss */
         if (ma) {
           var x = ma[1];
           if (!en) {
@@ -242,6 +246,9 @@
         }
       }
       r = this.renderRun(run);
+      if (r && COUNTED.test(out)) {
+        for (var one in PLURAL) if (r.indexOf(one) === 0) r = PLURAL[one] + r.slice(one.length);
+      }
       out += r != null ? cap(out, r) : run;
     }
     return out + s.slice(pos);

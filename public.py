@@ -1943,12 +1943,14 @@ def llms_txt():
              "and Chinese baby-name scoring that cite every classical rule they apply. Free, no account; "
              "Singapore and Malaysia birth times handled with true-solar correction.", "",
              "## Tools", "",
+             "- [bazifor.me home](https://bazifor.me/)",
              "- [BaZi calculator](https://bazifor.me/start): four pillars, day master, useful element, luck cycles — every line cites its rule",
              "- [Home feng shui analyzer](https://bazifor.me/fengshui): trace a floor plan, get flying stars, Eight House directions and room assignments",
              "- [Chinese baby name builder](https://bazifor.me/baby): names scored by 用神, 五格, 三才, meaning, sound and gender fit",
              "- [Kua number calculator](https://bazifor.me/kua): 命卦 from birth date and sex (立春-correct), East/West group, best bed and desk directions",
              "", "## Chinese pages (简体中文 / Simplified Chinese)", "",
              "- [八字为我 (home)](https://bazifor.me/zh)",
+             "- [知识库](https://bazifor.me/zh/learn)",
              "- [八字排盘](https://bazifor.me/zh/start): 四柱、日主、用神、大运，每一行都标明所依据的规则",
              "- [宝宝起名](https://bazifor.me/zh/baby)", "- [命卦计算器](https://bazifor.me/zh/kua)",
              "- [运作原理](https://bazifor.me/zh/how-it-works)", "- [关于](https://bazifor.me/zh/about)",
@@ -1957,7 +1959,8 @@ def llms_txt():
              "- [隐私说明](https://bazifor.me/zh/privacy): 我们保存什么、保存多久、怎么删除",
              "- [使用条款](https://bazifor.me/zh/terms)", "- [联系我们](https://bazifor.me/zh/contact)",
              "- [验证方法](https://bazifor.me/zh/validation): 27/27、32/32 这一说法的比对方法，以及可以自己重算的表格",
-             "", "## Guides (English)", ""]
+             "", "## Guides (English)", "",
+             "- [Learn](https://bazifor.me/learn)"]
     for slug, title in _learn_titles("web/learn"):
         lines.append(f"- [{title}](https://bazifor.me/learn/{slug})")
     lines += ["", "## Guides (Chinese)", ""]
