@@ -75,6 +75,17 @@ class Chart:
         return y if STEMS[stem_idx] == self.pillars["year"].stem else y - 1
 
 
+def reading_year(now: datetime | None = None) -> int:
+    """The BaZi year (立春-bounded) that a reading calls "this year", taken from the date and the engine's own solar-term calendar.
+
+    `now` is a naive civil datetime; the default is the present moment in Singapore (the server runs on UTC, the reader does not).
+    Before 立春 the date is still in the previous BaZi year, which is the same test Chart.lichun_year applies to a birth."""
+    if now is None:
+        from zoneinfo import ZoneInfo
+        now = datetime.now(ZoneInfo("Asia/Singapore")).replace(tzinfo=None)
+    return now.year if STEMS[(now.year - 4) % 10] == cal.pillars_for(now)["year"].stem else now.year - 1
+
+
 def build_chart(person: str, sex: str, birth_local: datetime, policy: str, place: dict | None = None, lang: str = "en") -> Chart:
     """`place` (engine.places.place) sets longitude and time zone; None or Singapore keeps the Singapore path."""
     if policy == TRUE_SOLAR and place and place.get("cc") != "SG":

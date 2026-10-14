@@ -523,6 +523,13 @@ def _work(p, lang="en"):
                    + ("；" if lang == "zh" else "; ").join(top["reasons"])}
 
 
+def vault_opener(V) -> str:
+    """The branch that opens a sealed 財庫: the 六沖 partner of the vault's own branch (interpret._VAULT_CLASH). Read from the branch,
+    which is the same in every language, never from the state sentence, which is not."""
+    from .interpret import _VAULT_CLASH
+    return _VAULT_CLASH.get(V.get("branch", ""), "")
+
+
 def _money(p, lang="en"):
     W = next((d for d in p.get("domains") or [] if d["key"] == "wealth"), None)
     if not W:
@@ -531,8 +538,10 @@ def _money(p, lang="en"):
     head = {"strong": T("plain._money.01", "Money comes to you readily.", lang), "even": T("plain._money.02", "Money comes through steady effort.", lang),
             "weak": T("plain._money.03", "Money needs deliberate building.", lang)}[bk]
     V = (p.get("palaces") or {}).get("vault") or {}
-    br = V.get("state", "").split(" opens in ")[-1][:1] if V.get("present") and not V.get("open") else ""
-    nxt = next((y for y in range(2026, 2040) if "子丑寅卯辰巳午未申酉戌亥"[(y - 4) % 12] == br), None) if br else None
+    br = vault_opener(V) if V.get("present") and not V.get("open") else ""
+    from .bazi import reading_year
+    y0 = (((p.get("windows") or {}).get("years") or [{}])[0].get("y")) or reading_year()   # the reading's own year, never a constant
+    nxt = next((y for y in range(y0, y0 + 14) if "子丑寅卯辰巳午未申酉戌亥"[(y - 4) % 12] == br), None) if br else None
     means = (T("plain._money.04", f"You have a store of wealth that opens in {ANIMAL.get(br, br)} years ({br}); the next is {nxt}. Those are your years to save and build.", lang,
                ANIMAL_br=_animal(br, lang), br=br, nxt=nxt) if br
              else T("plain._money.05", "Your wealth store is open, so money moves freely; keep a buffer.", lang) if V.get("present")

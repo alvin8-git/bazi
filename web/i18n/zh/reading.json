@@ -120,24 +120,24 @@
 "zh": "八宅方位"
 },
 "appjs.CHART_CAP.makeup": {
-"en": "Your eight characters.",
-"zh": "你的八字。"
+"en": "<b>Four pillars.</b> Your eight characters.",
+"zh": "<b>四柱。</b>你的八字。"
 },
 "appjs.CHART_CAP.balance": {
-"en": "Your five elements, and how they feed and check each other.",
-"zh": "你的五行，以及它们如何相生相克。"
+"en": "<b>Five elements.</b> How they feed and check each other.",
+"zh": "<b>五行。</b>它们如何相生相克。"
 },
 "appjs.CHART_CAP.drives": {
-"en": "The ten classical roles, grouped.",
-"zh": "十神：十种经典角色，按类分组。"
+"en": "<b>Ten gods.</b> The ten classical roles, grouped.",
+"zh": "<b>十神。</b>十种经典角色，按类分组。"
 },
 "appjs.CHART_CAP.timing": {
-"en": "Your luck pillars, decade by decade.",
-"zh": "你的大运，一步一个十年。"
+"en": "<b>Luck pillars.</b> Your decades, one pillar at a time.",
+"zh": "<b>大运。</b>一个十年一步。"
 },
 "appjs.CHART_CAP.space": {
-"en": "The eight directions for your Kua number.",
-"zh": "你的命卦对应的八个方位。"
+"en": "<b>Eight directions.</b> For your Kua number.",
+"zh": "<b>八个方位。</b>对应你的命卦。"
 },
 "appjs.PILLAR_KEYS.year.label": {
 "en": "year",
@@ -284,7 +284,7 @@
 "zh": "生气"
 },
 "appjs.BAZHAI_EN.生氣.1": {
-"en": "the best — growth, energy, opportunity; ideal for bed, desk, main door",
+"en": "the best: growth, energy, opportunity; ideal for bed, desk, main door",
 "zh": "最吉的方位：成长、精力、机会，适合放床头、书桌朝向和大门"
 },
 "appjs.BAZHAI_EN.天醫.0": {
@@ -380,7 +380,7 @@
 "zh": "四柱"
 },
 "appjs.LEGENDS.chart.01.gloss": {
-"en": "the Four Pillars: birth year·month·day·hour, each written as two characters — eight in all",
+"en": "the Four Pillars: birth year·month·day·hour, each written as two characters: eight in all",
 "zh": "四柱即出生的年、月、日、时，每柱写成两个字，一共八个字"
 },
 "appjs.LEGENDS.chart.02.term": {
@@ -396,7 +396,7 @@
 "zh": "日主"
 },
 "appjs.LEGENDS.chart.03.gloss": {
-"en": "the day stem — the character that IS you; every other character is read by its relationship to it",
+"en": "the day stem: the character that IS you; every other character is read by its relationship to it",
 "zh": "日干，也就是代表你自己的那个字；其他每个字都按与它的关系来读"
 },
 "appjs.LEGENDS.chart.04.term": {
@@ -404,7 +404,7 @@
 "zh": "十神"
 },
 "appjs.LEGENDS.chart.04.gloss": {
-"en": "that relationship, named — translated god-by-god in §4",
+"en": "that relationship, named, translated god-by-god in §4",
 "zh": "把这种关系起了名字，第 4 节逐个说明"
 },
 "appjs.LEGENDS.chart.05.term": {
@@ -428,7 +428,7 @@
 "zh": "命卦"
 },
 "appjs.LEGENDS.chart.07.gloss": {
-"en": "your personal trigram — decides your lucky compass directions (§7)",
+"en": "your personal trigram: decides your lucky compass directions (§7)",
 "zh": "你个人的卦，决定你的吉方（第 7 节）"
 },
 "appjs.LEGENDS.chart.08.term": {
@@ -436,7 +436,7 @@
 "zh": "本命星"
 },
 "appjs.LEGENDS.chart.08.gloss": {
-"en": "the life star (Nine Star, 九星) of the birth year — the number feng shui overlays use for you",
+"en": "the life star (Nine Star, 九星) of the birth year: the number feng shui overlays use for you",
 "zh": "出生年对应的本命星（九星），风水叠加盘里用在你身上的就是这个数字"
 },
 "appjs.LEGENDS.chart.09.term": {
@@ -444,7 +444,7 @@
 "zh": "命宫"
 },
 "appjs.LEGENDS.chart.09.gloss": {
-"en": "an auxiliary destiny point derived from the birth month + hour — classical readers weigh it for temperament and life theme",
+"en": "an auxiliary destiny point derived from the birth month + hour: classical readers weigh it for temperament and life theme",
 "zh": "由出生月和时辰推出的辅助命点，古法据此看性情和人生主题"
 },
 "appjs.LEGENDS.chart.10.term": {
@@ -452,7 +452,7 @@
 "zh": "胎元"
 },
 "appjs.LEGENDS.chart.10.gloss": {
-"en": "the pillar of the estimated conception month — a supplementary root the chart can draw on",
+"en": "the pillar of the estimated conception month: a supplementary root the chart can draw on",
 "zh": "按推算的受孕月份排出的一柱，是命盘可以借用的补充根气"
 },
 "appjs.LEGENDS.chart.11.term": {
@@ -468,7 +468,7 @@
 "zh": "神煞"
 },
 "appjs.LEGENDS.chart.12.gloss": {
-"en": "symbolic stars carried by the pillars — detailed with meanings in §9",
+"en": "symbolic stars carried by the pillars: detailed with meanings in §9",
 "zh": "各柱带有的象征性星曜，含义详见第 9 节"
 },
 "appjs.LEGENDS.chart.13.term": {
@@ -476,7 +476,7 @@
 "zh": "纳音"
 },
 "appjs.LEGENDS.chart.13.gloss": {
-"en": "the pillar's melodic element — its poetic name in the 60-cycle (e.g. Sea Metal, 海中金)",
+"en": "the pillar's melodic element: its poetic name in the 60-cycle (e.g. Sea Metal, 海中金)",
 "zh": "这一柱的音律五行，即六十甲子里的诗意名称（如海中金）"
 },
 "appjs.LEGENDS.chart.14.term": {
@@ -484,7 +484,7 @@
 "zh": "十二长生"
 },
 "appjs.LEGENDS.chart.14.gloss": {
-"en": "the Day Master's life-stage in that branch (birth→peak→decline cycle) — vitality flavour, not a verdict",
+"en": "the Day Master's life-stage in that branch (birth→peak→decline cycle): vitality flavour, not a verdict",
 "zh": "日主在该地支所处的长生阶段（生、旺、衰的循环），反映的是活力的状态，不是定论"
 },
 "appjs.LEGENDS.chart.15.gloss": {
@@ -512,7 +512,7 @@
 "zh": "怎么看"
 },
 "appjs.LEGENDS.1.03.gloss": {
-"en": "balance beats abundance — the tallest bar is the heaviest, not the best",
+"en": "balance beats abundance: the tallest bar is the heaviest, not the best",
 "zh": "平衡比多更重要：最高的那一条只说明它最重，不说明它最好"
 },
 "appjs.LEGENDS.1.04.term": {
@@ -528,7 +528,7 @@
 "zh": "绿色箭头（相生）"
 },
 "appjs.LEGENDS.1.05.gloss": {
-"en": "the generating cycle (wood→fire→earth→metal→water) — thicker = stronger feeder",
+"en": "the generating cycle (wood→fire→earth→metal→water): thicker = stronger feeder",
 "zh": "相生循环（木→火→土→金→水），越粗说明供养越强"
 },
 "appjs.LEGENDS.1.06.term": {
@@ -536,7 +536,7 @@
 "zh": "红色线条（相克）"
 },
 "appjs.LEGENDS.1.06.gloss": {
-"en": "the controlling cycle — solid red = an actual affliction in this chart (a heavy element crushing a weak one)",
+"en": "the controlling cycle: solid red = an actual affliction in this chart (a heavy element crushing a weak one)",
 "zh": "相克循环；红色实线表示这张命盘里真实存在的克伤（偏多的五行压住偏少的五行）"
 },
 "appjs.LEGENDS.1.07.term": {
@@ -544,7 +544,7 @@
 "zh": "五种角色"
 },
 "appjs.LEGENDS.1.07.gloss": {
-"en": "the five roles every element plays relative to the Day Master — resource, output, wealth, pressure, peers; the ten gods refine these",
+"en": "the five roles every element plays relative to the Day Master: resource, output, wealth, pressure, peers; the ten gods refine these",
 "zh": "每个五行相对日主所扮演的五种角色：印（资源）、食伤（表达）、财、官杀（压力）、比劫（同辈）；十神是对它们的细分"
 },
 "appjs.LEGENDS.2.01.term": {
@@ -552,7 +552,7 @@
 "zh": "身强"
 },
 "appjs.LEGENDS.2.01.gloss": {
-"en": "the chart can afford to spend — output, wealth and pressure suit it",
+"en": "the chart can afford to spend: output, wealth and pressure suit it",
 "zh": "命盘有余力可以消耗，适合食伤、财和官杀"
 },
 "appjs.LEGENDS.2.02.term": {
@@ -560,7 +560,7 @@
 "zh": "身弱"
 },
 "appjs.LEGENDS.2.02.gloss": {
-"en": "the chart needs feeding — support, rest and resource suit it",
+"en": "the chart needs feeding: support, rest and resource suit it",
 "zh": "命盘需要滋养，适合扶持、休养和印"
 },
 "appjs.LEGENDS.2.03.term": {
@@ -576,7 +576,7 @@
 "zh": "根气"
 },
 "appjs.LEGENDS.2.04.gloss": {
-"en": "the Day Master's own element hidden inside the branches — its anchoring",
+"en": "the Day Master's own element hidden inside the branches: its anchoring",
 "zh": "日主自身的五行藏在地支里的部分，是它的根基"
 },
 "appjs.LEGENDS.3.01.term": {
@@ -612,7 +612,7 @@
 "zh": "“正”指该领域里规矩、正统的形态，“偏”指它不循常规的另一面（正为阴阳相异，偏为阴阳相同）"
 },
 "appjs.LEGENDS.4.02.gloss": {
-"en": "share of the chart's characters classified as that god — where life's attention defaults",
+"en": "share of the chart's characters classified as that god: where life's attention defaults",
 "zh": "命盘中被归为该十神的字所占的比例，也就是人生的注意力默认落在哪里"
 },
 "appjs.LEGENDS.4.03.term": {
@@ -636,7 +636,7 @@
 "zh": "绿色 / 红色箭头"
 },
 "appjs.LEGENDS.4.05.gloss": {
-"en": "generating (feeding) and controlling cycles between the god groups — same cycles as §1, one level up",
+"en": "generating (feeding) and controlling cycles between the god groups: same cycles as §1, one level up",
 "zh": "各十神组之间的相生（供养）与相克，和第 1 节是同一套循环，只是上了一层"
 },
 "appjs.LEGENDS.4.06.term": {
@@ -644,7 +644,7 @@
 "zh": "旁边的小点"
 },
 "appjs.LEGENDS.4.06.gloss": {
-"en": "each group's Direct/Indirect pair with its own share — faded = barely present",
+"en": "each group's Direct/Indirect pair with its own share: faded = barely present",
 "zh": "每组的正、偏一对及各自的占比；颜色淡表示几乎没有"
 },
 "appjs.LEGENDS.4.07.term": {
@@ -660,7 +660,7 @@
 "zh": "组合格局"
 },
 "appjs.LEGENDS.4.08.gloss": {
-"en": "classical combinations (Eating God controls Seven Killings, Hurting Officer meets Direct Officer, …) — the gods' joint behaviour, not just their sizes",
+"en": "classical combinations (Eating God controls Seven Killings, Hurting Officer meets Direct Officer, …): the gods' joint behaviour, not just their sizes",
 "zh": "经典组合（食神制七杀、伤官见正官……），看的是十神合在一起的表现，而不只是各自的大小"
 },
 "appjs.LEGENDS.5.01.term": {
@@ -668,7 +668,7 @@
 "zh": "用神（喜用）"
 },
 "appjs.LEGENDS.5.01.gloss": {
-"en": "favourable — the chart's medicine; carry these elements in colours, directions, fields",
+"en": "favourable: the chart's medicine; carry these elements in colours, directions, fields",
 "zh": "喜用：用来调和命盘的五行；可在颜色、方位和行业上多取这些五行"
 },
 "appjs.LEGENDS.5.02.term": {
@@ -744,7 +744,7 @@
 "zh": "因人而异"
 },
 "appjs.LEGENDS.7.03.gloss": {
-"en": "this map differs per person — a couple can have opposite maps",
+"en": "this map differs per person: a couple can have opposite maps",
 "zh": "这张方位图每个人不一样，夫妻两人的图可能正好相反"
 },
 "appjs.LEGENDS.8.01.term": {
@@ -768,7 +768,7 @@
 "zh": "标签"
 },
 "appjs.LEGENDS.8.04.gloss": {
-"en": "the audit trail — hover none, they are the working",
+"en": "the audit trail: hover none, they are the working",
 "zh": "推演依据：这几项没有悬停说明，它们本身就是推演过程"
 },
 "appjs.LEGENDS.8.05.term": {
@@ -776,7 +776,7 @@
 "zh": "坐实"
 },
 "appjs.LEGENDS.8.05.gloss": {
-"en": "the domain's signal god actually resides in its primary palace — a seated signal lands harder than share alone suggests",
+"en": "the domain's signal god actually resides in its primary palace: a seated signal lands harder than share alone suggests",
 "zh": "该领域的关键十神确实坐在它的主宫位里，所以比单看占比更有分量"
 },
 "appjs.LEGENDS.8.06.term": {
@@ -796,7 +796,7 @@
 "zh": "年柱 / 月柱 / 日柱 / 时柱标记"
 },
 "appjs.LEGENDS.9.02.gloss": {
-"en": "which pillar carries it — ancestry · career/parents · self/spouse · children/later life",
+"en": "which pillar carries it: ancestry · career/parents · self/spouse · children/later life",
 "zh": "落在哪一柱：祖上 · 事业与父母 · 自己与配偶 · 子女与晚年"
 },
 "appjs.LEGENDS.10.01.term": {
@@ -804,7 +804,7 @@
 "zh": "维度"
 },
 "appjs.LEGENDS.10.01.gloss": {
-"en": "read straight off §4's distribution — the basis column shows the exact threshold",
+"en": "read straight off §4's distribution: the basis column shows the exact threshold",
 "zh": "直接取自第 4 节的分布，“依据”一列写着确切的阈值"
 },
 "appjs.LEGENDS.10.02.term": {
@@ -820,7 +820,7 @@
 "zh": "五行 ↔ 脏腑"
 },
 "appjs.LEGENDS.11.01.gloss": {
-"en": "traditional five-element medicine correspondence — reference, not medical advice",
+"en": "traditional five-element medicine correspondence: reference, not medical advice",
 "zh": "传统五行医学的对应关系，仅供参考，不是医疗建议"
 },
 "appjs.LEGENDS.11.02.term": {
@@ -844,7 +844,7 @@
 "zh": "额外耗力"
 },
 "appjs.LEGENDS.12.02.gloss": {
-"en": "low-ranked fields cost more energy here — never forbidden",
+"en": "low-ranked fields cost more energy here: never forbidden",
 "zh": "排名靠后的领域在这里要多花力气，但绝不是禁区"
 },
 "appjs.LEGENDS.13.01.term": {
@@ -860,7 +860,7 @@
 "zh": "⚠ 留意"
 },
 "appjs.LEGENDS.13.02.gloss": {
-"en": "navigate deliberately — a note, never a verdict",
+"en": "navigate deliberately: a note, never a verdict",
 "zh": "走得稳一点就好，这只是提示，不是定论"
 },
 "appjs.LEGENDS.13.03.term": {
@@ -1120,11 +1120,11 @@
 "zh": "时机窗口"
 },
 "appjs.renderPerson.007": {
-"en": "Interpretation: {SEC_ZH_n} — the numbers read out",
+"en": "Interpretation: {SEC_ZH_n}: the numbers read out",
 "zh": "解读：{SEC_ZH_n}，把数字翻成人话"
 },
 "appjs.renderPerson.008": {
-"en": "Strategy: {SEC_ZH_n} — what this asks of you",
+"en": "Strategy: {SEC_ZH_n}: what this asks of you",
 "zh": "策略：{SEC_ZH_n}，它对你的要求"
 },
 "appjs.renderPerson.015": {
@@ -1144,11 +1144,11 @@
 "zh": "它对你的要求"
 },
 "appjs.stratBlock.002": {
-"en": "<b>Monthly rhythm</b>\n        (recurring every year): green months feed this chart, red months drain it —\n        schedule pushes into green months, recovery into red ones.",
+"en": "<b>Monthly rhythm</b>\n        (recurring every year): green months feed this chart, red months drain it:\n        schedule pushes into green months, recovery into red ones.",
 "zh": "<b>月度节奏</b>（每年重复）：绿色的月份滋养这张命盘，红色的月份消耗它，冲刺安排在绿色月份，休整安排在红色月份。"
 },
 "appjs.stratBlock.003": {
-"en": "<b>{s_kid}:</b>\n        primary risk point — {dnAll_s}",
+"en": "<b>{s_kid}:</b>\n        primary risk point: {dnAll_s}",
 "zh": "<b>{s_kid}：</b>主要风险点：{dnAll_s}"
 },
 "appjs.stratBlock.004": {
@@ -1200,7 +1200,7 @@
 "zh": "<b>可出手的年份：</b>{s_act_windows}"
 },
 "appjs.stratBlock.016": {
-"en": "no wealth-activation years in the next decade — build, don't chase",
+"en": "no wealth-activation years in the next decade: build, don't chase",
 "zh": "未来十年没有财星被激活的年份：先打基础，不要追逐"
 },
 "appjs.stratBlock.017": {
@@ -1340,7 +1340,7 @@
 "zh": "四柱排盘"
 },
 "appjs.buildPillars.005": {
-"en": "A {weak_weak} {elc_dm} {elw_dmEl} day master, {season} — {fav_map} {fav_length} your medicine.",
+"en": "A {weak_weak} {elc_dm} {elw_dmEl} day master, {season}: {fav_map} {fav_length} your medicine.",
 "zh": "{weak_weak}{elc_dm}{elw_dmEl}日主，生于 {season}：{fav_map} 是你的用神 {fav_length}。"
 },
 "appjs.buildPillars.006": {
@@ -1392,7 +1392,7 @@
 "zh": "神煞是依据天干地支读出的经典格局，用来给命盘结构添些细节，从不凌驾于强弱平衡的判断之上。"
 },
 "appjs.buildPillars.019": {
-"en": "Interpretation — the numbers read out",
+"en": "Interpretation: the numbers read out",
 "zh": "解读：把数字翻成人话"
 },
 "appjs.buildPillars.020": {
@@ -1408,7 +1408,7 @@
 "zh": "五行五角图"
 },
 "appjs.buildElements.003": {
-"en": "{elb_pr} {elw_pr} fights you hardest ({pr_share}%); {elb_rs} {elw_rs} feeds you {pr_share_2}{rs_share}% — {pr_share_3}.",
+"en": "{elb_pr} {elw_pr} fights you hardest ({pr_share}%); {elb_rs} {elw_rs} feeds you {pr_share_2}{rs_share}%: {pr_share_3}.",
 "zh": "{elb_pr}{elw_pr} 对你压力最大（{pr_share}%）；{elb_rs}{elw_rs} 滋养你 {pr_share_2}{rs_share}%，{pr_share_3}。"
 },
 "appjs.buildElements.004": {
@@ -1428,7 +1428,7 @@
 "zh": "印星"
 },
 "appjs.buildElements.008": {
-"en": "<b>五行关系 — the five relations, listed</b>{eflowsList_c}",
+"en": "<b>五行关系: the five relations, listed</b>{eflowsList_c}",
 "zh": "<b>五行关系，逐项列出</b>{eflowsList_c}"
 },
 "appjs.buildElements.009": {
@@ -1440,7 +1440,7 @@
 "zh": "<span class=\"tag\">扶持占比{st_support_ratio}%</span> <span class=\"tag\">根气占比{st_root_ratio}%</span> <span class=\"tag\">{st_formation_status}</span>"
 },
 "appjs.buildElements.011": {
-"en": "{weak_Weak} ({st_score}) — {sp_the}{stage_stage}, not which element has the biggest bar.",
+"en": "{weak_Weak} ({st_score}): {sp_the}{stage_stage}, not which element has the biggest bar.",
 "zh": "{weak_Weak}（{st_score}）：定强弱的是 {sp_the}{stage_stage}，而不是哪个五行的柱子最高。"
 },
 "appjs.buildElements.014": {
@@ -1456,7 +1456,7 @@
 "zh": "月令不偏不倚"
 },
 "appjs.buildElements.017": {
-"en": "{elb_topSup} {topSup_zh} {elw_topSup} supports hardest ({topSup_w}) — support {pt_support} {pt_support_2} drain {pt_drain}, {weak_pt}.",
+"en": "{elb_topSup} {topSup_zh} {elw_topSup} supports hardest ({topSup_w}): support {pt_support} {pt_support_2} drain {pt_drain}, {weak_pt}.",
 "zh": "{elb_topSup}{topSup_zh}{elw_topSup} 扶持最多（{topSup_w}）：扶持 {pt_support}{pt_support_2} 泄耗 {pt_drain}，{weak_pt}。"
 },
 "appjs.buildElements.018": {
@@ -1500,15 +1500,15 @@
 "zh": "<b class=\"keepzh\">{h_element}</b>：{h_organs}；留意{h_aspects}。"
 },
 "appjs.buildElements.029": {
-"en": "{elb_excess} {elw_excess} excess ({excess_share}%) — watch {excess_organs}; {excess_aspects} is the pattern to notice.",
+"en": "{elb_excess} {elw_excess} excess ({excess_share}%): watch {excess_organs}; {excess_aspects} is the pattern to notice.",
 "zh": "{elb_excess}{elw_excess} 过旺（{excess_share}%）：留意 {excess_organs}；{excess_aspects} 是需要留意的表现。"
 },
 "appjs.buildElements.030": {
-"en": "{elb_weakEl} {elw_weakEl} weak ({weakEl_share}%) — support {weakEl_organs}; watch {weakEl_aspects}.",
+"en": "{elb_weakEl} {elw_weakEl} weak ({weakEl_share}%): support {weakEl_organs}; watch {weakEl_aspects}.",
 "zh": "{elb_weakEl}{elw_weakEl} 不足（{weakEl_share}%）：宜调养 {weakEl_organs}；留意 {weakEl_aspects}。"
 },
 "appjs.buildElements.031": {
-"en": "All five elements sit in range — no organ system is flagged.",
+"en": "All five elements sit in range: no organ system is flagged.",
 "zh": "五行都在正常范围内，没有需要特别提示的脏腑系统。"
 },
 "appjs.buildElements.032": {
@@ -1536,7 +1536,7 @@
 "zh": "紧随其后"
 },
 "appjs.buildGods.004": {
-"en": "The five circles are the ten roles in five groups; a bigger circle is a bigger share of your chart. The centre is you, the Day Master (日元).",
+"en": "The five circles are the ten roles in five groups; a bigger circle is a bigger share of your chart. The centre is you, the Day Master (日主).",
 "zh": "五个圆圈是分成五组的十神；圆圈越大，在你命盘里占的比例越大。中心是你自己，也就是日主。"
 },
 "appjs.buildGods.005": {
@@ -1580,7 +1580,7 @@
 "zh": "十神占比条"
 },
 "appjs.buildGods.015": {
-"en": "Your chart runs on {godc_dm} {en_g1} ({Math_round}%) — {c_tengods_legend}.",
+"en": "Your chart runs on {godc_dm} {en_g1} ({Math_round}%): {c_tengods_legend}.",
 "zh": "你的命盘以 {godc_dm}{en_g1}（{Math_round}%）为主：{c_tengods_legend}。"
 },
 "appjs.buildGods.016": {
@@ -1604,11 +1604,11 @@
 "zh": "性格维度"
 },
 "appjs.buildGods.021": {
-"en": "{sharp_verdict} — {sharp_metrics} make up {sharp_metrics_2}% of your chart, your sharpest trait.",
+"en": "{sharp_verdict}: {sharp_metrics} make up {sharp_metrics_2}% of your chart, your sharpest trait.",
 "zh": "{sharp_verdict}：{sharp_metrics} 合计占你命盘的 {sharp_metrics_2}%，是你最鲜明的特质。"
 },
 "appjs.buildGods.022": {
-"en": "No strong tendency on any axis — a balanced profile, not a failure.",
+"en": "No strong tendency on any axis: a balanced profile, not a failure.",
 "zh": "没有哪个维度的倾向特别强，这是一份均衡的画像，不是缺点。"
 },
 "appjs.buildGods.023": {
@@ -1620,7 +1620,7 @@
 "zh": "组合格局 · {ti_patterns_length}"
 },
 "appjs.buildGods.025": {
-"en": "No classical pair pattern triggers — the gods operate independently in this chart.",
+"en": "No classical pair pattern triggers: the gods operate independently in this chart.",
 "zh": "没有触发经典的组合格局，这张命盘里各个十神各自独立起作用。"
 },
 "appjs.buildGods.026": {
@@ -1628,15 +1628,15 @@
 "zh": "结构检查"
 },
 "appjs.buildGods.027": {
-"en": "{godc_dm} ({bad_pct}%) carries an unfavourable element ({elc_bad}) — use it deliberately, budget recovery.",
+"en": "{godc_dm} ({bad_pct}%) carries an unfavourable element ({elc_bad}): use it deliberately, budget recovery.",
 "zh": "{godc_dm}（{bad_pct}%）的五行（{elc_bad}）属忌：用时要有分寸，并留出恢复的时间。"
 },
 "appjs.buildGods.028": {
-"en": "{godc_dm} ({good_pct}%) carries {elc_good}, one of your 用神 — a clean engine; using it strengthens the chart.",
+"en": "{godc_dm} ({good_pct}%) carries {elc_good}, one of your 用神: a clean engine; using it strengthens the chart.",
 "zh": "{godc_dm}（{good_pct}%）带的是 {elc_good}，属于你的用神之一：这是一台干净的引擎，用好它会让命盘更稳。"
 },
 "appjs.buildGods.029": {
-"en": "The heavy gods sit outside both lists — structure is neutral here.",
+"en": "The heavy gods sit outside both lists: structure is neutral here.",
 "zh": "最重的几个十神既不在喜用的名单里，也不在忌的名单里，这里的结构是中性的。"
 },
 "appjs.buildGods.030": {
@@ -1700,7 +1700,7 @@
 "zh": "人生领域：得分、信号、落位"
 },
 "appjs.buildGods.046": {
-"en": "{top_en} stands highest among charts, with a score of {top_score}; your heaviest signal is {heavyName_toLowerCase} — {heavy}%, {inPal_heavy} {heavy_2}.",
+"en": "{top_en} stands highest among charts, with a score of {top_score}; your heaviest signal is {heavyName_toLowerCase}: {heavy}%, {inPal_heavy} {heavy_2}.",
 "zh": "{top_en} 的位次在命盘中最高，得分 {top_score}；你最重的信号是 {heavyName_toLowerCase}，占 {heavy}%，{inPal_heavy}{heavy_2}。"
 },
 "appjs.buildGods.047": {
@@ -1784,7 +1784,7 @@
 "zh": "大运条"
 },
 "appjs.buildTiming.008": {
-"en": "In the {cur_gz} decade ({cur_ages}, {cur_phase}) — {nxt_shifts}",
+"en": "In the {cur_gz} decade ({cur_ages}, {cur_phase}): {nxt_shifts}",
 "zh": "目前走 {cur_gz} 大运（{cur_ages}，{cur_phase}）：{nxt_shifts}"
 },
 "appjs.buildTiming.009": {
@@ -1796,7 +1796,7 @@
 "zh": "这是命盘排出的最后一步大运。"
 },
 "appjs.buildTiming.011": {
-"en": "Before the first decade — {W_decades}",
+"en": "Before the first decade: {W_decades}",
 "zh": "第一步大运之前：{W_decades}"
 },
 "appjs.buildTiming.012": {
@@ -1816,7 +1816,7 @@
 "zh": "<b>人生脉络：</b>{W_arc}"
 },
 "appjs.buildTiming.016": {
-"en": "<b>Peach blossom:</b> {W_taohua_branch} — {W_taohua_type}{W_taohua}",
+"en": "<b>Peach blossom:</b> {W_taohua_branch}: {W_taohua_type}{W_taohua}",
 "zh": "<b>桃花：</b>{W_taohua_branch}，{W_taohua_type}{W_taohua}"
 },
 "appjs.buildTiming.017": {
@@ -1872,7 +1872,7 @@
 "zh": "流年"
 },
 "appjs.buildTiming.030": {
-"en": "The two cards are the energies currently overlaid on the birth chart — the active 10-year luck pillar and this year's pillar — labelled with their ten gods relative to this Day Master.",
+"en": "The two cards are the energies currently overlaid on the birth chart: the active 10-year luck pillar and this year's pillar, labelled with their ten gods relative to this Day Master.",
 "zh": "这两张卡片是当前叠加在出生命盘上的两股能量：正在行的十年大运，和今年的流年柱，并标出了它们相对这位日主的十神。"
 },
 "appjs.buildTiming.031": {
@@ -1888,11 +1888,11 @@
 "zh": "顺的月份：{ranges_good}（{gel}）。{ranges_bad} 要放慢节奏。"
 },
 "appjs.buildTiming.034": {
-"en": "No month carries your medicine — pace the whole year evenly.",
+"en": "No month carries your medicine: pace the whole year evenly.",
 "zh": "没有哪个月份的五行是你的用神，全年平稳安排即可。"
 },
 "appjs.buildTiming.035": {
-"en": "Each solar month carries a branch and its element. Months whose element is your medicine are marked good; months carrying a 忌神 element are marked to pace. The rhythm is the same every year — the 流年 table says which years lift or lower it.",
+"en": "Each solar month carries a branch and its element. Months whose element is your medicine are marked good; months carrying a 忌神 element are marked to pace. The rhythm is the same every year: the 流年 table says which years lift or lower it.",
 "zh": "每个节气月都带一个地支和它的五行。五行是你的用神的月份，标为顺；带有忌神五行的月份，标为要放慢。这套节奏每年都一样，哪些年份会抬高或压低它，要看流年表。"
 },
 "appjs.buildCompass.001": {
@@ -1904,7 +1904,7 @@
 "zh": "床和书桌朝向<b>{dirOf}</b>（生气）；久坐的位置避开<b>{dirOf_2}</b>（绝命）。"
 },
 "appjs.buildCompass.004": {
-"en": "<b>Two layers:</b> 八宅 grades ORIENTATION — where to face and head long-stay activities; 用神 grades ELEMENT CONTENT — what colours, materials and fields feed the chart. A green direction whose element is unfavourable is still a good direction to FACE — furnish it in the 用神 palette. 命卦 comes from the birth year alone; the 用神 layer is the personal one.",
+"en": "<b>Two layers:</b> 八宅 grades ORIENTATION: where to face and head long-stay activities; 用神 grades ELEMENT CONTENT: what colours, materials and fields feed the chart. A green direction whose element is unfavourable is still a good direction to FACE; furnish it in the 用神 palette. 命卦 comes from the birth year alone; the 用神 layer is the personal one.",
 "zh": "<b>两个层面：</b>八宅评定的是朝向，也就是人面朝哪里、床头和久留之处怎么定；用神评定的是五行内容，也就是什么颜色、材质和行业能滋养命盘。一个方位即使是绿色吉方、五行却对你不利，仍然是值得面朝的好方位，只要用用神的色系来布置。命卦只由出生年份决定，用神这一层才是因人而异的。"
 },
 "appjs.buildCompass.005": {
@@ -1964,11 +1964,11 @@
 "zh": "，以 {colEn} 为主色，"
 },
 "appjs.buildCompass.022": {
-"en": "<b>Technique:</b> 扶抑 supports a weak chart or restrains a strong one; 调候 corrects its season — for this chart, add {fav_map}, keep {unf_map} light.",
+"en": "<b>Technique:</b> 扶抑 supports a weak chart or restrains a strong one; 调候 corrects its season: for this chart, add {fav_map}, keep {unf_map} light.",
 "zh": "<b>用的方法：</b>扶抑是命弱就扶、命强就抑；调候是按出生季节的寒热燥湿来调。就这张命盘而言，宜补{fav_map}，{unf_map}宜少。"
 },
 "appjs.buildCompass.023": {
-"en": "<b>In god vocabulary:</b> your 用神 {fav_map} — those life-areas ARE the medicine.",
+"en": "<b>In god vocabulary:</b> your 用神 {fav_map}: those life-areas ARE the medicine.",
 "zh": "<b>用十神的话说：</b>你的用神是{fav_map}，这些人生领域正是用神所在。"
 },
 "appjs.buildCompass.024": {
@@ -2000,7 +2000,7 @@
 "zh": "书桌"
 },
 "appjs.buildCompass.033": {
-"en": "Long-stay items follow the 八宅 stars of your 命卦: 天醫 for the bed, 生氣 for desk and door, 延年 for the couples' bed, 伏位 for a quiet room. The three corners are personal 神煞 — 文昌 by day stem, 桃花 and 驛馬 by the year-branch trine — mapped to their palace.",
+"en": "Long-stay items follow the 八宅 stars of your 命卦: 天醫 for the bed, 生氣 for desk and door, 延年 for the couples' bed, 伏位 for a quiet room. The three corners are personal 神煞: 文昌 by day stem, 桃花 and 驛馬 by the year-branch trine, mapped to their palace.",
 "zh": "久待的位置按命卦的八宅星来定：床取天医，书桌和门取生气，夫妻床取延年，安静的房间取伏位。另外三个方位是个人神煞：文昌按日干定，桃花和驿马按年支三合定，各落在对应的宫位。"
 },
 "appjs.buildCompass.034": {
@@ -2028,15 +2028,15 @@
 "zh": "今年的煞位，没有一个落在你的四个吉方。"
 },
 "appjs.buildCompass.043": {
-"en": "<b>Grand Duke</b> — {AF_taisui_rule}",
+"en": "<b>Grand Duke</b>: {AF_taisui_rule}",
 "zh": "<b>太岁</b>：{AF_taisui_rule}"
 },
 "appjs.buildCompass.044": {
-"en": "<b>Year Breaker</b> — {AF_suipo_rule}",
+"en": "<b>Year Breaker</b>: {AF_suipo_rule}",
 "zh": "<b>岁破</b>：{AF_suipo_rule}"
 },
 "appjs.buildCompass.045": {
-"en": "<b>Three Killings</b> — {AF_sansha_rule}",
+"en": "<b>Three Killings</b>: {AF_sansha_rule}",
 "zh": "<b>三煞</b>：{AF_sansha_rule}"
 },
 "appjs.buildCompass.046": {
@@ -2120,8 +2120,8 @@
 "zh": "返回正文"
 },
 "appjs.pStory.004": {
-"en": "<b>The classical chart.</b> {CHART_CAP_id}",
-"zh": "<b>经典命盘。</b>{CHART_CAP_id}"
+"en": "{CHART_CAP_id}",
+"zh": "{CHART_CAP_id}"
 },
 "appjs.zhKey.001": {
 "en": "<b>Key:</b> {pairs_map}",
@@ -2144,7 +2144,7 @@
 "zh": "本月没有特别突出的吉日。"
 },
 "appjs.dailyFig.004": {
-"en": "Avoid {W_avoid} on {W_date} {W_gz} — {W_why}.",
+"en": "Avoid {W_avoid} on {W_date} {W_gz}: {W_why}.",
 "zh": "{W_date} {W_gz}日避免 {W_avoid}：{W_why}。"
 },
 "appjs.dailyFig.005": {
@@ -2168,7 +2168,7 @@
 "zh": "<b>建除十二神：</b>{officers_map}"
 },
 "appjs.dailyFig.010": {
-"en": "<b>◉ good · ⚠ avoid · · neutral</b> — per activity, hover a cell for the deciding rule.",
+"en": "<b>◉ good · ⚠ avoid · · neutral</b>: per activity, hover a cell for the deciding rule.",
 "zh": "<b>◉ 吉 · ⚠ 忌 · · 平</b>，按事项分列；将鼠标悬停在格子上，可看到起决定作用的规则。"
 },
 "appjs.dailyFig.011": {
@@ -2220,11 +2220,11 @@
 "zh": "，即你的日主"
 },
 "appjs.eflowsList.001": {
-"en": "How every other element relates to\n      YOUR Day Master {elb_er} — the same five roles the ten gods (十神 tab) are built from:",
+"en": "How every other element relates to\n      YOUR Day Master {elb_er}: the same five roles the ten gods (十神 tab) are built from:",
 "zh": "其他各个五行与你的日主（{elb_er}）是什么关系，这五种角色正是十神（见十神标签页）的来源："
 },
 "appjs.eflowsList.002": {
-"en": "<span class=\"sub\">(this share is the Day Master's own element — as ten-god 比肩/劫財 peers the chart counts 0%)</span>",
+"en": "<span class=\"sub\">(this share is the Day Master's own element: as ten-god 比肩/劫財 peers the chart counts 0%)</span>",
 "zh": "<span class=\"sub\">（这一份是日主自身的五行；换成十神里的比肩、劫财来看，命盘中占0%）</span>"
 },
 "appjs.strengthGauge.001": {
@@ -2244,7 +2244,7 @@
 "zh": "{st_verdict} · 得分 {st_score}"
 },
 "appjs.supportDrain.001": {
-"en": "Supporting (same kind) vs draining (other kinds) — the score's own numbers",
+"en": "Supporting (same kind) vs draining (other kinds): the score's own numbers",
 "zh": "扶持（同类）与泄耗（异类）：这就是得分用到的数字"
 },
 "appjs.supportDrain.002": {
@@ -2268,7 +2268,7 @@
 "zh": "未显现"
 },
 "appjs.tiaohouStrip.003": {
-"en": "<b>Seasonal adjustment</b> the {elc_c} month asks for {chips}\n    — <b>{t_verdict}</b> with the support-and-restrain verdict above",
+"en": "<b>Seasonal adjustment</b> the {elc_c} month asks for {chips}: <b>{t_verdict}</b> with the support-and-restrain verdict above",
 "zh": "<b>调候</b>：{elc_c}月需要{chips}，与上面扶抑的结论<b>{t_verdict}</b>。"
 },
 "appjs.pillarGrid.001": {
@@ -2288,7 +2288,7 @@
 "zh": "地支关系"
 },
 "appjs.interactionsLine.001": {
-"en": "No 合冲刑害 among your four branches — the pillars sit quietly with each other.",
+"en": "No 合冲刑害 among your four branches: the pillars sit quietly with each other.",
 "zh": "你的四个地支之间没有合冲刑害，各柱之间相安无事。"
 },
 "appjs.interactionsLine.002": {
@@ -2320,7 +2320,7 @@
 "zh": "六"
 },
 "appjs.interactionsLine.009": {
-"en": "{words_n} branch {n_tension}, {clash_one}: {list} — {clash_watch}.",
+"en": "{words_n} branch {n_tension}, {clash_one}: {list}; {clash_watch}.",
 "zh": "{words_n} 处地支 {n_tension}，{clash_one}：{list}；{clash_watch}。"
 },
 "appjs.interactionsLine.010": {
@@ -2454,5 +2454,17 @@
 "appjs.pBalance.005": {
 "en": "{EL_EN_H} is what helps you most.",
 "zh": "对你帮助最大的是{EL_EN_H}。"
+},
+"appjs.buildElements.035": {
+"en": "Green arrow: feeds. Thicker means the element has more to give; faint means little.",
+"zh": "绿色箭头：相生。越粗，说明这个五行能给出的越多；很淡，说明给得很少。"
+},
+"appjs.buildElements.036": {
+"en": "Red arrow: checks, flagged as strain on your chart (a strong element pressing on a weak one, or two strong ones facing off).",
+"zh": "红色箭头：相克，且在你的命盘里被标为压力（强的五行压着弱的，或两个强的五行互相对峙）。"
+},
+"appjs.buildElements.037": {
+"en": "Dotted pale arrow: checks, with no strain flagged.",
+"zh": "浅色虚线箭头：相克，没有被标为压力。"
 }
 }

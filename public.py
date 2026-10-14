@@ -31,7 +31,7 @@ from fastapi.responses import (FileResponse, HTMLResponse, PlainTextResponse,
 from pydantic import BaseModel, Field
 
 from engine.bazhai import STAR_SCORE, gua_group, ming_gua, youxing_stars
-from engine.bazi import TEN_GOD_EN, TRUE_SOLAR, build_chart
+from engine.bazi import TEN_GOD_EN, TRUE_SOLAR, build_chart, reading_year
 from engine.careers import career_paths
 from engine.domains import industry_map, life_domains
 from engine.extras import compass_afflictions, harmony_matrix
@@ -51,7 +51,7 @@ from engine.windows import timing_windows
 from engine.wuxing import PALACES
 from engine.xuankong import annual_chart, chengmen, guard_chengmen, natal_chart_from_degrees
 from engine.yongshen import yong_shen
-from scripts.bazi_report import build_person, family_section
+from scripts.bazi_report import build_person, chart_is_minor, family_section
 
 import os
 
@@ -64,7 +64,6 @@ _DEFAULT_STORE = ("/tmp/bazifor_store" if os.environ.get("VERCEL")
                   else ROOT / "data/public_store")
 STORE = Path(os.environ.get("BAZIFORME_STORE", _DEFAULT_STORE))
 UPLOADS = STORE / "uploads"
-YEAR = 2026
 MAX_PEOPLE = 8
 TTL_SECONDS = 183 * 24 * 3600          # ~6 months
 MAX_UPLOAD = 8 * 1024 * 1024           # 8 MB floorplan cap
@@ -260,7 +259,7 @@ def _card(m, c, ys, lang: str = "en") -> dict:
     from engine.report import chart_payload
     from engine.plain import POLE
     from engine.story import AREAS_FOR
-    p = chart_payload(_tosimp(m.name), c, ys, YEAR, lang)
+    p = chart_payload(_tosimp(m.name), c, ys, reading_year(), lang)
     pl, v = p["plain"], p["story"]["voice"]
     from engine.area_reference import standing_key
     doms = sorted((d for d in p["domains"] if d["key"] in AREAS_FOR[v]), key=standing_key, reverse=True)   # Layer 2: strongest and weakest by standing among charts
@@ -411,7 +410,8 @@ def get_pair(token: str, a: int, b: int):
     ma, ca = _chart_of(ppl[a])
     mb, cb = _chart_of(ppl[b])
     ya, yb = yong_shen(ca), yong_shen(cb)
-    pa_, pb_ = chart_payload(_tosimp(ma.name), ca, ya, YEAR), chart_payload(_tosimp(mb.name), cb, yb, YEAR)
+    yr = reading_year()
+    pa_, pb_ = chart_payload(_tosimp(ma.name), ca, ya, yr), chart_payload(_tosimp(mb.name), cb, yb, yr)
     rel = (ws.get("pairs") or {}).get(_pair_key(a, b)) or {}
     senior = {a: ca.person, b: cb.person}.get(rel.get("senior"))
     out = pair_full(ca, cb, ya, yb, pa_, pb_, rel=rel.get("rel"), senior=senior)
@@ -468,7 +468,7 @@ def remove_person(token: str, idx: int):
 
 
 @router.get("/api/pub/w/{token}/person/{idx}/chart")
-def person_chart(token: str, idx: int, year: int = YEAR, lang: str = "en"):
+def person_chart(token: str, idx: int, year: int | None = None, lang: str = "en"):
     """Full Reading 命书 payload (13 sections) for a workspace person —
     identical shape to the family /api/chart route."""
     from engine.report import chart_payload
@@ -476,6 +476,7 @@ def person_chart(token: str, idx: int, year: int = YEAR, lang: str = "en"):
     if not 0 <= idx < len(ws["people"]):
         raise HTTPException(404, "no such person")
     m, c = _chart_of(ws["people"][idx])
+    year = year or reading_year()   # the BaZi year of today (立春-bounded), unless the caller asks for another
     from engine.element_reference import attach_standing   # additive: where each element's share stands among charts (the balance panel's quiet line)
     return attach_standing(chart_payload(_tosimp(m.name), c, yong_shen(c), year, lang if lang in ("en", "zh") else "en"))
 
@@ -551,7 +552,7 @@ def person_report(token: str, idx: int):
         m, c = _chart_of(p)
         members.append(m)
         charts[m.name], ys_map[m.name] = c, yong_shen(c)
-    fam = (family_section(members, charts, ys_map)
+    fam = (family_section(members, charts, ys_map, money=not chart_is_minor(charts[members[idx].name]))
            if len(members) >= 2 else "")
     others = [(_tosimp(m.name),
                max(charts[m.name].element_weights,
@@ -795,7 +796,7 @@ def _people_analysis(req, charts: dict, ys_map: dict, rooms: list[dict],
         # spot, auspicious facing).
         wc_pal = BRANCH_PALACE[WENCHANG[c.day_master]]
         wc_rooms = [r["label"] for r in rooms if r["palace_pie"] == wc_pal]
-        people.append({"name": name, "gua": g, "group": grp, "age": YEAR - c.lichun_year,
+        people.append({"name": name, "gua": g, "group": grp, "age": reading_year() - c.lichun_year,
                        "match": grp == house_group,
                        "dirs_good": good_dirs,
                        "dirs_bad": [d for d in dirs
@@ -953,7 +954,7 @@ def _room_placements(rooms: list[dict], charts: dict) -> dict:
     per_person = {}
     for name, c in charts.items():
         pl = [p for p in person_placements(c) if p["key"] in ("wenchang", "taohua", "yima")]
-        af = compass_afflictions(c, YEAR)
+        af = compass_afflictions(c, reading_year())
         per_person[name] = (pl, af)
     out = {}
     for r in rooms:
@@ -983,7 +984,7 @@ def _room_placements(rooms: list[dict], charts: dict) -> dict:
                 continue
             seen.add(k); dedup.append(h)
         out[r["id"]] = {"palace": pal, "placements": pls,
-                        "afflictions": {"year": YEAR, "hits": dedup}}
+                        "afflictions": {"year": reading_year(), "hits": dedup}}
     return out
 
 
@@ -1143,9 +1144,10 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
     for p in ws["people"]:
         m, c = _chart_of(p)
         charts[_tosimp(m.name)], ys_map[_tosimp(m.name)] = c, yong_shen(c)
+    yr = reading_year()   # one reading year for the whole response
     natal = natal_chart_from_degrees(req.period, req.facing_deg)
-    annual = annual_chart(YEAR)
-    result = {"year": YEAR, "period": req.period, "trace_checks": checks,
+    annual = annual_chart(yr)
+    result = {"year": yr, "period": req.period, "trace_checks": checks,
               "include_outdoor": req.include_outdoor,
               "boundary": natal.get("boundary"),
               "main": _chart_block(natal, rooms, annual, req.period)}
@@ -1166,7 +1168,7 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
     from engine.aspects import compose_family
     from engine.interpret import STRUCTURE_TEXT
     asp = compose_family(charts, ys_map, rooms, assignment, natal, annual,
-                         YEAR, "pie",
+                         yr, "pie",
                          STRUCTURE_TEXT.get(natal["structure"],
                                             "a mixed structure"))
     result["aspects"] = {
@@ -1175,7 +1177,7 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
                 "band_zh": c["band_zh"], "driver": c.get("driver"),
                 "meaning": c.get("meaning")} for c in cards]
         for name, cards in asp["people"].items()}
-    result["works_timing"] = _works_timing(rooms, YEAR)
+    result["works_timing"] = _works_timing(rooms, yr)
     # P1 room briefs: every traced room, occupants optional (design doc v2 §3)
     result["room_briefs"] = room_briefs(
         [r for r in rooms if r["id"] != "entrance"], natal,
@@ -1186,7 +1188,7 @@ def _do_analyze(token: str, ws: dict, hid: str, req: AnalyzeIn):
         b = result["room_briefs"].get(row["id"])
         if b is None:
             continue
-        years = [y for y, hits in ((YEAR, row["now"]), (YEAR + 1, row["next"])) if hits]
+        years = [y for y, hits in ((yr, row["now"]), (yr + 1, row["next"])) if hits]
         b.setdefault("timing_rules", []).append({
             "code": "F2", "zh": "動土界線", "years": years,
             "text": f"{' / '.join(map(str, years))}: a platform, a wall-fixed panel, a floor overlay "
@@ -1348,7 +1350,7 @@ def baby(name: str = Form("宝宝"), sex: str = Form(...), dob: str = Form(...),
         except ValueError as e:
             naming_html = f'<div class="sec cite">naming: {e}</div>'
     dy = "".join(f'<div class="dy"><div>{d["ages"]}</div><b>{d["gz"]}</b></div>'
-                 for d in dayun_detail(c, YEAR)[:6])
+                 for d in dayun_detail(c, reading_year())[:6])
     html = f"""<!doctype html><html><head><meta charset="utf-8">
 <title>Baby BaZi 宝宝八字</title><style>
 body{{font-family:system-ui,'Noto Sans SC',sans-serif;max-width:720px;margin:24px auto;

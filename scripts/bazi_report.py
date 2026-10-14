@@ -20,7 +20,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from engine.bazi import TRUE_SOLAR, build_chart
+from engine.bazi import TRUE_SOLAR, build_chart, reading_year
 from engine.bazhai import gua_group, ming_gua, youxing_stars
 from engine.careers import career_paths
 from engine.domains import health_map, personality_axes
@@ -28,6 +28,7 @@ from engine.htmlreport import _tosimp
 from engine.import_family import load_family
 from engine.interpret import interpret_person
 from engine.liunian import dayun_detail
+from engine.story import is_minor
 from engine.shensha import (ANIMALS, TEN_GOD_MEANING, WENCHANG, life_palaces,
                             shensha, ten_god_pct)
 from engine.windows import timing_windows
@@ -36,7 +37,6 @@ from engine.yongshen import yong_shen
 from engine.i18n import L, T, and_l, cap, dot, jn, zs  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
-YEAR = 2026
 FILE_NAME = {"王大明": "Member1", "李小华": "Member2", "王一心": "Member3",
              "王二强": "Member4", "王三美": "Member5"}
 ROLE = {"王大明": "dad", "李小华": "mum", "王一心": "eldest daughter",
@@ -132,6 +132,13 @@ REL_ADVICE = {
              "relationship in window years, and treat caution years as "
              "maintenance mode, not verdicts."],
 }
+# the lines of CAREER_ADVICE that are about pay, costs or assets, by position (the Chinese list runs in the same order); a minor's reading leaves them out
+CAREER_MONEY_LINES = {"vent": (0, 1), "ambi": (1,)}
+
+
+def career_advice(mode, minor=False, lang="en"):
+    lines = L("bazi_report.CAREER_ADVICE", CAREER_ADVICE, lang)[mode]
+    return [a for i, a in enumerate(lines) if not (minor and i in CAREER_MONEY_LINES.get(mode, ()))]
 WEALTH_ADVICE = {
     "steady": ["Automate a fixed savings percentage before spending touches "
                "it — this chart wins by compounding, not by timing.",
@@ -377,7 +384,7 @@ def exam_overlay(chart, w, lang: str = "en"):
     rows = []
     for age, exam in L("bazi_report.EXAMS", EXAMS, lang).items():
         y = chart.lichun_year + age
-        if y < YEAR:
+        if y < reading_year():
             continue
         yr = next((r for r in w["years"] if r["y"] == y), None)
         bits = []
@@ -424,11 +431,12 @@ def birth_time_confidence(chart):
             "could flip the Hour Pillar; consider chart rectification ⚠")
 
 
-def strategy_payload(chart, ys, year=YEAR, others=(), lang: str = "en") -> dict:
+def strategy_payload(chart, ys, year=None, others=(), lang: str = "en") -> dict:
     """The strategy report's advice blocks, keyed by the Reading section each
     belongs to (s2 strength, s5 用神 rhythm, s8 relationships, s10 handling,
     s11 health, s12 career, s13 windows/wealth) — the Reading tab renders
     them in place, replacing the separate strategy report link."""
+    year = year or reading_year()
     pct = ten_god_pct(chart)
     w = timing_windows(chart, ys, dayun_detail(chart, year, lang=lang), year, lang=lang)
     d = dial(pct, lang=lang)
@@ -453,6 +461,8 @@ def strategy_payload(chart, ys, year=YEAR, others=(), lang: str = "en") -> dict:
                    + (f'{"：" if lang == "zh" else " — "}{jn(nxt["notes"], lang, "; ", "；")}' if nxt["notes"] else ""))
     top2 = [g for g, _ in sorted(pct.items(), key=lambda kv: -kv[1])[:2]
             if g in L("bazi_report.GOD_HANDLE", GOD_HANDLE, lang)]
+    minor = chart_is_minor(chart, year)   # no money advice under 18 (owner 2026-10-10): the same test the reading's story and the full report use
+    career_adv = career_advice(d["mode"], minor, lang)
     return {
         "s2": {"advice": L("bazi_report.STRENGTH_ADVICE", STRENGTH_ADVICE, lang)[weak]},
         "s5": {"rhythm": [{"mon": mo, "br": b, "el": e, "cls": c}
@@ -473,7 +483,7 @@ def strategy_payload(chart, ys, year=YEAR, others=(), lang: str = "en") -> dict:
                 "trigger_years": trig, "recovery_years": rec},
         "s12": {"pct_corp": d["pct_corp"], "verdict": d["verdict"],
                 "corp_ev": d["corp_ev"], "vent_ev": d["vent_ev"],
-                "advice": L("bazi_report.CAREER_ADVICE", CAREER_ADVICE, lang)[d["mode"]] + [
+                "advice": career_adv + [
                     T("bazi_report.strategy_payload.04", f"Fields carry elements: prefer "
                     f"{'·'.join(ys['favourable'])}-flavoured industries even "
                     "inside the same job title — the same work in the right "
@@ -481,9 +491,9 @@ def strategy_payload(chart, ys, year=YEAR, others=(), lang: str = "en") -> dict:
                     pc["boss"],
                     T("bazi_report.strategy_payload.05", f"Ideal collaborator: this chart's thinnest resource is "
                     f"{pc['weak_group']} — team up with {pc['partner']}.", lang, pc_weak_group=pc['weak_group'], pc_partner=pc['partner'])]},
-        "s13": {"wealth_pattern": wp["pattern"], "wealth_carry": wp["carry"],
-                "act_windows": wp["windows"], "cautions": wp["cautions"],
-                "wealth_advice": L("bazi_report.WEALTH_ADVICE", WEALTH_ADVICE, lang)[wp["mode"]],
+        "s13": {"wealth_pattern": "" if minor else wp["pattern"], "wealth_carry": "" if minor else wp["carry"],
+                "act_windows": [] if minor else wp["windows"], "cautions": [] if minor else wp["cautions"],
+                "wealth_advice": [] if minor else L("bazi_report.WEALTH_ADVICE", WEALTH_ADVICE, lang)[wp["mode"]],
                 "advice": L("bazi_report.WINDOWS_ADVICE", WINDOWS_ADVICE, lang), "handoff": handoff,
                 "exams": exam_overlay(chart, w, lang=lang) if is_kid else []},
     }
@@ -493,10 +503,11 @@ def build_person(m, chart, ys, fam_section, others):
     """m needs .name/.sex/.birth_dt; works for any person, not just the family
     (ROLE/KIDS fall back to age-based defaults for workspace users)."""
     name = _tosimp(m.name)
+    yr = reading_year()
     pct = ten_god_pct(chart)
-    pc = people_compat(chart, pct, ys,
-                       [(n, el) for n, el in others if n != _tosimp(m.name)])
-    w = timing_windows(chart, ys, dayun_detail(chart, YEAR), YEAR)
+    peers = [(n, el) for n, el in others if n != _tosimp(m.name)]
+    pc = people_compat(chart, pct, ys, peers)
+    w = timing_windows(chart, ys, dayun_detail(chart, yr), yr)
     lp = life_palaces(chart)
     gua = ming_gua(chart.lichun_year, chart.sex)
     yx = youxing_stars(gua)
@@ -504,11 +515,12 @@ def build_person(m, chart, ys, fam_section, others):
     d = dial(pct)
     rr = relationship_risk(chart, pct, w)
     wp = wealth_pattern(chart, pct, w)
-    is_kid = m.name in KIDS or (YEAR - chart.lichun_year) < 18
+    is_kid = m.name in KIDS or (yr - chart.lichun_year) < 18
+    minor = chart_is_minor(chart, yr)   # the reading's rule for under 18: no money advice
     role = ROLE.get(m.name, "child" if is_kid else "adult")
     hm = health_map(chart)
     weak = chart.strength["verdict"].startswith("身弱")
-    narrative = interpret_person(chart, ys, YEAR)["paragraphs"]
+    narrative = interpret_person(chart, ys, yr)["paragraphs"]
 
     def sec(title, body):
         return f'<div class="sec"><h2>{title}</h2>{body}</div>'
@@ -558,11 +570,15 @@ def build_person(m, chart, ys, fam_section, others):
         volatility evidence: {', '.join(d['vent_ev']) or '—'}</div>
       <p><b>Top fields:</b> {' · '.join(f"{a['en']} {a['zh']}" for a in cp['top'][:3])}.
         <b>Priced against:</b> {' · '.join(a['en'] for a in cp['avoid'])}.</p>
-      {sugg(CAREER_ADVICE[d['mode']] + [
+      {sugg(career_advice(d['mode'], minor) + [
         f"Fields carry elements: prefer {'·'.join(ys['favourable'])}-flavoured industries even inside the same job title — the same work in the right field costs less energy.",
         pc['boss'],
         f"Ideal collaborator: this chart's thinnest resource is {pc['weak_group']} — team up with {pc['partner']}."])}""")
 
+    # "In this family" only means something when the workspace holds someone else
+    family_line = (f'''<div class="cite"><b>In this family:</b>
+        {('energized by ' + ', '.join(pc['boost'])) if pc['boost'] else 'no member dominantly carries the feeding element'}{('; tiring in long doses: ' + ', '.join(pc['drain'])) if pc['drain'] else ''}
+        — element-level only; the full pair chemistry is in the harmony matrix.</div>''' if peers else "")
     rel_title = ("Q2 · Partnership & friendship patterns 关系"
                  if is_kid else "Q2 · Relationship patterns 感情")
     q2 = sec(rel_title, f"""
@@ -576,12 +592,10 @@ def build_person(m, chart, ys, fam_section, others):
         <b>Friction 生肖:</b> {pc['clash']}-born — workable, but agreements need to be
         explicit, not assumed.</div>
       <div class="cite"><b>Element fit:</b> {pc['el_line']}.</div>
-      <div class="cite"><b>In this family:</b>
-        {('energized by ' + ', '.join(pc['boost'])) if pc['boost'] else 'no member dominantly carries the feeding element'}{('; tiring in long doses: ' + ', '.join(pc['drain'])) if pc['drain'] else ''}
-        — element-level only; the full pair chemistry is in the harmony matrix.</div>
+      {family_line}
       {sugg(REL_ADVICE[rr['key']])}""")
 
-    q3 = sec("Q3 · Wealth pattern & timing 财富", f"""
+    q3 = "" if minor else sec("Q3 · Wealth pattern & timing 财富", f"""
       <p class="verdict">{wp['pattern']}</p><p>{wp['carry']}</p>
       {'<div class="cite"><b>Act-year windows:</b><br>' + '<br>'.join('◉ ' + x for x in wp['windows']) + '</div>' if wp['windows'] else '<div class="cite">no wealth-activation years in the next decade — build, don\'t chase</div>'}
       {f'<div class="cite">⚠ hold-back years: {", ".join(wp["cautions"])}</div>' if wp['cautions'] else ''}
@@ -605,7 +619,7 @@ def build_person(m, chart, ys, fam_section, others):
     yr_rows = "".join(f"""<tr><th>{y['y']} {y['gz']}</th>
         <td class="v-{y['overall']}">{y['overall_zh']}</td>
         <td class="f-{y['career']['flag']}">{y['career']['note']}</td>
-        <td class="f-{y['wealth']['flag']}">{y['wealth']['note']}</td>
+        {'' if minor else f"<td class=\"f-{y['wealth']['flag']}\">{y['wealth']['note']}</td>"}
         <td class="f-{y['relationship']['flag']}">{y['relationship']['note']}</td>
         <td class="f-{y['health']['flag']}">{y['health']['note']}</td></tr>"""
         for y in w["years"])
@@ -618,7 +632,7 @@ def build_person(m, chart, ys, fam_section, others):
                    f'as a {nxt["phase_zh"]} {nxt["phase"]} phase'
                    + (f' — {"; ".join(nxt["notes"])}' if nxt["notes"] else "") + ".</div>")
     q5 = sec("Q5 · Key decision windows 时机", f"""
-      <table class="wt"><tr><th>Year</th><th>Overall</th><th>事业</th><th>财富</th><th>感情</th><th>健康</th></tr>
+      <table class="wt"><tr><th>Year</th><th>Overall</th><th>事业</th>{'' if minor else '<th>财富</th>'}<th>感情</th><th>健康</th></tr>
       {yr_rows}</table>{handoff}
       {sugg(WINDOWS_ADVICE)}""")
 
@@ -692,7 +706,7 @@ def build_person(m, chart, ys, fam_section, others):
 <h1>🧬 {name} — personal BaZi strategy report</h1>
 <div class="sub">{role} · birth-data only, valid in any home · calculation +
 interpretation: every figure is followed by what it means and what to do · all advice
-rule-selected, no runtime AI · regenerate with <code>python scripts/bazi_report.py</code></div>
+rule-selected, no runtime AI</div>
 {snapshot}{who}{q1}{q2}{q3}{q4}{q5}{extras}{exams}{fam_section}
 <div class="note"><b>Method:</b> 子平 four-pillars with true-solar time; strength by
 得令/得地/得势 with 調候 cross-check; timing = 大運/流年 × natal pillars × 用神. These are
@@ -702,13 +716,20 @@ Known contested point: this chart school reads {'a borderline chart — the alte
     return _tosimp(html)
 
 
-def family_section(members, charts, ys_map, axis_note=""):
+def chart_is_minor(chart, year=None) -> bool:
+    """Under 18 by the reading's own rule (engine.story.is_minor: child or teen voice), so the report and the reading agree."""
+    return is_minor(chart.effective_dt.strftime("%Y-%m-%d %H:%M"), year or reading_year())
+
+
+def family_section(members, charts, ys_map, axis_note="", money=True):
+    """`money=False` leaves out the delegation map, the one place this section talks about wealth, for a minor's report."""
+    yr = reading_year()
     wmap = {m.name: timing_windows(charts[m.name], ys_map[m.name],
-                                   dayun_detail(charts[m.name], YEAR), YEAR)
+                                   dayun_detail(charts[m.name], yr), yr)
             for m in members}
     rows = []
     for i in range(10):
-        y = YEAR + i
+        y = yr + i
         score, careful, peak = 0, [], []
         for m in members:
             r = wmap[m.name]["years"][i]
@@ -743,8 +764,7 @@ def family_section(members, charts, ys_map, axis_note=""):
       best years for relocation, family ventures, big purchases):</div>{joint}
       <div class="cite" style="margin-top:4px"><b>Years where someone needs shelter:</b>
       {"; ".join(veto) or "none in the decade"}</div>
-      <div class="cite" style="margin-top:8px"><b>Delegation map 财务搭档</b> — whose
-      favourable elements carry whose wealth element:</div>{"".join(deleg)}
+      {'<div class="cite" style="margin-top:8px"><b>Delegation map 财务搭档</b> — whose favourable elements carry whose wealth element:</div>' + "".join(deleg) if money else ""}
       {f'<div class="cite" style="margin-top:6px"><b>Known friction axis:</b> {axis_note}</div>' if axis_note else ''}</div>"""
 
 
@@ -754,19 +774,20 @@ def main():
               for m in members}
     ys_map = {n: yong_shen(c) for n, c in charts.items()}
     (ROOT / "data/out/people").mkdir(parents=True, exist_ok=True)
-    fam = family_section(members, charts, ys_map,
-                         axis_note="the 寅申 clash runs through 二强 and both "
-                                   "parents — remedies in the harmony handbook; his "
-                                   "solo room and the sisters as buffers are "
-                                   "structural, not optional.")
+    fam_args = dict(axis_note="the 寅申 clash runs through 二强 and both "
+                              "parents — remedies in the harmony handbook; his "
+                              "solo room and the sisters as buffers are "
+                              "structural, not optional.")
+    fam = family_section(members, charts, ys_map, **fam_args)
+    fam_no_money = family_section(members, charts, ys_map, money=False, **fam_args)   # a minor's report carries no money advice
     others = [(_tosimp(m.name),
                max(charts[m.name].element_weights,
                    key=charts[m.name].element_weights.get))
               for m in members]
     for m in members:
         out = ROOT / "data/out/people" / f"bazi{FILE_NAME[m.name]}.html"
-        out.write_text(build_person(m, charts[m.name], ys_map[m.name], fam,
-                                    others), "utf8")
+        out.write_text(build_person(m, charts[m.name], ys_map[m.name],
+                                    fam_no_money if chart_is_minor(charts[m.name]) else fam, others), "utf8")
         print(f"{out.name} written ({out.stat().st_size} bytes)")
 
 

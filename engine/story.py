@@ -8,10 +8,11 @@ markers that open the figure, rule or citation in place. Same payload in, same t
 from __future__ import annotations
 
 from .area_reference import standing_key
+from .bazi import reading_year
 from .i18n import T, an, num_word, zh_join
 from .shensha import star_name_en
 from .plain import (ANIMAL, AREA, BAND_KEY, DIR_WORD, EL_ROOM, EN, MEDICINE, NEG_STARS, POLE, SEASON,
-                    STEM_EL, _day_label, _month_runs, _run_words, and_join, strength_key)
+                    STEM_EL, _day_label, _month_runs, _run_words, and_join, strength_key, vault_opener)
 
 GOD_NOUN = {"比肩": "peers and self-reliance", "劫財": "rivals and bold moves", "劫财": "rivals and bold moves",
             "食神": "ease and natural talent", "傷官": "sharp expression and challenge", "伤官": "sharp expression and challenge",
@@ -42,6 +43,11 @@ def voice_of(age):
     """Four voices (owner 2026-10-10): child under 13, teen 13 to 17, adult, senior 65 and over."""
     if age is None: return "adult"
     return "child" if age < 13 else "teen" if age < 18 else "senior" if age >= 65 else "adult"
+
+
+def is_minor(effective_time, year) -> bool:
+    """The reading's one test for "under 18" (child or teen voice, owner 2026-10-10: no money advice). The full report asks it here too."""
+    return voice_of(_age({"effective_time": effective_time}, year)) in ("child", "teen")
 
 
 AREAS_FOR = {"child": {"learning", "health"}, "teen": {"learning", "health", "career"},
@@ -121,7 +127,7 @@ def _age(p, year):
 
 
 def _year_now(p):
-    return (p.get("afflictions") or {}).get("year") or (((p.get("windows") or {}).get("years") or [{}])[0].get("y")) or 2026
+    return (p.get("afflictions") or {}).get("year") or (((p.get("windows") or {}).get("years") or [{}])[0].get("y")) or reading_year()
 
 
 def _ages(d):
@@ -262,7 +268,7 @@ def _balance(p, v, lang="en"):
     if role in ROLE:
         p2.append(S(T("story._balance.15", f"For {EN[dm_el]}, {EN[med]} is {ROLE[role]}.", lang, dm_el_en=el(dm_el), med_en=el(med),
                       role_role=T(f"story.ROLE.{role}", ROLE[role], lang)), "flows"))
-        exp = next((a for a in p.get("personality") or [] if a["axis"].endswith("Expression")), None)
+        exp = next((a for a in p.get("personality") or [] if a["poles"]["right"]["zh"] == "外放"), None)
         if role == "output" and exp and exp.get("zone") == "left":
             p2.append(S(T("story._balance.16", "Your personality reading says you hold your output back, so what you most need is a way "
                           "for your energy to come out.", lang), "personality"))
@@ -337,7 +343,7 @@ def _drives(p, v, lang="en"):
     if v in ("child", "teen"):
         pass   # no money advice under 18 (owner 2026-10-10)
     elif V.get("present") and not V.get("open"):
-        br = V.get("state", "").split(" opens in ")[-1][:1]
+        br = vault_opener(V)
         nxt = next((y for y in range(_year_now(p), _year_now(p) + 13) if "子丑寅卯辰巳午未申酉戌亥"[(y - 4) % 12] == br), None)
         if nxt:
             also = (T("story._drives.10", ", a good year to put your affairs in order", lang) if v == "senior"
@@ -546,7 +552,7 @@ def _vault_why(V, lang="en"):
     br = V.get("branch", "")
     if V.get("open"):
         return T("story._vault_why.02", f"Wealth store (财库): the {br} ({ANIMAL.get(br, br)}) branch, already open.", lang, br=br, ANIMAL_br=an_(br))
-    opens = V.get("state", "").split(" opens in ")[-1][:1]
+    opens = vault_opener(V)
     return T("story._vault_why.03", f"Wealth store (财库): the {br} ({ANIMAL.get(br, br)}) branch, sealed; it opens in {ANIMAL.get(opens, opens)} ({opens}) years, "
              "which the timing windows mark as years to save and build.", lang, br=br, ANIMAL_br=an_(br), ANIMAL_opens=an_(opens), opens=opens)
 

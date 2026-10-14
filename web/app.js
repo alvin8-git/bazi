@@ -22,11 +22,11 @@ const READING_EN = {
   "appjs.CHAPTERS.space.q": "Where should you sit, sleep and work?",
   "appjs.CHAPTERS.space.tech": "Compass",
   "appjs.CHAPTERS.space.what": "eight-house directions",
-  "appjs.CHART_CAP.makeup": "Your eight characters.",
-  "appjs.CHART_CAP.balance": "Your five elements, and how they feed and check each other.",
-  "appjs.CHART_CAP.drives": "The ten classical roles, grouped.",
-  "appjs.CHART_CAP.timing": "Your luck pillars, decade by decade.",
-  "appjs.CHART_CAP.space": "The eight directions for your Kua number.",
+  "appjs.CHART_CAP.makeup": "<b>Four pillars.</b> Your eight characters.",
+  "appjs.CHART_CAP.balance": "<b>Five elements.</b> How they feed and check each other.",
+  "appjs.CHART_CAP.drives": "<b>Ten gods.</b> The ten classical roles, grouped.",
+  "appjs.CHART_CAP.timing": "<b>Luck pillars.</b> Your decades, one pillar at a time.",
+  "appjs.CHART_CAP.space": "<b>Eight directions.</b> For your Kua number.",
   "appjs.PILLAR_KEYS.year.label": "year",
   "appjs.PILLAR_KEYS.month.label": "month",
   "appjs.PILLAR_KEYS.day.label": "you",
@@ -63,7 +63,7 @@ const READING_EN = {
   "appjs.EL_EN.\u91d1": "Metal",
   "appjs.EL_EN.\u6c34": "Water",
   "appjs.BAZHAI_EN.\u751f\u6c23.0": "Vitality",
-  "appjs.BAZHAI_EN.\u751f\u6c23.1": "the best — growth, energy, opportunity; ideal for bed, desk, main door",
+  "appjs.BAZHAI_EN.\u751f\u6c23.1": "the best: growth, energy, opportunity; ideal for bed, desk, main door",
   "appjs.BAZHAI_EN.\u5929\u91ab.0": "Heavenly Doctor",
   "appjs.BAZHAI_EN.\u5929\u91ab.1": "health and recovery; good bedroom direction when unwell",
   "appjs.BAZHAI_EN.\u5ef6\u5e74.0": "Longevity",
@@ -87,56 +87,56 @@ const READING_EN = {
   "appjs.DIR_WORD_EN.SE": "south-east",
   "appjs.DIR_WORD_EN.SW": "south-west",
   "appjs.LEGENDS.chart.01.term": "Four Pillars",
-  "appjs.LEGENDS.chart.01.gloss": "the Four Pillars: birth year·month·day·hour, each written as two characters — eight in all",
+  "appjs.LEGENDS.chart.01.gloss": "the Four Pillars: birth year·month·day·hour, each written as two characters: eight in all",
   "appjs.LEGENDS.chart.02.term": "Stem / branch",
   "appjs.LEGENDS.chart.02.gloss": "the top character of a pillar is its heavenly stem, the bottom its earthly branch (with the zodiac animal)",
   "appjs.LEGENDS.chart.03.term": "日主 Day Master",
-  "appjs.LEGENDS.chart.03.gloss": "the day stem — the character that IS you; every other character is read by its relationship to it",
+  "appjs.LEGENDS.chart.03.gloss": "the day stem: the character that IS you; every other character is read by its relationship to it",
   "appjs.LEGENDS.chart.04.term": "Ten Gods",
-  "appjs.LEGENDS.chart.04.gloss": "that relationship, named — translated god-by-god in §4",
+  "appjs.LEGENDS.chart.04.gloss": "that relationship, named, translated god-by-god in §4",
   "appjs.LEGENDS.chart.05.term": "Hidden stems",
   "appjs.LEGENDS.chart.05.gloss": "hidden stems: extra elements stored inside each branch, listed under the pillar",
   "appjs.LEGENDS.chart.06.term": "Zodiac animal",
   "appjs.LEGENDS.chart.06.gloss": "the zodiac animal of the birth-year branch",
   "appjs.LEGENDS.chart.07.term": "Kua number",
-  "appjs.LEGENDS.chart.07.gloss": "your personal trigram — decides your lucky compass directions (§7)",
+  "appjs.LEGENDS.chart.07.gloss": "your personal trigram: decides your lucky compass directions (§7)",
   "appjs.LEGENDS.chart.08.term": "Natal star",
-  "appjs.LEGENDS.chart.08.gloss": "the life star (Nine Star, 九星) of the birth year — the number feng shui overlays use for you",
+  "appjs.LEGENDS.chart.08.gloss": "the life star (Nine Star, 九星) of the birth year: the number feng shui overlays use for you",
   "appjs.LEGENDS.chart.09.term": "Life Palace",
-  "appjs.LEGENDS.chart.09.gloss": "an auxiliary destiny point derived from the birth month + hour — classical readers weigh it for temperament and life theme",
+  "appjs.LEGENDS.chart.09.gloss": "an auxiliary destiny point derived from the birth month + hour: classical readers weigh it for temperament and life theme",
   "appjs.LEGENDS.chart.10.term": "Conception Palace",
-  "appjs.LEGENDS.chart.10.gloss": "the pillar of the estimated conception month — a supplementary root the chart can draw on",
+  "appjs.LEGENDS.chart.10.gloss": "the pillar of the estimated conception month: a supplementary root the chart can draw on",
   "appjs.LEGENDS.chart.11.term": "Useful god",
   "appjs.LEGENDS.chart.11.gloss": "the elements that act as this chart's medicine (§5)",
   "appjs.LEGENDS.chart.12.term": "Symbolic stars",
-  "appjs.LEGENDS.chart.12.gloss": "symbolic stars carried by the pillars — detailed with meanings in §9",
+  "appjs.LEGENDS.chart.12.gloss": "symbolic stars carried by the pillars: detailed with meanings in §9",
   "appjs.LEGENDS.chart.13.term": "Sound element (Nayin)",
-  "appjs.LEGENDS.chart.13.gloss": "the pillar's melodic element — its poetic name in the 60-cycle (e.g. Sea Metal, 海中金)",
+  "appjs.LEGENDS.chart.13.gloss": "the pillar's melodic element: its poetic name in the 60-cycle (e.g. Sea Metal, 海中金)",
   "appjs.LEGENDS.chart.14.term": "Life stage",
-  "appjs.LEGENDS.chart.14.gloss": "the Day Master's life-stage in that branch (birth→peak→decline cycle) — vitality flavour, not a verdict",
+  "appjs.LEGENDS.chart.14.gloss": "the Day Master's life-stage in that branch (birth→peak→decline cycle): vitality flavour, not a verdict",
   "appjs.LEGENDS.chart.15.gloss": "the 10-year luck cycles that colour each decade (§6)",
   "appjs.LEGENDS.1.01.term": "Wood / Fire / Earth / Metal / Water",
   "appjs.LEGENDS.1.01.gloss": "wood / fire / earth / metal / water",
   "appjs.LEGENDS.1.02.term": "weight",
   "appjs.LEGENDS.1.02.gloss": "weighted count of visible + hidden characters carrying that element",
   "appjs.LEGENDS.1.03.term": "reading it",
-  "appjs.LEGENDS.1.03.gloss": "balance beats abundance — the tallest bar is the heaviest, not the best",
+  "appjs.LEGENDS.1.03.gloss": "balance beats abundance: the tallest bar is the heaviest, not the best",
   "appjs.LEGENDS.1.04.term": "wheel: node size",
   "appjs.LEGENDS.1.04.gloss": "that element's share of THIS chart; gold ring = your Day Master",
   "appjs.LEGENDS.1.05.term": "green arrows (generating)",
-  "appjs.LEGENDS.1.05.gloss": "the generating cycle (wood→fire→earth→metal→water) — thicker = stronger feeder",
+  "appjs.LEGENDS.1.05.gloss": "the generating cycle (wood→fire→earth→metal→water): thicker = stronger feeder",
   "appjs.LEGENDS.1.06.term": "red lines (controlling)",
-  "appjs.LEGENDS.1.06.gloss": "the controlling cycle — solid red = an actual affliction in this chart (a heavy element crushing a weak one)",
+  "appjs.LEGENDS.1.06.gloss": "the controlling cycle: solid red = an actual affliction in this chart (a heavy element crushing a weak one)",
   "appjs.LEGENDS.1.07.term": "The five roles",
-  "appjs.LEGENDS.1.07.gloss": "the five roles every element plays relative to the Day Master — resource, output, wealth, pressure, peers; the ten gods refine these",
+  "appjs.LEGENDS.1.07.gloss": "the five roles every element plays relative to the Day Master: resource, output, wealth, pressure, peers; the ten gods refine these",
   "appjs.LEGENDS.2.01.term": "Strong",
-  "appjs.LEGENDS.2.01.gloss": "the chart can afford to spend — output, wealth and pressure suit it",
+  "appjs.LEGENDS.2.01.gloss": "the chart can afford to spend: output, wealth and pressure suit it",
   "appjs.LEGENDS.2.02.term": "Weak",
-  "appjs.LEGENDS.2.02.gloss": "the chart needs feeding — support, rest and resource suit it",
+  "appjs.LEGENDS.2.02.gloss": "the chart needs feeding: support, rest and resource suit it",
   "appjs.LEGENDS.2.03.term": "support ratio",
   "appjs.LEGENDS.2.03.gloss": "share of the chart on the Day Master's side",
   "appjs.LEGENDS.2.04.term": "root mass",
-  "appjs.LEGENDS.2.04.gloss": "the Day Master's own element hidden inside the branches — its anchoring",
+  "appjs.LEGENDS.2.04.gloss": "the Day Master's own element hidden inside the branches: its anchoring",
   "appjs.LEGENDS.3.01.term": "Stem row",
   "appjs.LEGENDS.3.01.gloss": "the ten god of each pillar's visible character",
   "appjs.LEGENDS.3.02.term": "Hidden-stem row",
@@ -145,21 +145,21 @@ const READING_EN = {
   "appjs.LEGENDS.3.03.gloss": "each god's name and meaning is translated in §4's list",
   "appjs.LEGENDS.4.01.term": "Direct vs indirect",
   "appjs.LEGENDS.4.01.gloss": "Direct = the proper/conventional form of a domain, Indirect = its unconventional twin (opposite-polarity / same-polarity pairing)",
-  "appjs.LEGENDS.4.02.gloss": "share of the chart's characters classified as that god — where life's attention defaults",
+  "appjs.LEGENDS.4.02.gloss": "share of the chart's characters classified as that god: where life's attention defaults",
   "appjs.LEGENDS.4.03.term": "wheel: Day Master centre",
   "appjs.LEGENDS.4.03.gloss": "your Day Master; the five groups around it are the five roles from §1's element wheel, refined into gods",
   "appjs.LEGENDS.4.04.term": "node colour & size",
   "appjs.LEGENDS.4.04.gloss": "colour = that group's actual element for YOUR Day Master (§1 palette); size = its share of the chart",
   "appjs.LEGENDS.4.05.term": "green / red arrows",
-  "appjs.LEGENDS.4.05.gloss": "generating (feeding) and controlling cycles between the god groups — same cycles as §1, one level up",
+  "appjs.LEGENDS.4.05.gloss": "generating (feeding) and controlling cycles between the god groups: same cycles as §1, one level up",
   "appjs.LEGENDS.4.06.term": "satellites",
-  "appjs.LEGENDS.4.06.gloss": "each group's Direct/Indirect pair with its own share — faded = barely present",
+  "appjs.LEGENDS.4.06.gloss": "each group's Direct/Indirect pair with its own share: faded = barely present",
   "appjs.LEGENDS.4.07.term": "rooted / floating",
   "appjs.LEGENDS.4.07.gloss": "a visible god whose element also sits in the branches is rooted (durable); visible-only is floating (shows up socially, needs backing)",
   "appjs.LEGENDS.4.08.term": "pair patterns",
-  "appjs.LEGENDS.4.08.gloss": "classical combinations (Eating God controls Seven Killings, Hurting Officer meets Direct Officer, …) — the gods' joint behaviour, not just their sizes",
+  "appjs.LEGENDS.4.08.gloss": "classical combinations (Eating God controls Seven Killings, Hurting Officer meets Direct Officer, …): the gods' joint behaviour, not just their sizes",
   "appjs.LEGENDS.5.01.term": "Useful god (favourable)",
-  "appjs.LEGENDS.5.01.gloss": "favourable — the chart's medicine; carry these elements in colours, directions, fields",
+  "appjs.LEGENDS.5.01.gloss": "favourable: the chart's medicine; carry these elements in colours, directions, fields",
   "appjs.LEGENDS.5.02.term": "Avoid",
   "appjs.LEGENDS.5.02.gloss": "elements that aggravate the imbalance",
   "appjs.LEGENDS.5.03.term": "Support-and-restrain method",
@@ -178,36 +178,36 @@ const READING_EN = {
   "appjs.LEGENDS.7.02.term": "how to use",
   "appjs.LEGENDS.7.02.gloss": "green = bed headboard, desk facing, main door; red = fine for storage/bathroom",
   "appjs.LEGENDS.7.03.term": "personal",
-  "appjs.LEGENDS.7.03.gloss": "this map differs per person — a couple can have opposite maps",
+  "appjs.LEGENDS.7.03.gloss": "this map differs per person: a couple can have opposite maps",
   "appjs.LEGENDS.8.01.term": "score",
   "appjs.LEGENDS.8.01.gloss": "starts at a neutral 50; every chip is a rule that moved it",
   "appjs.LEGENDS.8.02.gloss": "a natural strength",
   "appjs.LEGENDS.8.03.gloss": "an area to consciously support",
   "appjs.LEGENDS.8.04.term": "chips",
-  "appjs.LEGENDS.8.04.gloss": "the audit trail — hover none, they are the working",
+  "appjs.LEGENDS.8.04.gloss": "the audit trail: hover none, they are the working",
   "appjs.LEGENDS.8.05.term": "Seated",
-  "appjs.LEGENDS.8.05.gloss": "the domain's signal god actually resides in its primary palace — a seated signal lands harder than share alone suggests",
+  "appjs.LEGENDS.8.05.gloss": "the domain's signal god actually resides in its primary palace: a seated signal lands harder than share alone suggests",
   "appjs.LEGENDS.8.06.term": "Wealth vault",
   "appjs.LEGENDS.8.06.gloss": "the wealth-element storage branch (Chen, Xu, Chou, Wei): open = accumulation compounds; sealed = opens in its clash years (§13); absent = wealth flows, systems must do the storing",
   "appjs.LEGENDS.9.01.gloss": "symbolic stars: classical stem-branch patterns, flavour on top of structure",
   "appjs.LEGENDS.9.02.term": "Year / month / day / hour tag",
-  "appjs.LEGENDS.9.02.gloss": "which pillar carries it — ancestry · career/parents · self/spouse · children/later life",
+  "appjs.LEGENDS.9.02.gloss": "which pillar carries it: ancestry · career/parents · self/spouse · children/later life",
   "appjs.LEGENDS.10.01.term": "axes",
-  "appjs.LEGENDS.10.01.gloss": "read straight off §4's distribution — the basis column shows the exact threshold",
+  "appjs.LEGENDS.10.01.gloss": "read straight off §4's distribution: the basis column shows the exact threshold",
   "appjs.LEGENDS.10.02.term": "no strong tendency",
   "appjs.LEGENDS.10.02.gloss": "a legitimate result, not a failure",
   "appjs.LEGENDS.11.01.term": "element ↔ organs",
-  "appjs.LEGENDS.11.01.gloss": "traditional five-element medicine correspondence — reference, not medical advice",
+  "appjs.LEGENDS.11.01.gloss": "traditional five-element medicine correspondence: reference, not medical advice",
   "appjs.LEGENDS.11.02.term": "status",
   "appjs.LEGENDS.11.02.gloss": "flags an element too weak or too heavy to lean on",
   "appjs.LEGENDS.12.01.term": "fit",
   "appjs.LEGENDS.12.01.gloss": "how efficiently effort converts to reward in that field",
   "appjs.LEGENDS.12.02.term": "priced against",
-  "appjs.LEGENDS.12.02.gloss": "low-ranked fields cost more energy here — never forbidden",
+  "appjs.LEGENDS.12.02.gloss": "low-ranked fields cost more energy here: never forbidden",
   "appjs.LEGENDS.13.01.term": "◉ window",
   "appjs.LEGENDS.13.01.gloss": "a supportive year for that life dimension",
   "appjs.LEGENDS.13.02.term": "⚠ caution",
-  "appjs.LEGENDS.13.02.gloss": "navigate deliberately — a note, never a verdict",
+  "appjs.LEGENDS.13.02.gloss": "navigate deliberately: a note, never a verdict",
   "appjs.LEGENDS.13.03.term": "· quiet",
   "appjs.LEGENDS.13.03.gloss": "nothing notable triggered",
   "appjs.LEGENDS.13.04.term": "climate / weather",
@@ -272,14 +272,14 @@ const READING_EN = {
   "appjs.renderPerson.004": "life domains",
   "appjs.renderPerson.005": "symbolic stars",
   "appjs.renderPerson.006": "timing windows",
-  "appjs.renderPerson.007": "Interpretation: {SEC_ZH_n} — the numbers read out",
-  "appjs.renderPerson.008": "Strategy: {SEC_ZH_n} — what this asks of you",
+  "appjs.renderPerson.007": "Interpretation: {SEC_ZH_n}: the numbers read out",
+  "appjs.renderPerson.008": "Strategy: {SEC_ZH_n}: what this asks of you",
   "appjs.renderPerson.015": "{who} <small class=\"rp-sub1\">Your reading (<span class=\"zh\" lang=\"zh-Hans\" tabindex=\"0\" title=\"mìng shū · the reading\">命书</span>)</small>",
   "appjs.renderPerson.016": "{who}: your BaZi reading",
   "appjs.bootReading.001": "load failed: {e_message}",
   "appjs.stratBlock.001": "What this asks of you",
-  "appjs.stratBlock.002": "<b>Monthly rhythm</b>\n        (recurring every year): green months feed this chart, red months drain it —\n        schedule pushes into green months, recovery into red ones.",
-  "appjs.stratBlock.003": "<b>{s_kid}:</b>\n        primary risk point — {dnAll_s}",
+  "appjs.stratBlock.002": "<b>Monthly rhythm</b>\n        (recurring every year): green months feed this chart, red months drain it:\n        schedule pushes into green months, recovery into red ones.",
+  "appjs.stratBlock.003": "<b>{s_kid}:</b>\n        primary risk point: {dnAll_s}",
   "appjs.stratBlock.004": "<b>Peach blossom:</b> {s_taohua} · <b>Zodiac allies:</b> {s_allies}\n        · <b>Zodiac friction:</b> {s_clash}",
   "appjs.stratBlock.005": "<b>Element fit:</b> {dnAll_s}",
   "appjs.stratBlock.006": "Partnership & friendship patterns",
@@ -292,7 +292,7 @@ const READING_EN = {
   "appjs.stratBlock.013": "structure evidence: {s_corp_ev} ·\n        volatility evidence: {s_vent_ev}",
   "appjs.stratBlock.014": "<b>Wealth pattern:</b>\n        {dnAll_s} {dnAll_s_2}",
   "appjs.stratBlock.015": "<b>Act-year windows:</b>\n          {s_act_windows}",
-  "appjs.stratBlock.016": "no wealth-activation years in the next decade — build, don't chase",
+  "appjs.stratBlock.016": "no wealth-activation years in the next decade: build, don't chase",
   "appjs.stratBlock.017": "⚠ hold-back years: {s_cautions}",
   "appjs.stratBlock.018": "<b>Next-decade handoff:</b> {dnAll_s}",
   "appjs.stratBlock.019": "<b>Exam-year overlay:</b>",
@@ -327,7 +327,7 @@ const READING_EN = {
   "appjs.buildPillars.002": "carried by the season",
   "appjs.buildPillars.003": "level with the season",
   "appjs.buildPillars.004": "Four-Pillar Grid",
-  "appjs.buildPillars.005": "A {weak_weak} {elc_dm} {elw_dmEl} day master, {season} — {fav_map} {fav_length} your medicine.",
+  "appjs.buildPillars.005": "A {weak_weak} {elc_dm} {elw_dmEl} day master, {season}: {fav_map} {fav_length} your medicine.",
   "appjs.buildPillars.006": "score {c_strength_score}",
   "appjs.buildPillars.007": "Branch interactions",
   "appjs.buildPillars.008": "Arcs join the pillars whose branches interact. Dashed amber = 害·刑·冲 (friction, punishment, clash);\n      solid green = 合 (combination). Read with the palaces: a tension between Year and Month touches ancestry\n      and career; Day is the self and spouse.{its_length}",
@@ -340,23 +340,23 @@ const READING_EN = {
   "appjs.buildPillars.015": "; {part_neg} in your {PEN_neg} pillar asks for care: {part_neg_2}.",
   "appjs.buildPillars.016": ", and no star asks for care.",
   "appjs.buildPillars.018": "Symbolic stars (神煞) are classical patterns read from the stems and branches; they add flavour on top of the chart's structure and never override the balance reading.",
-  "appjs.buildPillars.019": "Interpretation — the numbers read out",
+  "appjs.buildPillars.019": "Interpretation: the numbers read out",
   "appjs.buildPillars.020": "Every rule this reading cites",
   "appjs.buildElements.001": "单位 = 字重，不是个数：天干各 1.0、地支本气 1.0、余气 1/3，全盘合计 {wtot_toFixed}。\n      Units are weighted character counts: each stem 1.0, each branch's main hidden stem 1.0, each minor hidden stem 1/3.",
   "appjs.buildElements.002": "Element pentagon",
-  "appjs.buildElements.003": "{elb_pr} {elw_pr} fights you hardest ({pr_share}%); {elb_rs} {elw_rs} feeds you {pr_share_2}{rs_share}% — {pr_share_3}.",
+  "appjs.buildElements.003": "{elb_pr} {elw_pr} fights you hardest ({pr_share}%); {elb_rs} {elw_rs} feeds you {pr_share_2}{rs_share}%: {pr_share_3}.",
   "appjs.buildElements.004": "pressure outweighs support",
   "appjs.buildElements.005": "support outweighs pressure",
   "appjs.buildElements.006": "Authority",
   "appjs.buildElements.007": "Resource",
-  "appjs.buildElements.008": "<b>五行关系 — the five relations, listed</b>{eflowsList_c}",
+  "appjs.buildElements.008": "<b>五行关系: the five relations, listed</b>{eflowsList_c}",
   "appjs.buildElements.009": "Strength gauge and its arithmetic",
   "appjs.buildElements.010": "<span class=\"tag\">support ratio {st_support_ratio}%</span> <span class=\"tag\">root mass {st_root_ratio}%</span> <span class=\"tag\">{st_formation_status}</span>",
-  "appjs.buildElements.011": "{weak_Weak} ({st_score}) — {sp_the}{stage_stage}, not which element has the biggest bar.",
+  "appjs.buildElements.011": "{weak_Weak} ({st_score}): {sp_the}{stage_stage}, not which element has the biggest bar.",
   "appjs.buildElements.014": "the season controls you",
   "appjs.buildElements.015": "the season carries you",
   "appjs.buildElements.016": "the season is neutral",
-  "appjs.buildElements.017": "{elb_topSup} {topSup_zh} {elw_topSup} supports hardest ({topSup_w}) — support {pt_support} {pt_support_2} drain {pt_drain}, {weak_pt}.",
+  "appjs.buildElements.017": "{elb_topSup} {topSup_zh} {elw_topSup} supports hardest ({topSup_w}): support {pt_support} {pt_support_2} drain {pt_drain}, {weak_pt}.",
   "appjs.buildElements.018": "yet the season still tips it weak",
   "appjs.buildElements.019": "yet the season still carries it strong",
   "appjs.buildElements.020": "and the verdict follows",
@@ -367,16 +367,19 @@ const READING_EN = {
   "appjs.buildElements.026": "too much",
   "appjs.buildElements.027": "too little",
   "appjs.buildElements.028": "<b>{h_en}</b> (<span class=\"keepzh\">{h_element}</span>): {h_organs}; watch {h_aspects}.",
-  "appjs.buildElements.029": "{elb_excess} {elw_excess} excess ({excess_share}%) — watch {excess_organs}; {excess_aspects} is the pattern to notice.",
-  "appjs.buildElements.030": "{elb_weakEl} {elw_weakEl} weak ({weakEl_share}%) — support {weakEl_organs}; watch {weakEl_aspects}.",
-  "appjs.buildElements.031": "All five elements sit in range — no organ system is flagged.",
+  "appjs.buildElements.029": "{elb_excess} {elw_excess} excess ({excess_share}%): watch {excess_organs}; {excess_aspects} is the pattern to notice.",
+  "appjs.buildElements.030": "{elb_weakEl} {elw_weakEl} weak ({weakEl_share}%): support {weakEl_organs}; watch {weakEl_aspects}.",
+  "appjs.buildElements.031": "All five elements sit in range: no organ system is flagged.",
   "appjs.buildElements.032": "Health element map",
   "appjs.buildElements.033": "Excess",
   "appjs.buildElements.034": "Deficient",
+  "appjs.buildElements.035": "Green arrow: feeds. Thicker means the element has more to give; faint means little.",
+  "appjs.buildElements.036": "Red arrow: checks, flagged as strain on your chart (a strong element pressing on a weak one, or two strong ones facing off).",
+  "appjs.buildElements.037": "Dotted pale arrow: checks, with no strain flagged.",
   "appjs.buildGods.001": "The god wheel",
   "appjs.buildGods.002": "{gs} {GRP_EN_gs} lead your wheel at {gs_2}%, {gs_3} {GRP_EN_gs_2} {gs_gs} at {gs_4}%.",
   "appjs.buildGods.003": "close behind",
-  "appjs.buildGods.004": "The five circles are the ten roles in five groups; a bigger circle is a bigger share of your chart. The centre is you, the Day Master (日元).",
+  "appjs.buildGods.004": "The five circles are the ten roles in five groups; a bigger circle is a bigger share of your chart. The centre is you, the Day Master (日主).",
   "appjs.buildGods.005": "Solid green arrows: each group feeds the next. Dashed red arrows: each group checks the one it points at.",
   "appjs.buildGods.006": "<b class=\"keepzh\">{zh}</b> <b>{name}</b>: {en_a} ({a}) and {en_b} ({b})",
   "appjs.buildGods.007": "0% (absent)",
@@ -387,21 +390,21 @@ const READING_EN = {
   "appjs.buildGods.012": "Output stars",
   "appjs.buildGods.013": "Peer stars",
   "appjs.buildGods.014": "Ten-god bars",
-  "appjs.buildGods.015": "Your chart runs on {godc_dm} {en_g1} ({Math_round}%) — {c_tengods_legend}.",
+  "appjs.buildGods.015": "Your chart runs on {godc_dm} {en_g1} ({Math_round}%): {c_tengods_legend}.",
   "appjs.buildGods.016": "{absent_length} of 10 gods",
   "appjs.buildGods.017": "Each bar is how much of your chart one role takes up. A role is what a character is to you, the Day Master.",
   "appjs.buildGods.018": "<b>Bands:</b> 20% or more is prominent, 8% or more is present, under 8% is faint, 0% is absent.",
   "appjs.buildGods.019": "<span>{a_poles_left_zh} <small>{a_poles_left_en}</small></span><span class=\"mid\">neutral</span>\n        <span>{a_poles_right_zh} <small>{a_poles_right_en}</small></span>",
   "appjs.buildGods.020": "Personality axes",
-  "appjs.buildGods.021": "{sharp_verdict} — {sharp_metrics} make up {sharp_metrics_2}% of your chart, your sharpest trait.",
-  "appjs.buildGods.022": "No strong tendency on any axis — a balanced profile, not a failure.",
+  "appjs.buildGods.021": "{sharp_verdict}: {sharp_metrics} make up {sharp_metrics_2}% of your chart, your sharpest trait.",
+  "appjs.buildGods.022": "No strong tendency on any axis: a balanced profile, not a failure.",
   "appjs.buildGods.023": "<b>Visible stems:</b> {ti_rooted}",
   "appjs.buildGods.024": "pair patterns · {ti_patterns_length}",
-  "appjs.buildGods.025": "No classical pair pattern triggers — the gods operate independently in this chart.",
+  "appjs.buildGods.025": "No classical pair pattern triggers: the gods operate independently in this chart.",
   "appjs.buildGods.026": "Structure check",
-  "appjs.buildGods.027": "{godc_dm} ({bad_pct}%) carries an unfavourable element ({elc_bad}) — use it deliberately, budget recovery.",
-  "appjs.buildGods.028": "{godc_dm} ({good_pct}%) carries {elc_good}, one of your 用神 — a clean engine; using it strengthens the chart.",
-  "appjs.buildGods.029": "The heavy gods sit outside both lists — structure is neutral here.",
+  "appjs.buildGods.027": "{godc_dm} ({bad_pct}%) carries an unfavourable element ({elc_bad}): use it deliberately, budget recovery.",
+  "appjs.buildGods.028": "{godc_dm} ({good_pct}%) carries {elc_good}, one of your 用神: a clean engine; using it strengthens the chart.",
+  "appjs.buildGods.029": "The heavy gods sit outside both lists: structure is neutral here.",
   "appjs.buildGods.030": "{ti_favor} of {ti_favor_length} heavy gods",
   "appjs.buildGods.031": "{ti_rooted} stems",
   "appjs.buildGods.032": "Three checks a percentage chart cannot make: is the heavy god aligned with your 用神, is it rooted in the branches, and what do the gods form together. Personality is not static: the current decade (时运 tab) overlays its own gods.",
@@ -417,7 +420,7 @@ const READING_EN = {
   "appjs.buildGods.043": "<b>Columns:</b> <span class=\"keepzh\">领域</span> life area · <span class=\"keepzh\">分</span> score out of 100 (50 is neutral) · <span class=\"keepzh\">十神</span> the roles that govern it, with their share of your chart · <span class=\"keepzh\">得位</span> ✓ when those roles sit in the area's own pillar",
   "appjs.buildGods.044": "<b>{n_split}</b> (<span class=\"keepzh\">{n_split_2}</span>): a signal only, with no score of its own.",
   "appjs.buildGods.045": "Life domains: score, signal, seat",
-  "appjs.buildGods.046": "{top_en} stands highest among charts, with a score of {top_score}; your heaviest signal is {heavyName_toLowerCase} — {heavy}%, {inPal_heavy} {heavy_2}.",
+  "appjs.buildGods.046": "{top_en} stands highest among charts, with a score of {top_score}; your heaviest signal is {heavyName_toLowerCase}: {heavy}%, {inPal_heavy} {heavy_2}.",
   "appjs.buildGods.047": "seated in",
   "appjs.buildGods.048": "Each score starts at a neutral 50; every rule listed under the table moved it by the amount shown.",
   "appjs.buildGods.049": "<b>Marriage:</b> {c_spouse_reading_star_li} {c_spouse_reading_palace_}",
@@ -440,15 +443,15 @@ const READING_EN = {
   "appjs.buildTiming.005": "<b>Roles:</b> {gods_map}",
   "appjs.buildTiming.006": "<span class=\"keepzh\">{gzc_d}</span> {STEM_YANG_d} {EL_EN_STEM_EL} over {ZODIAC_BR_ANIMAL} ({EL_EN_BR_EL})",
   "appjs.buildTiming.007": "Decade strip",
-  "appjs.buildTiming.008": "In the {cur_gz} decade ({cur_ages}, {cur_phase}) — {nxt_shifts}",
+  "appjs.buildTiming.008": "In the {cur_gz} decade ({cur_ages}, {cur_phase}): {nxt_shifts}",
   "appjs.buildTiming.009": "shifts to {nxt_gz} ({nxt_phase}) at age {String_nxt}.",
   "appjs.buildTiming.010": "the last charted decade.",
-  "appjs.buildTiming.011": "Before the first decade — {W_decades}",
+  "appjs.buildTiming.011": "Before the first decade: {W_decades}",
   "appjs.buildTiming.012": "{W_decades} begins at age {String_W}.",
   "appjs.buildTiming.013": "Luck cycle",
   "appjs.buildTiming.014": "Starts at age",
   "appjs.buildTiming.015": "<b>Life arc:</b> {W_arc}",
-  "appjs.buildTiming.016": "<b>Peach blossom:</b> {W_taohua_branch} — {W_taohua_type}{W_taohua}",
+  "appjs.buildTiming.016": "<b>Peach blossom:</b> {W_taohua_branch}: {W_taohua_type}{W_taohua}",
   "appjs.buildTiming.017": "(in the {W_taohua} pillar)",
   "appjs.buildTiming.018": "{GRP_THEME_pair} with {GRP_THEME_pair_2}",
   "appjs.buildTiming.019": "This year, on this decade",
@@ -462,15 +465,15 @@ const READING_EN = {
   "appjs.buildTiming.027": "LUCK",
   "appjs.buildTiming.028": "ages {L_ages}",
   "appjs.buildTiming.029": "YEAR",
-  "appjs.buildTiming.030": "The two cards are the energies currently overlaid on the birth chart — the active 10-year luck pillar and this year's pillar — labelled with their ten gods relative to this Day Master.",
+  "appjs.buildTiming.030": "The two cards are the energies currently overlaid on the birth chart: the active 10-year luck pillar and this year's pillar, labelled with their ten gods relative to this Day Master.",
   "appjs.buildTiming.031": "<em class=\"rnow\">▲ now</em>",
   "appjs.buildTiming.032": "Monthly rhythm",
   "appjs.buildTiming.033": "Good months: {ranges_good} ({gel}). Pace {ranges_bad}.",
-  "appjs.buildTiming.034": "No month carries your medicine — pace the whole year evenly.",
-  "appjs.buildTiming.035": "Each solar month carries a branch and its element. Months whose element is your medicine are marked good; months carrying a 忌神 element are marked to pace. The rhythm is the same every year — the 流年 table says which years lift or lower it.",
+  "appjs.buildTiming.034": "No month carries your medicine: pace the whole year evenly.",
+  "appjs.buildTiming.035": "Each solar month carries a branch and its element. Months whose element is your medicine are marked good; months carrying a 忌神 element are marked to pace. The rhythm is the same every year: the 流年 table says which years lift or lower it.",
   "appjs.buildCompass.001": "Eight House 3×3 grid",
   "appjs.buildCompass.002": "Face <b>{dirOf}</b> (Vitality) for bed and desk; keep long sitting out of <b>{dirOf_2}</b> (Severed Fate).",
-  "appjs.buildCompass.004": "<b>Two layers:</b> 八宅 grades ORIENTATION — where to face and head long-stay activities; 用神 grades ELEMENT CONTENT — what colours, materials and fields feed the chart. A green direction whose element is unfavourable is still a good direction to FACE — furnish it in the 用神 palette. 命卦 comes from the birth year alone; the 用神 layer is the personal one.",
+  "appjs.buildCompass.004": "<b>Two layers:</b> 八宅 grades ORIENTATION: where to face and head long-stay activities; 用神 grades ELEMENT CONTENT: what colours, materials and fields feed the chart. A green direction whose element is unfavourable is still a good direction to FACE; furnish it in the 用神 palette. 命卦 comes from the birth year alone; the 用神 layer is the personal one.",
   "appjs.buildCompass.005": "Favourable {elbs_fav} · avoid {elbs_unf} · colours <b>{cols_join}</b>",
   "appjs.buildCompass.006": "<b>Medicine, ranked:</b> {c_medicine_rank}",
   "appjs.buildCompass.007": "西南·东北 SW/NE",
@@ -485,8 +488,8 @@ const READING_EN = {
   "appjs.buildCompass.016": "Where the medicine sits",
   "appjs.buildCompass.017": "Add {elw_fav} ({elc_fav}){colEn_in} through lighting or an accent wall; keep {unf_map} ({unf_map_2}) out of your main room.",
   "appjs.buildCompass.018": ", in {colEn},",
-  "appjs.buildCompass.022": "<b>Technique:</b> 扶抑 supports a weak chart or restrains a strong one; 调候 corrects its season — for this chart, add {fav_map}, keep {unf_map} light.",
-  "appjs.buildCompass.023": "<b>In god vocabulary:</b> your 用神 {fav_map} — those life-areas ARE the medicine.",
+  "appjs.buildCompass.022": "<b>Technique:</b> 扶抑 supports a weak chart or restrains a strong one; 调候 corrects its season: for this chart, add {fav_map}, keep {unf_map} light.",
+  "appjs.buildCompass.023": "<b>In god vocabulary:</b> your 用神 {fav_map}: those life-areas ARE the medicine.",
   "appjs.buildCompass.024": "{elb_el} arrives as <b>{f_f}</b>",
   "appjs.buildCompass.025": "Placements",
   "appjs.buildCompass.026": "what is placed",
@@ -494,16 +497,16 @@ const READING_EN = {
   "appjs.buildCompass.029": "Bed head to the <b>{bed_dir}</b> ({bed_star}), desk facing <b>{desk_dir}</b> ({desk_star}).",
   "appjs.buildCompass.030": "Bed head",
   "appjs.buildCompass.031": "Desk",
-  "appjs.buildCompass.033": "Long-stay items follow the 八宅 stars of your 命卦: 天醫 for the bed, 生氣 for desk and door, 延年 for the couples' bed, 伏位 for a quiet room. The three corners are personal 神煞 — 文昌 by day stem, 桃花 and 驛馬 by the year-branch trine — mapped to their palace.",
+  "appjs.buildCompass.033": "Long-stay items follow the 八宅 stars of your 命卦: 天醫 for the bed, 生氣 for desk and door, 延年 for the couples' bed, 伏位 for a quiet room. The three corners are personal 神煞: 文昌 by day stem, 桃花 and 驛馬 by the year-branch trine, mapped to their palace.",
   "appjs.buildCompass.034": "A direction is where the head or face points; when the room cannot allow the first choice, take the next favourable star, never an unfavourable one.",
   "appjs.buildCompass.035": "{AF_year} afflictions",
   "appjs.buildCompass.036": "Grand Duke",
   "appjs.buildCompass.037": "Year Breaker",
   "appjs.buildCompass.038": "Three Killings",
   "appjs.buildCompass.039": "None of this year's afflictions sits on your four favourable sectors.",
-  "appjs.buildCompass.043": "<b>Grand Duke</b> — {AF_taisui_rule}",
-  "appjs.buildCompass.044": "<b>Year Breaker</b> — {AF_suipo_rule}",
-  "appjs.buildCompass.045": "<b>Three Killings</b> — {AF_sansha_rule}",
+  "appjs.buildCompass.043": "<b>Grand Duke</b>: {AF_taisui_rule}",
+  "appjs.buildCompass.044": "<b>Year Breaker</b>: {AF_suipo_rule}",
+  "appjs.buildCompass.045": "<b>Three Killings</b>: {AF_sansha_rule}",
   "appjs.buildCompass.046": "{h_affliction} on your {h_star} ({h_dir}): {h_note}.",
   "appjs.buildCompass.047": "<b>Year Punishment</b>: {AF_suixing_rule}",
   "appjs.buildCompass.048": "Year Punishment",
@@ -534,19 +537,19 @@ const READING_EN = {
   "appjs.pStory.001": "<span class=\"vh\">Evidence </span>{num_e}",
   "appjs.pStory.002": "Close evidence",
   "appjs.pStory.003": "Back to the text",
-  "appjs.pStory.004": "<b>The classical chart.</b> {CHART_CAP_id}",
+  "appjs.pStory.004": "{CHART_CAP_id}",
   "appjs.zhKey.001": "<b>Key:</b> {pairs_map}",
   "appjs.rdFig.001": "how to read this",
   "appjs.bazhaiCompass.001": "Eight directions, north at the top: {rows_map}",
   "appjs.dailyFig.002": "Best day this month for {B_for}: {B_date} {B_gz} ({B_officer} day).",
   "appjs.dailyFig.003": "No clear best day this month.",
-  "appjs.dailyFig.004": "Avoid {W_avoid} on {W_date} {W_gz} — {W_why}.",
+  "appjs.dailyFig.004": "Avoid {W_avoid} on {W_date} {W_gz}: {W_why}.",
   "appjs.dailyFig.005": "Daily fortune, next 30 days",
   "appjs.dailyFig.006": "good days",
   "appjs.dailyFig.007": "days with a caution",
   "appjs.dailyFig.008": "<b>Columns:</b> <span class=\"keepzh\">日期</span> date · <span class=\"keepzh\">日柱</span> day pillar (with its day officer) · <span class=\"keepzh\">十神</span> the roles the day brings you · <span class=\"keepzh\">五行</span> the day's element (<span class=\"keepzh\">用</span> useful to you, <span class=\"keepzh\">忌</span> to avoid) · {actZh_map}",
   "appjs.dailyFig.009": "<b>Day officers:</b> {officers_map}",
-  "appjs.dailyFig.010": "<b>◉ good · ⚠ avoid · · neutral</b> — per activity, hover a cell for the deciding rule.",
+  "appjs.dailyFig.010": "<b>◉ good · ⚠ avoid · · neutral</b>: per activity, hover a cell for the deciding rule.",
   "appjs.dailyFig.011": "<b>Twelve day officers</b> Completion, Open and Settle are good for most acts; Remove suits treatment; Close and Danger hold back travel and moving; Break (and any day that clashes the month) is avoided for everything.",
   "appjs.dailyFig.012": "<b>Your branches</b> a day branch that clashes your day branch ({elc_c}) or year branch ({elc_c_2}) is avoided for marriage, moving and launches; a Six Combination with your day branch favours marriage and signing; a Harm holds back medical.",
   "appjs.dailyFig.013": "<b>Element of the day</b> a day stem carrying your primary useful god favours launches and signing; one carrying your chief avoided element is avoided for banking and launches.",
@@ -559,24 +562,24 @@ const READING_EN = {
   "appjs.gejuPlain.003": "{tou} also shows among your visible stems (透干), so the chart works as a {god} structure ({tou_2}).",
   "appjs.gejuPlain.004": "None of the month's hidden stems shows among your visible stems (透干), so the chart works from that ruling stem (司令), with the visible stems as the actors.",
   "appjs.elementWheel.001": ", your day master",
-  "appjs.eflowsList.001": "How every other element relates to\n      YOUR Day Master {elb_er} — the same five roles the ten gods (十神 tab) are built from:",
-  "appjs.eflowsList.002": "<span class=\"sub\">(this share is the Day Master's own element — as ten-god 比肩/劫財 peers the chart counts 0%)</span>",
+  "appjs.eflowsList.001": "How every other element relates to\n      YOUR Day Master {elb_er}: the same five roles the ten gods (十神 tab) are built from:",
+  "appjs.eflowsList.002": "<span class=\"sub\">(this share is the Day Master's own element: as ten-god 比肩/劫財 peers the chart counts 0%)</span>",
   "appjs.strengthGauge.001": "strength {st_verdict} score {st_score}",
   "appjs.strengthGauge.002": "身弱 weak",
   "appjs.strengthGauge.003": "身強 strong",
   "appjs.strengthGauge.004": "{st_verdict} · score {st_score}",
-  "appjs.supportDrain.001": "Supporting (same kind) vs draining (other kinds) — the score's own numbers",
+  "appjs.supportDrain.001": "Supporting (same kind) vs draining (other kinds): the score's own numbers",
   "appjs.supportDrain.002": "<span>← drain</span><span>support →</span>",
   "appjs.supportDrain.003": "<span class=\"sbl\">net balance</span>",
   "appjs.supportDrain.004": "score = in season {pt_season_pts}{pt_season_pts_2}\n      (season) + 2 × (support {pt_support} − drain {pt_drain}) / total {pt_total}\n      + rooting {pt_root_pts}{pt_root_pts_2} (roots) = <b>{c_strength_score}</b> → {c_strength_verdict}",
   "appjs.tiaohouStrip.001": "✓ aligned with the medicine",
   "appjs.tiaohouStrip.002": "not visible",
-  "appjs.tiaohouStrip.003": "<b>Seasonal adjustment</b> the {elc_c} month asks for {chips}\n    — <b>{t_verdict}</b> with the support-and-restrain verdict above",
+  "appjs.tiaohouStrip.003": "<b>Seasonal adjustment</b> the {elc_c} month asks for {chips}: <b>{t_verdict}</b> with the support-and-restrain verdict above",
   "appjs.pillarGrid.001": "Read each column top to bottom: the role the stem plays for you, the stem, the branch, the stems hidden in the branch, its life stage and its sound element. Year is on the right, as in a classical chart; your own column, 日, is outlined. Tap any character for its meaning.",
   "appjs.pillarGrid.002": "(clock {clock})",
   "appjs.interactionsSvg.001": "<span><b style=\"color:{it_kind}\">{it_kind_2}</b> {it_pair} · {it_pillars} pillars</span>",
   "appjs.interactionsSvg.002": "branch interactions",
-  "appjs.interactionsLine.001": "No 合冲刑害 among your four branches — the pillars sit quietly with each other.",
+  "appjs.interactionsLine.001": "No 合冲刑害 among your four branches: the pillars sit quietly with each other.",
   "appjs.interactionsLine.002": "{elc_pair} doubles on itself",
   "appjs.interactionsLine.003": "One",
   "appjs.interactionsLine.004": "Two",
@@ -584,7 +587,7 @@ const READING_EN = {
   "appjs.interactionsLine.006": "Four",
   "appjs.interactionsLine.007": "Five",
   "appjs.interactionsLine.008": "Six",
-  "appjs.interactionsLine.009": "{words_n} branch {n_tension}, {clash_one}: {list} — {clash_watch}.",
+  "appjs.interactionsLine.009": "{words_n} branch {n_tension}, {clash_one}: {list}; {clash_watch}.",
   "appjs.interactionsLine.010": "one of them a clash",
   "appjs.interactionsLine.011": "none a clash",
   "appjs.interactionsLine.012": "watch the clash",
@@ -636,13 +639,19 @@ const T2S_PAIRS =
   "題题響响環环風风師师傳传統统現现綜综標标準准側侧測测記记計计認认證证誤误說说詳详註注" +
   "釋释義义儀仪" +
   "斷断壞坏謹谨聽听觀观際际團团隊队條条確确實实稱称雜杂濕湿燥燥窮穷寶宝鑑鉴長长" +
-  "戀恋貴贵將将華华業业馬马驛驿號号蓋盖脈脉穩稳雞鸡豬猪";
+  "戀恋貴贵將将華华業业馬马驛驿號号蓋盖脈脉穩稳雞鸡豬猪" +
+  "協协紀纪牆墙興兴須须迴回爭争鬬斗隨随淵渊會会";   // classical titles and quotations, and the wall labels: one script inside every string
 const T2S = {};
 for (let i = 0; i < T2S_PAIRS.length; i += 2) T2S[T2S_PAIRS[i]] = T2S_PAIRS[i + 1];
 const toSimp = (s) => [...String(s)].map((c) => T2S[c] || c).join("");
 /* Everything (names included) renders 简体; only the Names 姓名 tab keeps 繁體,
    because Kangxi stroke analysis is only meaningful on traditional forms. */
 const jt = toSimp;
+/* No em dash in running text, as in the reading story. The engine's own sentences are pinned word for word by the English payload
+   fixtures, so this reads them on the way in: the first " — " in a stretch of text becomes a colon, later ones a comma. It works on the text between
+   tags only (markup is never touched); a lone "—" standing for an empty cell has no spaces beside it and stays. */
+const deDash = (html) => String(html).split(/(<[^>]+>)/).map((ch) => { if (ch[0] === "<") return ch; let k = 0;
+  return ch.replace(/(^|\S)\s+—\s+(?=\S)/g, (m, a) => a + (k++ ? ", " : ": ")); }).join("");
 const dn = (n) => n;       // names now pass through; jt() simplifies them
 const dnAll = (s) => s;
 const LAYER_ZH = { bazhai: "八宅", xuankong: "飞星", yongshen: "用神", bazi: "八字" };
@@ -677,7 +686,7 @@ function splitNarr(i) {
   return { by, rest };
 }
 const legendBlock = (pairs) => !pairs ? "" : `<div class="legend">
-  <b>Legend</b>${pairs.map(([t, d]) => `<span><b>${t}</b> — ${d}</span>`).join("")}</div>`;
+  <b>Legend</b>${pairs.map(([t, d]) => `<span><b>${t}</b>: ${d}</span>`).join("")}</div>`;
 /* the one element icon, site wide: the painted swatch with its character on it (the same disc as the wheel and the character
    cards). Decorative, so the name reaches a screen reader as hidden text; silent when the element's name is printed beside it.
    keepzh + data-notip keep the glossary from expanding the character. Width and height come from --s, so nothing shifts; the 128 px file is the one the wheel and answer cards already
@@ -693,8 +702,7 @@ function stratBlock(n, st) {
   if (!s) return "";
   switch (n) {
     case 2: return sadv([s.advice], RS("appjs.stratBlock.001"));
-    case 5: return `<div class="cite" style="margin-top:8px">${RS("appjs.stratBlock.002")}</div>
-      <div class="mos">${s.rhythm.map((m) => `<span class="mo ${m.cls}">${m.mon} ${m.br}${m.el}</span>`).join("")}</div>`;
+    case 5: return "";   // the twelve months are drawn once, as the months tiles in the timing chapter; the medicine panel no longer repeats them
     case 8: return `<div class="cite" style="margin-top:8px">${RS("appjs.stratBlock.003", {s_kid: s.kid
         ? RS("appjs.stratBlock.006") : RS("appjs.stratBlock.007"), dnAll_s: dnAll(s.risk)})}</div>
       ${s.evidence.map((e) => `<div class="cite">· ${dnAll(e)}</div>`).join("")}
@@ -711,13 +719,13 @@ function stratBlock(n, st) {
       <div class="cite"><b>${dnAll(s.verdict)}</b></div>
       <div class="cite">${RS("appjs.stratBlock.013", {s_corp_ev: s.corp_ev.join(", ") || "—", s_vent_ev: s.vent_ev.join(", ") || "—"})}</div>
       ${sadv(s.advice)}`;
-    case 13: return `<div class="cite" style="margin-top:8px">${RS("appjs.stratBlock.014", {dnAll_s: dnAll(s.wealth_pattern), dnAll_s_2: dnAll(s.wealth_carry)})}</div>
-      ${s.act_windows.length ? `<div class="cite">${RS("appjs.stratBlock.015", {s_act_windows: s.act_windows.map((x) => "◉ " + dnAll(x)).join("<br>")})}</div>`
+    case 13: return `${s.wealth_pattern ? `<div class="cite" style="margin-top:8px">${RS("appjs.stratBlock.014", {dnAll_s: dnAll(s.wealth_pattern), dnAll_s_2: dnAll(s.wealth_carry)})}</div>` : ""}
+      ${!s.wealth_pattern ? "" : s.act_windows.length ? `<div class="cite">${RS("appjs.stratBlock.015", {s_act_windows: s.act_windows.map((x) => "◉ " + dnAll(x)).join("<br>")})}</div>`
         : `<div class="cite">${RS("appjs.stratBlock.016")}</div>`}
       ${s.cautions.length ? `<div class="cite">${RS("appjs.stratBlock.017", {s_cautions: s.cautions.join(", ")})}</div>` : ""}
       ${s.handoff ? `<div class="cite">${RS("appjs.stratBlock.018", {dnAll_s: dnAll(s.handoff)})}</div>` : ""}
       ${s.exams.length ? `<div class="cite">${RS("appjs.stratBlock.019")}<br>
-          ${s.exams.map((r) => `<b>${r.exam} — ${r.year}:</b> ${dnAll(r.note)}`).join("<br>")}</div>` : ""}
+          ${s.exams.map((r) => `<b>${r.exam}, ${r.year}:</b> ${dnAll(r.note)}`).join("<br>")}</div>` : ""}
       ${sadv(s.wealth_advice.concat(s.advice))}`;
   }
   return "";
@@ -1328,7 +1336,7 @@ function tenGodsWheel(c, opts = {}) {
     <circle cx="${cx}" cy="${cy}" r="23.5" fill="none" stroke="var(--gold)" stroke-width="2.5"/>
     <text x="${cx}" y="${cy + 1}" text-anchor="middle" font-size="13" font-weight="700"
       fill="#fff">${c.day_master}</text>
-    <text x="${cx}" y="${cy + 13}" text-anchor="middle" font-size="8.5" fill="#fff">日元</text>`;
+    <text x="${cx}" y="${cy + 13}" text-anchor="middle" font-size="8.5" fill="#fff">日主</text>`;
   GROUPS.forEach(g => {
     s += `<g><title>${g.en} ${g.sum}% (${g.zh})</title>
       ${opts.zh ? swatchDisc(g.x, g.y, g.r, g.el) : `<circle cx="${g.x}" cy="${g.y}" r="${g.r}" fill="${EL_COL[g.el]}" opacity=".92"/>`}
@@ -1679,18 +1687,23 @@ const CHART_CAP = { makeup: RS("appjs.CHART_CAP.makeup"), balance: RS("appjs.CHA
 const EV_OWNER = { pillars: "makeup", stars: "makeup", interactions: "makeup", personality: "makeup", elements: "balance", strength: "balance",
   flows: "balance", medicine: "balance", health: "balance", gods: "drives", domains: "drives", work: "drives", money: "drives",
   decades: "timing", years: "timing", months: "timing", days: "timing", placements: "space", afflict: "space" };
-function pStory(id, S, ev, proofs, chart) {
+/* Evidence that is the chapter's own chart has no panel: its marker points at the chart and opens the chart's key (flows, the pentagon). */
+const EV_FIG = { flows: "balance" };
+/* One panel per piece of evidence, in the chapter that owns it. A chapter that cites evidence owned elsewhere gets a marker that
+   opens that one panel where the marker is tapped, so nothing is printed twice. */
+function pStory(id, S, ev, proofs, chart, ownerOf = () => id) {
   const num = {}; let n = 0;
-  const mk = (e) => `<button type="button" class="mk" aria-expanded="false" aria-controls="ev-${id}-${num[e]}">${RS("appjs.pStory.001", {num_e: num[e]})}</button>`;
-  const panel = (e) => `<div class="ev" id="ev-${id}-${num[e]}" data-ev="${e}" tabindex="-1" hidden><button type="button" class="ev-x" aria-label="${RS("appjs.pStory.002")}">×</button><p class="evh">${num[e]}. ${ev[e].label}</p>${zhNoteIf(ev[e].why)}${ev[e].why ? ev[e].why.split("\n").map((x) => `<p>${x}</p>`).join("") : ""}${(proofs[e] || []).join("")}<button type="button" class="ev-back">${RS("appjs.pStory.003")}</button></div>`;
+  const mk = (e) => EV_FIG[e] ? `<button type="button" class="mk mk-fig" aria-controls="chart-${EV_FIG[e]}" data-n="${num[e]}">${RS("appjs.pStory.001", {num_e: num[e]})}</button>`
+    : `<button type="button" class="mk" aria-expanded="false" aria-controls="ev-${ownerOf(e)}-${e}" data-n="${num[e]}">${RS("appjs.pStory.001", {num_e: num[e]})}</button>`;
+  const panel = (e) => `<div class="ev" id="ev-${id}-${e}" data-ev="${e}" tabindex="-1" hidden><button type="button" class="ev-x" aria-label="${RS("appjs.pStory.002")}">×</button><p class="evh"><span class="evn">${num[e]}</span>. ${ev[e].label}</p>${zhNoteIf(ev[e].why)}${ev[e].why ? ev[e].why.split("\n").map((x) => `<p>${x}</p>`).join("") : ""}${(proofs[e] || []).join("")}<button type="button" class="ev-back">${RS("appjs.pStory.003")}</button></div>`;
   // a run of sentences resting on the same evidence shows its markers once, at the end of the run
   const para = (ss, cls) => { const fresh = [];
     const html = ss.map((s, k) => s.t.replace(/^(If you do one thing:|只做一件事的话：)/, "<b>$&</b>") + (ss[k + 1] && ss[k + 1].ev.join() === s.ev.join() ? "" : s.ev.map((e) => {
-      if (!num[e]) { num[e] = ++n; fresh.push(e); } return mk(e); }).join(""))).join(IS_ZH ? "" : " ");
+      if (!num[e]) { num[e] = ++n; if (!EV_FIG[e] && ownerOf(e) === id) fresh.push(e); } return mk(e); }).join(""))).join(IS_ZH ? "" : " ");
     return `<p${cls ? ` class="${cls}"` : ""}>${html}</p>${fresh.map(panel).join("")}`; };
   let out = "";
   S.paras.forEach((p, k) => { out += para(p);
-    if (k === S.chart_after && chart) out += `<figure class="rp-chart"><figcaption>${RS("appjs.pStory.004", {CHART_CAP_id: CHART_CAP[id]})}</figcaption>${chart}</figure>`; });
+    if (k === S.chart_after && chart) out += `<figure class="rp-chart" id="chart-${id}" tabindex="-1"><figcaption>${RS("appjs.pStory.004", {CHART_CAP_id: CHART_CAP[id]})}</figcaption>${chart}</figure>`; });
   if (S.one) out += para([S.one], "rp-one");
   return `<div class="rp-story">${out}</div>`;
 }
@@ -1716,7 +1729,7 @@ function readingChapters(c, R) {
   const img = { balance: `/static/img/reading/${EL_SLUG[P.helps.el]}-600.jpg`,
     drives: DRIVE_IMG[top.zh] ? `/static/img/reading/drive-${DRIVE_IMG[top.zh]}-600.jpg` : "",
     timing: cur ? `/static/img/reading/phase-${cur.phase}-600.jpg` : "" };
-  return CHAPTERS.map((ch) => pChapter(ch, pStory(ch[0], ST.chapters[ch[0]], ST.evidence, proofsFor(ch[0]), charts[ch[0]]), img[ch[0]])).join("")
+  return CHAPTERS.map((ch) => pChapter(ch, pStory(ch[0], ST.chapters[ch[0]], ST.evidence, proofsFor(ch[0]), charts[ch[0]], owner), img[ch[0]])).join("")
     + (rest.length ? `<section class="rp-chap rp-sources" id="ch-sources" aria-labelledby="h-sources"><div class="rp-chead"><div><h2 id="h-sources">${RS("appjs.readingChapters.001")}</h2></div></div><div class="rd-tail">${rest.join("")}</div></section>` : "");
 }
 const pChapBar = () => `<nav class="rp-bar" aria-label="${RS("appjs.pChapBar.001")}"><div>${CHAPTERS.map(([id, lab]) =>
@@ -1830,7 +1843,7 @@ const GRP_THEME = { 比劫: RS("appjs.GRP_THEME.比劫"), 印: RS("appjs.GRP_THE
 const GRP_EN = { 官殺: RS("appjs.GRP_EN.官殺"), 印星: RS("appjs.GRP_EN.印星"), 比劫: RS("appjs.GRP_EN.比劫"), 食傷: RS("appjs.GRP_EN.食傷"), 財星: RS("appjs.GRP_EN.財星") };
 const COLOUR_ZH_EN = { 红: "red", 紅: "red", 紫: "purple", 黄: "yellow", 黃: "yellow", 棕: "brown",
   绿: "green", 綠: "green", 青: "green", 蓝: "blue", 藍: "blue", 黑: "black", 灰: "grey", 白: "white", 金: "gold" };
-const legendList = (n) => (LEGENDS[n] || []).map(([k, v]) => `<div><b>${k}</b> — ${v}</div>`).join("");
+const legendList = (n) => (LEGENDS[n] || []).map(([k, v]) => `<div><b>${k}</b>: ${v}</div>`).join("");
 const clip = (s, n) => { s = String(s || ""); return s.length > n ? s.slice(0, n - 1) + "…" : s; };
 
 /* --- the figure ------------------------------------------------------------ */
@@ -1981,7 +1994,7 @@ function buildPillars(c, R) {
   const p6 = rdFig({ tier: "secondary", span: 5, label: RS("appjs.buildPillars.007"), learn: "chart",
     chart: interactionsSvg(c), line: interactionsLine(c),
     facts: [...Object.entries(kinds).map(([k, n]) => [k, `×${n}`]), ...(its.some((i) => i.kind.includes("冲")) ? [] : [["冲", "none"]])],
-    legend: `${RS("appjs.buildPillars.008", {its_length: its.length ? "<hr>" + its.map((i) => `<div><b>${i.pair} ${i.kind}</b> (${i.pillars.join("+")}) — ${i.note}</div>`).join("") : ""})}` });
+    legend: `${RS("appjs.buildPillars.008", {its_length: its.length ? "<hr>" + its.map((i) => `<div><b>${i.pair} ${i.kind}</b> (${i.pillars.join("+")}): ${i.note}</div>`).join("") : ""})}` });
   // Four Palaces retired 2026-10-10: the four sides in the opening carry each palace (owner cut)
   // Which Way to Face retired 2026-10-10: it repeated the Compass 3×3 grid (owner cut)
   let p5 = "";
@@ -2019,7 +2032,8 @@ function buildElements(c, R) {
   if (er) {
     const pr = er.flows.pressure, rs = er.flows.resource;
     e2 = rdFig({ tier: "hero", span: 5, extra: "rd-pair2", label: RS("appjs.buildElements.002"), learn: 1,
-      chart: `<div class="ewrap"><div class="svg-plate">${elementWheel(er)}</div></div>`,
+      chart: `<div class="ewrap"><div class="svg-plate">${elementWheel(er)}</div></div>
+        <ul class="ewkey"><li><i class="ewk-sw ewk-g" aria-hidden="true"></i><span>${RS("appjs.buildElements.035")}</span></li><li><i class="ewk-sw ewk-r" aria-hidden="true"></i><span>${RS("appjs.buildElements.036")}</span></li><li><i class="ewk-sw ewk-d" aria-hidden="true"></i><span>${RS("appjs.buildElements.037")}</span></li></ul>`,
       line: `${RS("appjs.buildElements.003", {elb_pr: eli(pr.el, { silent: true }), elw_pr: elw(pr.el), pr_share: pr.share, elb_rs: eli(rs.el, { silent: true }), elw_rs: elw(rs.el), pr_share_2: pr.share > rs.share ? "only " : "", rs_share: rs.share, pr_share_3: pr.share > rs.share ? RS("appjs.buildElements.004") : RS("appjs.buildElements.005")})}`,
       facts: [[RS("appjs.buildElements.006"), `${elc(pr.el)} ${pr.share}%`], [RS("appjs.buildElements.007"), `${elc(rs.el)} ${rs.share}%`]],
       legend: `${RS("appjs.buildElements.008", {eflowsList_c: eflowsList(c)})}` });
@@ -2036,7 +2050,7 @@ function buildElements(c, R) {
     facts: [[st.verdict.split(" ")[0], `${st.score}`], [RS("appjs.buildElements.021"), `${pt.support}`], [RS("appjs.buildElements.022"), `${pt.drain}`],
       c.tiaohou ? [RS("appjs.LEGENDS.5.04.term"), c.tiaohou.verdict] : null].filter(Boolean),
     legend: `<div class="cite">${RS("appjs.buildElements.024", {st_formation_detail: st.formation.detail})}</div>
-      ${(st.steps || []).map((s) => `<div class="cite"><b>${s.step}. ${s.name}:</b> ${s.value} — ${s.detail}</div>`).join("")}${legendList(2)}
+      ${(st.steps || []).map((s) => `<div class="cite"><b>${s.step}. ${s.name}:</b> ${s.value}; ${s.detail}</div>`).join("")}${legendList(2)}
       ${c.tiaohou && c.tiaohou.line ? `<div class="cite">${c.tiaohou.line} <span class="tag">${c.tiaohou.source_ref}</span></div>` : ""}` });
   const H = c.health || [];
   const stZh = (s) => (s.match(/[㐀-鿿]+/) || [s.startsWith("balanced") ? "平" : s])[0];
@@ -2081,7 +2095,7 @@ function buildGods(c, R) {
     [RS("appjs.buildGods.011"), "正印+偏印", ["正印", "偏印"]], [RS("appjs.buildGods.012"), "食神+傷官", ["食神", "傷官"]],
     [RS("appjs.buildGods.013"), "比肩+劫財", ["比肩", "劫財"]]];
   const g1f = rdFig({ tier: "hero", span: 7, extra: "rd-pair2", label: RS("appjs.buildGods.014"), learn: 4, chart: bars,
-    line: `${RS("appjs.buildGods.015", {godc_dm: godc(dm, g1), en_g1: en(g1), Math_round: Math.round(p1), c_tengods_legend: (c.tengods_legend[g1] || {}).meaning || GRP_THEME[grpOfGod(g1)]})}`,
+    line: `${RS("appjs.buildGods.015", {godc_dm: godc(dm, g1), en_g1: IS_ZH ? "" : en(g1), Math_round: Math.round(p1), c_tengods_legend: (c.tengods_legend[g1] || {}).meaning || GRP_THEME[grpOfGod(g1)]})}`,
     facts: [[g1, `${p1}%`], ["absent", `${RS("appjs.buildGods.016", {absent_length: absent.length})}`]],
     legend: `<div>${RS("appjs.buildGods.017")}</div>
       <div>${RS("appjs.buildGods.018")}</div>
@@ -2109,7 +2123,7 @@ function buildGods(c, R) {
     const chart = geju + ti.favor.map((f) => `<div class="cite structrow"><b>${f.god} ${f.pct}%</b> ${eli(f.el)}
         <span class="dirchip ${f.status === "favourable" ? "good" : f.status === "unfavourable" ? "bad" : ""}">${f.status === "favourable" ? RS("appjs.buildGods.favourable") : f.status === "unfavourable" ? RS("appjs.buildGods.unfavourable") : f.status}</span> — ${f.note}</div>`).join("")
       + `<div class="cite" style="margin-top:6px">${RS("appjs.buildGods.023", {ti_rooted: ti.rooted.map((r) => `<span class="dirchip ${r.state === "rooted" ? "good" : "bad"}">${r.god} ${r.state === "rooted" ? RS("appjs.buildGods.rooted") : RS("appjs.buildGods.floating")}</span>`).join(" ")})}</div>`
-      + (ti.patterns.length ? `<details class="deep pairpat"><summary>${RS("appjs.buildGods.024", {ti_patterns_length: ti.patterns.length})}</summary><div class="deepbody">${ti.patterns.map((p) => `<div class="ninline"><b>${p.name} — ${p.zh}</b> ${p.state ? `<span class="dirchip ${/^(formed|已成)/.test(p.state) ? "good" : ""}">${p.state}</span>` : ""}<div>${p.note}${p.activation ? ` <b>${p.activation}${IS_ZH ? "。" : "."}</b>` : ""}</div></div>`).join("")}</div></details>`
+      + (ti.patterns.length ? `<details class="deep pairpat"><summary>${RS("appjs.buildGods.024", {ti_patterns_length: ti.patterns.length})}</summary><div class="deepbody">${ti.patterns.map((p) => `<div class="ninline"><b>${p.name}: ${p.zh}</b> ${p.state ? `<span class="dirchip ${/^(formed|已成)/.test(p.state) ? "good" : ""}">${p.state}</span>` : ""}<div>${p.note}${p.activation ? ` <b>${p.activation}${IS_ZH ? "。" : "."}</b>` : ""}</div></div>`).join("")}</div></details>`
         : `<div class="cite">${RS("appjs.buildGods.025")}</div>`);
     const bad = ti.favor.find((f) => f.status === "unfavourable"), good = ti.favor.find((f) => f.status === "favourable");
     g5 = rdFig({ tier: "secondary", span: 6, label: RS("appjs.buildGods.026"), learn: 4, chart,
@@ -2175,8 +2189,11 @@ function buildGods(c, R) {
 }
 
 /* --- 时运 Timing ---------------------------------------------------------------- */
+/* a decade card says one meaning once: when the stem god and the branch god read the same, "A / A" is shown as "A" */
+const dedupKw = (s) => { const [a, ...b] = String(s).split(" / "); return b.length && b.every((x) => x === a) ? a : s; };
 function buildTiming(c, R) {
   const W = c.windows; if (!W) return { figs: {}, tail: [R.narr(6), R.narr(13)] };
+  const YR = (c.afflictions || {}).year || ((W.years || [])[0] || {}).y;   // the reading's year, from the payload (the BaZi year of today), never a constant
   const dd = c.dayun_detail || [], dm = c.day_master;
   // owner 2026-10-10: the classical strip in characters only, element-coloured; English lives in the "?" key
   const gzc = (gz) => `<span style="color:${EL_TXT[STEM_EL[gz[0]]]}">${gz[0]}</span><span style="color:${EL_TXT[BR_EL[gz[1]]]}">${gz[1]}</span>`;
@@ -2186,7 +2203,7 @@ function buildTiming(c, R) {
       <div class="ccdyage">${d.ages}</div><div class="ccdygz">${gzc(d.gz)}</div>
       <div class="wphase w-${d.phase}">${d.phase_zh}</div>
       <div class="dygods">${godz(x.stem_god)}${x.stem_god ? "·" : ""}${godz(x.branch_god)}</div>
-      ${x.keywords ? `<div class="dykw">${x.keywords}</div>` : ""}${d.current ? `<div class="ccdyhere">${RS("appjs.buildTiming.001")}</div>` : ""}</div>`; }).join("")}</div>`;
+      ${x.keywords ? `<div class="dykw">${dedupKw(x.keywords)}</div>` : ""}${d.current ? `<div class="ccdyhere">${RS("appjs.buildTiming.001")}</div>` : ""}</div>`; }).join("")}</div>`;
   const gods = [...new Set(dd.flatMap((x) => [x.stem_god, x.branch_god]).filter(Boolean))];
   const phases = [...new Map(W.decades.map((d) => [d.phase, d.phase_zh])).entries()];
   const stripKey = `<div class="tkey"><p>${RS("appjs.buildTiming.002")}</p>
@@ -2206,11 +2223,11 @@ function buildTiming(c, R) {
   const gDec = [grpOfGod(L.stem_god || ""), grpOfGod(L.branch_god || "")], gYr = [grpOfGod(T.year_stem_god || ""), grpOfGod(T.year_branch_god || "")];
   const theme = (pair) => pair[0] === pair[1] ? GRP_THEME[pair[0]] : `${RS("appjs.buildTiming.018", {GRP_THEME_pair: GRP_THEME[pair[0]], GRP_THEME_pair_2: GRP_THEME[pair[1]]})}`;
   const p8 = rdFig({ tier: "secondary", span: 5, label: RS("appjs.buildTiming.019"), learn: 13,
-    chart: `<div class="pillar-cards"><div class="pillar-card transit"><div class="gz">${T.year_gz}</div><div class="pos">${RS("appjs.buildTiming.020", {state_year: state.year})}</div>
+    chart: `<div class="pillar-cards"><div class="pillar-card transit"><div class="gz">${T.year_gz}</div><div class="pos">${RS("appjs.buildTiming.020", {state_year: YR})}</div>
         <div class="god">${T.year_stem_god}/${T.year_branch_god}</div><div class="sub">${RS("appjs.buildTiming.021")}</div></div>
       ${L.gz ? `<div class="pillar-chip">${RS("appjs.buildTiming.022", {L_gz: L.gz, L_ages: L.ages, L_stem_god: L.stem_god, L_branch_god: L.branch_god})}</div>` : ""}</div>`,
     line: `${RS("appjs.buildTiming.023", {L_gz: L.gz ? `${RS("appjs.buildTiming.024", {gDec_gDec: gDec[0] === gDec[1] ? RS("appjs.buildTiming.025") : "mixes", theme_gDec: theme(gDec)})}` : RS("appjs.buildTiming.026"), theme_gYr: theme(gYr)})}`,
-    facts: [L.gz ? [RS("appjs.buildTiming.027"), `${RS("appjs.buildTiming.028", {L_ages: L.ages})}`] : null, [RS("appjs.buildTiming.029"), `${state.year}`]].filter(Boolean),
+    facts: [L.gz ? [RS("appjs.buildTiming.027"), `${RS("appjs.buildTiming.028", {L_ages: L.ages})}`] : null, [RS("appjs.buildTiming.029"), `${YR}`]].filter(Boolean),
     legend: RS("appjs.buildTiming.030") });
   const RH = ((c.strategy || {}).s5 || {}).rhythm; let t6 = "";
   if (RH && RH.length) {
@@ -2281,7 +2298,7 @@ function buildCompass(c, R) {
     chart: `<div class="cmpx-wrap">${bazhaiCompass(c)}</div>`,
     line: `${RS("appjs.buildCompass.002", {dirOf: dirOf["生氣"], dirOf_2: dirOf["絕命"]})}`,
     facts: [[RS("appjs.LEGENDS.chart.07.term"), `${c.gua} · ${c.group.split(" ")[0]}`], ["生氣", dirOf["生氣"]], ["絕命", dirOf["絕命"]], ["五鬼", dirOf["五鬼"]]],
-    legend: `${BAZHAI_ORDER.map((s) => `<div><b>${s} ${BAZHAI_EN[s][0]}</b> — ${BAZHAI_EN[s][1]}</div>`).join("")}
+    legend: `${BAZHAI_ORDER.map((s) => `<div><b>${s} ${BAZHAI_EN[s][0]}</b>: ${BAZHAI_EN[s][1]}</div>`).join("")}
       <div class="cite">${RS("appjs.buildCompass.004")}</div>${legendList(7)}` });
   const fav = c.yongshen.favourable, unf = c.yongshen.unfavourable, cols = c.yongshen.colours || [];
   const colEn = cols.map((z) => COLOUR_ZH_EN[z] || z).slice(0, 2).join("/");
@@ -2447,7 +2464,11 @@ function wireReading(root) {
     }
     const b = ev.target.closest(".mk"); if (!b) return;
     const p = document.getElementById(b.getAttribute("aria-controls")); if (!p) return;
+    if (p.matches("figure.rp-chart")) {   // evidence that is the chart itself: bring it into view with its key open
+      const lg = p.querySelector(".rd-legend"); if (lg) lg.open = true;
+      p.scrollIntoView({ block: "center", behavior: "smooth" }); p.focus({ preventScroll: true }); return; }
     if (!p.hidden && p._opener === b) { close(p); return; }
+    const hn = p.querySelector(".evn"); if (hn && b.dataset.n) hn.textContent = b.dataset.n;   // one panel, several markers: it carries the number of the one tapped
     const para = b.closest("p, li") || b.parentElement;
     if (para.nextElementSibling !== p) para.after(p);
     p.hidden = false; p._opener = b; sync(p, true); reveal(p);
@@ -2486,10 +2507,10 @@ async function renderPerson(name) {
     narr: (n) => deepWrap(`${RS("appjs.renderPerson.007", {SEC_ZH_n: SEC_ZH[n] || ""})}`,
       (nb.by[n] || []).map((t) => `<div class="ninline">${dnAll(t)}</div>`).join("")),
     stb: (n) => deepWrap(`${RS("appjs.renderPerson.008", {SEC_ZH_n: SEC_ZH[n] || ""})}`, stratBlock(n, c.strategy)) };
-  $("#tab-person").innerHTML = jt(`
+  $("#tab-person").innerHTML = jt(deDash(`
     <div class="rp-open">${pIdentity(c, name)}${pSides(c)}${pAnswers(c)}${synthNote(c.synthesis)}</div>
     ${pChapBar()}
-    ${readingChapters(c, R)}`);
+    ${readingChapters(c, R)}`));
   if (keepPic) { const fresh = document.querySelector("#tab-person .rp-bgimg"); if (fresh) fresh.replaceWith(keepPic); }
   wireReading($("#tab-person"));
   const who = dn(name || c.name), h1 = document.querySelector(".pub-in h1");

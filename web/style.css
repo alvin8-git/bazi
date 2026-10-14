@@ -876,6 +876,10 @@ details.zhver>div{margin-top:8px}
 /* Balance: the pentagon fills its card */
 #tab-person .rp-chart .ewrap{display:block}
 #tab-person .rp-chart .svg-plate svg{display:block;width:100%;max-width:560px;height:auto;margin:0 auto}
+#tab-person .ewkey{list-style:none;margin:6px auto 0;padding:0;max-width:560px;display:grid;gap:5px;font-size:13px;line-height:1.4;color:var(--ink)}
+#tab-person .ewkey li{display:flex;gap:10px;align-items:center}
+#tab-person .ewk-sw{flex:none;display:block;width:34px;height:0;border-top:3px solid}
+#tab-person .ewk-g{border-top-color:#7aa87f}#tab-person .ewk-r{border-top-color:#b03a2e;border-top-width:4px}#tab-person .ewk-d{border-top-color:#d5b3b0;border-top-style:dotted;border-top-width:4px}
 /* drives round (2026-10-10): the god wheel in characters, centred, filling its card; the ten-role key */
 #tab-person .rp-chart .tgwrap{display:block}
 #tab-person .rp-chart .tgwrap svg{display:block;width:100%;max-width:520px;height:auto;margin:0 auto}
