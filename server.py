@@ -124,13 +124,21 @@ async def _http_exception(request, exc):
     return await http_exception_handler(request, exc)
 
 
-# Cache policy for /static.  Nothing under web/ has a content hash or a ?v= in its URL, so no asset can be
-# `immutable` yet: images (the reading art, brand icons, OG cards, guide heroes) get a day, because the art is
-# regenerated in place now and then; everything else (app.js, style.css, glossary*.js, place-picker.js, the i18n
-# and city JSON) keeps no-cache, because a cached old script silently renders a stale layout after a deploy.
-# If these URLs ever carry a content hash, give them `public, max-age=31536000, immutable` here.
+# Cache policy (decided 2026-10-14, tests/test_round_a123.py pins it).
+#   HTML pages, /static CSS, JS and JSON data:  `no-cache`.  Nothing under web/ has a content hash or a ?v= in its URL,
+#       so none of it can be `immutable`, and any max-age would let a browser reuse an old script or page after a deploy
+#       (a reload revalidates the page, not the scripts it loads).  Revalidation is cheap here: every response carries
+#       an ETag and a Last-Modified that means something, so an unchanged file costs one 304 and no body.
+#   /static images (the reading art, brand icons, OG cards, guide heroes):  `public, max-age=86400`, because the art is
+#       regenerated in place now and then.
+#   Workspace URLs (/w/, /zh/w/ and the /api/pub/w/ data behind them):  `private, no-store`.  The token in the URL is the
+#       only credential, so no shared cache (CDN, proxy) may keep a copy and the browser keeps none either.
+# If the CSS and JS URLs ever carry a content hash, give them `public, max-age=31536000, immutable` here.
 _IMAGE_EXT = (".png", ".jpg", ".jpeg", ".webp", ".svg", ".gif", ".ico")
 _STATIC_IMAGE_CC = "public, max-age=86400"
+_REVALIDATE_CC = "no-cache"
+_WORKSPACE_CC = "private, no-store"
+_WORKSPACE_PREFIXES = ("/w/", "/zh/w/", "/api/pub/w/")
 
 # Sent on every response.  Permissions-Policy denies only features the site never uses (clipboard-write stays,
 # the share-link button needs it).  X-Frame-Options: no page frames another and none is meant to be framed.
@@ -160,17 +168,19 @@ async def _security_headers(request, call_next):
 
 @app.middleware("http")
 async def _no_stale_ui(request, call_next):
-    """HTML pages and /static JS/CSS must revalidate — a cached old app.js
-    silently renders stale layouts after a deploy (ETag still gives 304s).
-    /static images get a short public max-age (see _IMAGE_EXT above)."""
+    """The cache policy above: workspace URLs are private and never stored, HTML pages and /static JS/CSS must
+    revalidate (a cached old app.js silently renders stale layouts after a deploy; the ETag still gives 304s),
+    /static images get a short public max-age."""
     resp = await call_next(request)
     ct = resp.headers.get("content-type", "")
     path = request.url.path
-    if "text/html" in ct:
-        resp.headers["Cache-Control"] = "no-cache"
+    if path.startswith(_WORKSPACE_PREFIXES):
+        resp.headers["Cache-Control"] = _WORKSPACE_CC
+    elif "text/html" in ct:
+        resp.headers["Cache-Control"] = _REVALIDATE_CC
     elif path.startswith("/static"):
         is_image = path.lower().endswith(_IMAGE_EXT) and resp.status_code in (200, 206, 304)
-        resp.headers["Cache-Control"] = _STATIC_IMAGE_CC if is_image else "no-cache"
+        resp.headers["Cache-Control"] = _STATIC_IMAGE_CC if is_image else _REVALIDATE_CC
     return resp
 
 

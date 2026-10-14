@@ -1,0 +1,426 @@
+{
+ "data-81-numbers.001": {
+  "en": "The 81 numbers table: stroke verdicts used by the name builder | bazifor.me",
+  "zh": "81 数理表：起名器使用的笔画吉凶 / bazifor.me"
+ },
+ "data-81-numbers.002": {
+  "en": "All 81 numbers with the verdict the bazifor.me name builder gives each: 35 auspicious, 46 not. Generated from the engine, with the rule, two worked names and the limits.",
+  "zh": "81 个数字，以及 bazifor.me 起名器对每个数字的判断：35 个吉，46 个不吉。由引擎生成，附规则、两个示例姓名和局限。"
+ },
+ "data-81-numbers.003": {
+  "en": "The 81 numbers table: stroke verdicts used by the name builder",
+  "zh": "81 数理表：起名器使用的笔画吉凶"
+ },
+ "data-81-numbers.004": {
+  "en": "website",
+  "zh": "(same)"
+ },
+ "data-81-numbers.005": {
+  "en": "summary_large_image",
+  "zh": "(same)"
+ },
+ "data-81-numbers.006": {
+  "en": "bazifor.me",
+  "zh": "八字为我"
+ },
+ "data-81-numbers.007": {
+  "en": "Your Reading",
+  "zh": "你的解读"
+ },
+ "data-81-numbers.008": {
+  "en": "Home Fengshui",
+  "zh": "家居风水"
+ },
+ "data-81-numbers.009": {
+  "en": "Baby Names",
+  "zh": "宝宝起名"
+ },
+ "data-81-numbers.010": {
+  "en": "Learn",
+  "zh": "指南"
+ },
+ "data-81-numbers.011": {
+  "en": "The 81 numbers table (",
+  "zh": "81 数理表"
+ },
+ "data-81-numbers.012": {
+  "en": "The stroke verdicts the name builder uses, all 81 of them",
+  "zh": "起名器所用的笔画吉凶，81 个数字全部列出"
+ },
+ "data-81-numbers.013": {
+  "en": "When the name builder scores a Chinese name, it adds up the stroke counts of the surname and the given name, as counted in the Kangxi Dictionary (",
+  "zh": "起名器给中文名字评分时，会把姓和名的笔画数相加，笔画数按康熙字典"
+ },
+ "data-81-numbers.014": {
+  "en": "), into the Five Grids (",
+  "zh": "，得出五格"
+ },
+ "data-81-numbers.015": {
+  "en": "). Each grid number is looked up in a table of 81 numbers, and the table says one thing about each number: auspicious or not. This page prints that table exactly as the engine holds it.",
+  "zh": "。每个格数都要到一张 81 个数字的表里去查，表里对每个数字只说一件事：吉，还是不吉。本页按引擎里的原样印出这张表。"
+ },
+ "data-81-numbers.016": {
+  "en": "35 of the 81 numbers are marked auspicious (",
+  "zh": "81 个数字中有 35 个标为吉"
+ },
+ "data-81-numbers.017": {
+  "en": ") and 46 are not. The verdicts follow a modern naming-school convention. The engine cites no classical text for them, and neither does this page.",
+  "zh": "，另外 46 个没有。这些判断沿用现代姓名学派的惯例，引擎没有为它们引用任何古典文献，本页也没有。"
+ },
+ "data-81-numbers.018": {
+  "en": "The table",
+  "zh": "表格"
+ },
+ "data-81-numbers.019": {
+  "en": "Find a grid number in the first column. The second column is the element of its last digit, which is what the Three Talents (",
+  "zh": "先在第一列找到格数。第二列是它个位数字对应的五行，这正是三才"
+ },
+ "data-81-numbers.020": {
+  "en": ") score reads. The third column is the verdict the name builder uses.",
+  "zh": "评分所读取的内容。第三列是起名器采用的判断。"
+ },
+ "data-81-numbers.021": {
+  "en": "Number",
+  "zh": "数字"
+ },
+ "data-81-numbers.022": {
+  "en": "Element of the last digit",
+  "zh": "个位数字对应的五行"
+ },
+ "data-81-numbers.023": {
+  "en": "Verdict in the name builder",
+  "zh": "起名器中的判断"
+ },
+ "data-81-numbers.024": {
+  "en": "Wood",
+  "zh": "(empty)"
+ },
+ "data-81-numbers.025": {
+  "en": "auspicious",
+  "zh": "(empty)"
+ },
+ "data-81-numbers.026": {
+  "en": "not auspicious",
+  "zh": "(empty)"
+ },
+ "data-81-numbers.027": {
+  "en": "Fire",
+  "zh": "(empty)"
+ },
+ "data-81-numbers.028": {
+  "en": "Earth",
+  "zh": "(empty)"
+ },
+ "data-81-numbers.029": {
+  "en": "Metal",
+  "zh": "(empty)"
+ },
+ "data-81-numbers.030": {
+  "en": "Water",
+  "zh": "(empty)"
+ },
+ "data-81-numbers.031": {
+  "en": "Key to the verdicts",
+  "zh": "吉凶标记说明"
+ },
+ "data-81-numbers.032": {
+  "en": "Mark",
+  "zh": "标记"
+ },
+ "data-81-numbers.033": {
+  "en": "Meaning",
+  "zh": "含义"
+ },
+ "data-81-numbers.034": {
+  "en": "Auspicious",
+  "zh": "吉利"
+ },
+ "data-81-numbers.035": {
+  "en": "Not auspicious. The engine does not separate adverse from neutral.",
+  "zh": "不吉利。引擎不区分凶与平。"
+ },
+ "data-81-numbers.036": {
+  "en": "Key to the elements",
+  "zh": "五行说明"
+ },
+ "data-81-numbers.037": {
+  "en": "Last digit of the number",
+  "zh": "数字的个位"
+ },
+ "data-81-numbers.038": {
+  "en": "Element",
+  "zh": "五行"
+ },
+ "data-81-numbers.039": {
+  "en": "1 or 2",
+  "zh": "1 或 2"
+ },
+ "data-81-numbers.040": {
+  "en": "3 or 4",
+  "zh": "3 或 4"
+ },
+ "data-81-numbers.041": {
+  "en": "5 or 6",
+  "zh": "5 或 6"
+ },
+ "data-81-numbers.042": {
+  "en": "7 or 8",
+  "zh": "7 或 8"
+ },
+ "data-81-numbers.043": {
+  "en": "9 or 0",
+  "zh": "9 或 0"
+ },
+ "data-81-numbers.044": {
+  "en": "How a name uses the table",
+  "zh": "名字怎样用这张表"
+ },
+ "data-81-numbers.045": {
+  "en": "The builder takes the Kangxi stroke count of each character and forms the five grids. The table below shows how each grid is formed for a one-character surname and a two-character given name, and how many of the 25 points the Five Grids carry each grid is worth. A grid scores its points when its number is auspicious and nothing otherwise.",
+  "zh": "起名器取每个字的康熙笔画数，组成五格。下表列出单字姓配两字名时各格的算法，以及五格共占的 25 分里每一格各占多少。某一格的数字为吉，就得到这一格的分数，否则不得分。"
+ },
+ "data-81-numbers.046": {
+  "en": "Grid",
+  "zh": "格"
+ },
+ "data-81-numbers.047": {
+  "en": "How it is formed",
+  "zh": "算法"
+ },
+ "data-81-numbers.048": {
+  "en": "Points, two-character given name",
+  "zh": "两字名的分值"
+ },
+ "data-81-numbers.049": {
+  "en": "Points, one-character given name",
+  "zh": "单字名的分值"
+ },
+ "data-81-numbers.050": {
+  "en": "Heaven grid",
+  "zh": "(empty)"
+ },
+ "data-81-numbers.051": {
+  "en": "The surname strokes plus 1",
+  "zh": "姓的笔画数加 1"
+ },
+ "data-81-numbers.052": {
+  "en": "Not scored",
+  "zh": "不计分"
+ },
+ "data-81-numbers.053": {
+  "en": "Person grid",
+  "zh": "(empty)"
+ },
+ "data-81-numbers.054": {
+  "en": "The surname strokes plus the first given-name character",
+  "zh": "姓的笔画数加名第一字的笔画数"
+ },
+ "data-81-numbers.055": {
+  "en": "grid",
+  "zh": "(empty)"
+ },
+ "data-81-numbers.056": {
+  "en": "The two given-name characters added together",
+  "zh": "名的两个字的笔画数相加"
+ },
+ "data-81-numbers.057": {
+  "en": "Outer grid",
+  "zh": "(empty)"
+ },
+ "data-81-numbers.058": {
+  "en": "The second given-name character plus 1",
+  "zh": "名第二字的笔画数加 1"
+ },
+ "data-81-numbers.059": {
+  "en": "Total grid",
+  "zh": "(empty)"
+ },
+ "data-81-numbers.060": {
+  "en": "All three characters added together",
+  "zh": "三个字的笔画数相加"
+ },
+ "data-81-numbers.061": {
+  "en": "Two invented names show the whole path. Each grid is shown with its number and its verdict.",
+  "zh": "下面用两个虚构的名字把全过程走一遍。每一格都列出数字和判断。"
+ },
+ "data-81-numbers.062": {
+  "en": "Name",
+  "zh": "名字"
+ },
+ "data-81-numbers.063": {
+  "en": "Kangxi strokes (surname + given)",
+  "zh": "康熙笔画数（姓 + 名）"
+ },
+ "data-81-numbers.064": {
+  "en": "is counted as",
+  "zh": "按"
+ },
+ "data-81-numbers.065": {
+  "en": ", because the Kangxi count is on the traditional form:",
+  "zh": "计数，因为康熙笔画数是按繁体字形数的："
+ },
+ "data-81-numbers.066": {
+  "en": ", 14 strokes.",
+  "zh": "计数，14 画。"
+ },
+ "data-81-numbers.067": {
+  "en": "How the page stays true to the engine",
+  "zh": "本页怎样与引擎保持一致"
+ },
+ "data-81-numbers.068": {
+  "en": "Every row is produced by calling the engine function that the name builder calls for the same number, and a test regenerates the page from the engine.",
+  "zh": "每一行都由起名器对同一个数字调用的引擎函数生成，并有测试从引擎重新生成本页。"
+ },
+ "data-81-numbers.069": {
+  "en": "The test fails if a single cell differs, so a change to the engine's verdicts cannot reach the page unnoticed.",
+  "zh": "只要有一个单元格不同，测试就会失败，所以引擎的判断一旦变动，不可能不被发现就流入本页。"
+ },
+ "data-81-numbers.070": {
+  "en": "What this table is not",
+  "zh": "这张表不是什么"
+ },
+ "data-81-numbers.071": {
+  "en": "Not a classical table.",
+  "zh": "不是古典文献里的表。"
+ },
+ "data-81-numbers.072": {
+  "en": "The auspicious set is a modern naming-school convention. The method page records it as a two-state scale, auspicious or not, until a cited finer table is adopted.",
+  "zh": "吉的数字集合出自现代姓名学派的惯例。方法页把它记为只分吉与不吉两档，待采用有出处的更细分档表后再调整。"
+ },
+ "data-81-numbers.073": {
+  "en": "Not a finer reading.",
+  "zh": "不是更细的分档。"
+ },
+ "data-81-numbers.074": {
+  "en": "Some schools add a middle band, or attach a poem and a fortune to each number. The name builder uses neither, and this page does not publish them.",
+  "zh": "有些学派在中间加一档，或给每个数字配一首诗和一条运势。起名器两样都不用，本页也不刊载。"
+ },
+ "data-81-numbers.075": {
+  "en": "Not a verdict on a person.",
+  "zh": "不是对某个人的判断。"
+ },
+ "data-81-numbers.076": {
+  "en": "It judges a number. Five Grids carry 25 of the 100 points in a name score, and the other parts are described in",
+  "zh": "它评判的是数字。五格占名字评分 100 分中的 25 分，其余部分见"
+ },
+ "data-81-numbers.077": {
+  "en": "the guide to how names are scored",
+  "zh": "起名评分指南"
+ },
+ "data-81-numbers.078": {
+  "en": ", not here.",
+  "zh": "，本页不重复。"
+ },
+ "data-81-numbers.079": {
+  "en": "Not tested against outcomes.",
+  "zh": "没有拿结果检验过。"
+ },
+ "data-81-numbers.080": {
+  "en": "Nothing links a verdict here to anything that happens to a person. The only check is that this page shows the list the engine uses.",
+  "zh": "没有任何依据把这里的判断与一个人身上发生的事联系起来。唯一的检验，是本页显示的正是引擎所用的那份名单。"
+ },
+ "data-81-numbers.081": {
+  "en": "Not open-ended.",
+  "zh": "不是无限延伸的。"
+ },
+ "data-81-numbers.082": {
+  "en": "The table stops at 81. For a larger grid number, the engine subtracts 81 until the result is between 1 and 81.",
+  "zh": "表到 81 为止。格数更大时，引擎反复减去 81，直到结果落在 1 到 81 之间。"
+ },
+ "data-81-numbers.083": {
+  "en": "Related",
+  "zh": "相关页面"
+ },
+ "data-81-numbers.084": {
+  "en": "Chinese baby name builder",
+  "zh": "中文起名器"
+ },
+ "data-81-numbers.085": {
+  "en": "How Chinese baby names are scored",
+  "zh": "宝宝名字如何评分"
+ },
+ "data-81-numbers.086": {
+  "en": "Kangxi stroke counts for 3,500 common characters",
+  "zh": "3,500 个常用字的康熙笔画数"
+ },
+ "data-81-numbers.087": {
+  "en": "Method: what the engine does and does not claim",
+  "zh": "方法说明：引擎做什么，不声称什么"
+ },
+ "data-81-numbers.088": {
+  "en": "© bazifor.me, deterministic BaZi & fengshui readings.",
+  "zh": "© bazifor.me，按固定规则推算的八字与风水解读。"
+ },
+ "data-81-numbers.089": {
+  "en": "BaZi",
+  "zh": "八字"
+ },
+ "data-81-numbers.090": {
+  "en": "Home fengshui",
+  "zh": "家居风水"
+ },
+ "data-81-numbers.091": {
+  "en": "Baby names",
+  "zh": "宝宝起名"
+ },
+ "data-81-numbers.092": {
+  "en": "Kua number",
+  "zh": "命卦"
+ },
+ "data-81-numbers.093": {
+  "en": "Guides in Chinese (",
+  "zh": "中文指南"
+ },
+ "data-81-numbers.094": {
+  "en": "How it works",
+  "zh": "运作原理"
+ },
+ "data-81-numbers.095": {
+  "en": "About",
+  "zh": "关于"
+ },
+ "data-81-numbers.096": {
+  "en": "FAQ",
+  "zh": "常见问题"
+ },
+ "data-81-numbers.097": {
+  "en": "Method",
+  "zh": "方法"
+ },
+ "data-81-numbers.098": {
+  "en": "Author",
+  "zh": "作者"
+ },
+ "data-81-numbers.099": {
+  "en": "Privacy",
+  "zh": "隐私说明"
+ },
+ "data-81-numbers.100": {
+  "en": "Terms",
+  "zh": "使用条款"
+ },
+ "data-81-numbers.101": {
+  "en": "Contact",
+  "zh": "联系我们"
+ },
+ "data-81-numbers.102": {
+  "en": "Validation",
+  "zh": "验证方法"
+ },
+ "data-81-numbers.103": {
+  "en": "Data:",
+  "zh": "数据："
+ },
+ "data-81-numbers.104": {
+  "en": "The 81 numbers table",
+  "zh": "81 数理表"
+ },
+ "data-81-numbers.105": {
+  "en": "Flying stars 2027",
+  "zh": "2027 年飞星"
+ },
+ "data-81-numbers.106": {
+  "en": "Kangxi strokes",
+  "zh": "康熙笔画"
+ }
+}

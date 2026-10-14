@@ -1249,7 +1249,7 @@
 },
 "appjs.pSides.003": {
 "en": ", <span class=\"rp-nw\">ages {s_ages}</span>",
-"zh": "，<span class=\"rp-nw\">{s_ages}岁</span>"
+"zh": "，<span class=\"rp-nw\">{s_ages}</span>"
 },
 "appjs.pSides.004": {
 "en": "<b>Children palace:</b> {kids}",
@@ -1258,10 +1258,6 @@
 "appjs.pAnswers.001": {
 "en": "Your balance",
 "zh": "你的五行平衡"
-},
-"appjs.pAnswers.002": {
-"en": "{heavy} is heaviest; {EL_EN_H} is what you need.",
-"zh": "{heavy} 最重；你需要的是 {EL_EN_H}。"
 },
 "appjs.pAnswers.003": {
 "en": "What helps you",
@@ -2426,5 +2422,37 @@
 "appjs.buildCompass.048": {
 "en": "Year Punishment",
 "zh": "岁刑"
+},
+"appjs.pBudget.002": {
+"en": "Heavier than {st_n} in 100 charts",
+"zh": "比100张命盘中的{st_n}张更重"
+},
+"appjs.pBudget.003": {
+"en": "Lighter than {st_n} in 100 charts",
+"zh": "比100张命盘中的{st_n}张更轻"
+},
+"appjs.pBudget.004": {
+"en": "most useful",
+"zh": "帮助最大"
+},
+"appjs.pBalance.001": {
+"en": "{EL_EN_top} leads your chart at {top_share}%, heavier than {st_n} in 100 charts.",
+"zh": "{EL_EN_top}在你的命盘中最旺，占{top_share}%，比100张命盘中的{st_n}张更重。"
+},
+"appjs.pBalance.002": {
+"en": "{EL_EN_top} leads your chart at {top_share}%, lighter than {st_n} in 100 charts.",
+"zh": "{EL_EN_top}在你的命盘中最旺，占{top_share}%，比100张命盘中的{st_n}张更轻。"
+},
+"appjs.pBalance.003": {
+"en": "{EL_EN_top} leads your chart at {top_share}%.",
+"zh": "{EL_EN_top}在你的命盘中最旺，占{top_share}%。"
+},
+"appjs.pBalance.004": {
+"en": "{EL_EN_H} is what helps you most, and {Y_y} reads as a {Y_word}.",
+"zh": "对你帮助最大的是{EL_EN_H}，{Y_y}年是{Y_word}。"
+},
+"appjs.pBalance.005": {
+"en": "{EL_EN_H} is what helps you most.",
+"zh": "对你帮助最大的是{EL_EN_H}。"
 }
 }

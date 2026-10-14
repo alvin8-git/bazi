@@ -307,7 +307,6 @@ const READING_EN = {
   "appjs.pSides.003": ", <span class=\"rp-nw\">ages {s_ages}</span>",
   "appjs.pSides.004": "<b>Children palace:</b> {kids}",
   "appjs.pAnswers.001": "Your balance",
-  "appjs.pAnswers.002": "{heavy} is heaviest; {EL_EN_H} is what you need.",
   "appjs.pAnswers.003": "What helps you",
   "appjs.pAnswers.004": "Two things to do",
   "appjs.pAnswers.005": "your balance",
@@ -511,6 +510,14 @@ const READING_EN = {
   "appjs.pRelations.001": "<b>{x_a}</b> and <b>{x_b}</b>: {x_note} ({x_kind})",
   "appjs.pRelations.002": "No strong pulls between your pillars.",
   "appjs.pBudget.001": "<span class=\"rp-tag\">helps you most</span>",
+  "appjs.pBudget.002": "Heavier than {st_n} in 100 charts",
+  "appjs.pBudget.003": "Lighter than {st_n} in 100 charts",
+  "appjs.pBudget.004": "most useful",
+  "appjs.pBalance.001": "{EL_EN_top} leads your chart at {top_share}%, heavier than {st_n} in 100 charts.",
+  "appjs.pBalance.002": "{EL_EN_top} leads your chart at {top_share}%, lighter than {st_n} in 100 charts.",
+  "appjs.pBalance.003": "{EL_EN_top} leads your chart at {top_share}%.",
+  "appjs.pBalance.004": "{EL_EN_H} is what helps you most, and {Y_y} reads as a {Y_word}.",
+  "appjs.pBalance.005": "{EL_EN_H} is what helps you most.",
   "appjs.pVault.001": "{ZODIAC_BR_ANIMAL}, the {EL_EN_el} store",
   "appjs.pVault.002": "not in your chart",
   "appjs.pVault.003": "{ZODIAC_BR_ANIMAL} years open it",
@@ -1552,25 +1559,62 @@ function pCareers(c) {
   return (C.top || []).length ? `<p><b>Career archetypes, ranked.</b></p><ul class="rp-list">${C.top.map(row).join("")}${(C.avoid || []).map((a) =>
     `<li>Harder going: <b>${a.en}</b> (${a.score} pts): ${a.reasons.join("; ")}</li>`).join("")}</ul>` : "";
 }
+/* The helping element's ink dots, drawn only in the "What helps you" region (owner 2026-10-14, round 38: they left the element rows).
+   A dot whose colour sits within 15% of the page's cream in luminance (metal's white) gets a thin ring in the muted ink so every dot has an edge. */
+const PANEL_BG = "#faf7f2", RING_MAX_DL = 0.15;
+const relLum = (hex) => { const v = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+const needsRing = (hex) => Math.abs(relLum(hex) - relLum(PANEL_BG)) <= RING_MAX_DL;
+const swDots = (el) => (SWATCH[el] || []).map((x) => `<span class="swd${needsRing(x) ? " ring" : ""}"><i style="background-color:${x}"></i></span>`).join("");
+const swBlot = (el) => `--blot:url('/static/img/reading/sw/${EL_SLUG[el]}-128.webp')`;
+/* One row per element: painted disc, name, track, the printed share, the band word. The band word takes the flag colour only when it is
+   not "about right". The helping element's name carries a quiet second line, "most useful" (round 38: the ink dots left the row). In Chinese
+   the disc already carries the character, so the row has no name cell: the disc names the element to a screen reader through its hidden
+   label, and the tag becomes a quiet line under the row. The quiet line under a row appears only where the standing among charts contradicts that
+   band word; the rule lives in engine/element_reference.py (standing.contradicts) and arrives on the row. */
 function pBudget(c, compact) {
-  return `<div class="rp-bud">${c.plain.balance.map((r) => `${eli(r.el, { silent: true })}<span>${r.en}</span>
+  return `<div class="rp-bud${IS_ZH ? " rp-bud-zh" : ""}">${c.plain.balance.map((r) => { const st = r.standing, flag = (r.band_key || r.band) !== "about right",
+    most = compact && r.medicine ? `<span class="rp-most">${RS("appjs.pBudget.004")}</span>` : "";
+    return `${eli(r.el, { silent: !IS_ZH })}${IS_ZH ? "" : `<span class="rp-nm">${r.en}${most}</span>`}
     <span class="rp-tr"><i style="width:${Math.min(100, Math.max(2, r.share / 60 * 100)).toFixed(0)}%;background:${EL_COL[r.el]}"></i></span>
-    <span class="rp-bd${(r.band_key || r.band) === "about right" ? "" : " rp-strong"}">${r.band}</span>${r.medicine || (!compact && r.note)
-      ? `<span class="rp-note">${r.medicine ? (RS("appjs.pBudget.001") + ' ') : ""}${compact ? "" : r.note}</span>` : ""}`).join("")}</div>`;
+    <span class="rp-pct">${Math.round(r.share)}%</span><span class="rp-bd${flag ? " rp-strong" : ""}">${r.band}</span>${IS_ZH ? most.replace('class="rp-most"', 'class="rp-most rp-most-ln"') : ""}${!compact && (r.medicine || r.note)
+      ? `<span class="rp-note">${r.medicine ? (RS("appjs.pBudget.001") + ' ') : ""}${r.note}</span>` : ""}${st && st.contradicts
+      ? `<span class="rp-pc">${RS(st.side === "heavier" ? "appjs.pBudget.002" : "appjs.pBudget.003", {st_n: st.n})}</span>` : ""}`; }).join("")}</div>`;
 }
 /* each answer card's "?" opens the evidence panel that proves it (owner 2026-10-10); keys in EV_OWNER */
 const ANS_EV = { balance: ["elements", "strength"], helps: ["medicine"], year: ["years"], acts: ["medicine", "placements"] };
 const ansQ = (k, name) => `<button type="button" class="rp-q" data-ev="${ANS_EV[k].join(" ")}" aria-label="${RS("appjs.ansQ.001", {name: name})}">?</button>`;
+/* The panel's ground, keyed through one lookup. Today six pictures exist: one per helping element and one for a chart whose every element sits
+   inside its band (13.5% of charts). A pair picture (heaviest element + helping element, 25 in all) is added by putting
+   web/img/reading/bal/<heavy>-<help>-{600,1200}.webp on disk and its slug here; the lookup already tries the pair first after "balanced". */
+/* No picture on a phone (owner 2026-10-14, round 38): the art sits in a <picture> whose only real source applies above the reading page's
+   640 px breakpoint. Below it no source matches, the <img> keeps this inline 1 px transparent GIF (no request) and CSS removes the box. */
+const BLANK_PX = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+const BAL_ART = new Set(["wood", "fire", "earth", "metal", "water", "balanced"]);
+function balanceArt(c, rows) {
+  const heavy = EL_SLUG[rows[0].el], help = EL_SLUG[c.plain.helps.el];
+  const inBand = rows.every((r) => !["too much", "too little"].includes(r.band_key || r.band));
+  return [inBand ? "balanced" : null, `${heavy}-${help}`, help].find((k) => k && BAL_ART.has(k)) || null;
+}
+/* the one-line summary: heaviest element with where it stands among charts, the helping element, and the year */
+function balanceStrip(c) {
+  const top = c.plain.balance[0], st = top.standing, H = c.plain.helps, Y = c.plain.year;
+  const lead = st ? RS(st.side === "heavier" ? "appjs.pBalance.001" : "appjs.pBalance.002", {EL_EN_top: EL_EN[top.el], top_share: Math.round(top.share), st_n: st.n})
+    : RS("appjs.pBalance.003", {EL_EN_top: EL_EN[top.el], top_share: Math.round(top.share)});
+  return `${lead}${IS_ZH ? "" : " "}${Y ? RS("appjs.pBalance.004", {EL_EN_H: EL_EN[H.el], Y_y: Y.y, Y_word: IS_ZH ? Y.word : Y.word.toLowerCase()})
+    : RS("appjs.pBalance.005", {EL_EN_H: EL_EN[H.el]})}`;
+}
+const ansHead = (label, btn) => `<div class="rp-rh"><p class="rp-k">${label}</p>${btn}</div>`;
+/* One seamless panel, single column, labelled regions: the element rows, what helps, this year, two things to do. No card edges (owner 2026-10-14). */
 function pAnswers(c) {
-  const P = c.plain, H = P.helps, Y = P.year;
-  const heavy = Object.entries(c.element_weights).sort((a, b) => b[1] - a[1])[0][0];
-  return `<div class="rp-answers">
-    <div class="rp-ans rp-bal"><p class="rp-k">${RS("appjs.pAnswers.001")}</p><h3>${RS("appjs.pAnswers.002", {heavy: EL_EN[{ Wood: "木", Fire: "火", Earth: "土", Metal: "金", Water: "水" }[heavy]] || heavy, EL_EN_H: EL_EN[H.el]})}</h3>${pBudget(c, true)}${ansQ("balance", RS("appjs.pAnswers.005"))}</div>
-    <div class="rp-ans"><p class="rp-k">${RS("appjs.pAnswers.003")}</p><h3>${H.head}</h3><div class="rp-sw" aria-hidden="true" style="--blot:url('/static/img/reading/sw/${EL_SLUG[H.el]}-128.webp')">${(SWATCH[H.el] || []).map((x) =>
-      `<i style="background-color:${x}"></i>`).join("")}</div><p>${H.means}</p>${ansQ("helps", RS("appjs.pAnswers.006"))}</div>
-    ${Y ? `<div class="rp-ans"><p class="rp-k">${RS("appjs.pAnswers.007")}</p><p class="rp-year"><span class="rp-ybig">${Y.y}</span> <span class="rp-gz keepzh" data-notip>${Y.gz}</span></p>
-      <h3>${Y.word}</h3><p>${Y.means}</p>${ansQ("year", RS("appjs.pAnswers.008"))}</div>` : ""}
-    <div class="rp-ans rp-wide"><p class="rp-k">${RS("appjs.pAnswers.004")}</p><ul class="rp-acts">${P.actions.map((a) => `<li>${a}</li>`).join("")}</ul>${ansQ("acts", RS("appjs.pAnswers.009"))}</div></div>`;
+  const P = c.plain, H = P.helps, Y = P.year, art = balanceArt(c, P.balance);
+  return `<div class="rp-answers rp-pan${art ? " has-art" : ""}">
+    <div class="rp-ans rp-bal">${art ? `<picture class="rp-artp"><source media="(min-width:641px)" srcset="/static/img/reading/bal/${art}-600.webp 600w, /static/img/reading/bal/${art}-1200.webp 1200w" sizes="(max-width:1079px) 100vw, 960px"><img class="rp-art" src="${BLANK_PX}" alt="" aria-hidden="true" width="1200" height="418" loading="lazy" decoding="async" data-art="${art}"></picture>` : ""}
+      ${ansHead(RS("appjs.pAnswers.001"), ansQ("balance", RS("appjs.pAnswers.005")))}<h3 class="rp-sum">${balanceStrip(c)}</h3>${pBudget(c, true)}</div>
+    <div class="rp-ans rp-help">${ansHead(RS("appjs.pAnswers.003"), ansQ("helps", RS("appjs.pAnswers.006")))}<h3>${H.head}</h3><div class="rp-sw" aria-hidden="true" style="${swBlot(H.el)}">${swDots(H.el)}</div><p>${H.means}</p></div>
+    ${Y ? `<div class="rp-ans">${ansHead(RS("appjs.pAnswers.007"), ansQ("year", RS("appjs.pAnswers.008")))}<p class="rp-year"><span class="rp-ybig">${Y.y}</span> <span class="rp-gz keepzh" data-notip>${Y.gz}</span></p>
+      <h3>${Y.word}</h3><p>${Y.means}</p></div>` : ""}
+    <div class="rp-ans">${ansHead(RS("appjs.pAnswers.004"), ansQ("acts", RS("appjs.pAnswers.009")))}<ul class="rp-acts">${P.actions.map((a) => `<li>${a}</li>`).join("")}</ul></div></div>`;
 }
 /* luck decades as rows: a painted phase mark, the ages, the phase, one plain line; the next turn named (owner 2026-10-10) */
 const PHASE_LINE = { growth: RS("appjs.PHASE_LINE.growth"), consolidation: RS("appjs.PHASE_LINE.consolidation"),

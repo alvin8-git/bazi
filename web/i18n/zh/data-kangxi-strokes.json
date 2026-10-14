@@ -1,0 +1,490 @@
+{
+ "data-kangxi-strokes.001": {
+  "en": "Kangxi stroke counts for 3,500 common characters | bazifor.me",
+  "zh": "3,500 个常用字的康熙笔画数 / bazifor.me"
+ },
+ "data-kangxi-strokes.002": {
+  "en": "The Kangxi stroke count of the 3,500 common characters the bazifor.me name builder uses, with the traditional form each is counted as. Generated from the engine, with the rule and its limits.",
+  "zh": "bazifor.me 起名器所用 3,500 个常用字的康熙笔画数，以及各字计数所依据的繁体字形。由引擎生成，附规则和局限。"
+ },
+ "data-kangxi-strokes.003": {
+  "en": "Kangxi stroke counts for 3,500 common characters",
+  "zh": "3,500 个常用字的康熙笔画数"
+ },
+ "data-kangxi-strokes.004": {
+  "en": "website",
+  "zh": "(same)"
+ },
+ "data-kangxi-strokes.005": {
+  "en": "summary_large_image",
+  "zh": "(same)"
+ },
+ "data-kangxi-strokes.006": {
+  "en": "bazifor.me",
+  "zh": "八字为我"
+ },
+ "data-kangxi-strokes.007": {
+  "en": "Your Reading",
+  "zh": "你的解读"
+ },
+ "data-kangxi-strokes.008": {
+  "en": "Home Fengshui",
+  "zh": "家居风水"
+ },
+ "data-kangxi-strokes.009": {
+  "en": "Baby Names",
+  "zh": "宝宝起名"
+ },
+ "data-kangxi-strokes.010": {
+  "en": "Learn",
+  "zh": "指南"
+ },
+ "data-kangxi-strokes.011": {
+  "en": "The stroke table behind the name builder",
+  "zh": "起名器背后的笔画表"
+ },
+ "data-kangxi-strokes.012": {
+  "en": "Chinese name numerology counts strokes by the Kangxi Dictionary (",
+  "zh": "中文姓名学数笔画，依据的是康熙字典"
+ },
+ "data-kangxi-strokes.013": {
+  "en": "), and the dictionary counts the traditional form of each character. A simplified character is therefore counted as its traditional form: the name builder counts",
+  "zh": "，而这部字典数的是每个字的繁体字形。因此简体字要按其繁体字形计数：起名器把"
+ },
+ "data-kangxi-strokes.014": {
+  "en": "as",
+  "zh": "按"
+ },
+ "data-kangxi-strokes.015": {
+  "en": ", with 14 strokes.",
+  "zh": "计数，共 14 画。"
+ },
+ "data-kangxi-strokes.016": {
+  "en": "This page lists the Kangxi count for each of the 3,500 characters in the first level of the General Standard Chinese Characters (",
+  "zh": "本页列出 3,500 个字的康熙笔画数，它们取自通用规范汉字表"
+ },
+ "data-kangxi-strokes.017": {
+  "en": "), the 2013 national list. The name builder offers these first and calls them common. 1,197 of them are counted as their traditional form, which is not the character in the list. 406 have another traditional form that the builder offers as a choice, and the table lists it.",
+  "zh": "的一级字，即 2013 年发布的国家字表。起名器优先提供这些字，并称它们为常用字。其中 1,197 个字按其繁体字形计数，该字形与字表中的字不同。另有 406 个字还有别的繁体字形，起名器把它作为选项提供，表中一并列出。"
+ },
+ "data-kangxi-strokes.018": {
+  "en": "The table",
+  "zh": "表格"
+ },
+ "data-kangxi-strokes.019": {
+  "en": "Characters run in the order of the list within each stroke count. Jump to a stroke count:",
+  "zh": "同一笔画数内，字按字表的顺序排列。跳到某个笔画数："
+ },
+ "data-kangxi-strokes.020": {
+  "en": "Character",
+  "zh": "字"
+ },
+ "data-kangxi-strokes.021": {
+  "en": "Counted as",
+  "zh": "计数字形"
+ },
+ "data-kangxi-strokes.022": {
+  "en": "Kangxi strokes",
+  "zh": "康熙笔画"
+ },
+ "data-kangxi-strokes.023": {
+  "en": "Other forms the builder offers",
+  "zh": "起名器提供的其他字形"
+ },
+ "data-kangxi-strokes.024": {
+  "en": "1 stroke: 2 characters",
+  "zh": "1 画：2 个字"
+ },
+ "data-kangxi-strokes.025": {
+  "en": "same",
+  "zh": "相同"
+ },
+ "data-kangxi-strokes.026": {
+  "en": "1 stroke",
+  "zh": "1 画"
+ },
+ "data-kangxi-strokes.027": {
+  "en": "none",
+  "zh": "无"
+ },
+ "data-kangxi-strokes.028": {
+  "en": "2 strokes: 16 characters",
+  "zh": "2 画：16 个字"
+ },
+ "data-kangxi-strokes.029": {
+  "en": "2 strokes",
+  "zh": "2 画"
+ },
+ "data-kangxi-strokes.030": {
+  "en": "17 strokes",
+  "zh": "17 画"
+ },
+ "data-kangxi-strokes.031": {
+  "en": "3 strokes: 36 characters",
+  "zh": "3 画：36 个字"
+ },
+ "data-kangxi-strokes.032": {
+  "en": "3 strokes",
+  "zh": "3 画"
+ },
+ "data-kangxi-strokes.033": {
+  "en": "8 strokes",
+  "zh": "8 画"
+ },
+ "data-kangxi-strokes.034": {
+  "en": "23 strokes",
+  "zh": "23 画"
+ },
+ "data-kangxi-strokes.035": {
+  "en": "24 strokes",
+  "zh": "24 画"
+ },
+ "data-kangxi-strokes.036": {
+  "en": "14 strokes",
+  "zh": "14 画"
+ },
+ "data-kangxi-strokes.037": {
+  "en": "9 strokes",
+  "zh": "9 画"
+ },
+ "data-kangxi-strokes.038": {
+  "en": "4 strokes: 79 characters",
+  "zh": "4 画：79 个字"
+ },
+ "data-kangxi-strokes.039": {
+  "en": "4 strokes",
+  "zh": "4 画"
+ },
+ "data-kangxi-strokes.040": {
+  "en": "10 strokes",
+  "zh": "10 画"
+ },
+ "data-kangxi-strokes.041": {
+  "en": "5 strokes: 104 characters",
+  "zh": "5 画：104 个字"
+ },
+ "data-kangxi-strokes.042": {
+  "en": "5 strokes",
+  "zh": "5 画"
+ },
+ "data-kangxi-strokes.043": {
+  "en": "13 strokes",
+  "zh": "13 画"
+ },
+ "data-kangxi-strokes.044": {
+  "en": "18 strokes",
+  "zh": "18 画"
+ },
+ "data-kangxi-strokes.045": {
+  "en": "20 strokes",
+  "zh": "20 画"
+ },
+ "data-kangxi-strokes.046": {
+  "en": "6 strokes: 121 characters",
+  "zh": "6 画：121 个字"
+ },
+ "data-kangxi-strokes.047": {
+  "en": "6 strokes",
+  "zh": "6 画"
+ },
+ "data-kangxi-strokes.048": {
+  "en": "16 strokes",
+  "zh": "16 画"
+ },
+ "data-kangxi-strokes.049": {
+  "en": "32 strokes",
+  "zh": "32 画"
+ },
+ "data-kangxi-strokes.050": {
+  "en": "12 strokes",
+  "zh": "12 画"
+ },
+ "data-kangxi-strokes.051": {
+  "en": "11 strokes",
+  "zh": "11 画"
+ },
+ "data-kangxi-strokes.052": {
+  "en": "19 strokes",
+  "zh": "19 画"
+ },
+ "data-kangxi-strokes.053": {
+  "en": "7 strokes: 172 characters",
+  "zh": "7 画：172 个字"
+ },
+ "data-kangxi-strokes.054": {
+  "en": "7 strokes",
+  "zh": "7 画"
+ },
+ "data-kangxi-strokes.055": {
+  "en": "15 strokes",
+  "zh": "15 画"
+ },
+ "data-kangxi-strokes.056": {
+  "en": "22 strokes",
+  "zh": "22 画"
+ },
+ "data-kangxi-strokes.057": {
+  "en": "8 strokes: 219 characters",
+  "zh": "8 画：219 个字"
+ },
+ "data-kangxi-strokes.058": {
+  "en": "9 strokes: 259 characters",
+  "zh": "9 画：259 个字"
+ },
+ "data-kangxi-strokes.059": {
+  "en": "10 strokes: 293 characters",
+  "zh": "10 画：293 个字"
+ },
+ "data-kangxi-strokes.060": {
+  "en": "11 strokes: 312 characters",
+  "zh": "11 画：312 个字"
+ },
+ "data-kangxi-strokes.061": {
+  "en": "21 strokes",
+  "zh": "21 画"
+ },
+ "data-kangxi-strokes.062": {
+  "en": "12 strokes: 327 characters",
+  "zh": "12 画：327 个字"
+ },
+ "data-kangxi-strokes.063": {
+  "en": "13 strokes: 272 characters",
+  "zh": "13 画：272 个字"
+ },
+ "data-kangxi-strokes.064": {
+  "en": "29 strokes",
+  "zh": "29 画"
+ },
+ "data-kangxi-strokes.065": {
+  "en": "14 strokes: 251 characters",
+  "zh": "14 画：251 个字"
+ },
+ "data-kangxi-strokes.066": {
+  "en": "15 strokes: 273 characters",
+  "zh": "15 画：273 个字"
+ },
+ "data-kangxi-strokes.067": {
+  "en": "16 strokes: 196 characters",
+  "zh": "16 画：196 个字"
+ },
+ "data-kangxi-strokes.068": {
+  "en": "17 strokes: 163 characters",
+  "zh": "17 画：163 个字"
+ },
+ "data-kangxi-strokes.069": {
+  "en": "18 strokes: 99 characters",
+  "zh": "18 画：99 个字"
+ },
+ "data-kangxi-strokes.070": {
+  "en": "19 strokes: 103 characters",
+  "zh": "19 画：103 个字"
+ },
+ "data-kangxi-strokes.071": {
+  "en": "20 strokes: 66 characters",
+  "zh": "20 画：66 个字"
+ },
+ "data-kangxi-strokes.072": {
+  "en": "27 strokes",
+  "zh": "27 画"
+ },
+ "data-kangxi-strokes.073": {
+  "en": "21 strokes: 48 characters",
+  "zh": "21 画：48 个字"
+ },
+ "data-kangxi-strokes.074": {
+  "en": "25 strokes",
+  "zh": "25 画"
+ },
+ "data-kangxi-strokes.075": {
+  "en": "22 strokes: 34 characters",
+  "zh": "22 画：34 个字"
+ },
+ "data-kangxi-strokes.076": {
+  "en": "23 strokes: 15 characters",
+  "zh": "23 画：15 个字"
+ },
+ "data-kangxi-strokes.077": {
+  "en": "24 strokes: 17 characters",
+  "zh": "24 画：17 个字"
+ },
+ "data-kangxi-strokes.078": {
+  "en": "25 strokes: 12 characters",
+  "zh": "25 画：12 个字"
+ },
+ "data-kangxi-strokes.079": {
+  "en": "26 strokes: 5 characters",
+  "zh": "26 画：5 个字"
+ },
+ "data-kangxi-strokes.080": {
+  "en": "26 strokes",
+  "zh": "26 画"
+ },
+ "data-kangxi-strokes.081": {
+  "en": "27 strokes: 5 characters",
+  "zh": "27 画：5 个字"
+ },
+ "data-kangxi-strokes.082": {
+  "en": "28 strokes: 1 character",
+  "zh": "28 画：1 个字"
+ },
+ "data-kangxi-strokes.083": {
+  "en": "28 strokes",
+  "zh": "28 画"
+ },
+ "data-kangxi-strokes.084": {
+  "en": "How the counts are produced",
+  "zh": "笔画数怎样得出"
+ },
+ "data-kangxi-strokes.085": {
+  "en": "Each count is derived from the traditional form of the character: the Kangxi radical at its full form plus the remaining strokes in the Unicode Unihan database, with one count set by hand.",
+  "zh": "每个笔画数都由该字的繁体字形推出：部首按康熙字典的完整字形计数，再加上 Unicode Unihan 数据库中记录的其余笔画，其中一个字的笔画数是手工设定的。"
+ },
+ "data-kangxi-strokes.086": {
+  "en": "The engine takes the traditional form of the character. Where a simplified character has several traditional forms, the builder picks a default and offers the others, which is the last column.",
+  "zh": "引擎先取该字的繁体字形。简体字对应多个繁体字形时，起名器选定一个默认字形，并把其余字形作为选项提供，见最后一列。"
+ },
+ "data-kangxi-strokes.087": {
+  "en": "It counts the Kangxi radical at its full form, and adds the remaining strokes recorded in the Unicode Unihan database for that traditional character. A radical written in a shortened form is still counted in full, for example",
+  "zh": "它把康熙部首按完整字形计数，再加上 Unicode Unihan 数据库为该繁体字记录的其余笔画。部首写成简省形式时仍按完整字形计数，例如"
+ },
+ "data-kangxi-strokes.088": {
+  "en": "with 4 strokes.",
+  "zh": "计，共 4 画。"
+ },
+ "data-kangxi-strokes.089": {
+  "en": "One count is set by hand.",
+  "zh": "有一个字的笔画数是手工设定的。"
+ },
+ "data-kangxi-strokes.090": {
+  "en": "is 15 strokes, because the first radical listing in the Unicode data is not the Kangxi one for that character.",
+  "zh": "是 15 画，因为 Unicode 数据里该字的第一个部首归类不是康熙字典的部首。"
+ },
+ "data-kangxi-strokes.091": {
+  "en": "Every row is read straight from the engine's character data. A test regenerates this page from it and fails if a single cell differs.",
+  "zh": "每一行都直接取自引擎的汉字数据。测试会据此重新生成本页，只要有一个单元格不同就会失败。"
+ },
+ "data-kangxi-strokes.092": {
+  "en": "What this table is not",
+  "zh": "这张表不是什么"
+ },
+ "data-kangxi-strokes.093": {
+  "en": "Not a copy of the printed dictionary.",
+  "zh": "不是印刷版字典的照搬。"
+ },
+ "data-kangxi-strokes.094": {
+  "en": "The counts are derived by rule, not looked up page by page.",
+  "zh": "笔画数是按规则推出的，不是逐页查出来的。"
+ },
+ "data-kangxi-strokes.095": {
+  "en": "Checked on 42 characters only.",
+  "zh": "只核对了 42 个字。"
+ },
+ "data-kangxi-strokes.096": {
+  "en": "The rule reproduces 42 counts pinned in the engine's tests, 28 common surnames and 14 given-name characters, taken from published stroke tables. The other 3,458 characters have no independent check on this page.",
+  "zh": "这套规则能复现引擎测试里固定下来的 42 个笔画数，包括 28 个常见姓氏和 14 个名字用字，均取自公开发表的笔画表。其余 3,458 个字在本页没有独立的核对。"
+ },
+ "data-kangxi-strokes.097": {
+  "en": "Not the only way to count.",
+  "zh": "不是唯一的数法。"
+ },
+ "data-kangxi-strokes.098": {
+  "en": "Modern stroke counts, and some schools' counts, differ from the Kangxi count for many characters. A different count changes the grid numbers of a name.",
+  "zh": "现代笔画数和一些学派的数法，在很多字上与康熙笔画数不同。笔画数一变，名字的格数就会变。"
+ },
+ "data-kangxi-strokes.099": {
+  "en": "Not a list of good name characters.",
+  "zh": "不是好名字用字的清单。"
+ },
+ "data-kangxi-strokes.100": {
+  "en": "It lists a stroke count for every common character, whatever its meaning or sound.",
+  "zh": "它给每个常用字都列出笔画数，不论字义和读音如何。"
+ },
+ "data-kangxi-strokes.101": {
+  "en": "Related",
+  "zh": "相关页面"
+ },
+ "data-kangxi-strokes.102": {
+  "en": "Chinese baby name builder",
+  "zh": "中文起名器"
+ },
+ "data-kangxi-strokes.103": {
+  "en": "How Chinese baby names are scored",
+  "zh": "宝宝名字如何评分"
+ },
+ "data-kangxi-strokes.104": {
+  "en": "The 81 numbers table",
+  "zh": "81 数理表"
+ },
+ "data-kangxi-strokes.105": {
+  "en": "Method: what the engine does and does not claim",
+  "zh": "方法说明：引擎做什么，不声称什么"
+ },
+ "data-kangxi-strokes.106": {
+  "en": "© bazifor.me, deterministic BaZi & fengshui readings.",
+  "zh": "© bazifor.me，按固定规则推算的八字与风水解读。"
+ },
+ "data-kangxi-strokes.107": {
+  "en": "BaZi",
+  "zh": "八字"
+ },
+ "data-kangxi-strokes.108": {
+  "en": "Home fengshui",
+  "zh": "家居风水"
+ },
+ "data-kangxi-strokes.109": {
+  "en": "Baby names",
+  "zh": "宝宝起名"
+ },
+ "data-kangxi-strokes.110": {
+  "en": "Kua number",
+  "zh": "命卦"
+ },
+ "data-kangxi-strokes.111": {
+  "en": "Guides in Chinese (",
+  "zh": "中文指南"
+ },
+ "data-kangxi-strokes.112": {
+  "en": "How it works",
+  "zh": "运作原理"
+ },
+ "data-kangxi-strokes.113": {
+  "en": "About",
+  "zh": "关于"
+ },
+ "data-kangxi-strokes.114": {
+  "en": "FAQ",
+  "zh": "常见问题"
+ },
+ "data-kangxi-strokes.115": {
+  "en": "Method",
+  "zh": "方法"
+ },
+ "data-kangxi-strokes.116": {
+  "en": "Author",
+  "zh": "作者"
+ },
+ "data-kangxi-strokes.117": {
+  "en": "Privacy",
+  "zh": "隐私说明"
+ },
+ "data-kangxi-strokes.118": {
+  "en": "Terms",
+  "zh": "使用条款"
+ },
+ "data-kangxi-strokes.119": {
+  "en": "Contact",
+  "zh": "联系我们"
+ },
+ "data-kangxi-strokes.120": {
+  "en": "Validation",
+  "zh": "验证方法"
+ },
+ "data-kangxi-strokes.121": {
+  "en": "Data:",
+  "zh": "数据："
+ },
+ "data-kangxi-strokes.122": {
+  "en": "Flying stars 2027",
+  "zh": "2027 年飞星"
+ }
+}

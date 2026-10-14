@@ -476,7 +476,8 @@ def person_chart(token: str, idx: int, year: int = YEAR, lang: str = "en"):
     if not 0 <= idx < len(ws["people"]):
         raise HTTPException(404, "no such person")
     m, c = _chart_of(ws["people"][idx])
-    return chart_payload(_tosimp(m.name), c, yong_shen(c), year, lang if lang in ("en", "zh") else "en")
+    from engine.element_reference import attach_standing   # additive: where each element's share stands among charts (the balance panel's quiet line)
+    return attach_standing(chart_payload(_tosimp(m.name), c, yong_shen(c), year, lang if lang in ("en", "zh") else "en"))
 
 
 _STEM_SLUG = dict(zip("甲乙丙丁戊己庚辛壬癸", "jia yi bing ding wu ji geng xin ren gui".split()))
@@ -1803,7 +1804,8 @@ def gsc_verification():
 _ROBOTS_ALLOW = ("Allow: /$\nAllow: /start\nAllow: /fengshui\nAllow: /baby\nAllow: /kua\nAllow: /learn\n"
                  "Allow: /zh\nAllow: /how-it-works\nAllow: /about\nAllow: /faq\n"
                  "Allow: /author\nAllow: /method\nAllow: /privacy\nAllow: /terms\nAllow: /contact\nAllow: /validation\n"
-                 "Allow: /llms.txt\nAllow: /llms-full.txt\n"
+                 "Allow: /data\n"
+                 "Allow: /llms.txt\nAllow: /llms-full.txt\nAllow: /llms-full-zh.txt\n"
                  "Disallow: /w/\nDisallow: /api/\n"
                  "Content-Signal: search=yes, ai-input=yes, ai-train=yes\n")
 _ROBOTS_BOTS = ("Googlebot", "Bingbot", "OAI-SearchBot", "Claude-SearchBot", "PerplexityBot",
@@ -1881,6 +1883,10 @@ def _page_timestamps() -> dict[str, int]:
                 got = calendar.timegm((int(m[1]), int(m[2]), int(m[3]), 0, 0, 0))
         if got is not None:
             stamps[rel] = got
+    for rel, ts in list(stamps.items()):          # a guide's Markdown copy is as old as the guide itself
+        m = re.fullmatch(r"web/(learn|learn-zh)/([a-z0-9-]+)\.html", rel)
+        if m and m[2] != "index":
+            stamps[f"data/seo/md/{'zh' if m[1] == 'learn-zh' else 'en'}/{m[2]}.md"] = ts
     return stamps
 
 
@@ -1926,7 +1932,7 @@ class PageFile(FileResponse):
                 except (TypeError, ValueError):
                     fresh = False
             if fresh:
-                keep = {"etag", "last-modified", "cache-control", "content-type"}
+                keep = {"etag", "last-modified", "cache-control", "content-type", "link"}
                 hdrs = [(k, v) for k, v in self.raw_headers if k.decode("latin-1").lower() in keep]
                 await send({"type": "http.response.start", "status": 304, "headers": hdrs})
                 await send({"type": "http.response.body", "body": b"", "more_body": False})
@@ -1959,6 +1965,9 @@ def llms_txt():
              "- [隐私说明](https://bazifor.me/zh/privacy): 我们保存什么、保存多久、怎么删除",
              "- [使用条款](https://bazifor.me/zh/terms)", "- [联系我们](https://bazifor.me/zh/contact)",
              "- [验证方法](https://bazifor.me/zh/validation): 27/27、32/32 这一说法的比对方法，以及可以自己重算的表格",
+             "- [81 数理表](https://bazifor.me/zh/data/81-numbers): 起名器使用的 81 个数字的吉凶，由引擎生成",
+             "- [2027 年飞星九宫格](https://bazifor.me/zh/data/flying-stars-2027): 2027 年的流年飞星盘和引擎对每颗星的评分",
+             "- [康熙笔画表](https://bazifor.me/zh/data/kangxi-strokes): 起名器所用常用字的康熙笔画数，以及计数所用的繁体字形",
              "", "## Guides (English)", "",
              "- [Learn](https://bazifor.me/learn)"]
     for slug, title in _learn_titles("web/learn"):
@@ -1974,13 +1983,31 @@ def llms_txt():
               "- [Terms of use](https://bazifor.me/terms)", "- [Contact](https://bazifor.me/contact)",
               "- [Validation](https://bazifor.me/validation): how the 27 of 27 and 32 of 32 claim was checked, a table you can re-run, and what it does not prove",
               "- [FAQ](https://bazifor.me/faq): method, accuracy, privacy",
-              "- [Full text of the English guides](https://bazifor.me/llms-full.txt)", ""]
+              "", "## Data", "",
+              "- [The 81 numbers table](https://bazifor.me/data/81-numbers): the auspicious or not verdict the name builder gives each of the 81 stroke numbers, generated from the engine",
+              "- [Flying stars for 2027](https://bazifor.me/data/flying-stars-2027): the 2027 nine-palace grid, the rule behind it and the engine's score for each star",
+              "- [Kangxi stroke counts](https://bazifor.me/data/kangxi-strokes): the Kangxi stroke count of every common character the name builder uses, with the traditional form each is counted as",
+              "",
+              "- [Full text of the English guides](https://bazifor.me/llms-full.txt)",
+              "- [中文指南全文 (full text of the Chinese guides)](https://bazifor.me/llms-full-zh.txt)",
+              "", "## Markdown copies", "",
+              "Every guide is also served as plain Markdown: add .md to its address, for example "
+              "https://bazifor.me/learn/what-is-bazi.md and https://bazifor.me/zh/learn/what-is-bazi.md. "
+              "Each copy names its canonical page in the file and in a Link header; cite the canonical page.", ""]
     return "\n".join(lines)
 
 
 @router.get("/llms-full.txt", response_class=PlainTextResponse)
 def llms_full_txt():
     f = _seo_file("llms-full.txt")
+    if not f.is_file():
+        raise HTTPException(404)
+    return f.read_text("utf8")
+
+
+@router.get("/llms-full-zh.txt", response_class=PlainTextResponse)
+def llms_full_zh_txt():
+    f = _seo_file("llms-full-zh.txt")
     if not f.is_file():
         raise HTTPException(404)
     return f.read_text("utf8")
@@ -2074,6 +2101,22 @@ def validation_page():
     return PageFile(ROOT / "web/validation.html")
 
 
+# The three data pages: generated from the engine by scripts/build_data_pages.py (audit C7)
+@router.get("/data/81-numbers")
+def data_81_numbers():
+    return PageFile(ROOT / "web/data-81-numbers.html")
+
+
+@router.get("/data/flying-stars-2027")
+def data_flying_stars_2027():
+    return PageFile(ROOT / "web/data-flying-stars-2027.html")
+
+
+@router.get("/data/kangxi-strokes")
+def data_kangxi_strokes():
+    return PageFile(ROOT / "web/data-kangxi-strokes.html")
+
+
 def _learn_slugs(sub: str = "web/learn") -> list[str]:
     d = ROOT / sub
     return sorted(f.stem for f in d.glob("*.html")
@@ -2089,7 +2132,8 @@ def _lastmod() -> dict:
 @router.get("/sitemap.xml")
 def sitemap():
     pages = ["/", "/start", "/fengshui", "/baby", "/kua",
-             "/how-it-works", "/about", "/faq", "/author", "/method", "/privacy", "/terms", "/contact", "/validation", "/learn"]
+             "/how-it-works", "/about", "/faq", "/author", "/method", "/privacy", "/terms", "/contact", "/validation", "/learn",
+             "/data/81-numbers", "/data/flying-stars-2027", "/data/kangxi-strokes"]
     pages += [f"/learn/{s}" for s in _learn_slugs()]
     pages += ["/zh/learn"] + ["/zh" + p for p in ZH_PAGES]
     pages += [f"/zh/learn/{s}" for s in _learn_slugs("web/learn-zh")]
@@ -2122,6 +2166,34 @@ def learn_hub():
     return PageFile(ROOT / "web/learn/index.html")
 
 
+def _guide_markdown(lang: str, slug: str):
+    """The Markdown copy of a guide (built by scripts/seo_build.py).  Never in the sitemap; the Link header and the
+    Canonical line inside the file point at the HTML page, so a crawler treats the copy as the same document."""
+    if not re.fullmatch(r"[a-z0-9-]{1,80}", slug):
+        raise HTTPException(404)
+    f = ROOT / "data/seo/md" / lang / f"{slug}.md"
+    if not f.is_file():
+        raise HTTPException(404)
+    canonical = f"{SITE_URL}{'/zh' if lang == 'zh' else ''}/learn/{slug}"
+    return PageFile(f, media_type="text/markdown; charset=utf-8",
+                    headers={"Link": f'<{canonical}>; rel="canonical"', "Cache-Control": "no-cache"})
+
+
+def _markdown_alternate(lang: str, slug: str) -> dict:
+    return {"Link": f'<{SITE_URL}{"/zh" if lang == "zh" else ""}/learn/{slug}.md>; rel="alternate"; type="text/markdown"'}
+
+
+# The .md routes come first: "/learn/{slug}" would otherwise swallow "what-is-bazi.md" and answer 404.
+@router.get("/learn/{slug}.md")
+def learn_article_md(slug: str):
+    return _guide_markdown("en", slug)
+
+
+@router.get("/zh/learn/{slug}.md")
+def learn_article_zh_md(slug: str):
+    return _guide_markdown("zh", slug)
+
+
 @router.get("/learn/{slug}")
 def learn_article(slug: str):
     if not re.fullmatch(r"[a-z0-9-]{1,80}", slug):
@@ -2129,7 +2201,7 @@ def learn_article(slug: str):
     f = ROOT / "web/learn" / f"{slug}.html"
     if not f.is_file():
         raise HTTPException(404)
-    return PageFile(f)
+    return PageFile(f, headers=_markdown_alternate("en", slug))
 
 
 @router.get("/zh/learn")
@@ -2144,7 +2216,7 @@ def learn_article_zh(slug: str):
     f = ROOT / "web/learn-zh" / f"{slug}.html"
     if not f.is_file():
         raise HTTPException(404)
-    return PageFile(f)
+    return PageFile(f, headers=_markdown_alternate("zh", slug))
 
 
 @router.get("/start")
@@ -2183,7 +2255,9 @@ def kua_page():
 # exactly like /zh/learn. Engine-driven content inside them stays English until Phase 2.
 ZH_PAGES = {"": "landing", "/start": "start", "/baby": "baby", "/kua": "kua", "/about": "about",
             "/how-it-works": "how-it-works", "/faq": "faq", "/method": "method", "/author": "author",
-            "/privacy": "privacy", "/terms": "terms", "/contact": "contact", "/validation": "validation"}
+            "/privacy": "privacy", "/terms": "terms", "/contact": "contact", "/validation": "validation",
+            "/data/81-numbers": "data-81-numbers", "/data/flying-stars-2027": "data-flying-stars-2027",
+            "/data/kangxi-strokes": "data-kangxi-strokes"}
 
 
 def _zh_page(name: str):
@@ -2259,3 +2333,18 @@ def zh_contact():
 @router.get("/zh/validation")
 def zh_validation():
     return _zh_page("validation")
+
+
+@router.get("/zh/data/81-numbers")
+def zh_data_81_numbers():
+    return _zh_page("data-81-numbers")
+
+
+@router.get("/zh/data/flying-stars-2027")
+def zh_data_flying_stars_2027():
+    return _zh_page("data-flying-stars-2027")
+
+
+@router.get("/zh/data/kangxi-strokes")
+def zh_data_kangxi_strokes():
+    return _zh_page("data-kangxi-strokes")

@@ -1,0 +1,554 @@
+{
+ "data-flying-stars-2027.001": {
+  "en": "Flying stars for 2027: the nine-palace grid, computed | bazifor.me",
+  "zh": "2027 年飞星：九宫格，由引擎算出 / bazifor.me"
+ },
+ "data-flying-stars-2027.002": {
+  "en": "The 2027 flying-star grid as the bazifor.me engine computes it: star 9 in the centre, the 5 Yellow in the north, the rule behind it and the engine's score for each star.",
+  "zh": "bazifor.me 引擎算出的 2027 年飞星盘：9 星入中宫，五黄在正北，附其背后的规则和引擎对每颗星的评分。"
+ },
+ "data-flying-stars-2027.003": {
+  "en": "Flying stars for 2027: the nine-palace grid, computed",
+  "zh": "2027 年飞星：九宫格，由引擎算出"
+ },
+ "data-flying-stars-2027.004": {
+  "en": "website",
+  "zh": "(same)"
+ },
+ "data-flying-stars-2027.005": {
+  "en": "summary_large_image",
+  "zh": "(same)"
+ },
+ "data-flying-stars-2027.006": {
+  "en": "bazifor.me",
+  "zh": "八字为我"
+ },
+ "data-flying-stars-2027.007": {
+  "en": "Your Reading",
+  "zh": "你的解读"
+ },
+ "data-flying-stars-2027.008": {
+  "en": "Home Fengshui",
+  "zh": "家居风水"
+ },
+ "data-flying-stars-2027.009": {
+  "en": "Baby Names",
+  "zh": "宝宝起名"
+ },
+ "data-flying-stars-2027.010": {
+  "en": "Learn",
+  "zh": "指南"
+ },
+ "data-flying-stars-2027.011": {
+  "en": "Flying stars for 2027 (",
+  "zh": "2027 年玄空飞星"
+ },
+ "data-flying-stars-2027.012": {
+  "en": "The annual nine-palace grid, and how the engine scores each star",
+  "zh": "全年九宫飞星盘，以及引擎怎样给每颗星打分"
+ },
+ "data-flying-stars-2027.013": {
+  "en": "In a flying-star year the nine stars are dealt again across the centre and the eight compass palaces. The deal depends on the year only, not on any building. This page prints the 2027 deal as the bazifor.me engine computes it, the rule that produces it, and the score the engine gives each star in homes of each period.",
+  "zh": "每个飞星年，九颗星都会在中宫和八个方位的宫位上重新排布一次。排布只取决于年份，与任何建筑无关。本页印出 bazifor.me 引擎算出的 2027 年排布、产生它的规则，以及引擎对每颗星在各运住宅里的评分。"
+ },
+ "data-flying-stars-2027.014": {
+  "en": "In 2027, star 9 is in the centre. The 5 Yellow is in the north, where the engine scores it −2.0 in homes of most periods, the lowest score it gives any star.",
+  "zh": "2027 年，9 星入中宫。五黄在正北，引擎在大多数运的住宅里给它 −2.0 分，是它给任何一颗星的最低分。"
+ },
+ "data-flying-stars-2027.015": {
+  "en": "The 2027 grid",
+  "zh": "2027 年的飞星盘"
+ },
+ "data-flying-stars-2027.016": {
+  "en": "The 2027 grid with south at the top. The centre star is 9.",
+  "zh": "2027 年的飞星盘，南在上。中宫星是 9。"
+ },
+ "data-flying-stars-2027.017": {
+  "en": "East side",
+  "zh": "东侧"
+ },
+ "data-flying-stars-2027.018": {
+  "en": "Middle",
+  "zh": "中间"
+ },
+ "data-flying-stars-2027.019": {
+  "en": "West side",
+  "zh": "西侧"
+ },
+ "data-flying-stars-2027.020": {
+  "en": "South side",
+  "zh": "南侧"
+ },
+ "data-flying-stars-2027.021": {
+  "en": "Southeast",
+  "zh": "东南"
+ },
+ "data-flying-stars-2027.022": {
+  "en": "South",
+  "zh": "南"
+ },
+ "data-flying-stars-2027.023": {
+  "en": "Southwest",
+  "zh": "西南"
+ },
+ "data-flying-stars-2027.024": {
+  "en": "East",
+  "zh": "东"
+ },
+ "data-flying-stars-2027.025": {
+  "en": "Centre",
+  "zh": "中"
+ },
+ "data-flying-stars-2027.026": {
+  "en": "West",
+  "zh": "西"
+ },
+ "data-flying-stars-2027.027": {
+  "en": "North side",
+  "zh": "北侧"
+ },
+ "data-flying-stars-2027.028": {
+  "en": "Northeast",
+  "zh": "东北"
+ },
+ "data-flying-stars-2027.029": {
+  "en": "North",
+  "zh": "北"
+ },
+ "data-flying-stars-2027.030": {
+  "en": "Northwest",
+  "zh": "西北"
+ },
+ "data-flying-stars-2027.031": {
+  "en": "The grid holds for the whole flying-star year, from Start of Spring (",
+  "zh": "这张盘在整个飞星年里有效，从立春"
+ },
+ "data-flying-stars-2027.032": {
+  "en": ") on 2027-02-04 until Start of Spring on 2028-02-04. A date before 2027-02-04 belongs to the previous year's grid.",
+  "zh": "（2027-02-04）起，到 2028-02-04 的立春止。2027-02-04 之前的日期属于上一年的飞星盘。"
+ },
+ "data-flying-stars-2027.033": {
+  "en": "The nine palaces",
+  "zh": "九个宫位"
+ },
+ "data-flying-stars-2027.034": {
+  "en": "The engine fills the palaces in a fixed order, starting at the centre and following the order of the table below. Each step adds 1 to the centre star, and a result above 9 wraps back to 1.",
+  "zh": "引擎按固定的顺序填宫，从中宫开始，顺序就是下表的顺序。每走一步，中宫星加 1，超过 9 就回到 1。"
+ },
+ "data-flying-stars-2027.035": {
+  "en": "Palace",
+  "zh": "宫位"
+ },
+ "data-flying-stars-2027.036": {
+  "en": "Step",
+  "zh": "步数"
+ },
+ "data-flying-stars-2027.037": {
+  "en": "Centre star plus step",
+  "zh": "中宫星加步数"
+ },
+ "data-flying-stars-2027.038": {
+  "en": "Star",
+  "zh": "星"
+ },
+ "data-flying-stars-2027.039": {
+  "en": "Star name",
+  "zh": "星名"
+ },
+ "data-flying-stars-2027.040": {
+  "en": "Star element",
+  "zh": "星的五行"
+ },
+ "data-flying-stars-2027.041": {
+  "en": "centre",
+  "zh": "中宫"
+ },
+ "data-flying-stars-2027.042": {
+  "en": "9 Purple",
+  "zh": "(empty)"
+ },
+ "data-flying-stars-2027.043": {
+  "en": "Fire",
+  "zh": "(empty)"
+ },
+ "data-flying-stars-2027.044": {
+  "en": "northwest",
+  "zh": "西北"
+ },
+ "data-flying-stars-2027.045": {
+  "en": "9 + 1 = 10, wraps to 1",
+  "zh": "9 + 1 = 10，回到 1"
+ },
+ "data-flying-stars-2027.046": {
+  "en": "1 White",
+  "zh": "(empty)"
+ },
+ "data-flying-stars-2027.047": {
+  "en": "Water",
+  "zh": "(empty)"
+ },
+ "data-flying-stars-2027.048": {
+  "en": "west",
+  "zh": "西"
+ },
+ "data-flying-stars-2027.049": {
+  "en": "9 + 2 = 11, wraps to 2",
+  "zh": "9 + 2 = 11，回到 2"
+ },
+ "data-flying-stars-2027.050": {
+  "en": "2 Black",
+  "zh": "(empty)"
+ },
+ "data-flying-stars-2027.051": {
+  "en": "Earth",
+  "zh": "(empty)"
+ },
+ "data-flying-stars-2027.052": {
+  "en": "northeast",
+  "zh": "东北"
+ },
+ "data-flying-stars-2027.053": {
+  "en": "9 + 3 = 12, wraps to 3",
+  "zh": "9 + 3 = 12，回到 3"
+ },
+ "data-flying-stars-2027.054": {
+  "en": "3 Jade",
+  "zh": "(empty)"
+ },
+ "data-flying-stars-2027.055": {
+  "en": "Wood",
+  "zh": "(empty)"
+ },
+ "data-flying-stars-2027.056": {
+  "en": "south",
+  "zh": "南"
+ },
+ "data-flying-stars-2027.057": {
+  "en": "9 + 4 = 13, wraps to 4",
+  "zh": "9 + 4 = 13，回到 4"
+ },
+ "data-flying-stars-2027.058": {
+  "en": "4 Green",
+  "zh": "(empty)"
+ },
+ "data-flying-stars-2027.059": {
+  "en": "north",
+  "zh": "北"
+ },
+ "data-flying-stars-2027.060": {
+  "en": "9 + 5 = 14, wraps to 5",
+  "zh": "9 + 5 = 14，回到 5"
+ },
+ "data-flying-stars-2027.061": {
+  "en": "5 Yellow",
+  "zh": "(empty)"
+ },
+ "data-flying-stars-2027.062": {
+  "en": "southwest",
+  "zh": "西南"
+ },
+ "data-flying-stars-2027.063": {
+  "en": "9 + 6 = 15, wraps to 6",
+  "zh": "9 + 6 = 15，回到 6"
+ },
+ "data-flying-stars-2027.064": {
+  "en": "6 White",
+  "zh": "(empty)"
+ },
+ "data-flying-stars-2027.065": {
+  "en": "Metal",
+  "zh": "(empty)"
+ },
+ "data-flying-stars-2027.066": {
+  "en": "east",
+  "zh": "东"
+ },
+ "data-flying-stars-2027.067": {
+  "en": "9 + 7 = 16, wraps to 7",
+  "zh": "9 + 7 = 16，回到 7"
+ },
+ "data-flying-stars-2027.068": {
+  "en": "7 Red",
+  "zh": "(empty)"
+ },
+ "data-flying-stars-2027.069": {
+  "en": "southeast",
+  "zh": "东南"
+ },
+ "data-flying-stars-2027.070": {
+  "en": "9 + 8 = 17, wraps to 8",
+  "zh": "9 + 8 = 17，回到 8"
+ },
+ "data-flying-stars-2027.071": {
+  "en": "8 White",
+  "zh": "(empty)"
+ },
+ "data-flying-stars-2027.072": {
+  "en": "Where the centre star comes from",
+  "zh": "中宫星是怎么来的"
+ },
+ "data-flying-stars-2027.073": {
+  "en": "The centre star falls by 1 each year and wraps from 1 back to 9. The engine anchors the count at the year 2000, which has centre star 9.",
+  "zh": "中宫星每年减 1，从 1 回到 9。引擎把 2000 年作为起点，该年的中宫星是 9。"
+ },
+ "data-flying-stars-2027.074": {
+  "en": "Flying-star year",
+  "zh": "飞星年"
+ },
+ "data-flying-stars-2027.075": {
+  "en": "Starts at Start of Spring on",
+  "zh": "起于立春日"
+ },
+ "data-flying-stars-2027.076": {
+  "en": "Centre star",
+  "zh": "中宫星"
+ },
+ "data-flying-stars-2027.077": {
+  "en": "How the engine scores a star",
+  "zh": "引擎怎样给一颗星打分"
+ },
+ "data-flying-stars-2027.078": {
+  "en": "The engine scores a star by its relation to the period of the home. Periods are 20 years long and count from 1864, so period 8 runs from 2004 to 2023 and period 9 from 2024 to 2043. A home built in period 8 is a period 8 home, and so on. The conditions below are checked from the top, and the first one that fits gives the score.",
+  "zh": "引擎按一颗星与住宅所属运的关系给它打分。每运 20 年，从 1864 年起算，所以八运是 2004 年到 2023 年，九运是 2024 年到 2043 年。八运建成的住宅就是八运宅，其余类推。下面的条件从上往下逐条检查，第一条符合的就决定得分。"
+ },
+ "data-flying-stars-2027.079": {
+  "en": "Order",
+  "zh": "顺序"
+ },
+ "data-flying-stars-2027.080": {
+  "en": "Condition",
+  "zh": "条件"
+ },
+ "data-flying-stars-2027.081": {
+  "en": "Score",
+  "zh": "得分"
+ },
+ "data-flying-stars-2027.082": {
+  "en": "The star is the home's own period",
+  "zh": "这颗星就是住宅本身的运"
+ },
+ "data-flying-stars-2027.083": {
+  "en": "The star is the next period",
+  "zh": "这颗星是下一运"
+ },
+ "data-flying-stars-2027.084": {
+  "en": "The star is 5",
+  "zh": "这颗星是 5"
+ },
+ "data-flying-stars-2027.085": {
+  "en": "The star is 2",
+  "zh": "这颗星是 2"
+ },
+ "data-flying-stars-2027.086": {
+  "en": "The star is 3",
+  "zh": "这颗星是 3"
+ },
+ "data-flying-stars-2027.087": {
+  "en": "The star is two periods ahead",
+  "zh": "这颗星是下两运"
+ },
+ "data-flying-stars-2027.088": {
+  "en": "The star is the previous period",
+  "zh": "这颗星是上一运"
+ },
+ "data-flying-stars-2027.089": {
+  "en": "The star is 1 or 6",
+  "zh": "这颗星是 1 或 6"
+ },
+ "data-flying-stars-2027.090": {
+  "en": "Any other star",
+  "zh": "其他任何星"
+ },
+ "data-flying-stars-2027.091": {
+  "en": "Applying those rules to every star in every home period gives this table. Read the row of a 2027 star against the column of your home's period. Star 8 scores +2.0 in a period 8 home, and the 5 Yellow scores −2.0 in every period except 4 and 5.",
+  "zh": "把这些规则用在每颗星、每一运的住宅上，就得到下表。用 2027 年的星所在的行，对照你家住宅所属运的列。8 星在八运宅里得 +2.0 分，五黄在除 4 运和 5 运之外的每一运里都是 −2.0 分。"
+ },
+ "data-flying-stars-2027.092": {
+  "en": "Period 1",
+  "zh": "1 运"
+ },
+ "data-flying-stars-2027.093": {
+  "en": "Period 2",
+  "zh": "2 运"
+ },
+ "data-flying-stars-2027.094": {
+  "en": "Period 3",
+  "zh": "3 运"
+ },
+ "data-flying-stars-2027.095": {
+  "en": "Period 4",
+  "zh": "4 运"
+ },
+ "data-flying-stars-2027.096": {
+  "en": "Period 5",
+  "zh": "5 运"
+ },
+ "data-flying-stars-2027.097": {
+  "en": "Period 6",
+  "zh": "6 运"
+ },
+ "data-flying-stars-2027.098": {
+  "en": "Period 7",
+  "zh": "7 运"
+ },
+ "data-flying-stars-2027.099": {
+  "en": "Period 8",
+  "zh": "8 运"
+ },
+ "data-flying-stars-2027.100": {
+  "en": "Period 9",
+  "zh": "9 运"
+ },
+ "data-flying-stars-2027.101": {
+  "en": "How the page stays true to the engine",
+  "zh": "本页怎样与引擎保持一致"
+ },
+ "data-flying-stars-2027.102": {
+  "en": "The grid comes from the engine function that the home reports call for the annual chart, and the scores come from the function that scores a star. A test regenerates this page from those functions.",
+  "zh": "飞星盘来自住宅报告用来取流年盘的那个引擎函数，评分来自给星打分的那个函数。测试会用这些函数重新生成本页。"
+ },
+ "data-flying-stars-2027.103": {
+  "en": "The test fails if a single cell differs.",
+  "zh": "只要有一个单元格不同，测试就会失败。"
+ },
+ "data-flying-stars-2027.104": {
+  "en": "What this page is not",
+  "zh": "本页不是什么"
+ },
+ "data-flying-stars-2027.105": {
+  "en": "Not a reading of your home.",
+  "zh": "不是对你家的解读。"
+ },
+ "data-flying-stars-2027.106": {
+  "en": "The grid is the same for every building. Which room sits in which palace depends on the home, and that is what the home analyzer works out.",
+  "zh": "这张盘对每座建筑都一样。哪个房间落在哪个宫，取决于住宅本身，那是家居风水分析器要算的事。"
+ },
+ "data-flying-stars-2027.107": {
+  "en": "Not a classical score.",
+  "zh": "不是古典文献里的分数。"
+ },
+ "data-flying-stars-2027.108": {
+  "en": "Classical texts call stars prosperous, rising, retreating or troublesome. They do not give numbers. The scores are the engine's own weights, and the engine cites no source for the numbers.",
+  "zh": "古典文献把星称为旺、进、退或带来麻烦，但没有给出数字。这些分数是引擎自己的权重，引擎没有为这些数字引用任何出处。"
+ },
+ "data-flying-stars-2027.109": {
+  "en": "Not a forecast.",
+  "zh": "不是预测。"
+ },
+ "data-flying-stars-2027.110": {
+  "en": "A score ranks a star against the period of a home. It does not predict what happens in a room.",
+  "zh": "分数只是把一颗星与住宅所属的运相比后排出高低，并不预测房间里会发生什么。"
+ },
+ "data-flying-stars-2027.111": {
+  "en": "Not the other annual markers.",
+  "zh": "不含其他流年方位。"
+ },
+ "data-flying-stars-2027.112": {
+  "en": "The Grand Duke, the Year Breaker and the Three Killings are covered in",
+  "zh": "太岁、岁破和三煞见"
+ },
+ "data-flying-stars-2027.113": {
+  "en": "the 2027 guide",
+  "zh": "2027 年指南"
+ },
+ "data-flying-stars-2027.114": {
+  "en": ", not here.",
+  "zh": "，本页不重复。"
+ },
+ "data-flying-stars-2027.115": {
+  "en": "Related",
+  "zh": "相关页面"
+ },
+ "data-flying-stars-2027.116": {
+  "en": "Flying stars 2027: the annual chart explained",
+  "zh": "2027 年飞星：流年盘详解"
+ },
+ "data-flying-stars-2027.117": {
+  "en": "Home feng shui analyzer",
+  "zh": "家居风水分析器"
+ },
+ "data-flying-stars-2027.118": {
+  "en": "How the engine was validated",
+  "zh": "引擎是怎么验证的"
+ },
+ "data-flying-stars-2027.119": {
+  "en": "The 81 numbers table",
+  "zh": "81 数理表"
+ },
+ "data-flying-stars-2027.120": {
+  "en": "Kangxi stroke counts for 3,500 common characters",
+  "zh": "3,500 个常用字的康熙笔画数"
+ },
+ "data-flying-stars-2027.121": {
+  "en": "© bazifor.me, deterministic BaZi & fengshui readings.",
+  "zh": "© bazifor.me，按固定规则推算的八字与风水解读。"
+ },
+ "data-flying-stars-2027.122": {
+  "en": "BaZi",
+  "zh": "八字"
+ },
+ "data-flying-stars-2027.123": {
+  "en": "Home fengshui",
+  "zh": "家居风水"
+ },
+ "data-flying-stars-2027.124": {
+  "en": "Baby names",
+  "zh": "宝宝起名"
+ },
+ "data-flying-stars-2027.125": {
+  "en": "Kua number",
+  "zh": "命卦"
+ },
+ "data-flying-stars-2027.126": {
+  "en": "Guides in Chinese (",
+  "zh": "中文指南"
+ },
+ "data-flying-stars-2027.127": {
+  "en": "How it works",
+  "zh": "运作原理"
+ },
+ "data-flying-stars-2027.128": {
+  "en": "About",
+  "zh": "关于"
+ },
+ "data-flying-stars-2027.129": {
+  "en": "FAQ",
+  "zh": "常见问题"
+ },
+ "data-flying-stars-2027.130": {
+  "en": "Method",
+  "zh": "方法"
+ },
+ "data-flying-stars-2027.131": {
+  "en": "Author",
+  "zh": "作者"
+ },
+ "data-flying-stars-2027.132": {
+  "en": "Privacy",
+  "zh": "隐私说明"
+ },
+ "data-flying-stars-2027.133": {
+  "en": "Terms",
+  "zh": "使用条款"
+ },
+ "data-flying-stars-2027.134": {
+  "en": "Contact",
+  "zh": "联系我们"
+ },
+ "data-flying-stars-2027.135": {
+  "en": "Validation",
+  "zh": "验证方法"
+ },
+ "data-flying-stars-2027.136": {
+  "en": "Data:",
+  "zh": "数据："
+ },
+ "data-flying-stars-2027.137": {
+  "en": "Flying stars 2027",
+  "zh": "2027 年飞星"
+ },
+ "data-flying-stars-2027.138": {
+  "en": "Kangxi strokes",
+  "zh": "康熙笔画"
+ }
+}
