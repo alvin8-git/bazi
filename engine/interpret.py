@@ -75,8 +75,8 @@ TEN_GOD_GROUP = {"比肩": "比劫", "劫財": "比劫", "食神": "食傷", "�
 GROUP_MEANING = {
     "比劫": "peers & independence (self-reliance, siblings, competition for resources)",
     "食傷": "output & expression (creativity, performance, children)",
-    "財": "wealth (practical results, money; classically the spouse star in a man's chart)",
-    "官殺": "authority (career, discipline, status, pressure; classically the spouse star "
+    "財": "wealth (practical results, money; read as the spouse star in a man's chart)",
+    "官殺": "authority (career, discipline, status, pressure; read as the spouse star "
           "in a woman's chart)",
     "印": "resource (learning, protection, support from elders)",
 }
@@ -447,8 +447,10 @@ def _fav_word(el: str, ys: dict, lang: str = "en") -> str:
     return "neutral"
 
 
-def interpret_person(chart, ys: dict, year: int, lang: str = "en") -> dict:
-    """Plain-English narrative for one BaZi chart — deterministic templates."""
+def interpret_person(chart, ys: dict, year: int, lang: str = "en", minor: bool = False) -> dict:
+    """Plain-English narrative for one BaZi chart — deterministic templates.
+    `minor` (no money advice under 18, owner 2026-10-10) picks the strongest and most-in-need life domain without the wealth area,
+    and leaves the salary star (祿神) out of the symbolic-star count."""
     paras = []
     dm_el = STEM_ELEMENT[chart.day_master]
     strong = chart.strength["verdict"].startswith("身強")
@@ -516,7 +518,7 @@ def interpret_person(chart, ys: dict, year: int, lang: str = "en") -> dict:
                      "started yet — the birth chart itself dominates.", lang, year=year, age=age))
 
     from .domains import life_domains
-    doms = life_domains(chart, ys, lang=lang)
+    doms = [d for d in life_domains(chart, ys, lang=lang) if not (minor and d['key'] == 'wealth')]
     from .area_reference import standing_key
     best = max(doms, key=standing_key)   # Layer 2: strongest and most-in-need are picked by standing among charts; each sentence still states the raw score
     low = min(doms, key=standing_key)
@@ -568,7 +570,7 @@ def interpret_person(chart, ys: dict, year: int, lang: str = "en") -> dict:
           f"daily colours. Treat 忌神 {'·'.join(ys['unfavourable'])} as load, "
           "not poison — fine in doses, taxing as a lifestyle.", lang, join_ys_unfavourable='·'.join(ys['unfavourable'])))
 
-    ss = [s["star"] for s in shensha(chart, lang=lang)]
+    ss = [s["star"] for s in shensha(chart, lang=lang) if not (minor and s["star"] == "祿神")]   # the salary star is a money line: not counted for a minor
     bits = []
     if any("貴人" in s for s in ss):
         bits.append(T("interpret.interpret_person.22", "貴人 nobleman stars — help tends to arrive through "

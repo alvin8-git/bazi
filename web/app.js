@@ -24,7 +24,7 @@ const READING_EN = {
   "appjs.CHAPTERS.space.what": "eight-house directions",
   "appjs.CHART_CAP.makeup": "<b>Four pillars.</b> Your eight characters.",
   "appjs.CHART_CAP.balance": "<b>Five elements.</b> How they feed and check each other.",
-  "appjs.CHART_CAP.drives": "<b>Ten gods.</b> The ten classical roles, grouped.",
+  "appjs.CHART_CAP.drives": "<b>Ten gods.</b> The ten roles, in five groups.",
   "appjs.CHART_CAP.timing": "<b>Luck pillars.</b> Your decades, one pillar at a time.",
   "appjs.CHART_CAP.space": "<b>Eight directions.</b> For your Kua number.",
   "appjs.PILLAR_KEYS.year.label": "year",
@@ -323,6 +323,27 @@ const READING_EN = {
   "appjs.readingChapters.001": "Sources and the full interpretation",
   "appjs.tidyEvidence.001": "What this shows",
   "appjs.tidyEvidence.002": "How to read this chart",
+  "appjs.waveB.full": "The full interpretation",
+  "appjs.BAZHAI_MINOR.五鬼": "instability, quarrels; keep activity here light",
+  "appjs.rule.afflict": "The year's 太岁, 岁破, 三煞 and 岁刑 sectors are placed from the year branch and set against your own sectors. Source: 岁刑 follows 《协纪辨方书》卷三 (动土兴工亦须回避，犯之多斗争); for the 太岁, 岁破 and 三煞 rules, no readable source in a text this engine cites.",
+  "appjs.rule.placements": "Your Kua number (命卦) gives one of the eight Eight House (八宅) stars to each direction by the line-change (大游年) rule; 文昌 and the peach-blossom position come from this engine's table, by day stem and year branch. Source: no passage is cited for the line-change rule; for the table, no readable source in a text this engine cites.",
+  "appjs.rule.days": "The twelve day officers (十二建除), the month-breaking day (月破), the day branch's clashes, combinations and harms against your day and year branches, and the day stem's element against your useful and unfavourable elements. The do and avoid map is a simplified one. Source: no readable source in a text this engine cites.",
+  "appjs.rule.months": "Each solar month's branch element is set against your useful and unfavourable elements: good if it is a medicine element, pace if it is unfavourable. Source: no readable source in a text this engine cites.",
+  "appjs.rule.years": "Each year's pillar is set against your chart and your 用神 and flagged as a window or a caution. Source: a punishment (刑) between your year branch and the Grand Duke follows 《协纪辨方书》卷三 (岁刑表); a combination with the Grand Duke, read as 晦, follows 《渊海子平》〈论征太岁〉. For the other year rules, including the rule for a vault opening, no readable source in a text this engine cites.",
+  "appjs.rule.decades": "Luck decades run forward or backward from the month pillar by the convention for your sex and year polarity. The four phase names are this engine's own. Source: no readable source in a text this engine cites.",
+  "appjs.rule.money": "The wealth store (财库) is the storage branch of your wealth element, one of 辰, 戌, 丑 and 未; it opens when a clash year meets it. Source: no readable source in a text this engine cites.",
+  "appjs.rule.work": "The 15 career archetypes are scored on the element of the field (your 用神), the ten-god style and the stars. This is a modern synthesis. Source: no readable source in a text this engine cites.",
+  "appjs.rule.domains": "Each life area starts at 50 and moves by the ten-god, star and palace checks listed under it, each with its points. This is a modern synthesis. Source: no readable source in a text this engine cites.",
+  "appjs.rule.health": "Each element is paired with a set of organs; a share of 30 percent or more is marked excess and 7 percent or less is marked weak. This is not medical advice. Source: no readable source in a text this engine cites.",
+  "appjs.rule.medicine": "Four techniques in turn: 扶抑 (support and restrain), 调候 (climate), 病药 (sickness and medicine) and 通关 (not used here). Source: 调候 follows 《穷通宝鉴》; 病药 follows 《滴天髓》〈中和〉, with 《渊海子平》〈论伤官〉〈伤官说〉〈论劫财〉〈论阳刃〉 and 《三命通会》卷六〈论正财〉 for the three patterns it names. 扶抑 is a framework, not a text, and no passage is cited for it.",
+  "appjs.rule.strength": "The score is the season points, plus twice (support minus drain) divided by the total, plus rooting; the verdict is read in the 扶抑 (support and restrain) framework. Source: the climate line cites a cross-checked reproduction of 《穷通宝鉴》 喜用提要; for the score formula, no readable source in a text this engine cites.",
+  "appjs.rule.elements": "Each stem counts 1, each branch's main hidden stem counts 1 and each other hidden stem counts one third, added up per element. The weights are this engine's own choice. Source: no readable source in a text this engine cites.",
+  "appjs.rule.interactions": "The four branches are compared in pairs for combination (合), clash (冲), punishment (刑) and harm (害). Source: no readable source in a text this engine cites.",
+  "appjs.rule.stars": "Each star is looked up from your stems and branches in this engine's own table; a star adds flavour and never overrides the balance reading. Source: no readable source in a text this engine cites.",
+  "appjs.rule.personality": "Five axes, each read off your ten-god shares, with the threshold printed beside it. This is a modern synthesis, not a classical rule. Source: no readable source in a text this engine cites.",
+  "appjs.rule.pillars": "The four pillars are calendar arithmetic from your birth time (solar terms, true solar time). Each pillar is read for its palace: year for roots, month for career, day for self and partner, hour for children and later years. Source: 命宫 and 胎元 follow the palace formulas of 《渊海子平》, with no passage cited; for the rest, no readable source in a text this engine cites.",
+  "appjs.rule.gods": "Each stem and hidden stem is named by its relation to your Day Master, and the shares are the weighted counts from the elements panel. The pair-pattern check uses this engine's own thresholds on those shares. Source: no readable source in a text this engine cites.",
+  "appjs.rule.label": "Rule applied.",
   "appjs.buildPillars.001": "fighting the season",
   "appjs.buildPillars.002": "carried by the season",
   "appjs.buildPillars.003": "level with the season",
@@ -339,7 +360,7 @@ const READING_EN = {
   "appjs.buildPillars.014": "No helpful star is carried",
   "appjs.buildPillars.015": "; {part_neg} in your {PEN_neg} pillar asks for care: {part_neg_2}.",
   "appjs.buildPillars.016": ", and no star asks for care.",
-  "appjs.buildPillars.018": "Symbolic stars (神煞) are classical patterns read from the stems and branches; they add flavour on top of the chart's structure and never override the balance reading.",
+  "appjs.buildPillars.018": "Symbolic stars (神煞) are looked up from the stems and branches in this engine's own table of stars; they add flavour on top of the chart's structure and never override the balance reading.",
   "appjs.buildPillars.019": "Interpretation: the numbers read out",
   "appjs.buildPillars.020": "Every rule this reading cites",
   "appjs.buildElements.001": "单位 = 字重，不是个数：天干各 1.0、地支本气 1.0、余气 1/3，全盘合计 {wtot_toFixed}。\n      Units are weighted character counts: each stem 1.0, each branch's main hidden stem 1.0, each minor hidden stem 1/3.",
@@ -400,7 +421,7 @@ const READING_EN = {
   "appjs.buildGods.022": "No strong tendency on any axis: a balanced profile, not a failure.",
   "appjs.buildGods.023": "<b>Visible stems:</b> {ti_rooted}",
   "appjs.buildGods.024": "pair patterns · {ti_patterns_length}",
-  "appjs.buildGods.025": "No classical pair pattern triggers: the gods operate independently in this chart.",
+  "appjs.buildGods.025": "None of this engine's pair patterns triggers: the gods operate independently in this chart.",
   "appjs.buildGods.026": "Structure check",
   "appjs.buildGods.027": "{godc_dm} ({bad_pct}%) carries an unfavourable element ({elc_bad}): use it deliberately, budget recovery.",
   "appjs.buildGods.028": "{godc_dm} ({good_pct}%) carries {elc_good}, one of your 用神: a clean engine; using it strengthens the chart.",
@@ -575,7 +596,7 @@ const READING_EN = {
   "appjs.tiaohouStrip.001": "✓ aligned with the medicine",
   "appjs.tiaohouStrip.002": "not visible",
   "appjs.tiaohouStrip.003": "<b>Seasonal adjustment</b> the {elc_c} month asks for {chips}: <b>{t_verdict}</b> with the support-and-restrain verdict above",
-  "appjs.pillarGrid.001": "Read each column top to bottom: the role the stem plays for you, the stem, the branch, the stems hidden in the branch, its life stage and its sound element. Year is on the right, as in a classical chart; your own column, 日, is outlined. Tap any character for its meaning.",
+  "appjs.pillarGrid.001": "Year is on the right and Hour on the left; your own column, 日, is outlined.",
   "appjs.pillarGrid.002": "(clock {clock})",
   "appjs.interactionsSvg.001": "<span><b style=\"color:{it_kind}\">{it_kind_2}</b> {it_pair} · {it_pillars} pillars</span>",
   "appjs.interactionsSvg.002": "branch interactions",
@@ -611,6 +632,7 @@ const READING_EN = {
   "appjs.buildCompass.tag": "{h_affliction} on {h_star} {h_dir}"
 };
 const IS_ZH = !!(window.I18N && window.I18N.reading);
+let IS_MINOR = false;   // set from the payload (engine/minors.py) before anything is built: a reader under 18 gets no money line
 const zhNoteIf = (t) => (IS_ZH && /\b[a-z]{3,}\b/.test(String(t || "").replace(/<[^>]+>/g, "")) ? zhNote() : "");   // the notice stays only where English is left
 const zhNote = () => (IS_ZH ? `<p class="zhnote" role="note">${RS("appjs.zhNote.001")}</p>` : "");
 const RS = (id, slots) => {
@@ -1688,14 +1710,22 @@ const EV_OWNER = { pillars: "makeup", stars: "makeup", interactions: "makeup", p
   flows: "balance", medicine: "balance", health: "balance", gods: "drives", domains: "drives", work: "drives", money: "drives",
   decades: "timing", years: "timing", months: "timing", days: "timing", placements: "space", afflict: "space" };
 /* Evidence that is the chapter's own chart has no panel: its marker points at the chart and opens the chart's key (flows, the pentagon). */
+/* The rule applied, the first row of every evidence panel (round 41, owner-approved wording): the method, then the text the engine cites or the one plain sentence that none is readable. */
+const RULE_ROW = { gods: RS("appjs.rule.gods"), pillars: RS("appjs.rule.pillars"), personality: RS("appjs.rule.personality"), stars: RS("appjs.rule.stars"), interactions: RS("appjs.rule.interactions"), elements: RS("appjs.rule.elements"), strength: RS("appjs.rule.strength"), medicine: RS("appjs.rule.medicine"), health: RS("appjs.rule.health"), domains: RS("appjs.rule.domains"), work: RS("appjs.rule.work"), money: RS("appjs.rule.money"), decades: RS("appjs.rule.decades"), years: RS("appjs.rule.years"), months: RS("appjs.rule.months"), days: RS("appjs.rule.days"), placements: RS("appjs.rule.placements"), afflict: RS("appjs.rule.afflict") };
 const EV_FIG = { flows: "balance" };
+/* Panels whose body only restated numbers a chapter figure draws (round 41): elements (the pentagon), gods (the group wheel), decades (the strip).
+   They open on a pointer to that figure, built from the figure's own caption, so no new wording is needed. */
+const EV_POINTS = { elements: "balance", gods: "drives", decades: "timing" };
+const figName = (id) => ((CHART_CAP[id] || "").match(/^<b>(.*?)<\/b>/) || [, ""])[1].replace(/[.。]$/, "");
+const evPtr = (id) => `<p class="ev-ptr"><button type="button" class="mk mk-fig ev-ptr-b" aria-controls="chart-${id}">↑ ${figName(id)}</button></p>`;
 /* One panel per piece of evidence, in the chapter that owns it. A chapter that cites evidence owned elsewhere gets a marker that
    opens that one panel where the marker is tapped, so nothing is printed twice. */
 function pStory(id, S, ev, proofs, chart, ownerOf = () => id) {
   const num = {}; let n = 0;
   const mk = (e) => EV_FIG[e] ? `<button type="button" class="mk mk-fig" aria-controls="chart-${EV_FIG[e]}" data-n="${num[e]}">${RS("appjs.pStory.001", {num_e: num[e]})}</button>`
     : `<button type="button" class="mk" aria-expanded="false" aria-controls="ev-${ownerOf(e)}-${e}" data-n="${num[e]}">${RS("appjs.pStory.001", {num_e: num[e]})}</button>`;
-  const panel = (e) => `<div class="ev" id="ev-${id}-${e}" data-ev="${e}" tabindex="-1" hidden><button type="button" class="ev-x" aria-label="${RS("appjs.pStory.002")}">×</button><p class="evh"><span class="evn">${num[e]}</span>. ${ev[e].label}</p>${zhNoteIf(ev[e].why)}${ev[e].why ? ev[e].why.split("\n").map((x) => `<p>${x}</p>`).join("") : ""}${(proofs[e] || []).join("")}<button type="button" class="ev-back">${RS("appjs.pStory.003")}</button></div>`;
+  const why = (e) => (EV_POINTS[e] ? "" : ev[e].why);   // the sentence that lists the numbers a figure elsewhere already draws is not printed again
+  const panel = (e) => `<div class="ev" id="ev-${id}-${e}" data-ev="${e}" tabindex="-1" hidden><button type="button" class="ev-x" aria-label="${RS("appjs.pStory.002")}">×</button><p class="evh"><span class="evn">${num[e]}</span>. ${ev[e].label}</p><p class="ev-rule keepzh"><b>${RS("appjs.rule.label")}</b> ${RULE_ROW[e]}</p>${zhNoteIf(why(e))}${why(e) ? why(e).split("\n").map((x) => `<p>${x}</p>`).join("") : ""}${(proofs[e] || []).join("")}<button type="button" class="ev-back">${RS("appjs.pStory.003")}</button></div>`;
   // a run of sentences resting on the same evidence shows its markers once, at the end of the run
   const para = (ss, cls) => { const fresh = [];
     const html = ss.map((s, k) => s.t.replace(/^(If you do one thing:|只做一件事的话：)/, "<b>$&</b>") + (ss[k + 1] && ss[k + 1].ev.join() === s.ev.join() ? "" : s.ev.map((e) => {
@@ -1712,20 +1742,20 @@ function readingChapters(c, R) {
   const A = buildPillars(c, R), E = buildElements(c, R), G = buildGods(c, R), T = buildTiming(c, R), K = buildCompass(c, R);
   const cur = (P.decades || []).find((d) => d.current), top = (P.drives.groups || [])[0] || {};
   const figs = {   // every figure and citation the card layout carried, keyed by the evidence it proves
-    pillars: [A.figs.grid], stars: [A.figs.stars, R.narr(9)], interactions: [pRelations(c), A.figs.interactions],
-    personality: [G.figs.axes, R.stb(10), R.narr(10)], elements: [pBudget(c), E.units, R.narr(1)],
-    strength: [E.figs.gauge, R.narr(2), R.stb(2)], flows: [], medicine: [K.figs.medicine, R.stb(5), R.narr(5)],
-    health: [E.figs.health, R.narr(11), R.stb(11)], gods: [pDrives(c), G.figs.structure, G.figs.bars, R.narr(4), R.narr(3)],
-    domains: [G.figs.domains, R.stb(8), R.narr(8)], work: [G.figs.industries, R.stb(12), R.narr(12)],   // one work figure (roles and archetypes merged in)
-    money: [pVault(c)], decades: [pWeather(c), R.narr(6)], years: [pYears(c), T.figs.thisyear, R.stb(13), R.narr(13)],
-    months: [T.figs.rhythm], days: [T.figs.daily], placements: [pRoom(c), K.figs.placements, R.narr(7)], afflict: [K.figs.afflictions] };
+    pillars: [A.figs.grid], stars: [A.figs.stars, R.full(9)], interactions: [pRelations(c), A.figs.interactions],
+    personality: [G.figs.axes, R.full(10)], elements: [evPtr("balance"), E.units, R.full(1)],   // elements, decades, the pillar grid and the god groups are drawn by their chapter's figure: the panel points at it
+    strength: [E.figs.gauge, R.full(2)], flows: [], medicine: [K.figs.medicine, R.full(5)],
+    health: [E.figs.health, R.full(11)], gods: [evPtr("drives"), G.figs.structure, G.figs.bars, R.full(4, 3)],
+    domains: [G.figs.domains, R.full(8)], work: [G.figs.industries, R.full(12)],   // one work figure (roles and archetypes merged in)
+    money: [pVault(c)], decades: [evPtr("timing"), R.full(6)], years: [pYears(c), T.figs.thisyear, R.full(13)],
+    months: [T.figs.rhythm], days: [T.figs.daily], placements: [pRoom(c), K.figs.placements, R.full(7)], afflict: [K.figs.afflictions] };
   const uses = (id) => new Set(ST.chapters[id].paras.flat().concat(ST.chapters[id].one || []).flatMap((s) => s.ev));
   const U = Object.fromEntries(CHAPTERS.map(([id]) => [id, uses(id)]));
   const owner = (e) => U[EV_OWNER[e]] && U[EV_OWNER[e]].has(e) ? EV_OWNER[e] : (CHAPTERS.find(([id]) => U[id].has(e)) || [])[0];
   const proofsFor = (id) => Object.fromEntries(Object.keys(figs).map((e) => [e, owner(e) === id ? figs[e].filter(Boolean) : []]));
   const charts = { makeup: pSlimGrid(c), balance: E.figs.pentagon, drives: G.figs.wheel, timing: T.figs.strip, space: K.figs.grid };
   const orphan = Object.keys(figs).filter((e) => !owner(e)).flatMap((e) => figs[e]).filter(Boolean);   // nothing cites them: keep them reachable
-  const rest = A.tail.filter((x) => x && x !== R.narr(9)).concat(orphan);
+  const rest = A.tail.filter((x) => x && x !== R.full(9)).concat(orphan);
   const img = { balance: `/static/img/reading/${EL_SLUG[P.helps.el]}-600.jpg`,
     drives: DRIVE_IMG[top.zh] ? `/static/img/reading/drive-${DRIVE_IMG[top.zh]}-600.jpg` : "",
     timing: cur ? `/static/img/reading/phase-${cur.phase}-600.jpg` : "" };
@@ -1855,7 +1885,7 @@ function rdFig(o) {
   return `<figure class="rd-fig rd-${o.tier}${o.extra ? " " + o.extra : ""}" style="grid-column: span ${o.span}">
     <figcaption class="rd-label"><span>${o.label}</span></figcaption>
     <div class="rd-chart">${o.chart}</div>
-    <div class="rd-line-row"><p class="rd-line">${o.line}</p>${legend}</div>
+    <div class="rd-line-row">${o.line ? `<p class="rd-line">${o.line}</p>` : ""}${legend}</div>
     ${o.line2 ? `<p class="rd-line rd-line2">${o.line2}</p>` : ""}${facts}</figure>`;
 }
 
@@ -1863,7 +1893,7 @@ function rdFig(o) {
 /* chart-grid glyphs stay Chinese (the glyph IS the chart) with their pinyin in the tooltip
    span; the small line under each carries the short gloss on first sight, nothing after */
 const zhs = (g) => (window.GL ? GL.zhSpan(g) : g);
-function pillarGrid(c) {   // owner pick 2026-10-10: characters only, English in each tooltip
+function pillarGrid(c, extrasOnly) {   // owner pick 2026-10-10: characters only, English in each tooltip
   const lp = c.life_palaces, order = ["hour", "day", "month", "year"], head = { hour: "时", day: "日", month: "月", year: "年" };
   const col = (z, el) => `<span style="color:${EL_TXT[el]}">${zhs(z)}</span>`;
   const row = (lab, f, cls = "") => `<tr class="${cls}"><th scope="row">${zhs(lab)}</th>${order.map((p) => `<td${p === "day" ? ' class="dm"' : ""}>${f(p)}</td>`).join("")}</tr>`;
@@ -1872,14 +1902,14 @@ function pillarGrid(c) {   // owner pick 2026-10-10: characters only, English in
   const clock = (tp.explanation || "").match(/(?:clock |钟表时间\s*)(\d{1,2}:\d{2})/);
   return `<div class="cgwrap keepzh"><table class="cgrid">
     <thead><tr><th></th>${order.map((p) => `<th scope="col"${p === "day" ? ' class="dm"' : ""}>${zhs(head[p])}</th>`).join("")}</tr></thead>
-    <tbody>${row("十神", (p) => zhs(c.ten_gods[p]), "cggod")}
+    <tbody>${extrasOnly ? "" : `${row("十神", (p) => zhs(c.ten_gods[p]), "cggod")}
       ${row("天干", (p) => col(c.pillars[p][0], STEM_EL[c.pillars[p][0]]), "cgbig")}
       ${row("地支", (p) => col(c.pillars[p][1], BR_EL[c.pillars[p][1]]), "cgbig")}
-      ${row("藏干", hid, "cghids")}
+      ${row("藏干", hid, "cghids")}`}
       ${row("长生", (p) => zhs(c.pillar_extras[p].stage))}
       ${row("纳音", (p) => zhs(c.pillar_extras[p].nayin))}</tbody></table>
     <p class="cgfacts">${zhs("命卦")} ${col(c.gua, GUA_EL[c.gua])} · ${zhs("生肖")} ${zhs(lp.animal)} · ${zhs("命宫")} ${zhs(lp.ming_gong)} · ${zhs("胎元")} ${zhs(lp.tai_yuan)} · ${zhs("年命星")} ${zhs(lp.life_star_zh)} · ${zhs("真太阳时")} ${(c.effective_time || "").slice(11)}${clock ? ` ${RS("appjs.pillarGrid.002", {clock: clock[1]})}` : ""}</p></div>
-    <p class="cgcap">${RS("appjs.pillarGrid.001")}</p>`;
+    ${extrasOnly ? "" : `<p class="cgcap">${RS("appjs.pillarGrid.001")}</p>`}`;
 }
 const GLOSS_IX = { 六害: RS("appjs.GLOSS_IX.六害"), 害: RS("appjs.GLOSS_IX.六害"), 冲: RS("appjs.GLOSS_IX.冲"), 六冲: RS("appjs.GLOSS_IX.冲"), 刑: RS("appjs.GLOSS_IX.刑"),
   破: RS("appjs.GLOSS_IX.破"), 六合: RS("appjs.GLOSS_IX.六合"), 三合: RS("appjs.GLOSS_IX.六合"), 半合: RS("appjs.GLOSS_IX.半合") };
@@ -1985,7 +2015,7 @@ function buildPillars(c, R) {
   const sp = (c.strength.parts || {}).season_pts || 0;
   const season = sp < 0 ? RS("appjs.buildPillars.001") : sp > 0 ? RS("appjs.buildPillars.002") : RS("appjs.buildPillars.003");
   const p1 = rdFig({ tier: "hero", span: 12, label: RS("appjs.buildPillars.004"), learn: "chart",
-    chart: pillarGrid(c),
+    chart: `${evPtr("makeup")}${pillarGrid(c, true)}`,   // the characters, ten gods and hidden stems are the chapter's own four-pillar chart; the panel keeps what that chart does not draw
     line: `${RS("appjs.buildPillars.005", {weak_weak: weak ? "weak" : "strong", elc_dm: elc(dm), elw_dmEl: elw(dmEl), season: season, fav_map: fav.map(elw).join(" and "), fav_length: fav.length > 1 ? "are" : "is"})}`,
     facts: [[c.strength.verdict.split(" ")[0], `${RS("appjs.buildPillars.006", {c_strength_score: c.strength.score})}`]],   // 格局 is explained in plain words under the structure check
     legend: legendList("chart") });
@@ -2002,22 +2032,18 @@ function buildPillars(c, R) {
     const NEG = ["劫煞", "空亡", "災煞", "亡神", "羊刃", "孤辰", "寡宿"];
     const PZH = { year: "年", month: "月", day: "日", hour: "时" }, PEN = { year: "year", month: "month", day: "day", hour: "hour" };
     const part = (s) => { const [en, ...g] = s.meaning.split(" — "); return [en, (g.join(" — ") || s.meaning).split(";")[0]]; };
-    const named = (s) => IS_ZH ? part(s)[0] : `${part(s)[0]} (<span class="keepzh" lang="zh-Hans" data-notip>${s.star}</span>)`;   // English first, the characters beside it
     const chart = `<table class="htable shentable keepzh"><tr><th scope="col"></th><th scope="col">神煞</th><th scope="col">柱</th><th scope="col">吉忌</th></tr>
       ${c.shensha.map((s, i) => { const neg = NEG.includes(s.star); return `<tr><td>${i + 1}</td><td><b class="${neg ? "shen-neg" : "shen-pos"}">${s.star}</b></td>
         <td>${s.pillars.map((p) => PZH[p] || p).join("·")}</td><td>${neg ? "忌" : "吉"}</td></tr>`; }).join("")}</table>
       <ol class="tkey-list">${c.shensha.map((s) => { const [en, gist] = part(s); const neg = NEG.includes(s.star);
         return `<li class="cite">${RS("appjs.buildPillars.010", {en: en, s_star: s.star, s_pillars: s.pillars.map((p) => PEN[p] || p).join(" and "), s_pillars_2: s.pillars.length > 1 ? "s" : "", gist: gist, neg_Asks: neg ? RS("appjs.buildPillars.011") : RS("appjs.buildPillars.012")})}</li>`; }).join("")}</ol>
       <p class="tkey">${RS("appjs.buildPillars.009")}</p>`;
-    const pos = c.shensha.find((s) => !NEG.includes(s.star)), neg = c.shensha.find((s) => NEG.includes(s.star));
-    const line = (pos ? `${RS("appjs.buildPillars.013", {part_pos: named(pos), part_pos_2: part(pos)[1]})}` : RS("appjs.buildPillars.014"))
-      + (neg ? `${RS("appjs.buildPillars.015", {part_neg: named(neg), PEN_neg: PEN[neg.pillars[0]], part_neg_2: part(neg)[1]})}` : RS("appjs.buildPillars.016"));
-    p5 = rdFig({ tier: "reference", span: 7, label: RS("appjs.LEGENDS.chart.12.term"), learn: 9, chart, line,
+    p5 = rdFig({ tier: "reference", span: 7, label: RS("appjs.LEGENDS.chart.12.term"), learn: 9, chart, line: "",   // the numbered list under the table says it once
       legend: ("<div>" + RS("appjs.buildPillars.018") + "</div>") });
   }
   return { figs: { grid: p1, interactions: p6, stars: p5 },
     tail: [R.nb.rest.length ? deepWrap(RS("appjs.buildPillars.019"), R.nb.rest.map((t) => `<div class="ninline">${dnAll(t)}</div>`).join("")) : "",
-      R.narr(9), deepWrap(RS("appjs.buildPillars.020"),
+      R.full(9), deepWrap(RS("appjs.buildPillars.020"),
         c.citations.map((x) => `<div class="cite"><b>[${layerZh(x.layer)}] ${x.source_ref}:</b> ${x.explanation}</div>`).join(""))] };
 }
 
@@ -2158,7 +2184,7 @@ function buildGods(c, R) {
         ${extra.map(([n]) => `<li>${RS("appjs.buildGods.044", {n_split: n.split(" ").slice(1).join(" "), n_split_2: n.split(" ")[0]})}</li>`).join("")}</ol>
       <p class="tkey">${RS("appjs.buildGods.043")}</p>`;
     const top = c.domains.slice().sort((a, b) => ((b.percentile ?? b.score) - (a.percentile ?? a.score)) || (b.score - a.score))[0];   // Layer 2: "highest" is by standing among charts
-    const sigs = [...Object.entries(sig).map(([k, v]) => [k, v]), ...extra.map((e) => [e[0], [e[1], e[2], e[3], e[4], e[5]]])];
+    const sigs = [...Object.entries(sig).filter(([k]) => c.domains.some((d) => d.zh === k)).map(([k, v]) => [k, v]), ...extra.map((e) => [e[0], [e[1], e[2], e[3], e[4], e[5]]])];   // an area left out of a minor's reading is not named as the heaviest signal
     const heavy = sigs.sort((a, b) => b[1][1] - a[1][1])[0];
     const heavyName = (c.domains.find((d) => d.zh === heavy[0]) || {}).en || heavy[0].replace(/^\S+\s/, "").replace("&amp;", "&");
     ld = rdFig({ tier: "secondary", span: 12, label: RS("appjs.buildGods.045"), learn: 8, chart: table,
@@ -2239,7 +2265,7 @@ function buildTiming(c, R) {
     const good = RH.filter((r) => r.cls === "good"), bad = RH.filter((r) => r.cls !== "good");
     const gel = [...new Set(good.map((r) => r.el))].map(elw).join(" and ");
     t6 = rdFig({ tier: "secondary", span: 7, label: RS("appjs.buildTiming.032"), learn: 13, chart: `<div class="rhy keepzh">${cells}</div>`,
-      line: good.length ? `${RS("appjs.buildTiming.033", {ranges_good: ranges(good.map((r) => r.mon)), gel: gel, ranges_bad: ranges(bad.map((r) => r.mon))})}` : RS("appjs.buildTiming.034"),
+      line: "",   // the tiles are the months; the story paragraph above already names the good ones
       facts: [["good", `${good.length}`], ["pace", `${bad.length}`]],
       legend: RS("appjs.buildTiming.035") });
   }
@@ -2298,7 +2324,7 @@ function buildCompass(c, R) {
     chart: `<div class="cmpx-wrap">${bazhaiCompass(c)}</div>`,
     line: `${RS("appjs.buildCompass.002", {dirOf: dirOf["生氣"], dirOf_2: dirOf["絕命"]})}`,
     facts: [[RS("appjs.LEGENDS.chart.07.term"), `${c.gua} · ${c.group.split(" ")[0]}`], ["生氣", dirOf["生氣"]], ["絕命", dirOf["絕命"]], ["五鬼", dirOf["五鬼"]]],
-    legend: `${BAZHAI_ORDER.map((s) => `<div><b>${s} ${BAZHAI_EN[s][0]}</b>: ${BAZHAI_EN[s][1]}</div>`).join("")}
+    legend: `${BAZHAI_ORDER.map((s) => `<div><b>${s} ${BAZHAI_EN[s][0]}</b>: ${IS_MINOR && s === "五鬼" ? RS("appjs.BAZHAI_MINOR.五鬼") : BAZHAI_EN[s][1]}</div>`).join("")}
       <div class="cite">${RS("appjs.buildCompass.004")}</div>${legendList(7)}` });
   const fav = c.yongshen.favourable, unf = c.yongshen.unfavourable, cols = c.yongshen.colours || [];
   const colEn = cols.map((z) => COLOUR_ZH_EN[z] || z).slice(0, 2).join("/");
@@ -2357,18 +2383,25 @@ function tidyEvidence(root) {
     if (lines.length) {
       const lead = document.createElement("div"); lead.className = "ev-lead";
       lead.innerHTML = `<p class="ev-k">${RS("appjs.tidyEvidence.001")}</p>${lines.map((l) => `<p>${l.innerHTML}</p>`).join("")}`;
-      (p.querySelector(".evh") || p.firstChild).after(lead);
+      (p.querySelector(".ev-rule") || p.querySelector(".evh") || p.firstChild).after(lead);   // the rule applied is the first row, the conclusions come after it
       lines.forEach((l) => { const row = l.closest(".rd-line-row"); l.remove();
         if (row) { const lg = row.querySelector(".rd-legend"); if (lg) row.before(lg); row.remove(); } });
     }
     p.querySelectorAll("details").forEach((d) => {
       const sum = d.querySelector(":scope > summary"), sec = document.createElement("section");
-      const title = sum ? (sum.getAttribute("aria-label") === "how to read this" ? RS("appjs.tidyEvidence.002") : sum.textContent.trim()) : "";
+      const title = sum ? (d.classList.contains("rd-legend") ? RS("appjs.tidyEvidence.002") : sum.textContent.trim()) : "";   // a chart key is "How to read this chart" in either language
       sec.className = "ev-sub"; if (sum) sum.remove();
+      if (d.classList.contains("rd-legend")) sec.classList.add("ev-how");
       sec.innerHTML = (title ? `<h5>${title.charAt(0).toUpperCase() + title.slice(1)}</h5>` : "") + d.innerHTML;
       sec.querySelectorAll(".rd-legend-body").forEach((x) => (x.className = "ev-legend"));   // a popover no longer: it reads in place
       d.replaceWith(sec);
     });
+    // one "How to read this chart" per panel: a panel with two charts keeps their keys together, under the second chart
+    const hows = [...p.querySelectorAll(".ev-how")];
+    if (hows.length > 1) {
+      const last = hows.pop(), h5 = last.querySelector(":scope > h5"), ref = h5 ? h5.nextSibling : last.firstChild;
+      hows.forEach((x) => { [...x.childNodes].filter((n) => n.nodeName !== "H5").forEach((n) => last.insertBefore(n, ref)); x.remove(); });
+    }
   });
 }
 
@@ -2494,6 +2527,7 @@ async function renderPerson(name) {
   const url = window.__CHART_URL__ ||
     `/api/chart/${encodeURIComponent(name)}?policy=${state.policy}&year=${state.year}`;
   const c = await api(url);
+  IS_MINOR = !!c.minor;
   // the server already sent the opening painting with the page (it is the largest element on a phone); keep that very
   // <img> so it never reloads or re-paints. Without it (other routes), start the download as soon as the data is here.
   const keepPic = document.querySelector("#tab-person .rp-ssr .rp-bgimg");
@@ -2507,6 +2541,8 @@ async function renderPerson(name) {
     narr: (n) => deepWrap(`${RS("appjs.renderPerson.007", {SEC_ZH_n: SEC_ZH[n] || ""})}`,
       (nb.by[n] || []).map((t) => `<div class="ninline">${dnAll(t)}</div>`).join("")),
     stb: (n) => deepWrap(`${RS("appjs.renderPerson.008", {SEC_ZH_n: SEC_ZH[n] || ""})}`, stratBlock(n, c.strategy)) };
+  // one fold per panel (round 41): the interpretation and the strategy of every section the panel rests on, under one heading
+  R.full = (...ns) => deepWrap(RS("appjs.waveB.full"), ns.map((n) => (nb.by[n] || []).map((t) => `<div class="ninline">${dnAll(t)}</div>`).join("") + stratBlock(n, c.strategy)).join(""));
   $("#tab-person").innerHTML = jt(deDash(`
     <div class="rp-open">${pIdentity(c, name)}${pSides(c)}${pAnswers(c)}${synthNote(c.synthesis)}</div>
     ${pChapBar()}

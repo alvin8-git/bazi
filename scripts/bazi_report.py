@@ -774,12 +774,8 @@ def main():
               for m in members}
     ys_map = {n: yong_shen(c) for n, c in charts.items()}
     (ROOT / "data/out/people").mkdir(parents=True, exist_ok=True)
-    fam_args = dict(axis_note="the 寅申 clash runs through 二强 and both "
-                              "parents — remedies in the harmony handbook; his "
-                              "solo room and the sisters as buffers are "
-                              "structural, not optional.")
-    fam = family_section(members, charts, ys_map, **fam_args)
-    fam_no_money = family_section(members, charts, ys_map, money=False, **fam_args)   # a minor's report carries no money advice
+    fam = family_section(members, charts, ys_map)
+    fam_no_money = family_section(members, charts, ys_map, money=False)   # a minor's report carries no money advice
     others = [(_tosimp(m.name),
                max(charts[m.name].element_weights,
                    key=charts[m.name].element_weights.get))

@@ -38,7 +38,7 @@ from engine.extras import compass_afflictions, harmony_matrix
 from engine.extras import placements as person_placements
 from engine.interpret import STRUCTURE_TEXT
 from engine.glossary import english as _gl_english
-from engine.htmlreport import _tosimp, gloss_html
+from engine.htmlreport import _tosimp
 from engine.i18n import T
 from engine.household import assign_roles, default_assignment
 from engine.jianchu import movein_dates, sitting_branches
@@ -51,7 +51,6 @@ from engine.windows import timing_windows
 from engine.wuxing import PALACES
 from engine.xuankong import annual_chart, chengmen, guard_chengmen, natal_chart_from_degrees
 from engine.yongshen import yong_shen
-from scripts.bazi_report import build_person, chart_is_minor, family_section
 
 import os
 
@@ -478,7 +477,10 @@ def person_chart(token: str, idx: int, year: int | None = None, lang: str = "en"
     m, c = _chart_of(ws["people"][idx])
     year = year or reading_year()   # the BaZi year of today (立春-bounded), unless the caller asks for another
     from engine.element_reference import attach_standing   # additive: where each element's share stands among charts (the balance panel's quiet line)
-    return attach_standing(chart_payload(_tosimp(m.name), c, yong_shen(c), year, lang if lang in ("en", "zh") else "en"))
+    from engine.minors import withhold_money               # no money advice under 18 (owner 2026-10-10), the same is_minor the story uses
+    lang = lang if lang in ("en", "zh") else "en"
+    ys = yong_shen(c)
+    return withhold_money(attach_standing(chart_payload(_tosimp(m.name), c, ys, year, lang)), c, ys, year, lang)
 
 
 _STEM_SLUG = dict(zip("甲乙丙丁戊己庚辛壬癸", "jia yi bing ding wu ji geng xin ren gui".split()))
@@ -543,24 +545,13 @@ def pair_report_page(token: str, a: int, b: int):
 
 @router.get("/w/{token}/person/{idx}/report")
 def person_report(token: str, idx: int):
-    """The full strategy report — same composition the family reports use."""
+    """The full strategy report page is retired (round 41): the reading carries everything it said, in the current voice.
+    A person that exists is sent on to the reading with a permanent 308 (the move the trailing-slash twins already use);
+    an unknown workspace or person is still a 404. scripts/bazi_report.py stays as the private CLI behind the family reports."""
     ws = _load(token)
     if not 0 <= idx < len(ws["people"]):
         raise HTTPException(404, "no such person")
-    members, charts, ys_map = [], {}, {}
-    for p in ws["people"]:
-        m, c = _chart_of(p)
-        members.append(m)
-        charts[m.name], ys_map[m.name] = c, yong_shen(c)
-    fam = (family_section(members, charts, ys_map, money=not chart_is_minor(charts[members[idx].name]))
-           if len(members) >= 2 else "")
-    others = [(_tosimp(m.name),
-               max(charts[m.name].element_weights,
-                   key=charts[m.name].element_weights.get)) for m in members]
-    m = members[idx]
-    html = build_person(m, charts[m.name], ys_map[m.name], fam, others)
-    return HTMLResponse(gloss_html(html, protect=[x.name for x in members] +
-                                    [p.get("name", "") for p in ws["people"]]))
+    return RedirectResponse(f"/w/{token}/person/{idx}/reading", status_code=308)
 
 
 # ---------------------------------------------------------------- fengshui

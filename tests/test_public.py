@@ -59,16 +59,6 @@ def test_rename_person():
                         json={"name": ""}).status_code == 422
 
 
-def test_person_report_html():
-    tok = _new_ws(P1, P2)
-    r = client.get(f"/w/{tok}/person/0/report")
-    assert r.status_code == 200
-    assert "BaZi strategy report" in r.text
-    assert "Q1" in r.text and "Windows" not in r.headers  # full report body
-    assert "测试二" in r.text or "family" in r.text.lower()  # family section present
-    assert client.get(f"/w/{tok}/person/9/report").status_code == 404
-
-
 def test_bad_inputs():
     assert client.post("/api/pub/workspace",
                        json={**P1, "dob": "1985-13-40"}).status_code in (400, 422)

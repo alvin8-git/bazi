@@ -180,13 +180,15 @@ def _helps(p, lang="en"):
                      p_medicine_ran=p.get("medicine_rank", ""))}
 
 
-def _year(p, lang="en"):
+def _year(p, lang="en", minor=False):
+    """`minor` (no money advice under 18, owner 2026-10-10) leaves the wealth area out of the window and caution lists; engine.minors recomputes the card with it."""
+    areas = [k for k in AREA if not (minor and k == "wealth")]
     ys = (p.get("windows") or {}).get("years") or []
     if not ys:
         return None
     y = ys[0]
-    win = [_area(k, lang) for k in AREA if (y.get(k) or {}).get("flag") == "window"]
-    cau = [_area(k, lang) for k in AREA if (y.get(k) or {}).get("flag") == "caution"]
+    win = [_area(k, lang) for k in areas if (y.get(k) or {}).get("flag") == "window"]
+    cau = [_area(k, lang) for k in areas if (y.get(k) or {}).get("flag") == "caution"]
     tail = ([T("plain._year.01", f"a window for {and_join(win)}", lang, and_join_win=_join(win, lang))] if win else []) + \
            ([T("plain._year.02", f"go carefully with {and_join(cau)}", lang, and_join_cau=_join(cau, lang))] if cau else [])
     if lang == "zh":
@@ -201,7 +203,7 @@ def _year(p, lang="en"):
             "head": head, "means": means,
             "why": T("plain._year.04", f"Year {y['y']} {y['gz']}: overall {y['overall']} ({y['overall_zh']}). ", lang,
                      y_y=y["y"], y_gz=y["gz"], y_overall=y["overall"], y_overall_zh=y["overall_zh"]) +
-                   bits.join(f"{k} {y[k]['flag']}: {y[k]['note']}" for k in AREA if (y.get(k) or {}).get("flag", "quiet") != "quiet")}
+                   bits.join(f"{k} {y[k]['flag']}: {y[k]['note']}" for k in areas if (y.get(k) or {}).get("flag", "quiet") != "quiet")}
 
 
 def _actions(p, lang="en"):
@@ -470,7 +472,7 @@ def _health(p, lang="en"):
     lo = [h for h in H if h["status"].startswith("weak")]
     if not hi and not lo:
         return {"head": T("plain._health.01", "No organ system is flagged.", lang),
-                "means": T("plain._health.02", "All five elements sit in range. This is a traditional pairing, not medical advice.", lang), "why": ""}
+                "means": T("plain._health.02", "All five elements sit in range. This is the engine's own element-to-organ pairing, not medical advice.", lang), "why": ""}
     main = hi or lo[0]
     org = lambda h: _join(h["organs"].split(", "), lang)
     body, _, mood = main["aspects"].partition("; ")
@@ -481,7 +483,7 @@ def _health(p, lang="en"):
                main_en=main_en, org_main=org(main), watch=watch)
              if hi else T("plain._health.06", f"{main['en']} runs low in your chart; the {org(main)} want support, so notice {watch}. ", lang,
                           main_en=main_en, org_main=org(main), watch=watch))
-    means += T("plain._health.07", "This is a traditional pairing, not medical advice.", lang)
+    means += T("plain._health.07", "This is the engine's own element-to-organ pairing, not medical advice.", lang)
     rest = [h for h in lo if h is not main]
     sep = T("plain._health.09", ", and your ", lang)
     joined = sep.join(org(h) for h in rest)
@@ -571,9 +573,9 @@ def _love(p, lang="en"):
             "why": " ".join(x for x in (sp.get("star_line"), sp.get("palace_line")) if x)}
 
 
-def _next_ten(p, lang="en"):
+def _next_ten(p, lang="en", minor=False):
     Y = (p.get("windows") or {}).get("years") or []
-    dims = [k for k in AREA if Y and k in Y[0]]
+    dims = [k for k in AREA if Y and k in Y[0] and not (minor and k == "wealth")]
     if not Y:
         return None
     best = max(Y, key=lambda y: sum((y.get(k) or {}).get("flag") == "window" for k in dims))

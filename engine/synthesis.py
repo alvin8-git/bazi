@@ -261,6 +261,7 @@ _SHADOW = {"比劫": "keep money and friendships in separate ledgers",
            "財": "store before you spend",
            "食傷": "finish one thing before opening the next",
            "印": "act before you feel fully prepared"}
+_MONEY_SHADOW = ("比劫", "財")
 _NEG_STARS = ("劫煞", "空亡", "災煞", "亡神", "羊刃", "孤辰", "寡宿")
 
 
@@ -285,9 +286,11 @@ def _first_clause(s: str) -> str:
     return _SEMI.split(_clauses(s)[0])[0].strip()
 
 
-def clinical_report(p: dict, lang: str = "en") -> dict:
+def clinical_report(p: dict, lang: str = "en", minor: bool = False) -> dict:
     """summary · findings · assessment · plan · confidence — the geomancer's
-    report a client reads first. Every claim names its number or rule."""
+    report a client reads first. Every claim names its number or rule.
+    `minor` (owner 2026-10-10, no money advice under 18) leaves out the wealth-vault sentence, the wealth item of a window or caution list,
+    the wealth area from the lowest-standing pick, and the shadow line that is about money. Default False: the payload hashes are unchanged."""
     dm = p["day_master"]; dm_el = STEM_ELEMENT[dm]; en = ELEM(lang)
     st = p["strength"]; weak = st["verdict"].startswith("身弱")
     parts = st.get("parts") or {}
@@ -366,7 +369,7 @@ def clinical_report(p: dict, lang: str = "en") -> dict:
         pal += T("synthesis.clinical_report.28", f"Spouse palace {sp.get('branch', '')} is {_first_clause(sp.get('state', ''))}. ", lang, sp_branch=sp.get('branch', ''), first_clause_sp_state=_first_clause(sp.get('state', '')))
     if ch:
         pal += T("synthesis.clinical_report.29", f"Children palace output stars {ch.get('output_share', '—')}%. ", lang, ch_output_share=ch.get('output_share', '—'))
-    if vt:
+    if vt and not minor:
         tail = _clauses(vt.get("state") or "")
         open_sealed = T("synthesis.clinical_report.32", "open", lang) if vt.get("open") else T("synthesis.clinical_report.33", "sealed", lang)
         vault_line = (T("synthesis.clinical_report.31", f"{vt.get('branch', '')} is {open_sealed}", lang, vt_branch=vt.get('branch', ''), open_sealed=open_sealed)
@@ -392,7 +395,7 @@ def clinical_report(p: dict, lang: str = "en") -> dict:
                  f"{Lk.get('stem_god', '')}/{Lk.get('branch_god', '')}; ", lang, cur_gz=cur['gz'], cur_ages=cur['ages'], cur_phase_zh=cur['phase_zh'], cur_phase="" if zh else cur['phase'], L_stem_god=Lk.get('stem_god', ''), L_branch_god=Lk.get('branch_god', ''))
     tim += T("synthesis.clinical_report.40", f"{Tr.get('year_gz', '')} this year adds {Tr.get('year_stem_god', '')}/{Tr.get('year_branch_god', '')}. ", lang, T_year_gz=Tr.get('year_gz', ''), T_year_stem_go=Tr.get('year_stem_god', ''), T_year_branch_=Tr.get('year_branch_god', ''))
     years = W.get("years") or []
-    dims = ("career", "wealth", "relationship", "health")
+    dims = ("career", "relationship", "health") if minor else ("career", "wealth", "relationship", "health")
     def flags(y, f): return [d for d in dims if (y.get(d) or {}).get("flag") == f]
     def dims_l(ds): return jn([T(f"plain.AREA.{d}", d, lang) for d in ds], lang)
     win = max(years, key=lambda y: len(flags(y, "window")), default=None)
@@ -451,11 +454,12 @@ def clinical_report(p: dict, lang: str = "en") -> dict:
         plan.append(T("synthesis.clinical_report.63", f"Set bed head and desk to face {best}; keep long sitting out of {worst_l}.", lang, best=best, x=worst_l))
     if win and flags(win, "window"):
         plan.append(T("synthesis.clinical_report.65", f"Act in {win['y']} {win['gz']}", lang, win_y=win['y'], win_gz=win['gz']) + (T("synthesis.clinical_report.66", f"; protect {cau['y']} {cau['gz']} ({dims_l(flags(cau, 'caution'))}).", lang, cau_y=cau['y'], cau_gz=cau['gz'], join_flags_cau=dims_l(flags(cau, 'caution'))) if cau and flags(cau, "caution") else ("。" if zh else ".")))
-    doms = p.get("domains") or []
+    doms = [d for d in (p.get("domains") or []) if not (minor and d.get("key") == "wealth")]
     if doms:
         low = min(doms, key=standing_key)   # Layer 2: the lowest standing among charts, not the lowest raw number; the sentence still states the score
         plan.append(T("synthesis.clinical_report.67", f"Support {low['zh']} {low['en']} ({low['score']}), the domain that stands lowest among charts, with routine rather than effort spikes.", lang, low_zh=low['zh'], low_en=low['en'], low_score=low['score']))
-    plan.append(T("synthesis.clinical_report.68", f"Offset {g1}'s shadow: {L("synthesis._SHADOW", _SHADOW, lang).get(_grp_of(g1), '')}.", lang, g1=g1, _SHADOW_grp_of_g1=L("synthesis._SHADOW", _SHADOW, lang).get(_grp_of(g1), '')))
+    if not (minor and _grp_of(g1) in _MONEY_SHADOW):    # the 比劫 and 財 shadow lines are about money
+        plan.append(T("synthesis.clinical_report.68", f"Offset {g1}'s shadow: {L("synthesis._SHADOW", _SHADOW, lang).get(_grp_of(g1), '')}.", lang, g1=g1, _SHADOW_grp_of_g1=L("synthesis._SHADOW", _SHADOW, lang).get(_grp_of(g1), '')))
     # ---- confidence
     th = p.get("tiaohou") or {}
     if th.get("verdict"):

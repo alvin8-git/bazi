@@ -207,7 +207,7 @@ def placements(chart, lang: str = "en") -> list[dict]:
         row("quiet", "静室", T("extras.placements.09", "quiet study / retreat", lang), star="伏位",
             rule=T("extras.placements.10", "八宅: 伏位 is the stable, low-drama sector for reflection", lang)),
         row("wenchang", "文昌位", T("extras.placements.11", "study corner", lang), branch=wc,
-            rule=T("extras.placements.12", f"文昌 by day stem {chart.day_master} → {wc}; the classical seat for study and exams", lang, day_master=chart.day_master, wc=wc)),
+            rule=T("extras.placements.12", f"文昌 by day stem {chart.day_master} → {wc}; the seat this engine's table gives for study and exams", lang, day_master=chart.day_master, wc=wc)),
         row("taohua", "桃花位", T("extras.placements.13", "relationship corner", lang), branch=trine["桃花"],
             rule=T("extras.placements.14", f"桃花 of the {yb} trine → {trine['桃花']}; activate for social and romantic life", lang, yb=yb, trine_桃花=trine['桃花'])),
         row("yima", "驿马位", T("extras.placements.15", "travel corner", lang), branch=trine["驛馬"],

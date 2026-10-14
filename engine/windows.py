@@ -128,7 +128,7 @@ def _year_row(chart, ys, hm_excess, hm_weak, y, decade_score, lang: str = "en") 
             wealth = dim("window", T("windows._year_row.08", f"{'/'.join(sorted(gods & WEALTH_GODS))} arrives — income moves possible", lang, join_sorted_gods_WEALTH_GODS='/'.join(sorted(gods & WEALTH_GODS))))
     elif CHONG_MAP.get(br) == VAULT[wealth_el]:
         wealth = dim("window", T("windows._year_row.09", f"年支{br} 沖開財庫 {VAULT[wealth_el]} — the vault OPENS: "
-                               "a classical accumulation year", lang, br=br, wealth_el_vault=VAULT[wealth_el]))
+                               "this engine counts it as an accumulation year", lang, br=br, wealth_el_vault=VAULT[wealth_el]))
     elif br == VAULT[wealth_el]:
         wealth = dim("quiet", T("windows._year_row.10", f"年支{br} sits ON the sealed 財庫 (值庫, not the 沖 that "
                               "opens it) — store, don't expect release", lang, br=br))

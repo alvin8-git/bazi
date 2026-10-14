@@ -128,8 +128,8 @@
 "zh": "<b>五行。</b>它们如何相生相克。"
 },
 "appjs.CHART_CAP.drives": {
-"en": "<b>Ten gods.</b> The ten classical roles, grouped.",
-"zh": "<b>十神。</b>十种经典角色，按类分组。"
+"en": "<b>Ten gods.</b> The ten roles, in five groups.",
+"zh": "<b>十神。</b>十种角色，分成五组。"
 },
 "appjs.CHART_CAP.timing": {
 "en": "<b>Luck pillars.</b> Your decades, one pillar at a time.",
@@ -1388,8 +1388,8 @@
 "zh": "，也没有需要留意的神煞。"
 },
 "appjs.buildPillars.018": {
-"en": "Symbolic stars (神煞) are classical patterns read from the stems and branches; they add flavour on top of the chart's structure and never override the balance reading.",
-"zh": "神煞是依据天干地支读出的经典格局，用来给命盘结构添些细节，从不凌驾于强弱平衡的判断之上。"
+"en": "Symbolic stars (神煞) are looked up from the stems and branches in this engine's own table of stars; they add flavour on top of the chart's structure and never override the balance reading.",
+"zh": "神煞是按天干地支，在本引擎自己的神煞表里查出来的；它们给命盘的结构添些色彩，但不会盖过平衡的判断。"
 },
 "appjs.buildPillars.019": {
 "en": "Interpretation: the numbers read out",
@@ -1620,8 +1620,8 @@
 "zh": "组合格局 · {ti_patterns_length}"
 },
 "appjs.buildGods.025": {
-"en": "No classical pair pattern triggers: the gods operate independently in this chart.",
-"zh": "没有触发经典的组合格局，这张命盘里各个十神各自独立起作用。"
+"en": "None of this engine's pair patterns triggers: the gods operate independently in this chart.",
+"zh": "本引擎检查的配对格局，一个也没有触发：这张命盘里，各个十神各自起作用。"
 },
 "appjs.buildGods.026": {
 "en": "Structure check",
@@ -2272,8 +2272,8 @@
 "zh": "<b>调候</b>：{elc_c}月需要{chips}，与上面扶抑的结论<b>{t_verdict}</b>。"
 },
 "appjs.pillarGrid.001": {
-"en": "Read each column top to bottom: the role the stem plays for you, the stem, the branch, the stems hidden in the branch, its life stage and its sound element. Year is on the right, as in a classical chart; your own column, 日, is outlined. Tap any character for its meaning.",
-"zh": "每一列从上往下读：天干对你扮演的角色、天干、地支、地支里的藏干、十二长生的阶段和纳音五行。年柱在最右，与经典命盘一致；你自己的那一列是日柱，用框标出。点任意一个字可以看它的含义。"
+"en": "Year is on the right and Hour on the left; your own column, 日, is outlined.",
+"zh": "年柱在右，时柱在左；你自己的那一列，日柱，有框线。"
 },
 "appjs.pillarGrid.002": {
 "en": "(clock {clock})",
@@ -2466,5 +2466,89 @@
 "appjs.buildElements.037": {
 "en": "Dotted pale arrow: checks, with no strain flagged.",
 "zh": "浅色虚线箭头：相克，没有被标为压力。"
+},
+"appjs.rule.label": {
+"en": "Rule applied.",
+"zh": "所用规则。"
+},
+"appjs.rule.gods": {
+"en": "Each stem and hidden stem is named by its relation to your Day Master, and the shares are the weighted counts from the elements panel. The pair-pattern check uses this engine's own thresholds on those shares. Source: no readable source in a text this engine cites.",
+"zh": "每个天干、藏干按它与日主的关系取十神名，占比用五行页那套加权计数。配对格局的检查，用的是本引擎自己对这些占比设的阈值。出处：本引擎所引的典籍中，没有可读的出处。"
+},
+"appjs.rule.pillars": {
+"en": "The four pillars are calendar arithmetic from your birth time (solar terms, true solar time). Each pillar is read for its palace: year for roots, month for career, day for self and partner, hour for children and later years. Source: 命宫 and 胎元 follow the palace formulas of 《渊海子平》, with no passage cited; for the rest, no readable source in a text this engine cites.",
+"zh": "四柱是按出生时间（节气、真太阳时）推算的历法算术。每一柱按所在的宫位来读：年柱看根基，月柱看事业，日柱看自己与伴侣，时柱看子女和晚年。出处：命宫和胎元依《渊海子平》的宫位公式，没有引用具体段落；其余部分，本引擎所引的典籍中没有可读的出处。"
+},
+"appjs.rule.personality": {
+"en": "Five axes, each read off your ten-god shares, with the threshold printed beside it. This is a modern synthesis, not a classical rule. Source: no readable source in a text this engine cites.",
+"zh": "五条性格轴，每条都读自你的十神占比，阈值印在旁边。这是现代的综合做法，不是古籍里的规则。出处：本引擎所引的典籍中，没有可读的出处。"
+},
+"appjs.rule.stars": {
+"en": "Each star is looked up from your stems and branches in this engine's own table; a star adds flavour and never overrides the balance reading. Source: no readable source in a text this engine cites.",
+"zh": "每颗神煞都按你的天干地支，在本引擎自己的表里查出；神煞只添色彩，不会盖过平衡的判断。出处：本引擎所引的典籍中，没有可读的出处。"
+},
+"appjs.rule.interactions": {
+"en": "The four branches are compared in pairs for combination (合), clash (冲), punishment (刑) and harm (害). Source: no readable source in a text this engine cites.",
+"zh": "四个地支两两比对，看有没有合、冲、刑、害。出处：本引擎所引的典籍中，没有可读的出处。"
+},
+"appjs.rule.elements": {
+"en": "Each stem counts 1, each branch's main hidden stem counts 1 and each other hidden stem counts one third, added up per element. The weights are this engine's own choice. Source: no readable source in a text this engine cites.",
+"zh": "每个天干计 1，每个地支的本气计 1，其余藏干各计三分之一，按五行分别相加。这些权重是本引擎自己定的。出处：本引擎所引的典籍中，没有可读的出处。"
+},
+"appjs.rule.strength": {
+"en": "The score is the season points, plus twice (support minus drain) divided by the total, plus rooting; the verdict is read in the 扶抑 (support and restrain) framework. Source: the climate line cites a cross-checked reproduction of 《穷通宝鉴》 喜用提要; for the score formula, no readable source in a text this engine cites.",
+"zh": "得分是月令分，加上（扶持减泄耗）的两倍除以总数，再加通根分；结论按扶抑法来读。出处：调候那一行引用的是《穷通宝鉴》喜用提要的一个经过交叉核对的转录本；得分公式本身，本引擎所引的典籍中没有可读的出处。"
+},
+"appjs.rule.medicine": {
+"en": "Four techniques in turn: 扶抑 (support and restrain), 调候 (climate), 病药 (sickness and medicine) and 通关 (not used here). Source: 调候 follows 《穷通宝鉴》; 病药 follows 《滴天髓》〈中和〉, with 《渊海子平》〈论伤官〉〈伤官说〉〈论劫财〉〈论阳刃〉 and 《三命通会》卷六〈论正财〉 for the three patterns it names. 扶抑 is a framework, not a text, and no passage is cited for it.",
+"zh": "依次用四种方法：扶抑法、调候法、病药法，以及这里没有用到的通关法。出处：调候法依《穷通宝鉴》；病药法依《滴天髓》〈中和〉，所点名的三种病，分别依《渊海子平》〈论伤官〉〈伤官说〉〈论劫财〉〈论阳刃〉和《三命通会》卷六〈论正财〉。扶抑法是一套方法，不是某部典籍，没有引用具体段落。"
+},
+"appjs.rule.health": {
+"en": "Each element is paired with a set of organs; a share of 30 percent or more is marked excess and 7 percent or less is marked weak. This is not medical advice. Source: no readable source in a text this engine cites.",
+"zh": "每个五行对应一组脏腑；占比达到 30% 以上记为过旺，7% 以下记为不足。这不是医疗建议。出处：本引擎所引的典籍中，没有可读的出处。"
+},
+"appjs.rule.domains": {
+"en": "Each life area starts at 50 and moves by the ten-god, star and palace checks listed under it, each with its points. This is a modern synthesis. Source: no readable source in a text this engine cites.",
+"zh": "每个领域从 50 分起算，按下面列出的十神、神煞和宫位检查逐项加减，每项都标出分值。这是现代的综合做法。出处：本引擎所引的典籍中，没有可读的出处。"
+},
+"appjs.rule.work": {
+"en": "The 15 career archetypes are scored on the element of the field (your 用神), the ten-god style and the stars. This is a modern synthesis. Source: no readable source in a text this engine cites.",
+"zh": "15 种职业类型，按行业的五行（你的用神）、十神风格和神煞打分。这是现代的综合做法。出处：本引擎所引的典籍中，没有可读的出处。"
+},
+"appjs.rule.money": {
+"en": "The wealth store (财库) is the storage branch of your wealth element, one of 辰, 戌, 丑 and 未; it opens when a clash year meets it. Source: no readable source in a text this engine cites.",
+"zh": "财库是你财星五行对应的库支，即辰、戌、丑、未之一；逢冲之年则开。出处：本引擎所引的典籍中，没有可读的出处。"
+},
+"appjs.rule.decades": {
+"en": "Luck decades run forward or backward from the month pillar by the convention for your sex and year polarity. The four phase names are this engine's own. Source: no readable source in a text this engine cites.",
+"zh": "大运从月柱起，按你的性别和出生年阴阳的惯例顺排或逆排。四个阶段的名称是本引擎自己起的。出处：本引擎所引的典籍中，没有可读的出处。"
+},
+"appjs.rule.years": {
+"en": "Each year's pillar is set against your chart and your 用神 and flagged as a window or a caution. Source: a punishment (刑) between your year branch and the Grand Duke follows 《协纪辨方书》卷三 (岁刑表); a combination with the Grand Duke, read as 晦, follows 《渊海子平》〈论征太岁〉. For the other year rules, including the rule for a vault opening, no readable source in a text this engine cites.",
+"zh": "每年的干支对照你的命盘和用神，标成窗口年或谨慎年。出处：年支与太岁相刑，依《协纪辨方书》卷三（岁刑表）；与太岁相合，按“晦”来读，依《渊海子平》〈论征太岁〉。其他流年规则，包括开库的规则，本引擎所引的典籍中没有可读的出处。"
+},
+"appjs.rule.months": {
+"en": "Each solar month's branch element is set against your useful and unfavourable elements: good if it is a medicine element, pace if it is unfavourable. Source: no readable source in a text this engine cites.",
+"zh": "每个节气月的地支五行，对照你的喜用与忌神：是用神五行的月份算顺，是忌神五行的月份要放缓。出处：本引擎所引的典籍中，没有可读的出处。"
+},
+"appjs.rule.days": {
+"en": "The twelve day officers (十二建除), the month-breaking day (月破), the day branch's clashes, combinations and harms against your day and year branches, and the day stem's element against your useful and unfavourable elements. The do and avoid map is a simplified one. Source: no readable source in a text this engine cites.",
+"zh": "十二建除、月破，日支与你日支、年支的冲合害，以及日干五行与你的喜用、忌神的关系。宜忌对照表是简化过的。出处：本引擎所引的典籍中，没有可读的出处。"
+},
+"appjs.rule.placements": {
+"en": "Your Kua number (命卦) gives one of the eight Eight House (八宅) stars to each direction by the line-change (大游年) rule; 文昌 and the peach-blossom position come from this engine's table, by day stem and year branch. Source: no passage is cited for the line-change rule; for the table, no readable source in a text this engine cites.",
+"zh": "你的命卦按变爻（大游年）规则，给八个方位各分一颗八宅星；文昌位和桃花位按日干和年支，取自本引擎自己的表。出处：变爻规则没有引用具体段落；那张表，本引擎所引的典籍中没有可读的出处。"
+},
+"appjs.rule.afflict": {
+"en": "The year's 太岁, 岁破, 三煞 and 岁刑 sectors are placed from the year branch and set against your own sectors. Source: 岁刑 follows 《协纪辨方书》卷三 (动土兴工亦须回避，犯之多斗争); for the 太岁, 岁破 and 三煞 rules, no readable source in a text this engine cites.",
+"zh": "当年的太岁、岁破、三煞和岁刑方位，由年支推出，再与你自己的方位对照。出处：岁刑依《协纪辨方书》卷三（动土兴工亦须回避，犯之多斗争）；太岁、岁破、三煞的规则，本引擎所引的典籍中没有可读的出处。"
+},
+"appjs.waveB.full": {
+"en": "The full interpretation",
+"zh": "完整解读"
+},
+"appjs.BAZHAI_MINOR.五鬼": {
+"en": "instability, quarrels; keep activity here light",
+"zh": "主不稳、争吵；这里少安排活动"
 }
 }

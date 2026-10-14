@@ -277,9 +277,9 @@ def _balance(p, v, lang="en"):
     # medicine is an element it avoids, the sentence says to treat the medicine as a short-term fix. Money strains are not told to children or teens.
     by = (p.get("yongshen") or {}).get("bingyao") or {}
     if by.get("pattern") and (by["pattern"] == "傷官見官" or v not in ("child", "teen")):
-        base = {"傷官見官": ("story._balance.22", "Your chart has one built-in strain: sharp expression meets rules and responsibility, so candour can cost you standing; the classical remedy is mentors and learning"),
-                "比劫奪財": ("story._balance.23", "Your chart has one built-in strain: peers and rivals draw off what you earn, so money tends to leak to people close to you; the classical remedy is rules and responsibility"),
-                "財多身弱": ("story._balance.24", "Your chart has one built-in strain: more opportunity than you can carry, so money passes through without staying; the classical remedy is mentors and learning")}[by["pattern"]]
+        base = {"傷官見官": ("story._balance.22", "Your chart has one built-in strain: sharp expression meets rules and responsibility, so candour can cost you standing; 《淵海子平》〈傷官說〉 names mentors and learning as the remedy"),
+                "比劫奪財": ("story._balance.23", "Your chart has one built-in strain: peers and rivals draw off what you earn, so money tends to leak to people close to you; 《淵海子平》〈論陽刃〉 names rules and responsibility as the remedy"),
+                "財多身弱": ("story._balance.24", "Your chart has one built-in strain: more opportunity than you can carry, so money passes through without staying; 《三命通會》卷六〈論正財〉 is the text the engine follows, and it names mentors and learning")}[by["pattern"]]
         tail = {"agrees": T("story._balance.25", ", which your balance reading also favours.", lang),
                 "parts": T("story._balance.26", ", but your balance reading points elsewhere, so treat that remedy as a short-term fix.", lang)}.get(by["status"], "。" if lang == "zh" else ".")
         p2.append(S(T(base[0], base[1], lang) + tail, "medicine"))
@@ -301,7 +301,7 @@ def _balance(p, v, lang="en"):
             organs = zh_join([(hi or lo[0])["organs"].split(", ")[0]] + [h["organs"].split(", ")[0] for h in lo if h is not (hi or lo[0])])
         joined = "，".join(bits) if lang == "zh" else " and ".join(bits)
         p3.append(S(T("story._balance.21", f"Your body follows the same shape: {' and '.join(bits)}, so look after your {organs}. "
-                      "This is a traditional pairing, not medical advice.", lang, join_bits=joined, organs=organs), HEALTH_EV))
+                      "This is the engine's own element-to-organ pairing, not medical advice.", lang, join_bits=joined, organs=organs), HEALTH_EV))
     one = S(T(f"story.ONE_THING.{v}.{sk}", ONE_THING[v][sk], lang), "strength") if sk in ONE_THING[v] else None
     return {"paras": [x for x in (p1, p2, p3) if x], "chart_after": 1, "one": one}
 
@@ -538,7 +538,7 @@ EVIDENCE_LABEL = {
     "gods": "The ten roles, and how much of each you carry", "pillars": "Your four pillars", "personality": "Personality axes",
     "stars": "Symbolic stars", "interactions": "How your pillars pull on each other", "elements": "How much of each element you carry",
     "strength": "Why the strength verdict", "flows": "What feeds you and what presses on you", "medicine": "What helps you, and why",
-    "health": "Body: the traditional pairing", "domains": "Your six life areas", "work": "Work that fits", "money": "Your wealth store",
+    "health": "Body: the engine's element-to-organ table", "domains": "Your life areas", "work": "Work that fits", "money": "Your wealth store",
     "decades": "Your luck decades", "years": "Year by year", "months": "Month by month", "days": "Day by day",
     "placements": "Where to sleep and face", "afflict": "This year's afflictions",
 }

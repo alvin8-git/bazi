@@ -1008,8 +1008,8 @@
 "zh": "没有哪个脏腑系统被特别提示。"
 },
 "plain._health.02": {
-"en": "All five elements sit in range. This is a traditional pairing, not medical advice.",
-"zh": "五行都在正常范围内。这只是传统上的对应，不是医疗建议。"
+"en": "All five elements sit in range. This is the engine's own element-to-organ pairing, not medical advice.",
+"zh": "五行都在正常范围内。这是本引擎自己的五行与脏腑对应，不是医疗建议。"
 },
 "plain._health.03": {
 "en": ", and watch for {mood}",
@@ -1028,8 +1028,8 @@
 "zh": "{main_en} 在你的命盘里偏少；{org_main} 需要照顾，所以留意 {watch}。"
 },
 "plain._health.07": {
-"en": "This is a traditional pairing, not medical advice.",
-"zh": "这只是传统上的对应，不是医疗建议。"
+"en": "This is the engine's own element-to-organ pairing, not medical advice.",
+"zh": "这是本引擎自己的五行与脏腑对应，不是医疗建议。"
 },
 "plain._health.08": {
 "en": "Support your {join_x} too; your chart is short of them.",
@@ -1700,12 +1700,12 @@
 "zh": "什么对你有帮助，为什么"
 },
 "story.EVIDENCE_LABEL.health": {
-"en": "Body: the traditional pairing",
-"zh": "身体：传统上的对应"
+"en": "Body: the engine's element-to-organ table",
+"zh": "身体：五行与脏腑的对应表"
 },
 "story.EVIDENCE_LABEL.domains": {
-"en": "Your six life areas",
-"zh": "你的六个人生领域"
+"en": "Your life areas",
+"zh": "你的人生领域"
 },
 "story.EVIDENCE_LABEL.work": {
 "en": "Work that fits",
@@ -1892,8 +1892,8 @@
 "zh": "{and_join_x} 偏少"
 },
 "story._balance.21": {
-"en": "Your body follows the same shape: {join_bits}, so look after your {organs}. This is a traditional pairing, not medical advice.",
-"zh": "你的身体也是同一个走向：{join_bits}，所以要照顾好 {organs}。这只是传统上的对应，不是医疗建议。"
+"en": "Your body follows the same shape: {join_bits}, so look after your {organs}. This is the engine's own element-to-organ pairing, not medical advice.",
+"zh": "你的身体也是同一个走向：{join_bits}，所以要照顾好 {organs}。这是本引擎自己的五行与脏腑对应，不是医疗建议。"
 },
 "story._drives.01": {
 "en": "Compared with other charts, your strongest life area is {nm_top} ({top_score} of 100); your weakest is {nm_low} ({low_score}).",
@@ -3736,8 +3736,8 @@
 "zh": "学习角"
 },
 "extras.placements.12": {
-"en": "文昌 by day stem {day_master} → {wc}; the classical seat for study and exams",
-"zh": "以日干 {day_master} 取文昌在 {wc}，是古法中读书考试的位置"
+"en": "文昌 by day stem {day_master} → {wc}; the seat this engine's table gives for study and exams",
+"zh": "日干 {day_master} 查得文昌在 {wc}；在本引擎的表里，这是读书和考试的位置"
 },
 "extras.placements.13": {
 "en": "relationship corner",
@@ -3780,12 +3780,12 @@
 "zh": "表达与输出（创造力、表现、子女）"
 },
 "interpret.GROUP_MEANING.財": {
-"en": "wealth (practical results, money; classically the spouse star in a man's chart)",
-"zh": "财星（务实的成果、金钱；古法中是男命的配偶星）"
+"en": "wealth (practical results, money; read as the spouse star in a man's chart)",
+"zh": "财星（务实的成果、金钱；按男命的配偶星来读）"
 },
 "interpret.GROUP_MEANING.官殺": {
-"en": "authority (career, discipline, status, pressure; classically the spouse star in a woman's chart)",
-"zh": "官杀（事业、纪律、地位、压力；古法中是女命的配偶星）"
+"en": "authority (career, discipline, status, pressure; read as the spouse star in a woman's chart)",
+"zh": "官杀（事业、纪律、地位、压力；按女命的配偶星来读）"
 },
 "interpret.GROUP_MEANING.印": {
 "en": "resource (learning, protection, support from elders)",
@@ -5148,8 +5148,8 @@
 "zh": "{join_sorted_gods_WEALTH_GODS} 到来：收入有机会增加"
 },
 "windows._year_row.09": {
-"en": "年支{br} 沖開財庫 {wealth_el_vault} — the vault OPENS: a classical accumulation year",
-"zh": "年支 {br} 冲开财库 {wealth_el_vault}：库被冲开，是经典的积累之年"
+"en": "年支{br} 沖開財庫 {wealth_el_vault} — the vault OPENS: this engine counts it as an accumulation year",
+"zh": "年支 {br} 冲开财库 {wealth_el_vault}：财库被冲开，本引擎算作积累之年"
 },
 "windows._year_row.10": {
 "en": "年支{br} sits ON the sealed 財庫 (值庫, not the 沖 that opens it) — store, don't expect release",
@@ -5572,16 +5572,16 @@
 "zh": "{explanation}。出处：{source_ref}"
 },
 "story._balance.22": {
-"en": "Your chart has one built-in strain: sharp expression meets rules and responsibility, so candour can cost you standing; the classical remedy is mentors and learning",
-"zh": "你的命盘有一处先天的偏弊：表达太锋利，撞上规矩和责任，直言容易折损你的口碑；古法的对治是贵人和学习"
+"en": "Your chart has one built-in strain: sharp expression meets rules and responsibility, so candour can cost you standing; 《淵海子平》〈傷官說〉 names mentors and learning as the remedy",
+"zh": "你的命盘有一处先天的偏弊：表达太锋利，撞上规矩和责任，直言容易折损你的口碑；《渊海子平》〈伤官说〉给的解法是贵人与学习"
 },
 "story._balance.23": {
-"en": "Your chart has one built-in strain: peers and rivals draw off what you earn, so money tends to leak to people close to you; the classical remedy is rules and responsibility",
-"zh": "你的命盘有一处先天的偏弊：同辈和对手会分走你赚到的钱，钱容易流向身边的人；古法的对治是规矩和责任"
+"en": "Your chart has one built-in strain: peers and rivals draw off what you earn, so money tends to leak to people close to you; 《淵海子平》〈論陽刃〉 names rules and responsibility as the remedy",
+"zh": "你的命盘有一处先天的偏弊：同辈和对手会分走你赚到的钱，钱容易流向身边的人；《渊海子平》〈论阳刃〉给的解法是规矩与责任"
 },
 "story._balance.24": {
-"en": "Your chart has one built-in strain: more opportunity than you can carry, so money passes through without staying; the classical remedy is mentors and learning",
-"zh": "你的命盘有一处先天的偏弊：机会多过你扛得住的量，钱只是路过、留不下；古法的对治是贵人和学习"
+"en": "Your chart has one built-in strain: more opportunity than you can carry, so money passes through without staying; 《三命通會》卷六〈論正財〉 is the text the engine follows, and it names mentors and learning",
+"zh": "你的命盘有一处先天的偏弊：机会多过你扛得住的量，钱只是路过、留不下；本引擎依据的《三命通会》卷六〈论正财〉，给的解法是贵人与学习"
 },
 "story._balance.25": {
 "en": ", which your balance reading also favours.",
