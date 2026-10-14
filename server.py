@@ -800,4 +800,39 @@ app.include_router(public_router)
 
 import mimetypes   # some hosts' MIME tables lack WebP; the reading art is served as image/webp
 mimetypes.add_type("image/webp", ".webp")
-app.mount("/static", StaticFiles(directory=ROOT / "web"), name="static")
+
+# --- /static: a Last-Modified that means something ---------------------------------------------------
+# The host stamps every deployed file with one build mtime (ours answered "Sat, 20 Oct 2018" for a
+# stylesheet edited last week), so Starlette's mtime header was a fiction. Serve each asset's own last
+# commit date from data/seo/static_lastmod.json, send no date when the file is not in it, and decide
+# 304s against that date. Same principle as PageFile in public.py: never the meaningless mtime.
+_STATIC_DATES: dict[str, str] = {}
+_sd = ROOT / "data/seo/static_lastmod.json"
+if _sd.is_file():
+    _STATIC_DATES = json.loads(_sd.read_text("utf8"))
+
+
+class DatedStatic(StaticFiles):
+    def file_response(self, full_path, stat_result, scope, status_code: int = 200):
+        from email.utils import formatdate
+
+        from starlette.datastructures import Headers
+        from starlette.staticfiles import NotModifiedResponse
+
+        r = FileResponse(full_path, status_code=status_code, stat_result=stat_result)
+        try:
+            rel = Path(full_path).resolve().relative_to(Path(self.directory).resolve()).as_posix()
+        except ValueError:
+            rel = ""
+        day = _STATIC_DATES.get(rel)
+        if day:
+            r.headers["last-modified"] = formatdate(
+                _dt.datetime.strptime(day, "%Y-%m-%d").replace(tzinfo=_dt.timezone.utc).timestamp(), usegmt=True)
+        elif "last-modified" in r.headers:
+            del r.headers["last-modified"]
+        if self.is_not_modified(r.headers, Headers(scope=scope)):
+            return NotModifiedResponse(r.headers)
+        return r
+
+
+app.mount("/static", DatedStatic(directory=ROOT / "web"), name="static")

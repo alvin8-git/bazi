@@ -80,16 +80,8 @@ button:disabled{opacity:.5;cursor:default}
 .fcareer .cchip small{display:block;font-size:8.5px;color:var(--muted);line-height:1.1}
 .fcareer .fv.find{font-size:11px;line-height:1.35}.fcareer .fv.find b{font-weight:600}
 .fcareer .fv.fpers{font-size:12.5px;line-height:1.3}.fcareer .fv.fpers small{display:block;font-size:9px;color:var(--muted)}
-.elb{display:inline-block;width:24px;height:24px;border-radius:50%;font-weight:700;
-  font-size:14px;border:2px solid;margin:0 2px;line-height:20px;text-align:center;
-  vertical-align:middle;box-sizing:border-box;padding:0}
 .verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#6b6359;
   z-index:99;background:rgba(255,255,255,.7);border-radius:6px;padding:1px 7px}
-.elb.el-木{color:#1e8e3e;border-color:#1e8e3e;background:#e9f7ee}
-.elb.el-火{color:#c5221f;border-color:#c5221f;background:#fdecea}
-.elb.el-土{color:#8a6d1f;border-color:#8a6d1f;background:#f6efdc}
-.elb.el-金{color:#a67c00;border-color:#c9a227;background:#faf3dd}
-.elb.el-水{color:#1a56b0;border-color:#1a56b0;background:#e8f0fe}
 .doms{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
 .doms span{background:#f3efe7;border:1px solid var(--line);border-radius:6px;
   padding:1px 6px;font-size:11.5px}
@@ -232,6 +224,8 @@ nav.top a{min-height:44px;display:inline-flex;align-items:center}
 .cin{flex:1;min-width:0;padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px}
 .ico{width:var(--s);height:var(--s);flex:none;display:inline-grid;place-items:center;background:center/cover no-repeat;border-radius:50%}
 .ico b{color:#fff;font:700 calc(var(--s)*.5)/1 Georgia,"Noto Serif SC",serif;text-shadow:0 0 2px rgba(0,0,0,.7),0 0 5px rgba(0,0,0,.45)}
+/* the Metal wash is the pale one, so its character is ink with a light halo, as the reading page already draws it (swatchInk) */
+.ico.el-metal b{color:#22242a;text-shadow:0 0 2px rgba(250,247,242,.9),0 0 5px rgba(250,247,242,.7)}
 .ctag{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.cnum{font-size:13px;font-weight:600;color:var(--muted)}
 .cnm{margin:0;font:600 19px/1.2 Georgia,"Noto Serif SC",serif;color:var(--ink)}
 .cseal{display:inline-grid;grid-template-columns:repeat(4,1fr);border:1px solid #cfc6b6;border-radius:6px;width:max-content}
@@ -368,9 +362,6 @@ async function api(path, opts) {
   return r.json();
 }
 
-const elb = e => `<span class="elb el-${e} keepzh" title="${EL_EN[e] || e}">${e}</span>`;
-const elbs = a => (a || []).map(elb).join("");
-
 const STEM_EL = { 甲: "木", 乙: "木", 丙: "火", 丁: "火", 戊: "土", 己: "土",
   庚: "金", 辛: "金", 壬: "水", 癸: "水" };
 const BR_EL = { 子: "水", 丑: "土", 寅: "木", 卯: "木", 辰: "土", 巳: "火", 午: "火", 未: "土", 申: "金", 酉: "金", 戌: "土", 亥: "水" };
@@ -413,7 +404,8 @@ const STEM_SLUG = { 甲: "jia", 乙: "yi", 丙: "bing", 丁: "ding", 戊: "wu", 
 const SEASON = Object.fromEntries([..."寅卯辰"].map((b) => [b, "spring"]).concat([..."巳午未"].map((b) => [b, "summer"]),
   [..."申酉戌"].map((b) => [b, "autumn"]), [..."亥子丑"].map((b) => [b, "winter"])));
 /* element icon: the character in a painted circle */
-const ico = (ch, el, s) => `<span class="ico keepzh" data-notip aria-hidden="true" style="--s:${s}px;background-image:url(/static/img/reading/sw/${EL_SW[el] || "earth"}-64.webp)"><b>${ch}</b></span>`;
+const ico = (ch, el, s) => { const sw = EL_SW[el] || "earth";
+  return `<span class="ico el-${sw} keepzh" data-notip aria-hidden="true" style="--s:${s}px;background-image:url(/static/img/reading/sw/${sw}-64.webp)"><b>${ch}</b></span>`; };
 const ctag = (p, i, tagName) => `<span class="cnum">${i + 1}</span>${ico(p.day_master, STEM_EL[p.day_master], 30)}<${tagName} class="cnm nm">${p.name}</${tagName}>`;
 
 function personCard(p, i) {
