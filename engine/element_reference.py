@@ -2,7 +2,7 @@
 
 The share and its band word (engine/domains.py health_map, engine/plain.py _balance) are absolute readings of one chart, and nothing
 here changes them. This module adds a second, separate figure: the standing of that share inside a frozen reference sample of
-fictional charts (data/element_reference_v1.json, built once by scripts/build_element_reference.py and pinned by a checksum test).
+fictional charts (data/element_reference_v2.json, built once by scripts/build_element_reference.py and pinned by a checksum test).
 The score path never reads it: only attach_standing, called by the public chart route after chart_payload has built the whole payload,
 adds a standing to each balance row, so chart_payload's own output (and every pinned payload hash) is byte for byte what it was.
 
@@ -17,8 +17,8 @@ import json
 from functools import lru_cache
 from pathlib import Path
 
-REF_PATH = Path(__file__).resolve().parent.parent / "data" / "element_reference_v1.json"
-ENGINE_VERSION = "element-share-v1"   # the share formula the reference was built against; a change means a new version, not a regeneration
+REF_PATH = Path(__file__).resolve().parent.parent / "data" / "element_reference_v2.json"     # element_reference_v1.json (seed 20261015) stays untouched as the record
+ENGINE_VERSION = "element-share-v2"   # v2 (2026-10-15): same share formula; the 節 moment now sets year and month pillars, so the sample was redrawn (seed 20261063). v1 was the share formula the reference was built against; a change means a new version, not a regeneration
 
 # The contradiction rule (owner 2026-10-14: show the comparison only where it contradicts the band word).
 # A band word points to a side: "too much" says the share is high, "too little" and "a little thin" say it is low, "about right" says

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 import sxtwl
 
@@ -79,17 +79,50 @@ def _gz(obj) -> GZ:
     return GZ(STEMS[obj.tg], BRANCHES[obj.dz])
 
 
-def pillars_for(dt: datetime) -> dict:
-    """Four pillars for an exact (already policy-adjusted) datetime.
+BEIJING = timezone(timedelta(hours=8))   # sxtwl's clock: its 節 moments are Beijing time, UTC+8 (checked 2026-10-15 against JPL-based tables)
 
-    Year pillar changes at 立春; month pillars at the 12 節 — both via sxtwl.
+
+def civil_utc_offset(local: datetime, place: dict | None = None) -> float:
+    """UTC offset of the civil clock a birth was read on: the place's own zone when it is outside Singapore (host zone
+    database, else standard time from longitude to the half hour, the same fallback build_chart uses), otherwise Singapore's."""
+    if place and place.get("cc") != "SG" and place.get("tz") and place.get("lon") is not None:
+        off = utc_offset_hours(local, place["tz"])
+        return off if off is not None else round(place["lon"] / 15 * 2) / 2
+    return sg_utc_offset_hours(local.date())
+
+
+def _jie_moment(day) -> datetime | None:
+    """Exact moment of the 節 that falls on this sxtwl day, as a naive Beijing-clock datetime; None if the day has no 節
+    (a 中氣 day does not count: only the odd jqmc indices open a month)."""
+    if not day.hasJieQi() or day.getJieQi() % 2 == 0:
+        return None
+    t = sxtwl.JD2DD(day.getJieQiJD())
+    return datetime(t.Y, t.M, t.D, int(t.h), int(t.m)) + timedelta(seconds=t.s)
+
+
+def pillars_for(dt: datetime, instant: datetime | None = None) -> dict:
+    """Four pillars. `dt` is the (policy-adjusted, e.g. true solar) clock reading that sets the DAY and HOUR pillars.
+
+    Year and month pillars turn at the exact MOMENT of the 節 (立春 for the year, the 12 節 for the month; never the 中氣),
+    not at the start of its civil day. That moment comes from sxtwl, which gives it in Beijing time (UTC+8), and it is
+    compared as an absolute instant: `instant` is the birth's real moment, a timezone-aware datetime (the civil clock time
+    with its own UTC offset), converted here to Beijing clock. Without `instant`, `dt` itself is taken as a Beijing-clock
+    (UTC+8) reading, which is Singapore's clock today; the date-only callers (太歲 of a day, the reading year) pass noon.
+    So a birth on a 節 day before that 節's moment keeps the previous month (and, on 立春, the previous year), whatever
+    the true-solar shift does to `dt`. Day and hour never read `instant`.
     晚子時 (owner 2026-10-10): from 23:00 the 子 hour takes the SAME day's stem (乙 day → 丙子), and the
     day pillar stays with the civil date. sxtwl's getHourGZ(23) already rolls to the next day's 子, so
     the late 子 hour is read as hour 0 of the same day. (The old code shifted twice: 乙 day gave 庚子.)
     ponytail: single school implemented; add a policy flag when another school is wanted.
     """
+    bj = instant.astimezone(BEIJING).replace(tzinfo=None) if instant is not None else dt
+    bday = sxtwl.fromSolar(bj.year, bj.month, bj.day)
+    moment = _jie_moment(bday)
+    if moment is not None and bj < moment:       # sxtwl's year/month are day-level: step back to the day before the 節
+        prev = bj.date() - timedelta(days=1)
+        bday = sxtwl.fromSolar(prev.year, prev.month, prev.day)
     day = sxtwl.fromSolar(dt.year, dt.month, dt.day)
-    ygz, mgz, dgz = _gz(day.getYearGZ()), _gz(day.getMonthGZ()), _gz(day.getDayGZ())
+    ygz, mgz, dgz = _gz(bday.getYearGZ()), _gz(bday.getMonthGZ()), _gz(day.getDayGZ())
     hgz = _gz(day.getHourGZ(0 if dt.hour == 23 else dt.hour))
     return {"year": ygz, "month": mgz, "day": dgz, "hour": hgz}
 

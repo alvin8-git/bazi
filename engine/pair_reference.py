@@ -2,7 +2,7 @@
 
 The pair score (engine/hehun.py) is a sum of cited rows added to a neutral 50, and a typical pair finishes near 61, so fixed cut-offs
 (70, 55, 45) called about a quarter of random pairs "very compatible" and a tenth "needs effort". This module places a score inside a
-frozen reference sample of 20,000 fictional pairs (data/pair_reference_v1.json, built once by scripts/build_pair_reference.py and pinned
+frozen reference sample of 20,000 fictional pairs (data/pair_reference_v2.json, built once by scripts/build_pair_reference.py and pinned
 by a checksum test) and reads the band word from that standing: the top 15% of random pairs read "very compatible", the next 35%
 "compatible", the next 35% "workable", the bottom 15% "needs effort". The score itself never reads this file. If the file is missing
 or unreadable, the band falls back to the fixed cut-offs the engine used before, so a pair never shows without a word.
@@ -16,9 +16,9 @@ import json
 from functools import lru_cache
 from pathlib import Path
 
-REF_PATH = Path(__file__).resolve().parent.parent / "data" / "pair_reference_v1.json"
+REF_PATH = Path(__file__).resolve().parent.parent / "data" / "pair_reference_v2.json"     # pair_reference_v1.json (pair-rules-r45, seed 20261051) stays untouched as the record
 # The pair rules the reference was built against. A change to any pair rule, point value or threshold means a new version of both.
-PAIR_ENGINE_VERSION = "pair-rules-r45"
+PAIR_ENGINE_VERSION = "pair-rules-r46"   # r46 (2026-10-15): the pair rules are the r45 rules; the 節 moment now sets year and month pillars, so the reference sample was redrawn (seed 20261062)
 
 # Percentile cuts: >= 85 very compatible (top 15%), >= 50 compatible (next 35%), >= 15 workable (next 35%), else needs effort (bottom 15%).
 CUT_VERY, CUT_COMPAT, CUT_WORKABLE = 85, 50, 15

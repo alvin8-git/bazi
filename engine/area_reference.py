@@ -1,7 +1,7 @@
 """Layer 2 of the life-area scores: the comparison figure.
 
 The classical score (engine/domains.py) is an absolute reading of one chart. This module adds a second, separate number: the
-percentile of that score inside a frozen reference sample of fictional charts (data/area_reference_v3.json, built once by
+percentile of that score inside a frozen reference sample of fictional charts (data/area_reference_v4.json, built once by
 scripts/build_area_reference.py and pinned by a checksum test). It says where a score stands among charts, not how strong the
 area is. The raw score never reads it. Since round 45 (A3, 2026-10-15) the band WORD does: see `band_word` below.
 
@@ -21,10 +21,15 @@ from pathlib import Path
 #   area_reference_v3.json  built against life-areas-v4 (seed 20261044), 2026-10-15: the duplicate strong-or-weak chips are gone from career and
 #                           wealth (round 45, A1), so those two areas have new score distributions and the band word now reads the percentile.
 #                           area_reference_v2.json stays untouched as the record of life-areas-v3; nothing reads it any more.
+#   area_reference_v4.json  built against life-areas-v5 (seed 20261061), 2026-10-15: no score rule moved. The calendar did: year and month pillars
+#                           now turn at the exact moment of the 節 (engine/calendar.py pillars_for), not at the start of its day, so about 1.4% of
+#                           the sample's births have a different month or year pillar and the v3 histograms no longer describe the engine.
+#                           area_reference_v3.json stays untouched as the record of life-areas-v4; nothing reads it any more.
 REF_V1_PATH = Path(__file__).resolve().parent.parent / "data" / "area_reference_v1.json"
 REF_V2_PATH = Path(__file__).resolve().parent.parent / "data" / "area_reference_v2.json"
-REF_PATH = Path(__file__).resolve().parent.parent / "data" / "area_reference_v3.json"
-ENGINE_VERSION = "life-areas-v4"   # the scoring rules the reference was built against; changing a chip means a new version, not a regeneration
+REF_V3_PATH = Path(__file__).resolve().parent.parent / "data" / "area_reference_v3.json"      # life-areas-v4, kept as the record; nothing reads it
+REF_PATH = Path(__file__).resolve().parent.parent / "data" / "area_reference_v4.json"
+ENGINE_VERSION = "life-areas-v5"   # the scoring rules the reference was built against; changing a chip means a new version, not a regeneration
 
 # Band words from percentiles (round 45, A3, owner-approved 2026-10-15). The top quarter of the reference reads "prominent", the bottom
 # quarter "needs support", the middle half "balanced": equal chances of strength and weakness, whatever the area's raw scale. The cut

@@ -31,7 +31,7 @@ See these rules applied to your own chart: free BaZi reading →
 
 ## How is a score built?
 
-A score is 50 plus the sum of its chips, kept between 5 and 95. A chip is one rule with one signed number, and the full list is printed under every score in the reading. The word beside a score comes from where the score stands among 10,000 fictional reference charts, not from fixed cut-offs. In love, stability, career, wealth and health, the top quarter of charts read prominent, the middle half read balanced and the bottom quarter read needs support. Learning is the one exception and keeps the fixed cut-offs: 70 or more reads prominent, 45 to 69 reads balanced and under 45 reads needs support. The reason is that 36% of charts sit on learning's cap of 95, so a percentile word would call a learning score of 75 weak. The exception is to be revisited.
+A score is 50 plus the sum of its chips, kept between 5 and 95. A chip is one rule with one signed number, and the full list is printed under every score in the reading. The word beside a score comes from where the score stands among 10,000 fictional reference charts, not from fixed cut-offs. In love, stability, career, wealth and health, the top quarter of charts read prominent, the middle half read balanced and the bottom quarter read needs support. Learning is the one exception and keeps the fixed cut-offs: 70 or more reads prominent, 45 to 69 reads balanced and under 45 reads needs support. The reason is that 37% of charts sit on learning's cap of 95, so a percentile word would call a learning score of 75 weak. The exception is to be revisited.
 
 The thresholds in the chips (a star share of 15%, 20% and so on) and the sizes of the points are the engine's own calibration. What a star or a structure means is the classical part. The engine therefore labels the whole score a modern synthesis, and says so in the source line of every area.
 
@@ -40,7 +40,7 @@ Key facts
 - Six areas, each 50 plus named chips, clamped to 5 to 95. Bands come from the percentile: the top 25% of reference charts read prominent, the middle 50% balanced, the bottom 25% needs support. Learning is the exception and keeps the fixed cut-offs: 70 and above prominent, 45 to 69 balanced, under 45 needs support.
 - Health is read from the Day Master's root, balance and the supply of the useful god. The organ map is not scored; it stays in the advice text.
 - The percentile is a second figure: where the score stands in a fixed reference sample of 10,000 fictional charts. It is a relative standing among charts, not strength.
-- The reference is frozen as area_reference_v3. A change to any rule means a new version, never a silent regeneration.
+- The reference is frozen as area_reference_v4. A change to any rule means a new version, never a silent regeneration.
 - Classical books are cited at book level; a chapter is named only where it has been confirmed.
 
 A worked example, using the fictional man 王大明 (born 1988-03-15, 09:30, weak Day Master). His learning score is 50, plus 10 for resource present, plus 10 for the canopy star, plus 5 for authority feeding resource, which makes 75: prominent. Every chip of that sum is listed in his reading.
@@ -211,31 +211,31 @@ So health now reads three things the classics do read: the root of the Day Maste
 
 The raw scores sit on different scales. A typical learning score is 90 and a typical stability score is 46, so a 60 means something different in each. Before the band words followed the percentile, "prominent" was easy to earn in learning and hard to earn in stability. Each score is therefore placed in a frozen reference sample of fictional charts, and the band word in five of the six areas, and the comparison between areas, read that standing. Learning is the exception: so many charts sit on its cap that its word keeps the fixed cut-offs.
 
-The percentile is the share of reference charts that score below the number, with half of those that tie counted, as a whole number from 0 to 100. A learning score of 75 reads prominent under the fixed cut-offs, yet its percentile is 20, because most reference charts score higher in learning; the percentile is shown beside it and does not change its word. 王大明's health score of 67 reads prominent, with a percentile of 90.
+The percentile is the share of reference charts that score below the number, with half of those that tie counted, as a whole number from 0 to 100. A learning score of 75 reads prominent under the fixed cut-offs, yet its percentile is 19, because most reference charts score higher in learning; the percentile is shown beside it and does not change its word. 王大明's health score of 67 reads prominent, with a percentile of 90.
 
 The percentile is a relative standing among charts, not strength. It does not make the score more or less true, and the number never changes. In every area except learning it also decides the band word: a percentile of 75 or more reads prominent and 25 or less reads needs support. It is used where areas are compared with each other: the strongest and weakest area on your card and in the story, the priority line, and the lowest-area sentence for children. Every sentence that states a score still states the score.
 
 ## What is in the reference sample?
 
-The sample is 10,000 fictional charts, drawn with a fixed random seed (20261044). Birth dates are uniform across the days from 1930-01-01 to 2024-12-31, with a uniform minute of the day and an even split of sexes. It is version area_reference_v3, built against engine version life-areas-v4, and stored as a histogram of scores per area. It replaced version 2 (seed 20261043, built against life-areas-v3) on 2026-10-15, when the duplicate strong-or-weak chips left career and wealth. Versions 1 and 2 are kept, unedited, as the record of what the percentile used to be measured against. Nobody's real birth data is in any of them.
+The sample is 10,000 fictional charts, drawn with a fixed random seed (20261061). Birth dates are uniform across the days from 1930-01-01 to 2024-12-31, with a uniform minute of the day and an even split of sexes. It is version area_reference_v4, built against engine version life-areas-v5, and stored as a histogram of scores per area. It replaced version 3 (seed 20261044, built against life-areas-v4) on 2026-10-15, when the year and month pillars began to change at the exact moment of each solar term (節). Version 3 had replaced version 2 (seed 20261043, built against life-areas-v3) the same day, when the duplicate strong-or-weak chips left career and wealth. Versions 1 to 3 are kept, unedited, as the record of what the percentile used to be measured against. Nobody's real birth data is in any of them.
 
 Area | Median score | Middle half of charts | Prominent | Needs support | 
 
 Love and attraction | 69 | 60 to 75 | 27% | 20% | 
 
-Relationship stability | 46 | 32 to 58 | 26% | 25% | 
+Relationship stability | 46 | 34 to 60 | 26% | 25% | 
 
 Career | 70 | 61 to 80 | 24% | 24% | 
 
 Wealth | 60 | 55 to 70 | 24% | 19% | 
 
-Learning (fixed cut-offs) | 90 | 80 to 95 | 88% | 0% | 
+Learning (fixed cut-offs) | 90 | 80 to 95 | 89% | 0% | 
 
 Health | 58 | 53 to 64 | 19% | 30% | 
 
-The shares are not exactly 25, 50 and 25 because scores are whole numbers and many charts share the same one. Learning is shown by its fixed cut-offs, because 36% of charts sit on the cap of 95.
+The shares are not exactly 25, 50 and 25 because scores are whole numbers and many charts share the same one. Learning is shown by its fixed cut-offs, because 37% of charts sit on the cap of 95.
 
-The file is never regenerated silently. A test pins its checksum, and a second test checks that today's engine still reproduces a probe of 12 charts stored in the file. If a rule is ever changed, the right step is a new version beside the old one, so a percentile always names the sample it was measured against. That has now happened twice, as described above.
+The file is never regenerated silently. A test pins its checksum, and a second test checks that today's engine still reproduces a probe of 12 charts stored in the file. If a rule is ever changed, the right step is a new version beside the old one, so a percentile always names the sample it was measured against. That has now happened three times, as described above.
 
 ## FAQ
 
@@ -257,7 +257,7 @@ Because the strongest area on your card is picked by percentile, not by the raw 
 
 ### Will the percentile change if the engine changes?
 
-Not silently. The reference is frozen as area_reference_v3. If a rule changes, a new version is built next to it and the percentile names the version it used.
+Not silently. The reference is frozen as area_reference_v4. If a rule changes, a new version is built next to it and the percentile names the version it used.
 
 ## Sources and method
 
@@ -267,6 +267,6 @@ Not silently. The reference is frozen as area_reference_v3. If a rule changes, a
 
 - Health: the Day Master's root, balance and the supply of the useful god, as a static natal tendency. The organ map is reference and not medical advice.
 
-- Percentile: the mid-rank share inside area_reference_v3, built by scripts/build_area_reference.py with seed 20261044.
+- Percentile: the mid-rank share inside area_reference_v4, built by scripts/build_area_reference.py with seed 20261061.
 
 See the scores applied to a chart in the free reading, and the ten claims the engine commits to on the method page.

@@ -7,7 +7,7 @@ datetime plus flags.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import date, datetime
+from datetime import date, datetime, timedelta, timezone
 
 from . import calendar as cal
 from .wuxing import (BRANCH_ELEMENT, ELEMENT_COLOURS, ELEMENT_EN, ELEMENTS,
@@ -105,8 +105,9 @@ def build_chart(person: str, sex: str, birth_local: datetime, policy: str, place
                 f"equation of time {cal.equation_of_time_minutes(birth_local.date()):+.1f} min)", lang, birth_local=birth_local, eff=eff, sg_utc_offset_hours_date=cal.sg_utc_offset_hours(birth_local.date()), SG_LON=cal.SG_LON, equation_of_time_minutes_dat=cal.equation_of_time_minutes(birth_local.date())))
     else:
         eff, note = birth_local, T("bazi.build_chart.05", "civil clock time, no solar correction", lang)
+    instant = birth_local.replace(tzinfo=timezone(timedelta(hours=cal.civil_utc_offset(birth_local, place))))   # the real moment, for the 節 boundary
     chart = Chart(person=person, sex=sex, birth_local=birth_local, policy=policy,
-                  effective_dt=eff, pillars=cal.pillars_for(eff))
+                  effective_dt=eff, pillars=cal.pillars_for(eff, instant))
     chart.citations.append({"rule_id": "time-policy", "layer": "bazi",
                             "source_ref": T("bazi.build_chart.06", "子平 convention (design premise 2)", lang),
                             "explanation": note})

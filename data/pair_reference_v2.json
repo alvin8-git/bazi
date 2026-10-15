@@ -1,0 +1,271 @@
+{
+ "bands": "percentile >= 85 very compatible, >= 50 compatible, >= 15 workable, else needs effort (15 / 35 / 35 / 15, owner-approved 2026-10-15)",
+ "base_commit": "4c962f5",
+ "engine_version": "pair-rules-r46",
+ "generator": "scripts/build_pair_reference.py v2",
+ "note": "Fictional random pairs only, not couples. Relative standing among random pairs, not a verdict. Never regenerate silently: a rule change means a new version.",
+ "percentile": "mid-rank: (pairs scoring below + half the pairs scoring equal) / n, rounded to a whole number 0 to 100",
+ "probe": [
+  {
+   "births": [
+    {
+     "sex": "M",
+     "when": "1996-12-17 18:02"
+    },
+    {
+     "sex": "F",
+     "when": "2009-03-27 15:22"
+    }
+   ],
+   "score": 57
+  },
+  {
+   "births": [
+    {
+     "sex": "F",
+     "when": "1936-08-28 16:57"
+    },
+    {
+     "sex": "F",
+     "when": "2006-02-07 09:47"
+    }
+   ],
+   "score": 80
+  },
+  {
+   "births": [
+    {
+     "sex": "F",
+     "when": "1972-05-04 17:44"
+    },
+    {
+     "sex": "M",
+     "when": "1931-03-30 06:22"
+    }
+   ],
+   "score": 48
+  },
+  {
+   "births": [
+    {
+     "sex": "M",
+     "when": "1985-03-23 05:06"
+    },
+    {
+     "sex": "M",
+     "when": "2006-10-12 04:40"
+    }
+   ],
+   "score": 54
+  },
+  {
+   "births": [
+    {
+     "sex": "M",
+     "when": "1932-04-02 18:14"
+    },
+    {
+     "sex": "M",
+     "when": "2010-05-16 15:49"
+    }
+   ],
+   "score": 65
+  },
+  {
+   "births": [
+    {
+     "sex": "F",
+     "when": "1953-12-14 12:36"
+    },
+    {
+     "sex": "M",
+     "when": "2013-10-14 19:44"
+    }
+   ],
+   "score": 48
+  },
+  {
+   "births": [
+    {
+     "sex": "M",
+     "when": "1957-11-01 07:54"
+    },
+    {
+     "sex": "F",
+     "when": "1963-01-20 13:25"
+    }
+   ],
+   "score": 47
+  },
+  {
+   "births": [
+    {
+     "sex": "F",
+     "when": "2008-03-13 17:24"
+    },
+    {
+     "sex": "F",
+     "when": "1963-04-07 17:39"
+    }
+   ],
+   "score": 67
+  },
+  {
+   "births": [
+    {
+     "sex": "F",
+     "when": "1988-08-08 15:02"
+    },
+    {
+     "sex": "M",
+     "when": "1977-11-14 14:23"
+    }
+   ],
+   "score": 71
+  },
+  {
+   "births": [
+    {
+     "sex": "F",
+     "when": "1971-10-12 15:29"
+    },
+    {
+     "sex": "M",
+     "when": "2006-01-03 00:23"
+    }
+   ],
+   "score": 72
+  },
+  {
+   "births": [
+    {
+     "sex": "M",
+     "when": "2014-10-06 12:45"
+    },
+    {
+     "sex": "F",
+     "when": "2017-07-11 20:43"
+    }
+   ],
+   "score": 63
+  },
+  {
+   "births": [
+    {
+     "sex": "M",
+     "when": "2008-10-29 20:30"
+    },
+    {
+     "sex": "F",
+     "when": "1991-01-17 17:13"
+    }
+   ],
+   "score": 62
+  }
+ ],
+ "quantiles": {
+  "mean": 59.51,
+  "p10": 43,
+  "p15": 46,
+  "p25": 51,
+  "p5": 38,
+  "p50": 60,
+  "p75": 68,
+  "p85": 73,
+  "p90": 76,
+  "p95": 80
+ },
+ "sample": {
+  "births": "40,000 births, pair i = births 2i and 2i+1; date uniform 1930-01-01 to 2024-12-31, minute of day uniform, sex M or F with equal chance",
+  "chart": "engine.bazi.build_chart with TRUE_SOLAR; scores from engine.hehun.pair_compatibility",
+  "n": 20000,
+  "rng": "random.Random",
+  "seed": 20261062
+ },
+ "scores": {
+  "12": 1,
+  "13": 1,
+  "14": 1,
+  "15": 2,
+  "16": 2,
+  "18": 3,
+  "19": 2,
+  "20": 3,
+  "21": 9,
+  "22": 8,
+  "23": 13,
+  "24": 10,
+  "25": 16,
+  "26": 21,
+  "27": 25,
+  "28": 22,
+  "29": 32,
+  "30": 54,
+  "31": 46,
+  "32": 61,
+  "33": 80,
+  "34": 69,
+  "35": 86,
+  "36": 132,
+  "37": 137,
+  "38": 177,
+  "39": 166,
+  "40": 213,
+  "41": 218,
+  "42": 263,
+  "43": 272,
+  "44": 291,
+  "45": 351,
+  "46": 301,
+  "47": 350,
+  "48": 442,
+  "49": 395,
+  "50": 499,
+  "51": 505,
+  "52": 503,
+  "53": 558,
+  "54": 577,
+  "55": 545,
+  "56": 632,
+  "57": 583,
+  "58": 605,
+  "59": 637,
+  "60": 637,
+  "61": 590,
+  "62": 689,
+  "63": 561,
+  "64": 581,
+  "65": 576,
+  "66": 583,
+  "67": 498,
+  "68": 534,
+  "69": 447,
+  "70": 457,
+  "71": 449,
+  "72": 427,
+  "73": 336,
+  "74": 346,
+  "75": 300,
+  "76": 275,
+  "77": 253,
+  "78": 206,
+  "79": 193,
+  "80": 188,
+  "81": 157,
+  "82": 130,
+  "83": 117,
+  "84": 101,
+  "85": 76,
+  "86": 56,
+  "87": 64,
+  "88": 50,
+  "89": 46,
+  "90": 27,
+  "91": 31,
+  "92": 22,
+  "93": 18,
+  "94": 14,
+  "95": 46
+ },
+ "version": "pair_reference_v2"
+}
