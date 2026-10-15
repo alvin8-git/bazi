@@ -1181,7 +1181,7 @@ Because it is the part that comes from the child, not from the name. The useful 
 
 - Favourable (喜): 0.7
 
-- Neutral (闲) or undetermined (未定): 0.3
+- Undetermined (未定), for a character whose element is not set: 0.3
 
 - Unfavourable (忌): 0.0
 
@@ -1201,7 +1201,11 @@ Two-character given name (双名) | 8 | 7 | 7 | 3 | 25 |
 
 One-character given name (单名) | 15 | 10 | not scored | not scored | 25 | 
 
-The Heaven grid is not scored in either layout: it comes from the surname alone, so no choice of given name changes it (method note).
+One-character given name with a two-character surname (复姓) | 8 | 10 | 7 | not scored | 25 | 
+
+With a two-character surname such as 欧阳 or 司马, the Person grid and the Total grid are two different numbers, so each is scored on its own. The 15 points that one shared number carries with a one-character surname are split the way the two-character-given-name layout splits them: 8 for the Person grid and 7 for the Total grid. This split is the engine's choice, not a number from a text.
+
+The Heaven grid is not scored in any layout: it comes from the surname alone, so no choice of given name changes it (method note).
 
 ## Which element relations count in the Three Talents?
 
@@ -1376,7 +1380,7 @@ Key facts
 - Six areas, each 50 plus named chips, clamped to 5 to 95. Bands: 70 and above prominent, 45 to 69 balanced, under 45 needs support.
 - Health is read from the Day Master's root, balance and the supply of the useful god. The organ map is not scored; it stays in the advice text.
 - The percentile is a second figure: where the score stands in a fixed reference sample of 10,000 fictional charts. It is a relative standing among charts, not strength.
-- The reference is frozen as area_reference_v1. A change to any rule means a new version, never a silent regeneration.
+- The reference is frozen as area_reference_v2. A change to any rule means a new version, never a silent regeneration.
 - Classical books are cited at book level; a chapter is named only where it has been confirmed.
 
 A worked example, using the fictional man 王大明 (born 1988-03-15, 09:30, weak Day Master). His learning score is 50, plus 10 for resource present, plus 10 for the canopy star, plus 5 for authority feeding resource, which makes 75: prominent. Every chip of that sum is listed in his reading.
@@ -1451,13 +1455,15 @@ Chip | Points | Classical basis |
 
 Spouse palace clashed (day branch in a Six Clash) | -20 | A clash is the main classical flaw of the day branch. | 
 
-Spouse palace in punishment, harm or self-punishment | -5 | The classics rank clash above punishment above harm, so the lesser flaws cost less. | 
+Spouse palace in punishment or self-punishment, or in harm together with either | -5 | The classics rank clash above punishment above harm, so the lesser flaws cost less. | 
 
-Spouse palace combined | +10 | A combination binds. | 
+Spouse palace in harm on its own | -2 | Harm is the lightest of the three, and the engine weights it less than punishment. This weight is the engine's own choice, not a number from a text. | 
+
+Spouse palace combined | +10 | A combination binds. A half harmony between the day branch and another branch counts only when it holds a cardinal branch (子, 午, 卯 or 酉); a half harmony without one, called 拱合, is listed but does not count. | 
 
 Spouse palace undisturbed | +5 | A quiet palace. | 
 
-Single clear spouse star | +10 | A pure spouse star is the classical ideal. | 
+Single clear spouse star, holding 8% or more of the chart | +10 | A pure spouse star is the classical ideal. A star under 8% is the faint star that the love score already marks down, so it does not also count as a clear anchor here. | 
 
 Mixed spouse stars | -4 for a man, -8 for a woman | Mixed authority, Proper Officer and Seven Killings together in a woman's chart, is a named classical flaw. Mixed Direct and Indirect Wealth in a man's chart is the milder case. | 
 
@@ -1543,31 +1549,31 @@ So health now reads three things the classics do read: the root of the Day Maste
 
 ## What is the percentile, and what is it not?
 
-The raw scores sit on different scales. A typical learning score is 90 and a typical stability score is 45, so a 60 means something different in each. The word "prominent" is easy to earn in learning and hard to earn in stability. To compare areas fairly, each score is also placed in a frozen reference sample of fictional charts.
+The raw scores sit on different scales. A typical learning score is 90 and a typical stability score is 46, so a 60 means something different in each. The word "prominent" is easy to earn in learning and hard to earn in stability. To compare areas fairly, each score is also placed in a frozen reference sample of fictional charts.
 
-The percentile is the share of reference charts that score below the number, with half of those that tie counted, as a whole number from 0 to 100. A learning score of 75 is prominent, yet its percentile is 19, because most reference charts score higher in learning. 王大明's health score of 67 is balanced, with a percentile of 90.
+The percentile is the share of reference charts that score below the number, with half of those that tie counted, as a whole number from 0 to 100. A learning score of 75 is prominent, yet its percentile is 20, because most reference charts score higher in learning. 王大明's health score of 67 is balanced, with a percentile of 90.
 
 The percentile is a relative standing among charts, not strength. It does not make the score more or less true and it does not change a band. It is used where areas are compared with each other: the strongest and weakest area on your card and in the story, the priority line, and the lowest-area sentence for children. Every sentence that states a score still states the score.
 
 ## What is in the reference sample?
 
-The sample is 10,000 fictional charts, drawn with a fixed random seed (20261011). Birth dates are uniform across the days from 1930-01-01 to 2024-12-31, with a uniform minute of the day and an even split of sexes. It is version area_reference_v1, built against engine version life-areas-v2, and stored as a histogram of scores per area. Nobody's real birth data is in it.
+The sample is 10,000 fictional charts, drawn with a fixed random seed (20261043). Birth dates are uniform across the days from 1930-01-01 to 2024-12-31, with a uniform minute of the day and an even split of sexes. It is version area_reference_v2, built against engine version life-areas-v3, and stored as a histogram of scores per area. It replaced version 1 (seed 20261011, built against life-areas-v2) on 2026-10-15, when three stability rules changed. Version 1 is kept, unedited, as the record of what the percentile used to be measured against. Nobody's real birth data is in either.
 
 Area | Median score | Middle half of charts | Prominent | Needs support | 
 
 Love and attraction | 70 | 60 to 75 | 50% | 4% | 
 
-Relationship stability | 45 | 31 to 60 | 8% | 41% | 
+Relationship stability | 46 | 32 to 58 | 6% | 44% | 
 
-Career | 70 | 60 to 76 | 57% | 8% | 
+Career | 70 | 60 to 80 | 58% | 8% | 
 
-Wealth | 60 | 50 to 80 | 34% | 14% | 
+Wealth | 60 | 50 to 80 | 35% | 14% | 
 
 Learning | 90 | 80 to 95 | 87% | 0% | 
 
 Health | 58 | 53 to 64 | 9% | 4% | 
 
-The file is never regenerated silently. A test pins its checksum, and a second test checks that today's engine still reproduces a probe of 12 charts stored in the file. If a rule is ever changed, the right step is a new version beside the old one, so a percentile always names the sample it was measured against.
+The file is never regenerated silently. A test pins its checksum, and a second test checks that today's engine still reproduces a probe of 12 charts stored in the file. If a rule is ever changed, the right step is a new version beside the old one, so a percentile always names the sample it was measured against. That has now happened once, as described above.
 
 ## FAQ
 
@@ -1589,7 +1595,7 @@ Because the strongest area on your card is picked by percentile, not by the raw 
 
 ### Will the percentile change if the engine changes?
 
-Not silently. The reference is frozen as area_reference_v1. If a rule changes, a new version is built next to it and the percentile names the version it used.
+Not silently. The reference is frozen as area_reference_v2. If a rule changes, a new version is built next to it and the percentile names the version it used.
 
 ## Sources and method
 
@@ -1599,7 +1605,7 @@ Not silently. The reference is frozen as area_reference_v1. If a rule changes, a
 
 - Health: the Day Master's root, balance and the supply of the useful god, as a static natal tendency. The organ map is reference and not medical advice.
 
-- Percentile: the mid-rank share inside area_reference_v1, built by scripts/build_area_reference.py with seed 20261011.
+- Percentile: the mid-rank share inside area_reference_v2, built by scripts/build_area_reference.py with seed 20261043.
 
 See the scores applied to a chart in the free reading, and the ten claims the engine commits to on the method page.
 
@@ -2399,7 +2405,7 @@ The classical toolkit has four techniques, and the engine cites which one it use
 
 - Support and restrain is the workhorse. A weak Day Master is supported by the element that generates it (resource, 印, the resource) and the element that matches it (peers, 比劫, peers). A strong one is drained or disciplined by output (食傷), wealth (財) or authority (官殺).
 
-- Climate adjustment looks at the season. A chart born in deep winter may need fire regardless of strength, and a blazing summer chart may need water. Season can override arithmetic when the imbalance is extreme.
+- Climate adjustment looks at the season. A chart born in deep winter may need fire regardless of strength, and a blazing summer chart may need water. Season can override arithmetic when the imbalance is extreme. In four cells of the 窮通寶鑑 table the book's first choice is the opposite element (a 丙 Day Master in the 子 or 丑 month, 辛 in 亥, 庚 in 未), and there the engine follows the book.
 
 - Bridging element applies when two camps of elements deadlock. The element that mediates between them unlocks the chart.
 

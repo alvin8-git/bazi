@@ -17,7 +17,7 @@ The classical toolkit has four techniques, and the engine cites which one it use
 
 - Support and restrain is the workhorse. A weak Day Master is supported by the element that generates it (resource, 印, the resource) and the element that matches it (peers, 比劫, peers). A strong one is drained or disciplined by output (食傷), wealth (財) or authority (官殺).
 
-- Climate adjustment looks at the season. A chart born in deep winter may need fire regardless of strength, and a blazing summer chart may need water. Season can override arithmetic when the imbalance is extreme.
+- Climate adjustment looks at the season. A chart born in deep winter may need fire regardless of strength, and a blazing summer chart may need water. Season can override arithmetic when the imbalance is extreme. In four cells of the 窮通寶鑑 table the book's first choice is the opposite element (a 丙 Day Master in the 子 or 丑 month, 辛 in 亥, 庚 in 未), and there the engine follows the book.
 
 - Bridging element applies when two camps of elements deadlock. The element that mediates between them unlocks the chart.
 

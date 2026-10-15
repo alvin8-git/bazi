@@ -617,6 +617,7 @@ const READING_EN = {
   "appjs.zhKey.001": "<b>Key:</b> {pairs_map}",
   "appjs.rdFig.001": "how to read this",
   "appjs.bazhaiCompass.001": "Eight directions, north at the top: {rows_map}",
+  "appjs.bazhaiCompass.use": "use",
   "appjs.dailyFig.002": "Best day this month for {B_for}: {B_date} {B_gz} ({B_officer} day).",
   "appjs.dailyFig.003": "No clear best day this month.",
   "appjs.dailyFig.004": "Avoid {W_avoid} on {W_date} {W_gz}: {W_why}.",
@@ -1262,7 +1263,7 @@ const swatchInk = (el) => el === "金" ? 'fill="#22242a" paint-order="stroke" st
   : 'fill="#fff" paint-order="stroke" stroke="rgba(28,20,12,.55)" stroke-width="2.6" stroke-linejoin="round"';
 /* The shared term key (round 42, items 14 and 15). Every native-form label in a chapter figure is a 44 px link to its own row in #termkey, which
    is built from web/glossary.js after the figures are drawn. English pages only: the Chinese reading does not load the glossary and has no key. */
-const TK_ON = () => !IS_ZH && !!(window.GL && window.GL.segment);
+const TK_ON = () => !IS_ZH && !window.__WHEEL_ONLY__ && !!(window.GL && window.GL.segment);   // the Kua page has no shared term key to link to
 const tkKey = (t) => { const h = window.GL && GL.lookup(t); return h ? h[0] : t; };
 const tkId = (t) => "tk-" + toSimp(tkKey(t));   // the page writes 简体 after the figures are built, so the id is written in 简体 on both sides
 const tkEn = (t) => { const x = GL.tip(t); const i = x.indexOf(" · "); return i < 0 ? x : x.slice(i + 3); };
@@ -1571,6 +1572,19 @@ function strengthGauge(st) {
   </svg>`;
 }
 
+/* the focus of each centre painting: [x, y of the subject's centre in the 600 x 400 file, scale in circle units per pixel]. First measured from the paintings' own ink (geng-autumn by eye: the anvil, not the post), then tuned against the rendered circle until the ink sits on its middle. */
+const CRING_FOCUS = {
+  "jia-spring": [457, 280, 0.34], "jia-summer": [476, 249, 0.34], "jia-autumn": [433, 249, 0.34], "jia-winter": [471, 214, 0.3],
+  "yi-spring": [439, 281, 0.32], "yi-summer": [463, 284, 0.32], "yi-autumn": [408, 269, 0.3], "yi-winter": [440, 278, 0.3],
+  "bing-spring": [387, 317, 0.3], "bing-summer": [445, 290, 0.32], "bing-autumn": [410, 314, 0.3], "bing-winter": [432, 268, 0.3],
+  "ding-spring": [442, 266, 0.31], "ding-summer": [353, 263, 0.3], "ding-autumn": [473, 288, 0.43], "ding-winter": [429, 273, 0.3],
+  "wu-spring": [448, 290, 0.36], "wu-summer": [423, 298, 0.3], "wu-autumn": [442, 297, 0.36], "wu-winter": [407, 278, 0.3],
+  "ji-spring": [405, 309, 0.3], "ji-summer": [420, 306, 0.36], "ji-autumn": [374, 299, 0.3], "ji-winter": [397, 295, 0.3],
+  "geng-spring": [438, 307, 0.33], "geng-summer": [433, 265, 0.34], "geng-autumn": [448, 317, 0.44], "geng-winter": [454, 294, 0.34],
+  "xin-spring": [441, 292, 0.32], "xin-summer": [442, 234, 0.3], "xin-autumn": [411, 322, 0.3], "xin-winter": [425, 289, 0.3],
+  "ren-spring": [376, 286, 0.3], "ren-summer": [402, 295, 0.3], "ren-autumn": [391, 295, 0.3], "ren-winter": [376, 302, 0.3],
+  "gui-spring": [476, 291, 0.4], "gui-summer": [501, 290, 0.3], "gui-autumn": [501, 280, 0.38], "gui-winter": [445, 294, 0.3],
+};
 /* the eight directions as a painted compass ring (owner pick A, 2026-10-10): north at the top, green washes where the
    house stars help, red-ochre where they harm, the person's season painting at the centre; characters in the ring, English in the key */
 function bazhaiCompass(c, opts = {}) {
@@ -1589,7 +1603,7 @@ function bazhaiCompass(c, opts = {}) {
     + (AF.suipo ? `<path data-af="suipo" data-dir="${AF.suipo.dir}" d="${sectorPath(ANG[AF.suipo.dir], R1 - 3, R0 + 3, 3)}" fill="none" stroke="${AFC}" stroke-width="3.5"/>` : "")
     + ((AF.sansha || {}).dirs || []).map((d) => `<path data-af="sansha" data-dir="${d}" d="${sectorPath(ANG[d], R1 - 9, R0 + 9, 7)}" fill="none" stroke="${AFC}" stroke-width="3" stroke-dasharray="1 5" stroke-linecap="round"/>`).join("")
     + (AF.suixing ? (() => { const a = ANG[AF.suixing.dir], [x1, y1] = pt(R1 + 9, a), [x2, y2] = pt(R1 - 16, a); return `<line data-af="suixing" data-dir="${AF.suixing.dir}" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${AFC}" stroke-width="6" stroke-linecap="butt"/>`; })() : "") + "</g>";
-  let svg = `<svg viewBox="0 0 340 340" class="cring keepzh" data-notip role="${ln ? "group" : "img"}" aria-label="${RS("appjs.bazhaiCompass.001", {rows_map: rows.map((r) => `${r.dir} ${BAZHAI_EN[r.s] ? BAZHAI_EN[r.s][0] : r.s}, ${r.good ? "use" : "avoid"}`).join("; ")})}">
+  let svg = `<svg viewBox="0 0 340 340" class="cring keepzh" data-notip role="${ln ? "group" : "img"}" aria-label="${RS("appjs.bazhaiCompass.001", {rows_map: rows.map((r) => IS_ZH ? `${toSimp(r.pal)} ${toSimp(r.s)}，${r.good ? RS("appjs.bazhaiCompass.use") : RS("appjs.waveC.avoid")}` : `${r.dir} ${BAZHAI_EN[r.s] ? BAZHAI_EN[r.s][0] : r.s}, ${r.good ? RS("appjs.bazhaiCompass.use") : RS("appjs.waveC.avoid")}`).join(IS_ZH ? "；" : "; ")})}">
     <circle cx="${C}" cy="${C}" r="${R1 + 8}" fill="#fdfbf6" stroke="#d9d0c1"/>`;
   rows.forEach((r, i) => {
     const a = ANG[r.dir], d = sectorPath(a, R1, R0);
@@ -1601,9 +1615,17 @@ function bazhaiCompass(c, opts = {}) {
       <path d="${d}" fill="none" stroke="#faf7f2" stroke-width="3"/>
       ${tkLink(r.pal, [mx - 32, my - 37, 64, 52], t1)}${tkLink(r.s, [mx - 32, my + 15, 64, 52], t2)}`;
   });
-  const cid = `cc${++INK_N}`;
+  /* the centre picture (round 41, fix 3): each 600 x 400 painting keeps its subject low and to the right, so a plain centre crop cut it in half. CRING_FOCUS gives the
+     subject's own centre and a scale for each of the forty paintings; the picture is placed so that point lands on the middle of the circle. Where the painting's edge
+     falls inside the circle, a blurred mask fades it into the paper tone instead of ending in a hard line. */
+  const hasPic = !!c.day_master;   // the Kua page may not have a Day Master to paint; the ring then keeps a plain paper centre
+  const cid = `cc${++INK_N}`, pkey = `${STEM_SLUG[c.day_master]}-${season}`, [fx, fy, fk] = CRING_FOCUS[pkey] || [300, 200, 0.32];
+  const pw = 600 * fk, ph = 400 * fk, px = C - fx * fk, py = C - fy * fk, fd = 12;
   svg += `${overlay}<clipPath id="${cid}"><circle cx="${C}" cy="${C}" r="${R0 - 4}"/></clipPath>
-    <image href="/static/img/reading/bg/${STEM_SLUG[c.day_master]}-${season}-600.jpg" x="${C - R0}" y="${C - R0}" width="${2 * R0}" height="${2 * R0}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${cid})"/>
+    <filter id="${cid}f" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="${fd / 2}"/></filter>
+    <mask id="${cid}m" maskUnits="userSpaceOnUse" x="0" y="0" width="340" height="340"><rect x="${(px + fd).toFixed(1)}" y="${(py + fd).toFixed(1)}" width="${(pw - 2 * fd).toFixed(1)}" height="${(ph - 2 * fd).toFixed(1)}" fill="#fff" filter="url(#${cid}f)"/></mask>
+    <circle cx="${C}" cy="${C}" r="${R0 - 4}" fill="#faf6ec"/>
+    ${hasPic ? `<image class="cring-pic" data-focus="${pkey}" href="/static/img/reading/bg/${pkey}-600.jpg" x="${px.toFixed(1)}" y="${py.toFixed(1)}" width="${pw.toFixed(1)}" height="${ph.toFixed(1)}" preserveAspectRatio="none" clip-path="url(#${cid})" mask="url(#${cid}m)"/>` : ""}
     <circle cx="${C}" cy="${C}" r="${R0 - 4}" fill="none" stroke="#8a7f72" stroke-width="1.5"/>
     <text x="${C}" y="9" text-anchor="middle" font-size="11" fill="#5f574e">${RS("appjs.DIR_WORD_EN.N")}</text></svg>`;
   const key = zhKey(rows.map((r) => [toSimp(r.s), BAZHAI_EN[r.s] ? BAZHAI_EN[r.s][0] : ""]).concat(rows.map((r) => [toSimp(r.pal), DIR_WORD_EN[r.dir] || r.dir])).concat([["✓", "use"], ["✗", "avoid"]]));
@@ -1790,12 +1812,20 @@ function pRoom(c) {
 const pRelations = (c) => { const ps = c.plain.makeup.pairs;
   return ps.length ? `<ul class="rp-list">${ps.map((x) => `<li>${RS("appjs.pRelations.001", {x_a: x.a.charAt(0).toUpperCase() + x.a.slice(1), x_b: x.b, x_note: x.note, x_kind: x.kind})}</li>`).join("")}</ul>`
     : ("<p>" + RS("appjs.pRelations.002") + "</p>"); };
+/* a pillar's hidden stems: one row, each character in its element's text colour (EL_TXT, the contrast-checked set). On the English page the whole row is one tap
+   target (class zh + data-tip, the glossary's own tip) that names every stem in it: "丙 fire · 庚 metal · 戊 earth". The Chinese page has no glossary, so its row is plain. */
+function hidRow(list) {
+  const stems = list.map((x) => x[0]), chars = stems.map((z) => `<span class="rp-hs" style="color:${EL_TXT[STEM_EL[z]]}">${z}</span>`).join("");
+  if (IS_ZH || !stems.length) return `<span class="rp-hid">${chars}</span>`;
+  const gloss = stems.map((z) => `${z} ${(EL_EN[STEM_EL[z]] || "").toLowerCase()}`).join(" · ");
+  return `<span class="rp-hid zh" lang="zh-Hans" tabindex="0" title="${gloss}" data-tip="${gloss}">${chars}</span>`;
+}
 function pSlimGrid(c) {
   const P = c.pillars, tg = c.ten_gods || {}, hid = c.hidden_gods || {};
   return `<div class="rp-sg keepzh">${PILLAR_KEYS.map(([k, lab]) => { const g = k === "day" ? "日主" : tg[k] || "";
     return `<div${k === "day" ? ' class="me"' : ""}><small>${k === "day" ? RS("appjs.pSlimGrid.002") : lab}</small><span class="rp-tg" title="${k === "day" ? RS("appjs.pSlimGrid.003") : godEn(c, g)}">${g}</span>
       <span class="rp-big" style="color:${EL_TXT[STEM_EL[P[k][0]]]}">${P[k][0]}</span><span class="rp-big" style="color:${EL_TXT[BR_EL[P[k][1]]]}">${P[k][1]}</span>
-      <span class="rp-hid">${(hid[k] || []).map((x) => `<span title="${godEn(c, x.slice(2, -1))}">${x[0]}</span>`).join(" ")}</span></div>`; }).join("")}</div>
+      ${hidRow(hid[k] || [])}</div>`; }).join("")}</div>
     <p class="rp-cap">${RS("appjs.pSlimGrid.001")}</p>`;
 }
 function pChapter([id, , q, tech, img, what], body, src) {
@@ -2597,8 +2627,9 @@ function wireReading(root) {
   // evidence panels open where you tapped (owner 2026-10-10): the one panel moves under the tapped marker's paragraph
   // (or under the answer cards for a "?"), shows its top without jumping, and × / Back / Escape close it and return focus
   const sync = (p, open) => root.querySelectorAll(`.mk[aria-controls="${p.id}"]`).forEach((m) => m.setAttribute("aria-expanded", String(open)));
-  const reveal = (p) => { markOverflow(); const r = p.getBoundingClientRect();
-    if (r.top > innerHeight - 120 || r.top < 0) scrollBy({ top: r.top - innerHeight * 0.3, behavior: "smooth" }); p.focus({ preventScroll: true }); };
+  const reveal = (p) => { markOverflow(); const r = p.getBoundingClientRect(), bar = 56;   // the sticky chapter bar covers the top 56 px
+    const want = Math.max(bar, Math.min(innerHeight * 0.3, innerHeight - r.height - 8));   // a tall panel sits right under the bar so its whole height is on screen
+    if (r.top > innerHeight - 120 || r.top < bar || r.bottom > innerHeight) scrollBy({ top: r.top - want, behavior: "smooth" }); p.scrollTop = 0; p.focus({ preventScroll: true }); };
   const close = (p) => { const o = p._opener;   // panels a "?" opened together close together
     (o && o.classList.contains("rp-q") ? [...root.querySelectorAll(".ev")].filter((x) => x._opener === o) : [p])
       .forEach((x) => { x.hidden = true; sync(x, false); x._opener = null; });
@@ -2626,8 +2657,9 @@ function wireReading(root) {
     if (para.nextElementSibling !== p) para.after(p);
     p.hidden = false; p._opener = b; sync(p, true); reveal(p);
   });
-  root.addEventListener("keydown", (ev) => { if (ev.key !== "Escape") return;
-    const p = ev.target.closest && ev.target.closest(".ev"); if (p && !p.hidden) close(p); });
+  root.addEventListener("keydown", (ev) => { if (ev.key !== "Escape") return;   // inside the panel, or on the "?" that opened it
+    const t = ev.target, p = t.closest && t.closest(".ev") || [...root.querySelectorAll(".ev")].find((x) => !x.hidden && x._opener === t);
+    if (p && !p.hidden) close(p); });
 }
 
 /* ===== The shared term key (round 42, item 15) =====
@@ -2636,13 +2668,17 @@ function wireReading(root) {
    figures (HTML and SVG text and titles) are Tier 1; the Chinese runs in the evidence panels and the sources are Tier 2, in a nested fold.
    A run is cut with the same longest-match routine the tip pass uses (GL.segment). A run with no glossary row in Tier 1 is listed as characters and
    pinyin (what GL.tip returns) and flagged data-gap; the tests fail on any gap that is not on the owner's list. English pages only. */
-const TK_GROUPS = [["stems", "Stems and branches"], ["elements", "Elements"], ["gods", "Ten gods and groups"], ["palaces", "Palaces and directions"],
+const TK_GROUPS = [["elements", "Elements"], ["gods", "Ten gods and groups"], ["palaces", "Palaces and directions"],
   ["bazhai", "Eight House stars"], ["stars", "Symbolic stars"], ["officers", "Day officers"], ["relations", "Relations"], ["other", "Other terms"]];
-const TK_GROUP_OF = { stem: "stems", branch: "stems", "branch/stem": "stems", animal: "stems", element: "elements", colour: "elements", tengod: "gods",
+/* stems, branches, animals and whole pillars are not listed: the pillar grid and the decade strip give each one's gloss on a tap (round 41, fix 1) */
+const TK_UNLISTED = new Set(["stem", "branch", "branch/stem", "animal"]);
+const TK_GROUP_OF = { element: "elements", colour: "elements", tengod: "gods",
   trigram: "palaces", direction: "palaces", bazhai: "bazhai", shensha: "stars", officer: "officers", relation: "relations" };
 function termKeyRuns(root) {
   const t1 = new Map(), t2 = new Map(), gaps = [], unlisted = new Set();
-  const add = (term, tier) => { const m = tier === 1 ? t1 : t2, k = tkId(term); if (!m.has(k)) m.set(k, term); };
+  const add = (term, tier) => { const m = tier === 1 ? t1 : t2, k = tkId(term); if (m.has(k)) return;
+    const h = GL.lookup(term); if (TK_UNLISTED.has(h ? h[1][3] : GL.isPillar(term) || GL.isYear(term) ? "branch/stem" : "")) return;   // glossed by the tap pass, not listed
+    m.set(k, term); };
   const take = (run, tier) => run.split(/[，、；：]/).forEach((piece) => { if (!piece) return;
     const parts = GL.lookup(piece) || GL.isPillar(piece) || GL.isYear(piece) ? [piece] : GL.segment(piece);
     if (!parts) { if (tier === 1) { gaps.push(piece); add(piece, 1); } else unlisted.add(piece); return; }
@@ -2745,7 +2781,9 @@ async function renderPerson(name) {
   wireReading($("#tab-person"));
   const who = dn(name || c.name), h1 = document.querySelector(".pub-in h1");
   if (h1 && who) {
-    h1.innerHTML = `${RS("appjs.renderPerson.015", {who: who})}`;
+    // the day master's painted element disc beside the name: the same eli() the cards and rows use (round 41, fix 5)
+    const whoH = `<span class="rp-hd">${eli(STEM_EL[c.day_master], { s: 44 })}<span>${who}</span></span>`;
+    h1.innerHTML = `${RS("appjs.renderPerson.015", {who: whoH})}`;
     document.title = `${RS("appjs.renderPerson.016", {who: who})}`;
     const own = $("#tab-person .rp-name"); if (own) own.remove();
   }
@@ -3048,7 +3086,9 @@ function renderUnitTab() {
   });
 }
 
-if (window.__PUBLIC_READING__) {
+if (window.__WHEEL_ONLY__) {
+  // the Kua page (/kua) loads this file only to draw bazhaiCompass(), the eight directions wheel: no page of its own to boot
+} else if (window.__PUBLIC_READING__) {
   // standalone Reading 命书 page (bazifor.me workspace person) — no family app boot
   (async () => {
     window.__CHART_URL__ = window.__PUBLIC_READING__.chartUrl;

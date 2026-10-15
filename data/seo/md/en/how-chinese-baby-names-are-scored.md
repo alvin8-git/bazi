@@ -50,7 +50,7 @@ Because it is the part that comes from the child, not from the name. The useful 
 
 - Favourable (喜): 0.7
 
-- Neutral (闲) or undetermined (未定): 0.3
+- Undetermined (未定), for a character whose element is not set: 0.3
 
 - Unfavourable (忌): 0.0
 
@@ -70,7 +70,11 @@ Two-character given name (双名) | 8 | 7 | 7 | 3 | 25 |
 
 One-character given name (单名) | 15 | 10 | not scored | not scored | 25 | 
 
-The Heaven grid is not scored in either layout: it comes from the surname alone, so no choice of given name changes it (method note).
+One-character given name with a two-character surname (复姓) | 8 | 10 | 7 | not scored | 25 | 
+
+With a two-character surname such as 欧阳 or 司马, the Person grid and the Total grid are two different numbers, so each is scored on its own. The 15 points that one shared number carries with a one-character surname are split the way the two-character-given-name layout splits them: 8 for the Person grid and 7 for the Total grid. This split is the engine's choice, not a number from a text.
+
+The Heaven grid is not scored in any layout: it comes from the surname alone, so no choice of given name changes it (method note).
 
 ## Which element relations count in the Three Talents?
 

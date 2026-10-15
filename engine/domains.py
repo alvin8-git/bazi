@@ -7,7 +7,7 @@ computed from our own engine. Tendencies, never guarantees.
 """
 from __future__ import annotations
 
-from .shensha import natal_interactions, shensha, ten_god_distribution
+from .shensha import is_gonghe, natal_interactions, shensha, ten_god_distribution
 from .wuxing import EARTH, ELEMENTS, FIRE, KE, METAL, SHENG_REV, STEM_ELEMENT, WATER, WOOD
 from .area_reference import percentile, reference_version
 from .i18n import ELEM, L, T, and_l, cap, dot, jn, zs  # noqa: F401
@@ -103,6 +103,12 @@ def _formation(chart) -> str:
     return "dominant" if st.get("support_ratio", 0) > 75 else "ordinary"
 
 
+def _scores_as_he(i: dict) -> bool:
+    """Does this day-pillar interaction count as the spouse palace being combined (日支合)? 六合 and 三合 do; a half-trine does too,
+    unless it holds no cardinal branch (拱合), which the engine lists but never scores (one rule everywhere, 2026-10-15, fix 5)."""
+    return "合" in i["kind"] and not (i["kind"] == "半合" and is_gonghe(i["pair"][0], i["pair"][1]))
+
+
 def life_domains(chart, ys: dict, lang: str = "en") -> list[dict]:
     dist = ten_god_distribution(chart)
     total = sum(dist.values()) or 1
@@ -155,16 +161,21 @@ def life_domains(chart, ys: dict, lang: str = "en") -> list[dict]:
         # over-penalised 刑/害/自刑. 沖 keeps -20 (S1 is a size choice, left alone); 刑/害/自刑 take the review's -5.
         (T("domains.life_domains.14", "spouse palace clashed (日支沖)", lang), -20)
         if any(i["kind"] == "六沖" for i in day_hits) else
-        (T("domains.life_domains.52", "spouse palace pressed (日支刑/害/自刑)", lang), -5)
+        (T("domains.life_domains.52", "spouse palace pressed (日支刑/害/自刑)", lang),
+         # 2026-10-15 (owner): 六害 on its own presses the palace less than 刑 or 自刑 do. -2 when 六害 is the only trigger, -5 otherwise.
+         -2 if all(i["kind"] == "六害" for i in day_hits if i["kind"] in ("六害", "刑", "自刑")) else -5)
         if any(i["kind"] in ("六害", "刑", "自刑") for i in day_hits) else
         (T("domains.life_domains.15", "spouse palace combined (日支合)", lang), 10)
-        if any("合" in i["kind"] for i in day_hits) else
+        if any(_scores_as_he(i) for i in day_hits) else
         (T("domains.life_domains.16", "spouse palace undisturbed", lang), 5),
         # S4 (blind review B, classified FIX, the review's "wrong" row): 官殺混雜 in a woman's chart is a named classical flaw (-8);
         # mixed 正財/偏財 in a man's chart is the milder case (-4). Was a flat -10 for both.
         (T("domains.life_domains.17", "mixed 正/偏 spouse stars", lang), -4) if mixed and chart.sex == "M" else
         (T("domains.life_domains.53", "mixed 官/殺 spouse stars (官殺混雜)", lang), -8) if mixed else
-        (T("domains.life_domains.18", "single clear spouse star", lang), 10) if sp > 0 else
+        # Fix 2 (2026-10-15): "clear" needs the star to hold 8% of the chart or more, the same cut attraction uses for "present". A star under 8%
+        # is "faint" there (-5), so it cannot also be a clear anchor here (+10); under 8% it earns no chip, and only an absent star costs -10.
+        (T("domains.life_domains.18", "single clear spouse star", lang), 10) if sp >= .08 else
+        None if sp > 0 else
         (T("domains.life_domains.19", "no spouse star to anchor", lang), -10),
         (T("domains.life_domains.20", "spouse element is favourable", lang), 10) if spouse_el in ys["favourable"] else
         (T("domains.life_domains.21", "spouse element is avoided", lang), -10) if spouse_el in ys["unfavourable"] else None,

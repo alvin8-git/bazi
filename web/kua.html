@@ -66,7 +66,10 @@ input[type=date]{font:inherit;padding:10px 12px;min-height:44px;border:1.5px sol
 .grp{display:inline-block;margin:10px 0 0;padding:4px 12px;border-radius:999px;font-weight:700;font-size:14px}
 .grp.east{background:var(--ji-bg);color:var(--ji)}.grp.west{background:#f6efdc;color:#7a5f16}
 .note{color:var(--muted);font-size:14px;margin:10px 0 0}
-.compass{display:block;margin:6px auto 0;width:100%;max-width:360px;height:auto}
+.wheel{margin:6px auto 0;width:100%;max-width:440px;aspect-ratio:1/1}
+.wheel .cring{display:block;width:100%;height:auto;margin:0 auto 6px}
+.wheel .tkey{font-size:13px;color:var(--muted);margin:8px 0 0}
+.wheelnote{color:var(--muted);font-size:14px;margin:8px 0 0}
 .legend{display:flex;gap:16px;justify-content:center;font-size:13px;color:var(--muted);margin-top:6px;flex-wrap:wrap}
 .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
 .lists{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -88,6 +91,7 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
 .empty p{margin:0;color:var(--muted)}
 .empty p strong{color:var(--ink)}
 .howread{background:#fbf3e4;border-color:#e8d9b5}
+.howread .lbl{color:#7a5f16}
 .howread p{margin:0}
 .nextstrip{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 .nextstrip img{width:48px;height:48px;border-radius:10px;object-fit:cover;flex:none}
@@ -155,8 +159,9 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
     <div class="sec">
       <h2>Your eight directions</h2>
       <p class="hsub">North is at the top of the compass.</p>
-      <svg id="compass" class="compass" viewBox="0 0 340 340" role="img" aria-label="Eight-sector compass with North at the top"></svg>
-      <div class="legend"><span><i style="background:#cfe9d3;border:1px solid #1e7d32"></i>Good direction</span><span><i style="background:#f8d3cf;border:1px solid #b3261e"></i>Direction to avoid</span></div>
+      <div id="wheel" class="wheel"></div>
+      <div class="legend"><span><i style="background:#e6f0e4;border:1px solid #1e7d32"></i>Good direction</span><span><i style="background:#f7e6e1;border:1px solid #b3261e"></i>Direction to avoid</span></div>
+      <p class="wheelnote">The same wheel as in the full reading. The painting in the middle is your Day Master in its season, worked out from your birth date alone.</p>
     </div>
     <div class="sec lists">
       <div><h2>Best headboard directions</h2><ol id="bed"></ol></div>
@@ -201,34 +206,32 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
     <div class="cta"><a class="btn primary" href="/fengshui">Audit your whole home</a><a class="btn" href="/start">Full BaZi reading</a></div>
   </div>
 </main>
-<div class="learnstrip">Learn more: <a href="/learn/bed-direction-guide">Bed direction guide</a><a href="/learn/eight-house-directions">Eight House directions</a><a href="/learn/what-is-bazi">What is BaZi?</a></div>
+<aside class="learnstrip">Learn more: <a href="/learn/bed-direction-guide">Bed direction guide</a><a href="/learn/eight-house-directions">Eight House directions</a><a href="/learn/what-is-bazi">What is BaZi?</a></aside>
 <footer class="sitefoot">© bazifor.me, deterministic BaZi &amp; fengshui readings.<br>
 <span class="fnav"><a href="/start">BaZi</a> · <a href="/fengshui">Home fengshui</a> · <a href="/baby">Baby names</a> · <a href="/kua">Kua number</a> · <a href="/learn">Learn</a> · <a href="/zh/learn">Guides in Chinese (<span class="zh" lang="zh-Hant" title="zhōng wén">中文</span>)</a> · <a href="/how-it-works">How it works</a> · <a href="/about">About</a> · <a href="/faq">FAQ</a> · <a href="/method">Method</a> · <a href="/author">Author</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/contact">Contact</a> · <a href="/validation">Validation</a></span></footer>
 <script src="/static/glossary.js"></script>
 <script>
 (function(){
   var $=function(i){return document.getElementById(i)};
-  var NS="http://www.w3.org/2000/svg";
-  var ORDER=["N","NE","E","SE","S","SW","W","NW"];
-  function el(n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;return e}
-  function pt(cx,cy,r,deg){var a=(deg-90)*Math.PI/180;return[cx+r*Math.cos(a),cy+r*Math.sin(a)]}
-  function draw(stars){
-    var s=$("compass");while(s.firstChild)s.removeChild(s.firstChild);
-    var cx=170,cy=170,R=150,r=34,by={};stars.forEach(function(x){by[x.dir]=x});
-    var labels=[];   // drawn after every sector so a neighbour never covers a long English name
-    ORDER.forEach(function(d,i){
-      var x=by[d],c=i*45,a0=c-22.5,a1=c+22.5,p1=pt(cx,cy,R,a0),p2=pt(cx,cy,R,a1),p3=pt(cx,cy,r,a1),p4=pt(cx,cy,r,a0);
-      var path="M"+p1+" A"+R+","+R+" 0 0 1 "+p2+" L"+p3+" A"+r+","+r+" 0 0 0 "+p4+" Z";
-      s.appendChild(el("path",{d:path,fill:x.good?"#cfe9d3":"#f8d3cf",stroke:x.good?"#1e7d32":"#b3261e","stroke-width":1.5}));
-      var l=pt(cx,cy,98,c);   // one anchor per sector, three stacked lines (no radial overlap on E/W)
-      labels.push(el("text",{x:l[0],y:l[1]-6,"text-anchor":"middle","font-size":15,"font-weight":700,fill:"#2b2620"},d));
-      var st=el("text",{x:l[0],y:l[1]+12,"text-anchor":"middle","font-size":11,"font-weight":700,fill:x.good?"#14551f":"#8f1d17"},window.GL?GL.english(x.star):x.star);
-      if(window.GL)st.appendChild(el("title",{},x.star+" · "+GL.tip(x.star)));   // pinyin on hover only
-      labels.push(st);
-    });
-    labels.forEach(function(t){s.appendChild(t)});
-    s.appendChild(el("circle",{cx:cx,cy:cy,r:r-4,fill:"#fff",stroke:"#e5ded2"}));
-    s.appendChild(el("text",{x:cx,y:cy+5,"text-anchor":"middle","font-size":14,"font-weight":700,fill:"#8a6d1f"},"N ↑"));
+  /* The eight directions wheel is the personal reading's own component, bazhaiCompass() in /static/app.js. This page loads that file only when a result
+     is ready (window.__WHEEL_ONLY__ keeps it from booting the reading page) and hands it the three things it draws from: the eight stars by palace, the
+     month branch and the Day Master. The last two come from the birth date alone (noon), so the painting in the middle can differ from the reading's when
+     a birth hour moves the day; if that lookup fails the wheel is drawn with a plain centre. */
+  function loadWheel(){
+    if(window.bazhaiCompass)return Promise.resolve();
+    window.__WHEEL_ONLY__=true;
+    return new Promise(function(ok,no){var s=document.createElement("script");s.src="/static/app.js";s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+  }
+  function paintOf(dob,sex){
+    return fetch("/api/pub/name/chart?sex="+sex+"&dob="+encodeURIComponent(dob)).then(function(r){return r.ok?r.json():null}).then(function(j){
+      if(!j)return null;var m=j.pillars.filter(function(p){return p.k==="month"})[0];
+      return m&&j.day_master?{day_master:j.day_master,branch:m.branch}:null}).catch(function(){return null});
+  }
+  function draw(stars,paint){
+    var youxing={};stars.forEach(function(x){youxing[x.palace]=x.star});
+    var c={youxing:youxing,pillars:{month:["",paint?paint.branch:"寅"]}};
+    if(paint)c.day_master=paint.day_master;
+    $("wheel").innerHTML=bazhaiCompass(c);
   }
   function fill(id,items){
     var o=$(id);o.textContent="";
@@ -245,15 +248,16 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
     if(!sx){$("sex-e").textContent="Choose male or female.";bad=true}
     if(bad)return;
     $("go").disabled=true;$("go").textContent="Calculating…";
+    var paintP=paintOf(dob,sx.value),wheelP=loadWheel();
     fetch("/api/pub/kua?dob="+encodeURIComponent(dob)+"&sex="+sx.value).then(function(r){
       return r.json().then(function(j){if(!r.ok)throw new Error(typeof j.detail==="string"?j.detail:"Check the date and try again.");return j})
-    }).then(function(d){
+    }).then(function(d){return Promise.all([paintP,wheelP]).then(function(a){d._paint=a[0];return d})}).then(function(d){
       $("r-num").textContent=d.gua_num;if(window.GL)$("r-gua").innerHTML=GL.zhSpan(d.gua);else $("r-gua").textContent=d.gua;$("r-py").textContent=(window.GL?GL.gloss(d.gua)+" trigram":d.gua_pinyin);
       var g=$("r-grp");g.className="grp "+(d.group==="East"?"east":"west");
       g.textContent=d.group+" group";var z=document.createElement("span");if(window.GL)z.innerHTML=" ("+GL.zhSpan(d.group_zh)+")";else z.textContent=" ("+d.group_zh+")";g.appendChild(z);
       $("r-lichun").textContent="Counted as year "+d.lichun_year+": your year turned on Start of Spring (立春), "+d.lichun_date+".";
       if(window.GL)GL.reset();
-      draw(d.stars);fill("bed",d.best_bed);fill("desk",d.best_desk);
+      draw(d.stars,d._paint);fill("bed",d.best_bed);fill("desk",d.best_desk);
       if(window.GL)GL.tipify($("res"));
       $("empty").hidden=true;$("res").hidden=false;$("res").scrollIntoView({behavior:"smooth",block:"start"});
     }).catch(function(err){$("form-e").textContent=err.message||"Something went wrong. Try again.";$("res").hidden=true})

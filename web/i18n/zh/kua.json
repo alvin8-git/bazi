@@ -131,10 +131,6 @@
   "en": "North is at the top of the compass.",
   "zh": "罗盘上方为北。"
  },
- "kua.034": {
-  "en": "Eight-sector compass with North at the top",
-  "zh": "八方位罗盘，上方为北"
- },
  "kua.035": {
   "en": "Good direction",
   "zh": "吉方"
@@ -490,5 +486,9 @@
  "kua.123": {
   "en": "Validation",
   "zh": "验证方法"
+ },
+ "kua.124": {
+  "en": "The same wheel as in the full reading. The painting in the middle is your Day Master in its season, worked out from your birth date alone.",
+  "zh": "与完整解读中的轮盘相同。中间的画是你的日主与所在季节，仅按出生日期推算。"
  }
 }

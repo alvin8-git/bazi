@@ -8,8 +8,8 @@ the life-domain signals.
 from __future__ import annotations
 
 from .bazi import TEN_GOD_EN, ten_god
-from .shensha import _TRINE, _XING_PAIRS
-from .wuxing import CHONG_MAP, ELEMENT_EN, HAI_MAP, HE_MAP
+from .shensha import CARDINAL as _CARDINAL, _TRINE, _XING_PAIRS, is_gonghe
+from .wuxing import CHONG_MAP, ELEMENT_EN, ELEMENTS, HAI_MAP, HE_MAP
 
 WUHE = {"甲": "己", "己": "甲", "乙": "庚", "庚": "乙", "丙": "辛",
         "辛": "丙", "丁": "壬", "壬": "丁", "戊": "癸", "癸": "戊"}
@@ -32,7 +32,6 @@ _CELL_PTS = {"day": {"六合": 4, "半三合": 3, "六沖": -4, "刑": -2, "六�
              "other": {"六合": 2, "半三合": 1, "六沖": -2, "刑": -1, "六害": -1}}
 _CELL_CAP = 6                                      # bonds and frictions capped separately
 _DM_CHONG, _DM_KE = -5, -2                         # Day Masters 天干相冲 / 相克
-_CARDINAL = set("子午卯酉")                         # a half-trine without one is 拱合: shown, not scored
 _STEM_CHONG = {frozenset(x) for x in ("甲庚", "乙辛", "丙壬", "丁癸")}
 _STEM_KE = {frozenset(x) for x in ("甲戊", "乙己", "丙庚", "丁辛", "戊壬", "己癸")}   # same-polarity 克, not a 冲 or 合
 
@@ -61,7 +60,7 @@ def relation_additions(ca, cb) -> list[dict]:
     # (b) the fourteen unscored cells; a branch pair counts once, and never again when the frozen day-day or
     # year-year rule already scored that same pair (reviewer, 2026-10-10); 拱合 half-trines are not scored
     best, order = {}, 0
-    frozen_pairs = {(ca.pillars[k].branch, cb.pillars[k].branch) for k in ("day", "year") if _branch_rel(ca.pillars[k].branch, cb.pillars[k].branch)}
+    frozen_pairs = {(ca.pillars[k].branch, cb.pillars[k].branch) for k in ("day", "year") if scored_rel(ca.pillars[k].branch, cb.pillars[k].branch)}
     for pa in PALACES:
         for pb in PALACES:
             if (pa == pb == "day") or (pa == pb == "year"):
@@ -71,7 +70,7 @@ def relation_additions(ca, cb) -> list[dict]:
             if not r or (ba, bb) in frozen_pairs:
                 continue
             kind = r[0]
-            if kind == "半三合" and not (set(ba + bb) & _CARDINAL):
+            if kind == "半三合" and is_gonghe(ba, bb):
                 continue
             day = "day" in (pa, pb)
             pts = _CELL_PTS["day" if day else "other"][kind]
@@ -110,6 +109,30 @@ def relation_additions(ca, cb) -> list[dict]:
     return rows
 
 
+def strongest_elements(weights: dict) -> list[str]:
+    """Every element tied for the largest weight, in 木火土金水 order. One element in most charts; two or more in 12.5% of them, and
+    then no element is "the" strongest: picking one by dictionary order (木 first) decided a -6 by the order the table is written in."""
+    top = max(weights.values())
+    return [e for e in ELEMENTS if weights.get(e) == top]
+
+
+def strongest_avoided(weights: dict, taker_unfavourable) -> list[str]:
+    """The strongest element(s) of a chart when the other person avoids them, else []. A tie counts only when EVERY tied element is
+    avoided (2026-10-15, fix 1): if even one of them suits the other person, the chart has no single strongest element to blame."""
+    tied = strongest_elements(weights)
+    return tied if tied and all(e in taker_unfavourable for e in tied) else []
+
+
+def strongest_phrase(tied: list[str]) -> str:
+    """"Wood is X's strongest element" for one, "Wood is X's strongest element, tied with Fire" for a tie (English). The first words keep the shape
+    the pair page reads to draw its red dots, so a tie still draws its first element."""
+    head = f"{ELEMENT_EN[tied[0]]} is {{who}}'s strongest element"
+    if len(tied) == 1:
+        return head
+    rest = [ELEMENT_EN[e] for e in tied[1:]]
+    return head + ", tied with " + (rest[0] if len(rest) == 1 else ", ".join(rest[:-1]) + " and " + rest[-1])
+
+
 def _branch_rel(a: str, b: str) -> tuple[str, int] | None:
     if HE_MAP.get(a) == b:
         return "六合", 1
@@ -124,13 +147,23 @@ def _branch_rel(a: str, b: str) -> tuple[str, int] | None:
     return None
 
 
+def scored_rel(a: str, b: str) -> tuple[str, int] | None:
+    """The branch relation that earns points. Same as _branch_rel, except a half-trine without a cardinal branch (拱合) is shown but
+    not scored: the owner's rule of 2026-10-10, applied to the day and year rules and the stability score too on 2026-10-15
+    (fix 5). Use _branch_rel to list or draw a relation, scored_rel to count it."""
+    r = _branch_rel(a, b)
+    return None if r and r[0] == "半三合" and is_gonghe(a, b) else r
+
+
 def pair_compatibility(ca, cb, ys_a: dict, ys_b: dict) -> dict:
     chips, notes = [], []
     da, db = ca.pillars["day"], cb.pillars["day"]
 
     # 1. spouse palaces (day branches) — the heart of classical 合婚
-    rel = _branch_rel(da.branch, db.branch)
-    if rel is None:
+    rel = scored_rel(da.branch, db.branch)
+    if rel is None and _branch_rel(da.branch, db.branch):
+        chips.append((f"Day branches {da.branch} and {db.branch}: half trine without a cardinal branch (拱合), shown but not scored", 0))
+    elif rel is None:
         chips.append(("Day branches: no link", 0))
     else:
         kind, sign = rel
@@ -141,11 +174,13 @@ def pair_compatibility(ca, cb, ys_a: dict, ys_b: dict) -> dict:
         chips.append((f"Day stems {da.stem} and {db.stem}: Five Combination, a classic stem bond.", 10))
 
     # 2. year branches (生肖 relation)
-    yrel = _branch_rel(ca.pillars["year"].branch, cb.pillars["year"].branch)
+    yrel = scored_rel(ca.pillars["year"].branch, cb.pillars["year"].branch)
     if yrel:
         kind, _ = yrel
         pts = {"六合": 8, "半三合": 8, "六沖": -8, "刑": -4, "六害": -4}[kind]
         chips.append((f"Zodiac years: {kind}", pts))
+    elif _branch_rel(ca.pillars["year"].branch, cb.pillars["year"].branch):      # 拱合: listed, never scored (fix 5, 2026-10-15)
+        chips.append(("Zodiac years: half trine without a cardinal branch (拱合), shown but not scored", 0))
 
     # 3. mutual 用神 supply — does one chart carry what the other needs?
     wa, wb = ca.element_weights, cb.element_weights
@@ -157,10 +192,10 @@ def pair_compatibility(ca, cb, ys_a: dict, ys_b: dict) -> dict:
                 chips.append((f"{giver.person} has plenty of {ELEMENT_EN[e]}, "
                               f"which {taker.person} needs.", 6))
                 n += 1
-        dom = max(gw, key=gw.get)
-        if dom in tys["unfavourable"]:
-            chips.append((f"{ELEMENT_EN[dom]} is {giver.person}'s strongest element, "
-                          f"and {taker.person} does better with less of it.", -6))
+        dom = strongest_avoided(gw, tys["unfavourable"])
+        if dom:
+            chips.append((strongest_phrase(dom).format(who=giver.person) + ", "
+                          f"and {taker.person} does better with less of {'it' if len(dom) == 1 else 'them'}.", -6))
 
     # 4. batch 2: cross-stem 五合, the other grid cells (capped), Day Master stem clash or control
     for row in relation_additions(ca, cb):              # capped rows stay listed at 0, like "no link"

@@ -8,7 +8,7 @@ Citations per rule; MODERN SYNTHESIS marked where a mapping is ours.
 from __future__ import annotations
 
 from .bazi import ten_god
-from .hehun import WUHE, _branch_rel, pair_compatibility
+from .hehun import WUHE, _branch_rel, pair_compatibility, scored_rel, strongest_avoided, strongest_phrase
 from .wuxing import BRANCH_ELEMENT, ELEMENT_EN
 
 PALACES = ("year", "month", "day", "hour")
@@ -368,8 +368,15 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
         return (f"{subject} {verb} {KIND_EN[kind]}",
                 f"{subject} {verb} {KIND_EN[kind]} ({kind})")
 
-    rel = _branch_rel(da.branch, db.branch)
-    if rel is None:
+    rel = scored_rel(da.branch, db.branch)
+    if rel is None and _branch_rel(da.branch, db.branch):               # 拱合: listed, never scored (fix 5, 2026-10-15)
+        add(f"日支半三合 {da.branch}{db.branch}（拱合，仅展示不计分）",
+            f"Day branches {da.branch} and {db.branch}: half trine without a cardinal branch (拱合), shown but not scored",
+            0, "day-day", kind="day",
+            plain=f"their day branches {da.branch} and {db.branch} share a trine without a cardinal branch (拱合), shown but not scored",
+            plain_cn=f"their day branches {da.branch} and {db.branch} share a trine without a cardinal branch (拱合), shown but not scored",
+            relation="", relation_en="half trine without a cardinal branch (拱合), not scored")
+    elif rel is None:
         add("日支中性", "Day branches: no link", 0, "day-day", kind="day",
             plain="their day branches show no link", relation="", relation_en="no link")
     else:
@@ -389,7 +396,7 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
             10, "day-day", skind="五合", kind="stem", plain=s_pl,
             plain_cn=s_pl + " (五合)", relation="五合", relation_en="Five Combination")
     ya, yb = ca.pillars["year"].branch, cb.pillars["year"].branch
-    yrel = _branch_rel(ya, yb)
+    yrel = scored_rel(ya, yb)
     if yrel:
         kind, _ = yrel
         pts = _REL_PTS["year"][kind]
@@ -399,6 +406,12 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
             skind="year合" if pts > 0 else None,
             fr=_friction(kind, "year", ya, yb, na, nb, kid) if pts < 0 else None,
             kind="year", plain=pl, plain_cn=plc, relation=kind, relation_en=KIND_EN[kind])
+    elif _branch_rel(ya, yb):                                            # 拱合: listed, never scored (fix 5, 2026-10-15)
+        gp = f"their zodiac years share a trine without a cardinal branch (拱合), shown but not scored"
+        add(f"年支半三合 {ya}{yb}（拱合，仅展示不计分）",
+            "Zodiac years: half trine without a cardinal branch (拱合), shown but not scored",
+            0, "year-year", kind="year", plain=gp, plain_cn=gp,
+            relation="", relation_en="half trine without a cardinal branch (拱合), not scored")
     adds = relation_additions(ca, cb)                    # batch 2 rows, listed after the supply rows (same order as the score)
     scored_cells = {(r["pillar_a"], r["pillar_b"]): r["delta"] for r in adds if r["kind"] == "cell"}
     wa, wb = ca.element_weights, cb.element_weights
@@ -426,11 +439,12 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
                                       "Using one chart's supply for the other is our own "
                                       "modern addition."})
                 n += 1
-        dom = max(gw, key=gw.get)
-        if dom in tys["unfavourable"]:
-            add(f"{giver.person}主气{dom}为{taker.person}所忌",
-                f"{ELEMENT_EN[dom]} is {giver.person}'s strongest element, and "
-                f"{taker.person}'s chart does better with less of it", -6, "chart-wide",
+        tied = strongest_avoided(gw, tys["unfavourable"])
+        if tied:
+            dom = tied[0]                                     # a tie shows the first tied element in the colour advice
+            add(f"{giver.person}主气{''.join(tied)}为{taker.person}所忌",
+                strongest_phrase(tied).format(who=giver.person) + ", and "
+                f"{taker.person}'s chart does better with less of {'it' if len(tied) == 1 else 'them'}", -6, "chart-wide",
                 element=dom, kind="clash", giver=giver.person, receiver=taker.person,
                 fr={"mechanism": "克/洩",
                     "source_ref": "用神扶抑 (三命通會); lever MODERN SYNTHESIS",
@@ -462,7 +476,8 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
                 "pillar_a": pa, "pillar_b": pb,
                 "branch_a": ca.pillars[pa].branch, "branch_b": cb.pillars[pb].branch,
                 "relation": _bi(kind, ge),
-                "already_scored": (pa == pb == "day") or (pa == pb == "year") or bool(scored_cells.get((pa, pb))),
+                "already_scored": ((pa == pb == "day") or (pa == pb == "year")) and bool(scored_rel(ca.pillars[pa].branch, cb.pillars[pb].branch))
+                                  or bool(scored_cells.get((pa, pb))),
                 "meaning": _bi(
                     f"{na}的{PALACE_ZH[pa][1]}遇{nb}的{PALACE_ZH[pb][1]}——{gz}",
                     f"{na}'s {_pal_en(pa, kid)} meets {nb}'s {_pal_en(pb, kid)}: {ge}.")})
@@ -566,10 +581,13 @@ def modern_layers(ca, cb, ys_a, ys_b) -> dict:
     for x, y, nx, ny, cx in ((ys_a, ys_b, na, nb, ca), (ys_b, ys_a, nb, na, cb)):
         hit = [e for e in x["favourable"] if e in y["unfavourable"]]
         if hit:
-            dom = max(cx.element_weights, key=cx.element_weights.get)
-            same = len(hit) == 1 and hit[0] == dom
-            row(f"{nx}用神{''.join(hit)}为{ny}所忌", f"What helps {nx} ({'/'.join(ELEMENT_EN[e] for e in hit)}) is something {ny} should keep to a minimum.", -4, "classical",
-                "This is the same issue as the strongest-element row in the score working." if same
+            # Fix 7 (2026-10-15): when the one element that helps x is also x's strongest element and y avoids it, the score working
+            # already took -6 for exactly that (the strongest-element row). This row used to take another -4 for the same fact, so it is
+            # listed at 0 and the fact is counted once. Same test as the score: a tie counts only when every tied element is avoided.
+            same = len(hit) == 1 and strongest_avoided(cx.element_weights, y["unfavourable"]) == hit
+            row(f"{nx}用神{''.join(hit)}为{ny}所忌", f"What helps {nx} ({'/'.join(ELEMENT_EN[e] for e in hit)}) is something {ny} should keep to a minimum.",
+                0 if same else -4, "classical",
+                "This is the same issue as the strongest-element row in the score working, so it is listed here and not counted twice." if same
                 else "Fixing one person's chart with it can cost the other in shared rooms.",
                 kind="conflict", giver=nx, receiver=ny, repeats_strongest_element=same)
     delta = sum(r["delta"] for r in rows)
@@ -844,7 +862,7 @@ def sweep_matrix(ca, cb, scored_cells: dict | None = None) -> list[list[dict]]:
         for pb in PALACES:
             ba, bb = ca.pillars[pa].branch, cb.pillars[pb].branch
             r = _branch_rel(ba, bb)
-            frozen = (pa == pb == "day") or (pa == pb == "year")
+            frozen = ((pa == pb == "day") or (pa == pb == "year")) and bool(scored_rel(ba, bb))   # 拱合 is shown, not scored
             pts = scored_cells.get((pa, pb), 0)
             row.append({"pillar_a": pa, "pillar_b": pb, "branch_a": ba, "branch_b": bb,
                         "element_a": BRANCH_ELEMENT.get(ba, ""), "element_b": BRANCH_ELEMENT.get(bb, ""),

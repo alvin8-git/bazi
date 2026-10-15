@@ -8,11 +8,24 @@ not applied to a single chart; it is used only between two charts, in the pair r
 from __future__ import annotations
 
 from .bazi import Chart, favourable_colours
+from .tiaohou import TIAOHOU
 from .wuxing import (BRANCH_ELEMENT, ELEMENT_EN, ELEMENTS, KE, SHENG,
                      SHENG_REV, STEM_ELEMENT)
 from .i18n import ELEM, L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
 WINTER, SUMMER = {"亥", "子", "丑"}, {"巳", "午", "未"}
+
+
+def climate_element(day_master: str, month_branch: str) -> str | None:
+    """The element the 調候 pass promotes for a winter or summer month, or None in a mild month. The blanket rule is 火 in winter and 水 in
+    summer. In four cells of the 窮通寶鑑 table (丙 in 子 and 丑, 辛 in 亥, 庚 in 未) the book's FIRST god is the opposite element, and the
+    blanket rule used to inject the element the book does not want; those four now follow the table (2026-10-15, fix 6). Nothing else changes."""
+    if month_branch not in WINTER and month_branch not in SUMMER:
+        return None
+    blanket = "火" if month_branch in WINTER else "水"
+    opposite = "水" if blanket == "火" else "火"
+    gods = TIAOHOU.get(day_master, {}).get(month_branch, "")
+    return opposite if gods and STEM_ELEMENT[gods[0]] == opposite else blanket
 
 # 病藥. The rule behind it: 《滴天髓》〈中和〉 "有病方為貴，無傷不是奇，格中如去病，財祿兩相隨" (a chart's sickness is named, then cured).
 # Detection reuses interpret.ten_god_insights' pattern cuts (傷官 8% and 正官 5%; 比劫 20% and 財 8%; 財 25% and a weak Day Master), so no new
@@ -50,13 +63,17 @@ def yong_shen(chart: Chart, lang: str = "en") -> dict:
 
     month_branch = chart.pillars["month"].branch
     tiaohou = None
-    if month_branch in WINTER and "火" not in fav:
-        fav = ["火"] + fav
-        tiaohou = T("yongshen.yong_shen.04", "born in winter — chart is cold, 火 (Fire) promoted by 調候", lang)
-    elif month_branch in SUMMER and "水" not in fav:
-        fav = ["水"] + fav
-        tiaohou = T("yongshen.yong_shen.05", "born in summer — chart is hot, 水 (Water) promoted by 調候", lang)
-    elif month_branch in WINTER or month_branch in SUMMER:
+    inj = climate_element(chart.day_master, month_branch)
+    table_led = inj is not None and inj != ("火" if month_branch in WINTER else "水")      # one of the four cells where the table decides
+    if inj and inj not in fav:
+        fav = [inj] + fav
+        if table_led:
+            tiaohou = _table_led_text(chart.day_master, month_branch, inj, lang)
+        elif month_branch in WINTER:
+            tiaohou = T("yongshen.yong_shen.04", "born in winter — chart is cold, 火 (Fire) promoted by 調候", lang)
+        else:
+            tiaohou = T("yongshen.yong_shen.05", "born in summer — chart is hot, 水 (Water) promoted by 調候", lang)
+    elif inj:
         tiaohou = T("yongshen.yong_shen.06", "climatic need already satisfied by 扶抑 selection", lang)
     citations.append({"rule_id": "yongshen-tiaohou", "layer": "yongshen",
                       "source_ref": T("yongshen.yong_shen.07", "調候法 (technique 2 of 4)", lang),
@@ -77,6 +94,15 @@ def yong_shen(chart: Chart, lang: str = "en") -> dict:
             "colours": favourable_colours(fav[:2]),
             "citations": citations,
             "bingyao": by}
+
+
+def _table_led_text(dm: str, mb: str, el: str, lang: str) -> str:
+    """The 調候 line for the four cells where the 窮通寶鑑 table, not the winter/summer rule, names the element (fix 6)."""
+    if mb in WINTER:
+        return T("yongshen.yong_shen.22", f"born in winter, but the 窮通寶鑑 table puts {el} ({ELEMENT_EN[el]}) first for a {dm} Day Master in the {mb} month, "
+                 f"so {el} is promoted by 調候", lang, dm=dm, mb=mb, el=el)
+    return T("yongshen.yong_shen.23", f"born in summer, but the 窮通寶鑑 table puts {el} ({ELEMENT_EN[el]}) first for a {dm} Day Master in the {mb} month, "
+             f"so {el} is promoted by 調候", lang, dm=dm, mb=mb, el=el)
 
 
 def bing_yao(chart: Chart, fav: list[str], unfav: list[str]) -> dict:

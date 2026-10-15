@@ -2770,5 +2770,13 @@
 "appjs.wordsC.band.needs_support": {
 "en": "needs support",
 "zh": "需要扶持"
+},
+"appjs.bazhaiCompass.use": {
+"en": "use",
+"zh": "吉"
+},
+"reading.012": {
+"en": "Learn",
+"zh": "指南"
 }
 }

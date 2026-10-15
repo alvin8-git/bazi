@@ -239,7 +239,7 @@ def suggest_names(ys: dict, surname: str, top: int = 20,
 # Picker universe: 通用规范汉字表 levels 1–2 (data `lvl`), curated POOL first.
 GRID_ORDER = ("天格", "人格", "地格", "外格", "總格")
 ROLE_EN = {"用神": "useful element", "喜": "favourable", "忌": "unfavourable",
-           "闲": "neutral", "未定": "element not set", "姓": "surname"}
+           "未定": "element not set", "姓": "surname"}
 
 
 def strip_pinyin(py: str | None) -> str:
@@ -295,7 +295,9 @@ def _role(el: str | None, ys: dict) -> str:
         return "喜"
     if el in unf:
         return "忌"
-    return "闲"
+    # 扶抑 always files all five elements under 喜 or 忌, so an element is never left over. Score 2026-10-15: the old third
+    # role (闲, 0.3) could not fire and is gone; an element neither list names, which only a hand-made list can produce, is 未定.
+    return "未定"
 
 
 @lru_cache(maxsize=1)
@@ -372,10 +374,13 @@ def slot_candidates(ys: dict, surname: str, given: list[str | None], slot: int,
 
 # ---- quantitative score (0–100) ------------------------------------------------
 # Reviewer's weights (research/naming_method_review_2026-10-04.md §4), adopted 2026-10-04:
-#   用神 30 — mean over the given characters of the role: 用神 1.0 · 喜 0.7 · 闲 0.3 · 未定 0.3 · 忌 0.
+#   用神 30 — mean over the given characters of the role: 用神 1.0 · 喜 0.7 · 未定 0.3 · 忌 0.
+#            (闲 was a fifth role at 0.3 that could never fire: 扶抑 files every element under 喜 or 忌. Removed 2026-10-15.)
 #   五格 25 — only the grids the given name controls (天格 is fixed by the surname).
 #            双名: 人格 8 · 地格 7 · 總格 7 · 外格 3.
 #            单名: 人格 = 總格 (one number) 15 · 地格 10 · 外格 unscored (a fixed convention).
+#            复姓单名: 人格 and 總格 are two numbers (人格 = 姓末 + 名, 總格 = 姓首 + 姓末 + 名), so the 15 that stands for both is
+#            split as the 双名 table splits it: 人格 8 · 總格 7 · 地格 10 · 外格 unscored. Added 2026-10-15; before it 總格 went unscored.
 #            A grid scores its weight when 吉, else 0 (one cited 吉 set; no 大吉/半吉 grades yet).
 #   三才 15 — the mean directional factor of the two relations (see SANCAI_FACTOR).
 #   音韵 5 — how the full name sounds (see SOUND_PENALTY and sound_score).
@@ -385,7 +390,8 @@ def slot_candidates(ys: dict, surname: str, given: list[str | None], slot: int,
 #            disputed 0.6 · inferred from the radical only 0.5 · no element 0.
 GRID_WEIGHT = {"人格": 8, "地格": 7, "總格": 7, "外格": 3}
 GRID_WEIGHT_SINGLE = {"人格": 15, "地格": 10}
-ROLE_SCORE = {"用神": 1.0, "喜": 0.7, "闲": 0.3, "未定": 0.3, "忌": 0.0}
+GRID_WEIGHT_SINGLE_COMPOUND = {"人格": 8, "地格": 10, "總格": 7}   # 复姓单名: 人格 ≠ 總格, so both score
+ROLE_SCORE = {"用神": 1.0, "喜": 0.7, "未定": 0.3, "忌": 0.0}
 CONF_CURATED, CONF_CONTESTED, CONF_RADICAL = 1.0, 0.6, 0.5
 SCORE_MAX = {"yongshen": 30, "wuge": 25, "sancai": 15, "meaning": 10, "sound": 5, "gender": 5, "confidence": 10}
 # 性别 5 — mean over the given characters: neutral or matching the child's sex 1.0, a character
@@ -585,8 +591,14 @@ def interpret_name(given: str) -> dict:
     return {"zh": z, "en": f"A name suggesting: {en[0]}; {en[1]}.", "partial": partial}
 
 
-def grid_weights(n_given: int) -> dict:
-    return GRID_WEIGHT_SINGLE if n_given == 1 else GRID_WEIGHT
+def grid_weights(n_given: int, grids: dict | None = None) -> dict:
+    """The five-grid weights for a name. A single given name normally has 人格 = 總格 (one number, 15). With a compound surname the two
+    differ, so pass the name's grids and 總格 is scored on its own (see GRID_WEIGHT_SINGLE_COMPOUND)."""
+    if n_given != 1:
+        return GRID_WEIGHT
+    if grids is not None and grids["人格"]["num"] != grids["總格"]["num"]:
+        return GRID_WEIGHT_SINGLE_COMPOUND
+    return GRID_WEIGHT_SINGLE
 
 
 def confidence(entry: dict | None) -> float:
@@ -622,7 +634,7 @@ def meaning_value(ch: str) -> float:
 
 def stroke_score(grids: dict, sc: dict, n_given: int = 2) -> tuple[float, float]:
     """(五格 part of 25, 三才 part of 15) — depends on stroke counts only."""
-    wuge = sum(w for k, w in grid_weights(n_given).items() if grids[k]["luck"] == "吉")
+    wuge = sum(w for k, w in grid_weights(n_given, grids).items() if grids[k]["luck"] == "吉")
     return float(wuge), round(SCORE_MAX["sancai"] * sc["score"], 2)
 
 
@@ -640,7 +652,9 @@ def score_name(grids: dict, sc: dict, roles: list[str], confs: list[float] | Non
              "sound": round(SCORE_MAX["sound"] * sound, 1),
              "gender": round(SCORE_MAX["gender"] * sum(genders) / n, 1),
              "confidence": round(SCORE_MAX["confidence"] * sum(confs) / n, 1)}
-    gw = ("Person/Total 15 · Earth 10 (single-character given name 单名; Outer grid unscored)"
+    gw = ("Person 8 · Earth 10 · Total 7 (single-character given name with a compound surname 复姓单名; Outer grid unscored)"
+          if grid_weights(len(roles), grids) is GRID_WEIGHT_SINGLE_COMPOUND else
+          "Person/Total 15 · Earth 10 (single-character given name 单名; Outer grid unscored)"
           if len(roles) == 1 else "Person 8 · Earth 7 · Total 7 · Outer 3")
     total = round(sum(parts.values()), 1)
     _, gzh, gen = next(g for g in GRADES if total >= g[0])
@@ -650,7 +664,7 @@ def score_name(grids: dict, sc: dict, roles: list[str], confs: list[float] | Non
                  "reason": "谐音不雅 — the name sounds like an unlucky or rude word"}
     return {"total": total, "parts": parts, "max": dict(SCORE_MAX), "labels": PART_LABEL,
             "grade": grade,
-            "basis": f"useful god (用神) 30 (useful 1.0 · favourable 0.7 · neutral 0.3 · undetermined 0.3 · unfavourable 0) + "
+            "basis": f"useful god (用神) 30 (useful 1.0 · favourable 0.7 · undetermined 0.3 · unfavourable 0) + "
                      f"Five Grids 25 ({gw}, auspicious only) + "
                      "Three Talents 15 (supports 1.0 · matches 0.8 · drains 0.4 · strains 0.2 · harms 0) + "
                      "meaning 10 (categorised 1.0 · plain 0.5 · adverse 0) + sound 5 (tone pattern, repeated sounds, "
@@ -804,7 +818,7 @@ def _score_notes(gv: list[dict], grids: dict, sc: dict, sex: str | None, snd: di
     from .wuxing import ELEMENT_EN
     cat_en = {c["id"]: c["en"].split(" · ")[0] for c in meaning_categories()}
     blocked = meaning_exclude()
-    w = grid_weights(len(gv))
+    w = grid_weights(len(gv), grids)
     conf = {CONF_CURATED: "curated", CONF_CONTESTED: "curated but disputed", CONF_RADICAL: "inferred from its radical", 0.0: "no element"}
     mism = [c for c in gv if c["mismatch"]]
     who = {"F": "a girl", "M": "a boy"}.get(sex)
@@ -812,7 +826,7 @@ def _score_notes(gv: list[dict], grids: dict, sc: dict, sex: str | None, snd: di
         "yongshen": ", ".join(f"{c['ch']} {ELEMENT_EN[c['el']] if c['el'] in ELEMENT_EN else 'element not set'} ({c['role_en']})"
                               for c in gv),
         "wuge": f"{sum(1 for k in w if grids[k]['luck'] == '吉')} of {len(w)} scored grids auspicious"
-                + (" (Person grid = Total grid for a single-character name)" if len(gv) == 1 else ""),
+                + (" (Person grid = Total grid for a single-character name)" if len(gv) == 1 and w is GRID_WEIGHT_SINGLE else ""),
         "sancai": ", ".join(f"{d['text_en']}: {_SANCAI_VERB[d['kind']]}" for d in sc["detail"]),
         "meaning": ", ".join(f"{c['ch']} " + ("adverse meaning" if c["ch"] in blocked else
                                               cat_en[c["tags"][0]] if c["tags"] else "plain meaning") for c in gv),

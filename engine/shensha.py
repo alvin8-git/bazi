@@ -219,6 +219,12 @@ _XING_PAIRS = {frozenset(p) for p in
                [("寅", "巳"), ("巳", "申"), ("寅", "申"),
                 ("丑", "戌"), ("戌", "未"), ("丑", "未"), ("子", "卯")]}
 _SELF_XING = set("辰午酉亥")
+CARDINAL = set("子午卯酉")   # a half-trine that holds none of these is 拱合: shown, never scored (owner, 2026-10-10; one rule everywhere, 2026-10-15)
+
+
+def is_gonghe(x: str, y: str) -> bool:
+    """True when two branches form a half-trine without a cardinal branch (拱合). The engine lists it but gives it no points."""
+    return _TRINE.get(x) is not None and x != y and _TRINE.get(x) == _TRINE.get(y) and not ({x, y} & CARDINAL)
 
 
 def natal_interactions(chart, lang: str = "en") -> list[dict]:

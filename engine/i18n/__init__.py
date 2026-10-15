@@ -9,6 +9,7 @@ from __future__ import annotations
 import re
 
 from .zh import ZH
+from .zh_extra import ZH_EXTRA   # rows added after the generated table; fold them into it at the next regeneration
 
 MISSING: set[str] = set()
 TRACE: list[str] | None = None   # tests set this to a list to record every id the code asks for
@@ -23,6 +24,8 @@ def tidy(s: str) -> str:
 
 def _zh(id: str, en: str, **slots) -> str:
     z = ZH.get(id)
+    if z is None:
+        z = ZH_EXTRA.get(id)
     if z is None:
         MISSING.add(id)
         return en

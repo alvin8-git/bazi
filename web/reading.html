@@ -30,6 +30,14 @@ body.reading-pub a:focus-visible,body.reading-pub button:focus-visible,body.read
 .reading-pub header.pub a#back{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;margin:0;
   background:#fff;color:#b03a2e;border:1px solid #e5ded2;border-radius:22px;font-size:15px;font-weight:600;text-decoration:none}
 .reading-pub header.pub a#back:hover{border-color:#b03a2e}
+/* round 41: the Learn button beside the language toggle (same 44 px, same border and type, a pill because it carries a word), and the same back button at the foot */
+.reading-pub header.pub a.learnbtn{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-height:44px;margin:0 0 0 8px;padding:0 16px;border:1px solid var(--line,#e5ded2);border-radius:22px;background:transparent;color:var(--ink,#2b2620);font:600 14px/1 system-ui,"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;text-decoration:none;vertical-align:middle}
+.reading-pub header.pub a.learnbtn:hover{background:rgba(0,0,0,.05)}
+.reading-pub header.pub a.learnbtn:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}
+.reading-pub .endback{margin:28px 0 0;text-align:center}
+.reading-pub a#back-end{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;background:#fff;color:#b03a2e;border:1px solid #e5ded2;border-radius:22px;font-size:15px;font-weight:600;text-decoration:none}
+.reading-pub a#back-end:hover{border-color:#b03a2e}
+.reading-pub header.pub h1 .rp-hd{display:inline-flex;align-items:center;gap:10px;vertical-align:middle}
 .reading-pub main{padding:18px 16px 48px;max-width:1180px;margin:0 auto}
 @media(max-width:720px){.reading-pub header.pub h1{font-size:36px}
   .reading-pub header.pub::before{background:rgba(250,247,242,.88)}}
@@ -71,7 +79,7 @@ body.reading-pub a:focus-visible,body.reading-pub button:focus-visible,body.read
   <div class="pub-in">
     <h1>Your reading <small>(<span class="zh" lang="zh-Hans" tabindex="0" title="mìng shū · the reading" data-tip="mìng shū · the reading">命书</span>)</small></h1>
     <span class="hint">Every number and label here is engine output, and the rule behind it is cited beside it.</span>
-    <a id="back" href="/start">&larr; Back to workspace</a><a class="langtoggle" href="/zh/reading" hreflang="zh-CN" lang="zh-CN" aria-label="中文版" data-l="中文" onclick="try{localStorage.setItem('lang','zh')}catch(e){}"></a>
+    <a id="back" href="/start">&larr; Back to workspace</a><a class="langtoggle" href="/zh/reading" hreflang="zh-CN" lang="zh-CN" aria-label="中文版" data-l="中文" onclick="try{localStorage.setItem('lang','zh')}catch(e){}"></a><a class="learnbtn" href="/learn">Learn</a>
   </div>
 </header>
 <main>
@@ -86,6 +94,7 @@ body.reading-pub a:focus-visible,body.reading-pub button:focus-visible,body.read
       <li><a href="/kua">Kua number calculator</a></li>
     </ul>
   </aside>
+  <p class="endback"><a id="back-end" href="/start">&larr; Back to workspace</a></p>
 </main>
 <script>
   fetch("/api/pub/version").then(r => r.json())
@@ -97,7 +106,7 @@ body.reading-pub a:focus-visible,body.reading-pub button:focus-visible,body.read
     token: m[2], idx: +m[3],
     name: "",
   } : null;
-  if (m) document.getElementById("back").href = `${m[1] || ""}/w/${m[2]}`;
+  if (m) ["back", "back-end"].forEach((id) => { document.getElementById(id).href = `${m[1] || ""}/w/${m[2]}`; });   // the workspace link is the page's own token, in the page's own language
 </script>
 <script src="/static/glossary.js"></script>
 <script src="/static/app.js"></script>

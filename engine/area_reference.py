@@ -1,7 +1,7 @@
 """Layer 2 of the life-area scores: the comparison figure.
 
 The classical score (engine/domains.py) is an absolute reading of one chart. This module adds a second, separate number: the
-percentile of that score inside a frozen reference sample of fictional charts (data/area_reference_v1.json, built once by
+percentile of that score inside a frozen reference sample of fictional charts (data/area_reference_v2.json, built once by
 scripts/build_area_reference.py and pinned by a checksum test). It says where a score stands among charts, not how strong the
 area is. The raw score and its band word never read it.
 
@@ -14,8 +14,13 @@ import json
 from functools import lru_cache
 from pathlib import Path
 
-REF_PATH = Path(__file__).resolve().parent.parent / "data" / "area_reference_v1.json"
-ENGINE_VERSION = "life-areas-v2"   # the scoring rules the reference was built against; changing a chip means a new version, not a regeneration
+# History (never overwrite, a rule change means a new reference):
+#   area_reference_v1.json  built against life-areas-v2 (seed 20261011), kept untouched as the historical record. Nothing reads it any more.
+#   area_reference_v2.json  built against life-areas-v3 (seed 20261043), 2026-10-15: the stability "single clear spouse star" cut at 8%,
+#                           拱合 no longer counted as a combined spouse palace, and 六害 on its own at -2 instead of -5.
+REF_V1_PATH = Path(__file__).resolve().parent.parent / "data" / "area_reference_v1.json"
+REF_PATH = Path(__file__).resolve().parent.parent / "data" / "area_reference_v2.json"
+ENGINE_VERSION = "life-areas-v3"   # the scoring rules the reference was built against; changing a chip means a new version, not a regeneration
 
 
 @lru_cache(maxsize=1)
