@@ -29,6 +29,7 @@
 <meta name="twitter:image" content="https://bazifor.me/static/og/start.png">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "@id": "https://bazifor.me/start#app", "image": "https://bazifor.me/static/og/start.png", "name": "bazifor.me BaZi calculator", "url": "https://bazifor.me/start", "description": "Enter a birth date and time: four pillars, day master, useful element and luck cycles, each citing its classical rule. True solar time for any birth place.", "applicationCategory": "LifestyleApplication", "operatingSystem": "Web", "inLanguage": "en", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SGD"}, "featureList": ["Four pillars with hidden stems", "Day master strength", "Useful element (用神) and colours", "Luck cycles and timing windows", "Up to 8 people with harmony comparison"], "publisher": {"@type": "Organization", "@id": "https://bazifor.me/#org", "name": "bazifor.me", "url": "https://bazifor.me"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "@id": "https://bazifor.me/start#breadcrumb", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "bazifor.me", "item": "https://bazifor.me"}, {"@type": "ListItem", "position": 2, "name": "BaZi calculator", "item": "https://bazifor.me/start"}]}</script>
+<link rel="stylesheet" href="/static/brand.css">
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;
   --gold:#8a6d1f;--line:#e5ded2}
@@ -128,6 +129,7 @@ header a#back{background:#fff;color:var(--ink)}
 </head><body>
 <span class="verbadge" id="ver"></span>
 <header>
+  <a class="bzf-brand bzf-top" href="/"><img src="/static/img/brand/icon-64.png" width="28" height="28" alt=""><span>bazifor.me</span></a>
   <h1>Free BaZi calculator (<span class="zh" lang="zh-Hans" tabindex="0" title="bā zì pái pán · BaZi chart calculator" data-tip="bā zì pái pán · BaZi chart calculator">八字排盘</span>)</h1>
   <div class="sub">Deterministic readings that show every classical rule they cite. No generative AI writes them.</div>
   <nav class="top">
@@ -367,8 +369,9 @@ const STEM_EL = { 甲: "木", 乙: "木", 丙: "火", 丁: "火", 戊: "土", �
 const BR_EL = { 子: "水", 丑: "土", 寅: "木", 卯: "木", 辰: "土", 巳: "火", 午: "火", 未: "土", 申: "金", 酉: "金", 戌: "土", 亥: "水" };
 const EL_EN = { 木: "Wood", 火: "Fire", 土: "Earth", 金: "Metal", 水: "Water" };
 const EL_COL = { 木: "#1e8e3e", 火: "#c5221f", 土: "#8a6d1f", 金: "#a67c00", 水: "#1a56b0" };
-const BAND_COL = (s) => s >= 70 ? ["#1e7a3a", "#e9f4ec"] : s >= 55 ? ["#5c4d0f", "#f6f0dc"]
-  : s >= 45 ? ["#8a4b0f", "#f9ebdc"] : ["#a3221d", "#f8e3e1"];   // text on its own tint, all 4.5:1 or better
+/* the band word is the server's (engine/pair_reference.py: percentile bands, with the fixed cut-offs only as its own fallback); the page keys its colours on that word */
+const BAND_COLS = { "very compatible": ["#1e7a3a", "#e9f4ec"], compatible: ["#5c4d0f", "#f6f0dc"], workable: ["#8a4b0f", "#f9ebdc"], "needs effort": ["#a3221d", "#f8e3e1"] };
+const BAND_COL = (band) => BAND_COLS[String(band).replace(/\s*[㐀-鿿]+\s*$/, "").trim().toLowerCase()] || BAND_COLS.workable;   // text on its own tint, all 4.5:1 or better
 
 /* English-first pass: each person card stands alone, so it gets its own glossary context
    (Chinese once in parentheses at first use inside the card, English after) */
@@ -456,7 +459,7 @@ function harmonyTable(h) {
   const rows = names.slice(0, -1).map((a, i) =>
     `<tr><th scope="row">${tag(i)}</th>${names.slice(1).map((b, j) => {
       if (j < i) return "<td></td>";
-      const p = cell[a + "|" + b], [fg, bg] = BAND_COL(p.score), word = String(p.band).replace(/\s*[㐀-鿿]+\s*$/, "");
+      const p = cell[a + "|" + b], [fg, bg] = BAND_COL(p.band), word = String(p.band).replace(/\s*[㐀-鿿]+\s*$/, "");
       return `<td><a class="hcell" href="/w/${token}/pair/${i}/${j + 1}" style="background:${bg};color:${fg}"
         aria-label="${CARD_TEXT.pair(a, b, p.score, word)}"><b>${p.score}</b><span class="hband">${word}</span></a></td>`;
     }).join("")}</tr>`).join("");

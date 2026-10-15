@@ -8,6 +8,7 @@ the life-domain signals.
 from __future__ import annotations
 
 from .bazi import TEN_GOD_EN, ten_god
+from .pair_reference import band_label
 from .shensha import CARDINAL as _CARDINAL, _TRINE, _XING_PAIRS, is_gonghe
 from .wuxing import CHONG_MAP, ELEMENT_EN, ELEMENTS, HAI_MAP, HE_MAP
 
@@ -16,6 +17,24 @@ WUHE = {"甲": "己", "己": "甲", "乙": "庚", "庚": "乙", "丙": "辛",
 KIND_EN = {"六合": "Six Harmony", "半三合": "Half Three Harmony", "六沖": "Six Clash",
            "刑": "Punishment", "六害": "Six Harm"}
 PALACES = ("year", "month", "day", "hour")
+# Points for a scored branch relation, one table for the score and for the ledger that explains it (hehun_detail reads these two).
+DAY_PTS = {"六合": 15, "半三合": 10, "六沖": -15, "刑": -8, "六害": -8}
+# Round 45, P3 (2026-10-15, owner-approved): a year 半三合 scores +5, not +8. +8 equalled the year 六合, so the weaker bond scored as much as the
+# stronger; +5 is close to the day table's ratio (半三合 10 against 六合 15 is two thirds; here 5 against 8 is five eighths).
+YEAR_PTS = {"六合": 8, "半三合": 5, "六沖": -8, "刑": -4, "六害": -4}
+# Round 45, P2 (2026-10-15, owner-approved): "plenty of an element" is 20% of a chart for wood, fire, metal and water, but earth is structurally
+# heavier (辰戌丑未 are all earth, hidden stems included), so a flat 20% fired for an earth need 69.8% of the time against 41.8% to 46.3% for the
+# others. The earth threshold is scaled by earth's typical share. MEAN_SHARE is each element's mean share over the audit's 10,000 fictional
+# charts (seed 20261040, /data/alvin/tmp/score-audit/data/charts.jsonl) and .186 is the figure the flat 20% stands for (wood's mean share).
+MEAN_SHARE = {"木": .186, "火": .184, "土": .258, "金": .185, "水": .187}
+PLENTY_SHARE = {e: 0.2 * m / .186 for e, m in MEAN_SHARE.items()}
+
+
+def plenty(weights: dict, total: float, element: str) -> bool:
+    """Does this chart hold "plenty" of `element` for the supply rule? Its share of the chart reaches the element's own threshold."""
+    return weights.get(element, 0) / total >= PLENTY_SHARE[element]
+
+
 PALACE_ZH = {"year": "年柱", "month": "月柱", "day": "日柱", "hour": "时柱"}
 
 # ---------------------------------------------------------------------------
@@ -167,7 +186,7 @@ def pair_compatibility(ca, cb, ys_a: dict, ys_b: dict) -> dict:
         chips.append(("Day branches: no link", 0))
     else:
         kind, sign = rel
-        pts = {"六合": 15, "半三合": 10, "六沖": -15, "刑": -8, "六害": -8}[kind]
+        pts = DAY_PTS[kind]
         chips.append((f"Day branches {da.branch} and {db.branch}: {kind}, "
                       + ("a bond." if sign > 0 else "a clash."), pts))
     if WUHE.get(da.stem) == db.stem:
@@ -177,7 +196,7 @@ def pair_compatibility(ca, cb, ys_a: dict, ys_b: dict) -> dict:
     yrel = scored_rel(ca.pillars["year"].branch, cb.pillars["year"].branch)
     if yrel:
         kind, _ = yrel
-        pts = {"六合": 8, "半三合": 8, "六沖": -8, "刑": -4, "六害": -4}[kind]
+        pts = YEAR_PTS[kind]
         chips.append((f"Zodiac years: {kind}", pts))
     elif _branch_rel(ca.pillars["year"].branch, cb.pillars["year"].branch):      # 拱合: listed, never scored (fix 5, 2026-10-15)
         chips.append(("Zodiac years: half trine without a cardinal branch (拱合), shown but not scored", 0))
@@ -188,7 +207,7 @@ def pair_compatibility(ca, cb, ys_a: dict, ys_b: dict) -> dict:
     for giver, gw, gt, taker, tys in ((ca, wa, ta, cb, ys_b), (cb, wb, tb, ca, ys_a)):
         n = 0
         for e in tys["favourable"]:
-            if gw.get(e, 0) / gt >= 0.2 and n < 2:
+            if plenty(gw, gt, e) and n < 2:
                 chips.append((f"{giver.person} has plenty of {ELEMENT_EN[e]}, "
                               f"which {taker.person} needs.", 6))
                 n += 1
@@ -202,9 +221,7 @@ def pair_compatibility(ca, cb, ys_a: dict, ys_b: dict) -> dict:
         chips.append((row["plain"][0].upper() + row["plain"][1:] + (" (cap reached)." if row.get("capped") else "."), row["delta"]))
 
     score = max(5, min(95, 50 + sum(d for _, d in chips)))
-    band = ("very compatible 上等" if score >= 70 else
-            "compatible 中上" if score >= 55 else
-            "workable 中" if score >= 45 else "needs effort 需磨合")
+    band = band_label(score)       # round 45: the word comes from the score's standing among 20,000 random pairs (engine/pair_reference.py)
 
     rel_ab = ten_god(da.stem, db.stem)
     rel_ba = ten_god(db.stem, da.stem)

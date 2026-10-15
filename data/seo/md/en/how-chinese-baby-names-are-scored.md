@@ -2,38 +2,36 @@
 
 Canonical: https://bazifor.me/learn/how-chinese-baby-names-are-scored
 Language: en
-Updated: 2026-10-08
+Updated: 2026-10-15
 
 Naming
 
-By BaziMaster 2026-10-08 Updated 2026-10-08
-A Chinese baby name score is a 100-point total built from seven checked parts: the child's favourable element (useful god), the five grids, the three talents, meaning, sound, gender fit and data confidence. Each part has a fixed weight, so the final grade can be traced back to the rule behind every point.
+By BaziMaster 2026-10-08 Updated 2026-10-15
+A Chinese baby name score is a 100-point total built from five checked parts: the child's favourable element (useful god), the five grids, the three talents, sound and gender fit. Character meaning and data confidence are shown beside the score as a measure of how much the engine knows about each character; they do not add to it. Each part has a fixed weight, so the final grade can be traced back to the rule behind every point.
 
 ## How is a name scored out of 100?
 
-A name is rarely good or bad on one test. A character can carry the right element, have an excellent stroke count and still sound like something embarrassing. The builder at bazifor.me therefore scores seven parts, weights them, and adds them up. Nothing is hidden: the weights below are the ones the engine uses.
+A name is rarely good or bad on one test. A character can carry the right element, have an excellent stroke count and still sound like something embarrassing. The builder at bazifor.me therefore scores five parts, weights them, and adds them up. Nothing is hidden: the weights below are the ones the engine uses.
 
 Part | Weight | What it checks | 
 
-Useful god | 30 | Does each character carry an element the child's chart needs? | 
+Useful god | 37.5 | Does each character carry an element the child's chart needs? | 
 
-Five Grids | 25 | Are the five stroke-count grids lucky or unlucky? | 
+Five Grids | 31.25 | Are the five stroke-count grids lucky or unlucky? | 
 
-Three Talents | 15 | Do the elements of the heaven, person and earth grids support each other? | 
+Three Talents | 18.75 | Do the elements of the heaven, person and earth grids support each other? | 
 
-Character meaning (字义) | 10 | What do the characters mean, in 16 meaning categories? | 
+Sound (音韵) | 6.25 | Do the tones and sounds read well, and do they collide with a bad word? | 
 
-Sound (音韵) | 5 | Do the tones and sounds read well, and do they collide with a bad word? | 
+Gender fit (性别) | 6.25 | Does the name fit the child's gender, using character tags? | 
 
-Gender fit (性别) | 5 | Does the name fit the child's gender, using character tags? | 
+The five weights add up to 100. The sum of the weights is the highest total a name can reach. They were scaled by 1.25 from 30, 25, 15, 5 and 5, so the five stay in the same proportion.
 
-Confidence (可信度) | 10 | How far can the engine trust the data behind the other parts? | 
-
-The seven weights add up to 100. The sum of the weights is the highest total a name can reach.
+Two more figures sit beside the score and do not add to it: character meaning (字义), out of 10, shows what the characters mean in 16 meaning categories, and confidence (可信度), out of 10, shows how far the engine can trust the element data behind each character. Both measure how much the engine knows, not how well the name fits the child. Names from the curated pool used to score 6.8 points higher than comparable names from the wider character set for that reason alone; with them out of the total the gap is 0.4.
 
 Key facts
 
-- The seven weights are useful god 30, Five Grids 25, Three Talents 15, character meaning 10, sound 5, gender fit 5 and confidence 10.
+- The five weights are useful god 37.5, Five Grids 31.25, Three Talents 18.75, sound 6.25 and gender fit 6.25. Character meaning and confidence are shown beside the score, out of 10 each, and do not add to it.
 - The grade bands are 90 and above excellent (上佳), 80 and above good (佳), 65 and above fair (可), and below 65 needs a second look (待斟酌).
 - A strong sound hit (an English profanity, a homophone or a severe homophone) caps the grade at needs a second look whatever the total.
 - The sound layer is backed by 303 sound-alike entries, of which 79 are severe, and 72 English reading checks.
@@ -54,7 +52,7 @@ Because it is the part that comes from the child, not from the name. The useful 
 
 - Unfavourable (忌): 0.0
 
-The 30 points scale with these role scores (method note: the exact blending across characters is the engine's). That is why the child's birth moment matters for naming. The chart behind the useful god depends on true solar time. For a birth in Singapore or Malaysia the clock is UTC+8 (UTC+7:30 in Singapore before 1982), and a birth near a two-hour boundary can change the hour pillar and with it the useful god. The year changes at Start of Spring (立春), so a late January or early February birth may belong to the previous year.
+The 37.5 points scale with these role scores (method note: the exact blending across characters is the engine's). That is why the child's birth moment matters for naming. The chart behind the useful god depends on true solar time. For a birth in Singapore or Malaysia the clock is UTC+8 (UTC+7:30 in Singapore before 1982), and a birth near a two-hour boundary can change the hour pillar and with it the useful god. The year changes at Start of Spring (立春), so a late January or early February birth may belong to the previous year.
 
 ## How do the five grids work?
 
@@ -62,7 +60,7 @@ The Five Grids are five numbers derived from the stroke counts of the surname an
 
 Stroke counts come from the Kangxi Dictionary. This matters because the dictionary uses the traditional form: 祿 (prosperity) has more strokes than the simplified 禄, so a name typed in simplified Chinese must be counted in its traditional form.
 
-The 25 points are split across the grids by name length:
+The grid weights below add to 25 and are scaled by 1.25, so Five Grids carries 31.25 of the 100 points. They are split across the grids by name length:
 
 Name type | Person grid | Earth grid | Total grid | Outer grid | Total | 
 
@@ -136,7 +134,7 @@ Score a name for your own baby: free name builder →
 
 ## What does the meaning and gender layer add?
 
-The character meaning part (10 points) looks up each character in a table of 478 tagged characters across 16 meaning categories. The result also produces a short interpretation of the name, written from those tags. The gender fit part (5 points) uses 171 gender tags, which check the name against the child's gender.
+The character meaning figure (out of 10, beside the score) looks up each character in a table of 478 tagged characters across 16 meaning categories. The result also produces a short interpretation of the name, written from those tags. The gender fit part (6.25 points) uses 171 gender tags, which check the name against the child's gender.
 
 ## What does a worked example look like?
 
@@ -144,15 +142,15 @@ Take the fictional girl's name 王禄婷 (traditional 王祿婷), for a child bo
 
 - Strokes (Kangxi Dictionary): 王 4, 祿 13, 婷 12.
 
-- Five grids: Heaven grid 5 (Earth, 土), Person grid 17 (Metal, 金), Earth grid 25 (Earth), Outer grid 13 (Fire, 火), Total grid 29 (Water, 水). All five read auspicious, so Five Grids earns the full 25.
+- Five grids: Heaven grid 5 (Earth, 土), Person grid 17 (Metal, 金), Earth grid 25 (Earth), Outer grid 13 (Fire, 火), Total grid 29 (Water, 水). All five read auspicious, so Five Grids earns the full 31.25.
 
-- Three Talents: Earth Metal Earth. The engine's detail lines read 天土生人金 ×1.0 and 地土生人金 ×0.4, the verdict is centre (中), and the part earns 10.5 of 15.
+- Three Talents: Earth Metal Earth. The engine's detail lines read 天土生人金 ×1.0 and 地土生人金 ×0.4, the verdict is centre (中), and the part earns 13.12 of 18.75.
 
-- Sound: tones 2, 4, 2 (wang, lu, ting). There are no findings, so the part earns the full 5.0.
+- Sound: tones 2, 4, 2 (wang, lu, ting). There are no findings, so the part earns the full 6.25.
 
-- The other parts: useful god 30.0, character meaning 10.0, gender fit 5.0 and confidence 10.0.
+- The other parts: useful god 37.5 and gender fit 6.25. Beside the score, character meaning shows 10.0 of 10 and confidence 10.0 of 10; neither is added.
 
-The total is 30 + 25 + 10.5 + 10 + 5 + 5 + 10 = 95.5, which lands in the excellent band. The only points lost are the 4.5 in the Three Talents part. The engine's reading of the name is: 既福禄双全，又亭亭玉立, or "a name suggesting blessing and prosperity; graceful and poised."
+The total is 37.5 + 31.25 + 13.12 + 6.25 + 6.25 = 94.4, which lands in the excellent band. The only points lost are the 5.6 in the Three Talents part. The engine's reading of the name is: 既福禄双全，又亭亭玉立, or "a name suggesting blessing and prosperity; graceful and poised."
 
 A name scoring 89.9 would read good, one scoring 79 would read fair, and anything under 65 reads needs a second look.
 
@@ -174,7 +172,7 @@ under 65 | Needs a second look | reconsider |
 
 ### How is a Chinese baby name scored out of 100?
 
-The score has seven parts: useful god 30, Five Grids 25, Three Talents 15, character meaning 10, sound 5, gender fit 5 and confidence 10. The weights add up to 100. Nothing is hidden, so each point traces back to a rule.
+The score has five parts: useful god 37.5, Five Grids 31.25, Three Talents 18.75, sound 6.25 and gender fit 6.25. The weights add up to 100. Character meaning and confidence are shown beside the score and do not add to it. Nothing is hidden, so each point traces back to a rule.
 
 ### Why does the useful god carry the most weight in a baby name?
 
@@ -202,6 +200,6 @@ Strokes follow the Kangxi Dictionary, which uses the traditional form of each ch
 
 - Useful god: the four methods support and restrain, climate adjustment, bridging element and illness and remedy, applied to the child's chart under the 子平 (classical BaZi school) true-solar-time convention.
 
-- Sound, meaning, gender and confidence parts, and the grade cap: the engine's own rules and data tables (method note), not classical sources.
+- Sound and gender parts, the meaning and confidence figures, and the grade cap: the engine's own rules and data tables (method note), not classical sources.
 
 Score a name for your own child in the baby name builder at /baby, with the full breakdown and the rule behind every part.

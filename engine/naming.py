@@ -384,8 +384,13 @@ def slot_candidates(ys: dict, surname: str, given: list[str | None], slot: int,
 #            A grid scores its weight when 吉, else 0 (one cited 吉 set; no 大吉/半吉 grades yet).
 #   三才 15 — the mean directional factor of the two relations (see SANCAI_FACTOR).
 #   音韵 5 — how the full name sounds (see SOUND_PENALTY and sound_score).
+#   性别 5 — see below.
+# Round 45, N1 (2026-10-15, owner-approved): 字义 and 可信度 are OUT of the total. They measure how much the engine knows about a
+# character (a curated, categorised character earns both in full), not how well the name fits the child; names from the curated pool
+# scored 6.8 points higher than equivalent names from the wider character universe for that reason alone. The five parts above add to
+# 80, so each is scaled by SCORE_SCALE (100/80) and the total stays out of 100. Both are still computed and shown, beside the score:
 #   字义 10 — mean over the given characters: 1.0 with at least one meaning category,
-#            0.5 allowed but uncategorised, 0 screened as adverse.
+#            0.5 allowed but uncategorised, 0 screened as adverse. (An adverse character still raises a warning.)
 #   可信度 10 — how far each element assignment can be trusted: curated 1.0 · curated but
 #            disputed 0.6 · inferred from the radical only 0.5 · no element 0.
 GRID_WEIGHT = {"人格": 8, "地格": 7, "總格": 7, "外格": 3}
@@ -393,7 +398,10 @@ GRID_WEIGHT_SINGLE = {"人格": 15, "地格": 10}
 GRID_WEIGHT_SINGLE_COMPOUND = {"人格": 8, "地格": 10, "總格": 7}   # 复姓单名: 人格 ≠ 總格, so both score
 ROLE_SCORE = {"用神": 1.0, "喜": 0.7, "未定": 0.3, "忌": 0.0}
 CONF_CURATED, CONF_CONTESTED, CONF_RADICAL = 1.0, 0.6, 0.5
-SCORE_MAX = {"yongshen": 30, "wuge": 25, "sancai": 15, "meaning": 10, "sound": 5, "gender": 5, "confidence": 10}
+SCORE_SCALE = 1.25                                   # 100 / 80: the five scored parts below were worth 30 + 25 + 15 + 5 + 5 before N1
+RAW_MAX = {"yongshen": 30, "wuge": 25, "sancai": 15, "sound": 5, "gender": 5}          # the original weights of the parts that stay
+SCORE_MAX = {k: v * SCORE_SCALE for k, v in RAW_MAX.items()}                          # 37.5 · 31.25 · 18.75 · 6.25 · 6.25 = 100
+DATA_MAX = {"meaning": 10, "confidence": 10}         # shown beside the score as data coverage, never added to it
 # 性别 5 — mean over the given characters: neutral or matching the child's sex 1.0, a character
 #          that reads as the other gender 0 (data/naming/gender_tags.json; no sex given → 1.0).
 PART_LABEL = {"yongshen": {"zh": "用神", "en": "useful element"}, "wuge": {"zh": "五格", "en": "five grids (strokes)"},
@@ -635,7 +643,7 @@ def meaning_value(ch: str) -> float:
 def stroke_score(grids: dict, sc: dict, n_given: int = 2) -> tuple[float, float]:
     """(五格 part of 25, 三才 part of 15) — depends on stroke counts only."""
     wuge = sum(w for k, w in grid_weights(n_given, grids).items() if grids[k]["luck"] == "吉")
-    return float(wuge), round(SCORE_MAX["sancai"] * sc["score"], 2)
+    return float(wuge), round(RAW_MAX["sancai"] * sc["score"], 2)
 
 
 def score_name(grids: dict, sc: dict, roles: list[str], confs: list[float] | None = None,
@@ -646,29 +654,32 @@ def score_name(grids: dict, sc: dict, roles: list[str], confs: list[float] | Non
     meanings = meanings if meanings is not None else [1.0] * len(roles)
     genders = genders if genders is not None else [1.0] * len(roles)
     wuge, san = stroke_score(grids, sc, len(roles))
-    parts = {"yongshen": round(SCORE_MAX["yongshen"] * sum(ROLE_SCORE[r] for r in roles) / n, 1),
-             "wuge": wuge, "sancai": san,
-             "meaning": round(SCORE_MAX["meaning"] * sum(meanings) / n, 1),
-             "sound": round(SCORE_MAX["sound"] * sound, 1),
-             "gender": round(SCORE_MAX["gender"] * sum(genders) / n, 1),
-             "confidence": round(SCORE_MAX["confidence"] * sum(confs) / n, 1)}
+    raw = {"yongshen": round(RAW_MAX["yongshen"] * sum(ROLE_SCORE[r] for r in roles) / n, 1),
+           "wuge": wuge, "sancai": san,
+           "sound": round(RAW_MAX["sound"] * sound, 1),
+           "gender": round(RAW_MAX["gender"] * sum(genders) / n, 1)}
+    parts = {k: round(v * SCORE_SCALE, 2) for k, v in raw.items()}                     # each part on the 100-point scale
+    data = {"meaning": round(DATA_MAX["meaning"] * sum(meanings) / n, 1),              # data coverage: shown, not scored (N1)
+            "confidence": round(DATA_MAX["confidence"] * sum(confs) / n, 1)}
     gw = ("Person 8 · Earth 10 · Total 7 (single-character given name with a compound surname 复姓单名; Outer grid unscored)"
           if grid_weights(len(roles), grids) is GRID_WEIGHT_SINGLE_COMPOUND else
           "Person/Total 15 · Earth 10 (single-character given name 单名; Outer grid unscored)"
           if len(roles) == 1 else "Person 8 · Earth 7 · Total 7 · Outer 3")
-    total = round(sum(parts.values()), 1)
+    total = round(sum(raw.values()) * SCORE_SCALE, 1)
     _, gzh, gen = next(g for g in GRADES if total >= g[0])
     grade = {"zh": gzh, "en": gen}
     if strong_sound:                         # an unlucky homophone or English profanity overrides the total
         grade = {"zh": GRADES[-1][1], "en": GRADES[-1][2], "capped": True,
                  "reason": "谐音不雅 — the name sounds like an unlucky or rude word"}
     return {"total": total, "parts": parts, "max": dict(SCORE_MAX), "labels": PART_LABEL,
+            "data": data, "data_max": dict(DATA_MAX),
             "grade": grade,
-            "basis": f"useful god (用神) 30 (useful 1.0 · favourable 0.7 · undetermined 0.3 · unfavourable 0) + "
-                     f"Five Grids 25 ({gw}, auspicious only) + "
-                     "Three Talents 15 (supports 1.0 · matches 0.8 · drains 0.4 · strains 0.2 · harms 0) + "
-                     "meaning 10 (categorised 1.0 · plain 0.5 · adverse 0) + sound 5 (tone pattern, repeated sounds, "
-                     "unlucky homophones) + gender fit 5 (neutral or matching 1.0 · other gender 0) + element confidence 10 "
+            "basis": f"useful god (用神) 37.5 (useful 1.0 · favourable 0.7 · undetermined 0.3 · unfavourable 0) + "
+                     f"Five Grids 31.25 ({gw}, auspicious only, weights scaled by 1.25) + "
+                     "Three Talents 18.75 (supports 1.0 · matches 0.8 · drains 0.4 · strains 0.2 · harms 0) + "
+                     "sound 6.25 (tone pattern, repeated sounds, unlucky homophones) + gender fit 6.25 "
+                     "(neutral or matching 1.0 · other gender 0). Shown beside the score, not in it: meaning /10 "
+                     "(categorised 1.0 · plain 0.5 · adverse 0) and element confidence /10 "
                      "(curated 1.0 · disputed 0.6 · radical-inferred 0.5)"}
 
 
@@ -681,8 +692,14 @@ def _check_category(cat: str | None) -> str | None:
 def char_value(e: dict, ys: dict, ch: str, sex: str | None = None) -> float:
     """Per-character contribution to the score that does not depend on strokes."""
     return (SCORE_MAX["yongshen"] * ROLE_SCORE[_role(e.get("el"), ys)]
-            + SCORE_MAX["meaning"] * meaning_value(ch) + SCORE_MAX["confidence"] * confidence(e)
-            + SCORE_MAX["gender"] * (not gender_mismatch(ch, sex)))
+            + SCORE_MAX["gender"] * (not gender_mismatch(ch, sex)))      # N1: 字义 and 可信度 no longer count, so they do not rank candidates either
+
+
+def char_data(e: dict, ch: str) -> float:
+    """How well documented a character is: its 字义 credit plus its 可信度 credit, 0 to 2. Round 45 (N1) took both out of the score, so this
+    is only a tie-break for the optimiser: among equally scoring names it still offers the ones with a categorised meaning and a curated
+    element first, which is what the old total did by adding the two in."""
+    return meaning_value(ch) + confidence(e)
 
 
 def _char_extras(ch: str, sex: str | None) -> dict:
@@ -717,7 +734,7 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
     pool = [(ch, e, in_pool) for ch, e, _, in_pool in _universe()
             if e.get("el") in want and ch not in taken and ch not in blocked
             and not gender_mismatch(ch, sex)]
-    pool.sort(key=lambda r: (-char_value(r[1], ys, r[0]), not r[2], r[1]["lvl"], r[1]["ks"], r[0]))
+    pool.sort(key=lambda r: (-char_value(r[1], ys, r[0]), -char_data(r[1], r[0]), not r[2], r[1]["lvl"], r[1]["ks"], r[0]))
 
     def pool_for(i: int) -> list:
         """Characters allowed in box i: the meaning category chosen for that box, if any."""
@@ -735,7 +752,7 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
         if g_ks not in scache:
             grids = five_grids(s_ks, list(g_ks))
             sc = sancai(grids)
-            scache[g_ks] = (grids, sc, sum(stroke_score(grids, sc, len(g_ks))))
+            scache[g_ks] = (grids, sc, SCORE_SCALE * sum(stroke_score(grids, sc, len(g_ks))))      # on the same 100-point scale as char_value
         return scache[g_ks]
 
     def row(chars: list[tuple], changed: list[int]) -> dict:
@@ -778,8 +795,9 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
     else:                                    # both boxes empty: rank stroke pairs first, then expand
         g0, g1 = group(pool_for(0)), group(pool_for(1))
         pairs = sorted(((a, b) for a in g0 for b in g1),
-                       key=lambda ab: -(strokes_part(ab)[2] + char_value(g0[ab[0]][0][1], ys, g0[ab[0]][0][0])
-                                        + char_value(g1[ab[1]][0][1], ys, g1[ab[1]][0][0])))
+                       key=lambda ab: (-(strokes_part(ab)[2] + char_value(g0[ab[0]][0][1], ys, g0[ab[0]][0][0])
+                                         + char_value(g1[ab[1]][0][1], ys, g1[ab[1]][0][0])),
+                                       -(char_data(g0[ab[0]][0][1], g0[ab[0]][0][0]) + char_data(g1[ab[1]][0][1], g1[ab[1]][0][0]))))
         for a, b in pairs[:80]:
             for ra in g0[a][:4]:
                 for rb in g1[b][:4]:
@@ -787,7 +805,7 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
                         rows.append(row([ra, rb], [0, 1]))
     dropped = sum(1 for r in rows if r["strong_sound"])
     rows = [r for r in rows if not r["strong_sound"]]     # never offer a name that sounds like a rude word
-    rows.sort(key=lambda r: (-r["score"]["total"], r["_k"], r["given"]))
+    rows.sort(key=lambda r: (-r["score"]["total"], -sum(r["score"]["data"].values()), r["_k"], r["given"]))
     out, per_first = [], {}
     for r in rows:
         first = r["given"][0]
@@ -805,8 +823,8 @@ def optimise_name(ys: dict, surname: str, given: list[str | None],
         baseline.pop("_k")
     return {"mode": mode, "baseline": baseline, "results": out, "els": sorted(want), "meaning": meaning,
             "dropped_sound": dropped,
-            "criteria": ["total score (useful god 30 + Five Grids 25 + Three Talents 15 + meaning 10 + sound 5 + gender fit 5 + element confidence 10), highest first",
-                         "then curated name characters, common level 1 before 2, fewer strokes",
+            "criteria": ["total score (useful god 37.5 + Five Grids 31.25 + Three Talents 18.75 + sound 6.25 + gender fit 6.25), highest first",
+                         "then the better-documented characters (categorised meaning, curated element), then curated name characters, common level 1 before 2, fewer strokes",
                          "empty boxes filled only from: " + "·".join(sorted(want))]}
 
 

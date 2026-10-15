@@ -31,7 +31,8 @@
 <meta name="twitter:image" content="https://bazifor.me/static/og/home.png">
 <link rel="preload" as="image" href="/static/img/hero-landing-600.jpg" media="(max-width: 759px)">
 <link rel="preload" as="image" href="/static/img/hero-landing.jpg" media="(min-width: 760px)">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "@id": "https://bazifor.me/#org", "image": "https://bazifor.me/static/og/home.png", "name": "八字为我", "url": "https://bazifor.me/zh", "logo": "https://bazifor.me/static/img/brand/icon-512.png", "sameAs": []}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "@id": "https://bazifor.me/#website", "name": "八字为我", "url": "https://bazifor.me/zh", "inLanguage": "zh-Hans", "publisher": {"@id": "https://bazifor.me/#org"}}</script><style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "@id": "https://bazifor.me/#org", "image": "https://bazifor.me/static/og/home.png", "name": "八字为我", "url": "https://bazifor.me/zh", "logo": "https://bazifor.me/static/img/brand/icon-512.png", "sameAs": []}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "@id": "https://bazifor.me/#website", "name": "八字为我", "url": "https://bazifor.me/zh", "inLanguage": "zh-Hans", "publisher": {"@id": "https://bazifor.me/#org"}}</script><link rel="stylesheet" href="/static/brand.css">
+<style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;--seal:#c7301d;
   --gold:#8a6d1f;--line:#e5ded2;--soft:#f3ecdd}
 *{box-sizing:border-box}
@@ -68,22 +69,33 @@ h1{margin:0 0 14px;font:700 34px/1.15 Georgia,"Noto Serif SC","Songti SC","Noto 
 .hero-img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);background:var(--card);display:block}
 .free{margin:14px 0 0;color:var(--muted);font-size:15px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-@media(min-width:760px){.cards .card:first-child{grid-column:1/-1;flex-direction:row}.cards .card:first-child .shot{width:54%;aspect-ratio:auto;border-bottom:0;border-right:1px solid var(--line)}.cards .card:first-child .body{justify-content:center}}
-.chips a{display:inline-flex;align-items:center;min-height:44px;font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:0 13px;text-decoration:none;transition:background .15s,border-color .15s}.chips a:hover{background:var(--soft);border-color:var(--gold)}.card{scroll-margin-top:16px}
+.chips a{display:inline-flex;align-items:center;min-height:44px;font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:0 13px;text-decoration:none;transition:background .15s,border-color .15s}.chips a:hover{background:var(--soft);border-color:var(--gold)}
 /* sections */
 section{padding:34px 0}
 .sec-h{margin:0 0 6px;font:700 26px/1.2 Georgia,"Noto Serif SC","Songti SC","Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;color:var(--ink)}
 .sec-sub{margin:0 0 20px;color:var(--muted);font-size:15.5px;max-width:40em}
 .cards{display:grid;grid-template-columns:1fr;gap:16px}
-@media(min-width:760px){.cards{grid-template-columns:1fr 1fr}}
-.card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
-.card .shot{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+/* One card per row, one link per card: the heading link is stretched over the whole card (::after), so the picture and the text are one 44px+ target and the
+   glossary terms in the text (span.zh, tabindex) sit above it at z-index 2 and keep their own tooltip. The "go" line is a cue, not a control. */
+.card{position:relative;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color .15s}
+.card:hover{border-color:var(--gold)}
+.card .pic{order:-1;border-bottom:1px solid var(--line);background:var(--soft)}
+.card .pic img{display:block;width:100%;height:auto}
 .card .body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
 .card h3{margin:0;font-size:20px;color:var(--ink)}
 .card h3 small{display:block;font-size:13px;font-weight:600;color:var(--gold);letter-spacing:.04em;margin-bottom:2px}
+.card h3 a.cardlink{color:inherit;text-decoration:none}
+.card h3 a.cardlink::after{content:"";position:absolute;inset:0;z-index:1}
+.card h3 a.cardlink:focus-visible{outline:none}
+.card h3 a.cardlink:focus-visible::after{outline:3px solid var(--gold);outline-offset:-3px;border-radius:14px}
 .card p{margin:0;color:#4a433a;font-size:15px;line-height:1.55}
-.card .go{margin-top:auto;padding-top:8px}
-.card .go a{display:inline-flex;align-items:center;min-height:44px;font-weight:700;text-decoration:none}
+.card p .zh{position:relative;z-index:2}
+.card{scroll-margin-top:16px}
+.card .go{display:inline-flex;align-items:center;min-height:44px;margin-top:4px;font-weight:700;color:var(--accent)}
+.card:hover .go{text-decoration:underline;text-underline-offset:3px}
+/* text left, picture right once both fit: the picture needs about 440px to stay readable and the text about 330px, so the card turns into a row at 820px */
+@media(min-width:820px){.card{flex-direction:row;align-items:stretch}.card .body{flex:1 1 0;min-width:0;padding:26px 26px 24px;justify-content:center}
+  .card .pic{order:0;flex:0 0 56%;border-bottom:0;border-left:1px solid var(--line)}.card h3{font-size:22px}}
 /* steps */
 .steps{display:grid;grid-template-columns:1fr;gap:14px;counter-reset:step}
 @media(min-width:760px){.steps{grid-template-columns:1fr 1fr 1fr}}
@@ -132,7 +144,7 @@ footer{padding:28px 16px 32px;color:var(--muted);font-size:14px;border-top:1px s
   .then(v=>{document.getElementById("ver").textContent="v "+v.version}).catch(()=>{});</script>
 <header class="wrap">
   <div class="top">
-    <a class="logo" href="/zh" aria-label="八字为我首页"><img src="/static/img/brand/icon-64.png" width="32" height="32" alt="">八字为我</a>
+    <a class="bzf-brand" href="/zh"><img src="/static/img/brand/icon-64.png" width="28" height="28" alt=""><span>八字为我</span></a>
     <nav class="topnav" aria-label="工具">
       <a href="/zh/start">八字排盘</a><a href="/fengshui">家居风水</a><a href="/zh/kua">命卦</a><a href="/zh/baby">宝宝起名</a><a href="/zh/learn">指南</a>
     </nav><a class="langtoggle" href="/" hreflang="en" lang="en" aria-label="English version" data-l="EN" onclick="try{localStorage.setItem('lang','en')}catch(e){}"></a>
@@ -156,36 +168,36 @@ footer{padding:28px 16px 32px;color:var(--muted);font-size:14px;border-top:1px s
     <p class="sec-sub">四个工具，一个引擎。每条结果都展示推算过程，规则就写在旁边。</p>
     <div class="cards">
       <article class="card" id="card-bazi">
-        <img class="shot" src="/static/img/shots/reading-desktop.jpg" alt="示例解读（虚构人物王大明）：以印章呈现的四柱、开头一句话，以及一幅春日园中泥土的水彩画" width="1280" height="900" loading="lazy">
         <div class="body">
-          <h3><small>个人</small>八字排盘</h3>
+          <h3><a class="cardlink" href="/zh/start"><small>个人</small>八字排盘</a></h3>
           <p>你的四柱、日主、用神、十年大运，以及随之而来的时间窗口，每一条都附上得出它的规则。可添加最多八位家人，一起对比。</p>
-          <div class="go"><a href="/zh/start">开始排盘</a></div>
+          <span class="go">开始排盘</span>
         </div>
+        <div class="pic"><img src="/static/img/shots/reading-desktop.jpg" alt="示例解读（虚构人物王大明）：以印章呈现的四柱、开头一句话，以及一幅春日园中泥土的水彩画" width="1280" height="900" loading="lazy"></div>
       </article>
       <article class="card" id="card-fengshui">
-        <img class="shot" src="/static/img/landing/fengshui-snapshot-zh-960.webp" srcset="/static/img/landing/fengshui-snapshot-zh-480.webp 480w, /static/img/landing/fengshui-snapshot-zh-960.webp 960w, /static/img/landing/fengshui-snapshot-zh-1440.webp 1440w" sizes="(min-width:760px) 496px, calc(100vw - 34px)" alt="示例住宅的分析图：九个已描绘的房间、读数 131.5° 的朝向盘，以及九运九宫玄空飞星图" width="960" height="540" loading="lazy" decoding="async">
         <div class="body">
-          <h3><small>住宅</small>家居风水评估</h3>
+          <h3><a class="cardlink" href="/fengshui"><small>住宅</small>家居风水评估</a></h3>
           <p>上传户型图，设定朝向，描出各个房间，就能得到玄空飞星盘，以及八宅与每个人的契合度，另有组屋或公寓逐个房间的评分。</p>
-          <div class="go"><a href="/fengshui">评估我的家</a></div>
+          <span class="go">评估我的家</span>
         </div>
+        <div class="pic"><picture><source type="image/webp" srcset="/static/img/landing/fengshui-zh-640.webp 640w, /static/img/landing/fengshui-zh-1280.webp 1280w" sizes="(min-width:1072px) 564px, (min-width:820px) 56vw, calc(100vw - 34px)"><img src="/static/img/landing/fengshui-zh-640.jpg" srcset="/static/img/landing/fengshui-zh-640.jpg 640w, /static/img/landing/fengshui-zh-1280.jpg 1280w" sizes="(min-width:1072px) 564px, (min-width:820px) 56vw, calc(100vw - 34px)" alt="家居风水示例结果（示例住宅）：“怎么看”说明卡、画出九个房间并带朝向盘（读数 131.5°）的平面图，以及旁边的九宫玄空飞星图" width="1280" height="900" loading="lazy" decoding="async"></picture></div>
       </article>
       <article class="card" id="card-kua">
-        <img class="shot" src="/static/img/shots/kua-desktop.jpg" alt="命卦示例结果：罗盘上的八个方位，吉位已标出" width="1280" height="900" loading="lazy">
         <div class="body">
-          <h3><small>方位</small>命卦</h3>
+          <h3><a class="cardlink" href="/zh/kua"><small>方位</small>命卦</a></h3>
           <p>由出生日期和性别得出你的命卦，年份以立春为界。页面会列出床位和书桌各自的四个吉方与四个凶方。</p>
-          <div class="go"><a href="/zh/kua">查我的命卦</a></div>
+          <span class="go">查我的命卦</span>
         </div>
+        <div class="pic"><picture><source type="image/webp" srcset="/static/img/landing/kua-zh-640.webp 640w, /static/img/landing/kua-zh-1280.webp 1280w" sizes="(min-width:1072px) 564px, (min-width:820px) 56vw, calc(100vw - 34px)"><img src="/static/img/landing/kua-zh-640.jpg" srcset="/static/img/landing/kua-zh-640.jpg 640w, /static/img/landing/kua-zh-1280.jpg 1280w" sizes="(min-width:1072px) 564px, (min-width:820px) 56vw, calc(100vw - 34px)" alt="命卦示例结果（虚构男性）：命卦 3，东四命，以及八个方位的罗盘，吉位为绿色，凶位为红色" width="1280" height="900" loading="lazy" decoding="async"></picture></div>
       </article>
       <article class="card" id="card-baby">
-        <img class="shot" src="/static/img/shots/baby-card-desktop.jpg" alt="虚构姓名的宝宝名字卡示例，附七项评分条" width="955" height="650" loading="lazy">
         <div class="body">
-          <h3><small>名字</small>宝宝起名工具</h3>
+          <h3><a class="cardlink" href="/zh/baby"><small>名字</small>宝宝起名工具</a></h3>
           <p>从宝宝的命盘到带评分的候选名单：用神、康熙笔画数、五格、字义、与普通话及英文读音相近的谐音，还有可打印的名字卡。</p>
-          <div class="go"><a href="/zh/baby">开始起名</a></div>
+          <span class="go">开始起名</span>
         </div>
+        <div class="pic"><picture><source type="image/webp" srcset="/static/img/landing/baby-zh-640.webp 640w, /static/img/landing/baby-zh-1280.webp 1280w" sizes="(min-width:1072px) 564px, (min-width:820px) 56vw, calc(100vw - 34px)"><img src="/static/img/landing/baby-zh-640.jpg" srcset="/static/img/landing/baby-zh-640.jpg 640w, /static/img/landing/baby-zh-1280.jpg 1280w" sizes="(min-width:1072px) 564px, (min-width:820px) 56vw, calc(100vw - 34px)" alt="虚构名字王禄婷的宝宝名字卡示例：名字及其用神标签、名字寓意，以及五项评分条" width="1280" height="1107" loading="lazy" decoding="async"></picture></div>
       </article>
     </div>
   </section>

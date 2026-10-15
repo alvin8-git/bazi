@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from .shensha import is_gonghe, natal_interactions, shensha, ten_god_distribution
 from .wuxing import EARTH, ELEMENTS, FIRE, KE, METAL, SHENG_REV, STEM_ELEMENT, WATER, WOOD
-from .area_reference import percentile, reference_version
+from .area_reference import band_word, percentile, reference_version
 from .i18n import ELEM, L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
 GROUPS = {"財": ("正財", "偏財"), "官殺": ("正官", "七殺"), "印": ("正印", "偏印"),
@@ -135,8 +135,10 @@ def life_domains(chart, ys: dict, lang: str = "en") -> list[dict]:
         score = max(5, min(95, raw))
         if raw > 95:
             chips = chips + [(T("domains.life_domains.01", "capped at 95", lang), 95 - raw)]
-        band = ("prominent 强" if score >= 70 else
-                "balanced 中" if score >= 45 else "needs support 待补")
+        # A3 (2026-10-15, owner-approved): the band word comes from the percentile against the frozen reference (top 25% prominent, bottom 25%
+        # needs support), not from fixed 70 / 45 cut-offs; band_word falls back to those cut-offs when no reference is loaded.
+        word, _ = band_word(key, score)
+        band = {"prominent": "prominent 强", "balanced": "balanced 中", "needs support": "needs support 待补"}[word]
         signals.append({"key": key, "zh": zh, "en": en, "score": score, "band": band,
                         "percentile": percentile(key, score), "reference_version": reference_version(),   # Layer 2: additive, never replaces score
                         "evidence": [{"label": l, "delta": d} for l, d in chips],
@@ -194,8 +196,9 @@ def life_domains(chart, ys: dict, lang: str = "en") -> list[dict]:
         (T("domains.life_domains.54", "no resource 印 against pressure", lang), -4) if off >= .15 and share(GROUPS["印"]) < .05 else None,
         (T("domains.life_domains.28", "驛馬 mobility star", lang), 5) if "驛馬" in stars else None,
         (T("domains.life_domains.29", "將星 leadership star", lang), 10) if "將星" in stars else None,
-        (T("domains.life_domains.30", "strong Day Master carries pressure", lang), 5) if strong else
-        (T("domains.life_domains.31", "weak Day Master under pressure", lang), -5),
+        # A1 (2026-10-15, owner-approved): the former "strong Day Master carries pressure" +5 / "weak Day Master under pressure" -5 chip is gone.
+        # It counted the strong-or-weak verdict a second time: the power-element chip above already carries it (the favourable and avoided
+        # lists always cover all five elements and are built from the verdict), and the two agreed for 94% of charts.
     ])
 
     wf = share(GROUPS["財"])
@@ -207,8 +210,8 @@ def life_domains(chart, ys: dict, lang: str = "en") -> list[dict]:
         (T("domains.life_domains.38", "wealth element avoided", lang), -10) if wealth_el in ys["unfavourable"] else None,
         (T("domains.life_domains.39", "財庫 wealth vault branch present", lang), 10) if VAULT[wealth_el] in branches else None,
         (T("domains.life_domains.40", "祿神 salary star present", lang), 5) if "祿神" in stars else None,
-        (T("domains.life_domains.41", "strong enough to carry wealth", lang), 10) if strong else
-        (T("domains.life_domains.42", "wealth drains a weak chart — pace it", lang), -5),
+        # A1 (2026-10-15, owner-approved): the former "strong enough to carry wealth" +10 / "wealth drains a weak chart" -5 chip is gone, for
+        # the same reason as in career: the wealth-element chip above already carries the strong-or-weak verdict (agreement 98%).
     ])
 
     res = share(GROUPS["印"])

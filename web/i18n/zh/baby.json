@@ -152,8 +152,8 @@
   "zh": "水彩画：一支毛笔搁在砚台旁，边上有一枝松枝"
  },
  "baby.039": {
-  "en": "Example baby name card for the fictional name 王禄婷 with the seven-part score bars",
-  "zh": "虚构名字王禄婷的示例名字卡，带七项评分条"
+  "en": "Example baby name card for the fictional name 王禄婷 with the five-part score bars",
+  "zh": "虚构名字王禄婷的示例名字卡，带五项评分条"
  },
  "baby.040": {
   "en": "What you will get: the baby's useful elements, a ranked shortlist, and a name card you can print. The card shown is fictional.",
@@ -164,20 +164,20 @@
   "zh": "起名工具会给出什么"
  },
  "baby.042": {
-  "en": "The seven scoring parts, the grades and the sound check.",
-  "zh": "七项评分、等级和读音检查。"
+  "en": "The five scoring parts, the grades and the sound check.",
+  "zh": "五项评分、等级和读音检查。"
  },
  "baby.043": {
-  "en": "Every name you build is scored out of 100 in seven parts, and each part has a fixed weight:",
-  "zh": "你组合出的每个名字都按 100 分制、分七项评分，每项权重固定："
+  "en": "Every name you build is scored out of 100 in five parts, and each part has a fixed weight:",
+  "zh": "你组合出的每个名字都按 100 分制、分五项评分，每项权重固定："
  },
  "baby.044": {
   "en": "Useful god",
   "zh": "用神"
  },
  "baby.045": {
-  "en": "30 (does each character carry an element your baby's BaZi chart needs:",
-  "zh": "30（每个字是否带有宝宝八字所需的五行："
+  "en": "37.5 (does each character carry an element your baby's BaZi chart needs:",
+  "zh": "37.5（每个字是否带有宝宝八字所需的五行："
  },
  "baby.046": {
   "en": "Wood",
@@ -208,48 +208,48 @@
   "zh": "五格"
  },
  "baby.053": {
-  "en": "25 (the five stroke-count grids),",
-  "zh": "25（由笔画数算出的五个格），"
+  "en": "31.25 (the five stroke-count grids),",
+  "zh": "31.25（由笔画数算出的五个格），"
  },
  "baby.054": {
   "en": "Three Talents (",
   "zh": "三才"
  },
  "baby.055": {
-  "en": "15 (whether the elements of the heaven, person and earth grids support each other),",
-  "zh": "15（天格、人格、地格的五行是否相生），"
+  "en": "18.75 (whether the elements of the heaven, person and earth grids support each other),",
+  "zh": "18.75（天格、人格、地格的五行是否相生），"
  },
  "baby.056": {
   "en": "character meaning (",
   "zh": "字义"
  },
  "baby.057": {
-  "en": "10 (what the characters mean, in 16 meaning categories),",
-  "zh": "10（字的含义，分为 16 个含义类别），"
+  "en": "out of 10 (what the characters mean, in 16 meaning categories) and",
+  "zh": "满分 10（字的含义，分为 16 个含义类别），以及"
  },
  "baby.058": {
   "en": "sound (",
   "zh": "读音"
  },
  "baby.059": {
-  "en": "5 (tones, repeated sounds and unlucky homophones),",
-  "zh": "5（声调、重复的音和不吉利的谐音），"
+  "en": "6.25 (tones, repeated sounds and unlucky homophones),",
+  "zh": "6.25（声调、重复的音和不吉利的谐音），"
  },
  "baby.060": {
   "en": "gender fit (",
   "zh": "性别契合"
  },
  "baby.061": {
-  "en": "5 (whether the characters suit a boy or a girl) and",
-  "zh": "5（这些字更适合男孩还是女孩），以及"
+  "en": "6.25 (whether the characters suit a boy or a girl). The weights add up to 100. Two more figures sit beside the score:",
+  "zh": "6.25（这些字更适合男孩还是女孩）。各项权重相加为 100。分数旁边另有两个数字："
  },
  "baby.062": {
   "en": "confidence (",
   "zh": "可信度"
  },
  "baby.063": {
-  "en": "10 (how far the engine can trust the data behind the other parts). The weights add up to 100.",
-  "zh": "10（引擎对其他各项所依据数据的可信程度）。各项权重相加为 100。"
+  "en": "out of 10 (how far the engine can trust the element data behind each character). Neither adds to the score.",
+  "zh": "满分 10（引擎对每个字的五行资料有多大把握）。两者都不计入总分。"
  },
  "baby.064": {
   "en": "The total maps to a grade:",

@@ -13,6 +13,7 @@
 <title>Your reading (命书) | bazifor.me</title>
 <meta name="twitter:title" content="Your reading (命书) | bazifor.me">
 <link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/brand.css">
 <style>
 :root{--seal:#c7301d;--gold2:#8a6d1f;--serif:Georgia,"Noto Serif SC","Songti SC",serif}
 body.reading-pub{background:#faf7f2;color:#2b2620;font-size:16px;line-height:1.55}
@@ -66,6 +67,7 @@ body.reading-pub a:focus-visible,body.reading-pub button:focus-visible,body.read
 
 /* the person's name is the page heading; the old title drops to a small line under it */
 .reading-pub header.pub h1 small.rp-sub1{display:block;margin-top:6px}
+@media print{.reading-pub header.pub a.bzf-brand.bzf-top{display:none}}
 /* the heading gets its second line (the sub-title) when the name arrives; hold that height so the page below does not move */
 .reading-pub header.pub h1{min-height:calc(46px*1.1 + 22px)}
 @media(max-width:720px){.reading-pub header.pub h1{min-height:calc(36px*1.1 + 22px)}}
@@ -77,6 +79,7 @@ body.reading-pub a:focus-visible,body.reading-pub button:focus-visible,body.read
     srcset="/static/img/tools/reading-header-600.jpg 600w, /static/img/tools/reading-header.jpg 1200w"
     sizes="100vw" width="1200" height="400" alt="Ink-and-paper illustration of a four-pillar chart on a writing desk" fetchpriority="high">
   <div class="pub-in">
+    <a class="bzf-brand bzf-top" href="/"><img src="/static/img/brand/icon-64.png" width="28" height="28" alt=""><span>bazifor.me</span></a>
     <h1>Your reading <small>(<span class="zh" lang="zh-Hans" tabindex="0" title="mìng shū · the reading" data-tip="mìng shū · the reading">命书</span>)</small></h1>
     <span class="hint">Every number and label here is engine output, and the rule behind it is cited beside it.</span>
     <a id="back" href="/start">&larr; Back to workspace</a><a class="langtoggle" href="/zh/reading" hreflang="zh-CN" lang="zh-CN" aria-label="中文版" data-l="中文" onclick="try{localStorage.setItem('lang','zh')}catch(e){}"></a><a class="learnbtn" href="/learn">Learn</a>
@@ -84,6 +87,7 @@ body.reading-pub a:focus-visible,body.reading-pub button:focus-visible,body.read
 </header>
 <main>
   <section id="tab-person" class="tabpane active"><p class="hint">computing…</p></section>
+  <p class="bzf-print" aria-hidden="true"><img src="/static/img/brand/icon-64.png" width="16" height="16" alt=""><span>bazifor.me</span></p>
   <aside class="next" aria-labelledby="next-h">
     <div class="next-head">
       <img src="/static/img/tools/motif-next-600.jpg" width="48" height="48" alt="" loading="lazy">

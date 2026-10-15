@@ -29,6 +29,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "@id": "https://bazifor.me/zh/learn/is-bazi-deterministic#article", "headline": "八字是确定性的吗？为什么我们用计算而不是聊天机器人", "description": "八字的计算是确定性的，解读则受规则引导。本文说明哪些部分是精确计算、哪些是解读，为何条条引用规则的读法胜过聊天机器人，附1988年样例逐步演示，并提醒新加坡与马来西亚读者留意本地时间规则。", "datePublished": "2026-09-16", "dateModified": "2026-10-09", "inLanguage": "zh-Hans", "author": {"@type": "Person", "@id": "https://bazifor.me/author#person", "name": "BaziMaster", "url": "https://bazifor.me/author"}, "publisher": {"@type": "Organization", "@id": "https://bazifor.me/#org", "name": "bazifor.me", "url": "https://bazifor.me", "logo": {"@type": "ImageObject", "url": "https://bazifor.me/static/img/brand/icon-512.png", "width": 512, "height": 512}}, "isPartOf": {"@type": "WebSite", "@id": "https://bazifor.me/#website", "name": "bazifor.me", "url": "https://bazifor.me"}, "mainEntityOfPage": "https://bazifor.me/zh/learn/is-bazi-deterministic", "wordCount": 2139, "image": ["https://bazifor.me/static/learn/img/hero/is-bazi-deterministic.jpg", "https://bazifor.me/static/learn/img/deterministic-pipeline.svg"]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "@id": "https://bazifor.me/zh/learn/is-bazi-deterministic#breadcrumb", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "知识库", "item": "https://bazifor.me/zh/learn"}, {"@type": "ListItem", "position": 2, "name": "八字是确定性的吗？为什么我们用计算而不是聊天机器人", "item": "https://bazifor.me/zh/learn/is-bazi-deterministic"}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "@id": "https://bazifor.me/zh/learn/is-bazi-deterministic#faq", "mainEntity": [{"@type": "Question", "name": "八字是确定性的吗？", "acceptedAnswer": {"@type": "Answer", "text": "大部分结构是日历上的算术，在写明的惯例下每一步只有一个正确答案。同样的出生资料或平面图永远得出同样的结果。"}}, {"@type": "Question", "name": "确定性等于宿命论吗？", "acceptedAnswer": {"@type": "Answer", "text": "不等于。这个词描述的是计算，不是你的人生。引擎声明它不预测事件，命盘是起始条件和倾向的地图。"}}, {"@type": "Question", "name": "八字解读有用生成式AI来写吗？", "acceptedAnswer": {"@type": "Answer", "text": "没有。本站的方法声明说得很直白：没有任何生成式AI撰写解读，文字是规则输出加手写指南，每一行输出都注明所用的古典规则。"}}, {"@type": "Question", "name": "新加坡与马来西亚出生的人，哪些时间规则会改变八字？", "acceptedAnswer": {"@type": "Answer", "text": "立春年界、时区和真太阳时都会。新加坡在1982-01-01之前用UTC+7:30，之后用UTC+8，马来西亚自1982-01-01起用UTC+8。换算用经度和时差方程。"}}, {"@type": "Question", "name": "各派对八字有分歧时怎么办？", "acceptedAnswer": {"@type": "Answer", "text": "引擎在传统有分歧之处记录自己的选择，并标为有争议。例如强弱一步，引擎按地支本身的五行读月令，旺相休囚死一派按季节的五行读。"}}]}</script>
+<link rel="stylesheet" href="/static/brand.css">
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;
 --gold:#8a6d1f;--line:#e5ded2;--tint:#f3ecdd;--r:12px}
@@ -45,8 +46,6 @@ display:flex;flex-wrap:wrap;align-items:center;column-gap:4px}
 nav a{color:var(--accent);text-decoration:none;font-weight:600;display:inline-flex;
 align-items:center;min-height:44px;padding:0 8px}
 nav a:hover{text-decoration:underline}
-nav a.brand{color:var(--ink);gap:8px;padding-left:0;margin-right:6px}
-nav a.brand svg{width:26px;height:26px;flex:none}
 nav a.lang{margin-left:auto;color:var(--gold);padding-right:0}
 main{max-width:720px;margin:0 auto;padding:20px 18px 56px}
 h1{font-size:30px;line-height:1.25;color:var(--accent);margin:12px 0 10px;letter-spacing:-.01em}
@@ -118,9 +117,9 @@ padding:18px 16px 28px;background:var(--card)}
 footer .fnav{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;margin-top:6px}
 footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 10px}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
-@media(max-width:480px){nav{padding:0 12px;font-size:14px}nav a{padding:0 6px}nav a.brand{margin-right:0}h1{font-size:26px}h2{font-size:21px}}
+@media(max-width:480px){nav{padding:0 12px;font-size:14px}nav a{padding:0 6px}h1{font-size:26px}h2{font-size:21px}}
 </style></head><body>
-<nav aria-label="Site"><a class="brand" href="/zh"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect width="64" height="64" rx="12" fill="#faf7f2" stroke="#e5ded2"/><g fill="#8a6d1f"><rect x="12" y="16" width="40" height="7" rx="2"/><rect x="12" y="28.5" width="40" height="7" rx="2"/><rect x="12" y="41" width="40" height="7" rx="2"/></g></svg><span>bazifor.me</span></a><a href="/zh/start">个人命盘</a><a href="/fengshui">宅运风水</a><a href="/zh/baby">宝宝起名</a><a href="/zh/learn">知识库</a><a class="lang" href="/learn/is-bazi-deterministic" rel="alternate">English</a></nav>
+<nav aria-label="Site"><a class="bzf-brand" href="/zh"><img src="/static/img/brand/icon-64.png" width="28" height="28" alt=""><span>八字为我</span></a><a href="/zh/start">个人命盘</a><a href="/fengshui">宅运风水</a><a href="/zh/baby">宝宝起名</a><a href="/zh/learn">知识库</a><a class="lang" href="/learn/is-bazi-deterministic" rel="alternate">English</a></nav>
 <main>
 <div class="hero"><img class="photo" src="/static/learn/img/hero/is-bazi-deterministic.jpg" srcset="/static/learn/img/hero/is-bazi-deterministic-600.jpg 600w, /static/learn/img/hero/is-bazi-deterministic.jpg 1200w" sizes="(max-width:760px) 100vw, 720px" alt="" aria-hidden="true" width="1200" height="800" fetchpriority="high"></div>
 <article>

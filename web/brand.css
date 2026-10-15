@@ -1,0 +1,17 @@
+/* The bazifor.me brand mark: the one shared rule behind scripts/brand_mark.py's markup, linked from every page.
+   Seal icon (28 px, size reserved by width/height) and wordmark, one 44 px tall link home.
+   Colours are fixed (not page variables) so the mark reads the same on a card, a band and a plain page: ink on cream is 14:1. */
+a.bzf-brand{display:inline-flex;align-items:center;justify-content:flex-start;gap:10px;box-sizing:border-box;min-width:44px;min-height:44px;margin:0 8px 0 0;padding:0;
+  color:#2b2620;font:700 17px/1.1 system-ui,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;letter-spacing:.01em;text-decoration:none;white-space:nowrap}
+a.bzf-brand img{display:block;width:28px;height:28px;flex:none;border-radius:6px}
+a.bzf-brand:hover span{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+a.bzf-brand:focus-visible{outline:3px solid #8a6d1f;outline-offset:2px;border-radius:6px}
+/* on its own line above a page heading */
+a.bzf-brand.bzf-top{display:flex;width:max-content;max-width:100%;margin:0 0 4px}
+/* the mark on paper: hidden on screen, shown wherever a printed or saved page carries it */
+.bzf-print{display:none}
+@media print{
+  .bzf-print{display:flex!important;align-items:center;gap:6px;margin:10px 0 0;color:#2b2620;font:600 11px/1 system-ui,"Noto Sans SC","PingFang SC",sans-serif;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .bzf-print img{width:16px;height:16px;border-radius:3px}
+}

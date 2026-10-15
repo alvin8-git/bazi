@@ -29,6 +29,7 @@
 <meta name="twitter:image" content="https://bazifor.me/static/og/kua.png">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "@id": "https://bazifor.me/kua#app", "image": "https://bazifor.me/static/og/kua.png", "name": "bazifor.me Kua number calculator", "url": "https://bazifor.me/kua", "description": "Free Kua number calculator: enter your birth date and sex to get your 命卦, East or West group, and best bed and desk directions.", "applicationCategory": "LifestyleApplication", "operatingSystem": "Web", "inLanguage": "en", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SGD"}, "featureList": ["Kua number (命卦) from the 立春-bounded birth year", "East or West group (東四命 / 西四命)", "Eight direction scores from 生氣 to 絕命", "Best headboard and desk directions"], "publisher": {"@type": "Organization", "@id": "https://bazifor.me/#org", "name": "bazifor.me", "url": "https://bazifor.me"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "@id": "https://bazifor.me/kua#breadcrumb", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "bazifor.me", "item": "https://bazifor.me"}, {"@type": "ListItem", "position": 2, "name": "Kua number calculator", "item": "https://bazifor.me/kua"}]}</script>
+<link rel="stylesheet" href="/static/brand.css">
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--seal:#c7301d;--accent:#b03a2e;--gold:#8a6d1f;--line:#e5ded2;
   --ji:#1e7d32;--ji-bg:#e3f4e7;--xiong:#b3261e;--xiong-bg:#fde8e6}
@@ -103,19 +104,67 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
 .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:8px}.tablewrap table{min-width:560px}
 :root{--wood:#187a35;--fire:#c5221f;--earth:#7a601b;--metal:#8a6500;--water:#1a56b0}.el-wood{color:var(--wood)}.el-fire{color:var(--fire)}.el-earth{color:var(--earth)}.el-metal{color:var(--metal)}.el-water{color:var(--water)}.zh[data-tip]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;border-radius:2px}.zh[data-tip]:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}.gl-tip{position:fixed;z-index:9999;max-width:calc(100vw - 32px);width:max-content;background:#2b2620;color:#fff;font:500 14px/1.45 system-ui,sans-serif;padding:6px 10px;border-radius:8px;box-shadow:0 4px 14px rgba(43,38,32,.25);opacity:0;transition:opacity .15s;pointer-events:none;text-align:left;white-space:normal}.gl-tip.on{opacity:1}@media (prefers-reduced-motion:reduce){.gl-tip{transition:none}}
 /*langtoggle*/a.langtoggle{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:44px;height:44px;flex:none;margin:0 0 0 8px;padding:0;border:1px solid var(--line,#e5ded2);border-radius:50%;background:transparent;color:var(--ink,#2b2620);font:600 14px/1 system-ui,"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;text-decoration:none;vertical-align:middle}a.langtoggle::before{content:attr(data-l)}.top .topnav{margin-left:auto}a.langtoggle:hover{background:rgba(0,0,0,.05)}a.langtoggle:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}/*/langtoggle*/</style>
+<style>
+/* round 46, step 1: the reading's painted language on the Kua page. Presentation only: paper tones, the serif display type, a painted header band and
+   hero panel, and the existing paintings (web/img/tools) as decoration (alt="", aria-hidden, size reserved). */
+:root{--paper:#faf8ec;--wash:#f3ecdd;--serif:Georgia,"Noto Serif SC","Songti SC",serif}
+header.kband{position:relative;overflow:hidden;padding:0;background:var(--wash);border-bottom:1px solid var(--line)}
+.kband-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right center;display:block}
+header.kband::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(250,247,242,.96) 0%,rgba(250,247,242,.9) 55%,rgba(250,247,242,.55) 100%)}
+header.kband .in{position:relative;z-index:2;padding:6px 16px 20px}
+header.kband h1{font:700 46px/1.1 var(--serif);letter-spacing:-.01em;margin:4px 0 0}
+.introblock{position:relative;overflow:hidden;display:block;min-height:270px;margin:6px 0 14px;padding:30px 32px;background:var(--paper);border:1px solid #eadfc9;border-radius:18px}
+.introblock>div{position:relative;z-index:2;max-width:46%}
+.introblock .lead:first-child{font:italic 400 21px/1.5 var(--serif);margin-bottom:12px}
+.introblock img{position:absolute;z-index:1;right:0;top:0;width:62%;height:100%;aspect-ratio:auto;object-fit:contain;object-position:72% 50%;border:0;border-radius:0;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40%);mask-image:linear-gradient(90deg,transparent 0,#000 40%)}
+.sec{border-color:#e8dfce;border-radius:16px}
+#res h2,.sec h2{letter-spacing:-.005em}
+/* the Kua number beside its painting: the eight stones are the eight directions */
+.kcard{display:grid;grid-template-columns:1fr 210px;grid-template-areas:"t a" "g g" "n n";column-gap:16px;align-items:center;background:var(--paper);border-color:#eadfc9}
+.kcard .kc-text{grid-area:t}
+.kcard .kc-art{grid-area:a;display:block;width:100%;aspect-ratio:3/2;overflow:hidden;
+  -webkit-mask-image:radial-gradient(ellipse 70% 72% at 50% 50%,#000 58%,transparent 100%);mask-image:radial-gradient(ellipse 70% 72% at 50% 50%,#000 58%,transparent 100%)}
+.kcard .kc-art img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.55)}
+.kcard .grp{grid-area:g;justify-self:stretch}
+.kcard .note{grid-area:n}
+.kcard .big .n{font:700 92px/1 var(--serif)}
+.wheelcard{background:radial-gradient(ellipse 70% 52% at 50% 56%,#f6efdf 0,#fffdf9 72%)}
+.howread,.howto{display:grid;grid-template-columns:64px 1fr;column-gap:16px;align-items:start}
+.howread>.motif,.howto>.motif{grid-column:1;grid-row:1/span 3;width:64px;height:64px;border-radius:14px;object-fit:cover}
+.howread>:not(.motif),.howto>:not(.motif){grid-column:2}
+.howread a,.howto a,.sec p a{color:var(--accent)}
+.lists ol{font-family:var(--serif)}
+.lists li small{font-family:system-ui,"Noto Sans SC",sans-serif}
+@media (max-width:700px){
+  header.kband h1{font-size:34px}
+  header.kband::before{background:rgba(250,247,242,.9)}
+  .introblock{min-height:0;padding:22px 18px 0}
+  .introblock>div{max-width:none}
+  .introblock .lead:first-child{font-size:19px}
+  .introblock img{position:relative;display:block;width:calc(100% + 36px);height:auto;margin:6px -18px 0;aspect-ratio:2/1;object-fit:cover;object-position:center;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 34%);mask-image:linear-gradient(180deg,transparent 0,#000 34%)}
+}
+@media (max-width:560px){
+  .kcard{grid-template-columns:1fr 128px}
+  .kcard .big .n{font-size:68px}
+  .howread,.howto{grid-template-columns:48px 1fr;column-gap:12px}
+  .howread>.motif,.howto>.motif{width:48px;height:48px}
+}
+</style>
 <link rel="preload" as="image" href="/static/img/tools/kua-intro-600.jpg" media="(max-width: 759px)">
 <link rel="preload" as="image" href="/static/img/tools/kua-intro.jpg" media="(min-width: 760px)">
 </head><body>
-<header><div class="in"><p class="sub"><a href="/">bazifor.me</a> · <a href="/fengshui">Home fengshui</a> · <a href="/start">BaZi</a> · <a href="/learn">Learn</a><a class="langtoggle" href="/zh/kua" hreflang="zh-CN" lang="zh-CN" aria-label="中文版" data-l="中文" onclick="try{localStorage.setItem('lang','zh')}catch(e){}"></a></p></div></header>
+<header class="kband"><img class="kband-art" src="/static/img/tools/reading-header-600.jpg" srcset="/static/img/tools/reading-header-600.jpg 600w, /static/img/tools/reading-header.jpg 1200w" sizes="100vw" width="1200" height="400" alt="" aria-hidden="true" fetchpriority="low" decoding="async"><div class="in"><a class="bzf-brand bzf-top" href="/"><img src="/static/img/brand/icon-64.png" width="28" height="28" alt=""><span>bazifor.me</span></a><p class="sub"><a href="/fengshui">Home fengshui</a> · <a href="/start">BaZi</a> · <a href="/learn">Learn</a><a class="langtoggle" href="/zh/kua" hreflang="zh-CN" lang="zh-CN" aria-label="中文版" data-l="中文" onclick="try{localStorage.setItem('lang','zh')}catch(e){}"></a></p>
+  <h1>Kua number calculator (<span class="zh" lang="zh-Hant" tabindex="0" title="mìng guà · Kua number" data-tip="mìng guà · Kua number">命卦</span>)</h1></div></header>
 <main>
-  <h1>Kua number calculator (<span class="zh" lang="zh-Hant" tabindex="0" title="mìng guà · Kua number" data-tip="mìng guà · Kua number">命卦</span>)</h1>
   <div class="introblock">
     <div>
       <p class="lead">This page works out your Kua number, the Eight Mansions label for you.</p>
       <p class="lead">You need only your birth date and sex.</p>
       <p class="lead">You get your number, East or West group and eight directions.</p>
     </div>
-    <img src="/static/img/tools/kua-intro-600.jpg" srcset="/static/img/tools/kua-intro-600.jpg 600w, /static/img/tools/kua-intro.jpg 1200w" sizes="(max-width:700px) 100vw, 420px" width="1200" height="800" alt="Illustration of a bedroom with a compass showing the eight directions around a bed and desk" fetchpriority="high" decoding="async">
+    <img src="/static/img/tools/kua-intro-600.jpg" srcset="/static/img/tools/kua-intro-600.jpg 600w, /static/img/tools/kua-intro.jpg 1200w" sizes="(max-width:700px) 100vw, 420px" width="1200" height="800" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
   </div>
 
   <div class="sec">
@@ -147,16 +196,18 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
 
   <section id="res" hidden aria-live="polite">
     <div class="sec howread">
+      <img class="motif" src="/static/img/tools/motif-rule-600.jpg" width="600" height="600" alt="" aria-hidden="true" loading="lazy" decoding="async">
       <p class="lbl">How to read this</p>
       <p>Green sectors are favourable and red sectors are to avoid. The headboard direction is the direction the top of your head points when you lie in bed. The <a href="/fengshui">whole-home audit</a> also weighs the sector each room sits in.</p>
     </div>
-    <div class="sec">
-      <h2>Your Kua number</h2>
-      <div class="big"><span class="n" id="r-num"></span><span class="t"><span id="r-gua"></span> <small id="r-py"></small></span></div>
+    <div class="sec kcard">
+      <div class="kc-text"><h2>Your Kua number</h2>
+      <div class="big"><span class="n" id="r-num"></span><span class="t"><span id="r-gua"></span> <small id="r-py"></small></span></div></div>
+      <span class="kc-art" aria-hidden="true"><img src="/static/img/tools/kua-empty-600.jpg" srcset="/static/img/tools/kua-empty-600.jpg 600w, /static/img/tools/kua-empty.jpg 1200w" sizes="460px" width="600" height="400" alt="" loading="lazy" decoding="async"></span>
       <div class="grp" id="r-grp"></div>
       <p class="note" id="r-lichun"></p>
     </div>
-    <div class="sec">
+    <div class="sec wheelcard">
       <h2>Your eight directions</h2>
       <p class="hsub">North is at the top of the compass.</p>
       <div id="wheel" class="wheel"></div>
@@ -167,7 +218,8 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
       <div><h2>Best headboard directions</h2><ol id="bed"></ol></div>
       <div><h2>Best desk facing</h2><ol id="desk"></ol></div>
     </div>
-    <div class="sec">
+    <div class="sec howto">
+      <img class="motif" src="/static/img/tools/motif-steps-600.jpg" width="600" height="600" alt="" aria-hidden="true" loading="lazy" decoding="async">
       <h2>How to use it</h2>
       <ul class="how">
         <li>Put the head of the bed on one of your good directions, against a solid wall, not under a window or in line with the door.</li>

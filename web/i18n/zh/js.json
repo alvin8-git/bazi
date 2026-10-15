@@ -188,8 +188,8 @@
   "zh": "两个空格的最佳用字"
  },
  "t.020": {
-  "en": "ranked by score: useful god 30 + Five Grids 25 + Three Talents 15 + character meaning 10 + sound 5 + gender fit 5 + confidence 10",
-  "zh": "按分数排序：用神 30 + 五格 25 + 三才 15 + 字义 10 + 读音 5 + 性别契合 5 + 可信度 10"
+  "en": "ranked by score: useful god 37.5 + Five Grids 31.25 + Three Talents 18.75 + sound 6.25 + gender fit 6.25; ties go to the better-documented characters",
+  "zh": "按分数排序：用神 37.5 + 五格 31.25 + 三才 18.75 + 读音 6.25 + 性别契合 6.25；同分时资料更完整的字排在前面"
  },
  "t.021": {
   "en": "elements",
@@ -394,5 +394,9 @@
  "t.071": {
   "en": "delete ✕",
   "zh": "删除 ✕"
+ },
+ "t.072": {
+  "en": "Beside the score, not in it",
+  "zh": "分数旁边，不计入总分"
  }
 }

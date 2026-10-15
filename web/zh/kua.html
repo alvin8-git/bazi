@@ -29,7 +29,8 @@
 <meta name="twitter:title" content="命卦计算器（八宅）/ bazifor.me">
 <meta name="twitter:description" content="免费命卦计算器：输入出生日期和性别，即可得到你的命卦、东四命或西四命，以及最佳的床头和书桌朝向。">
 <meta name="twitter:image" content="https://bazifor.me/static/og/kua.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "@id": "https://bazifor.me/zh/kua#app", "image": "https://bazifor.me/static/og/kua.png", "name": "八字为我 命卦计算器", "url": "https://bazifor.me/zh/kua", "description": "免费命卦计算器：输入出生日期和性别，即可得到你的命卦、东四命或西四命，以及最佳的床头和书桌朝向。", "applicationCategory": "LifestyleApplication", "operatingSystem": "Web", "inLanguage": "zh-Hans", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SGD"}, "featureList": ["Kua number (命卦) from the 立春-bounded birth year", "East or West group (東四命 / 西四命)", "Eight direction scores from 生氣 to 絕命", "最佳床头与书桌朝向"], "publisher": {"@type": "Organization", "@id": "https://bazifor.me/#org", "name": "八字为我", "url": "https://bazifor.me/zh"}}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "@id": "https://bazifor.me/kua#breadcrumb", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "八字为我", "item": "https://bazifor.me/zh"}, {"@type": "ListItem", "position": 2, "name": "命卦计算器", "item": "https://bazifor.me/zh/kua"}]}</script><style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "@id": "https://bazifor.me/zh/kua#app", "image": "https://bazifor.me/static/og/kua.png", "name": "八字为我 命卦计算器", "url": "https://bazifor.me/zh/kua", "description": "免费命卦计算器：输入出生日期和性别，即可得到你的命卦、东四命或西四命，以及最佳的床头和书桌朝向。", "applicationCategory": "LifestyleApplication", "operatingSystem": "Web", "inLanguage": "zh-Hans", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SGD"}, "featureList": ["Kua number (命卦) from the 立春-bounded birth year", "East or West group (東四命 / 西四命)", "Eight direction scores from 生氣 to 絕命", "最佳床头与书桌朝向"], "publisher": {"@type": "Organization", "@id": "https://bazifor.me/#org", "name": "八字为我", "url": "https://bazifor.me/zh"}}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "@id": "https://bazifor.me/kua#breadcrumb", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "八字为我", "item": "https://bazifor.me/zh"}, {"@type": "ListItem", "position": 2, "name": "命卦计算器", "item": "https://bazifor.me/zh/kua"}]}</script><link rel="stylesheet" href="/static/brand.css">
+<style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--seal:#c7301d;--accent:#b03a2e;--gold:#8a6d1f;--line:#e5ded2;
   --ji:#1e7d32;--ji-bg:#e3f4e7;--xiong:#b3261e;--xiong-bg:#fde8e6}
 *{box-sizing:border-box}
@@ -103,21 +104,69 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
 .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:8px}.tablewrap table{min-width:560px}
 :root{--wood:#187a35;--fire:#c5221f;--earth:#7a601b;--metal:#8a6500;--water:#1a56b0}.el-wood{color:var(--wood)}.el-fire{color:var(--fire)}.el-earth{color:var(--earth)}.el-metal{color:var(--metal)}.el-water{color:var(--water)}.zh[data-tip]{cursor:help;text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;border-radius:2px}.zh[data-tip]:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}.gl-tip{position:fixed;z-index:9999;max-width:calc(100vw - 32px);width:max-content;background:#2b2620;color:#fff;font:500 14px/1.45 system-ui,sans-serif;padding:6px 10px;border-radius:8px;box-shadow:0 4px 14px rgba(43,38,32,.25);opacity:0;transition:opacity .15s;pointer-events:none;text-align:left;white-space:normal}.gl-tip.on{opacity:1}@media (prefers-reduced-motion:reduce){.gl-tip{transition:none}}
 /*langtoggle*/a.langtoggle{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:44px;height:44px;flex:none;margin:0 0 0 8px;padding:0;border:1px solid var(--line,#e5ded2);border-radius:50%;background:transparent;color:var(--ink,#2b2620);font:600 14px/1 system-ui,"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;text-decoration:none;vertical-align:middle}a.langtoggle::before{content:attr(data-l)}.top .topnav{margin-left:auto}a.langtoggle:hover{background:rgba(0,0,0,.05)}a.langtoggle:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}/*/langtoggle*/</style>
+<style>
+/* round 46, step 1: the reading's painted language on the Kua page. Presentation only: paper tones, the serif display type, a painted header band and
+   hero panel, and the existing paintings (web/img/tools) as decoration (alt="", aria-hidden, size reserved). */
+:root{--paper:#faf8ec;--wash:#f3ecdd;--serif:Georgia,"Noto Serif SC","Songti SC","Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif}
+header.kband{position:relative;overflow:hidden;padding:0;background:var(--wash);border-bottom:1px solid var(--line)}
+.kband-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right center;display:block}
+header.kband::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(250,247,242,.96) 0%,rgba(250,247,242,.9) 55%,rgba(250,247,242,.55) 100%)}
+header.kband .in{position:relative;z-index:2;padding:6px 16px 20px}
+header.kband h1{font:700 46px/1.1 var(--serif);letter-spacing:-.01em;margin:4px 0 0}
+.introblock{position:relative;overflow:hidden;display:block;min-height:270px;margin:6px 0 14px;padding:30px 32px;background:var(--paper);border:1px solid #eadfc9;border-radius:18px}
+.introblock>div{position:relative;z-index:2;max-width:46%}
+.introblock .lead:first-child{font:italic 400 21px/1.5 var(--serif);margin-bottom:12px}
+.introblock img{position:absolute;z-index:1;right:0;top:0;width:62%;height:100%;aspect-ratio:auto;object-fit:contain;object-position:72% 50%;border:0;border-radius:0;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40%);mask-image:linear-gradient(90deg,transparent 0,#000 40%)}
+.sec{border-color:#e8dfce;border-radius:16px}
+#res h2,.sec h2{letter-spacing:-.005em}
+/* the Kua number beside its painting: the eight stones are the eight directions */
+.kcard{display:grid;grid-template-columns:1fr 210px;grid-template-areas:"t a" "g g" "n n";column-gap:16px;align-items:center;background:var(--paper);border-color:#eadfc9}
+.kcard .kc-text{grid-area:t}
+.kcard .kc-art{grid-area:a;display:block;width:100%;aspect-ratio:3/2;overflow:hidden;
+  -webkit-mask-image:radial-gradient(ellipse 70% 72% at 50% 50%,#000 58%,transparent 100%);mask-image:radial-gradient(ellipse 70% 72% at 50% 50%,#000 58%,transparent 100%)}
+.kcard .kc-art img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.55)}
+.kcard .grp{grid-area:g;justify-self:stretch}
+.kcard .note{grid-area:n}
+.kcard .big .n{font:700 92px/1 var(--serif)}
+.wheelcard{background:radial-gradient(ellipse 70% 52% at 50% 56%,#f6efdf 0,#fffdf9 72%)}
+.howread,.howto{display:grid;grid-template-columns:64px 1fr;column-gap:16px;align-items:start}
+.howread>.motif,.howto>.motif{grid-column:1;grid-row:1/span 3;width:64px;height:64px;border-radius:14px;object-fit:cover}
+.howread>:not(.motif),.howto>:not(.motif){grid-column:2}
+.howread a,.howto a,.sec p a{color:var(--accent)}
+.lists ol{font-family:var(--serif)}
+.lists li small{font-family:system-ui,"Noto Sans SC",sans-serif}
+@media (max-width:700px){
+  header.kband h1{font-size:34px}
+  header.kband::before{background:rgba(250,247,242,.9)}
+  .introblock{min-height:0;padding:22px 18px 0}
+  .introblock>div{max-width:none}
+  .introblock .lead:first-child{font-size:19px}
+  .introblock img{position:relative;display:block;width:calc(100% + 36px);height:auto;margin:6px -18px 0;aspect-ratio:2/1;object-fit:cover;object-position:center;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 34%);mask-image:linear-gradient(180deg,transparent 0,#000 34%)}
+}
+@media (max-width:560px){
+  .kcard{grid-template-columns:1fr 128px}
+  .kcard .big .n{font-size:68px}
+  .howread,.howto{grid-template-columns:48px 1fr;column-gap:12px}
+  .howread>.motif,.howto>.motif{width:48px;height:48px}
+}
+</style>
 <link rel="preload" as="image" href="/static/img/tools/kua-intro-600.jpg" media="(max-width: 759px)">
 <link rel="preload" as="image" href="/static/img/tools/kua-intro.jpg" media="(min-width: 760px)">
 <style id="zhx">html[lang="zh-CN"] body{font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC","Noto Sans SC","Source Han Sans SC",sans-serif}nav a{white-space:nowrap}.tagline{margin:-6px 0 14px;font-size:17px;letter-spacing:.04em;color:#5f574e}.zhnotice{margin:12px 0;padding:10px 14px;border:1px solid var(--line,#e5ded2);border-radius:8px;background:#fff7e0;color:#5c4d0f;font-size:15px;line-height:1.5}</style>
 </head><body>
 <script>window.I18N = {"reading":{"appjs.BAZHAI_EN.生氣.0":"生气","appjs.BAZHAI_EN.生氣.1":"最吉的方位：成长、精力、机会，适合放床头、书桌朝向和大门","appjs.BAZHAI_EN.天醫.0":"天医","appjs.BAZHAI_EN.天醫.1":"主健康与恢复；身体不适时是不错的卧室方位","appjs.BAZHAI_EN.延年.0":"延年","appjs.BAZHAI_EN.延年.1":"主和睦与人缘；有利夫妻感情和家人关系","appjs.BAZHAI_EN.伏位.0":"伏位","appjs.BAZHAI_EN.伏位.1":"安稳、平顺地向前；适合安静的工作和休息","appjs.BAZHAI_EN.禍害.0":"祸害","appjs.BAZHAI_EN.禍害.1":"主小麻烦和小摩擦；放储物间或卫生间无妨","appjs.BAZHAI_EN.六煞.0":"六煞","appjs.BAZHAI_EN.六煞.1":"主冲突与阻碍；床不要放在这里","appjs.BAZHAI_EN.五鬼.0":"五鬼","appjs.BAZHAI_EN.五鬼.1":"主不稳、争吵、破财；这里少安排活动","appjs.BAZHAI_EN.絕命.0":"绝命","appjs.BAZHAI_EN.絕命.1":"最不利的方位；不宜在这里久睡或久坐","appjs.DIR_WORD_EN.N":"北","appjs.DIR_WORD_EN.S":"南","appjs.DIR_WORD_EN.E":"东","appjs.DIR_WORD_EN.W":"西","appjs.DIR_WORD_EN.NE":"东北","appjs.DIR_WORD_EN.NW":"西北","appjs.DIR_WORD_EN.SE":"东南","appjs.DIR_WORD_EN.SW":"西南","appjs.buildCompass.001":"八宅九宫格","appjs.buildCompass.002":"床和书桌朝向<b>{dirOf}</b>（生气）；久坐的位置避开<b>{dirOf_2}</b>（绝命）。","appjs.buildCompass.004":"<b>两个层面：</b>八宅评定的是朝向，也就是人面朝哪里、床头和久留之处怎么定；用神评定的是五行内容，也就是什么颜色、材质和行业能滋养命盘。一个方位即使是绿色吉方、五行却对你不利，仍然是值得面朝的好方位，只要用用神的色系来布置。命卦只由出生年份决定，用神这一层才是因人而异的。","appjs.buildCompass.005":"喜用{elbs_fav} ·忌{elbs_unf} ·颜色<b>{cols_join}</b>","appjs.buildCompass.006":"<b>用神排序：</b>{c_medicine_rank}","appjs.buildCompass.007":"西南·东北","appjs.buildCompass.008":"坤·艮","appjs.buildCompass.009":"东墙，植物与木质陈设，绿色点缀","appjs.buildCompass.010":"南墙，暖色灯光，红色或橙色点缀","appjs.buildCompass.011":"中宫或西南、东北，陶瓷与石材，黄色或棕色调","appjs.buildCompass.012":"西墙，金属边框，白色或金色","appjs.buildCompass.013":"北墙，玻璃或水景，蓝色或黑色","appjs.buildCompass.014":"用神","appjs.buildCompass.015":"卦宫","appjs.buildCompass.016":"用神落在哪里","appjs.buildCompass.017":"用灯光或一面主题墙补入{elw_fav}（{elc_fav}）{colEn_in}；主要房间里少放{unf_map}（{unf_map_2}）。","appjs.buildCompass.018":"，以{colEn}为主色，","appjs.buildCompass.022":"<b>用的方法：</b>扶抑是命弱就扶、命强就抑；调候是按出生季节的寒热燥湿来调。就这张命盘而言，宜补{fav_map}，{unf_map}宜少。","appjs.buildCompass.023":"<b>用十神的话说：</b>你的用神是{fav_map}，这些人生领域正是用神所在。","appjs.buildCompass.024":"{elb_el}以<b>{f_f}</b>的形式出现","appjs.buildCompass.025":"摆放","appjs.buildCompass.026":"摆什么","appjs.buildCompass.028":"起决定作用的星或地支","appjs.buildCompass.029":"床头朝<b>{bed_dir}</b>（{bed_star}），书桌面朝<b>{desk_dir}</b>（{desk_star}）。","appjs.buildCompass.030":"床头","appjs.buildCompass.031":"书桌","appjs.buildCompass.033":"久待的位置按命卦的八宅星来定：床取天医，书桌和门取生气，夫妻床取延年，安静的房间取伏位。另外三个方位是个人神煞：文昌按日干定，桃花和驿马按年支三合定，各落在对应的宫位。","appjs.buildCompass.034":"这里的方向，指床头或面部所朝的方向；房间容不下首选时，就取下一个吉星，不要取凶星。","appjs.buildCompass.035":"{AF_year}年的煞位","appjs.buildCompass.036":"太岁","appjs.buildCompass.037":"岁破","appjs.buildCompass.038":"三煞","appjs.buildCompass.039":"今年的煞位，没有一个落在你的四个吉方。","appjs.buildCompass.043":"<b>太岁</b>：{AF_taisui_rule}","appjs.buildCompass.044":"<b>岁破</b>：{AF_suipo_rule}","appjs.buildCompass.045":"<b>三煞</b>：{AF_sansha_rule}","appjs.buildCompass.046":"{h_affliction}落在你的{h_star}（{h_dir}）：{h_note}。","appjs.zhKey.001":"<b>图例：</b>{pairs_map}","appjs.bazhaiCompass.001":"八个方位，上方为北：{rows_map}","appjs.buildCompass.tag":"{h_affliction}落在{h_star}（{h_dir}）","appjs.buildCompass.047":"<b>岁刑</b>：{AF_suixing_rule}","appjs.buildCompass.048":"岁刑","appjs.bazhaiCompass.use":"吉"}};</script>
-<header><div class="in"><p class="sub"><a href="/zh">八字为我</a> · <a href="/fengshui">家居风水</a> · <a href="/zh/start">八字</a> · <a href="/zh/learn">指南</a><a class="langtoggle" href="/kua" hreflang="en" lang="en" aria-label="English version" data-l="EN" onclick="try{localStorage.setItem('lang','en')}catch(e){}"></a></p></div></header>
+<header class="kband"><img class="kband-art" src="/static/img/tools/reading-header-600.jpg" srcset="/static/img/tools/reading-header-600.jpg 600w, /static/img/tools/reading-header.jpg 1200w" sizes="100vw" width="1200" height="400" alt="" aria-hidden="true" fetchpriority="low" decoding="async"><div class="in"><a class="bzf-brand bzf-top" href="/zh"><img src="/static/img/brand/icon-64.png" width="28" height="28" alt=""><span>八字为我</span></a><p class="sub"><a href="/fengshui">家居风水</a> · <a href="/zh/start">八字</a> · <a href="/zh/learn">指南</a><a class="langtoggle" href="/kua" hreflang="en" lang="en" aria-label="English version" data-l="EN" onclick="try{localStorage.setItem('lang','en')}catch(e){}"></a></p>
+  <h1>命卦计算器（命卦）</h1></div></header>
 <main>
-  <h1>命卦计算器（命卦）</h1>
   <div class="introblock">
     <div>
       <p class="lead">本页为你算出命卦，也就是八宅为你定的专属标签。</p>
       <p class="lead">你只需要出生日期和性别。</p>
       <p class="lead">你会得到命卦、东四命或西四命，以及八个方位。</p>
     </div>
-    <img src="/static/img/tools/kua-intro-600.jpg" srcset="/static/img/tools/kua-intro-600.jpg 600w, /static/img/tools/kua-intro.jpg 1200w" sizes="(max-width:700px) 100vw, 420px" width="1200" height="800" alt="卧室示意图：罗盘标出床和书桌周围的八个方位" fetchpriority="high" decoding="async">
+    <img src="/static/img/tools/kua-intro-600.jpg" srcset="/static/img/tools/kua-intro-600.jpg 600w, /static/img/tools/kua-intro.jpg 1200w" sizes="(max-width:700px) 100vw, 420px" width="1200" height="800" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
   </div>
 
   <div class="sec">
@@ -149,16 +198,18 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
 
   <section id="res" hidden aria-live="polite">
     <div class="sec howread">
+      <img class="motif" src="/static/img/tools/motif-rule-600.jpg" width="600" height="600" alt="" aria-hidden="true" loading="lazy" decoding="async">
       <p class="lbl">怎么看</p>
       <p>绿色方位为吉，红色方位宜避。床头朝向，指躺在床上时头顶所指的方向。<a href="/fengshui">全屋风水评估</a>还会结合每个房间所在的方位。</p>
     </div>
-    <div class="sec">
-      <h2>你的命卦</h2>
-      <div class="big"><span class="n" id="r-num"></span><span class="t"><span id="r-gua"></span> <small id="r-py"></small></span></div>
+    <div class="sec kcard">
+      <div class="kc-text"><h2>你的命卦</h2>
+      <div class="big"><span class="n" id="r-num"></span><span class="t"><span id="r-gua"></span> <small id="r-py"></small></span></div></div>
+      <span class="kc-art" aria-hidden="true"><img src="/static/img/tools/kua-empty-600.jpg" srcset="/static/img/tools/kua-empty-600.jpg 600w, /static/img/tools/kua-empty.jpg 1200w" sizes="460px" width="600" height="400" alt="" loading="lazy" decoding="async"></span>
       <div class="grp" id="r-grp"></div>
       <p class="note" id="r-lichun"></p>
     </div>
-    <div class="sec">
+    <div class="sec wheelcard">
       <h2>你的八个方位</h2>
       <p class="hsub">罗盘上方为北。</p>
       <div id="wheel" class="wheel"></div>
@@ -169,7 +220,8 @@ ul.how{margin:0;padding-left:20px}ul.how li{margin:5px 0}
       <div><h2>最佳床头朝向</h2><ol id="bed"></ol></div>
       <div><h2>最佳书桌朝向</h2><ol id="desk"></ol></div>
     </div>
-    <div class="sec">
+    <div class="sec howto">
+      <img class="motif" src="/static/img/tools/motif-steps-600.jpg" width="600" height="600" alt="" aria-hidden="true" loading="lazy" decoding="async">
       <h2>怎么用</h2>
       <ul class="how">
         <li>床头放在你的某个吉方，靠实墙，不要在窗下，也不要正对房门。</li>

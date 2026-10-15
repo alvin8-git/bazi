@@ -13,6 +13,7 @@
 <title>你的命书 / bazifor.me</title>
 <meta name="twitter:title" content="你的命书 / bazifor.me">
 <link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/brand.css">
 <style>
 :root{--seal:#c7301d;--gold2:#8a6d1f;--serif:Georgia,"Noto Serif SC","Songti SC","Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif}
 body.reading-pub{background:#faf7f2;color:#2b2620;font-size:16px;line-height:1.55}
@@ -66,6 +67,7 @@ body.reading-pub a:focus-visible,body.reading-pub button:focus-visible,body.read
 
 /* the person's name is the page heading; the old title drops to a small line under it */
 .reading-pub header.pub h1 small.rp-sub1{display:block;margin-top:6px}
+@media print{.reading-pub header.pub a.bzf-brand.bzf-top{display:none}}
 /* the heading gets its second line (the sub-title) when the name arrives; hold that height so the page below does not move */
 .reading-pub header.pub h1{min-height:calc(46px*1.1 + 22px)}
 @media(max-width:720px){.reading-pub header.pub h1{min-height:calc(36px*1.1 + 22px)}}
@@ -79,6 +81,7 @@ body.reading-pub a:focus-visible,body.reading-pub button:focus-visible,body.read
     srcset="/static/img/tools/reading-header-600.jpg 600w, /static/img/tools/reading-header.jpg 1200w"
     sizes="100vw" width="1200" height="400" alt="水墨纸本插画：书桌上摊着一张四柱命盘" fetchpriority="high">
   <div class="pub-in">
+    <a class="bzf-brand bzf-top" href="/zh"><img src="/static/img/brand/icon-64.png" width="28" height="28" alt=""><span>八字为我</span></a>
     <h1>你的解读<small>(命书）</small></h1>
     <span class="hint">这里的每个数字和标签都是引擎算出来的，背后的规则就写在旁边。</span>
     <a id="back" href="/zh/start">← 返回个人空间</a><a class="langtoggle" href="/reading" hreflang="en" lang="en" aria-label="English version" data-l="EN" onclick="try{localStorage.setItem('lang','en')}catch(e){}"></a><a class="learnbtn" href="/zh/learn">指南</a>
@@ -86,6 +89,7 @@ body.reading-pub a:focus-visible,body.reading-pub button:focus-visible,body.read
 </header>
 <main>
   <section id="tab-person" class="tabpane active"><p class="hint">计算中…</p></section>
+  <p class="bzf-print" aria-hidden="true"><img src="/static/img/brand/icon-64.png" width="16" height="16" alt=""><span>bazifor.me</span></p>
   <aside class="next" aria-labelledby="next-h">
     <div class="next-head">
       <img src="/static/img/tools/motif-next-600.jpg" width="48" height="48" alt="" loading="lazy">

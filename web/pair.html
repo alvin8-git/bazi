@@ -12,6 +12,7 @@
 <meta name="robots" content="noindex">
 <title>合婚配对报告 Pair Compatibility Report | bazifor.me</title>
 <meta name="twitter:title" content="合婚配对报告 Pair Compatibility Report | bazifor.me">
+<link rel="stylesheet" href="/static/brand.css">
 <style>
 :root{--bg:#f6f2ea;--card:#fffdf7;--ink:#22242a;--muted:#5f574e;--line:#e4ddcc;
   --accent:#a63d2f;--gold:#8a6d00;--good:#1e7d32;--bad:#b03a2e}
@@ -121,7 +122,7 @@ h2 .scorechip{float:right;margin-top:-2px}
   body{background:#fff;font-size:9.5px;line-height:1.35}
   .page{max-width:none;padding:0}
   .report{border:none;box-shadow:none;border-radius:0;padding:0 1mm}
-  .toolbar,details:not(.printable){display:none}
+  .toolbar,details:not(.printable),a.bzf-brand.bzf-top{display:none}
   details.printable>summary{display:none}
   .swtable{font-size:9px}.swtable th b{font-size:13px}.swtable td{padding:3px 2px}.swtable td b{font-size:10px}.seetable,.frtable{font-size:9px}
   .pitem{padding:2px 5px;margin:2px 0;background:#f6f3ec !important;border-radius:4px;
@@ -198,7 +199,7 @@ h2 .scorechip{float:right;margin-top:-2px}
 .ppc .pz{display:grid;justify-items:center;padding:3px 6px 2px;font:700 15px/1.05 Georgia,"Noto Serif SC",serif}.ppc .pz+.pz{border-left:1px solid #e6dfd2}
 .ppc .pz.me{outline:2px solid #c5221f;outline-offset:-2px;border-radius:4px}.ppc .pz small{font:500 10px/1.5 system-ui,sans-serif;color:#5f574e}
 .ppc .idl{font:600 14px/1.3 Georgia,serif}.ppc .tr{font-size:12.5px;color:#5f574e;font-style:italic}
-.pmid{display:grid;justify-items:center;text-align:center}.ring{width:120px;height:120px}.band{font:600 15px Georgia,serif}
+.pmid{display:grid;justify-items:center;text-align:center}.ring{width:120px;height:120px}.band{font:600 15px Georgia,serif}.pstand{font:500 12.5px/1.3 system-ui,sans-serif;color:#5f574e;margin-top:2px}.pbandnote{font:500 12.5px/1.4 system-ui,sans-serif;color:#5f574e;margin:6px 0 0;text-align:center}
 .prep-lede{font:600 17px/1.45 Georgia,"Noto Serif SC",serif;margin:14px 0 4px}
 .psec{border-top:1px solid #d9d0c1;margin-top:18px;padding-top:4px}.psec h2{border:none}.psec h3{font:600 15px Georgia,serif;margin:10px 0 4px}
 .psec details>summary{list-style:none;cursor:pointer}.psec details>summary::-webkit-details-marker{display:none}
@@ -248,6 +249,7 @@ h2 .scorechip{float:right;margin-top:-2px}
   .swlegend~.pitem{display:none}.bars .br{margin:0;padding:1px 0;font-size:8px;line-height:1.2}}
 </style></head><body>
 <div class="page">
+  <a class="bzf-brand bzf-top" href="/"><img src="/static/img/brand/icon-64.png" width="28" height="28" alt=""><span>bazifor.me</span></a>
   <div class="pair-band" aria-label="Pair compatibility">
     <img src="/static/img/tools/pair-header-600.jpg" srcset="/static/img/tools/pair-header-600.jpg 600w, /static/img/tools/pair-header.jpg 1200w"
       sizes="(min-width:820px) 788px, 100vw" width="1200" height="400" alt="Two ink-wash figures facing each other across a table" fetchpriority="high">
@@ -266,6 +268,7 @@ h2 .scorechip{float:right;margin-top:-2px}
     <p class="note">This is a traditional reading, not a prediction.</p>
   </section>
   <div class="report" id="rep">loading…</div>
+  <p class="bzf-print" aria-hidden="true"><img src="/static/img/brand/icon-64.png" width="16" height="16" alt=""><span>bazifor.me</span></p>
   <aside class="pair-next" aria-labelledby="pn-h" hidden><h2 id="pn-h">Next steps</h2>
     <ul><li><a href="../../">Back to your workspace</a></li>
       <li><a href="/start">Add or compare another person</a></li></ul>
@@ -297,8 +300,9 @@ const ELTH = { 木: "linear-gradient(160deg,rgba(243,249,239,.84),rgba(226,239,2
 const elthBg = (el) => ELTH[el]
   ? `background:${ELTH[el]},url(/static/img/elements/${ELIMG[el]}.jpg) center/cover`
   : "";
-const BAND_COL = (s) => s >= 70 ? ["#1e7a3a", "#e9f4ec"] : s >= 55 ? ["#5c4d0f", "#f6f0dc"]
-  : s >= 45 ? ["#8a4b0f", "#f9ebdc"] : ["#a3221d", "#f8e3e1"];   // same as the workspace matrix, 4.5:1 or better
+/* the band word is the server's (engine/pair_reference.py: percentile bands, with the fixed cut-offs only as its own fallback); the page keys its colours on that word */
+const BAND_COLS = { "very compatible": ["#1e7a3a", "#e9f4ec"], compatible: ["#5c4d0f", "#f6f0dc"], workable: ["#8a4b0f", "#f9ebdc"], "needs effort": ["#a3221d", "#f8e3e1"] };
+const BAND_COL = (band) => BAND_COLS[String(band).replace(/\s*[㐀-鿿]+\s*$/, "").trim().toLowerCase()] || BAND_COLS.workable;   // same as the workspace matrix, 4.5:1 or better
 const COLOUR_WORDS = { 红: "#c5221f", 紅: "#c5221f", 紫: "#7b3fa0", 黄: "#7d5800",
   黃: "#7d5800", 棕: "#8a5a2b", 绿: "#17702f", 綠: "#17702f", 青: "#17702f",
   蓝: "#1a56b0", 藍: "#1a56b0", 黑: "#22242a", 灰: "#4b5563", 金: "#7d5c00",
@@ -380,15 +384,16 @@ function glossifyRep(root) {
   for (const n of nodes) { const v = GL.text(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; }
   GL.tipify(root);                     // Chinese runs -> tooltip spans (pinyin there only), element colours
 }
-function gauge(score) {                       // band zones + marker, inline SVG
-  const x = 20 + (score / 100) * 320;
+function gauge(score, cuts) {                 // band zones + marker, inline SVG; cuts = the server's [workable, compatible, very compatible] minimum scores (d.standing.cuts)
+  const [c1, c2, c3] = cuts;
+  const x = 20 + (score / 100) * 320, px = (v) => 20 + v * 3.2;
   const zone = (a, b, c) => `<rect x="${20 + a * 3.2}" y="22" width="${(b - a) * 3.2}" height="10" fill="${c}"/>`;
   return `<svg viewBox="0 0 360 52" class="gauge" role="img" aria-label="score ${score} of 100">
-    ${zone(0, 45, "#f3d8cf")}${zone(45, 55, "#efe6cf")}${zone(55, 70, "#e3e8cf")}${zone(70, 100, "#cfe3cf")}
+    ${zone(0, c1, "#f3d8cf")}${zone(c1, c2, "#efe6cf")}${zone(c2, c3, "#e3e8cf")}${zone(c3, 100, "#cfe3cf")}
     <text x="21" y="18" font-size="8" fill="#8b8f9a">0 needs work</text>
-    <text x="164" y="18" font-size="8" fill="#8b8f9a">45 fair</text>
-    <text x="196" y="46" font-size="8" fill="#8b8f9a">55 good</text>
-    <text x="244" y="18" font-size="8" fill="#8b8f9a">70 strong</text>
+    <text x="${px(c1) - 20}" y="18" font-size="8" fill="#8b8f9a">${c1} fair</text>
+    <text x="${px(c2) - 8}" y="46" font-size="8" fill="#8b8f9a">${c2} good</text>
+    <text x="${px(c3) - 8}" y="18" font-size="8" fill="#8b8f9a">${c3} strong</text>
     <text x="340" y="18" font-size="8" fill="#8b8f9a" text-anchor="end">100</text>
     <line x1="${x}" y1="18" x2="${x}" y2="36" stroke="#a63d2f" stroke-width="2"/>
     <circle cx="${x}" cy="27" r="6" fill="#a63d2f"/>
@@ -436,7 +441,7 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
         <span class="in"><b class="nm nocolor">${esc(n)}</b><span class="seal keepzh nocolor" data-notip>${seal}</span>
         ${head ? `<span class="idl">you are ${esc(head)}.</span>` : ""}${(C.traits || []).length ? `<span class="tr">${C.traits.map(esc).join(" · ")}</span>` : ""}</span></a>`; };
     /* ring:start  the score ring and its number take the colour of the compatibility band */
-    const ring = (score) => { const bc = BAND_COL(score)[0], a = 2 * Math.PI * score / 100, x = 60 + 48 * Math.sin(a), y = 60 - 48 * Math.cos(a);
+    const ring = (score, band = d.band.en) => { const bc = BAND_COL(band)[0], a = 2 * Math.PI * score / 100, x = 60 + 48 * Math.sin(a), y = 60 - 48 * Math.cos(a);
       return `<svg class="ring" viewBox="0 0 120 120" role="img" aria-label="Score ${score} of 100, ${esc(d.band.en)}">
         <defs><filter id="rough"><feTurbulence baseFrequency="1.1" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="2.2"/></filter></defs>
         <circle cx="60" cy="60" r="48" fill="none" stroke="#eee6d8" stroke-width="10"/>
@@ -543,7 +548,8 @@ function rangeBar(delta) {                    // zero-axis reference-range strip
     rep.innerHTML = `
       <div class="rhead"><h1>${esc(d.a)} and ${esc(d.b)}</h1>
         <div class="rmeta">${new Date().toISOString().slice(0, 10)}<span id="verline"></span>${rel ? ` · ${relLabel}` : ""}<br>Same birth details always give the same result. Every number names the classical rule behind it.</div></div>
-      <div class="ptop">${pcard(pa, d.a, A)}<div class="pmid">${ring(d.score)}<b class="band" style="color:${BAND_COL(d.score)[0]}">${esc(d.band.en)}</b></div>${pcard(pb, d.b, B)}</div>
+      <div class="ptop">${pcard(pa, d.a, A)}<div class="pmid">${ring(d.score)}<b class="band" style="color:${BAND_COL(d.band.en)[0]}">${esc(d.band.en)}</b>${d.standing && d.standing.higher_than != null ? `<span class="pstand">Higher than ${d.standing.higher_than} of 100 random pairs</span>` : ""}</div>${pcard(pb, d.b, B)}</div>
+      ${d.standing && d.standing.from_reference ? `<p class="pbandnote">Bands compare this pair with 20,000 random pairs: the top 15% read very compatible, the next 35% compatible, the next 35% workable and the bottom 15% needs effort. The number is the same as before.</p>` : ""}
       ${relctl}
       ${d.report ? `<p class="prep-lede">${esc(d.report.summary)}</p>` : ""}
       <div class="pcols">

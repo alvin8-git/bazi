@@ -26,6 +26,7 @@
 <meta name="twitter:image" content="https://bazifor.me/static/og/fengshui.png">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "@id": "https://bazifor.me/fengshui#app", "image": "https://bazifor.me/static/og/fengshui.png", "name": "bazifor.me home feng shui analyzer", "url": "https://bazifor.me/fengshui", "description": "Upload a floor plan, set the facing, trace the rooms: flying stars, Eight House directions and room scores per person, every star cited. Free, no account.", "applicationCategory": "LifestyleApplication", "operatingSystem": "Web", "inLanguage": "en", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SGD"}, "featureList": ["Flying star chart from facing and period", "Eight House (八宅) directions per person", "Room-by-room scores with cited rules", "Renovation and move-in timing", "Floor plan tracing in the browser"], "publisher": {"@type": "Organization", "@id": "https://bazifor.me/#org", "name": "bazifor.me", "url": "https://bazifor.me"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "bazifor.me", "item": "https://bazifor.me"}, {"@type": "ListItem", "position": 2, "name": "Home feng shui analyzer", "item": "https://bazifor.me/fengshui"}]}</script>
+<link rel="stylesheet" href="/static/brand.css">
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;
   --gold:#8a6d1f;--line:#e5ded2;--good:#2e7d32}
@@ -319,13 +320,15 @@ header a#back,header a#learn-link{background:#fff;color:var(--ink)}
 </style><link rel="preload" as="image" href="/static/img/tools/fengshui-intro-600.jpg" media="(max-width: 759px)">
 <link rel="preload" as="image" href="/static/img/tools/fengshui-intro.jpg" media="(min-width: 760px)">
 </head><body>
-<header>
+<header class="fsb">
+  <img class="fsb-art" src="/static/img/tools/reading-header-600.jpg" srcset="/static/img/tools/reading-header-600.jpg 600w, /static/img/tools/reading-header.jpg 1200w" sizes="100vw" width="1200" height="400" alt="" aria-hidden="true" fetchpriority="low" decoding="async">
   <div>
+    <a class="bzf-brand bzf-top" href="/"><img src="/static/img/brand/icon-64.png" width="28" height="28" alt=""><span>bazifor.me</span></a>
     <h1>Home feng shui analyzer (<span class="zh" lang="zh-Hans" tabindex="0" title="zhái yùn fēn xī" data-tip="zhái yùn fēn xī">宅运分析</span>)</h1>
-      <div class="hint" style="font-size:13px">every star and score cites its classical rule</div>
-    <a href="/start" id="back" style="display:inline-block;margin-top:9px">← Back to
+      <div class="hint">every star and score cites its classical rule</div>
+    <a href="/start" id="back">← Back to
       workspace</a>
-    <a href="/learn" id="learn-link" style="display:inline-block;margin-top:9px">Learn</a>
+    <a href="/learn" id="learn-link">Learn</a>
   </div>
   <span class="verbadge" id="ver"></span>
 </header>
@@ -374,6 +377,70 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
 .fs-next a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:999px;color:var(--accent);font-size:14px;text-decoration:none;background:var(--bg)}
 .fs-next a:hover{border-color:var(--accent)}
 </style>
+<style>
+/* round 46, step 1: the reading's painted language on the result views. Presentation only: paper tones, the serif display type, a painted header band and
+   hero panel, and the existing paintings (web/img/tools) as decoration (alt="", aria-hidden, size reserved, lazy below the fold). */
+:root{--paper:#faf8ec;--wash:#f3ecdd;--serif:Georgia,"Noto Serif SC","Songti SC",serif}
+header.fsb{position:relative;overflow:hidden;display:block;padding:0;background:var(--wash)}
+.fsb-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right center;display:block}
+header.fsb::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(250,247,242,.96) 0%,rgba(250,247,242,.9) 55%,rgba(250,247,242,.55) 100%)}
+header.fsb>div{position:relative;z-index:2;max-width:1280px;margin:0 auto;padding:22px 22px 18px}
+header.fsb h1{margin:0 0 6px;font:700 46px/1.1 var(--serif);color:var(--ink);letter-spacing:-.01em}
+header.fsb .hint{display:block;margin:0 0 14px;font-size:16px;color:var(--muted);max-width:46ch}
+header.fsb a#back,header.fsb a#learn-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin:0 8px 0 0;padding:0 18px;border:1px solid var(--line);border-radius:22px;
+  background:#fff;color:var(--accent);font-size:15px;font-weight:600;text-decoration:none}
+header.fsb a#learn-link{background:transparent;color:var(--ink);font-size:14px;padding:0 16px}
+header.fsb a#back:hover,header.fsb a#learn-link:hover{border-color:var(--accent)}
+header.fsb a:focus-visible{outline:3px solid #8a6d1f;outline-offset:2px}
+header.fsb .verbadge{top:auto;bottom:8px}
+.fs-intro{position:relative;overflow:hidden;display:block;min-height:280px;margin:8px 0 18px;padding:30px 32px;background:var(--paper);border:1px solid #eadfc9;border-radius:18px}
+.fs-intro>div{position:relative;z-index:2;max-width:46%}
+.fs-intro p:first-of-type{font:italic 400 21px/1.5 var(--serif);margin-bottom:12px;color:#3a342c}
+.fs-intro img{position:absolute;z-index:1;right:0;top:0;width:62%;height:100%;object-fit:contain;object-position:72% 50%;border:0;border-radius:0;background:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40%);mask-image:linear-gradient(90deg,transparent 0,#000 40%)}
+.sec{border-color:#e8dfce;border-radius:16px}
+#results .sec{background:#fffdf9}
+.readcard{position:relative;overflow:hidden;display:block;min-height:170px;padding:24px 28px;background:var(--paper);border-color:#eadfc9;border-radius:18px}
+.readcard>div{position:relative;z-index:2;max-width:62%}
+.readcard .spot{display:block;position:absolute;z-index:1;right:0;top:0;width:44%;height:100%;object-fit:cover;border:0;border-radius:0;
+  -webkit-mask-image:radial-gradient(ellipse 62% 70% at 56% 50%,#000 55%,transparent 100%);mask-image:radial-gradient(ellipse 62% 70% at 56% 50%,#000 55%,transparent 100%)}
+.arted{position:relative}
+.arted>.art{position:absolute;right:16px;top:12px;width:56px;height:56px;border-radius:14px;object-fit:cover;background:var(--paper)}
+.arted>h2{min-height:54px;padding-right:76px;margin-top:0}
+.georead{background:var(--paper);border-color:#eadfc9}
+.stage{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:10px 32px;align-items:start;margin:0 0 56px;padding:24px 30px 24px;border:1px solid #eadfc9;border-radius:18px}
+#results .sec.stage{background:linear-gradient(135deg,#faf8ec 0%,#f6f0df 100%)}
+.stage h2{margin:0 0 8px}
+.stage-left{display:flex;flex-direction:column;gap:12px;min-width:0}
+.stage-plan{position:relative;width:100%;overflow:hidden;border:1px solid #e3d9c4;border-radius:12px;background:#fffdf8}
+.stage-plan .rect span{font-size:calc(12.5px / var(--z,1));padding:1px calc(6px / var(--z,1));border-radius:calc(5px / var(--z,1))}
+.stage-dial{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--muted)}
+.stage-dial .sd{position:relative;display:block;width:44px;height:44px;border:2px solid var(--line);border-radius:50%;background:#fffdf9;flex:none}
+.stage-dial .sn{position:absolute;left:50%;top:50%;width:2.5px;height:18px;background:var(--accent);transform-origin:50% 100%;translate:-50% -100%;border-radius:2px}
+.stage-dial b{font-size:15px;color:var(--ink)}
+.stage .pal{max-width:none;gap:8px;margin:14px 0 0}
+.stage .pal>div{padding:8px 4px 6px;border-color:#eadfc9;border-radius:12px;background:#fffdf9;font-size:14px}
+.stage .pal>div>div{border:0;background:none;padding:1px 0;border-radius:0}
+.stage .pal .st{font-size:30px;line-height:1.1}
+.stage .pal .ann{font-size:13px}
+.stage-art{display:block;width:100%;height:112px;margin:2px 0 0;object-fit:contain;object-position:center;
+  -webkit-mask-image:radial-gradient(ellipse 48% 60% at 50% 50%,#000 40%,transparent 100%);mask-image:radial-gradient(ellipse 48% 60% at 50% 50%,#000 40%,transparent 100%)}
+@media(max-width:899px){.stage{grid-template-columns:minmax(0,1fr);padding:20px 16px 22px;margin-bottom:28px}.stage .pal .st{font-size:26px}.stage-art{height:110px}}
+@media(max-width:759px){
+  header.fsb h1{font-size:34px}
+  header.fsb::before{background:rgba(250,247,242,.9)}
+  header.fsb>div{padding:18px 16px 16px}
+  .fs-intro{min-height:0;padding:22px 18px 0}
+  .fs-intro>div{max-width:none}
+  .fs-intro p:first-of-type{font-size:19px}
+  .fs-intro img{position:relative;display:block;width:calc(100% + 36px);height:auto;margin:6px -18px 0;aspect-ratio:5/2;object-fit:cover;object-position:center 60%;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 34%);mask-image:linear-gradient(180deg,transparent 0,#000 34%)}
+  .readcard{padding:20px 18px 0}
+  .readcard>div{max-width:none}
+  .readcard .spot{position:relative;width:calc(100% + 36px);height:auto;margin:4px -18px 0;aspect-ratio:3/1;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 34%,#000 70%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 34%,#000 70%,transparent 100%)}
+}
+</style>
 <section class="fs-intro" aria-label="About this tool">
   <div>
     
@@ -381,7 +448,7 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
     <p>You need a floor-plan photo, the facing bearing, and who sleeps where.</p>
     <p>You get room-by-room scores and remedies.</p>
   </div>
-  <img src="/static/img/tools/fengshui-intro-600.jpg" srcset="/static/img/tools/fengshui-intro-600.jpg 600w, /static/img/tools/fengshui-intro.jpg 1200w" sizes="(min-width:760px) 40vw, 100vw" width="600" height="400" alt="Illustration of a floor plan beside a compass, showing a home being read room by room" fetchpriority="high">
+  <img src="/static/img/tools/fengshui-intro-600.jpg" srcset="/static/img/tools/fengshui-intro-600.jpg 600w, /static/img/tools/fengshui-intro.jpg 1200w" sizes="(min-width:760px) 40vw, 100vw" width="600" height="400" alt="" aria-hidden="true" fetchpriority="high">
 </section>
 <ol class="stepper" id="fs-stepper" aria-label="Progress">
   <li data-s="1"><b>1</b>Upload</li><li data-s="2"><b>2</b>Facing</li><li data-s="3"><b>3</b>Rooms</li><li data-s="4"><b>4</b>People</li><li data-s="5"><b>5</b>Results</li>
@@ -536,7 +603,7 @@ main #results h2{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size
         <li>Every line names the rule it comes from.</li>
       </ul>
     </div>
-    <img class="spot" src="/static/img/tools/fengshui-rooms-600.jpg" width="600" height="400" alt="Illustration of rooms in a home with bed and desk positions marked" loading="lazy">
+    <img class="spot" src="/static/img/tools/fengshui-rooms-600.jpg" width="600" height="400" alt="" aria-hidden="true" loading="lazy" decoding="async">
   </div>
   <div class="fs-empty" id="fs-empty">
     <img class="eimg" src="/static/img/tools/fengshui-empty-600.jpg" width="600" height="400" alt="Illustration of an empty floor plan waiting for rooms to be traced" loading="lazy">
@@ -1488,6 +1555,8 @@ const AFF_EN = {"三煞":"Three Killings","岁破":"Year Breaker","歲破":"Year
 const GATE_EN = {"正城門":"main gate","副城門":"side gate"};
 // English-first labels: L(english, chinese?) -> English label, the Chinese small and shown once (shared glossary)
 const L = (en, zh) => window.GL && zh ? GL.label(zh, en) : `<span class="bl en">${en}</span>`;
+// decorative painting at the head of a result card: empty alt, size reserved, lazy (round 46 step 1)
+const ART = (name, h = 600) => `<img class="art" src="/static/img/tools/${name}-600.jpg" width="600" height="${h}" alt="" aria-hidden="true" loading="lazy" decoding="async">`;
 const Li = (en, zh) => L(en, zh);
 function swFor(text) {
   const out = [], seen = new Set();
@@ -1568,7 +1637,7 @@ function compatBlock(res) {
   const hz = h.group.includes("East") ? "East house (東四宅)" : "West house (西四宅)";
   const worst = Object.values(res.room_briefs || {}).filter(b => b.severity > 0)
     .sort((a, b) => b.severity - a.severity)[0];
-  let html = `<div class="sec"><h2>${L("House compatibility", "宅命相配")}</h2>
+  let html = `<div class="sec arted">${ART("motif-private")}<h2>${L("House compatibility", "宅命相配")}</h2>
     <div class="house-line">Period ${res.period} · sitting ${m.sitting} · facing ${m.facing} · <b>${m.structure}</b> · sitting trigram ${h.sitting_gua} · ${hz}
       ${worst ? ` · 2-5 first priority <b>${worst.label}</b> (${worst.palace} palace mountain ${worst.mountain} · facing ${worst.water})` : " · no 2-5 palace on a traced room"}</div>
     <div id="compat-rows">${res.people.map(p => `<div class="cp-row" data-cp="${p.name}">${compatRow(res, p)}</div>`).join("")}</div>
@@ -1697,7 +1766,7 @@ function renovationBlock(res) {
   const grid = Object.entries(briefs).map(([rid, b]) => { const r = wrow[rid];
     const cell = (hits) => hits && hits.length ? `<div class="bad">${hits.map(AF).join(" ")}</div>` : `<div class="clean">${L("clean")}</div>`;
     return `<div>${b.label || rid}</div>${cell(r && r.now)}${cell(r && r.next)}`; }).join("");
-  return `<div class="sec"><h2>${L("Renovation")} <span class="hint">per room: colours · materials · lighting · works timing · hover any cell for its rule</span></h2>
+  return `<div class="sec arted">${ART("motif-steps")}<h2>${L("Renovation")} <span class="hint">per room: colours · materials · lighting · works timing · hover any cell for its rule</span></h2>
     <div style="overflow-x:auto"><table class="rtable"><tr><th>${L("Room")}</th><th>${L("palace · stars")}</th><th>${L("2-5", "二五")}</th><th>${L("USE", "宜")}</th><th>${L("AVOID", "忌")}</th><th>${L("Materials")}</th><th>${L("Lighting")}</th><th>${L("works " + wt.year, "动工")}</th><th>${L("Gate")}</th></tr>${rows}</table></div>
     <div class="tgrid"><div class="th">${L("works")}</div><div class="th">${wt.year}</div><div class="th">${wt.next}</div>${grid}</div>
     <div class="hint" style="margin-top:6px">Grand Duke / Year Breaker / Three Killings / Five Yellow sectors: no breaking ground (动土: hacking, drilling, wet works) while afflicted; finish-fit proceeds. Start of Spring (立春) ≈ 4 Feb.</div>
@@ -1725,13 +1794,15 @@ function renderResults(res) {
   lastRes = res;
   if (window.GL) GL.reset();
   let html = "";
+  const stage = stageBlock("Main chart", res.main);
+  html += stage;
   if (res.boundary && res.boundary.zone !== "正向") {
     html += `<div class="warn">⚠ ${res.boundary.zone}: the facing sits ${res.boundary.offset_deg}°
       from the ${res.boundary.mountain} mountain centre near the ${res.boundary.neighbor}
       boundary — both charts shown; re-measure on site to settle which rules.</div>`;
   }
   html += traceChecksBlock(res);
-  html += chartBlock("Main chart", res.main);
+  html += chartBlock("Main chart", res.main, undefined, !!stage);
   if (res.alternate) {
     html += `<div class="warn">Why an alternate chart? The measured facing sits in the
       boundary zone between two mountains (mixed facing, 兼向 / straddling a boundary, 騎線) — a fraction of a degree decides
@@ -1749,6 +1820,7 @@ function renderResults(res) {
     facing — deterministic rules, no AI guesswork. This analysis is saved to this home
     in your workspace link.</div>`;
   $("#results").innerHTML = html;
+  paintStage();
   glossifyDom($("#results"), false);
   bindRoomSelects(res);
   const mi = $("#mi-go");
@@ -1870,7 +1942,7 @@ function personRoomScores(scores) {
      ${scores.violations.length ? "· ⚠ " + scores.violations.join("; ") : ""}</div>`;
 }
 
-function chartBlock(tag, cb, scores) {
+function chartBlock(tag, cb, scores, staged) {
   const DIRS = {"坎":"N","艮":"NE","震":"E","巽":"SE","離":"S","坤":"SW","兌":"W","乾":"NW"};
   const order = ["巽","離","坤","震","中","兌","艮","坎","乾"];
   const pal = order.map(p => {
@@ -1890,13 +1962,62 @@ function chartBlock(tag, cb, scores) {
   const geo = (cb.notes || []).length
     ? `<div class="georead"><b>Geomancer's read:</b>
        ${cb.notes.map(n => `<div>${n}</div>`).join("")}</div>` : "";
-  return `<div class="sec"><h2>${tag}: ${cb.structure}
+  const head = `<h2>${tag}: ${cb.structure}
+      ${cb.chart_type ? `<span class="hint">(${cb.chart_type})</span>` : ""}</h2>
+    <div class="hint">facing ${cb.facing} · sitting ${cb.sitting} · mountain star
+      (people/health) · facing (water) star (wealth) · annual star</div>`;
+  const table = `<table><tr><th>Room</th><th>Palace</th><th>Stars</th></tr>${roomrows}</table>`;
+  if (staged) return `<div class="sec">${table}${geo}${sc}</div>`;   // the heading and the nine palaces moved up into the stage panel
+  return `<div class="sec arted">${ART("kua-intro", 400)}${head}
+    <div class="cols"><div class="pal">${pal}</div>
+    ${table}</div>
+    ${geo}${sc}</div>`;
+}
+
+// Round 46, step 1b: the traced flat beside its Flying Stars chart in one painted panel (presentation only: the same heading, hint and nine palaces as
+// the card below, and a read-only copy of the traced plan, scaled and cropped to the rooms). Returns "" when the plan is not on screen to copy.
+function stageBox() {
+  const wrap = $("#wrap"), px = rooms.map(r => r.px).filter(Boolean);
+  if (!wrap || !wrap.offsetWidth || !px.length) return null;
+  const M = 22, W0 = wrap.offsetWidth, H0 = wrap.offsetHeight;
+  const x0 = Math.max(0, Math.min(...px.map(p => p[0])) - M), y0 = Math.max(0, Math.min(...px.map(p => p[1])) - M);
+  const x1 = Math.min(W0, Math.max(...px.map(p => p[0] + p[2])) + M), y1 = Math.min(H0, Math.max(...px.map(p => p[1] + p[3])) + M);
+  return x1 - x0 > 40 && y1 - y0 > 40 ? [x0, y0, x1 - x0, y1 - y0].map(Math.round) : null;
+}
+function stageBlock(tag, cb) {
+  const box = stageBox(); if (!box) return "";
+  const DIRS = {"坎":"N","艮":"NE","震":"E","巽":"SE","離":"S","坤":"SW","兌":"W","乾":"NW"};
+  const order = ["巽","離","坤","震","中","兌","艮","坎","乾"];
+  const pal = order.map(p => {
+    const v = cb.palaces[p] || {};
+    return `<div><div>${p}${DIRS[p] ? " " + DIRS[p] : ""}</div>
+      <div class="st"><span class="m">${v.mountain ?? ""}</span>·<span class="w">${v.water ?? ""}</span></div>
+      <div class="ann">year ${v.annual ?? ""}</div></div>`;
+  }).join("");
+  const art = `<img class="stage-art" src="/static/img/tools/kua-intro-600.jpg" width="600" height="400" alt="" aria-hidden="true" loading="lazy" decoding="async">`;
+  return `<div class="sec stage"><div class="stage-left"><div class="stage-plan" style="aspect-ratio:${box[2]}/${box[3]}" data-box="${box.join(",")}" aria-hidden="true" inert></div>
+      <div class="stage-dial" aria-hidden="true"><i class="sd"><i class="sn"></i></i><b></b></div></div>
+    <div class="stage-chart"><h2>${tag}: ${cb.structure}
       ${cb.chart_type ? `<span class="hint">(${cb.chart_type})</span>` : ""}</h2>
     <div class="hint">facing ${cb.facing} · sitting ${cb.sitting} · mountain star
       (people/health) · facing (water) star (wealth) · annual star</div>
-    <div class="cols"><div class="pal">${pal}</div>
-    <table><tr><th>Room</th><th>Palace</th><th>Stars</th></tr>${roomrows}</table></div>
-    ${geo}${sc}</div>`;
+    <div class="pal">${pal}</div>${art}</div></div>`;
+}
+function paintStage() {
+  const host = document.querySelector("#results .stage-plan"), src = $("#wrap");
+  if (!host || !src) return;
+  const [bx, by, bw] = host.dataset.box.split(",").map(Number);
+  const c = src.cloneNode(true);
+  c.querySelectorAll(".bedov,.rh,.odtag,#door-pin").forEach(e => e.remove());
+  c.querySelectorAll(".sel").forEach(e => e.classList.remove("sel"));
+  [c, ...c.querySelectorAll("[id]")].forEach(e => e.removeAttribute("id"));
+  c.style.cssText = `position:absolute;left:0;top:0;margin:0;width:${src.offsetWidth}px;height:${src.offsetHeight}px;transform-origin:0 0`;
+  const im = c.querySelector("img"); if (im) { im.style.cssText = `display:block;width:${src.offsetWidth}px;height:${src.offsetHeight}px;max-width:none;max-height:none`; im.alt = ""; im.removeAttribute("loading"); }
+  host.textContent = ""; host.appendChild(c);
+  const fit = () => { const z = host.clientWidth / bw; host.style.setProperty("--z", z.toFixed(3)); c.style.transform = `scale(${z}) translate(${-bx}px,${-by}px)`; };
+  fit(); if (window.ResizeObserver) new ResizeObserver(fit).observe(host);
+  const dial = document.querySelector("#results .stage-dial");
+  if (dial) { dial.querySelector(".sn").style.rotate = ($("#needle") || {style: {}}).style.rotate || "0deg"; dial.querySelector("b").textContent = ($("#cp-val") || {}).textContent || ""; }
 }
 </script>
 <script>

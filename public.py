@@ -1619,6 +1619,13 @@ def put_baby_shortlist(token: str, key: str, items: list[BabyNameIn]):
     return _baby_list_view(key, lists[key])
 
 
+# The bazifor.me brand mark on the certificate. scripts/brand_mark.py is the source of these strings (scripts/ is not shipped in the
+# deployed bundle, so the markup is repeated here; tests/test_landing_brand46.py fails if the two drift).
+_BRAND_CSS = '<link rel="stylesheet" href="/static/brand.css">'
+_BRAND_MARK = '<a class="bzf-brand bzf-top" href="/"><img src="/static/img/brand/icon-64.png" width="28" height="28" alt=""><span>bazifor.me</span></a>'
+_BRAND_PRINT = '<p class="bzf-print" aria-hidden="true"><img src="/static/img/brand/icon-64.png" width="16" height="16" alt=""><span>bazifor.me</span></p>'
+
+
 # ---------------------------------------------------------------- certificate
 @router.get("/api/pub/certificate", response_class=HTMLResponse)
 def certificate(surname: str, given: str, sex: str, dob: str,
@@ -1693,7 +1700,7 @@ def certificate(surname: str, given: str, sex: str, dob: str,
     from datetime import date
     today = date.today().strftime("%d %B %Y")
     html = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>Certificate of Naming · {full}</title><style>
+<title>Certificate of Naming · {full}</title>{_BRAND_CSS}<style>
 @page{{size:A4;margin:14mm}}
 body{{font-family:"Songti SC","Noto Serif SC","SimSun",serif;background:#f4efe6;
   color:#2b2620;margin:0;display:flex;justify-content:center;padding:24px 8px}}
@@ -1740,6 +1747,7 @@ td{{border:1px solid #e0d3b8;padding:5px 12px;text-align:center}}
 </style></head><body><div>
 <span class="noprint" style="position:fixed;top:8px;right:12px;font-size:11px;
   color:#b9b0a4">v {_VER}</span>
+<div class="noprint" style="text-align:left;margin:0 0 8px">{_BRAND_MARK}</div>
 <div class="cert">
   <h1>Certificate of Naming <small lang="zh-Hant">命名證書 {_py("命名證書")}</small></h1>
   <div class="sub">CERTIFICATE OF NAMING · derived by classical method · every step cited</div>
@@ -1765,6 +1773,7 @@ td{{border:1px solid #e0d3b8;padding:5px 12px;text-align:center}}
     {footnote}{'<br>' if footnote else ''}
     Issued {today} · bazifor.me · the family chooses the name; the classics supply the reasons
   </div>
+  {_BRAND_PRINT}
   <div class="stamp" title="A proper name makes proper speech">Name<br>sealed</div>
 </div>
 <div class="noprint"><button onclick="window.print()">🖨 Print / save as PDF</button></div>

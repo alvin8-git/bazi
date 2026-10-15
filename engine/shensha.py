@@ -262,7 +262,9 @@ def natal_interactions(chart, lang: str = "en") -> list[dict]:
             elif _TRINE.get(x) == _TRINE.get(y) and _TRINE.get(x) is not None \
                     and not any({x, y} <= f for f in full):
                 out.append({"kind": "半合", "pair": x + y, "pillars": [p1, p2],
-                            "note": T("shensha.natal_interactions.07", "half trine — latent alliance", lang)})
+                            "note": (T("shensha.natal_interactions.08", "half trine without a cardinal branch (拱合): an incomplete link, "
+                                       "noted here but not counted", lang) if is_gonghe(x, y) else      # 拱合: listed, never scored (2026-10-15)
+                                     T("shensha.natal_interactions.07", "half trine — latent alliance", lang))})
     return out
 
 

@@ -27,10 +27,6 @@
   "en": "Skip to content",
   "zh": "跳到正文"
  },
- "landing.008": {
-  "en": "bazifor.me home",
-  "zh": "八字为我首页"
- },
  "landing.009": {
   "en": "bazifor.me",
   "zh": "八字为我"
@@ -136,8 +132,8 @@
   "zh": "开始排盘"
  },
  "landing.036": {
-  "en": "Sample flat drawn by the analyzer: nine traced rooms and a facing dial reading 131.5 degrees, beside the nine-palace Flying Stars chart for Period 9",
-  "zh": "示例住宅的分析图：九个已描绘的房间、读数 131.5° 的朝向盘，以及九运九宫玄空飞星图"
+  "en": "Example home feng shui result for a sample flat: the How to read this card, the traced plan with nine rooms and a facing dial reading 131.5 degrees, beside the nine-palace Flying Stars chart",
+  "zh": "家居风水示例结果（示例住宅）：“怎么看”说明卡、画出九个房间并带朝向盘（读数 131.5°）的平面图，以及旁边的九宫玄空飞星图"
  },
  "landing.037": {
   "en": "House",
@@ -164,8 +160,8 @@
   "zh": "评估我的家"
  },
  "landing.043": {
-  "en": "Example Kua number result: the eight directions around a compass with the favourable ones marked",
-  "zh": "命卦示例结果：罗盘上的八个方位，吉位已标出"
+  "en": "Example Kua number result for a fictional man: Kua 3 in the East group, and the compass of eight directions with the favourable ones in green and the unfavourable ones in red",
+  "zh": "命卦示例结果（虚构男性）：命卦 3，东四命，以及八个方位的罗盘，吉位为绿色，凶位为红色"
  },
  "landing.044": {
   "en": "Directions",
@@ -184,8 +180,8 @@
   "zh": "查我的命卦"
  },
  "landing.048": {
-  "en": "Example baby name card for a fictional name with seven-part score bars",
-  "zh": "虚构姓名的宝宝名字卡示例，附七项评分条"
+  "en": "Example baby name card for the fictional name 王禄婷: the name with its useful-element tags, a possible reading of the name, and the five-part score bars",
+  "zh": "虚构名字王禄婷的宝宝名字卡示例：名字及其用神标签、名字寓意，以及五项评分条"
  },
  "landing.049": {
   "en": "Name",

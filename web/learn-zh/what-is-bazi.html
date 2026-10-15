@@ -29,6 +29,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "@id": "https://bazifor.me/zh/learn/what-is-bazi#article", "headline": "八字排盘原理：四柱、日主与真太阳时", "description": "八字把出生时刻换算成四柱干支。本文讲新加坡、马来西亚出生者如何排盘，附1988年示例命盘，并说明立春分界和真太阳时校正。", "datePublished": "2026-09-16", "dateModified": "2026-10-08", "inLanguage": "zh-Hans", "author": {"@type": "Person", "@id": "https://bazifor.me/author#person", "name": "BaziMaster", "url": "https://bazifor.me/author"}, "publisher": {"@type": "Organization", "@id": "https://bazifor.me/#org", "name": "bazifor.me", "url": "https://bazifor.me", "logo": {"@type": "ImageObject", "url": "https://bazifor.me/static/img/brand/icon-512.png", "width": 512, "height": 512}}, "isPartOf": {"@type": "WebSite", "@id": "https://bazifor.me/#website", "name": "bazifor.me", "url": "https://bazifor.me"}, "mainEntityOfPage": "https://bazifor.me/zh/learn/what-is-bazi", "wordCount": 1711, "image": ["https://bazifor.me/static/learn/img/hero/what-is-bazi.jpg", "https://bazifor.me/static/learn/img/four-pillars-grid.svg"]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "@id": "https://bazifor.me/zh/learn/what-is-bazi#breadcrumb", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "知识库", "item": "https://bazifor.me/zh/learn"}, {"@type": "ListItem", "position": 2, "name": "八字排盘原理：四柱、日主与真太阳时", "item": "https://bazifor.me/zh/learn/what-is-bazi"}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "@id": "https://bazifor.me/zh/learn/what-is-bazi#faq", "mainEntity": [{"@type": "Question", "name": "八字是什么？", "acceptedAnswer": {"@type": "Answer", "text": "八字由四柱八个字组成，即年柱、月柱、日柱和时柱，每柱是一个天干加一个地支。第一步是历法计算，之后的解读才需要解释规则。"}}, {"@type": "Question", "name": "八字的年从什么时候换？", "acceptedAnswer": {"@type": "Answer", "text": "年柱在立春换年，不在农历春节，也不在1月1日。2027年的立春是2027-02-04，所以1月下旬或2月初出生的人可能属于上一年。"}}, {"@type": "Question", "name": "新加坡和马来西亚出生的人，八字要怎么校正时间？", "acceptedAnswer": {"@type": "Answer", "text": "新加坡在1982-01-01以前使用UTC+7:30，之后使用UTC+8；马来西亚半岛自1982-01-01起使用UTC+8。引擎先套用这个偏移，再按经度和均时差算真太阳时。"}}, {"@type": "Question", "name": "为什么排八字要用真太阳时？", "acceptedAnswer": {"@type": "Answer", "text": "钟表时间是政治约定，八字用真太阳时，取决于出生地的经度和均时差。样例钟表09:30属于巳时，真太阳时08:16却属于辰时，不校正，时柱就错。"}}, {"@type": "Question", "name": "排八字是确定性的吗？", "acceptedAnswer": {"@type": "Answer", "text": "计算是精确的，解读依照成文的规则。同一地点、同一分钟出生的两人，任何合格的排盘者都排出相同的八字，但确定性不等于宿命。"}}]}</script>
+<link rel="stylesheet" href="/static/brand.css">
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;
 --gold:#8a6d1f;--line:#e5ded2;--tint:#f3ecdd;--r:12px}
@@ -45,8 +46,6 @@ display:flex;flex-wrap:wrap;align-items:center;column-gap:4px}
 nav a{color:var(--accent);text-decoration:none;font-weight:600;display:inline-flex;
 align-items:center;min-height:44px;padding:0 8px}
 nav a:hover{text-decoration:underline}
-nav a.brand{color:var(--ink);gap:8px;padding-left:0;margin-right:6px}
-nav a.brand svg{width:26px;height:26px;flex:none}
 nav a.lang{margin-left:auto;color:var(--gold);padding-right:0}
 main{max-width:720px;margin:0 auto;padding:20px 18px 56px}
 h1{font-size:30px;line-height:1.25;color:var(--accent);margin:12px 0 10px;letter-spacing:-.01em}
@@ -118,9 +117,9 @@ padding:18px 16px 28px;background:var(--card)}
 footer .fnav{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;margin-top:6px}
 footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 10px}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
-@media(max-width:480px){nav{padding:0 12px;font-size:14px}nav a{padding:0 6px}nav a.brand{margin-right:0}h1{font-size:26px}h2{font-size:21px}}
+@media(max-width:480px){nav{padding:0 12px;font-size:14px}nav a{padding:0 6px}h1{font-size:26px}h2{font-size:21px}}
 </style></head><body>
-<nav aria-label="Site"><a class="brand" href="/zh"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect width="64" height="64" rx="12" fill="#faf7f2" stroke="#e5ded2"/><g fill="#8a6d1f"><rect x="12" y="16" width="40" height="7" rx="2"/><rect x="12" y="28.5" width="40" height="7" rx="2"/><rect x="12" y="41" width="40" height="7" rx="2"/></g></svg><span>bazifor.me</span></a><a href="/zh/start">个人命盘</a><a href="/fengshui">宅运风水</a><a href="/zh/baby">宝宝起名</a><a href="/zh/learn">知识库</a><a class="lang" href="/learn/what-is-bazi" rel="alternate">English</a></nav>
+<nav aria-label="Site"><a class="bzf-brand" href="/zh"><img src="/static/img/brand/icon-64.png" width="28" height="28" alt=""><span>八字为我</span></a><a href="/zh/start">个人命盘</a><a href="/fengshui">宅运风水</a><a href="/zh/baby">宝宝起名</a><a href="/zh/learn">知识库</a><a class="lang" href="/learn/what-is-bazi" rel="alternate">English</a></nav>
 <main>
 <div class="hero"><img class="photo" src="/static/learn/img/hero/what-is-bazi.jpg" srcset="/static/learn/img/hero/what-is-bazi-600.jpg 600w, /static/learn/img/hero/what-is-bazi.jpg 1200w" sizes="(max-width:760px) 100vw, 720px" alt="" aria-hidden="true" width="1200" height="800" fetchpriority="high"></div>
 <article>

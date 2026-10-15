@@ -374,7 +374,7 @@ _VAULT_CLASH = {"辰": "戌", "戌": "辰", "丑": "未", "未": "丑"}
 def four_palaces(chart, ys: dict, lang: str = "en") -> dict:
     """The 宮位 layer: each pillar as a life-stage palace with its resident
     gods and a reading; spouse-palace, children-palace and 財庫 deep lines."""
-    from .shensha import TEN_GOD_MEANING, natal_interactions, ten_god_pct
+    from .shensha import TEN_GOD_MEANING, is_gonghe, natal_interactions, ten_god_pct
     dm_el = STEM_ELEMENT[chart.day_master]
     pillars = []
     for key, zh, ages, governs in L("interpret.PALACE_INFO", PALACE_INFO, lang):
@@ -390,7 +390,8 @@ def four_palaces(chart, ys: dict, lang: str = "en") -> dict:
 
     inter = [i for i in natal_interactions(chart, lang=lang) if "day" in i["pillars"]]
     clash = next((i for i in inter if "沖" in i["kind"] or "冲" in i["kind"]), None)
-    he = next((i for i in inter if "合" in i["kind"]), None)
+    # a half trine with no cardinal branch (拱合) is listed but never counted, so it does not put the palace "in combination" (same rule as domains._scores_as_he)
+    he = next((i for i in inter if "合" in i["kind"] and not (i["kind"] == "半合" and is_gonghe(i["pair"][0], i["pair"][1]))), None)
     xing = next((i for i in inter if "刑" in i["kind"] or "害" in i["kind"]), None)
     sp_state = (
         T("interpret.four_palaces.01", f"clashed 被沖 ({clash['pair']}) — attraction comes easily, but the "

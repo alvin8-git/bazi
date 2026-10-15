@@ -38,6 +38,7 @@
 {"@type": "Question", "name": "Does it predict events?", "acceptedAnswer": {"@type": "Answer", "text": "No. The engine computes classical structures such as the four pillars, the useful elements and the Flying Stars of a home, and states their traditional reading. It does not forecast events."}},
 {"@type": "Question", "name": "Does it work for births outside Singapore?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Pick the birth country and city, and the engine uses that city's time zone on the birth date, daylight saving and past changes included, and its longitude to compute true solar time. Singapore is only the default."}}
 ]}</script>
+<link rel="stylesheet" href="/static/brand.css">
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;--seal:#c7301d;
   --gold:#8a6d1f;--line:#e5ded2;--soft:#f3ecdd}
@@ -75,22 +76,33 @@ h1{margin:0 0 14px;font:700 34px/1.15 Georgia,"Noto Serif SC","Songti SC",serif;
 .hero-img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);background:var(--card);display:block}
 .free{margin:14px 0 0;color:var(--muted);font-size:15px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-@media(min-width:760px){.cards .card:first-child{grid-column:1/-1;flex-direction:row}.cards .card:first-child .shot{width:54%;aspect-ratio:auto;border-bottom:0;border-right:1px solid var(--line)}.cards .card:first-child .body{justify-content:center}}
-.chips a{display:inline-flex;align-items:center;min-height:44px;font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:0 13px;text-decoration:none;transition:background .15s,border-color .15s}.chips a:hover{background:var(--soft);border-color:var(--gold)}.card{scroll-margin-top:16px}
+.chips a{display:inline-flex;align-items:center;min-height:44px;font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:0 13px;text-decoration:none;transition:background .15s,border-color .15s}.chips a:hover{background:var(--soft);border-color:var(--gold)}
 /* sections */
 section{padding:34px 0}
 .sec-h{margin:0 0 6px;font:700 26px/1.2 Georgia,"Noto Serif SC","Songti SC",serif;color:var(--ink)}
 .sec-sub{margin:0 0 20px;color:var(--muted);font-size:15.5px;max-width:40em}
 .cards{display:grid;grid-template-columns:1fr;gap:16px}
-@media(min-width:760px){.cards{grid-template-columns:1fr 1fr}}
-.card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
-.card .shot{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+/* One card per row, one link per card: the heading link is stretched over the whole card (::after), so the picture and the text are one 44px+ target and the
+   glossary terms in the text (span.zh, tabindex) sit above it at z-index 2 and keep their own tooltip. The "go" line is a cue, not a control. */
+.card{position:relative;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color .15s}
+.card:hover{border-color:var(--gold)}
+.card .pic{order:-1;border-bottom:1px solid var(--line);background:var(--soft)}
+.card .pic img{display:block;width:100%;height:auto}
 .card .body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
 .card h3{margin:0;font-size:20px;color:var(--ink)}
 .card h3 small{display:block;font-size:13px;font-weight:600;color:var(--gold);letter-spacing:.04em;margin-bottom:2px}
+.card h3 a.cardlink{color:inherit;text-decoration:none}
+.card h3 a.cardlink::after{content:"";position:absolute;inset:0;z-index:1}
+.card h3 a.cardlink:focus-visible{outline:none}
+.card h3 a.cardlink:focus-visible::after{outline:3px solid var(--gold);outline-offset:-3px;border-radius:14px}
 .card p{margin:0;color:#4a433a;font-size:15px;line-height:1.55}
-.card .go{margin-top:auto;padding-top:8px}
-.card .go a{display:inline-flex;align-items:center;min-height:44px;font-weight:700;text-decoration:none}
+.card p .zh{position:relative;z-index:2}
+.card{scroll-margin-top:16px}
+.card .go{display:inline-flex;align-items:center;min-height:44px;margin-top:4px;font-weight:700;color:var(--accent)}
+.card:hover .go{text-decoration:underline;text-underline-offset:3px}
+/* text left, picture right once both fit: the picture needs about 440px to stay readable and the text about 330px, so the card turns into a row at 820px */
+@media(min-width:820px){.card{flex-direction:row;align-items:stretch}.card .body{flex:1 1 0;min-width:0;padding:26px 26px 24px;justify-content:center}
+  .card .pic{order:0;flex:0 0 56%;border-bottom:0;border-left:1px solid var(--line)}.card h3{font-size:22px}}
 /* steps */
 .steps{display:grid;grid-template-columns:1fr;gap:14px;counter-reset:step}
 @media(min-width:760px){.steps{grid-template-columns:1fr 1fr 1fr}}
@@ -138,7 +150,7 @@ footer{padding:28px 16px 32px;color:var(--muted);font-size:14px;border-top:1px s
   .then(v=>{document.getElementById("ver").textContent="v "+v.version}).catch(()=>{});</script>
 <header class="wrap">
   <div class="top">
-    <a class="logo" href="/" aria-label="bazifor.me home"><img src="/static/img/brand/icon-64.png" width="32" height="32" alt="">bazifor.me</a>
+    <a class="bzf-brand" href="/"><img src="/static/img/brand/icon-64.png" width="28" height="28" alt=""><span>bazifor.me</span></a>
     <nav class="topnav" aria-label="Tools">
       <a href="/start">BaZi reading</a><a href="/fengshui">Home feng shui</a><a href="/kua">Kua number</a><a href="/baby">Baby names</a><a href="/learn">Learn</a>
     </nav><a class="langtoggle" href="/zh" hreflang="zh-CN" lang="zh-CN" aria-label="中文版" data-l="中文" onclick="try{localStorage.setItem('lang','zh')}catch(e){}"></a>
@@ -161,36 +173,36 @@ footer{padding:28px 16px 32px;color:var(--muted);font-size:14px;border-top:1px s
     <p class="sec-sub">Four tools, one engine. Each result shows its working, with the rule beside every line.</p>
     <div class="cards">
       <article class="card" id="card-bazi">
-        <img class="shot" src="/static/img/shots/reading-desktop.jpg" alt="Example reading for the fictional person 王大明: the four pillars as a seal, the opening line and a watercolour of garden soil in spring" width="1280" height="900" loading="lazy">
         <div class="body">
-          <h3><small>Personal</small>BaZi reading</h3>
+          <h3><a class="cardlink" href="/start"><small>Personal</small>BaZi reading</a></h3>
           <p>Your four pillars, Day Master (<span class="zh" lang="zh-Hant" tabindex="0" title="rì zhǔ · Day Master" data-tip="rì zhǔ · Day Master">日主</span>), useful elements (<span class="zh" lang="zh-Hant" tabindex="0" title="yòng shén · useful god" data-tip="yòng shén · useful god">用神</span>), ten-year luck cycles and the timing windows that follow, each line with the rule that produced it. Add up to eight family members and compare.</p>
-          <div class="go"><a href="/start">Start a reading</a></div>
+          <span class="go">Start a reading</span>
         </div>
+        <div class="pic"><img src="/static/img/shots/reading-desktop.jpg" alt="Example reading for the fictional person 王大明: the four pillars as a seal, the opening line and a watercolour of garden soil in spring" width="1280" height="900" loading="lazy"></div>
       </article>
       <article class="card" id="card-fengshui">
-        <img class="shot" src="/static/img/landing/fengshui-snapshot-en-960.webp" srcset="/static/img/landing/fengshui-snapshot-en-480.webp 480w, /static/img/landing/fengshui-snapshot-en-960.webp 960w, /static/img/landing/fengshui-snapshot-en-1440.webp 1440w" sizes="(min-width:760px) 496px, calc(100vw - 34px)" alt="Sample flat drawn by the analyzer: nine traced rooms and a facing dial reading 131.5 degrees, beside the nine-palace Flying Stars chart for Period 9" width="960" height="540" loading="lazy" decoding="async">
         <div class="body">
-          <h3><small>House</small>Home feng shui audit</h3>
+          <h3><a class="cardlink" href="/fengshui"><small>House</small>Home feng shui audit</a></h3>
           <p>Upload the floor plan, set the facing, trace the rooms. You get the Flying Stars (<span class="zh" lang="zh-Hant" tabindex="0" title="xuán kōng fēi xīng · Flying Stars" data-tip="xuán kōng fēi xīng · Flying Stars">玄空飛星</span>) chart, the Eight Mansions (<span class="zh" lang="zh-Hant" tabindex="0" title="bā zhái · Eight House" data-tip="bā zhái · Eight House">八宅</span>) fit for each person, and a room-by-room score for an HDB flat or condominium.</p>
-          <div class="go"><a href="/fengshui">Audit your home</a></div>
+          <span class="go">Audit your home</span>
         </div>
+        <div class="pic"><picture><source type="image/webp" srcset="/static/img/landing/fengshui-en-640.webp 640w, /static/img/landing/fengshui-en-1280.webp 1280w" sizes="(min-width:1072px) 564px, (min-width:820px) 56vw, calc(100vw - 34px)"><img src="/static/img/landing/fengshui-en-640.jpg" srcset="/static/img/landing/fengshui-en-640.jpg 640w, /static/img/landing/fengshui-en-1280.jpg 1280w" sizes="(min-width:1072px) 564px, (min-width:820px) 56vw, calc(100vw - 34px)" alt="Example home feng shui result for a sample flat: the How to read this card, the traced plan with nine rooms and a facing dial reading 131.5 degrees, beside the nine-palace Flying Stars chart" width="1280" height="900" loading="lazy" decoding="async"></picture></div>
       </article>
       <article class="card" id="card-kua">
-        <img class="shot" src="/static/img/shots/kua-desktop.jpg" alt="Example Kua number result: the eight directions around a compass with the favourable ones marked" width="1280" height="900" loading="lazy">
         <div class="body">
-          <h3><small>Directions</small>Kua number</h3>
+          <h3><a class="cardlink" href="/kua"><small>Directions</small>Kua number</a></h3>
           <p>Birth date and sex give your Kua number, counted from the Start of Spring (<span class="zh" lang="zh-Hant" tabindex="0" title="lì chūn · Start of Spring" data-tip="lì chūn · Start of Spring">立春</span>) year boundary. The page shows your four favourable and four unfavourable directions for the bed and the desk.</p>
-          <div class="go"><a href="/kua">Find your Kua number</a></div>
+          <span class="go">Find your Kua number</span>
         </div>
+        <div class="pic"><picture><source type="image/webp" srcset="/static/img/landing/kua-en-640.webp 640w, /static/img/landing/kua-en-1280.webp 1280w" sizes="(min-width:1072px) 564px, (min-width:820px) 56vw, calc(100vw - 34px)"><img src="/static/img/landing/kua-en-640.jpg" srcset="/static/img/landing/kua-en-640.jpg 640w, /static/img/landing/kua-en-1280.jpg 1280w" sizes="(min-width:1072px) 564px, (min-width:820px) 56vw, calc(100vw - 34px)" alt="Example Kua number result for a fictional man: Kua 3 in the East group, and the compass of eight directions with the favourable ones in green and the unfavourable ones in red" width="1280" height="900" loading="lazy" decoding="async"></picture></div>
       </article>
       <article class="card" id="card-baby">
-        <img class="shot" src="/static/img/shots/baby-card-desktop.jpg" alt="Example baby name card for a fictional name with seven-part score bars" width="955" height="650" loading="lazy">
         <div class="body">
-          <h3><small>Name</small>Baby name builder</h3>
+          <h3><a class="cardlink" href="/baby"><small>Name</small>Baby name builder</a></h3>
           <p>From the baby's chart to a scored shortlist: useful elements, Kangxi (<span class="zh" lang="zh-Hant" tabindex="0" title="kāng xī · Kangxi" data-tip="kāng xī · Kangxi">康熙</span>) stroke counts, the Five Grids (<span class="zh" lang="zh-Hant" tabindex="0" title="wǔ gé · Five Grids" data-tip="wǔ gé · Five Grids">五格</span>), meaning, sound-alikes in Mandarin and English, and a printable name card.</p>
-          <div class="go"><a href="/baby">Build a name</a></div>
+          <span class="go">Build a name</span>
         </div>
+        <div class="pic"><picture><source type="image/webp" srcset="/static/img/landing/baby-en-640.webp 640w, /static/img/landing/baby-en-1280.webp 1280w" sizes="(min-width:1072px) 564px, (min-width:820px) 56vw, calc(100vw - 34px)"><img src="/static/img/landing/baby-en-640.jpg" srcset="/static/img/landing/baby-en-640.jpg 640w, /static/img/landing/baby-en-1280.jpg 1280w" sizes="(min-width:1072px) 564px, (min-width:820px) 56vw, calc(100vw - 34px)" alt="Example baby name card for the fictional name 王禄婷: the name with its useful-element tags, a possible reading of the name, and the five-part score bars" width="1280" height="1107" loading="lazy" decoding="async"></picture></div>
       </article>
     </div>
   </section>

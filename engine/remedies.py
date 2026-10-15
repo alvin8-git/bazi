@@ -256,9 +256,9 @@ def study_remedies(chart, room_palace: str | None,
 def pair_remedies(chart_a, chart_b, palace_rooms: dict[str, list[dict]],
                   shared_room: bool = True) -> list[dict]:
     """Actions for a pair: clash management, bond activation, 桃花位 use."""
-    from .hehun import _branch_rel
+    from .hehun import scored_rel
     ba, bb = chart_a.pillars["day"].branch, chart_b.pillars["day"].branch
-    rel = _branch_rel(ba, bb)
+    rel = scored_rel(ba, bb)       # a half trine with no cardinal branch (拱合) is listed but never counted, so it earns no "bond" advice
     out = []
     if rel and rel[1] < 0:
         kind = rel[0]

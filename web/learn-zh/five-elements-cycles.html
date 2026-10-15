@@ -29,6 +29,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "@id": "https://bazifor.me/zh/learn/five-elements-cycles#article", "headline": "八字里的五行：平衡、生克循环与「过旺」的含义", "description": "说明八字如何统计五行权重、生克两个循环怎样造成反复出现的摩擦、过旺或缺失意味着什么，以及五行与健康参考的关系，附1988年样例命盘，并提醒新加坡与马来西亚读者留意立春与时区。", "datePublished": "2026-09-19", "dateModified": "2026-10-09", "inLanguage": "zh-Hans", "author": {"@type": "Person", "@id": "https://bazifor.me/author#person", "name": "BaziMaster", "url": "https://bazifor.me/author"}, "publisher": {"@type": "Organization", "@id": "https://bazifor.me/#org", "name": "bazifor.me", "url": "https://bazifor.me", "logo": {"@type": "ImageObject", "url": "https://bazifor.me/static/img/brand/icon-512.png", "width": 512, "height": 512}}, "isPartOf": {"@type": "WebSite", "@id": "https://bazifor.me/#website", "name": "bazifor.me", "url": "https://bazifor.me"}, "mainEntityOfPage": "https://bazifor.me/zh/learn/five-elements-cycles", "wordCount": 2064, "image": ["https://bazifor.me/static/learn/img/hero/five-elements-cycles.jpg", "https://bazifor.me/static/learn/img/sheng-ke-cycle.svg"]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "@id": "https://bazifor.me/zh/learn/five-elements-cycles#breadcrumb", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "知识库", "item": "https://bazifor.me/zh/learn"}, {"@type": "ListItem", "position": 2, "name": "八字里的五行：平衡、生克循环与「过旺」的含义", "item": "https://bazifor.me/zh/learn/five-elements-cycles"}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "@id": "https://bazifor.me/zh/learn/five-elements-cycles#faq", "mainEntity": [{"@type": "Question", "name": "五行相生相克的顺序是什么？", "acceptedAnswer": {"@type": "Answer", "text": "相生顺序是木生火，火生土，土生金，金生水，水生木。相克顺序是木克土，土克水，水克火，火克金，金克木。"}}, {"@type": "Question", "name": "命盘里的五行是怎么统计的？", "acceptedAnswer": {"@type": "Answer", "text": "引擎给每个天干权重1.0，每个地支的主藏干加1.0，每个次要藏干加三分之一，再按五行把权重相加，并读作平衡而不是分数。"}}, {"@type": "Question", "name": "五行缺某一行是不是坏事？", "acceptedAnswer": {"@type": "Answer", "text": "不是诅咒。引擎把缺失标成一份不能自动运转的工作，例如缺金，结构与执行需要刻意用力；缺木，主动与新开始需要刻意用力。"}}, {"@type": "Question", "name": "五行对应的脏腑是医疗建议吗？", "acceptedAnswer": {"@type": "Answer", "text": "不是。传统五行医学把每一行连到脏腑系统，引擎只把很弱或很重的一行标为值得照顾的系统，这只是参考层，绝非医疗建议。"}}, {"@type": "Question", "name": "新加坡与马来西亚出生的人，五行统计会受什么影响？", "acceptedAnswer": {"@type": "Answer", "text": "凡是移动一柱的因素都会移动平衡，包括立春年界、时区偏移和真太阳时。新加坡在1982-01-01之前用UTC+7:30，之后用UTC+8。"}}]}</script>
+<link rel="stylesheet" href="/static/brand.css">
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#2b2620;--muted:#6b6359;--accent:#b03a2e;
 --gold:#8a6d1f;--line:#e5ded2;--tint:#f3ecdd;--r:12px}
@@ -45,8 +46,6 @@ display:flex;flex-wrap:wrap;align-items:center;column-gap:4px}
 nav a{color:var(--accent);text-decoration:none;font-weight:600;display:inline-flex;
 align-items:center;min-height:44px;padding:0 8px}
 nav a:hover{text-decoration:underline}
-nav a.brand{color:var(--ink);gap:8px;padding-left:0;margin-right:6px}
-nav a.brand svg{width:26px;height:26px;flex:none}
 nav a.lang{margin-left:auto;color:var(--gold);padding-right:0}
 main{max-width:720px;margin:0 auto;padding:20px 18px 56px}
 h1{font-size:30px;line-height:1.25;color:var(--accent);margin:12px 0 10px;letter-spacing:-.01em}
@@ -118,9 +117,9 @@ padding:18px 16px 28px;background:var(--card)}
 footer .fnav{display:flex;flex-wrap:wrap;justify-content:center;gap:0 2px;margin-top:6px}
 footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 10px}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
-@media(max-width:480px){nav{padding:0 12px;font-size:14px}nav a{padding:0 6px}nav a.brand{margin-right:0}h1{font-size:26px}h2{font-size:21px}}
+@media(max-width:480px){nav{padding:0 12px;font-size:14px}nav a{padding:0 6px}h1{font-size:26px}h2{font-size:21px}}
 </style></head><body>
-<nav aria-label="Site"><a class="brand" href="/zh"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect width="64" height="64" rx="12" fill="#faf7f2" stroke="#e5ded2"/><g fill="#8a6d1f"><rect x="12" y="16" width="40" height="7" rx="2"/><rect x="12" y="28.5" width="40" height="7" rx="2"/><rect x="12" y="41" width="40" height="7" rx="2"/></g></svg><span>bazifor.me</span></a><a href="/zh/start">个人命盘</a><a href="/fengshui">宅运风水</a><a href="/zh/baby">宝宝起名</a><a href="/zh/learn">知识库</a><a class="lang" href="/learn/five-elements-cycles" rel="alternate">English</a></nav>
+<nav aria-label="Site"><a class="bzf-brand" href="/zh"><img src="/static/img/brand/icon-64.png" width="28" height="28" alt=""><span>八字为我</span></a><a href="/zh/start">个人命盘</a><a href="/fengshui">宅运风水</a><a href="/zh/baby">宝宝起名</a><a href="/zh/learn">知识库</a><a class="lang" href="/learn/five-elements-cycles" rel="alternate">English</a></nav>
 <main>
 <div class="hero"><img class="photo" src="/static/learn/img/hero/five-elements-cycles.jpg" srcset="/static/learn/img/hero/five-elements-cycles-600.jpg 600w, /static/learn/img/hero/five-elements-cycles.jpg 1200w" sizes="(max-width:760px) 100vw, 720px" alt="" aria-hidden="true" width="1200" height="800" fetchpriority="high"></div>
 <article>

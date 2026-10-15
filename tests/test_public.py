@@ -421,13 +421,15 @@ def test_name_api_meaning_and_five_part_score():
     assert o["results"] and all("zhi" in x["chars"][0]["tags"] and "mei" in x["chars"][1]["tags"] for x in o["results"])
     assert client.get(f"/api/pub/name/optimise?surname=王&{NAME_Q}&given=__&mean=nope,_").status_code == 400
     s = client.get(f"/api/pub/name/score?surname=王&given=禄婷&{NAME_Q}").json()
-    assert set(s["score"]["parts"]) == {"yongshen", "wuge", "sancai", "meaning", "sound", "gender", "confidence"}
+    # 2026-10-15 (calibrations, round 45, owner-approved, N1): five scored parts in the total; meaning and confidence are returned beside it as data
+    assert set(s["score"]["parts"]) == {"yongshen", "wuge", "sancai", "sound", "gender"} and set(s["score"]["data"]) == {"meaning", "confidence"}
+    assert round(sum(s["score"]["parts"].values()), 1) == s["score"]["total"] or abs(sum(s["score"]["parts"].values()) - s["score"]["total"]) < 0.1
     assert s["score"]["notes"]["sound"] == "tones 2-4-2, no clashes" and s["sound"]["score"] == 1.0
     assert s["interpretation"]["zh"] and s["score"]["grade"]["en"] and s["score"]["notes"]["gender"] == "both suit a girl"
     boy = NAME_Q.replace("sex=F", "sex=M")
     b = client.get(f"/api/pub/name/chars?surname=王&{boy}&given=__&slot=0").json()
     assert b["tiles"] and not any(t["gender"] == "F" for t in b["tiles"])
-    assert client.get(f"/api/pub/name/score?surname=王&given=禄婷&{boy}").json()["score"]["parts"]["gender"] == 2.5
+    assert client.get(f"/api/pub/name/score?surname=王&given=禄婷&{boy}").json()["score"]["parts"]["gender"] == 3.12      # 2.5 x 1.25 (N1)
     cert = client.get(f"/api/pub/certificate?surname=王&given=禄婷&{NAME_Q}").text
     assert "既福禄双全，又亭亭玉立" in cert
     assert s["sancai"]["detail"][0]["text"] and s["chars"][1]["gloss"]

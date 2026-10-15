@@ -10,7 +10,7 @@ from __future__ import annotations
 from .area_reference import standing_key
 from .bazi import reading_year
 from .i18n import T, an, num_word, zh_join
-from .shensha import star_name_en
+from .shensha import is_gonghe, star_name_en
 from .plain import (status_paren, ANIMAL, AREA, BAND_KEY, DIR_WORD, EL_ROOM, EN, MEDICINE, NEG_STARS, POLE, SEASON,
                     STEM_EL, _day_label, _month_runs, _run_words, and_join, strength_key, vault_opener)
 
@@ -197,7 +197,8 @@ def _makeup(p, kid, lang="en"):
                 name = star_name_en(name, s["star"])
             lead_l = T(lid, lead, lang)
             p3.append(S(T("story._makeup.12", f"{lead_l}: the {name}, {gist}.", lang, lead=lead_l, name=name, gist=gist), "stars"))
-    ia = p.get("interactions") or []
+    # a half trine with no cardinal branch (拱合) is listed but never counted, so it is not a combination here either
+    ia = [x for x in (p.get("interactions") or []) if not (x["kind"] == "半合" and is_gonghe(x["pair"][0], x["pair"][1]))]
     hard = sum(1 for x in ia if any(k in x["kind"] for k in ("沖", "冲", "刑")))
     if hard >= 3:
         p3.append(S(T("story._makeup.13", "Your pillars clash more than most, so change in one part of your life tends to shake the others; "

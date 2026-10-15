@@ -171,7 +171,8 @@ def harmony_matrix(charts: dict, ys_map: dict) -> dict:
             pairs.append({"a": a, "b": b, "score": p["score"],
                           "band": p["band"],
                           "chips": [c["label"] for c in p["chips"]]})
-    return {"names": names, "pairs": pairs}
+    from .pair_reference import cuts
+    return {"names": names, "pairs": pairs, "band_cuts": list(cuts())}      # the cuts are for drawing; each pair's band word is the server's
 
 
 # ---- Compass tab (2026-09-27): placements + this year's afflictions ------------

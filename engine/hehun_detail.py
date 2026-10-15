@@ -8,7 +8,9 @@ Citations per rule; MODERN SYNTHESIS marked where a mapping is ours.
 from __future__ import annotations
 
 from .bazi import ten_god
-from .hehun import WUHE, _branch_rel, pair_compatibility, scored_rel, strongest_avoided, strongest_phrase
+from .pair_reference import ZH as ZH_GRADE, band_word, standing
+from .hehun import DAY_PTS, WUHE, YEAR_PTS, _branch_rel, pair_compatibility, plenty, scored_rel, strongest_avoided, strongest_phrase
+from .shensha import is_gonghe
 from .wuxing import BRANCH_ELEMENT, ELEMENT_EN
 
 PALACES = ("year", "month", "day", "hour")
@@ -232,13 +234,11 @@ FRAMING = {
             "couple": ("需要认真经营，必要时寻求咨询", "This pairing asks for serious commitment. Professional guidance is worth it if marriage is the goal."),
             "colleagues": ("合作前先明确边界与退出机制", "Agree on boundaries, and an exit plan, before committing to anything big.")},
 }
-_BAND_KEY = lambda s: ("上等" if s >= 70 else "中上" if s >= 55 else
-                       "中" if s >= 45 else "需磨合")
+_BAND_KEY = lambda s: ZH_GRADE[band_word(s)]          # round 45: the band word reads the score's standing among random pairs (pair_reference.py)
 _BAND_EN = {"上等": "Very compatible", "中上": "Compatible",
             "中": "Workable", "需磨合": "Needs effort"}
 
-_REL_PTS = {"day": {"六合": 15, "半三合": 10, "六沖": -15, "刑": -8, "六害": -8},
-            "year": {"六合": 8, "半三合": 8, "六沖": -8, "刑": -4, "六害": -4}}
+_REL_PTS = {"day": DAY_PTS, "year": YEAR_PTS}              # the score's own tables (engine/hehun.py), so the ledger cannot drift from it
 
 
 def _bi(zh, en):
@@ -419,7 +419,7 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
     for giver, gw, gt, taker, tys, gys in ((ca, wa, ta, cb, ys_b, ys_a), (cb, wb, tb, ca, ys_a, ys_b)):
         n = 0
         for e in tys["favourable"]:
-            if gw.get(e, 0) / gt >= 0.2 and n < 2:
+            if plenty(gw, gt, e) and n < 2:
                 w = _need(taker.element_weights, e)
                 tires = e in gys["unfavourable"]          # the giver's own chart avoids it (B2)
                 add(f"{giver.person}五行{e}旺，补{taker.person}所需",
@@ -472,6 +472,8 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
                 continue
             kind, _ = r
             gz, ge = REL_GLOSS[kind]
+            gh = kind == "半三合" and is_gonghe(ca.pillars[pa].branch, cb.pillars[pb].branch)   # 拱合: listed, never scored
+            mz, me = ("拱合，仅展示不计分", "a half trine without a cardinal branch (拱合), noted but not counted") if gh else (gz, ge)
             sweep.append({
                 "pillar_a": pa, "pillar_b": pb,
                 "branch_a": ca.pillars[pa].branch, "branch_b": cb.pillars[pb].branch,
@@ -479,8 +481,8 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
                 "already_scored": ((pa == pb == "day") or (pa == pb == "year")) and bool(scored_rel(ca.pillars[pa].branch, cb.pillars[pb].branch))
                                   or bool(scored_cells.get((pa, pb))),
                 "meaning": _bi(
-                    f"{na}的{PALACE_ZH[pa][1]}遇{nb}的{PALACE_ZH[pb][1]}——{gz}",
-                    f"{na}'s {_pal_en(pa, kid)} meets {nb}'s {_pal_en(pb, kid)}: {ge}.")})
+                    f"{na}的{PALACE_ZH[pa][1]}遇{nb}的{PALACE_ZH[pb][1]}——{mz}",
+                    f"{na}'s {_pal_en(pa, kid)} meets {nb}'s {_pal_en(pb, kid)}: {me}.")})
 
     def _god_el(dm, g):
         from .wuxing import STEM_ELEMENT, STEMS
@@ -496,6 +498,7 @@ def pair_breakdown(ca, cb, ys_a, ys_b) -> dict:
     return {"a": na, "b": nb, "score": base["score"],
             "ages": ages, "voice": voice,
             "band": _bi(band_zh, _BAND_EN[band_zh]),
+            "standing": standing(base["score"]),         # round 45: where this score stands among random pairs, and the raw-score cuts of the bands
             "day_pillars": base["day_pillars"],
             "arithmetic": ledger,
             "summary_parts": _summary_parts(ledger),
@@ -877,7 +880,8 @@ def sweep_reading(ca, cb, sweep: list[dict], voice: str = "adult") -> dict:
     they touch, the clearest pairing, and what it means day to day."""
     na, nb = ca.person, cb.person
     kid = voice != "adult"
-    bonds = [x for x in sweep if x["relation"]["zh"] in _BONDS]
+    gonghe = [x for x in sweep if x["relation"]["zh"] == "半三合" and is_gonghe(x["branch_a"], x["branch_b"])]   # 拱合: listed, never scored
+    bonds = [x for x in sweep if x["relation"]["zh"] in _BONDS and x not in gonghe]
     fric = [x for x in sweep if x["relation"]["zh"] not in _BONDS]
     if not sweep:
         return _bi("两盘四柱之间没有合冲刑害——这对关系靠五行与十神运转，不靠地支的化学反应。",
@@ -889,10 +893,12 @@ def sweep_reading(ca, cb, sweep: list[dict], voice: str = "adult") -> dict:
                       f"（{x['relation']['zh']}{'，已计分' if x['already_scored'] else ''}）")
     en = (f"{len(bonds)} bond{'s' if len(bonds) != 1 else ''} and {len(fric)} friction{'s' if len(fric) != 1 else ''} across the sixteen pairings."
           + (f" Bonds: {'; '.join(pal(x) for x in bonds)}." if bonds else "")
-          + (f" Frictions: {'; '.join(pal(x) for x in fric)}." if fric else ""))
+          + (f" Frictions: {'; '.join(pal(x) for x in fric)}." if fric else "")
+          + (f" Half trine without a cardinal branch (拱合), noted but not counted: {'; '.join(pal(x) for x in gonghe)}." if gonghe else ""))
     zh = (f"十六组地支中有{len(bonds)}处相合、{len(fric)}处相冲刑害。"
           + (f"相合：{'；'.join(palz(x) for x in bonds)}。" if bonds else "")
-          + (f"冲刑害：{'；'.join(palz(x) for x in fric)}。" if fric else ""))
+          + (f"冲刑害：{'；'.join(palz(x) for x in fric)}。" if fric else "")
+          + (f"半合不含子午卯酉（拱合），只记录，不计入：{'；'.join(palz(x) for x in gonghe)}。" if gonghe else ""))
     # B6: a Day Master combining with a non-day stem of the partner, when the Day Masters themselves do not
     sa = {k: ca.pillars[k].stem for k in PALACES}
     sb = {k: cb.pillars[k].stem for k in PALACES}
@@ -959,7 +965,7 @@ def framings_table(pair: dict, modern: dict) -> dict:
     scored = [r for r in arith if r.get("kind") in ("day", "year", "stem") and r["delta"]]
     neg = min(scored, key=lambda r: r["delta"], default=None)
     pos = max(scored, key=lambda r: r["delta"], default=None)
-    hi = pair.get("score", 0) >= 55
+    hi = band_word(pair.get("score", 0)) in ("very compatible", "compatible")         # follows the band, not a literal cut-off
     hint = (f" One thing to manage: {neg['plain']}." if hi and neg and neg["delta"] < 0 else
             f" One real strength: {pos['plain']}." if not hi and pos and pos["delta"] > 0 else "")
     ul, uw = set(), set()
