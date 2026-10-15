@@ -52,7 +52,8 @@ h2{font-size:16px;color:var(--gold);margin:0 0 10px}
 .bl.en small[lang]::before{content:"("}.bl.en small[lang]::after{content:")"}
 table.exs{display:block;max-width:100%;overflow-x:auto}
 table.wg{display:block;max-width:100%;overflow-x:auto}.grid2>div{min-width:0}
-.el-木{color:var(--wood)}.el-火{color:var(--fire)}.el-土{color:var(--earth)}.el-金{color:var(--metal)}.el-水{color:var(--water)}
+/* hex, not var(): the shared glossary-tip.js re-declares --earth on the English page, and 土 must stay #7a601b (owner, 2026-10-15) */
+.el-木{color:#187a35}.el-火{color:#c5221f}.el-土{color:#7a601b}.el-金{color:#8a6500}.el-水{color:#1a56b0}
 .bg-木{background:var(--wood-bg);border-color:var(--wood)}.bg-火{background:var(--fire-bg);border-color:var(--fire)}
 .bg-土{background:var(--earth-bg);border-color:var(--earth)}.bg-金{background:var(--metal-bg);border-color:var(--metal)}
 .bg-水{background:var(--water-bg);border-color:var(--water)}
@@ -77,10 +78,10 @@ table.wg{display:block;max-width:100%;overflow-x:auto}.grid2>div{min-width:0}
 .ysgrp.avoid{background:#fdf5f4;border:2px solid var(--xiong)}
 .ystitle{font-weight:700;font-size:15px;margin-bottom:8px}
 .ysgrp.use .ystitle{color:var(--ji)}.ysgrp.avoid .ystitle{color:var(--xiong)}
-.ysdiscs{display:flex;gap:12px;flex-wrap:wrap}
-.ysd{min-width:72px;border-radius:12px;padding:8px 4px;text-align:center;color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.ysdiscs{display:flex;gap:12px;flex-wrap:wrap;align-items:stretch}
+.ysd{box-sizing:border-box;flex:0 0 104px;width:104px;height:92px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:12px;padding:6px 4px;text-align:center;color:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
 .ysd span{display:block;font-size:20px;font-weight:700;line-height:1.1}
-.ysd small{display:block;font-size:11.5px;font-weight:500}
+.ysd small{display:block;font-size:11.5px;font-weight:500;line-height:1.3}.ysd small .rl{display:block;font-size:11.5px;font-weight:500;line-height:1.3;color:var(--muted)}
 .ysd-木{background:#176b33}.ysd-火{background:#b3261e}.ysd-土{background:#7a5f16}.ysd-金{background:#7a5a00}.ysd-水{background:#174ea6}
 .ysd.off{background:#fff;border:1.5px solid var(--line);box-shadow:none;color:var(--muted)}
 /* B · builder */
@@ -89,9 +90,9 @@ table.wg{display:block;max-width:100%;overflow-x:auto}.grid2>div{min-width:0}
   align-items:center;justify-content:center;font-size:40px;font-weight:700;position:relative;cursor:pointer;padding:0;color:var(--ink);font-family:inherit}
 .box small{font-size:11px;font-weight:500;color:var(--muted);white-space:nowrap}
 .box.fixed{background:#f6f1e8;cursor:default}
-.box.empty{border-style:dashed;color:#b9b0a4;font-size:24px}
+.box.empty{border-style:dashed;color:#8a8177;font-size:24px}
 .box.active{border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,58,46,.18)}
-.box:focus-visible,.tile:focus-visible,.fchip:focus-visible,.seg button:focus-visible,.btn:focus-visible,input:focus-visible{outline:3px solid #1a56b0;outline-offset:2px}
+.box:focus-visible,.gtog:focus-visible,.tile:focus-visible,.fchip:focus-visible,.seg button:focus-visible,.btn:focus-visible,input:focus-visible{outline:3px solid #1a56b0;outline-offset:2px}
 .box .x{position:absolute;top:2px;right:6px;font-size:12px;color:var(--muted);font-weight:400}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-left:auto}
 .seg button{border:0;background:#fff;padding:10px 14px;font:inherit;font-size:14px;cursor:pointer;min-height:44px;color:var(--ink)}
@@ -268,11 +269,7 @@ main>.intro{order:0}main>#formcard{order:1}main>#emptystate{order:2}main>#app{or
 .emptystate figure{margin:0}
 body.has-app .emptystate{display:none}
 /* how-to-read lines under each app heading */
-#app>.sec:first-child>h2::after,#builder>h2::after,#card>h2::after,#shortlist.sec>h2::after{display:block;font:400 14px/1.4 system-ui,"Noto Sans SC",sans-serif;color:var(--muted);margin-top:4px;margin-bottom:6px}
-#app>.sec:first-child>h2::after{content:"How to read this: the baby's chart decides which elements the name should add."}
-#builder>h2::after{content:"How to read this: pick characters; each shows its element and stroke count."}
-#card>h2::after{content:"How to read this: five parts add to 100; excellent (\4E0A\4F73) is 90 or more; a strong sound warning caps the grade."}
-#shortlist.sec>h2::after{content:"How to read this: up to eight names kept in this workspace."}
+h2[data-how]::after{content:attr(data-how);display:block;font:400 14px/1.4 system-ui,"Noto Sans SC",sans-serif;color:var(--muted);margin-top:4px;margin-bottom:6px}
 #card::before{content:"";display:block;aspect-ratio:3/1;max-height:170px;width:calc(100% + 40px);margin:-20px -20px 16px;border-radius:14px 14px 0 0;background:#f3ece0 url(/static/img/tools/baby-card-header.jpg) center/cover no-repeat}
 @media (max-width:640px){#card::before{background-image:url(/static/img/tools/baby-card-header-600.jpg)}}
 .nextstrip{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 20px}
@@ -363,6 +360,25 @@ header h1{font:600 34px/1.15 Georgia,"Noto Serif SC",serif;color:var(--ink)}head
   .pybox .pyin{flex:1 1 100%}
   .qa>summary{font-size:17px}
 }
+/* round 49 (owner 2026-10-15): Elements and pinyin first, Meaning and Strokes behind "+", no default choice, short stroke chips,
+   one size for the element cards, the add-to-workspace step */
+.fgrid.top{margin-bottom:4px}
+.pyrow{margin:6px 0 14px}
+.fgrid.groups{border-top:0;padding-top:0;margin-top:0}
+.gtog{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:44px;padding:6px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font:inherit;font-size:13px;font-weight:700;text-align:left;cursor:pointer}
+.gtog[aria-expanded=true]{border-color:var(--gold)}
+.gtog .gtt{flex:1;min-width:0;overflow-wrap:anywhere;line-height:1.3}
+.gtog .gts{font-weight:600;color:var(--accent)}
+.gtog .gti{flex:none;font-size:24px;line-height:1;font-weight:400;color:var(--accent);width:20px;text-align:center}
+.gbody[hidden]{display:none!important}
+.slegend{flex:1 0 100%;margin:0;font-size:13px;color:var(--muted);line-height:1.5}
+.elch{font-weight:700}
+.wsconf{margin-top:14px;border:1.5px solid var(--gold);border-radius:12px;background:#fffdf7;padding:12px 14px;max-width:560px}
+.wsconf .wsq{margin:0 0 10px;font-weight:700;font-size:16px}
+.wsconf .actions{margin-top:0}
+.wsmsg{margin:10px 0 0;font-size:14px;color:var(--muted)}
+.wsmsg.bad{color:#8c1d18}
+@media (max-width:640px){.ysd{flex:0 0 calc((100% - 24px) / 3);width:auto;min-width:88px}}
 /*langtoggle*/a.langtoggle{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:44px;height:44px;flex:none;margin:0 0 0 8px;padding:0;border:1px solid var(--line,#e5ded2);border-radius:50%;background:transparent;color:var(--ink,#2b2620);font:600 14px/1 system-ui,"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;text-decoration:none;vertical-align:middle}a.langtoggle::before{content:attr(data-l)}.top .topnav{margin-left:auto}a.langtoggle:hover{background:rgba(0,0,0,.05)}a.langtoggle:focus-visible{outline:2px solid #8a6d1f;outline-offset:2px}/*/langtoggle*/</style><link rel="preload" as="image" type="image/webp" imagesrcset="/static/img/tools/baby-plum-600.webp 600w, /static/img/tools/baby-plum-1200.webp 1200w" imagesizes="(max-width:640px) 100vw, 640px" fetchpriority="high">
 </head><body>
 <span class="verbadge" id="ver"></span>
@@ -466,9 +482,9 @@ header h1{font:600 34px/1.15 Georgia,"Noto Serif SC",serif;color:var(--ink)}head
         <p><b>Fictional example, computed by the engine.</b> A fictional baby girl born 2026-03-15 09:30 Singapore time, surname <span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span>. The three names below are real engine output for that chart; each scores good or better.</p>
         <table class="exs" aria-label="Fictional example, computed by the engine">
       <tr><th>Name</th><th>Elements</th><th>Kangxi strokes</th><th>Meaning</th><th>Score</th><th>Grade</th></tr>
-      <tr><td><b><span class="zh" lang="zh-Hant" tabindex="0" title="wáng xī lè" data-tip="wáng xī lè">王熙乐</span></b> (example name)</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="xī" data-tip="xī">熙</span> <span class="el el-fire">Fire</span>, <span class="zh" lang="zh-Hant" tabindex="0" title="lè" data-tip="lè">乐</span> <span class="el el-fire">Fire</span></td><td><span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span> 4, <span class="zh" lang="zh-Hant" tabindex="0" title="xī" data-tip="xī">熙</span> 14, <span class="zh" lang="zh-Hant" tabindex="0" title="lè" data-tip="lè">乐</span> 15</td><td>bright and harmonious; happy and content</td><td>97.5 / 100</td><td>excellent</td></tr>
-      <tr><td><b><span class="zh" lang="zh-Hant" tabindex="0" title="wáng nuǎn xuán" data-tip="wáng nuǎn xuán">王暖璇</span></b> (example name)</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="nuǎn" data-tip="nuǎn">暖</span> <span class="el el-fire">Fire</span>, <span class="zh" lang="zh-Hant" tabindex="0" title="xuán" data-tip="xuán">璇</span> <span class="el el-fire">Fire</span></td><td><span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span> 4, <span class="zh" lang="zh-Hant" tabindex="0" title="nuǎn" data-tip="nuǎn">暖</span> 13, <span class="zh" lang="zh-Hant" tabindex="0" title="xuán" data-tip="xuán">璇</span> 16</td><td>warm-hearted; fine jade, a guiding star</td><td>96.5 / 100</td><td>excellent</td></tr>
-      <tr><td><b><span class="zh" lang="zh-Hant" tabindex="0" title="wáng chén guāng" data-tip="wáng chén guāng">王晨光</span></b> (example name)</td><td><span class="zh" lang="zh-Hant" tabindex="0" title="chén" data-tip="chén">晨</span> <span class="el el-fire">Fire</span>, <span class="zh" lang="zh-Hant" tabindex="0" title="guāng" data-tip="guāng">光</span> <span class="el el-fire">Fire</span></td><td><span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span> 4, <span class="zh" lang="zh-Hant" tabindex="0" title="chén" data-tip="chén">晨</span> 11, <span class="zh" lang="zh-Hant" tabindex="0" title="guāng" data-tip="guāng">光</span> 6</td><td>the hope of dawn; bright and open</td><td>96.0 / 100</td><td>excellent</td></tr>
+      <tr><td><b><span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span><span class="el-fire"><span class="zh" lang="zh-Hant" tabindex="0" title="xī lè" data-tip="xī lè">熙乐</span></span></b> (example name)</td><td><span class="el-fire"><span class="zh" lang="zh-Hant" tabindex="0" title="xī" data-tip="xī">熙</span></span> <span class="el el-fire">Fire</span>, <span class="el-fire"><span class="zh" lang="zh-Hant" tabindex="0" title="lè" data-tip="lè">乐</span></span> <span class="el el-fire">Fire</span></td><td><span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span> 4, <span class="el-fire"><span class="zh" lang="zh-Hant" tabindex="0" title="xī" data-tip="xī">熙</span></span> 14, <span class="el-fire"><span class="zh" lang="zh-Hant" tabindex="0" title="lè" data-tip="lè">乐</span></span> 15</td><td>bright and harmonious; happy and content</td><td>97.5 / 100</td><td>excellent</td></tr>
+      <tr><td><b><span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span><span class="el-fire"><span class="zh" lang="zh-Hant" tabindex="0" title="nuǎn xuán" data-tip="nuǎn xuán">暖璇</span></span></b> (example name)</td><td><span class="el-fire"><span class="zh" lang="zh-Hant" tabindex="0" title="nuǎn" data-tip="nuǎn">暖</span></span> <span class="el el-fire">Fire</span>, <span class="el-fire"><span class="zh" lang="zh-Hant" tabindex="0" title="xuán" data-tip="xuán">璇</span></span> <span class="el el-fire">Fire</span></td><td><span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span> 4, <span class="el-fire"><span class="zh" lang="zh-Hant" tabindex="0" title="nuǎn" data-tip="nuǎn">暖</span></span> 13, <span class="el-fire"><span class="zh" lang="zh-Hant" tabindex="0" title="xuán" data-tip="xuán">璇</span></span> 16</td><td>warm-hearted; fine jade, a guiding star</td><td>96.5 / 100</td><td>excellent</td></tr>
+      <tr><td><b><span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span><span class="el-fire"><span class="zh" lang="zh-Hant" tabindex="0" title="chén guāng" data-tip="chén guāng">晨光</span></span></b> (example name)</td><td><span class="el-fire"><span class="zh" lang="zh-Hant" tabindex="0" title="chén" data-tip="chén">晨</span></span> <span class="el el-fire">Fire</span>, <span class="el-fire"><span class="zh" lang="zh-Hant" tabindex="0" title="guāng" data-tip="guāng">光</span></span> <span class="el el-fire">Fire</span></td><td><span class="zh" lang="zh-Hant" tabindex="0" title="wáng" data-tip="wáng">王</span> 4, <span class="el-fire"><span class="zh" lang="zh-Hant" tabindex="0" title="chén" data-tip="chén">晨</span></span> 11, <span class="el-fire"><span class="zh" lang="zh-Hant" tabindex="0" title="guāng" data-tip="guāng">光</span></span> 6</td><td>the hope of dawn; bright and open</td><td>96.0 / 100</td><td>excellent</td></tr>
     </table>
       </div>
     </details>
@@ -490,14 +506,22 @@ const EL = ["木", "火", "土", "金", "水"];
 const EL_EN = {"木": "wood", "火": "fire", "土": "earth", "金": "metal", "水": "water"};
 const GRID_EN = {"天格": "heaven · ancestry", "人格": "person · core", "地格": "earth · youth", "外格": "outer · social", "總格": "total · later life"};
 // English-first labels: L(english, chinese?) -> English label, the Chinese small and once (via the shared glossary)
-const L = (en, zh) => window.I18N && I18N.t[en] ? `<span class="bl en">${I18N.t[en]}</span>` : window.GL && zh ? GL.label(zh, en) : `<span class="bl en">${en}</span>`;
+const ZH = /^zh/i.test(document.documentElement.lang);       // the generated /zh/baby twin: every label comes from window.I18N or from the engine's own Chinese
+const L = (en, zh) => window.I18N && I18N.t[en] ? `<span class="bl en">${I18N.t[en]}</span>` : ZH && zh ? `<span class="bl en">${zh}</span>` : window.GL && zh ? GL.label(zh, en) : `<span class="bl en">${en}</span>`;
 // Lh: same markup as L, used in headings; the static headings for crawlers are in the explainer sections above #app
 const Lh = (en, zh) => L(en, zh);
 const Li = (en, zh) => L(en, zh);
 const ZT = s => (window.I18N && I18N.t[s]) || s;   // plain-text UI strings: the /zh build supplies I18N
+const ZTF = (s, v) => ZT(s).replace(/\{(\w+)\}/g, (_, k) => v[k]);   // the same with {name} slots
+/* an API error shown on the page: English as sent, or the table's Chinese (unknown messages get one plain line) */
+const errText = m => !ZH ? m : (window.I18N && I18N.t[m]) || (/^surname/.test(m) ? ZT("surname must be 1-2 characters from the dataset") : ZT("Something went wrong. Check the details and try again."));
 const cap = w => w ? w[0].toUpperCase() + w.slice(1) : "";
-const elw = e => cap(EL_EN[e] || "");
+const elw = e => ZH ? e : cap(EL_EN[e] || "");
+const elc = e => e ? `<b class="el-${e}">${e}</b>` : "";                // an element character, painted in its element's colour
 const REL_EN = {"生": "generates", "比": "same", "剋": "controls", "受剋": "controlled by", "克": "controls"};
+const REL_ALL = {...REL_EN, "洩": "洩", "人剋": "人剋", "被剋": "被剋"};   // the engine's own labels that have no English word on the page; /zh gets the simplified form
+const SANCAI_VERB = {"生": "supports", "比": "matches", "洩": "drains", "人剋": "strains", "被剋": "harms"};
+const catName = c => ZH ? c.zh : c.en.split(" · ")[0];
 const gt = x => window.GL ? GL.text(x) : x;
 /* chart-grid glyphs stay Chinese with their pinyin in the tooltip span (zs); pg gives the
    short gloss caption once per card ("yang Earth", "Dragon"), nothing afterwards */
@@ -507,11 +531,13 @@ const pg = g => { if (!window.GL || PG.has(g)) return ""; PG.add(g); return (GL.
 const gp = (zh, en) => window.GL ? GL.pair(zh, en) : en;
 const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
 const LUCK = {"吉": ["ji", "auspicious"], "凶/平": ["amber", "weak or neutral"], "中": ["ping", "neutral"], "凶": ["xiong", "adverse"]};
-const luckChip = (v, compact) => { const [c, en] = LUCK[v] || ["ping", ""]; return `<span class="luck ${c}">${en ? gp(v, en) : v}</span>`; };
+const luckChip = (v, compact, pre) => { const [c, en] = LUCK[v] || ["ping", ""]; return `<span class="luck ${c}">${pre ? pre + (ZH ? "：" : ": ") : ""}${ZH ? v : en ? gp(v, en) : v}</span>`; };
+const GEN = {F: ZT("F"), M: ZT("M")};
 const S = {q: null, chart: null, mode: 2, slots: [null, null], info: {}, active: 0, els: new Set(), strokes: new Set(), py: "", pyExact: false,
-           page: 1, trad: {}, shortlist: [], data: null, tiles: [], card: null, opt: null, meaning: [null, null]};
+           page: 1, trad: {}, shortlist: [], data: null, tiles: [], card: null, opt: null, meaning: [null, null],
+           open: {mean: false, ks: false}};     // the Meaning and Strokes groups start closed (owner, 2026-10-15)
 const catOf = id => (S.chart.categories || []).find(c => c.id === id);
-const catChips = tags => (tags || []).map(t => catOf(t)).filter(Boolean).map(c => `<span class="chip mcat">${c.en.split(" · ")[0]}</span>`).join("");
+const catChips = tags => (tags || []).map(t => catOf(t)).filter(Boolean).map(c => `<span class="chip mcat">${catName(c)}</span>`).join("");
 const meanParam = () => S.meaning.slice(0, S.mode).map(m => m || "_").join(",");
 const ctls = {};                       // one in-flight request per channel, so tiles and optimise never cancel each other
 async function api(path, params, key = "main") {
@@ -547,59 +573,83 @@ function fitArts() {
   if (artRO) artRO.disconnect();
   document.querySelectorAll(".pnt[data-fx]").forEach(f => { fitArt(f); if (artRO) artRO.observe(f); });
 }
+/* the engine's true-solar-time sentence, in the page's language. English as sent; the /zh twin rebuilds it from the same numbers.
+   Place and zone names are GeoNames and IANA names and stay as they are (marked lang="en"). */
+function solarNote(n) {
+  if (!ZH) return esc(n.charAt(0).toUpperCase() + n.slice(1));
+  let m = /^true solar time: clock (\d\d:\d\d) → (\d\d:\d\d) \(SG UTC([+-][\d.]+), lon ([\d.]+)°([EW]), equation of time ([+-][\d.]+) min\)$/.exec(n);
+  if (m) return ZTF("True solar time: clock {a} → {b} (Singapore UTC{u}, {w} longitude {lon}°, equation of time {eq} min)", {a: m[1], b: m[2], u: m[3], lon: m[4], w: ZT(m[5]), eq: m[6]});
+  m = /^true solar time: clock (\d\d:\d\d) → (\d\d:\d\d) \((.+?), (.+?): UTC([+-][\d.]+) by (time zone (.+)|standard time estimated from longitude), lon ([\d.]+)°([EW]), equation of time ([+-][\d.]+) min\)$/.exec(n);
+  if (!m) return "";
+  const how = m[7] ? ZTF("time zone {tz}", {tz: `<span lang="en" class="place">${esc(m[7])}</span>`}) : ZT("standard time estimated from longitude");
+  return ZTF("True solar time: clock {a} → {b} ({city}, {cc}: UTC{u}, {how}, {w} longitude {lon}°, equation of time {eq} min)",
+    {a: m[1], b: m[2], city: `<span lang="en" class="place">${esc(m[3])}</span>`, cc: `<span lang="en" class="place">${esc(m[4])}</span>`, u: m[5], how, w: ZT(m[9]), lon: m[8], eq: m[10]});
+}
+const strengthText = v => ZH ? String(v || "").replace(/\s*\(.*\)\s*$/, "").replace("強", "强") : gt(v);
 function pillarsBlock() {
   const P = S.chart;
-  return `<div class="sec"><h2>${Lh("Four Pillars", "四柱")}</h2>
+  return `<div class="sec"><h2 data-how="${esc(ZT("How to read this: the baby's chart decides which elements the name should add."))}">${Lh("Four Pillars", "四柱")}</h2>
     <div class="ptop"><div class="pcol">
     <div class="pillars">${P.pillars.map(p => `<div class="pil ${p.k === "day" ? "dm" : ""}">
       <div class="lab">${L(p.en, p.zh)}</div>
       <div class="gz"><span class="el-${p.sel}">${zs(p.stem)}</span><span class="el-${p.bel}">${zs(p.branch)}</span></div>
-      <div class="elx">${[pg(p.stem), pg(p.branch)].filter(Boolean).join(" · ") || p.sel + " / " + p.bel}${p.k === "day" ? " · " + zs("日主") : ""}</div></div>`).join("")}</div>
-    ${P.solar && P.solar.note ? `<p class="help solarnote">${esc(P.solar.note.charAt(0).toUpperCase() + P.solar.note.slice(1))}</p>` : ""}
+      <div class="elx">${[pg(p.stem), pg(p.branch)].filter(Boolean).join(" · ") || elc(p.sel) + " / " + elc(p.bel)}${p.k === "day" ? " · " + zs("日主") : ""}</div></div>`).join("")}</div>
+    ${P.solar && P.solar.note ? `<p class="help solarnote">${solarNote(P.solar.note)}</p>` : ""}
     <div class="bars">${EL.map(e => `<div class="bar"><b class="el-${e}">${zs(e)}</b><div class="track"><div class="fill f-${e}" style="width:${P.weights[e] || 0}%"></div></div><span>${P.weights[e] || 0}%</span></div>`).join("")}</div>
     </div>${paintingHtml()}</div>
-    <div class="ysline">${Li("Day Master", "日主")} <b class="el-${P.pillars[2].sel} keepzh">${zs(P.day_master)}</b> <small>${pg(P.day_master)}</small> · ${esc(gt(P.strength))}</div>
+    <div class="ysline">${Li("Day Master", "日主")} <b class="el-${P.pillars[2].sel} keepzh">${zs(P.day_master)}</b> <small>${pg(P.day_master)}</small> · ${esc(strengthText(P.strength))}</div>
     <div class="ysbox">
       <div class="ysgrp use"><div class="ystitle">${L("Choose names with these elements", "用神")}</div>
-        <div class="ysdiscs">${P.fav.map((e, i) => `<div class="ysd off"><span class="el-${e}">${elw(e)}</span><small>${zs(e)} · ${i === 0 ? "useful god" : "favourable"}</small></div>`).join("")}</div></div>
+        <div class="ysdiscs">${P.fav.map((e, i) => `<div class="ysd off"><span class="el-${e}">${elw(e)}</span><small>${ZH ? "" : `<span class="el-${e}">${zs(e)}</span>`}<span class="rl">${i === 0 ? ZT("useful god") : ZT("favourable")}</span></small></div>`).join("")}</div></div>
       <div class="ysgrp avoid"><div class="ystitle">${L("Avoid these elements")}</div>
-        <div class="ysdiscs">${P.unfav.map(e => `<div class="ysd off"><span class="el-${e}">${elw(e)}</span><small>${zs(e)}</small></div>`).join("") || `<span class="count">none</span>`}</div></div>
+        <div class="ysdiscs">${P.unfav.map(e => `<div class="ysd off"><span class="el-${e}">${elw(e)}</span><small>${ZH ? "" : `<span class="el-${e}">${zs(e)}</span>`}</small></div>`).join("") || `<span class="count">${ZT("none")}</span>`}</div></div>
     </div></div>`;
 }
 
 /* ---------- B · builder ---------- */
 function boxesHtml() {
   const P = S.chart, done = complete();
-  let h = `<div class="box fixed" aria-label="surname ${esc(P.surname)}"><span>${esc(P.surname)}</span><small>surname</small></div>`;
+  let h = `<div class="box fixed" aria-label="${esc(ZTF("surname {s}", {s: P.surname}))}"><span>${esc(P.surname)}</span><small>${ZT("surname")}</small></div>`;
   for (let i = 0; i < S.mode; i++) {
-    const ch = S.slots[i], c = S.info[ch] || {};
-    h += ch ? `<button class="box ${i === S.active && !done ? "active" : ""}" data-slot="${i}" aria-label="character ${i + 1}: ${ch}, press to clear"><span class="el-${c.el || ""}">${ch}</span><small>${esc(c.py || "")}</small><span class="x" aria-hidden="true">✕</span></button>`
-            : `<button class="box empty ${i === S.active ? "active" : ""}" data-slot="${i}" aria-label="character ${i + 1}, empty${S.meaning[i] ? ", meaning " + catOf(S.meaning[i]).en : ""}">${i + 1}<small>${S.meaning[i] ? "meaning " + catOf(S.meaning[i]).en.split(" · ")[0] : i === S.active ? "pick" : "empty"}</small></button>`;
+    const ch = S.slots[i], c = S.info[ch] || {}, mc = S.meaning[i] && catOf(S.meaning[i]);
+    h += ch ? `<button class="box ${i === S.active && !done ? "active" : ""}" data-slot="${i}" aria-label="${esc(ZTF("character {n}: {ch}, press to clear", {n: i + 1, ch}))}"><span class="el-${c.el || ""}">${ch}</span><small>${esc(c.py || "")}</small><span class="x" aria-hidden="true">✕</span></button>`
+            : `<button class="box empty ${i === S.active ? "active" : ""}" data-slot="${i}" aria-label="${esc(mc ? ZTF("character {n}, empty, meaning {m}", {n: i + 1, m: catName(mc)}) : ZTF("character {n}, empty", {n: i + 1}))}">${i + 1}<small>${mc ? ZT("meaning") + " " + catName(mc) : i === S.active ? ZT("pick") : ZT("empty")}</small></button>`;
   }
   return h;
 }
+/* the stroke chips read "7画 · 4/4吉": 画 (huà) strokes, 吉 (jí) auspicious grids of four. The characters are icon-like here (data-notip);
+   the legend under the group explains them, and aria-label keeps the full wording in the page's language. */
+const bestReach = () => S.mode === 2 && !S.slots[1 - S.active];
 function chipsHtml() {
-  const chips = (S.data && S.data.chips) || [];
-  return chips.map(c => `<button class="fchip st" data-ks="${c.ks}" aria-pressed="${S.strokes.has(c.ks)}">${c.ks} strokes<span class="n">${c.ji}/4 auspicious</span></button>`).join("") || `<span class="count">none</span>`;
+  const chips = (S.data && S.data.chips) || [], best = bestReach();
+  return chips.map(c => `<button class="fchip st" data-notip data-ks="${c.ks}" aria-pressed="${S.strokes.has(c.ks)}" aria-label="${esc(ZTF(best ? "{k} Kangxi strokes, best reachable {j} of 4 grids auspicious" : "{k} Kangxi strokes, {j} of 4 grids auspicious", {k: c.ks, j: c.ji}))}">${c.ks}画 · <span class="n">${c.ji}/4吉</span></button>`).join("") || `<span class="count">${ZT("none")}</span>`;
 }
+const tileTitle = c => c.blocked ? (ZH ? ZT("not for names") : "not for names — " + esc(c.why))
+  : c.mismatch ? ZT(c.gender === "F" ? "feminine character — usually a girl's name character" : "masculine character — usually a boy's name character")
+  : ZH ? [c.el, c.ks + "画", c.sense && c.sense.zh].filter(Boolean).join(" · ")
+  : esc((c.el ? EL_EN[c.el] + " · " : "") + c.ks + " strokes" + ((c.sense || c.gloss) ? " · " : "") + (c.sense ? c.sense.en : c.gloss || ""));
+const tileAria = c => ZH
+  ? [`${c.ch} ${c.py}`, c.el || ZT("element not set"), c.ks + "画", c.sense && c.sense.zh, c.blocked && ZT("not recommended for names")].filter(Boolean).join("，")
+  : `${c.ch} ${esc(c.py)}, ${c.el || "element not set"}, ${c.ks} strokes${c.gloss ? ", " + esc(c.gloss) : ""}${c.blocked ? ", not recommended for names: " + esc(c.why) : ""}`;
 function tilesHtml() {
   if (!S.data) return `<div class="empty-msg">${L("loading…")}</div>`;
   if (!S.tiles.length) return `<div class="empty-msg">${L("No character matches these filters")}<div style="margin-top:8px">${S.meaning[S.active] ? `<button class="btn" data-mean="${S.meaning[S.active]}">${ZT("clear the meaning filter")}</button> ` : ""}<button class="btn" data-reset="1">${ZT("reset filters")}</button></div></div>`;
-  return `<div class="tiles" data-notip>${S.tiles.map(c => `<button class="tile ${c.el ? "" : "noel"} ${c.blocked ? "blk" : ""}" data-pick="${c.ch}" title="${c.blocked ? "not for names — " + esc(c.why) : c.mismatch ? (c.gender === "F" ? "feminine character — usually a girl's name character" : "masculine character — usually a boy's name character") : esc((c.el ? EL_EN[c.el] + " · " : "") + c.ks + " strokes" + ((c.sense || c.gloss) ? " · " : "") + (c.sense ? c.sense.en : c.gloss || ""))}" aria-label="${c.ch} ${esc(c.py)}, ${c.el || "element not set"}, ${c.ks} strokes${c.gloss ? ", " + esc(c.gloss) : ""}${c.blocked ? ", not recommended for names: " + esc(c.why) : ""}">
-      ${c.blocked ? `<span class="bk">不宜</span>` : c.mismatch ? `<span class="bk gmk">${c.gender === "F" ? "feminine" : "masculine"}</span>` : c.pool ? `<span class="pm">名</span>` : ""}<span class="jn">${c.blocked ? "" : c.ji ? c.ji + "吉" : ""}</span>
-      <span class="ch el-${c.el || ""}">${c.ch}</span><span class="py">${esc(c.py)}</span><span class="ks">${c.ks} · ${c.el || "&ndash;"}${c.gender ? " · " + (c.gender === "F" ? "F" : "M") : ""}</span></button>`).join("")}</div>
-    ${S.data.total > S.tiles.length ? `<div class="more"><button class="btn" data-more="1">more (${S.data.total - S.tiles.length})</button></div>` : ""}`;
+  return `<div class="tiles" data-notip>${S.tiles.map(c => `<button class="tile ${c.el ? "" : "noel"} ${c.blocked ? "blk" : ""}" data-pick="${c.ch}" title="${tileTitle(c)}" aria-label="${tileAria(c)}">
+      ${c.blocked ? `<span class="bk">不宜</span>` : c.mismatch ? `<span class="bk gmk">${ZT(c.gender === "F" ? "feminine" : "masculine")}</span>` : c.pool ? `<span class="pm">名</span>` : ""}<span class="jn">${c.blocked ? "" : c.ji ? c.ji + "吉" : ""}</span>
+      <span class="ch el-${c.el || ""}">${c.ch}</span><span class="py">${esc(c.py)}</span><span class="ks">${c.ks} · ${c.el ? `<b class="el-${c.el}">${c.el}</b>` : "&ndash;"}${c.gender ? " · " + GEN[c.gender === "F" ? "F" : "M"] : ""}</span></button>`).join("")}</div>
+    ${S.data.total > S.tiles.length ? `<div class="more"><button class="btn" data-more="1">${ZTF("more ({n})", {n: S.data.total - S.tiles.length})}</button></div>` : ""}`;
 }
 /* the tile marks are the engine's own Chinese labels; one always-visible line explains them */
 function legendHtml() {
-  return `<p class="tlegend" id="tlegend">${zs("吉")} auspicious (3${zs("吉")}: three of the four grids are auspicious with that stroke count) · ${zs("名")} common in names · ${zs("不宜")} adverse meaning, not for names · under each character: its Kangxi stroke count, then its element</p>`;
+  return `<p class="tlegend" id="tlegend">${ZTF("{ji} auspicious (3{ji}: three of the four grids are auspicious with that stroke count) · {mi} common in names · {bx} adverse meaning, not for names · under each character: its Kangxi stroke count, then its element", {ji: zs("吉"), mi: zs("名"), bx: zs("不宜")})}</p>`;
 }
 function countHtml() {
-  return `${S.data ? S.data.total : "…"} ${Li("characters")} · ★ = useful-god element · <span style="background:var(--gold);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">名</span> = common name character · unset = element not set · <span style="background:var(--xiong);color:#fff;border-radius:4px;padding:0 4px;font-size:11px">不宜</span> = adverse meaning (pinyin search only) · feminine / masculine = usually the other gender (pinyin search only, lowers the score). unset characters also appear when a meaning is chosen`;
+  const bdg = (t, c) => `<span style="background:var(--${c});color:#fff;border-radius:4px;padding:0 4px;font-size:11px">${t}</span>`;
+  return `${S.data ? S.data.total : "…"} ${Li("characters")} · ${ZT("★ = useful-god element")} · ${bdg("名", "gold")} ${ZT("= common name character")} · ${ZT("unset = element not set")} · ${bdg("不宜", "xiong")} ${ZT("= adverse meaning (pinyin search only)")} · ${ZT("feminine / masculine = usually the other gender (pinyin search only, lowers the score).")} ${ZT("unset characters also appear when a meaning is chosen")}`;
 }
 /* pinyin mode note: prefix while typing, the whole syllable after a pause (or Enter); the text never changes per keystroke, so the live region stays quiet */
 const PY_PAUSE = 1000;
-const pyModeText = () => !S.py.trim() ? "" : S.pyExact ? ZT("Showing exactly {q}").replace("{q}", "\u201c" + S.py.trim() + "\u201d")
+const pyModeText = () => !S.py.trim() ? "" : S.pyExact ? ZT("Showing exactly {q}").replace("{q}", "“" + S.py.trim() + "”")
   : ZT("Showing syllables that start with your letters. Pause or press Enter for an exact match.");
 const setPyMode = () => { const el = $("#pymode"); if (el) el.textContent = pyModeText(); };
 function pyApply() {
@@ -608,50 +658,95 @@ function pyApply() {
   S.pyExact = true; S.page = 1; setPyMode(); loadTiles();
 }
 const setPy = v => { S.py = v; S.pyExact = false; };
+/* the Meaning and Strokes groups: a real button controls each region, closed by default; a closed group that holds a choice says so in its header */
+const mSummary = () => { const c = S.meaning[S.active] && catOf(S.meaning[S.active]); return c ? catName(c) : ""; };
+const kSummary = () => { const k = [...S.strokes].sort((a, b) => a - b); return k.slice(0, 3).map(x => x + "画").join(", ") + (k.length > 3 ? " +" + (k.length - 3) : ""); };
+function gtog(key, label, sum) {
+  const open = S.open[key];
+  return `<button type="button" class="gtog" data-gt="${key}" aria-expanded="${open}" aria-controls="g-${key}"><span class="gtt"><span class="gtl">${label}</span><span class="gts" data-notip>${sum ? (ZH ? "：" : ": ") + esc(sum) : ""}</span></span><span class="gti" aria-hidden="true">${open ? "−" : "+"}</span></button>`;
+}
+function toggleGroup(key) {
+  S.open[key] = !S.open[key];
+  const b = document.querySelector(`[data-gt="${key}"]`), r = document.getElementById("g-" + key);
+  if (!b || !r) return;
+  b.setAttribute("aria-expanded", S.open[key]); r.hidden = !S.open[key];
+  b.querySelector(".gti").textContent = S.open[key] ? "−" : "+";
+}
 function panelHtml() {
   if (complete()) return "";
-  const P = S.chart, partnerEmpty = S.mode === 2 && !S.slots[1 - S.active];
+  const P = S.chart, best = bestReach();
   return `<div class="panel">
     <div class="ptitle">${L(`Pick character ${S.active + 1}`)}</div>
+    <div class="fgrid top">
+      <div class="frow" role="group" aria-label="${esc(ZT("element filter"))}" aria-describedby="elnote"><span class="flab">${L("Element", "五行")}</span>
+        <div class="fbtns">${EL.map(e => `<button class="fchip elc-${e}" data-el="${e}" aria-pressed="${S.els.has(e)}"><b class="el-${e}">${elw(e)}</b>${P.fav.includes(e) ? " ★" : ""}</button>`).join("")}
+          <p class="fnote" id="elnote">${ZT("★ marks the baby's favourable elements, including the useful god. Tap an element to filter by it.")}</p></div></div>
+    </div>
     <div class="pyrow"><label class="flab" for="py">${L("Pinyin, no tones")}</label>
       <div class="pybox"><input class="pyin" id="py" type="text" inputmode="latin" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="ting, xuan, yu…" value="${esc(S.py)}" aria-describedby="pymode">
         <button class="fchip" data-clearpy="1" id="pyclear" ${S.py ? "" : "hidden"}>${ZT("clear")}</button>
         <p class="pymode" id="pymode" aria-live="polite">${esc(pyModeText())}</p></div></div>
-    <div class="fgrid">
-      <div class="frow" role="group" aria-label="meaning filter, choose one"><span class="flab">${L("Meaning — choose one", "字義")}</span>
-        <div class="fbtns">${(P.categories || []).map(c => `<button class="fchip mc" data-mean="${c.id}" aria-pressed="${S.meaning[S.active] === c.id}" title="${c.en}"><span class="bl en">${c.en.split(" · ")[0]}</span></button>`).join("")}</div></div>
-      <div class="frow" role="group" aria-label="element filter" aria-describedby="elnote"><span class="flab">${L("Element", "五行")}</span>
-        <div class="fbtns">${EL.map(e => `<button class="fchip elc-${e}" data-el="${e}" aria-pressed="${S.els.has(e)}"><b class="el-${e}">${elw(e)}</b>${P.fav.includes(e) ? " ★" : ""}</button>`).join("")}
-          <p class="fnote" id="elnote">${ZT("★ favourable elements are pre-selected. Switch any off to widen the list.")}</p></div></div>
-      <div class="frow" role="group" aria-label="stroke filter"><span class="flab">${L(partnerEmpty ? "Strokes (Kangxi): best reachable auspicious of 4" : "Strokes (Kangxi): auspicious of 4 with this stroke count", "康熙")}</span>
-        <div class="fbtns" id="chips">${chipsHtml()}</div></div>
+    <div class="fgrid groups">
+      <div class="frow fgroup">${gtog("mean", L("Meaning"), mSummary())}
+        <div class="fbtns gbody" id="g-mean" role="group" aria-label="${esc(ZT("meaning filter, choose one"))}"${S.open.mean ? "" : " hidden"}>${(P.categories || []).map(c => `<button class="fchip mc" data-mean="${c.id}" aria-pressed="${S.meaning[S.active] === c.id}"${ZH ? "" : ` title="${c.en}"`}><span class="bl en">${catName(c)}</span></button>`).join("")}
+          <p class="fnote">${ZT("Choose one meaning.")}</p></div></div>
+      <div class="frow fgroup">${gtog("ks", L("Strokes (Kangxi)"), kSummary())}
+        <div class="gbody" id="g-ks" role="group" aria-label="${esc(ZT("stroke filter"))}"${S.open.ks ? "" : " hidden"}>
+          <p class="fnote" id="stnote">${L(best ? "Best reachable auspicious grids of 4" : "Auspicious grids of 4 with this stroke count")}</p>
+          <div class="fbtns" id="chips">${chipsHtml()}</div>
+          <p class="slegend" data-notip>${ZT("画 huà = Kangxi strokes · 吉 jí = auspicious grids out of four")}</p></div></div>
     </div>
     <div class="count" id="count" aria-live="polite">${countHtml()}</div>
     ${legendHtml()}
     <div id="tiles">${tilesHtml()}</div></div>`;
 }
 function builderBlock() {
-  return `<div class="sec" id="builder"><h2>${Lh("Build the name", "起名")}</h2>
+  return `<div class="sec" id="builder"><h2 data-how="${esc(ZT("How to read this: pick characters; each shows its element and stroke count."))}">${Lh("Build the name", "起名")}</h2>
     <div class="boxes">${boxesHtml()}
-      <div class="bctl"><div class="seg" role="group" aria-label="name length"><button data-mode="1" aria-pressed="${S.mode === 1}">${ZT("1 char")}</button><button data-mode="2" aria-pressed="${S.mode === 2}">${ZT("2 chars")}</button></div>
-      <button class="btn primary optbtn" data-optimise="1" title="rank the best characters for the empty boxes, or better alternatives when the name is complete">${ZT("Optimise")}</button></div></div>
+      <div class="bctl"><div class="seg" role="group" aria-label="${esc(ZT("name length"))}"><button data-mode="1" aria-pressed="${S.mode === 1}">${ZT("1 char")}</button><button data-mode="2" aria-pressed="${S.mode === 2}">${ZT("2 chars")}</button></div>
+      <button class="btn primary optbtn" data-optimise="1" title="${esc(ZT("rank the best characters for the empty boxes, or better alternatives when the name is complete"))}">${ZT("Optimise")}</button></div></div>
     <div id="opt">${optHtml()}</div>
     ${panelHtml()}</div>`;
 }
 
-function scoreParts(sc) {
-  const row = (k, v, m) => `<div class="spart"><span class="sl">${L(sc.labels[k].en, sc.labels[k].zh)}</span><div class="track"><div class="fill" style="width:${v / m * 100}%"></div></div><span class="sv">${v}/${m}</span>${sc.notes ? `<span class="sn">${esc(sc.notes[k])}</span>` : ""}</div>`;
+/* one plain line per score part. English as the engine sends it; the /zh twin rebuilds each line from the same facts (characters, grids, findings),
+   because the engine's note is English only. */
+function zhNotes(c) {
+  const g = c.chars.filter(x => !x.surname), N = c.score.notes, cats = S.chart.categories || [], out = {};
+  out.yongshen = g.map(x => `${x.ch} ${x.el ? elc(x.el) : ZT("element not set")}（${x.role}）`).join("，");
+  const w = /^(\d+) of (\d+) scored grids auspicious( \(Person grid.*\))?$/.exec(N.wuge || "");
+  out.wuge = w ? ZTF("{a} of {b} scored grids auspicious", {a: w[1], b: w[2]}) + (w[3] ? ZT(" (Person grid = Total grid for a single-character name)") : "") : "";
+  out.sancai = (c.sancai.detail || []).map(d => `${esc(d.text)}：${ZT(SANCAI_VERB[d.kind] || "matches")}`).join("，");
+  out.meaning = (N.meaning || "").split(", ").map(t => {
+    const m = /^(\S) (.+)$/.exec(t); if (!m) return esc(t);
+    const cat = cats.find(x => x.en.split(" · ")[0] === m[2]);
+    return m[1] + " " + (cat ? cat.zh : ZT(m[2]));
+  }).join("，");
+  const sd = c.sound || {};
+  out.sound = ZT("tones") + " " + (sd.tones || []).join("-") + "，" + ((sd.findings || []).map(f => f.zh).join("；") || ZT("no clashes"));
+  out.gender = (N.gender || "").split(", ").map(t => {
+    const m = /^(\S) reads as (feminine|masculine)$/.exec(t);
+    return m ? `${m[1]} ${ZT("reads as " + m[2])}` : ZT(t);
+  }).join("，");
+  out.confidence = N.confidence === "elements from the curated list" ? ZT(N.confidence)
+    : (N.confidence || "").split(", ").map(t => { const m = /^(\S) (.+)$/.exec(t); return m ? m[1] + " " + ZT(m[2]) : esc(t); }).join("，");
+  return out;
+}
+function scoreParts(sc, card) {
+  const zn = ZH && card && sc.notes ? zhNotes(card) : null;
+  const note = k => zn ? zn[k] : esc(sc.notes[k]);
+  const row = (k, v, m) => `<div class="spart"><span class="sl">${L(sc.labels[k].en, sc.labels[k].zh)}</span><div class="track"><div class="fill" style="width:${v / m * 100}%"></div></div><span class="sv">${v}/${m}</span>${sc.notes ? `<span class="sn">${note(k)}</span>` : ""}</div>`;
   /* N1 (round 45): meaning and element confidence say how much the engine knows about the characters; they sit beside the score and are not in it */
   const dk = Object.keys(sc.data || {});
   const data = dk.length ? `<div class="sdata"><b>${L("Beside the score, not in it")}</b>${dk.map(k => row(k, sc.data[k], sc.data_max[k])).join("")}</div>` : "";
   return `<div class="sparts">${Object.keys(sc.max).map(k => row(k, sc.parts[k], sc.max[k])).join("")}${data}</div>`;
 }
 function optRow(r, cur) {
-  const chips = `<span class="luck ${r.ji === 5 ? "ji" : "amber"}">${r.ji}/5 auspicious</span> ${luckChip(r.sancai, true).replace(">", ">Three Talents: ")} ${luckChip(r.zong, true).replace(">", ">Total grid: ")}`;
-  return `<button class="optrow ${cur ? "cur" : ""}" ${cur ? "disabled" : `data-optpick="${r.given}"`} aria-label="${r.name}, score ${r.score.total}">
+  const chips = `<span class="luck ${r.ji === 5 ? "ji" : "amber"}">${ZTF("{n}/5 auspicious", {n: r.ji})}</span> ${luckChip(r.sancai, true, ZT("Three Talents"))} ${luckChip(r.zong, true, ZT("Total grid"))}`;
+  return `<button class="optrow ${cur ? "cur" : ""}" ${cur ? "disabled" : `data-optpick="${r.given}"`} aria-label="${esc(ZTF("{name}, score {s}", {name: r.name, s: r.score.total}))}">
     <span class="nm">${esc(S.chart.surname)}${r.chars.map((c, i) => `<span class="el-${c.el || ""} ${r.changed.includes(i) ? "newch" : ""}">${c.ch}</span>`).join("")}
-      <small>${r.chars.map(c => esc(c.py)).join(" ")}${cur ? " · current" : ""}</small></span>
-    <span class="meta">${chips} ${r.chars.map(c => `<span class="chip" title="${esc(c.gloss || "")}"><b class="el-${c.el}">${elw(c.el)}</b> ${window.GL ? GL.english(c.role) : c.role}</span>${catChips(c.tags)}`).join("")}</span>
+      <small>${r.chars.map(c => esc(c.py)).join(" ")}${cur ? " · " + ZT("current") : ""}</small></span>
+    <span class="meta">${chips} ${r.chars.map(c => `<span class="chip"${ZH ? "" : ` title="${esc(c.gloss || "")}"`}><b class="el-${c.el}">${elw(c.el)}</b> ${window.GL ? GL.english(c.role) : c.role}</span>${catChips(c.tags)}`).join("")}</span>
     <span class="tot">${r.score.total}<small>/100</small></span></button>`;
 }
 /* the one-line limits note beside every result; the full text is the last question of the FAQ */
@@ -664,12 +759,12 @@ function optHtml() {
     ? L("Better alternatives — one character changed, the other kept")
     : L("Best characters for the empty box" + (S.mode === 2 && !S.slots[0] && !S.slots[1] ? "es" : ""));
   return `<div class="opt"><div class="opthead"><b>${head}</b>
-      <span class="count">${L("ranked by score: useful god 37.5 + Five Grids 31.25 + Three Talents 18.75 + sound 6.25 + gender fit 6.25; ties go to the better-documented characters")} · ${Li("elements")} ${o.els.join("·")}${(o.meaning || []).some(Boolean) ? ` · ${Li("meaning")} ${o.meaning.map((m, i) => m ? `${i + 1}:${catOf(m).en.split(" · ")[0]}` : "").filter(Boolean).join(" ")}` : ""}${o.dropped_sound ? ` · ${o.dropped_sound} ${Li("dropped for sounding like a rude or unlucky word")}` : ""}</span>
+      <span class="count">${L("ranked by score: useful god 37.5 + Five Grids 31.25 + Three Talents 18.75 + sound 6.25 + gender fit 6.25; ties go to the better-documented characters")} · ${Li("elements")} ${o.els.map(elc).join("·")}${(o.meaning || []).some(Boolean) ? ` · ${Li("meaning")} ${o.meaning.map((m, i) => m ? `${i + 1}:${catName(catOf(m))}` : "").filter(Boolean).join(" ")}` : ""}${o.dropped_sound ? ` · ${o.dropped_sound} ${Li("dropped for sounding like a rude or unlucky word")}` : ""}</span>
       <button class="fchip" data-optclose="1">${ZT("close")}</button></div>
     ${o.baseline ? optRow(o.baseline, true) : ""}
     ${o.results.length ? o.results.map(r => optRow(r, false)).join("")
       : `<div class="empty-msg">${o.mode === "improve" ? L("No single-character change scores higher with these filters") : L("No character matches — widen the element filter or clear a meaning choice")}</div>`}
-    <div class="note">Gold outline = the character the optimiser chose.</div>
+    <div class="note">${ZT("Gold outline = the character the optimiser chose.")}</div>
     ${limitsHtml()}</div>`;
 }
 async function loadOpt() {
@@ -679,7 +774,7 @@ async function loadOpt() {
     let fresh = false;                         // the rows also tell us pinyin/element of boxes filled by a deep link
     for (const r of [S.opt.baseline, ...S.opt.results].filter(Boolean)) for (const c of r.chars) if (!S.info[c.ch]) { S.info[c.ch] = {py: c.py, el: c.el}; fresh = true; }
     if (fresh && S.slots.some(ch => ch && S.info[ch])) render(); else $("#opt").innerHTML = optHtml();
-  } catch (e) { if (e.name !== "AbortError") { S.opt = null; $("#opt").innerHTML = ""; $("#err").textContent = e.message; } }
+  } catch (e) { if (e.name !== "AbortError") { S.opt = null; $("#opt").innerHTML = ""; $("#err").textContent = errText(e.message); } }
 }
 
 /* ---------- C · name card ---------- */
@@ -690,49 +785,126 @@ function gridTable(grids) {
 function sancaiPanel(sc) {
   const lab = [["", "heaven"], ["", "person"], ["", "earth"]];
   const relc = r => (r === "生" || r === "比") ? "good" : (r === "剋" || r === "受剋") ? "bad" : "";
-  return `<div class="sancai">${sc.elements.map((e, i) => `<div class="disc bg-${e}"><span class="el-${e} keepzh" lang="zh-Hans">${e}</span><small>${lab[i][1]}</small></div>${i < 2 ? `<div class="rel ${relc(sc.relations[i])}"><b>${REL_EN[sc.relations[i]] || sc.relations[i]}</b>→</div>` : ""}`).join("")}</div>
+  return `<div class="sancai">${sc.elements.map((e, i) => `<div class="disc bg-${e}"><span class="el-${e} keepzh" lang="zh-Hans">${e}</span><small>${ZT(lab[i][1])}</small></div>${i < 2 ? `<div class="rel ${relc(sc.relations[i])}"><b>${ZT(REL_ALL[sc.relations[i]] || sc.relations[i])}</b>→</div>` : ""}`).join("")}</div>
     <div style="text-align:center">${luckChip(sc.verdict)}</div>
-    <div class="scd">${(sc.detail || []).map(d => `<div><b>${esc(String(d.pair || "").replace("天", "heaven ").replace("人", "person ").replace("地", "earth ").replace(/ →/, " →").trim())}</b> ${esc(d.text_en && window.GL ? GL.pair(d.text, d.text_en) : gt(d.text))} <span class="luck ${d.factor >= 0.8 ? "ji" : d.factor >= 0.4 ? "ping" : "xiong"}">×${d.factor}</span></div>`).join("")}</div>`;
+    <div class="scd">${(sc.detail || []).map(d => `<div><b>${esc(ZH ? String(d.pair || "") : String(d.pair || "").replace("天", "heaven ").replace("人", "person ").replace("地", "earth ").replace(/ →/, " →").trim())}</b> ${esc(ZH ? d.text : d.text_en && window.GL ? GL.pair(d.text, d.text_en) : gt(d.text))} <span class="luck ${d.factor >= 0.8 ? "ji" : d.factor >= 0.4 ? "ping" : "xiong"}">×${d.factor}</span></div>`).join("")}</div>`;
 }
 function certUrl(c) {
   return "/api/pub/certificate?" + new URLSearchParams({surname: c.surname, given: c.given, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, ...PL(), trad: tradParam()});
 }
+const whyText = w => !ZH ? esc(w.why) : w.class === "gender" ? ZT(w.why) : w.class === "sound" ? esc(String(w.why).split(" — ")[0]) : "";
 function cardBlock() {
   if (!complete()) return "";
   const c = S.card;
   if (!c) return `<div class="sec" id="card"><div class="empty-msg">${L("scoring…")}</div></div>`;
   const amb = c.chars.filter(x => !x.surname && x.trad_alts);
   const ct = c.chars.filter(x => !x.surname && x.contested);
-  return `<div class="sec" id="card"><h2>${Lh("Name card")}</h2>
+  const g = c.score.grade;
+  return `<div class="sec" id="card"><h2 data-how="${esc(ZT("How to read this: five parts add to 100; excellent (上佳) is 90 or more; a strong sound warning caps the grade."))}">${Lh("Name card")}</h2>
     <div class="nameband">
       <div class="namegrid" role="group" aria-label="${c.name}">${c.chars.map(x => `<div class="py">${esc(x.py)}</div><div class="ch ${x.surname ? "" : "el-" + (x.el || "")}">${x.ch}</div>
-        <div class="det"><span class="role ${!x.surname && x.el ? "bg-" + x.el + " el-" + x.el : ""}">${Li(!x.surname && x.el ? x.el + " · " + x.role_en : x.role_en)}</span>
-          <span class="mk">${x.gender ? `<span class="${x.mismatch ? "gm bad" : "gm"}">${x.gender === "F" ? "feminine" : "masculine"}</span>` : ""}${x.radical_inferred ? `<span class="rinf" title="element taken from the radical only — weaker evidence, half credit on confidence">radical-inferred</span>` : ""}</span>
-          ${!x.surname ? `<span class="gls">${catChips(x.tags)}${x.sense ? `<b>${esc(x.sense.en)}</b>` : x.gloss ? `<small>${esc(x.gloss)}</small>` : ""}</span>` : ""}</div>`).join("")}</div>
+        <div class="det"><span class="role ${!x.surname && x.el ? "bg-" + x.el + " el-" + x.el : ""}">${ZH ? (!x.surname && x.el ? x.el + " · " : "") + x.role : Li(!x.surname && x.el ? x.el + " · " + x.role_en : x.role_en)}</span>
+          <span class="mk">${x.gender ? `<span class="${x.mismatch ? "gm bad" : "gm"}">${ZT(x.gender === "F" ? "feminine" : "masculine")}</span>` : ""}${x.radical_inferred ? `<span class="rinf" title="${esc(ZT("element taken from the radical only — weaker evidence, half credit on confidence"))}">${ZT("radical-inferred")}</span>` : ""}</span>
+          ${!x.surname ? `<span class="gls">${catChips(x.tags)}${x.sense ? `<b>${esc(ZH ? x.sense.zh : x.sense.en)}</b>` : x.gloss && !ZH ? `<small>${esc(x.gloss)}</small>` : ""}</span>` : ""}</div>`).join("")}</div>
       <div class="interp"><div class="ilab">${L("A possible reading of the name")}</div>
-        <div class="ien">${esc(c.interpretation.en)}</div>
-        ${c.interpretation.partial ? `<div class="count">one character has no stock name sense; its dictionary gloss is shown.</div>` : ""}</div></div>
-    <div class="scoreband" title="${esc(c.score.basis)}">
+        <div class="ien">${esc(ZH ? c.interpretation.zh : c.interpretation.en)}</div>
+        ${c.interpretation.partial ? `<div class="count">${ZT("one character has no stock name sense; its dictionary gloss is shown.")}</div>` : ""}</div></div>
+    <div class="scoreband"${ZH ? "" : ` title="${esc(c.score.basis)}"`}>
       <div class="sbtot"><div class="scoretot">${c.score.total}<small>/100 ${Li("score")}</small></div>
-        <div class="grade g-${c.score.grade.en}">${c.score.grade.en} <small>${zs(c.score.grade.zh)}</small>${c.score.grade.capped ? `<span class="capped" title="${esc(c.score.grade.reason)}">capped</span>` : ""}</div>
-        ${c.score.grade.capped ? `<div class="count capnote">${esc(c.score.grade.reason)}</div>` : ""}
-        <div><span class="luck ${c.ji === 5 ? "ji" : "amber"}">${c.ji}/5 auspicious</span> ${luckChip(c.sancai.verdict, true).replace(">", ">Three Talents: ")}</div></div>
-      ${scoreParts(c.score)}</div>
-    ${(c.warnings || []).map(w => `<div class="warn" role="alert"><b>${w.ch}</b> ${w.class === "gender" ? Li("gender mismatch — lowers the gender-fit score") : w.class === "sound" ? Li("sounds like a rude or unlucky word — grade capped at needs a second look") : Li("adverse meaning — not recommended in a name")}: ${esc(w.why)}</div>`).join("")}
+        <div class="grade g-${g.en}">${ZH ? esc(g.zh) : `${g.en} <small>${zs(g.zh)}</small>`}${g.capped ? `<span class="capped"${ZH ? "" : ` title="${esc(g.reason)}"`}>${ZT("capped")}</span>` : ""}</div>
+        ${g.capped ? `<div class="count capnote">${esc(ZH ? String(g.reason).split(" — ")[0] : g.reason)}</div>` : ""}
+        <div><span class="luck ${c.ji === 5 ? "ji" : "amber"}">${ZTF("{n}/5 auspicious", {n: c.ji})}</span> ${luckChip(c.sancai.verdict, true, ZT("Three Talents"))}</div></div>
+      ${scoreParts(c.score, c)}</div>
+    ${(c.warnings || []).map(w => `<div class="warn" role="alert"><b>${w.ch}</b> ${w.class === "gender" ? Li("gender mismatch — lowers the gender-fit score") : w.class === "sound" ? Li("sounds like a rude or unlucky word — grade capped at needs a second look") : Li("adverse meaning — not recommended in a name")}${whyText(w) ? ": " + whyText(w) : ""}</div>`).join("")}
     <div class="tradline">${Li("traditional form", "繁體")} <b>${zs(c.trad)}</b>
-      <span class="count">${c.strokes.join(" + ")} strokes (Kangxi)</span>
-      ${amb.map(x => `<span class="tsw" role="group" aria-label="traditional form of ${x.ch}">${Object.entries(x.trad_alts).map(([f, k]) => `<button data-trad="${x.ch}:${f}" aria-pressed="${x.trad === f}">${f} <small>${k} strokes</small></button>`).join("")}</span>`).join("")}</div>
-    ${amb.length ? `<div class="note">${amb.map(x => x.ch).join("、")}: more than one traditional form — the name-usage form is preselected; switching recomputes the strokes and the grids.</div>` : ""}
+      <span class="count">${ZTF("{s} strokes (Kangxi)", {s: c.strokes.join(" + ")})}</span>
+      ${amb.map(x => `<span class="tsw" role="group" aria-label="${esc(ZTF("traditional form of {ch}", {ch: x.ch}))}">${Object.entries(x.trad_alts).map(([f, k]) => `<button data-trad="${x.ch}:${f}" aria-pressed="${x.trad === f}">${f} <small>${ZTF("{k} strokes", {k})}</small></button>`).join("")}</span>`).join("")}</div>
+    ${amb.length ? `<div class="note">${ZTF("{list}: more than one traditional form — the name-usage form is preselected; switching recomputes the strokes and the grids.", {list: amb.map(x => x.ch).join("、")})}</div>` : ""}
     <div class="grid2"><div>${gridTable(c.grids)}</div>
       <div><div style="font-weight:700;text-align:center;margin-bottom:4px">${L("Three Talents: heaven · person · earth", "三才")}</div>${sancaiPanel(c.sancai)}</div></div>
-    ${ct.length ? `<div class="note">⚑ ${ct.map(x => `${x.ch}: ${x.el}${x.el_alt ? " / " + esc(x.el_alt) : ""}`).join("；")} — element disputed between dictionary schools.</div>` : ""}
+    ${ct.length ? `<div class="note">⚑ ${ZTF("{list} — element disputed between dictionary schools.", {list: ct.map(x => `${x.ch}: ${elc(x.el)}${x.el_alt ? " / " + elc(x.el_alt) : ""}`).join("；")})}</div>` : ""}
     <div class="actions"><a class="btn primary" href="${certUrl(c)}" target="_blank" rel="noopener">${ZT("Naming certificate →")}</a>
-      ${S.shortlist.find(x => x.name === c.name) ? `<button class="btn" disabled>already in the shortlist</button>`
-        : S.shortlist.length >= SL_MAX ? `<button class="btn" disabled>shortlist full ${SL_MAX}/${SL_MAX} — delete one to add another</button>`
-        : `<button class="btn" data-short="1">Add to shortlist (${S.shortlist.length}/${SL_MAX})</button>`}<button class="btn" data-again="1">${ZT("Start over")}</button></div>
+      ${S.shortlist.find(x => x.name === c.name) ? `<button class="btn" disabled>${ZT("already in the shortlist")}</button>`
+        : S.shortlist.length >= SL_MAX ? `<button class="btn" disabled>${ZTF("shortlist full {n}/{n} — delete one to add another", {n: SL_MAX})}</button>`
+        : `<button class="btn" data-short="1">${ZTF("Add to shortlist ({n}/{m})", {n: S.shortlist.length, m: SL_MAX})}</button>`}<span id="wsbtn" style="display:contents">${wsBtnHtml()}</span><button class="btn" data-again="1">${ZT("Start over")}</button></div>
+    <div id="wsconf">${wsConfHtml()}</div>
     ${limitsHtml()}
     <p class="bzf-print" aria-hidden="true"><img src="/static/img/brand/icon-64.png" width="16" height="16" alt=""><span>bazifor.me</span></p>
   </div>`;
+}
+
+/* ---------- add this baby to a workspace ("smart add", owner 2026-10-15). One confirmation names what will be written. Opened from a workspace
+   (?ws=token): the same birth date, time and sex as a person already there offers to rename that person instead of adding a duplicate;
+   otherwise a new person is added (at most MAX_PEOPLE, 8). Opened without one: a new workspace is created with the same POST /start uses,
+   and the address of the reading page is the way back to it. Existing endpoints only: POST /api/pub/w/{token}/person, PATCH .../person/{idx}
+   (name), POST /api/pub/workspace. ---------- */
+const wsSame = p => p.dob === S.q.dob && (p.birth_time || "12:00") === S.q.birth_time && p.sex === S.q.sex;
+const readingUrl = (token, idx, zh) => `${zh ? "/zh" : ""}/w/${token}/person/${idx}/reading`;
+function wsPlanFor(info) {
+  if (!S.card) return null;
+  const name = S.card.name;
+  if (!S.ws || info === false) return {kind: "new", name};
+  if (!info) return {kind: "wait", name};
+  const ppl = info.people, i = ppl.findIndex(wsSame);
+  if (i >= 0) return ppl[i].name === name ? {kind: "have", name, idx: i} : {kind: "rename", name, idx: i, old: ppl[i].name};
+  if (ppl.length >= info.max_people) return {kind: "full", name, n: ppl.length, max: info.max_people};
+  return {kind: "add", name};
+}
+function wsBtnHtml() {
+  const pl = wsPlanFor(S.wsInfo); if (!pl) return "";
+  const lab = {new: ZT("Create a workspace for this baby"), add: ZT("Add to this workspace"), rename: ZT("Rename the existing baby"), have: ZT("already in this workspace"),
+               full: ZTF("workspace full ({n}/{m})", {n: pl.n, m: pl.max}), wait: ZT("checking the workspace…")}[pl.kind];
+  return `<button class="btn" data-wsadd="1" id="wsadd"${["have", "full", "wait"].includes(pl.kind) ? " disabled" : ""}>${lab}</button>`;
+}
+function wsConfHtml() {
+  const a = S.wsAsk;
+  if (!a) return S.wsMsg ? `<p class="wsmsg ${S.wsMsg.bad ? "bad" : ""}" role="status">${esc(S.wsMsg.t)}</p>` : "";
+  const q = {new: ZTF("Create a new workspace with {name} in it? The address of the reading page is your private link back.", {name: a.name}),
+             add: ZTF("Add {name} to this workspace?", {name: a.name}),
+             rename: ZTF("Rename the existing baby to {name}?", {name: a.name})}[a.kind];
+  const yes = {new: ZT("Create and open the reading"), add: ZT("Add and open the reading"), rename: ZT("Rename and open the reading")}[a.kind];
+  return `<div class="wsconf" role="group" aria-labelledby="wsq"><p class="wsq" id="wsq">${esc(q)}</p>
+    ${a.kind === "rename" ? `<p class="wsmsg">${esc(ZTF("{old} in this workspace has the same birth date, time and sex.", {old: a.old}))}</p>` : ""}
+    <div class="actions"><button class="btn primary" id="wsyes" data-wsyes="1"${a.busy ? " disabled" : ""}>${yes}</button><button class="btn" data-wsno="1"${a.busy ? " disabled" : ""}>${ZT("Cancel")}</button></div>
+    ${a.err ? `<p class="wsmsg bad" role="alert">${esc(a.err)}</p>` : ""}</div>`;
+}
+function paintWs() { const b = $("#wsbtn"), c = $("#wsconf"); if (b) b.innerHTML = wsBtnHtml(); if (c) c.innerHTML = wsConfHtml(); }
+async function wsApi(path, method, body) {
+  const r = await fetch(path, {method, headers: {"Content-Type": "application/json"}, body: body ? JSON.stringify(body) : undefined});
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.detail || ("HTTP " + r.status));
+  return d;
+}
+async function loadWs() {
+  S.wsInfo = null;
+  if (S.ws) { try { S.wsInfo = await wsApi(`/api/pub/w/${S.ws}`, "GET"); } catch (e) { S.wsInfo = false; } }
+  paintWs();
+}
+function wsAsk() {
+  const pl = wsPlanFor(S.wsInfo);
+  if (!pl || ["have", "full", "wait"].includes(pl.kind)) return;
+  S.wsAsk = pl; S.wsMsg = null; paintWs();
+  const y = $("#wsyes"); if (y) y.focus();
+}
+function wsCancel() { S.wsAsk = null; paintWs(); const b = $("#wsadd"); if (b) b.focus(); }
+async function wsConfirm() {
+  const a = S.wsAsk; if (!a || a.busy) return;
+  a.busy = true; a.err = ""; paintWs();
+  const person = {name: a.name, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, time_known: S.q.birth_time !== "12:00", place: S.q.place || null};
+  try {
+    let url;
+    if (a.kind === "new") {
+      const ws = await wsApi("/api/pub/workspace", "POST", person);
+      if (ZH) await wsApi(`/api/pub/workspace/${ws.token}/lang`, "PUT", {lang: "zh"}).catch(() => {});
+      url = readingUrl(ws.token, 0, ZH);
+    } else {
+      const cur = await wsApi(`/api/pub/w/${S.ws}`, "GET"), now = wsPlanFor(cur);   // look again just before writing: another tab may have changed it
+      if (now.kind !== a.kind || now.idx !== a.idx) { S.wsInfo = cur; S.wsAsk = null; S.wsMsg = {t: ZT("The workspace changed since you looked. Check the button and try again."), bad: true}; paintWs(); return; }
+      if (a.kind === "add") { const w = await wsApi(`/api/pub/w/${S.ws}/person`, "POST", person); url = readingUrl(S.ws, w.people.length - 1, w.lang === "zh"); }
+      else { await wsApi(`/api/pub/w/${S.ws}/person/${a.idx}`, "PATCH", {name: a.name}); url = readingUrl(S.ws, a.idx, cur.lang === "zh"); }
+    }
+    location.href = url;
+  } catch (e) { a.busy = false; a.err = errText(e.message); paintWs(); }
 }
 
 /* ---------- shortlist: one list per baby (surname + sex + birth date + time). Saved to the workspace when
@@ -777,12 +949,14 @@ async function slLoad() {
   const el = $("#shortlist"); if (el) el.outerHTML = shortlistBlock();
 }
 const slCertUrl = (given, trad) => "/api/pub/certificate?" + new URLSearchParams({surname: S.q.surname, given, sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, ...PL(), trad: Object.entries(trad || {}).map(([k, v]) => k + ":" + v).join(",")});
+/* a shortlisted name, each given character painted in its element's colour where the page already knows it (the surname has none) */
+const slName = n => [...n].map((ch, i) => { const el = i >= [...S.q.surname].length && S.info[ch] && S.info[ch].el; return el ? `<span class="el-${el}">${ch}</span>` : ch; }).join("");
 function shortlistBlock() {
   if (!S.shortlist.length) return `<div id="shortlist"></div>`;
-  return `<div class="sec" id="shortlist"><h2>${Lh("Shortlist")} <span class="count">${S.shortlist.length}/${SL_MAX} · ${S.ws && S.wsSaved !== false ? Li("saved to your workspace") : S.ws ? Li("workspace unreachable — kept in this browser for now") : Li("kept in this browser for this baby")}</span></h2>
+  return `<div class="sec" id="shortlist"><h2 data-how="${esc(ZT("How to read this: up to eight names kept in this workspace."))}">${Lh("Shortlist")} <span class="count">${S.shortlist.length}/${SL_MAX} · ${S.ws && S.wsSaved !== false ? Li("saved to your workspace") : S.ws ? Li("workspace unreachable — kept in this browser for now") : Li("kept in this browser for this baby")}</span></h2>
     <table class="sl"><tr><th>${L("Name")}</th><th>${L("Score")}</th><th>${L("Auspicious grids of 5")}</th><th>${L("Three Talents", "三才")}</th><th>${L("Traditional form", "繁體")}</th><th></th><th></th></tr>
-      ${S.shortlist.map((x, i) => `<tr><td><button class="slname" data-slopen="${i}" title="open in the builder">${x.name}</button> <small>${py(x.name)}</small></td><td><b>${x.score}</b> <small>${x.grade ? (x.grade.en || x.grade.zh) : ""}</small></td><td>${x.ji}/5</td><td>${luckChip(x.sv, true)}</td><td>${x.tradStr} <small>${py(x.tradStr)}</small></td>
-        <td><a href="${x.url}" target="_blank" rel="noopener">certificate →</a></td><td><button class="sldel" data-sldel="${i}" aria-label="remove ${x.name}">${ZT("delete ✕")}</button></td></tr>`).join("")}</table>
+      ${S.shortlist.map((x, i) => `<tr><td><button class="slname" data-slopen="${i}" title="${esc(ZT("open in the builder"))}">${slName(x.name)}</button> <small>${py(x.name)}</small></td><td><b>${x.score}</b> <small>${x.grade ? (ZH ? x.grade.zh : x.grade.en || x.grade.zh) : ""}</small></td><td>${x.ji}/5</td><td>${luckChip(x.sv, true)}</td><td>${x.tradStr} <small>${py(x.tradStr)}</small></td>
+        <td><a href="${x.url}" target="_blank" rel="noopener">${ZT("certificate →")}</a></td><td><button class="sldel" data-sldel="${i}" aria-label="${esc(ZTF("remove {name}", {name: x.name}))}">${ZT("delete ✕")}</button></td></tr>`).join("")}</table>
     <div class="actions"><button class="btn" data-slclear="1">${ZT("clear all")}</button></div></div>`;
 }
 /* English-first pass over the app region: glossary terms get "English (汉字)" at first use (pinyin in the tooltip);
@@ -791,7 +965,7 @@ function glossApp(root) {
   if (!window.GL || !root) return;
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: (n) => n.parentElement && /[\u3400-\u9fff]/.test(n.nodeValue)
-      && !n.parentElement.closest("input,textarea,.ch,.nm,.box,.tile,.slname,.namegrid,.tradline,.gz,.keepzh,.zh,#shortlist table,[lang='zh-Hans']")
+      && !n.parentElement.closest("input,textarea,.ch,.nm,.box,.tile,.slname,.namegrid,.tradline,.gz,.keepzh,.zh,#shortlist table,[lang='zh-Hans'],[data-notip]")
       ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
   const ns = []; let t; while ((t = w.nextNode())) ns.push(t);
   ns.forEach((n) => { const v = GL.text(n.nodeValue); if (v !== n.nodeValue) n.nodeValue = v; });
@@ -828,16 +1002,16 @@ async function loadTiles(append) {
     S.data = d; S.tiles = append ? S.tiles.concat(d.tiles) : d.tiles;
     for (const c of d.tiles) S.info[c.ch] = c;
     renderDynamic();
-  } catch (e) { if (e.name !== "AbortError") { $("#err").textContent = e.message; if (t) t.classList.remove("busy"); } }
+  } catch (e) { if (e.name !== "AbortError") { $("#err").textContent = errText(e.message); if (t) t.classList.remove("busy"); } }
 }
 async function loadCard() {
   try {
     S.card = await api("/api/pub/name/score", {surname: S.q.surname, given: S.slots.slice(0, S.mode).join(""), sex: S.q.sex, dob: S.q.dob, birth_time: S.q.birth_time, ...PL(), trad: tradParam()});
     for (const x of S.card.chars) if (!S.info[x.ch]) S.info[x.ch] = {py: x.py, el: x.el};
     render(); $("#card").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest"});
-  } catch (e) { if (e.name !== "AbortError") $("#err").textContent = e.message; }
+  } catch (e) { if (e.name !== "AbortError") $("#err").textContent = errText(e.message); }
 }
-function refresh() { S.card = null; S.data = null; S.tiles = []; S.opt = null; render(); complete() ? loadCard() : loadTiles(); }
+function refresh() { S.card = null; S.data = null; S.tiles = []; S.opt = null; S.wsAsk = null; S.wsMsg = null; render(); complete() ? loadCard() : loadTiles(); }
 
 document.addEventListener("click", e => {
   const t = e.target.closest("button"); if (!t || !S.chart) return;
@@ -848,6 +1022,10 @@ document.addEventListener("click", e => {
   else if (d.mean) { S.meaning[S.active] = S.meaning[S.active] === d.mean ? null : d.mean; S.page = 1; }
   else if (d.ks) { const k = +d.ks; S.strokes.has(k) ? S.strokes.delete(k) : S.strokes.add(k); S.page = 1; }
   else if (d.mode) { S.mode = +d.mode; S.slots = [S.slots[0], S.mode === 2 ? S.slots[1] : null]; const n = S.slots.slice(0, S.mode).findIndex(x => !x); S.active = n < 0 ? 0 : n; }
+  else if (d.gt) { toggleGroup(d.gt); return; }
+  else if (d.wsadd) { wsAsk(); return; }
+  else if (d.wsyes) { wsConfirm(); return; }
+  else if (d.wsno) { wsCancel(); return; }
   else if (d.more) { S.page++; loadTiles(true); return; }
   else if (d.optimise) { loadOpt(); return; }
   else if (d.optclose) { S.opt = null; $("#opt").innerHTML = ""; return; }
@@ -855,7 +1033,7 @@ document.addEventListener("click", e => {
     if (row) row.chars.forEach(c => { S.info[c.ch] = {py: c.py, el: c.el}; });
     S.slots = [g[0] || null, S.mode === 2 ? (g[1] || null) : null]; S.trad = {}; S.opt = null; }
   else if (d.clearpy) { setPy(""); S.page = 1; }
-  else if (d.reset) { S.els = new Set(S.chart.fav); S.strokes.clear(); setPy(""); S.meaning[S.active] = null; S.page = 1; }
+  else if (d.reset) { S.els = new Set(); S.strokes.clear(); setPy(""); S.meaning[S.active] = null; S.page = 1; }   // no default choice (owner, 2026-10-15)
   else if (d.trad) { const [ch, f] = d.trad.split(":"); S.trad[ch] = f; }
   else if (d.short) { const c = S.card; if (c && !S.shortlist.find(x => x.name === c.name) && S.shortlist.length < SL_MAX) { S.shortlist.push(slEntry(c, {...S.trad})); S.shortlist.sort((a, b) => b.score - a.score); slSave(); } render(); return; }
   else if (d.sldel) { S.shortlist.splice(+d.sldel, 1); slSave(); render(); return; }
@@ -871,6 +1049,7 @@ document.addEventListener("click", e => { const a = e.target.closest('a[href^="#
 addEventListener("hashchange", () => openFaq(location.hash.slice(1)));
 openFaq(location.hash.slice(1));
 document.addEventListener("keydown", e => {
+  if (S.wsAsk && e.key === "Escape" && !S.wsAsk.busy) { wsCancel(); return; }
   if (!S.chart || /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
   if (e.key === "Backspace") { const i = S.slots.slice(0, S.mode).map(Boolean).lastIndexOf(true); if (i >= 0) { delete S.trad[S.slots[i]]; S.slots[i] = null; S.active = i; refresh(); } return; }
   const tiles = [...document.querySelectorAll(".tile")], idx = tiles.indexOf(document.activeElement);
@@ -892,12 +1071,12 @@ $("#start").addEventListener("click", async () => {
     const typed = (f.given.value || "").trim().replace(/[^\p{Script=Han}]/gu, "").slice(0, 2);
     if (typed) S.pending = typed;             // a name typed in the form is evaluated straight away
     S.q = {...q, surname: chart.surname}; S.chart = chart; S.mode = 2; S.slots = [null, null]; S.info = {}; S.trad = {}; S.active = 0;
-    S.els = new Set(chart.fav); S.strokes = new Set(); setPy(S.pendingPy || ""); S.pendingPy = ""; S.page = 1; S.shortlist = []; slLoad();
+    S.els = new Set(); S.open = {mean: false, ks: false}; S.wsAsk = null; S.wsMsg = null; S.strokes = new Set(); setPy(S.pendingPy || ""); S.pendingPy = ""; S.page = 1; S.shortlist = []; slLoad(); if (S.ws) loadWs();
     S.meaning = (S.pendingMean || "").split(",").map(m => (chart.categories || []).some(c => c.id === m) ? m : null).concat([null, null]).slice(0, 2); S.pendingMean = "";
     if (S.pending) { const g = [...S.pending].slice(0, 2); S.mode = g.length; S.slots = g.map(c => c === "_" ? null : c).concat([null]).slice(0, 2); S.pending = ""; }
     refresh();
     if (S.pendingOpt) { S.pendingOpt = false; loadOpt(); } $("#app").scrollIntoView({behavior: "smooth", block: "start"});
-  } catch (e) { if (e.name !== "AbortError") $("#err").textContent = e.message; }
+  } catch (e) { if (e.name !== "AbortError") $("#err").textContent = errText(e.message); }
   $("#start").disabled = false;
 });
 /* deep link: /baby?surname=王&sex=F&dob=2026-03-15&time=09:30[&place=<city id>][&given=禄婷] restores the builder */
