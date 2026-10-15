@@ -1,0 +1,1638 @@
+{
+ "meta": {
+  "script": "scripts/build_baby_elements_2027.py",
+  "seed": 20261015,
+  "seed_for_spot_checks": 20261016,
+  "seed_for_fire_horse_tail": 20261017,
+  "sample": "one birth per clock hour of true solar time on every true solar date from 2027-02-04 to 2028-02-04, both sexes, keeping the births cast as 丁未 (between the exact 立春 moments of 2027 and 2028); minute drawn with random.Random(seed)",
+  "functions": [
+   "engine.bazi.build_chart(.., TRUE_SOLAR, None)",
+   "engine.yongshen.yong_shen",
+   "engine.bazi.Chart.strength"
+  ],
+  "samples": 17530,
+  "days_scanned": 366,
+  "per_day_per_sex": 24,
+  "sample_digest_sha256": "38da2f41fe6b754de870ab38ac67d67f6daef7f3afb2d85d1f6b34a6da66a330",
+  "sex_changes_result_count": 0,
+  "favourable_list_lengths": {
+   "3": 9174,
+   "2": 8088,
+   "4": 268
+  },
+  "strength_verdict_values": {
+   "身強 (Strong)": 7064,
+   "身弱 (Weak)": 10466
+  },
+  "lead_definition": "first element of ys['favourable'], the element engine.naming._role scores as 用神"
+ },
+ "boundary": {
+  "lichun_2027_sxtwl": {
+   "term": "立春",
+   "date": "2027-02-04",
+   "time": "09:45:59",
+   "month_branch": "寅"
+  },
+  "lichun_2028_sxtwl": {
+   "term": "立春",
+   "date": "2028-02-04",
+   "time": "15:30:53"
+  },
+  "engine_first_clock_minute_cast_as_丁未": "2027-02-04 09:46",
+  "engine_first_true_solar_time": "2027-02-04 08:27:19",
+  "astronomical_moment_in_true_solar_time": "2027-02-04 08:27:18",
+  "clock_hours_between_engine_switch_and_moment": -0.0,
+  "true_solar_behind_clock_minutes_on_2027_02_04": 79,
+  "before_year": [
+   {
+    "clock": "2027-01-01 12:00",
+    "year": "丙午",
+    "month": "庚子"
+   },
+   {
+    "clock": "2027-01-15 12:00",
+    "year": "丙午",
+    "month": "辛丑"
+   },
+   {
+    "clock": "2027-01-31 12:00",
+    "year": "丙午",
+    "month": "辛丑"
+   },
+   {
+    "clock": "2027-02-03 12:00",
+    "year": "丙午",
+    "month": "辛丑"
+   }
+  ],
+  "after_year_2028_02_05": {
+   "clock": "2028-02-05 12:00",
+   "year": "戊申"
+  },
+  "engine_last_clock_minute_cast_as_丁未_2028": "2028-02-04 15:30",
+  "same_morning_checks_2027_02_04": [
+   {
+    "clock": "2027-02-04 05:00",
+    "year": "丙午",
+    "month": "辛丑"
+   },
+   {
+    "clock": "2027-02-04 11:00",
+    "year": "丁未",
+    "month": "壬寅"
+   }
+  ]
+ },
+ "jie": [
+  {
+   "term": "立春",
+   "date": "2027-02-04",
+   "time": "09:45:59",
+   "month_branch": "寅"
+  },
+  {
+   "term": "驚蟄",
+   "date": "2027-03-06",
+   "time": "03:39:14",
+   "month_branch": "卯"
+  },
+  {
+   "term": "清明",
+   "date": "2027-04-05",
+   "time": "08:17:11",
+   "month_branch": "辰"
+  },
+  {
+   "term": "立夏",
+   "date": "2027-05-06",
+   "time": "01:24:52",
+   "month_branch": "巳"
+  },
+  {
+   "term": "芒種",
+   "date": "2027-06-06",
+   "time": "05:25:28",
+   "month_branch": "午"
+  },
+  {
+   "term": "小暑",
+   "date": "2027-07-07",
+   "time": "15:36:43",
+   "month_branch": "未"
+  },
+  {
+   "term": "立秋",
+   "date": "2027-08-08",
+   "time": "01:26:26",
+   "month_branch": "申"
+  },
+  {
+   "term": "白露",
+   "date": "2027-09-08",
+   "time": "04:28:08",
+   "month_branch": "酉"
+  },
+  {
+   "term": "寒露",
+   "date": "2027-10-08",
+   "time": "20:16:46",
+   "month_branch": "戌"
+  },
+  {
+   "term": "立冬",
+   "date": "2027-11-07",
+   "time": "23:38:15",
+   "month_branch": "亥"
+  },
+  {
+   "term": "大雪",
+   "date": "2027-12-07",
+   "time": "16:37:21",
+   "month_branch": "子"
+  },
+  {
+   "term": "小寒",
+   "date": "2028-01-06",
+   "time": "03:54:18",
+   "month_branch": "丑"
+  }
+ ],
+ "overall": {
+  "births": 17530,
+  "favourable_count": {
+   "木": 9354,
+   "火": 9020,
+   "土": 6868,
+   "金": 8560,
+   "水": 10968
+  },
+  "favourable_share": {
+   "木": 53.4,
+   "火": 51.5,
+   "土": 39.2,
+   "金": 48.8,
+   "水": 62.6
+  },
+  "lead_yongshen_count": {
+   "木": 2790,
+   "火": 4008,
+   "土": 1854,
+   "金": 3784,
+   "水": 5094
+  },
+  "lead_yongshen_share": {
+   "木": 15.9,
+   "火": 22.9,
+   "土": 10.6,
+   "金": 21.6,
+   "水": 29.1
+  },
+  "most_common_yongshen": [
+   "水"
+  ],
+  "strong_count": 7064,
+  "weak_count": 10466,
+  "strong_share": 40.3,
+  "weak_share": 59.7
+ },
+ "months": [
+  {
+   "month_pillar": "壬寅",
+   "branch": "寅",
+   "jie": "立春",
+   "engine_first_date": "2027-02-04",
+   "engine_last_date": "2027-03-06",
+   "births": 1426,
+   "favourable_count": {
+    "木": 0,
+    "火": 562,
+    "土": 1138,
+    "金": 1138,
+    "水": 576
+   },
+   "favourable_share": {
+    "木": 0.0,
+    "火": 39.4,
+    "土": 79.8,
+    "金": 79.8,
+    "水": 40.4
+   },
+   "lead_yongshen_count": {
+    "木": 0,
+    "火": 562,
+    "土": 576,
+    "金": 288,
+    "水": 0
+   },
+   "lead_yongshen_share": {
+    "木": 0.0,
+    "火": 39.4,
+    "土": 40.4,
+    "金": 20.2,
+    "水": 0.0
+   },
+   "most_common_yongshen": [
+    "土"
+   ],
+   "strong_count": 562,
+   "weak_count": 864,
+   "strong_share": 39.4,
+   "weak_share": 60.6
+  },
+  {
+   "month_pillar": "癸卯",
+   "branch": "卯",
+   "jie": "驚蟄",
+   "engine_first_date": "2027-03-06",
+   "engine_last_date": "2027-04-05",
+   "births": 1452,
+   "favourable_count": {
+    "木": 0,
+    "火": 590,
+    "土": 1164,
+    "金": 1164,
+    "水": 574
+   },
+   "favourable_share": {
+    "木": 0.0,
+    "火": 40.6,
+    "土": 80.2,
+    "金": 80.2,
+    "水": 39.5
+   },
+   "lead_yongshen_count": {
+    "木": 0,
+    "火": 590,
+    "土": 574,
+    "金": 288,
+    "水": 0
+   },
+   "lead_yongshen_share": {
+    "木": 0.0,
+    "火": 40.6,
+    "土": 39.5,
+    "金": 19.8,
+    "水": 0.0
+   },
+   "most_common_yongshen": [
+    "火"
+   ],
+   "strong_count": 588,
+   "weak_count": 864,
+   "strong_share": 40.5,
+   "weak_share": 59.5
+  },
+  {
+   "month_pillar": "甲辰",
+   "branch": "辰",
+   "jie": "清明",
+   "engine_first_date": "2027-04-05",
+   "engine_last_date": "2027-05-05",
+   "births": 1472,
+   "favourable_count": {
+    "木": 1140,
+    "火": 532,
+    "土": 44,
+    "金": 620,
+    "水": 1164
+   },
+   "favourable_share": {
+    "木": 77.4,
+    "火": 36.1,
+    "土": 3.0,
+    "金": 42.1,
+    "水": 79.1
+   },
+   "lead_yongshen_count": {
+    "木": 276,
+    "火": 0,
+    "土": 44,
+    "金": 576,
+    "水": 576
+   },
+   "lead_yongshen_share": {
+    "木": 18.8,
+    "火": 0.0,
+    "土": 3.0,
+    "金": 39.1,
+    "水": 39.1
+   },
+   "most_common_yongshen": [
+    "金",
+    "水"
+   ],
+   "strong_count": 556,
+   "weak_count": 916,
+   "strong_share": 37.8,
+   "weak_share": 62.2
+  },
+  {
+   "month_pillar": "乙巳",
+   "branch": "巳",
+   "jie": "立夏",
+   "engine_first_date": "2027-05-06",
+   "engine_last_date": "2027-06-06",
+   "births": 1496,
+   "favourable_count": {
+    "木": 624,
+    "火": 0,
+    "土": 584,
+    "金": 1160,
+    "水": 1496
+   },
+   "favourable_share": {
+    "木": 41.7,
+    "火": 0.0,
+    "土": 39.0,
+    "金": 77.5,
+    "水": 100.0
+   },
+   "lead_yongshen_count": {
+    "木": 0,
+    "火": 0,
+    "土": 296,
+    "金": 576,
+    "水": 624
+   },
+   "lead_yongshen_share": {
+    "木": 0.0,
+    "火": 0.0,
+    "土": 19.8,
+    "金": 38.5,
+    "水": 41.7
+   },
+   "most_common_yongshen": [
+    "水"
+   ],
+   "strong_count": 584,
+   "weak_count": 912,
+   "strong_share": 39.0,
+   "weak_share": 61.0
+  },
+  {
+   "month_pillar": "丙午",
+   "branch": "午",
+   "jie": "芒種",
+   "engine_first_date": "2027-06-06",
+   "engine_last_date": "2027-07-07",
+   "births": 1508,
+   "favourable_count": {
+    "木": 576,
+    "火": 0,
+    "土": 644,
+    "金": 1220,
+    "水": 1508
+   },
+   "favourable_share": {
+    "木": 38.2,
+    "火": 0.0,
+    "土": 42.7,
+    "金": 80.9,
+    "水": 100.0
+   },
+   "lead_yongshen_count": {
+    "木": 0,
+    "火": 0,
+    "土": 356,
+    "金": 576,
+    "水": 576
+   },
+   "lead_yongshen_share": {
+    "木": 0.0,
+    "火": 0.0,
+    "土": 23.6,
+    "金": 38.2,
+    "水": 38.2
+   },
+   "most_common_yongshen": [
+    "金",
+    "水"
+   ],
+   "strong_count": 644,
+   "weak_count": 864,
+   "strong_share": 42.7,
+   "weak_share": 57.3
+  },
+  {
+   "month_pillar": "丁未",
+   "branch": "未",
+   "jie": "小暑",
+   "engine_first_date": "2027-07-07",
+   "engine_last_date": "2027-08-07",
+   "births": 1508,
+   "favourable_count": {
+    "木": 1110,
+    "火": 532,
+    "土": 110,
+    "金": 734,
+    "水": 1462
+   },
+   "favourable_share": {
+    "木": 73.6,
+    "火": 35.3,
+    "土": 7.3,
+    "金": 48.7,
+    "水": 96.9
+   },
+   "lead_yongshen_count": {
+    "木": 0,
+    "火": 46,
+    "土": 8,
+    "金": 624,
+    "水": 830
+   },
+   "lead_yongshen_share": {
+    "木": 0.0,
+    "火": 3.1,
+    "土": 0.5,
+    "金": 41.4,
+    "水": 55.0
+   },
+   "most_common_yongshen": [
+    "水"
+   ],
+   "strong_count": 530,
+   "weak_count": 978,
+   "strong_share": 35.1,
+   "weak_share": 64.9
+  },
+  {
+   "month_pillar": "戊申",
+   "branch": "申",
+   "jie": "立秋",
+   "engine_first_date": "2027-08-08",
+   "engine_last_date": "2027-09-08",
+   "births": 1494,
+   "favourable_count": {
+    "木": 1270,
+    "火": 1094,
+    "土": 512,
+    "金": 112,
+    "水": 694
+   },
+   "favourable_share": {
+    "木": 85.0,
+    "火": 73.2,
+    "土": 34.3,
+    "金": 7.5,
+    "水": 46.5
+   },
+   "lead_yongshen_count": {
+    "木": 576,
+    "火": 224,
+    "土": 0,
+    "金": 112,
+    "水": 582
+   },
+   "lead_yongshen_share": {
+    "木": 38.6,
+    "火": 15.0,
+    "土": 0.0,
+    "金": 7.5,
+    "水": 39.0
+   },
+   "most_common_yongshen": [
+    "水"
+   ],
+   "strong_count": 694,
+   "weak_count": 800,
+   "strong_share": 46.5,
+   "weak_share": 53.5
+  },
+  {
+   "month_pillar": "己酉",
+   "branch": "酉",
+   "jie": "白露",
+   "engine_first_date": "2027-09-08",
+   "engine_last_date": "2027-10-08",
+   "births": 1474,
+   "favourable_count": {
+    "木": 1198,
+    "火": 1018,
+    "土": 408,
+    "金": 168,
+    "水": 778
+   },
+   "favourable_share": {
+    "木": 81.3,
+    "火": 69.1,
+    "土": 27.7,
+    "金": 11.4,
+    "水": 52.8
+   },
+   "lead_yongshen_count": {
+    "木": 498,
+    "火": 198,
+    "土": 0,
+    "金": 168,
+    "水": 610
+   },
+   "lead_yongshen_share": {
+    "木": 33.8,
+    "火": 13.4,
+    "土": 0.0,
+    "金": 11.4,
+    "水": 41.4
+   },
+   "most_common_yongshen": [
+    "水"
+   ],
+   "strong_count": 622,
+   "weak_count": 852,
+   "strong_share": 42.2,
+   "weak_share": 57.8
+  },
+  {
+   "month_pillar": "庚戌",
+   "branch": "戌",
+   "jie": "寒露",
+   "engine_first_date": "2027-10-08",
+   "engine_last_date": "2027-11-07",
+   "births": 1446,
+   "favourable_count": {
+    "木": 1158,
+    "火": 582,
+    "土": 0,
+    "金": 576,
+    "水": 1158
+   },
+   "favourable_share": {
+    "木": 80.1,
+    "火": 40.2,
+    "土": 0.0,
+    "金": 39.8,
+    "水": 80.1
+   },
+   "lead_yongshen_count": {
+    "木": 288,
+    "火": 0,
+    "土": 0,
+    "金": 576,
+    "水": 582
+   },
+   "lead_yongshen_share": {
+    "木": 19.9,
+    "火": 0.0,
+    "土": 0.0,
+    "金": 39.8,
+    "水": 40.2
+   },
+   "most_common_yongshen": [
+    "水"
+   ],
+   "strong_count": 582,
+   "weak_count": 864,
+   "strong_share": 40.2,
+   "weak_share": 59.8
+  },
+  {
+   "month_pillar": "辛亥",
+   "branch": "亥",
+   "jie": "立冬",
+   "engine_first_date": "2027-11-07",
+   "engine_last_date": "2027-12-07",
+   "births": 1424,
+   "favourable_count": {
+    "木": 576,
+    "火": 1280,
+    "土": 1136,
+    "金": 560,
+    "水": 144
+   },
+   "favourable_share": {
+    "木": 40.4,
+    "火": 89.9,
+    "土": 79.8,
+    "金": 39.3,
+    "水": 10.1
+   },
+   "lead_yongshen_count": {
+    "木": 576,
+    "火": 704,
+    "土": 0,
+    "金": 0,
+    "水": 144
+   },
+   "lead_yongshen_share": {
+    "木": 40.4,
+    "火": 49.4,
+    "土": 0.0,
+    "金": 0.0,
+    "水": 10.1
+   },
+   "most_common_yongshen": [
+    "火"
+   ],
+   "strong_count": 576,
+   "weak_count": 848,
+   "strong_share": 40.4,
+   "weak_share": 59.6
+  },
+  {
+   "month_pillar": "壬子",
+   "branch": "子",
+   "jie": "大雪",
+   "engine_first_date": "2027-12-07",
+   "engine_last_date": "2028-01-06",
+   "births": 1416,
+   "favourable_count": {
+    "木": 576,
+    "火": 1416,
+    "土": 1128,
+    "金": 552,
+    "水": 144
+   },
+   "favourable_share": {
+    "木": 40.7,
+    "火": 100.0,
+    "土": 79.7,
+    "金": 39.0,
+    "水": 10.2
+   },
+   "lead_yongshen_count": {
+    "木": 432,
+    "火": 840,
+    "土": 0,
+    "金": 0,
+    "水": 144
+   },
+   "lead_yongshen_share": {
+    "木": 30.5,
+    "火": 59.3,
+    "土": 0.0,
+    "金": 0.0,
+    "水": 10.2
+   },
+   "most_common_yongshen": [
+    "火"
+   ],
+   "strong_count": 576,
+   "weak_count": 840,
+   "strong_share": 40.7,
+   "weak_share": 59.3
+  },
+  {
+   "month_pillar": "癸丑",
+   "branch": "丑",
+   "jie": "小寒",
+   "engine_first_date": "2028-01-06",
+   "engine_last_date": "2028-02-04",
+   "births": 1414,
+   "favourable_count": {
+    "木": 1126,
+    "火": 1414,
+    "土": 0,
+    "金": 556,
+    "水": 1270
+   },
+   "favourable_share": {
+    "木": 79.6,
+    "火": 100.0,
+    "土": 0.0,
+    "金": 39.3,
+    "水": 89.8
+   },
+   "lead_yongshen_count": {
+    "木": 144,
+    "火": 844,
+    "土": 0,
+    "金": 0,
+    "水": 426
+   },
+   "lead_yongshen_share": {
+    "木": 10.2,
+    "火": 59.7,
+    "土": 0.0,
+    "金": 0.0,
+    "水": 30.1
+   },
+   "most_common_yongshen": [
+    "火"
+   ],
+   "strong_count": 550,
+   "weak_count": 864,
+   "strong_share": 38.9,
+   "weak_share": 61.1
+  }
+ ],
+ "seasons": {
+  "spring": {
+   "months": "寅卯辰",
+   "births": 4350,
+   "favourable_count": {
+    "木": 1140,
+    "火": 1684,
+    "土": 2346,
+    "金": 2922,
+    "水": 2314
+   },
+   "favourable_share": {
+    "木": 26.2,
+    "火": 38.7,
+    "土": 53.9,
+    "金": 67.2,
+    "水": 53.2
+   },
+   "lead_yongshen_count": {
+    "木": 276,
+    "火": 1152,
+    "土": 1194,
+    "金": 1152,
+    "水": 576
+   },
+   "lead_yongshen_share": {
+    "木": 6.3,
+    "火": 26.5,
+    "土": 27.4,
+    "金": 26.5,
+    "水": 13.2
+   },
+   "most_common_yongshen": [
+    "土"
+   ],
+   "strong_count": 1706,
+   "weak_count": 2644,
+   "strong_share": 39.2,
+   "weak_share": 60.8
+  },
+  "summer": {
+   "months": "巳午未",
+   "births": 4512,
+   "favourable_count": {
+    "木": 2310,
+    "火": 532,
+    "土": 1338,
+    "金": 3114,
+    "水": 4466
+   },
+   "favourable_share": {
+    "木": 51.2,
+    "火": 11.8,
+    "土": 29.7,
+    "金": 69.0,
+    "水": 99.0
+   },
+   "lead_yongshen_count": {
+    "木": 0,
+    "火": 46,
+    "土": 660,
+    "金": 1776,
+    "水": 2030
+   },
+   "lead_yongshen_share": {
+    "木": 0.0,
+    "火": 1.0,
+    "土": 14.6,
+    "金": 39.4,
+    "水": 45.0
+   },
+   "most_common_yongshen": [
+    "水"
+   ],
+   "strong_count": 1758,
+   "weak_count": 2754,
+   "strong_share": 39.0,
+   "weak_share": 61.0
+  },
+  "autumn": {
+   "months": "申酉戌",
+   "births": 4414,
+   "favourable_count": {
+    "木": 3626,
+    "火": 2694,
+    "土": 920,
+    "金": 856,
+    "水": 2630
+   },
+   "favourable_share": {
+    "木": 82.1,
+    "火": 61.0,
+    "土": 20.8,
+    "金": 19.4,
+    "水": 59.6
+   },
+   "lead_yongshen_count": {
+    "木": 1362,
+    "火": 422,
+    "土": 0,
+    "金": 856,
+    "水": 1774
+   },
+   "lead_yongshen_share": {
+    "木": 30.9,
+    "火": 9.6,
+    "土": 0.0,
+    "金": 19.4,
+    "水": 40.2
+   },
+   "most_common_yongshen": [
+    "水"
+   ],
+   "strong_count": 1898,
+   "weak_count": 2516,
+   "strong_share": 43.0,
+   "weak_share": 57.0
+  },
+  "winter": {
+   "months": "亥子丑",
+   "births": 4254,
+   "favourable_count": {
+    "木": 2278,
+    "火": 4110,
+    "土": 2264,
+    "金": 1668,
+    "水": 1558
+   },
+   "favourable_share": {
+    "木": 53.5,
+    "火": 96.6,
+    "土": 53.2,
+    "金": 39.2,
+    "水": 36.6
+   },
+   "lead_yongshen_count": {
+    "木": 1152,
+    "火": 2388,
+    "土": 0,
+    "金": 0,
+    "水": 714
+   },
+   "lead_yongshen_share": {
+    "木": 27.1,
+    "火": 56.1,
+    "土": 0.0,
+    "金": 0.0,
+    "水": 16.8
+   },
+   "most_common_yongshen": [
+    "火"
+   ],
+   "strong_count": 1702,
+   "weak_count": 2552,
+   "strong_share": 40.0,
+   "weak_share": 60.0
+  }
+ },
+ "fire_horse_tail": [
+  {
+   "month_pillar": "庚子",
+   "engine_first_date": "2027-01-01",
+   "engine_last_date": "2027-01-05",
+   "births": 234,
+   "favourable_count": {
+    "木": 118,
+    "火": 234,
+    "土": 212,
+    "金": 116,
+    "水": 22
+   },
+   "favourable_share": {
+    "木": 50.4,
+    "火": 100.0,
+    "土": 90.6,
+    "金": 49.6,
+    "水": 9.4
+   },
+   "lead_yongshen_count": {
+    "木": 96,
+    "火": 138,
+    "土": 0,
+    "金": 0,
+    "水": 0
+   },
+   "lead_yongshen_share": {
+    "木": 41.0,
+    "火": 59.0,
+    "土": 0.0,
+    "金": 0.0,
+    "水": 0.0
+   },
+   "most_common_yongshen": [
+    "火"
+   ],
+   "strong_count": 116,
+   "weak_count": 118,
+   "strong_share": 49.6,
+   "weak_share": 50.4
+  },
+  {
+   "month_pillar": "辛丑",
+   "engine_first_date": "2027-01-05",
+   "engine_last_date": "2027-02-04",
+   "births": 1416,
+   "favourable_count": {
+    "木": 1128,
+    "火": 1416,
+    "土": 0,
+    "金": 576,
+    "水": 1272
+   },
+   "favourable_share": {
+    "木": 79.7,
+    "火": 100.0,
+    "土": 0.0,
+    "金": 40.7,
+    "水": 89.8
+   },
+   "lead_yongshen_count": {
+    "木": 144,
+    "火": 840,
+    "土": 0,
+    "金": 0,
+    "水": 432
+   },
+   "lead_yongshen_share": {
+    "木": 10.2,
+    "火": 59.3,
+    "土": 0.0,
+    "金": 0.0,
+    "水": 30.5
+   },
+   "most_common_yongshen": [
+    "火"
+   ],
+   "strong_count": 576,
+   "weak_count": 840,
+   "strong_share": 40.7,
+   "weak_share": 59.3
+  }
+ ],
+ "by_day_master": {
+  "丁": {
+   "births": 1776,
+   "favourable_count": {
+    "木": 1160,
+    "火": 1160,
+    "土": 616,
+    "金": 616,
+    "水": 776
+   },
+   "favourable_share": {
+    "木": 65.3,
+    "火": 65.3,
+    "土": 34.7,
+    "金": 34.7,
+    "水": 43.7
+   },
+   "lead_yongshen_count": {
+    "木": 1000,
+    "火": 0,
+    "土": 616,
+    "金": 0,
+    "水": 160
+   },
+   "lead_yongshen_share": {
+    "木": 56.3,
+    "火": 0.0,
+    "土": 34.7,
+    "金": 0.0,
+    "水": 9.0
+   },
+   "most_common_yongshen": [
+    "木"
+   ],
+   "strong_count": 616,
+   "weak_count": 1160,
+   "strong_share": 34.7,
+   "weak_share": 65.3
+  },
+  "丙": {
+   "births": 1774,
+   "favourable_count": {
+    "木": 1144,
+    "火": 1144,
+    "土": 630,
+    "金": 630,
+    "水": 1058
+   },
+   "favourable_share": {
+    "木": 64.5,
+    "火": 64.5,
+    "土": 35.5,
+    "金": 35.5,
+    "水": 59.6
+   },
+   "lead_yongshen_count": {
+    "木": 716,
+    "火": 0,
+    "土": 630,
+    "金": 0,
+    "水": 428
+   },
+   "lead_yongshen_share": {
+    "木": 40.4,
+    "火": 0.0,
+    "土": 35.5,
+    "金": 0.0,
+    "水": 24.1
+   },
+   "most_common_yongshen": [
+    "木"
+   ],
+   "strong_count": 630,
+   "weak_count": 1144,
+   "strong_share": 35.5,
+   "weak_share": 64.5
+  },
+  "乙": {
+   "births": 1778,
+   "favourable_count": {
+    "木": 1200,
+    "火": 722,
+    "土": 578,
+    "金": 578,
+    "水": 1200
+   },
+   "favourable_share": {
+    "木": 67.5,
+    "火": 40.6,
+    "土": 32.5,
+    "金": 32.5,
+    "水": 67.5
+   },
+   "lead_yongshen_count": {
+    "木": 0,
+    "火": 722,
+    "土": 0,
+    "金": 0,
+    "水": 1056
+   },
+   "lead_yongshen_share": {
+    "木": 0.0,
+    "火": 40.6,
+    "土": 0.0,
+    "金": 0.0,
+    "水": 59.4
+   },
+   "most_common_yongshen": [
+    "水"
+   ],
+   "strong_count": 578,
+   "weak_count": 1200,
+   "strong_share": 32.5,
+   "weak_share": 67.5
+  },
+  "壬": {
+   "births": 1730,
+   "favourable_count": {
+    "木": 546,
+    "火": 690,
+    "土": 546,
+    "金": 1184,
+    "水": 1184
+   },
+   "favourable_share": {
+    "木": 31.6,
+    "火": 39.9,
+    "土": 31.6,
+    "金": 68.4,
+    "水": 68.4
+   },
+   "lead_yongshen_count": {
+    "木": 546,
+    "火": 144,
+    "土": 0,
+    "金": 1040,
+    "水": 0
+   },
+   "lead_yongshen_share": {
+    "木": 31.6,
+    "火": 8.3,
+    "土": 0.0,
+    "金": 60.1,
+    "水": 0.0
+   },
+   "most_common_yongshen": [
+    "金"
+   ],
+   "strong_count": 546,
+   "weak_count": 1184,
+   "strong_share": 31.6,
+   "weak_share": 68.4
+  },
+  "己": {
+   "births": 1756,
+   "favourable_count": {
+    "木": 948,
+    "火": 932,
+    "土": 808,
+    "金": 948,
+    "水": 948
+   },
+   "favourable_share": {
+    "木": 54.0,
+    "火": 53.1,
+    "土": 46.0,
+    "金": 54.0,
+    "水": 54.0
+   },
+   "lead_yongshen_count": {
+    "木": 0,
+    "火": 932,
+    "土": 0,
+    "金": 824,
+    "水": 0
+   },
+   "lead_yongshen_share": {
+    "木": 0.0,
+    "火": 53.1,
+    "土": 0.0,
+    "金": 46.9,
+    "水": 0.0
+   },
+   "most_common_yongshen": [
+    "火"
+   ],
+   "strong_count": 948,
+   "weak_count": 808,
+   "strong_share": 54.0,
+   "weak_share": 46.0
+  },
+  "庚": {
+   "births": 1728,
+   "favourable_count": {
+    "木": 830,
+    "火": 1124,
+    "土": 898,
+    "金": 898,
+    "水": 1118
+   },
+   "favourable_share": {
+    "木": 48.0,
+    "火": 65.0,
+    "土": 52.0,
+    "金": 52.0,
+    "水": 64.7
+   },
+   "lead_yongshen_count": {
+    "木": 0,
+    "火": 294,
+    "土": 316,
+    "金": 0,
+    "水": 1118
+   },
+   "lead_yongshen_share": {
+    "木": 0.0,
+    "火": 17.0,
+    "土": 18.3,
+    "金": 0.0,
+    "水": 64.7
+   },
+   "most_common_yongshen": [
+    "水"
+   ],
+   "strong_count": 830,
+   "weak_count": 898,
+   "strong_share": 48.0,
+   "weak_share": 52.0
+  },
+  "戊": {
+   "births": 1776,
+   "favourable_count": {
+    "木": 1010,
+    "火": 910,
+    "土": 766,
+    "金": 1010,
+    "水": 1010
+   },
+   "favourable_share": {
+    "木": 56.9,
+    "火": 51.2,
+    "土": 43.1,
+    "金": 56.9,
+    "水": 56.9
+   },
+   "lead_yongshen_count": {
+    "木": 0,
+    "火": 910,
+    "土": 0,
+    "金": 866,
+    "水": 0
+   },
+   "lead_yongshen_share": {
+    "木": 0.0,
+    "火": 51.2,
+    "土": 0.0,
+    "金": 48.8,
+    "水": 0.0
+   },
+   "most_common_yongshen": [
+    "火"
+   ],
+   "strong_count": 1010,
+   "weak_count": 766,
+   "strong_share": 56.9,
+   "weak_share": 43.1
+  },
+  "甲": {
+   "births": 1758,
+   "favourable_count": {
+    "木": 1184,
+    "火": 718,
+    "土": 574,
+    "金": 574,
+    "水": 1184
+   },
+   "favourable_share": {
+    "木": 67.3,
+    "火": 40.8,
+    "土": 32.7,
+    "金": 32.7,
+    "水": 67.3
+   },
+   "lead_yongshen_count": {
+    "木": 0,
+    "火": 718,
+    "土": 0,
+    "金": 0,
+    "水": 1040
+   },
+   "lead_yongshen_share": {
+    "木": 0.0,
+    "火": 40.8,
+    "土": 0.0,
+    "金": 0.0,
+    "水": 59.2
+   },
+   "most_common_yongshen": [
+    "水"
+   ],
+   "strong_count": 574,
+   "weak_count": 1184,
+   "strong_share": 32.7,
+   "weak_share": 67.3
+  },
+  "癸": {
+   "births": 1726,
+   "favourable_count": {
+    "木": 528,
+    "火": 672,
+    "土": 528,
+    "金": 1198,
+    "水": 1198
+   },
+   "favourable_share": {
+    "木": 30.6,
+    "火": 38.9,
+    "土": 30.6,
+    "金": 69.4,
+    "水": 69.4
+   },
+   "lead_yongshen_count": {
+    "木": 528,
+    "火": 144,
+    "土": 0,
+    "金": 1054,
+    "水": 0
+   },
+   "lead_yongshen_share": {
+    "木": 30.6,
+    "火": 8.3,
+    "土": 0.0,
+    "金": 61.1,
+    "水": 0.0
+   },
+   "most_common_yongshen": [
+    "金"
+   ],
+   "strong_count": 528,
+   "weak_count": 1198,
+   "strong_share": 30.6,
+   "weak_share": 69.4
+  },
+  "辛": {
+   "births": 1728,
+   "favourable_count": {
+    "木": 804,
+    "火": 948,
+    "土": 924,
+    "金": 924,
+    "水": 1292
+   },
+   "favourable_share": {
+    "木": 46.5,
+    "火": 54.9,
+    "土": 53.5,
+    "金": 53.5,
+    "水": 74.8
+   },
+   "lead_yongshen_count": {
+    "木": 0,
+    "火": 144,
+    "土": 292,
+    "金": 0,
+    "水": 1292
+   },
+   "lead_yongshen_share": {
+    "木": 0.0,
+    "火": 8.3,
+    "土": 16.9,
+    "金": 0.0,
+    "水": 74.8
+   },
+   "most_common_yongshen": [
+    "水"
+   ],
+   "strong_count": 804,
+   "weak_count": 924,
+   "strong_share": 46.5,
+   "weak_share": 53.5
+  }
+ },
+ "spot_checks": [
+  {
+   "sex": "F",
+   "clock": "2027-03-21 22:14",
+   "pillars": {
+    "year": "丁未",
+    "month": "癸卯",
+    "day": "己亥",
+    "hour": "乙亥"
+   },
+   "fav": [
+    "火",
+    "土"
+   ],
+   "verdict": "身弱 (Weak)",
+   "builder_fav": [
+    "火",
+    "土"
+   ],
+   "builder_strength": "身弱 (Weak)",
+   "match": true
+  },
+  {
+   "sex": "F",
+   "clock": "2027-10-10 22:57",
+   "pillars": {
+    "year": "丁未",
+    "month": "庚戌",
+    "day": "壬戌",
+    "hour": "辛亥"
+   },
+   "fav": [
+    "金",
+    "水"
+   ],
+   "verdict": "身弱 (Weak)",
+   "builder_fav": [
+    "金",
+    "水"
+   ],
+   "builder_strength": "身弱 (Weak)",
+   "match": true
+  },
+  {
+   "sex": "M",
+   "clock": "2027-08-14 19:25",
+   "pillars": {
+    "year": "丁未",
+    "month": "戊申",
+    "day": "乙丑",
+    "hour": "乙酉"
+   },
+   "fav": [
+    "水",
+    "木"
+   ],
+   "verdict": "身弱 (Weak)",
+   "builder_fav": [
+    "水",
+    "木"
+   ],
+   "builder_strength": "身弱 (Weak)",
+   "match": true
+  },
+  {
+   "sex": "M",
+   "clock": "2027-07-30 03:44",
+   "pillars": {
+    "year": "丁未",
+    "month": "丁未",
+    "day": "庚戌",
+    "hour": "丁丑"
+   },
+   "fav": [
+    "水",
+    "木",
+    "火"
+   ],
+   "verdict": "身強 (Strong)",
+   "builder_fav": [
+    "水",
+    "木",
+    "火"
+   ],
+   "builder_strength": "身強 (Strong)",
+   "match": true
+  },
+  {
+   "sex": "F",
+   "clock": "2027-09-18 23:58",
+   "pillars": {
+    "year": "丁未",
+    "month": "己酉",
+    "day": "庚子",
+    "hour": "丙子"
+   },
+   "fav": [
+    "水",
+    "木",
+    "火"
+   ],
+   "verdict": "身強 (Strong)",
+   "builder_fav": [
+    "水",
+    "木",
+    "火"
+   ],
+   "builder_strength": "身強 (Strong)",
+   "match": true
+  }
+ ],
+ "examples": [
+  {
+   "label": "summer baby",
+   "sex": "M",
+   "clock": "2027-06-15 09:30",
+   "pillars": {
+    "year": "丁未",
+    "month": "丙午",
+    "day": "乙丑",
+    "hour": "庚辰"
+   },
+   "verdict": "身弱 (Weak)",
+   "fav": [
+    "水",
+    "木"
+   ],
+   "unfav": [
+    "金",
+    "土",
+    "火"
+   ],
+   "surname": "王",
+   "names": [
+    {
+     "name": "王福慧",
+     "total": 100.0,
+     "grade_en": "excellent",
+     "chars": [
+      {
+       "ch": "福",
+       "py": "fú",
+       "el": "水",
+       "role": "用神"
+      },
+      {
+       "ch": "慧",
+       "py": "huì",
+       "el": "水",
+       "role": "用神"
+      }
+     ]
+    },
+    {
+     "name": "王源慧",
+     "total": 100.0,
+     "grade_en": "excellent",
+     "chars": [
+      {
+       "ch": "源",
+       "py": "yuán",
+       "el": "水",
+       "role": "用神"
+      },
+      {
+       "ch": "慧",
+       "py": "huì",
+       "el": "水",
+       "role": "用神"
+      }
+     ]
+    },
+    {
+     "name": "王溪慧",
+     "total": 100.0,
+     "grade_en": "excellent",
+     "chars": [
+      {
+       "ch": "溪",
+       "py": "xī",
+       "el": "水",
+       "role": "用神"
+      },
+      {
+       "ch": "慧",
+       "py": "huì",
+       "el": "水",
+       "role": "用神"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "label": "winter baby",
+   "sex": "F",
+   "clock": "2027-12-20 09:30",
+   "pillars": {
+    "year": "丁未",
+    "month": "壬子",
+    "day": "癸酉",
+    "hour": "丙辰"
+   },
+   "verdict": "身強 (Strong)",
+   "fav": [
+    "木",
+    "火",
+    "土"
+   ],
+   "unfav": [
+    "金",
+    "水"
+   ],
+   "surname": "王",
+   "names": [
+    {
+     "name": "王嘉莹",
+     "total": 100.0,
+     "grade_en": "excellent",
+     "chars": [
+      {
+       "ch": "嘉",
+       "py": "jiā",
+       "el": "木",
+       "role": "用神"
+      },
+      {
+       "ch": "莹",
+       "py": "yíng",
+       "el": "木",
+       "role": "用神"
+      }
+     ]
+    },
+    {
+     "name": "王嘉贤",
+     "total": 100.0,
+     "grade_en": "excellent",
+     "chars": [
+      {
+       "ch": "嘉",
+       "py": "jiā",
+       "el": "木",
+       "role": "用神"
+      },
+      {
+       "ch": "贤",
+       "py": "xián",
+       "el": "木",
+       "role": "用神"
+      }
+     ]
+    },
+    {
+     "name": "王琴朴",
+     "total": 100.0,
+     "grade_en": "excellent",
+     "chars": [
+      {
+       "ch": "琴",
+       "py": "qín",
+       "el": "木",
+       "role": "用神"
+      },
+      {
+       "ch": "朴",
+       "py": "pǔ",
+       "el": "木",
+       "role": "用神"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "engine_facts": {
+  "score_max": {
+   "yongshen": 37.5,
+   "wuge": 31.25,
+   "sancai": 18.75,
+   "sound": 6.25,
+   "gender": 6.25
+  },
+  "year_pillar_丁未": {
+   "stem_element": "火",
+   "branch_element": "土"
+  },
+  "example_total_scores": [
+   100.0,
+   100.0,
+   100.0,
+   100.0,
+   100.0,
+   100.0
+  ]
+ }
+}

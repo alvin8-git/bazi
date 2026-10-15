@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 396" role="img" aria-label="2027年出生的宝宝在各出生季节最常需要的五行" font-family="system-ui, 'Noto Sans SC', sans-serif">
+<title>2027年出生的宝宝在各出生季节最常需要的五行</title>
+<rect width="720" height="396" fill="#faf7f2"/>
+<text x="360" y="30" font-size="18" font-weight="bold" fill="#2b2620" text-anchor="middle">2027年出生的宝宝在各出生季节最常需要的五行</text>
+<text x="360" y="54" font-size="17" fill="#6b6359" text-anchor="middle">该五行出现在喜神名单中的命盘占比</text>
+<text x="216" y="96" font-size="24" font-weight="bold" fill="#2b2620" text-anchor="end">夏季</text>
+<text x="216" y="122" font-size="22" font-weight="bold" fill="#1a56b0" text-anchor="end">水</text>
+<rect x="232" y="78" width="372" height="46" rx="6" fill="#efe8da"/>
+<rect x="232" y="78" width="368.3" height="46" rx="6" fill="#1a56b0"/>
+<text x="610.3" y="110" font-size="24" font-weight="bold" fill="#2b2620">99.0%</text>
+<text x="216" y="170" font-size="24" font-weight="bold" fill="#2b2620" text-anchor="end">冬季</text>
+<text x="216" y="196" font-size="22" font-weight="bold" fill="#c5221f" text-anchor="end">火</text>
+<rect x="232" y="152" width="372" height="46" rx="6" fill="#efe8da"/>
+<rect x="232" y="152" width="359.4" height="46" rx="6" fill="#c5221f"/>
+<text x="601.4" y="184" font-size="24" font-weight="bold" fill="#2b2620">96.6%</text>
+<text x="216" y="244" font-size="24" font-weight="bold" fill="#2b2620" text-anchor="end">秋季</text>
+<text x="216" y="270" font-size="22" font-weight="bold" fill="#187a35" text-anchor="end">木</text>
+<rect x="232" y="226" width="372" height="46" rx="6" fill="#efe8da"/>
+<rect x="232" y="226" width="305.4" height="46" rx="6" fill="#187a35"/>
+<text x="547.4" y="258" font-size="24" font-weight="bold" fill="#2b2620">82.1%</text>
+<text x="216" y="318" font-size="24" font-weight="bold" fill="#2b2620" text-anchor="end">春季</text>
+<text x="216" y="344" font-size="22" font-weight="bold" fill="#8a6500" text-anchor="end">金</text>
+<rect x="232" y="300" width="372" height="46" rx="6" fill="#efe8da"/>
+<rect x="232" y="300" width="250.0" height="46" rx="6" fill="#8a6500"/>
+<text x="492.0" y="332" font-size="24" font-weight="bold" fill="#2b2620">67.2%</text>
+<line x1="232" y1="70" x2="232" y2="360" stroke="#2b2620" stroke-width="2"/>
+</svg>

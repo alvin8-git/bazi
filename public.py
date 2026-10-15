@@ -1983,6 +1983,7 @@ def llms_txt():
              "- [81 数理表](https://bazifor.me/zh/data/81-numbers): 起名器使用的 81 个数字的吉凶，由引擎生成",
              "- [2027 年飞星九宫格](https://bazifor.me/zh/data/flying-stars-2027): 2027 年的流年飞星盘和引擎对每颗星的评分",
              "- [康熙笔画表](https://bazifor.me/zh/data/kangxi-strokes): 起名器所用常用字的康熙笔画数，以及计数所用的繁体字形",
+             "- [2027年出生宝宝的用神五行](https://bazifor.me/zh/data/2027-baby-elements): 2027丁未火羊年出生的宝宝按出生月份需要哪些五行，来自引擎排出的17,530个命盘",
              "", "## Guides (English)", "",
              "- [Learn](https://bazifor.me/learn)"]
     for slug, title in _learn_titles("web/learn"):
@@ -2002,6 +2003,7 @@ def llms_txt():
               "- [The 81 numbers table](https://bazifor.me/data/81-numbers): the auspicious or not verdict the name builder gives each of the 81 stroke numbers, generated from the engine",
               "- [Flying stars for 2027](https://bazifor.me/data/flying-stars-2027): the 2027 nine-palace grid, the rule behind it and the engine's score for each star",
               "- [Kangxi stroke counts](https://bazifor.me/data/kangxi-strokes): the Kangxi stroke count of every common character the name builder uses, with the traditional form each is counted as",
+              "- [Useful elements for 2027 babies](https://bazifor.me/data/2027-baby-elements): which elements a baby born in the 2027 Fire Goat year needs, by birth month, from 17,530 charts the engine cast",
               "",
               "- [Full text of the English guides](https://bazifor.me/llms-full.txt)",
               "- [中文指南全文 (full text of the Chinese guides)](https://bazifor.me/llms-full-zh.txt)",
@@ -2116,7 +2118,7 @@ def validation_page():
     return PageFile(ROOT / "web/validation.html")
 
 
-# The three data pages: generated from the engine by scripts/build_data_pages.py (audit C7)
+# The four data pages: generated from the engine by scripts/build_data_pages.py (audit C7)
 @router.get("/data/81-numbers")
 def data_81_numbers():
     return PageFile(ROOT / "web/data-81-numbers.html")
@@ -2130,6 +2132,11 @@ def data_flying_stars_2027():
 @router.get("/data/kangxi-strokes")
 def data_kangxi_strokes():
     return PageFile(ROOT / "web/data-kangxi-strokes.html")
+
+
+@router.get("/data/2027-baby-elements")
+def data_2027_baby_elements():
+    return PageFile(ROOT / "web/data-2027-baby-elements.html")
 
 
 def _learn_slugs(sub: str = "web/learn") -> list[str]:
@@ -2148,7 +2155,7 @@ def _lastmod() -> dict:
 def sitemap():
     pages = ["/", "/start", "/fengshui", "/baby", "/kua",
              "/how-it-works", "/about", "/faq", "/author", "/method", "/privacy", "/terms", "/contact", "/validation", "/learn",
-             "/data/81-numbers", "/data/flying-stars-2027", "/data/kangxi-strokes"]
+             "/data/81-numbers", "/data/flying-stars-2027", "/data/kangxi-strokes", "/data/2027-baby-elements"]
     pages += [f"/learn/{s}" for s in _learn_slugs()]
     pages += ["/zh/learn"] + ["/zh" + p for p in ZH_PAGES]
     pages += [f"/zh/learn/{s}" for s in _learn_slugs("web/learn-zh")]
@@ -2272,7 +2279,7 @@ ZH_PAGES = {"": "landing", "/start": "start", "/baby": "baby", "/kua": "kua", "/
             "/how-it-works": "how-it-works", "/faq": "faq", "/method": "method", "/author": "author",
             "/privacy": "privacy", "/terms": "terms", "/contact": "contact", "/validation": "validation",
             "/data/81-numbers": "data-81-numbers", "/data/flying-stars-2027": "data-flying-stars-2027",
-            "/data/kangxi-strokes": "data-kangxi-strokes"}
+            "/data/kangxi-strokes": "data-kangxi-strokes", "/data/2027-baby-elements": "data-2027-baby-elements"}
 
 
 def _zh_page(name: str):
@@ -2363,3 +2370,8 @@ def zh_data_flying_stars_2027():
 @router.get("/zh/data/kangxi-strokes")
 def zh_data_kangxi_strokes():
     return _zh_page("data-kangxi-strokes")
+
+
+@router.get("/zh/data/2027-baby-elements")
+def zh_data_2027_baby_elements():
+    return _zh_page("data-2027-baby-elements")
