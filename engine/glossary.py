@@ -301,6 +301,15 @@ _add("relation", [
     ("合", "combination", "hé", ""), ("天干五合", "stem combination", "tiān gàn wǔ hé", ""),
     ("伏吟", "repeated pillar", "fú yín", ""), ("反吟", "clashing pillar", "fǎn yín", ""),
     ("自刑", "self-punishment", "zì xíng", ""),
+    # the five roles the other elements play toward the Day Master: the engine's own wording (interpret.element_relations)
+    ("生我", "feeds you", "shēng wǒ", ""), ("我生", "you feed", "wǒ shēng", ""),
+    ("剋我", "controls you", "kè wǒ", ""), ("我剋", "you control", "wǒ kè", ""),
+    ("同我", "peers", "tóng wǒ", ""),
+])
+_add("core", [
+    ("五行關係", "the five relations", "wǔ xíng guān xì", ""),
+    ("祿", "", "lù", "the Day Master's own station"),     # windows.py, story.py LU: the branch each stem sits on
+    ("牆內", "within walls", "qiáng nèi", ""), ("牆外", "outside walls", "qiáng wài", ""),   # windows.timing_windows.01, .02
 ])
 
 # ---------------------------------------------------------------- 24 solar terms
@@ -429,7 +438,7 @@ for _k in list(TERMS):
     if _s != _k and _s not in TERMS:
         ALIASES[_s] = _k
 ALIASES.update({"劫财": "劫財", "梟": "梟神", "枭神": "梟神", "龙": "龍", "马": "馬", "鸡": "雞",
-                "猪": "豬", "强弱": "強弱", "时": "時"})
+                "猪": "豬", "强弱": "強弱", "时": "時", "五行关系": "五行關係", "墙内": "牆內", "墙內": "牆內"})
 
 NO_EN = {t for t, v in TERMS.items() if not v[0]}
 CATEGORIES = sorted({v[3] for v in TERMS.values()})

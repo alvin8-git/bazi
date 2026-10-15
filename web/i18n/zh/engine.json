@@ -1020,8 +1020,8 @@
 "zh": "照顾好你的 {org_main}。"
 },
 "plain._health.05": {
-"en": "{main_en} runs high in your chart, which traditionally strains the {org_main}; notice {watch}. ",
-"zh": "{main_en} 在你的命盘里偏多，传统上会累及 {org_main}；留意 {watch}。"
+"en": "{main_en} runs high in your chart, which strains the {org_main} in this engine's pairing; notice {watch}. ",
+"zh": "{main_en} 在你的命盘里偏多，按本引擎的对应，会累及 {org_main}；留意 {watch}。"
 },
 "plain._health.06": {
 "en": "{main_en} runs low in your chart; the {org_main} want support, so notice {watch}. ",

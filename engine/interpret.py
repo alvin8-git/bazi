@@ -23,6 +23,13 @@ from .wuxing import (BRANCH_ELEMENT, ELEMENT_EN, PALACES, STEM_ELEMENT,
 from .xuankong import annual_chart, natal_chart, natal_chart_from_degrees
 from .i18n import ELEM, L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
+
+def _band_l(band: str, lang: str = "en") -> str:
+    """A life-area band as a word of the page's language (round 42, item 20): the Chinese page says 均衡, 突出 or 需要扶持, not the English code."""
+    import re
+    k = re.sub(r"\s+[㐀-鿿]+$", "", band).replace(" ", "_")
+    return T(f"card.band.{k}", band, lang)
+
 STRUCTURE_TEXT = {
     "旺山旺向": "one of the BEST flying-star structures: the prosperous mountain star "
               "sits at the sitting (people & health) AND the prosperous water star at "
@@ -527,7 +534,7 @@ def interpret_person(chart, ys: dict, year: int, lang: str = "en", minor: bool =
         f"{best['zh']} ({best['score']} — {best['band']}); most in need of support "
         f"{low['en']} {low['zh']} ({low['score']}). Each score is assembled from "
         "auditable parts — star shares, 神煞 and palace checks, listed under the "
-        "cards below — and reads as a structural tendency, not a prediction.", lang, best_en=best['en'], best_zh=best['zh'], best_score=best['score'], best_band=best['band'], low_en=low['en'], low_zh=low['zh'], low_score=low['score']))
+        "cards below — and reads as a structural tendency, not a prediction.", lang, best_en=best['en'], best_zh=best['zh'], best_score=best['score'], best_band=_band_l(best['band'], lang), low_en=low['en'], low_zh=low['zh'], low_score=low['score']))
 
     gua = ming_gua(chart.lichun_year, chart.sex)
     paras.append(T("interpret.interpret_person.14", f"[§7] Directions (八宅): {gua}命 · {gua_group(gua, lang=lang)} — best directions "

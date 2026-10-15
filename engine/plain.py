@@ -55,6 +55,18 @@ STRENGTH = {
                      todo="Lean into the element that dominates your chart."),
 }
 BAND = {"weak 不足": "too little", "balanced": "about right", "excess 過旺": "too much"}
+# a health status as the reader's words (round 42, item 20): the English page keeps the status as it was written, the Chinese page takes the ids the health map already asks for
+_STATUS_WORD = {"excess 過旺": "domains.health_map.01", "weak 不足": "domains.health_map.02", "watch 偏弱 (day-master element thin, 無根)": "domains.health_map.03",
+                "balanced": "synthesis.clinical_report.17"}
+
+
+def status_word(status: str, lang: str = "en") -> str:
+    return T(_STATUS_WORD[status], status, lang) if status in _STATUS_WORD else status
+
+
+def status_paren(status: str, lang: str = "en") -> str:
+    w = status_word(status, lang)   # asked in both languages, so the two runs ask for the same ids
+    return f"（{w}）" if lang == "zh" else f"({status})"
 band_word = lambda status: next((v for k, v in BAND.items() if status.startswith(k.split()[0])), "a little thin" if status.startswith("watch") else status)
 PHASE = {
     "growth": dict(word="Expanding", glyph="sun", means="Conditions favour building. What you start now tends to take root."),
@@ -308,11 +320,12 @@ def _makeup(p, lang="en"):
         head, means = (T("plain._makeup.05", "Your four pillars sit comfortably together.", lang),
                        T("plain._makeup.06", "No strong pulls between the parts of your life, so your energy is not spent on inner conflict.", lang))
     life = lambda k: T(f"plain.PILLAR_LIFE.{k}", PILLAR_LIFE[k], lang)
+    pen = lambda k: {"year": "年", "month": "月", "day": "日", "hour": "时"}.get(k, k) if lang == "zh" else k   # the Chinese page names a pillar by its one character (round 42, item 20)
     pairs = [{"a": life(x["pillars"][0]), "b": life(x["pillars"][1]), "kind": x["kind"],
               "note": x["note"].split(" — ")[-1]} for x in ia[:5]]
     sep = "；" if lang == "zh" else "; "
     listed = sep.join(T("plain._makeup.08", f"{x['kind']} {x['pair']} ({x['pillars'][0]} and {x['pillars'][1]})", lang,
-                        x_kind=x["kind"], x_pair=x["pair"], x_pillars=x["pillars"][0], x_pillars_2=x["pillars"][1]) for x in ia) \
+                        x_kind=x["kind"], x_pair=x["pair"], x_pillars=pen(x["pillars"][0]), x_pillars_2=pen(x["pillars"][1])) for x in ia) \
         or T("plain._makeup.09", "none", lang)
     return {"head": head, "means": means, "pairs": pairs,
             "why": T("plain._makeup.07", "Branch interactions: ", lang) + listed}
@@ -479,7 +492,7 @@ def _health(p, lang="en"):
     watch = _join(body.split(", "), lang) + (T("plain._health.03", f", and watch for {mood}", lang, mood=mood) if mood else "")
     head = T("plain._health.04", f"Look after your {org(main)}.", lang, org_main=org(main))
     main_en = _el(main["element"], lang) if lang == "zh" else main["en"]
-    means = (T("plain._health.05", f"{main['en']} runs high in your chart, which traditionally strains the {org(main)}; notice {watch}. ", lang,
+    means = (T("plain._health.05", f"{main['en']} runs high in your chart, which strains the {org(main)} in this engine's pairing; notice {watch}. ", lang,
                main_en=main_en, org_main=org(main), watch=watch)
              if hi else T("plain._health.06", f"{main['en']} runs low in your chart; the {org(main)} want support, so notice {watch}. ", lang,
                           main_en=main_en, org_main=org(main), watch=watch))
@@ -490,7 +503,7 @@ def _health(p, lang="en"):
     sep_why = "；" if lang == "zh" else "; "
     return {"head": head, "means": means,
             "todo": (T("plain._health.08", f"Support your {joined} too; your chart is short of them.", lang, join_x=joined) if rest else None),
-            "why": sep_why.join(f"{h['en']} {h['share']}% ({h['status']}): {h['organs']}" for h in H)}
+            "why": sep_why.join(f"{h['en']} {h['share']}%{' ' if lang != 'zh' else ''}{status_paren(h['status'], lang)}: {h['organs']}" for h in H)}
 
 
 def _personality(p, lang="en"):
@@ -588,7 +601,9 @@ def _next_ten(p, lang="en", minor=False):
     first = T("plain._next_ten.03", f"{by} opens windows for {and_join(win)}.", lang, best_y=by, and_join_win=_join(win, lang)) if win \
         else T("plain._next_ten.04", f"{by} is your strongest year ahead.", lang, best_y=by)
     second = T("plain._next_ten.05", f" {wy} asks for care with {and_join(cau)}.", lang, worst_y=wy, and_join_cau=_join(cau, lang)) if cau else ""
-    why = f"{best['y']} {best['gz']}: {best['overall']}; {worst['y']} {worst['gz']}: {worst['overall']}."
+    ovw = lambda o: (lambda w: w.rstrip("年") if lang == "zh" else o)(T(f"plain.YEAR.{o}.word", YEAR[o]["word"], lang))   # the Chinese page names the verdict in Chinese
+    colon, semi, stop = ("：", "；", "。") if lang == "zh" else (": ", "; ", ".")
+    why = f"{best['y']} {best['gz']}{colon}{ovw(best['overall'])}{semi}{worst['y']} {worst['gz']}{colon}{ovw(worst['overall'])}{stop}"
     # round A: this year's 犯太歲 rows (刑, and 合 read as 晦), each with its classical source, as one more paragraph of the same panel
     cites = (Y[0].get("taisui") or {}).get("cites") or []
     if cites:

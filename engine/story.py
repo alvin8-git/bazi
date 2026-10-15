@@ -11,7 +11,7 @@ from .area_reference import standing_key
 from .bazi import reading_year
 from .i18n import T, an, num_word, zh_join
 from .shensha import star_name_en
-from .plain import (ANIMAL, AREA, BAND_KEY, DIR_WORD, EL_ROOM, EN, MEDICINE, NEG_STARS, POLE, SEASON,
+from .plain import (status_paren, ANIMAL, AREA, BAND_KEY, DIR_WORD, EL_ROOM, EN, MEDICINE, NEG_STARS, POLE, SEASON,
                     STEM_EL, _day_label, _month_runs, _run_words, and_join, strength_key, vault_opener)
 
 GOD_NOUN = {"比肩": "peers and self-reliance", "劫財": "rivals and bold moves", "劫财": "rivals and bold moves",
@@ -560,7 +560,7 @@ def _vault_why(V, lang="en"):
 def _why(p, plain, lang="en"):
     st = p["strength"]; V = (p.get("palaces") or {}).get("vault") or {}
     zh = lang == "zh"
-    elem = ("，" if zh else ", ").join(f"{(_fav_el(h['element'], lang) if zh else h['en'])} {h['share']}% ({h['status']})" for h in p.get("health") or [])
+    elem = ("，" if zh else ", ").join(f"{(_fav_el(h['element'], lang) if zh else h['en'])} {h['share']}%{'' if zh else ' '}{status_paren(h['status'], lang)}" for h in p.get("health") or [])
     return {
         "gods": plain["drives"]["why"], "pillars": "\n".join(s["why"] for s in plain["sides"]),   # one note per line
         "personality": (plain.get("personality") or {}).get("why", ""), "stars": "",   # the stars figure lists each star once

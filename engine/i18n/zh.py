@@ -255,7 +255,7 @@ ZH = {
     "plain._health.02": "五行都在正常范围内。这是本引擎自己的五行与脏腑对应，不是医疗建议。",
     "plain._health.03": "，也留意 {mood}",
     "plain._health.04": "照顾好你的 {org_main}。",
-    "plain._health.05": "{main_en} 在你的命盘里偏多，传统上会累及 {org_main}；留意 {watch}。",
+    "plain._health.05": "{main_en} 在你的命盘里偏多，按本引擎的对应，会累及 {org_main}；留意 {watch}。",
     "plain._health.06": "{main_en} 在你的命盘里偏少；{org_main} 需要照顾，所以留意 {watch}。",
     "plain._health.07": "这是本引擎自己的五行与脏腑对应，不是医疗建议。",
     "plain._health.08": "也要照顾好 {join_x}，你的命盘里这些偏少。",

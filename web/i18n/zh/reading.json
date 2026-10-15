@@ -2550,5 +2550,225 @@
 "appjs.BAZHAI_MINOR.五鬼": {
 "en": "instability, quarrels; keep activity here light",
 "zh": "主不稳、争吵；这里少安排活动"
+},
+"appjs.waveC.good": {
+"en": "good",
+"zh": "吉"
+},
+"appjs.waveC.avoid": {
+"en": "avoid",
+"zh": "忌"
+},
+"appjs.waveC.neutral": {
+"en": "neutral",
+"zh": "平"
+},
+"appjs.waveC.all": {
+"en": "all six activities",
+"zh": "六项事宜全部"
+},
+"appjs.waveC.cal": {
+"en": "● more good than caution · ○ more caution than good · both marks when even · B best day · W worst day · outlined: today. Tap a day to see its reasons.",
+"zh": "● 吉多于忌 · ○ 忌多于吉 · 两个标记都有表示相当 · B 最佳日 · W 最差日 · 带框的是今天。点一天，看它的缘由。"
+},
+"appjs.waveC.wf": {
+"en": "Each bar starts at the tick (50). Dark segments add points to the right, amber ones take points off to the left, and the marker is where the score lands. Tap a row to name every rule.",
+"zh": "每根条从刻度线（50）起算。深色段向右加分，琥珀色段向左减分，标记所在处就是最终得分。点一行，可看到每一条规则的名字。"
+},
+"appjs.wordsC.absent": {
+"en": "absent",
+"zh": "缺失"
+},
+"appjs.wordsC.weak": {
+"en": "weak",
+"zh": "身弱"
+},
+"appjs.wordsC.strong": {
+"en": "strong",
+"zh": "身强"
+},
+"appjs.wordsC.Weak": {
+"en": "Weak",
+"zh": "身弱"
+},
+"appjs.wordsC.Strong": {
+"en": "Strong",
+"zh": "身强"
+},
+"appjs.wordsC.and": {
+"en": " and ",
+"zh": "和"
+},
+"appjs.wordsC.or": {
+"en": " or ",
+"zh": "或"
+},
+"appjs.wordsC.pen.year": {
+"en": "year",
+"zh": "年"
+},
+"appjs.wordsC.pen.month": {
+"en": "month",
+"zh": "月"
+},
+"appjs.wordsC.pen.day": {
+"en": "day",
+"zh": "日"
+},
+"appjs.wordsC.pen.hour": {
+"en": "hour",
+"zh": "时"
+},
+"appjs.wordsC.none": {
+"en": "none",
+"zh": "无"
+},
+"appjs.wordsC.twice": {
+"en": " twice",
+"zh": "两次"
+},
+"appjs.wordsC.tension": {
+"en": "tension",
+"zh": "张力"
+},
+"appjs.wordsC.tensions": {
+"en": "tensions",
+"zh": "张力"
+},
+"appjs.wordsC.beats": {
+"en": "beats",
+"zh": "大于"
+},
+"appjs.wordsC.trails": {
+"en": "trails",
+"zh": "小于"
+},
+"appjs.wordsC.visible": {
+"en": "visible",
+"zh": "透干"
+},
+"appjs.wordsC.col.red": {
+"en": "red",
+"zh": "红色"
+},
+"appjs.wordsC.col.purple": {
+"en": "purple",
+"zh": "紫色"
+},
+"appjs.wordsC.col.yellow": {
+"en": "yellow",
+"zh": "黄色"
+},
+"appjs.wordsC.col.brown": {
+"en": "brown",
+"zh": "棕色"
+},
+"appjs.wordsC.col.green": {
+"en": "green",
+"zh": "绿色"
+},
+"appjs.wordsC.col.blue": {
+"en": "blue",
+"zh": "蓝色"
+},
+"appjs.wordsC.col.black": {
+"en": "black",
+"zh": "黑色"
+},
+"appjs.wordsC.col.grey": {
+"en": "grey",
+"zh": "灰色"
+},
+"appjs.wordsC.col.white": {
+"en": "white",
+"zh": "白色"
+},
+"appjs.wordsC.col.gold": {
+"en": "gold",
+"zh": "金色"
+},
+"appjs.wordsC.pts": {
+"en": " pts",
+"zh": "分"
+},
+"appjs.wordsC.mixes": {
+"en": "mixes",
+"zh": "交错"
+},
+"appjs.wordsC.good": {
+"en": "good",
+"zh": "顺"
+},
+"appjs.wordsC.pace": {
+"en": "pace",
+"zh": "缓"
+},
+"appjs.wordsC.paceFact": {
+"en": "pace",
+"zh": "放慢"
+},
+"appjs.wordsC.fromD": {
+"en": "from",
+"zh": "起"
+},
+"appjs.wordsC.from": {
+"en": "from",
+"zh": "来自"
+},
+"appjs.wordsC.ver": {
+"en": "version {n}",
+"zh": "第 {n} 版"
+},
+"appjs.wordsC.eb.present": {
+"en": "present",
+"zh": "具备"
+},
+"appjs.wordsC.eb.heavy": {
+"en": "heavy",
+"zh": "偏重"
+},
+"appjs.wordsC.eb.absent": {
+"en": "absent",
+"zh": "缺失"
+},
+"appjs.wordsC.eb.faint": {
+"en": "faint",
+"zh": "微弱"
+},
+"appjs.wordsC.only": {
+"en": "only ",
+"zh": "仅"
+},
+"appjs.wordsC.yang": {
+"en": "yang",
+"zh": "阳"
+},
+"appjs.wordsC.yin": {
+"en": "yin",
+"zh": "阴"
+},
+"appjs.wordsC.next": {
+"en": "next",
+"zh": "下一步"
+},
+"appjs.wordsC.arc": {
+"en": "arc",
+"zh": "走势"
+},
+"appjs.wordsC.behind": {
+"en": "behind",
+"zh": "落后于"
+},
+"appjs.wordsC.band.balanced": {
+"en": "balanced",
+"zh": "均衡"
+},
+"appjs.wordsC.band.prominent": {
+"en": "prominent",
+"zh": "突出"
+},
+"appjs.wordsC.band.needs_support": {
+"en": "needs support",
+"zh": "需要扶持"
 }
 }

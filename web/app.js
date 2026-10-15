@@ -324,6 +324,61 @@ const READING_EN = {
   "appjs.tidyEvidence.001": "What this shows",
   "appjs.tidyEvidence.002": "How to read this chart",
   "appjs.waveB.full": "The full interpretation",
+  "appjs.wordsC.band.needs_support": "needs support",
+  "appjs.wordsC.band.prominent": "prominent",
+  "appjs.wordsC.band.balanced": "balanced",
+  "appjs.wordsC.behind": "behind",
+  "appjs.wordsC.arc": "arc",
+  "appjs.wordsC.next": "next",
+  "appjs.wordsC.yin": "yin",
+  "appjs.wordsC.yang": "yang",
+  "appjs.wordsC.only": "only ",
+  "appjs.wordsC.eb.faint": "faint",
+  "appjs.wordsC.eb.absent": "absent",
+  "appjs.wordsC.eb.heavy": "heavy",
+  "appjs.wordsC.eb.present": "present",
+  "appjs.wordsC.ver": "version {n}",
+  "appjs.wordsC.from": "from",
+  "appjs.wordsC.fromD": "from",
+  "appjs.wordsC.paceFact": "pace",
+  "appjs.wordsC.pace": "pace",
+  "appjs.wordsC.good": "good",
+  "appjs.wordsC.mixes": "mixes",
+  "appjs.wordsC.pts": " pts",
+  "appjs.wordsC.col.gold": "gold",
+  "appjs.wordsC.col.white": "white",
+  "appjs.wordsC.col.grey": "grey",
+  "appjs.wordsC.col.black": "black",
+  "appjs.wordsC.col.blue": "blue",
+  "appjs.wordsC.col.green": "green",
+  "appjs.wordsC.col.brown": "brown",
+  "appjs.wordsC.col.yellow": "yellow",
+  "appjs.wordsC.col.purple": "purple",
+  "appjs.wordsC.col.red": "red",
+  "appjs.wordsC.visible": "visible",
+  "appjs.wordsC.trails": "trails",
+  "appjs.wordsC.beats": "beats",
+  "appjs.wordsC.tensions": "tensions",
+  "appjs.wordsC.tension": "tension",
+  "appjs.wordsC.twice": " twice",
+  "appjs.wordsC.none": "none",
+  "appjs.wordsC.pen.hour": "hour",
+  "appjs.wordsC.pen.day": "day",
+  "appjs.wordsC.pen.month": "month",
+  "appjs.wordsC.pen.year": "year",
+  "appjs.wordsC.or": " or ",
+  "appjs.wordsC.and": " and ",
+  "appjs.wordsC.Strong": "Strong",
+  "appjs.wordsC.Weak": "Weak",
+  "appjs.wordsC.strong": "strong",
+  "appjs.wordsC.weak": "weak",
+  "appjs.wordsC.absent": "absent",
+  "appjs.waveC.wf": "Each bar starts at the tick (50). Dark segments add points to the right, amber ones take points off to the left, and the marker is where the score lands. Tap a row to name every rule.",
+  "appjs.waveC.cal": "● more good than caution · ○ more caution than good · both marks when even · B best day · W worst day · outlined: today. Tap a day to see its reasons.",
+  "appjs.waveC.all": "all six activities",
+  "appjs.waveC.neutral": "neutral",
+  "appjs.waveC.avoid": "avoid",
+  "appjs.waveC.good": "good",
   "appjs.BAZHAI_MINOR.五鬼": "instability, quarrels; keep activity here light",
   "appjs.rule.afflict": "The year's 太岁, 岁破, 三煞 and 岁刑 sectors are placed from the year branch and set against your own sectors. Source: 岁刑 follows 《协纪辨方书》卷三 (动土兴工亦须回避，犯之多斗争); for the 太岁, 岁破 and 三煞 rules, no readable source in a text this engine cites.",
   "appjs.rule.placements": "Your Kua number (命卦) gives one of the eight Eight House (八宅) stars to each direction by the line-change (大游年) rule; 文昌 and the peach-blossom position come from this engine's table, by day stem and year branch. Source: no passage is cited for the line-change rule; for the table, no readable source in a text this engine cites.",
@@ -640,6 +695,12 @@ const RS = (id, slots) => {
   const t = z !== undefined ? z : READING_EN[id];
   return slots ? t.replace(/\{([A-Za-z0-9_]+)(?::g)?\}/g, (m, k) => (k in slots ? slots[k] : m)) : t;
 };
+/* The small English words the reading script passes into its sentences, in the language of the page (round 42, item 20). Each is a table row, appjs.wordsC.*,
+   whose English is the word the script always wrote. On the Chinese page a list joins with 和, or 、 and 和 when there are three or more. */
+const WD = (id) => RS(`appjs.wordsC.${id}`);
+const andJoin = (a) => IS_ZH ? (a.length > 2 ? a.slice(0, -1).join("、") + WD("and") + a[a.length - 1] : a.join(WD("and"))) : a.join(" and ");
+const orJoin = (a) => a.join(IS_ZH ? WD("or") : " or ");
+const listAnd = (a) => a.length > 1 ? (IS_ZH ? andJoin(a) : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]) : a[0];
 const $ = (s) => document.querySelector(s);
 /* Snapshot mode: /snapshot bakes every API response into window.__BAKED__ so the
    identical page works offline as an email attachment (no server, no fetch). */
@@ -1199,6 +1260,21 @@ const BR_ANIMAL = { 子: "鼠", 丑: "牛", 寅: "虎", 卯: "兔", 辰: "龙", 
 const swatchDisc = (x, y, r, el) => `<image href="/static/img/reading/sw/${EL_SLUG[el]}-128.webp" x="${(x - r * 1.14).toFixed(1)}" y="${(y - r * 1.14).toFixed(1)}" width="${(r * 2.28).toFixed(1)}" height="${(r * 2.28).toFixed(1)}" preserveAspectRatio="none"/>`;
 const swatchInk = (el) => el === "金" ? 'fill="#22242a" paint-order="stroke" stroke="rgba(250,247,242,.7)" stroke-width="2.4"'
   : 'fill="#fff" paint-order="stroke" stroke="rgba(28,20,12,.55)" stroke-width="2.6" stroke-linejoin="round"';
+/* The shared term key (round 42, items 14 and 15). Every native-form label in a chapter figure is a 44 px link to its own row in #termkey, which
+   is built from web/glossary.js after the figures are drawn. English pages only: the Chinese reading does not load the glossary and has no key. */
+const TK_ON = () => !IS_ZH && !!(window.GL && window.GL.segment);
+const tkKey = (t) => { const h = window.GL && GL.lookup(t); return h ? h[0] : t; };
+const tkId = (t) => "tk-" + toSimp(tkKey(t));   // the page writes 简体 after the figures are built, so the id is written in 简体 on both sides
+const tkEn = (t) => { const x = GL.tip(t); const i = x.indexOf(" · "); return i < 0 ? x : x.slice(i + 3); };
+/* a link around an SVG label: a transparent 44 px rect (x, y, w, h in the figure's own units) under the label, focusable, to the term's row */
+function tkLink(term, box, inner) {
+  if (!TK_ON()) return inner;
+  const [x, y, w, h] = box.map((n) => +n.toFixed(1));
+  return `<a class="tklink" href="#${tkId(term)}" tabindex="0" aria-label="${inner.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()}, ${tkEn(term)}"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="transparent"/>${inner}</a>`;
+}
+/* a 44 px box centred on (cx, cy): the figure's own units are about one CSS px on a phone, so 54 keeps every label at 44 CSS px on a 375 px phone (the figure draws at about 0.87 of its units there) */
+const tkBox = (cx, cy, w = 54, h = 54) => [cx - w / 2, cy - h / 2, w, h];
+
 /* painted brush arrows (owner pick A, 2026-10-10): a brush shaft, a painted head that keeps its own shape however long
    the arrow is, and ink dabs for the controlling cycle. The masks are luminance images; each arrow is filled in its colour. */
 let INK_N = 0;
@@ -1246,11 +1322,13 @@ function elementWheel(er) {
     if (el === er.dm) s += `<circle cx="${x}" cy="${y}" r="${r + 3.5}" fill="none"
       stroke="var(--gold)" stroke-width="2.5"/>`;
     const fs = Math.max(11, Math.min(22, r * 0.62));
-    s += `<title>${EL_EN[el]} ${er.share[el]}%${el === er.dm ? RS("appjs.elementWheel.001") : ""}</title>
-      <text x="${x}" y="${y + fs * 0.35}" text-anchor="middle" font-size="${fs.toFixed(1)}"
-      font-weight="700" ${swatchInk(el)}>${el}</text>
-      <text x="${x}" y="${y + r + 13}" text-anchor="middle" font-size="10.5"
-      paint-order="stroke" stroke="#faf7f2" stroke-width="3" stroke-linejoin="round" fill="#6b6357">${er.share[el]}%${el === er.dm ? " 日主" : ""}</text>`;
+    const nb = Math.max(54, 2 * r), lab = (x0, y0, t) => `<text x="${x0}" y="${y0}" text-anchor="middle" font-size="10.5"
+      paint-order="stroke" stroke="#faf7f2" stroke-width="3" stroke-linejoin="round" fill="#6b6357">${t}</text>`;
+    s += `<title>${EL_EN[el]} ${er.share[el]}%${el === er.dm ? RS("appjs.elementWheel.001") : ""}</title>`
+      + tkLink(el, tkBox(x, y, nb, nb), `<text x="${x}" y="${y + fs * 0.35}" text-anchor="middle" font-size="${fs.toFixed(1)}"
+      font-weight="700" ${swatchInk(el)}>${el}</text>`)
+      + lab(x, y + r + 13, `${er.share[el]}%${el === er.dm && !TK_ON() ? " 日主" : ""}`)
+      + (el === er.dm && TK_ON() ? tkLink("日主", [x - 27, y + r - 4, 54, 52], lab(x, y + r + 26, "日主")) : "");
   });
   return s + "</svg>";
 }
@@ -1355,14 +1433,16 @@ function tenGodsWheel(c, opts = {}) {
     s += inkArrow(u, x1, y1, x2, y2, "#7aa87f", Math.max(1.2, Math.min(4, G(a).sum / 10)), false, G(a).sum < 5 ? 0.35 : 0.85);
   });
   s += `<circle cx="${cx}" cy="${cy}" r="20" fill="${EL_COL[dmEl]}"/>
-    <circle cx="${cx}" cy="${cy}" r="23.5" fill="none" stroke="var(--gold)" stroke-width="2.5"/>
-    <text x="${cx}" y="${cy + 1}" text-anchor="middle" font-size="13" font-weight="700"
+    <circle cx="${cx}" cy="${cy}" r="23.5" fill="none" stroke="var(--gold)" stroke-width="2.5"/>`
+    + (opts.zh ? tkLink("日主", tkBox(cx, cy), `<text x="${cx}" y="${cy + 1}" text-anchor="middle" font-size="13" font-weight="700"
       fill="#fff">${c.day_master}</text>
-    <text x="${cx}" y="${cy + 13}" text-anchor="middle" font-size="8.5" fill="#fff">日主</text>`;
+    <text x="${cx}" y="${cy + 13}" text-anchor="middle" font-size="8.5" fill="#fff">日主</text>`) : `<text x="${cx}" y="${cy + 1}" text-anchor="middle" font-size="13" font-weight="700"
+      fill="#fff">${c.day_master}</text>
+    <text x="${cx}" y="${cy + 13}" text-anchor="middle" font-size="8.5" fill="#fff">日主</text>`);
   GROUPS.forEach(g => {
     s += `<g><title>${g.en} ${g.sum}% (${g.zh})</title>
       ${opts.zh ? swatchDisc(g.x, g.y, g.r, g.el) : `<circle cx="${g.x}" cy="${g.y}" r="${g.r}" fill="${EL_COL[g.el]}" opacity=".92"/>`}
-      ${opts.zh ? `<text x="${g.x}" y="${g.y + 5.5}" text-anchor="middle" font-size="${Math.min(16, g.r * 0.62).toFixed(1)}" font-weight="700" ${swatchInk(g.el)} font-family="Noto Serif SC, serif">${g.zh}</text>` : nodeLines(g.en, g.x, g.y, g.r, 10.5)}</g>
+      ${opts.zh ? tkLink(g.zh, tkBox(g.x, g.y, Math.max(54, 2 * g.r), Math.max(54, 2 * g.r)), `<text x="${g.x}" y="${g.y + 5.5}" text-anchor="middle" font-size="${Math.min(16, g.r * 0.62).toFixed(1)}" font-weight="700" ${swatchInk(g.el)} font-family="Noto Serif SC, serif">${g.zh}</text>`) : nodeLines(g.en, g.x, g.y, g.r, 10.5)}</g>
       <text x="${g.x}" y="${g.y + g.r + 11}" text-anchor="middle" font-size="9.5"
         paint-order="stroke" stroke="#faf7f2" stroke-width="3" stroke-linejoin="round" fill="#6b6357">${g.sum}%</text>`;
     if (!opts.groupsOnly) g.sat.forEach(t => {
@@ -1493,30 +1573,54 @@ function strengthGauge(st) {
 
 /* the eight directions as a painted compass ring (owner pick A, 2026-10-10): north at the top, green washes where the
    house stars help, red-ochre where they harm, the person's season painting at the centre; characters in the ring, English in the key */
-function bazhaiCompass(c) {
+function bazhaiCompass(c, opts = {}) {
   const ANG = { N: -90, NE: -45, E: 0, SE: 45, S: 90, SW: 135, W: 180, NW: -135 }, R0 = 64, R1 = 158, C = 170;
   const pt = (r, a) => [C + r * Math.cos(a * Math.PI / 180), C + r * Math.sin(a * Math.PI / 180)];
   const season = { 寅: "spring", 卯: "spring", 辰: "spring", 巳: "summer", 午: "summer", 未: "summer", 申: "autumn", 酉: "autumn", 戌: "autumn", 亥: "winter", 子: "winter", 丑: "winter" }[c.pillars.month[1]];
   const GOOD = ["生氣", "天醫", "延年", "伏位"], rows = Object.entries(PALACE_DIR).map(([pal, dir]) => ({ pal, dir, s: c.youxing[pal], good: GOOD.includes(c.youxing[pal]) }));
-  let svg = `<svg viewBox="0 0 340 340" class="cring keepzh" data-notip role="img" aria-label="${RS("appjs.bazhaiCompass.001", {rows_map: rows.map((r) => `${r.dir} ${BAZHAI_EN[r.s] ? BAZHAI_EN[r.s][0] : r.s}, ${r.good ? "use" : "avoid"}`).join("; ")})}">
+  const AF = opts.af && c.afflictions ? c.afflictions : null, ln = TK_ON();
+  const sectorPath = (a, ro, ri, pad = 0) => { const [x1, y1] = pt(ro, a - 22.5 + pad), [x2, y2] = pt(ro, a + 22.5 - pad), [x3, y3] = pt(ri, a + 22.5 - pad), [x4, y4] = pt(ri, a - 22.5 + pad);
+    return `M${x1.toFixed(1)} ${y1.toFixed(1)}A${ro} ${ro} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}L${x3.toFixed(1)} ${y3.toFixed(1)}A${ri} ${ri} 0 0 0 ${x4.toFixed(1)} ${y4.toFixed(1)}Z`; };
+  const hid = `hat${++INK_N}`;
+  /* this year's afflictions (round 42, item 17): pattern, never colour alone. 太歲 hatched, 歲破 a solid outline, 三煞 a dotted outline, 歲刑 a tick on the rim */
+  const AFC = "#7d2410";
+  const overlay = !AF ? "" : `<g class="af-ov" aria-hidden="true"><defs><pattern id="${hid}" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="${AFC}" stroke-width="2"/></pattern></defs>`
+    + (AF.taisui ? `<path data-af="taisui" data-dir="${AF.taisui.dir}" d="${sectorPath(ANG[AF.taisui.dir], R1, R0)}" fill="url(#${hid})" opacity=".42"/>` : "")
+    + (AF.suipo ? `<path data-af="suipo" data-dir="${AF.suipo.dir}" d="${sectorPath(ANG[AF.suipo.dir], R1 - 3, R0 + 3, 3)}" fill="none" stroke="${AFC}" stroke-width="3.5"/>` : "")
+    + ((AF.sansha || {}).dirs || []).map((d) => `<path data-af="sansha" data-dir="${d}" d="${sectorPath(ANG[d], R1 - 9, R0 + 9, 7)}" fill="none" stroke="${AFC}" stroke-width="3" stroke-dasharray="1 5" stroke-linecap="round"/>`).join("")
+    + (AF.suixing ? (() => { const a = ANG[AF.suixing.dir], [x1, y1] = pt(R1 + 9, a), [x2, y2] = pt(R1 - 16, a); return `<line data-af="suixing" data-dir="${AF.suixing.dir}" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${AFC}" stroke-width="6" stroke-linecap="butt"/>`; })() : "") + "</g>";
+  let svg = `<svg viewBox="0 0 340 340" class="cring keepzh" data-notip role="${ln ? "group" : "img"}" aria-label="${RS("appjs.bazhaiCompass.001", {rows_map: rows.map((r) => `${r.dir} ${BAZHAI_EN[r.s] ? BAZHAI_EN[r.s][0] : r.s}, ${r.good ? "use" : "avoid"}`).join("; ")})}">
     <circle cx="${C}" cy="${C}" r="${R1 + 8}" fill="#fdfbf6" stroke="#d9d0c1"/>`;
   rows.forEach((r, i) => {
-    const a = ANG[r.dir], [x1, y1] = pt(R1, a - 22.5), [x2, y2] = pt(R1, a + 22.5), [x3, y3] = pt(R0, a + 22.5), [x4, y4] = pt(R0, a - 22.5);
-    const d = `M${x1.toFixed(1)} ${y1.toFixed(1)}A${R1} ${R1} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}L${x3.toFixed(1)} ${y3.toFixed(1)}A${R0} ${R0} 0 0 0 ${x4.toFixed(1)} ${y4.toFixed(1)}Z`;
+    const a = ANG[r.dir], d = sectorPath(a, R1, R0);
     const [mx, my] = pt((R0 + R1) / 2 + 4, a), id = `cr${++INK_N}`;
+    const t1 = `<text x="${mx.toFixed(1)}" y="${(my - 4).toFixed(1)}" text-anchor="middle" font-size="15" font-weight="700" fill="#2b2620" paint-order="stroke" stroke="#fdfbf6" stroke-width="3" stroke-linejoin="round" font-family="Georgia,'Noto Serif SC',serif">${r.dir} ${toSimp(r.pal)} ${r.good ? "✓" : "✗"}</text>`;
+    const t2 = `<text x="${mx.toFixed(1)}" y="${(my + 15).toFixed(1)}" text-anchor="middle" font-size="14" fill="#2b2620" paint-order="stroke" stroke="#fdfbf6" stroke-width="3" stroke-linejoin="round" font-family="'Noto Serif SC',serif">${toSimp(r.s)}</text>`;
     svg += `<clipPath id="${id}"><path d="${d}"/></clipPath><path d="${d}" fill="${r.good ? "#e6f0e4" : "#f7e6e1"}"/>
       <image href="/static/img/reading/sw/${r.good ? "wood" : "fire"}-128.webp" x="${(mx - 70).toFixed(1)}" y="${(my - 70).toFixed(1)}" width="140" height="140" opacity="${r.good ? 0.5 : 0.38}" clip-path="url(#${id})"/>
       <path d="${d}" fill="none" stroke="#faf7f2" stroke-width="3"/>
-      <text x="${mx.toFixed(1)}" y="${(my - 4).toFixed(1)}" text-anchor="middle" font-size="15" font-weight="700" fill="#2b2620" font-family="Georgia,'Noto Serif SC',serif">${r.dir} ${toSimp(r.pal)} ${r.good ? "✓" : "✗"}</text>
-      <text x="${mx.toFixed(1)}" y="${(my + 15).toFixed(1)}" text-anchor="middle" font-size="14" fill="#2b2620" font-family="'Noto Serif SC',serif">${toSimp(r.s)}</text>`;
+      ${tkLink(r.pal, [mx - 32, my - 37, 64, 52], t1)}${tkLink(r.s, [mx - 32, my + 15, 64, 52], t2)}`;
   });
   const cid = `cc${++INK_N}`;
-  svg += `<clipPath id="${cid}"><circle cx="${C}" cy="${C}" r="${R0 - 4}"/></clipPath>
+  svg += `${overlay}<clipPath id="${cid}"><circle cx="${C}" cy="${C}" r="${R0 - 4}"/></clipPath>
     <image href="/static/img/reading/bg/${STEM_SLUG[c.day_master]}-${season}-600.jpg" x="${C - R0}" y="${C - R0}" width="${2 * R0}" height="${2 * R0}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${cid})"/>
     <circle cx="${C}" cy="${C}" r="${R0 - 4}" fill="none" stroke="#8a7f72" stroke-width="1.5"/>
     <text x="${C}" y="9" text-anchor="middle" font-size="11" fill="#5f574e">${RS("appjs.DIR_WORD_EN.N")}</text></svg>`;
   const key = zhKey(rows.map((r) => [toSimp(r.s), BAZHAI_EN[r.s] ? BAZHAI_EN[r.s][0] : ""]).concat(rows.map((r) => [toSimp(r.pal), DIR_WORD_EN[r.dir] || r.dir])).concat([["✓", "use"], ["✗", "avoid"]]));
-  return `${svg}${key}`;
+  if (!AF) return `${svg}${key}`;
+  /* the switch and the pattern key: the key shows only while the overlay is on */
+  const sw = (n) => `<svg class="af-sw" viewBox="0 0 30 18" width="30" height="18" aria-hidden="true">${n}</svg>`;
+  const dirs = (o) => o.dirs ? o.dirs.map((d) => DIR_ZH[d] || d).join("·") : (DIR_ZH[o.dir] || o.dir);
+  const row = (swatch, name, o) => `<li>${swatch}<span><b>${name}</b> <span class="keepzh">${dirs(o)} ${o.palace || (o.palaces || []).join("·")} · ${o.branch || o.branches}</span>${opts.rules ? `<span class="af-rule">${o.rule}</span>` : ""}</span></li>`;
+  const hp = `hs${INK_N}`;
+  const afKey = [
+    row(sw(`<defs><pattern id="${hp}" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="${AFC}" stroke-width="1.6"/></pattern></defs><rect x="1" y="1" width="28" height="16" fill="url(#${hp})" stroke="#c9b9ab" stroke-width="1"/>`), RS("appjs.buildCompass.036"), AF.taisui),
+    row(sw(`<rect x="2" y="2" width="26" height="14" fill="none" stroke="${AFC}" stroke-width="3.5"/>`), RS("appjs.buildCompass.037"), AF.suipo),
+    row(sw(`<rect x="2" y="2" width="26" height="14" fill="none" stroke="${AFC}" stroke-width="3" stroke-dasharray="1 5" stroke-linecap="round"/>`), RS("appjs.buildCompass.038"), AF.sansha),
+    AF.suixing ? row(sw(`<rect x="1" y="1" width="28" height="16" fill="none" stroke="#c9b9ab" stroke-width="1"/><rect x="12" y="1" width="6" height="16" fill="${AFC}"/>`), RS("appjs.buildCompass.048"), AF.suixing) : ""].join("");
+  const notes = opts.notes && AF.collisions.length ? `<ul class="af-notes">${AF.collisions.map((h) => `<li>${h.note.replace(/^your/, "Your")}${IS_ZH ? "。" : "."}</li>`).join("")}</ul>` : "";
+  const on = !!opts.on;
+  return `<div class="af-wrap${on ? " af-on" : ""}"><button type="button" class="af-switch" aria-pressed="${on}">${RS("appjs.buildCompass.035", {AF_year: AF.year})}</button>${svg}<ul class="af-key">${afKey}</ul>${notes}</div>${key}`;
 }
 
 /* ---- Reading layout A (owner pick 2026-10-10) -------------------------------------------
@@ -1585,9 +1689,9 @@ function pSides(c) {
 }
 const DRIVE_IMG = { 比劫: "peers", 食傷: "expression", 財: "money", 官殺: "duty", 印: "support" };
 function pCareers(c) {
-  const C = c.careers || {}, row = (a) => `<li><b>${a.en}</b> (${a.score} pts): ${a.reasons.join("; ")}</li>`;
+  const C = c.careers || {}, row = (a) => `<li><b>${a.en}</b> (${a.score}${WD("pts")}): ${a.reasons.join("; ")}</li>`;
   return (C.top || []).length ? `<p><b>Career archetypes, ranked.</b></p><ul class="rp-list">${C.top.map(row).join("")}${(C.avoid || []).map((a) =>
-    `<li>Harder going: <b>${a.en}</b> (${a.score} pts): ${a.reasons.join("; ")}</li>`).join("")}</ul>` : "";
+    `<li>Harder going: <b>${a.en}</b> (${a.score}${WD("pts")}): ${a.reasons.join("; ")}</li>`).join("")}</ul>` : "";
 }
 /* The helping element's ink dots, drawn only in the "What helps you" region (owner 2026-10-14, round 38: they left the element rows).
    A dot whose colour sits within 15% of the page's cream in luminance (metal's white) gets a thin ring in the muted ink so every dot has an edge. */
@@ -1673,7 +1777,7 @@ const pDrives = (c) => `<div class="rp-drv">${c.plain.drives.groups.map((g) => `
 function pRoom(c) {
   const S = c.plain.space; if (!S) return "";
   const pos = { NW: [0, 0], N: [1, 0], NE: [2, 0], W: [0, 1], E: [2, 1], SW: [0, 2], S: [1, 2], SE: [2, 2] }, q = 93.3;
-  let s = `<svg class="rp-room" viewBox="0 0 300 312" role="img" aria-label="${RS("appjs.pRoom.001", {Object_entries: Object.entries(S.marks).map(([d, l]) => `${RS("appjs.pRoom.003", {l_join: l.join(" and "), d: d})}`).join("; ")})}">
+  let s = `<svg class="rp-room" viewBox="0 0 300 312" role="img" aria-label="${RS("appjs.pRoom.001", {Object_entries: Object.entries(S.marks).map(([d, l]) => `${RS("appjs.pRoom.003", {l_join: andJoin(l), d: d})}`).join("; ")})}">
     <text x="150" y="11" text-anchor="middle" font-size="11" fill="#6b6359">${RS("appjs.DIR_WORD_EN.N")}</text>
     <rect x="10" y="22" width="280" height="280" fill="#fff" stroke="#2b2620" stroke-width="2"/>`;
   [1, 2].forEach((k) => { s += `<line x1="${10 + k * q}" y1="22" x2="${10 + k * q}" y2="302" stroke="#e5ded2"/><line x1="10" y1="${22 + k * q}" x2="290" y2="${22 + k * q}" stroke="#e5ded2"/>`; });
@@ -1688,7 +1792,7 @@ const pRelations = (c) => { const ps = c.plain.makeup.pairs;
     : ("<p>" + RS("appjs.pRelations.002") + "</p>"); };
 function pSlimGrid(c) {
   const P = c.pillars, tg = c.ten_gods || {}, hid = c.hidden_gods || {};
-  return `<div class="rp-sg keepzh" data-notip>${PILLAR_KEYS.map(([k, lab]) => { const g = k === "day" ? "日主" : tg[k] || "";
+  return `<div class="rp-sg keepzh">${PILLAR_KEYS.map(([k, lab]) => { const g = k === "day" ? "日主" : tg[k] || "";
     return `<div${k === "day" ? ' class="me"' : ""}><small>${k === "day" ? RS("appjs.pSlimGrid.002") : lab}</small><span class="rp-tg" title="${k === "day" ? RS("appjs.pSlimGrid.003") : godEn(c, g)}">${g}</span>
       <span class="rp-big" style="color:${EL_TXT[STEM_EL[P[k][0]]]}">${P[k][0]}</span><span class="rp-big" style="color:${EL_TXT[BR_EL[P[k][1]]]}">${P[k][1]}</span>
       <span class="rp-hid">${(hid[k] || []).map((x) => `<span title="${godEn(c, x.slice(2, -1))}">${x[0]}</span>`).join(" ")}</span></div>`; }).join("")}</div>
@@ -1716,6 +1820,8 @@ const EV_FIG = { flows: "balance" };
 /* Panels whose body only restated numbers a chapter figure draws (round 41): elements (the pentagon), gods (the group wheel), decades (the strip).
    They open on a pointer to that figure, built from the figure's own caption, so no new wording is needed. */
 const EV_POINTS = { elements: "balance", gods: "drives", decades: "timing" };
+/* Panels whose first paragraph only says again what "What this shows" says (round 42): the days panel names the best and the worst day in both. */
+const EV_NO_WHY = { days: 1 };
 const figName = (id) => ((CHART_CAP[id] || "").match(/^<b>(.*?)<\/b>/) || [, ""])[1].replace(/[.。]$/, "");
 const evPtr = (id) => `<p class="ev-ptr"><button type="button" class="mk mk-fig ev-ptr-b" aria-controls="chart-${id}">↑ ${figName(id)}</button></p>`;
 /* One panel per piece of evidence, in the chapter that owns it. A chapter that cites evidence owned elsewhere gets a marker that
@@ -1724,7 +1830,7 @@ function pStory(id, S, ev, proofs, chart, ownerOf = () => id) {
   const num = {}; let n = 0;
   const mk = (e) => EV_FIG[e] ? `<button type="button" class="mk mk-fig" aria-controls="chart-${EV_FIG[e]}" data-n="${num[e]}">${RS("appjs.pStory.001", {num_e: num[e]})}</button>`
     : `<button type="button" class="mk" aria-expanded="false" aria-controls="ev-${ownerOf(e)}-${e}" data-n="${num[e]}">${RS("appjs.pStory.001", {num_e: num[e]})}</button>`;
-  const why = (e) => (EV_POINTS[e] ? "" : ev[e].why);   // the sentence that lists the numbers a figure elsewhere already draws is not printed again
+  const why = (e) => (EV_POINTS[e] || EV_NO_WHY[e] ? "" : ev[e].why);   // the sentence that lists the numbers a figure elsewhere already draws is not printed again
   const panel = (e) => `<div class="ev" id="ev-${id}-${e}" data-ev="${e}" tabindex="-1" hidden><button type="button" class="ev-x" aria-label="${RS("appjs.pStory.002")}">×</button><p class="evh"><span class="evn">${num[e]}</span>. ${ev[e].label}</p><p class="ev-rule keepzh"><b>${RS("appjs.rule.label")}</b> ${RULE_ROW[e]}</p>${zhNoteIf(why(e))}${why(e) ? why(e).split("\n").map((x) => `<p>${x}</p>`).join("") : ""}${(proofs[e] || []).join("")}<button type="button" class="ev-back">${RS("appjs.pStory.003")}</button></div>`;
   // a run of sentences resting on the same evidence shows its markers once, at the end of the run
   const para = (ss, cls) => { const fresh = [];
@@ -1733,7 +1839,7 @@ function pStory(id, S, ev, proofs, chart, ownerOf = () => id) {
     return `<p${cls ? ` class="${cls}"` : ""}>${html}</p>${fresh.map(panel).join("")}`; };
   let out = "";
   S.paras.forEach((p, k) => { out += para(p);
-    if (k === S.chart_after && chart) out += `<figure class="rp-chart" id="chart-${id}" tabindex="-1"><figcaption>${RS("appjs.pStory.004", {CHART_CAP_id: CHART_CAP[id]})}</figcaption>${chart}</figure>`; });
+    if (k === S.chart_after && chart) out += `<figure class="rp-chart" id="chart-${id}" tabindex="-1"><figcaption>${RS("appjs.pStory.004", {CHART_CAP_id: CHART_CAP[id]})}${TK_ON() ? '<a class="tk-open" href="#termkey">Terms</a>' : ""}</figcaption>${chart}</figure>`; });
   if (S.one) out += para([S.one], "rp-one");
   return `<div class="rp-story">${out}</div>`;
 }
@@ -1743,7 +1849,7 @@ function readingChapters(c, R) {
   const cur = (P.decades || []).find((d) => d.current), top = (P.drives.groups || [])[0] || {};
   const figs = {   // every figure and citation the card layout carried, keyed by the evidence it proves
     pillars: [A.figs.grid], stars: [A.figs.stars, R.full(9)], interactions: [pRelations(c), A.figs.interactions],
-    personality: [G.figs.axes, R.full(10)], elements: [evPtr("balance"), E.units, R.full(1)],   // elements, decades, the pillar grid and the god groups are drawn by their chapter's figure: the panel points at it
+    personality: [G.figs.axes, R.full(10)], elements: [evPtr("balance"), R.full(1)],   // elements, decades, the pillar grid and the god groups are drawn by their chapter's figure: the panel points at it
     strength: [E.figs.gauge, R.full(2)], flows: [], medicine: [K.figs.medicine, R.full(5)],
     health: [E.figs.health, R.full(11)], gods: [evPtr("drives"), G.figs.structure, G.figs.bars, R.full(4, 3)],
     domains: [G.figs.domains, R.full(8)], work: [G.figs.industries, R.full(12)],   // one work figure (roles and archetypes merged in)
@@ -1938,8 +2044,8 @@ function interactionsSvg(c) {
   order.forEach((k) => { const br = c.pillars[k][1], col = EL_COL[BR_EL[br]], x = xs[k];
     s += `<circle cx="${x}" cy="${NY}" r="${R}" fill="#fff" stroke="${col}" stroke-width="2.5"/>
       <text x="${x}" y="${NY + 9}" text-anchor="middle" font-size="26" font-weight="700" fill="${col}">${br}</text>
-      <text x="${x}" y="${NY + 44}" text-anchor="middle" font-size="15" fill="#6b6359">${k}</text>`; });
-  const legend = many ? `<div class="ixlegend">${its.map((it) => `${RS("appjs.interactionsSvg.001", {it_kind: it.kind.includes("合") ? "#0e7a6a" : "#99460a", it_kind_2: it.kind, it_pair: it.pair, it_pillars: it.pillars.join("+")})}`).join("")}</div>` : "";
+      <text x="${x}" y="${NY + 44}" text-anchor="middle" font-size="15" fill="#6b6359">${IS_ZH ? WD("pen." + k) : k}</text>`; });
+  const legend = many ? `<div class="ixlegend">${its.map((it) => `${RS("appjs.interactionsSvg.001", {it_kind: it.kind.includes("合") ? "#0e7a6a" : "#99460a", it_kind_2: it.kind, it_pair: it.pair, it_pillars: it.pillars.map((k) => (IS_ZH ? WD("pen." + k) : k)).join("+")})}`).join("")}</div>` : "";
   return `<svg class="ixsvg" viewBox="0 ${minY.toFixed(0)} 640 ${(maxY - minY).toFixed(0)}" role="img" aria-label="${RS("appjs.interactionsSvg.002")}">${s}</svg>${legend}`;
 }
 function interactionsLine(c) {
@@ -1949,11 +2055,11 @@ function interactionsLine(c) {
   its.forEach((it) => { const k = it.kind + "|" + it.pair.split("").sort().join(""); seen.set(k, (seen.get(k) || 0) + 1); });
   const tail = [...seen.entries()].map(([k, cnt]) => { const [kind, pair] = k.split("|");
     const t = kind === "自刑" ? `${RS("appjs.interactionsLine.002", {elc_pair: elc(pair[0])})}` : `${elc(pair[0])} ${GLOSS_IX[kind] || kind} ${elc(pair[1])}`;
-    return t + (cnt === 2 ? " twice" : cnt > 2 ? ` ×${cnt}` : ""); });
+    return t + (cnt === 2 ? WD("twice") : cnt > 2 ? ` ×${cnt}` : ""); });
   const clash = its.some((it) => it.kind.includes("冲"));
   const words = ["", RS("appjs.interactionsLine.003"), RS("appjs.interactionsLine.004"), RS("appjs.interactionsLine.005"), RS("appjs.interactionsLine.006"), RS("appjs.interactionsLine.007"), RS("appjs.interactionsLine.008")];
-  const list = tail.length > 1 ? tail.slice(0, -1).join(", ") + " and " + tail[tail.length - 1] : tail[0];
-  return `${RS("appjs.interactionsLine.009", {words_n: words[n] || n, n_tension: n === 1 ? "tension" : "tensions", clash_one: clash ? RS("appjs.interactionsLine.010") : RS("appjs.interactionsLine.011"), list: list, clash_watch: clash ? RS("appjs.interactionsLine.012") : RS("appjs.interactionsLine.013")})}`;
+  const list = listAnd(tail);
+  return `${RS("appjs.interactionsLine.009", {words_n: words[n] || n, n_tension: n === 1 ? WD("tension") : WD("tensions"), clash_one: clash ? RS("appjs.interactionsLine.010") : RS("appjs.interactionsLine.011"), list: list, clash_watch: clash ? RS("appjs.interactionsLine.012") : RS("appjs.interactionsLine.013")})}`;
 }
 function eflowsList(c) {
   const er = c.element_relations; if (!er) return "";
@@ -1962,7 +2068,7 @@ function eflowsList(c) {
       const peerNote = (k === "peer" && !((c.tengods_pct["比肩"] || 0) + (c.tengods_pct["劫財"] || 0)))
         ? ` ${RS("appjs.eflowsList.002")}` : "";
       return `<div class="eflow"><span class="efr">${f.role}</span> ${eli(f.el)} <b>${f.share}%</b>
-        <span class="efb ef-${f.band}">${f.band}</span> <span class="sub">${f.meaning}</span>${peerNote}</div>`; }).join("")}</div>`;
+        <span class="efb ef-${f.band}">${IS_ZH ? WD("eb." + f.band) : f.band}</span> <span class="sub">${f.meaning}</span>${peerNote}</div>`; }).join("")}</div>`;
 }
 function supportDrain(c) {
   const pt = c.strength.parts; if (!pt) return "";
@@ -1987,7 +2093,7 @@ function supportDrain(c) {
 function tiaohouStrip(c) {
   const t = c.tiaohou; if (!t || !t.gods) return "";
   const chips = t.gods.map((g) => `<span class="thchip">${elc(g.stem)} ${g.god}
-    <small>${g.aligned ? RS("appjs.tiaohouStrip.001") : g.visible ? "visible" : RS("appjs.tiaohouStrip.002")}</small></span>`).join(" ");
+    <small>${g.aligned ? RS("appjs.tiaohouStrip.001") : g.visible ? WD("visible") : RS("appjs.tiaohouStrip.002")}</small></span>`).join(" ");
   return `<div class="tiaohou">${RS("appjs.tiaohouStrip.003", {elc_c: elc(c.pillars.month[1]), chips: chips, t_verdict: t.verdict})}</div>`;
 }
 function groupSums(c) {
@@ -2016,15 +2122,15 @@ function buildPillars(c, R) {
   const season = sp < 0 ? RS("appjs.buildPillars.001") : sp > 0 ? RS("appjs.buildPillars.002") : RS("appjs.buildPillars.003");
   const p1 = rdFig({ tier: "hero", span: 12, label: RS("appjs.buildPillars.004"), learn: "chart",
     chart: `${evPtr("makeup")}${pillarGrid(c, true)}`,   // the characters, ten gods and hidden stems are the chapter's own four-pillar chart; the panel keeps what that chart does not draw
-    line: `${RS("appjs.buildPillars.005", {weak_weak: weak ? "weak" : "strong", elc_dm: elc(dm), elw_dmEl: elw(dmEl), season: season, fav_map: fav.map(elw).join(" and "), fav_length: fav.length > 1 ? "are" : "is"})}`,
+    line: `${RS("appjs.buildPillars.005", {weak_weak: weak ? WD("weak") : WD("strong"), elc_dm: elc(dm), elw_dmEl: elw(dmEl), season: season, fav_map: andJoin(fav.map(elw)), fav_length: IS_ZH ? "" : fav.length > 1 ? "are" : "is"})}`,
     facts: [[c.strength.verdict.split(" ")[0], `${RS("appjs.buildPillars.006", {c_strength_score: c.strength.score})}`]],   // 格局 is explained in plain words under the structure check
     legend: legendList("chart") });
   const its = c.interactions || [], kinds = {};
   its.forEach((it) => (kinds[it.kind] = (kinds[it.kind] || 0) + 1));
   const p6 = rdFig({ tier: "secondary", span: 5, label: RS("appjs.buildPillars.007"), learn: "chart",
     chart: interactionsSvg(c), line: interactionsLine(c),
-    facts: [...Object.entries(kinds).map(([k, n]) => [k, `×${n}`]), ...(its.some((i) => i.kind.includes("冲")) ? [] : [["冲", "none"]])],
-    legend: `${RS("appjs.buildPillars.008", {its_length: its.length ? "<hr>" + its.map((i) => `<div><b>${i.pair} ${i.kind}</b> (${i.pillars.join("+")}): ${i.note}</div>`).join("") : ""})}` });
+    facts: [...Object.entries(kinds).map(([k, n]) => [k, `×${n}`]), ...(its.some((i) => i.kind.includes("冲")) ? [] : [["冲", WD("none")]])],
+    legend: `${RS("appjs.buildPillars.008", {its_length: its.length ? "<hr>" + its.map((i) => `<div><b>${i.pair} ${i.kind}</b> (${i.pillars.map((k) => (IS_ZH ? WD("pen." + k) : k)).join("+")}): ${i.note}</div>`).join("") : ""})}` });
   // Four Palaces retired 2026-10-10: the four sides in the opening carry each palace (owner cut)
   // Which Way to Face retired 2026-10-10: it repeated the Compass 3×3 grid (owner cut)
   let p5 = "";
@@ -2036,10 +2142,9 @@ function buildPillars(c, R) {
       ${c.shensha.map((s, i) => { const neg = NEG.includes(s.star); return `<tr><td>${i + 1}</td><td><b class="${neg ? "shen-neg" : "shen-pos"}">${s.star}</b></td>
         <td>${s.pillars.map((p) => PZH[p] || p).join("·")}</td><td>${neg ? "忌" : "吉"}</td></tr>`; }).join("")}</table>
       <ol class="tkey-list">${c.shensha.map((s) => { const [en, gist] = part(s); const neg = NEG.includes(s.star);
-        return `<li class="cite">${RS("appjs.buildPillars.010", {en: en, s_star: s.star, s_pillars: s.pillars.map((p) => PEN[p] || p).join(" and "), s_pillars_2: s.pillars.length > 1 ? "s" : "", gist: gist, neg_Asks: neg ? RS("appjs.buildPillars.011") : RS("appjs.buildPillars.012")})}</li>`; }).join("")}</ol>
+        return `<li class="cite">${RS("appjs.buildPillars.010", {en: en, s_star: s.star, s_pillars: andJoin(s.pillars.map((p) => IS_ZH ? WD("pen." + p) : PEN[p] || p)), s_pillars_2: IS_ZH ? "" : s.pillars.length > 1 ? "s" : "", gist: gist, neg_Asks: neg ? RS("appjs.buildPillars.011") : RS("appjs.buildPillars.012")})}</li>`; }).join("")}</ol>
       <p class="tkey">${RS("appjs.buildPillars.009")}</p>`;
-    p5 = rdFig({ tier: "reference", span: 7, label: RS("appjs.LEGENDS.chart.12.term"), learn: 9, chart, line: "",   // the numbered list under the table says it once
-      legend: ("<div>" + RS("appjs.buildPillars.018") + "</div>") });
+    p5 = rdFig({ tier: "reference", span: 7, label: RS("appjs.LEGENDS.chart.12.term"), learn: 9, chart, line: "" });   // the numbered list under the table says it once; the rule row says how the stars are looked up
   }
   return { figs: { grid: p1, interactions: p6, stars: p5 },
     tail: [R.nb.rest.length ? deepWrap(RS("appjs.buildPillars.019"), R.nb.rest.map((t) => `<div class="ninline">${dnAll(t)}</div>`).join("")) : "",
@@ -2051,16 +2156,14 @@ function buildPillars(c, R) {
 function buildElements(c, R) {
   const dm = c.day_master, dmEl = STEM_EL[dm], fav = c.yongshen.favourable, unf = c.yongshen.unfavourable;
   const wtot = Object.values(c.element_weights).reduce((x, y) => x + y, 0) || 1;
-  // Element bars retired 2026-10-10 (owner cut: the energy budget and the pentagon carry the same numbers);
-  // its counting note now sits under the budget as "How these numbers are counted".
-  const units = `<div class="cite">${RS("appjs.buildElements.001", {wtot_toFixed: wtot.toFixed(1)})}</div>`;
+  // Element bars retired 2026-10-10 (owner cut: the energy budget and the pentagon carry the same numbers). The counting note that sat under them is the rule row now.
   const er = c.element_relations; let e2 = "";
   if (er) {
     const pr = er.flows.pressure, rs = er.flows.resource;
     e2 = rdFig({ tier: "hero", span: 5, extra: "rd-pair2", label: RS("appjs.buildElements.002"), learn: 1,
       chart: `<div class="ewrap"><div class="svg-plate">${elementWheel(er)}</div></div>
         <ul class="ewkey"><li><i class="ewk-sw ewk-g" aria-hidden="true"></i><span>${RS("appjs.buildElements.035")}</span></li><li><i class="ewk-sw ewk-r" aria-hidden="true"></i><span>${RS("appjs.buildElements.036")}</span></li><li><i class="ewk-sw ewk-d" aria-hidden="true"></i><span>${RS("appjs.buildElements.037")}</span></li></ul>`,
-      line: `${RS("appjs.buildElements.003", {elb_pr: eli(pr.el, { silent: true }), elw_pr: elw(pr.el), pr_share: pr.share, elb_rs: eli(rs.el, { silent: true }), elw_rs: elw(rs.el), pr_share_2: pr.share > rs.share ? "only " : "", rs_share: rs.share, pr_share_3: pr.share > rs.share ? RS("appjs.buildElements.004") : RS("appjs.buildElements.005")})}`,
+      line: `${RS("appjs.buildElements.003", {elb_pr: eli(pr.el, { silent: true }), elw_pr: elw(pr.el), pr_share: pr.share, elb_rs: eli(rs.el, { silent: true }), elw_rs: elw(rs.el), pr_share_2: pr.share > rs.share ? WD("only") : "", rs_share: rs.share, pr_share_3: pr.share > rs.share ? RS("appjs.buildElements.004") : RS("appjs.buildElements.005")})}`,
       facts: [[RS("appjs.buildElements.006"), `${elc(pr.el)} ${pr.share}%`], [RS("appjs.buildElements.007"), `${elc(rs.el)} ${rs.share}%`]],
       legend: `${RS("appjs.buildElements.008", {eflowsList_c: eflowsList(c)})}` });
   }
@@ -2071,8 +2174,8 @@ function buildElements(c, R) {
     chart: `<div class="svg-plate">${strengthGauge(st)}</div>
       <p class="rd-tags">${RS("appjs.buildElements.010", {st_support_ratio: st.support_ratio, st_root_ratio: st.root_ratio, st_formation_status: st.formation.status})}</p>
       ${supportDrain(c)}${tiaohouStrip(c)}`,
-    line: `${RS("appjs.buildElements.011", {weak_Weak: weak ? "Weak" : "Strong", st_score: st.score, sp_the: sp < 0 ? RS("appjs.buildElements.014") : sp > 0 ? RS("appjs.buildElements.015") : RS("appjs.buildElements.016"), stage_stage: stage ? ` (${stage})` : ""})}`,
-    line2: topSup ? `${RS("appjs.buildElements.017", {elb_topSup: eli(topSup.el, { silent: true }), topSup_zh: topSup.zh, elw_topSup: elw(topSup.el), topSup_w: topSup.w, pt_support: pt.support, pt_support_2: pt.support > pt.drain ? "beats" : "trails", pt_drain: pt.drain, weak_pt: weak && pt.support > pt.drain ? RS("appjs.buildElements.018") : !weak && pt.support < pt.drain ? RS("appjs.buildElements.019") : RS("appjs.buildElements.020")})}` : "",
+    line: `${RS("appjs.buildElements.011", {weak_Weak: weak ? WD("Weak") : WD("Strong"), st_score: st.score, sp_the: sp < 0 ? RS("appjs.buildElements.014") : sp > 0 ? RS("appjs.buildElements.015") : RS("appjs.buildElements.016"), stage_stage: stage ? ` (${stage})` : ""})}`,
+    line2: topSup ? `${RS("appjs.buildElements.017", {elb_topSup: eli(topSup.el, { silent: true }), topSup_zh: topSup.zh, elw_topSup: elw(topSup.el), topSup_w: topSup.w, pt_support: pt.support, pt_support_2: pt.support > pt.drain ? WD("beats") : WD("trails"), pt_drain: pt.drain, weak_pt: weak && pt.support > pt.drain ? RS("appjs.buildElements.018") : !weak && pt.support < pt.drain ? RS("appjs.buildElements.019") : RS("appjs.buildElements.020")})}` : "",
     facts: [[st.verdict.split(" ")[0], `${st.score}`], [RS("appjs.buildElements.021"), `${pt.support}`], [RS("appjs.buildElements.022"), `${pt.drain}`],
       c.tiaohou ? [RS("appjs.LEGENDS.5.04.term"), c.tiaohou.verdict] : null].filter(Boolean),
     legend: `<div class="cite">${RS("appjs.buildElements.024", {st_formation_detail: st.formation.detail})}</div>
@@ -2093,7 +2196,7 @@ function buildElements(c, R) {
     facts: [[RS("appjs.buildElements.033"), H.filter((h) => /excess|過旺|过旺/i.test(h.status)).map((h) => elc(h.element)).join("·") || "—"],
       [RS("appjs.buildElements.034"), H.filter((h) => /weak|不足/i.test(h.status)).map((h) => elc(h.element)).join("·") || "—"]],
     legend: legendList(11) });
-  return { figs: { pentagon: e2, gauge: e45, health: h1 }, units,
+  return { figs: { pentagon: e2, gauge: e45, health: h1 },
     tail: [R.narr(1), R.narr(2), R.stb(2), R.narr(11), R.stb(11)] };
 }
 
@@ -2103,7 +2206,7 @@ function buildGods(c, R) {
   const gs = groupSums(c).sort((a, b) => b[1] - a[1]);
   const g2 = rdFig({ tier: "hero", span: 5, label: RS("appjs.buildGods.001"), learn: 4,
     chart: `<div class="tgwrap svg-plate">${tenGodsWheel(c, { groupsOnly: true, zh: true })}</div>`,
-    line: `${RS("appjs.buildGods.002", {gs: gs[0][0], GRP_EN_gs: GRP_EN[gs[0][0]], gs_2: gs[0][1], gs_3: gs[1][0], GRP_EN_gs_2: GRP_EN[gs[1][0]], gs_gs: gs[0][1] - gs[1][1] < 12 ? RS("appjs.buildGods.003") : "behind", gs_4: gs[1][1]})}`,
+    line: `${RS("appjs.buildGods.002", {gs: gs[0][0], GRP_EN_gs: GRP_EN[gs[0][0]], gs_2: gs[0][1], gs_3: gs[1][0], GRP_EN_gs_2: GRP_EN[gs[1][0]], gs_gs: gs[0][1] - gs[1][1] < 12 ? RS("appjs.buildGods.003") : WD("behind"), gs_4: gs[1][1]})}`,
     facts: gs.slice(0, 2).map(([z, v]) => [z, `${v}%`]),
     legend: `<div>${RS("appjs.buildGods.004")}</div>
       ${WHEEL_KEY.map(([zh, name, a, b]) => `<div>${RS("appjs.buildGods.006", {zh: zh, name: name, en_a: en(a), a: a, en_b: en(b), b: b})}</div>`).join("")}
@@ -2122,7 +2225,7 @@ function buildGods(c, R) {
     [RS("appjs.buildGods.013"), "比肩+劫財", ["比肩", "劫財"]]];
   const g1f = rdFig({ tier: "hero", span: 7, extra: "rd-pair2", label: RS("appjs.buildGods.014"), learn: 4, chart: bars,
     line: `${RS("appjs.buildGods.015", {godc_dm: godc(dm, g1), en_g1: IS_ZH ? "" : en(g1), Math_round: Math.round(p1), c_tengods_legend: (c.tengods_legend[g1] || {}).meaning || GRP_THEME[grpOfGod(g1)]})}`,
-    facts: [[g1, `${p1}%`], ["absent", `${RS("appjs.buildGods.016", {absent_length: absent.length})}`]],
+    facts: [[g1, `${p1}%`], [WD("absent"), `${RS("appjs.buildGods.016", {absent_length: absent.length})}`]],
     legend: `<div>${RS("appjs.buildGods.017")}</div>
       <div>${RS("appjs.buildGods.018")}</div>
       <div class="tgkey2">${ALLGODS.map((g) => `<div><b style="color:${EL_TXT[godEl(dm, g)]}">${en(g)}</b> <span class="keepzh">(${g})</span>: ${TG_GIST[g] || ""}</div>`).join("")}</div>
@@ -2156,8 +2259,8 @@ function buildGods(c, R) {
       line: bad ? `${RS("appjs.buildGods.027", {godc_dm: godc(dm, bad.god), bad_pct: bad.pct, elc_bad: elc(bad.el)})}`
         : good ? `${RS("appjs.buildGods.028", {godc_dm: godc(dm, good.god), good_pct: good.pct, elc_good: elc(good.el)})}`
         : RS("appjs.buildGods.029"),
-      facts: [["favourable", `${RS("appjs.buildGods.030", {ti_favor: ti.favor.filter((f) => f.status === "favourable").length, ti_favor_length: ti.favor.length})}`],
-        ["rooted", `${RS("appjs.buildGods.031", {ti_rooted: ti.rooted.filter((r) => r.state === "rooted").length})}`]],
+      facts: [[RS("appjs.buildGods.favourable"), `${RS("appjs.buildGods.030", {ti_favor: ti.favor.filter((f) => f.status === "favourable").length, ti_favor_length: ti.favor.length})}`],
+        [RS("appjs.buildGods.rooted"), `${RS("appjs.buildGods.031", {ti_rooted: ti.rooted.filter((r) => r.state === "rooted").length})}`]],
       legend: `<div>${RS("appjs.buildGods.032")}</div>` });
   }
   const P = c.palaces; let ld = "";
@@ -2176,22 +2279,35 @@ function buildGods(c, R) {
       const sc = score == null ? '<span class="sub">·</span>' : `<b class="dnum ${cls === "good" ? "b-good" : cls === "weak" ? "b-weak" : ""}">${score}</b><div class="dbar"><i class="${cls}" style="width:${score}%"></i></div>${pct == null ? "" : `<small class="ldst">${RS("appjs.buildGods.061", {p: pct})}</small>`}`;
       return `<tr><td><b>${zh}</b></td><td class="ldscore">${sc}</td>
         <td>${s ? `${s[0].replace(/\s*\(.*\)$/, "")}<small class="ldpct">${s[1]}%</small>` : "·"}</td><td class="seat">${s ? (inPal(s[2], s[3]) ? "✓" : "·") : "·"}</td></tr>`; };
-    const doms = c.domains.slice().sort((a, b) => b.score - a.score);
+    const bandW = (b) => { const e = b.replace(/\s+[㐀-鿿]+$/, ""); return IS_ZH ? WD("band." + e.replace(/ /g, "_")) : e; };   // the band as a word of the page's language
+    const doms = c.domains.slice().sort((a, b) => ((b.percentile ?? b.score) - (a.percentile ?? a.score)) || (b.score - a.score));   // standing, strongest first: the order the chapter and its first line use
+    const tag = (e) => `<span class="wf-tag ${e.delta < 0 ? "m" : "p"}">${e.label} <b>${e.delta > 0 ? "+" : "−"}${Math.abs(e.delta)}</b></span>`;
+    /* the waterfall (round 42, item 16): every score starts at the neutral 50; each rule is one segment, width in points, plus to the right and minus to the left, so
+       no segment hides another; the tick is 50 and the marker is where the score lands. The row opens to name every rule. */
+    const waterfall = `<div class="wfall">${doms.map((d) => { let up = 0, dn = 0;
+      const segs = d.evidence.map((e) => { const w = Math.abs(e.delta); let left;
+        if (e.delta > 0) { left = 50 + up; up += w; } else { dn += w; left = 50 - dn; }
+        return `<i class="${e.delta > 0 ? "p" : "m"}" style="left:${left}%;width:${w}%"></i>`; }).join("");
+      const band = bandW(d.band), said = `${d.en}, ${d.score}, ${band}: ${d.evidence.map((e) => `${e.label} ${e.delta > 0 ? "+" : "−"}${Math.abs(e.delta)}`).join("; ")}`;
+      return `<details class="wf-row"><summary aria-label="${said}"><span class="wf-l"><b>${d.en}</b> <small class="keepzh">${d.zh}</small></span><span class="wf-s"><b>${d.score}</b> <small>${band}</small></span>
+        <span class="wf-bar" aria-hidden="true"><u class="wf-t"></u>${segs}<s class="wf-n" style="left:${Math.max(0, Math.min(100, d.score))}%"></s></span></summary>
+        <div class="wf-chips">${d.evidence.map(tag).join("")}${d.percentile == null ? "" : `<small class="wf-st">${RS("appjs.buildGods.061", {p: d.percentile})}</small>`}</div></details>`; }).join("")}</div>`;
     const table = `<div class="scrollx keepzh"><table class="bc-table ldtable"><tr><th scope="col">领域</th><th scope="col">分</th><th scope="col">十神</th><th scope="col">得位</th></tr>
       ${doms.map((d) => row(d.zh, d.en, d.score, d.band, sig[d.zh], d.evidence, d.percentile)).join("")}
       ${extra.map(([n, sg, sh, keys, groups, pal]) => row(n.split(" ")[0], n.split(" ").slice(1).join(" "), null, null, [sg, sh, keys, groups, pal], [])).join("")}</table></div>
-      <ol class="tkey-list">${doms.map((d) => `<li class="cite"><b>${d.en}</b> (<span class="keepzh">${d.zh}</span>), ${d.score}, ${d.band.replace(/\s+[㐀-鿿]+$/, "")}: ${d.evidence.map((e) => `${e.label} ${e.delta > 0 ? "+" : ""}${e.delta}`).join("; ")}.</li>`).join("")}
+      <ol class="tkey-list">${doms.map((d) => `<li class="cite"><b>${d.en}</b> (<span class="keepzh">${d.zh}</span>), ${d.score}, ${bandW(d.band)}: ${d.evidence.map((e) => `${e.label} ${e.delta > 0 ? "+" : ""}${e.delta}`).join("; ")}.</li>`).join("")}
         ${extra.map(([n]) => `<li>${RS("appjs.buildGods.044", {n_split: n.split(" ").slice(1).join(" "), n_split_2: n.split(" ")[0]})}</li>`).join("")}</ol>
       <p class="tkey">${RS("appjs.buildGods.043")}</p>`;
     const top = c.domains.slice().sort((a, b) => ((b.percentile ?? b.score) - (a.percentile ?? a.score)) || (b.score - a.score))[0];   // Layer 2: "highest" is by standing among charts
     const sigs = [...Object.entries(sig).filter(([k]) => c.domains.some((d) => d.zh === k)).map(([k, v]) => [k, v]), ...extra.map((e) => [e[0], [e[1], e[2], e[3], e[4], e[5]]])];   // an area left out of a minor's reading is not named as the heaviest signal
     const heavy = sigs.sort((a, b) => b[1][1] - a[1][1])[0];
     const heavyName = (c.domains.find((d) => d.zh === heavy[0]) || {}).en || heavy[0].replace(/^\S+\s/, "").replace("&amp;", "&");
-    ld = rdFig({ tier: "secondary", span: 12, label: RS("appjs.buildGods.045"), learn: 8, chart: table,
-      line: `${RS("appjs.buildGods.046", {top_en: top.en, top_score: top.score, heavyName_toLowerCase: heavyName.toLowerCase(), heavy: heavy[1][1], inPal_heavy: inPal(heavy[1][2], heavy[1][3]) ? RS("appjs.buildGods.047") : "from", heavy_2: heavy[1][4]})}`,
+    ld = rdFig({ tier: "secondary", span: 12, label: RS("appjs.buildGods.045"), learn: 8,
+      chart: `${waterfall}<details class="deep keepfold wf-num"><summary>${RS("appjs.buildGods.045")}</summary><div class="deepbody">${table}</div></details>`,
+      line: `${RS("appjs.buildGods.046", {top_en: top.en, top_score: top.score, heavyName_toLowerCase: heavyName.toLowerCase(), heavy: heavy[1][1], inPal_heavy: inPal(heavy[1][2], heavy[1][3]) ? RS("appjs.buildGods.047") : WD("from"), heavy_2: heavy[1][4]})}`,
 
-      legend: `<div>${RS("appjs.buildGods.048")}</div>
-        ${c.domains[0] && c.domains[0].percentile != null ? `<div>${RS("appjs.buildGods.060", {v: c.domains[0].reference_version})}</div>` : ""}
+      legend: `<div>${RS("appjs.waveC.wf")}</div>
+        ${c.domains[0] && c.domains[0].percentile != null ? `<div>${RS("appjs.buildGods.060", {v: IS_ZH ? RS("appjs.wordsC.ver", {n: String(c.domains[0].reference_version).replace(/\D+/g, "")}) : c.domains[0].reference_version})}</div>` : ""}
         ${c.spouse_reading ? `<div class="cite">${RS("appjs.buildGods.049", {c_spouse_reading_star_li: c.spouse_reading.star_line, c_spouse_reading_palace_: c.spouse_reading.palace_line})}</div>` : ""}` });
   }
   // raw pillar data (G7) retired 2026-09-27: the Pillars grid carries every stem/hidden stem; its key lives in the bars' legend. Gods = 7 figures.
@@ -2201,7 +2317,7 @@ function buildGods(c, R) {
     const F = c.industries.favourable || [], A = c.industries.avoid || [], C = c.careers || {}, T = (C.top || []).slice(0, 3);
     const Rl = ((c.career_roles || {}).top || []).slice(0, 6), AV = C.avoid || [];
     const chart = `<div class="wkfig">
-      <h5>${RS("appjs.buildGods.050")}</h5><ol class="wk-top">${T.map((x) => `<li><b>${x.en}</b> <span class="sub">${x.score} pts</span><span class="wk-why">${x.reasons.join("; ")}</span></li>`).join("")}</ol>
+      <h5>${RS("appjs.buildGods.050")}</h5><ol class="wk-top">${T.map((x) => `<li><b>${x.en}</b> <span class="sub">${x.score}${WD("pts")}</span><span class="wk-why">${x.reasons.join("; ")}</span></li>`).join("")}</ol>
       ${F.length ? `<p class="wk-ind">${RS("appjs.buildGods.051")}</p>${F.map((it) => `<div class="cite wk-indrow">${eli(it.element)} ${it.industries}</div>`).join("")}` : ""}
       ${Rl.length ? `<h5>${RS("appjs.buildGods.052")}</h5><ul class="wk-roles">${Rl.map((x) => `<li>${x.role} <span class="sub">${x.score}</span></li>`).join("")}</ul>` : ""}
       ${AV.length || A.length ? `<h5>${RS("appjs.buildGods.053")}</h5><ul class="wk-av">${AV.map((x) => `<li><b>${x.en}</b>: ${x.reasons.join("; ")}</li>`).join("")}
@@ -2232,19 +2348,19 @@ function buildTiming(c, R) {
       ${x.keywords ? `<div class="dykw">${dedupKw(x.keywords)}</div>` : ""}${d.current ? `<div class="ccdyhere">${RS("appjs.buildTiming.001")}</div>` : ""}</div>`; }).join("")}</div>`;
   const gods = [...new Set(dd.flatMap((x) => [x.stem_god, x.branch_god]).filter(Boolean))];
   const phases = [...new Map(W.decades.map((d) => [d.phase, d.phase_zh])).entries()];
-  const stripKey = `<div class="tkey"><p>${RS("appjs.buildTiming.002")}</p>
+  const stripKey = `<div class="tkey"><p>${RS("appjs.buildTiming.002")}</p>${TK_ON() ? "" : `
     <p>${RS("appjs.buildTiming.003", {phases_map: phases.map(([en, zh]) => `<span class="keepzh">${zh}</span> ${PHASE_EN[en] || en}`).join(" · ")})}</p>
-    <p>${RS("appjs.buildTiming.004", {W_decades: W.decades.map((d) => `${RS("appjs.buildTiming.006", {gzc_d: gzc(d.gz), STEM_YANG_d: STEM_YANG[d.gz[0]] ? "yang" : "yin", EL_EN_STEM_EL: EL_EN[STEM_EL[d.gz[0]]], ZODIAC_BR_ANIMAL: (ZODIAC[BR_ANIMAL[d.gz[1]]] || ["", d.gz[1]])[1], EL_EN_BR_EL: EL_EN[BR_EL[d.gz[1]]]})}`).join("; ")})}</p>
-    <p>${RS("appjs.buildTiming.005", {gods_map: gods.map((g) => `<span class="keepzh">${godz(g)}</span> ${TG_EN_FALLBACK[tgCanon(g)] || TG_EN_FALLBACK[g] || ""}`).join(" · ")})}</p></div>`;
+    <p>${RS("appjs.buildTiming.004", {W_decades: W.decades.map((d) => `${RS("appjs.buildTiming.006", {gzc_d: gzc(d.gz), STEM_YANG_d: STEM_YANG[d.gz[0]] ? WD("yang") : WD("yin"), EL_EN_STEM_EL: EL_EN[STEM_EL[d.gz[0]]], ZODIAC_BR_ANIMAL: (ZODIAC[BR_ANIMAL[d.gz[1]]] || ["", d.gz[1]])[1], EL_EN_BR_EL: EL_EN[BR_EL[d.gz[1]]]})}`).join("; ")})}</p>
+    <p>${RS("appjs.buildTiming.005", {gods_map: gods.map((g) => `<span class="keepzh">${godz(g)}</span> ${TG_EN_FALLBACK[tgCanon(g)] || TG_EN_FALLBACK[g] || ""}`).join(" · ")})}</p>`}</div>`;   // the shared key (#termkey) lists the phases, pillars and roles on the English page
   const ci = W.decades.findIndex((d) => d.current), cur = W.decades[ci], nxt = W.decades[ci + 1];
   const arc = ((W.arc || "").match(/(?:Element arc: |五行走势：)(.*?)(?: —|……)/) || [])[1];
   const t1 = rdFig({ tier: "hero", span: 12, label: RS("appjs.buildTiming.007"), learn: 6, chart: strip,
-    line: cur ? `${RS("appjs.buildTiming.008", {cur_gz: cur.gz, cur_ages: cur.ages, cur_phase: cur.phase, nxt_shifts: nxt ? `${RS("appjs.buildTiming.009", {nxt_gz: nxt.gz, nxt_phase: nxt.phase, String_nxt: String(nxt.ages).split(/[–-]/)[0]})}` : RS("appjs.buildTiming.010")})}`
+    line: cur ? `${RS("appjs.buildTiming.008", {cur_gz: cur.gz, cur_ages: cur.ages, cur_phase: IS_ZH ? PHASE_EN[cur.phase] || cur.phase : cur.phase, nxt_shifts: nxt ? `${RS("appjs.buildTiming.009", {nxt_gz: nxt.gz, nxt_phase: IS_ZH ? PHASE_EN[nxt.phase] || nxt.phase : nxt.phase, String_nxt: String(nxt.ages).split(/[–-]/)[0]})}` : RS("appjs.buildTiming.010")})}`
       : `${RS("appjs.buildTiming.011", {W_decades: W.decades[0] ? `${RS("appjs.buildTiming.012", {W_decades: W.decades[0].gz, String_W: String(W.decades[0].ages).split(/[–-]/)[0]})}` : ""})}`,
-    facts: [cur ? [RS("appjs.buildTiming.013"), `${cur.gz} · ${cur.ages}`] : null, nxt ? ["next", `${nxt.gz} · ${nxt.ages}`] : null,
-      c.dayun && c.dayun[0] ? [RS("appjs.buildTiming.014"), `${String(c.dayun[0].ages).split(/[–-]/)[0]}`] : null, arc ? ["arc", arc] : null].filter(Boolean),
+    facts: [cur ? [RS("appjs.buildTiming.013"), `${cur.gz} · ${cur.ages}`] : null, nxt ? [WD("next"), `${nxt.gz} · ${nxt.ages}`] : null,
+      c.dayun && c.dayun[0] ? [RS("appjs.buildTiming.014"), `${String(c.dayun[0].ages).split(/[–-]/)[0]}`] : null, arc ? [WD("arc"), arc] : null].filter(Boolean),
     legend: `${stripKey}${legendList(6)}${W.arc ? `<div class="cite">${RS("appjs.buildTiming.015", {W_arc: W.arc})}</div>` : ""}
-      ${W.taohua ? `<div class="cite">${RS("appjs.buildTiming.016", {W_taohua_branch: W.taohua.branch, W_taohua_type: W.taohua.type, W_taohua: W.taohua.pillars.length ? ` ${RS("appjs.buildTiming.017", {W_taohua: W.taohua.pillars.join("/")})}` : ""})}</div>` : ""}` });
+      ${W.taohua ? `<div class="cite">${RS("appjs.buildTiming.016", {W_taohua_branch: W.taohua.branch, W_taohua_type: W.taohua.type, W_taohua: W.taohua.pillars.length ? ` ${RS("appjs.buildTiming.017", {W_taohua: IS_ZH ? W.taohua.pillars.map((q) => q.split("/").map((x) => ((PILLAR_KEYS.find(([k]) => k === x) || [])[1] || x)).join("/")).join("/") : W.taohua.pillars.join("/")})}` : ""})}</div>` : ""}` });
   const T = c.transit || {}, L = T.luck || {};
   const gDec = [grpOfGod(L.stem_god || ""), grpOfGod(L.branch_god || "")], gYr = [grpOfGod(T.year_stem_god || ""), grpOfGod(T.year_branch_god || "")];
   const theme = (pair) => pair[0] === pair[1] ? GRP_THEME[pair[0]] : `${RS("appjs.buildTiming.018", {GRP_THEME_pair: GRP_THEME[pair[0]], GRP_THEME_pair_2: GRP_THEME[pair[1]]})}`;
@@ -2252,22 +2368,21 @@ function buildTiming(c, R) {
     chart: `<div class="pillar-cards"><div class="pillar-card transit"><div class="gz">${T.year_gz}</div><div class="pos">${RS("appjs.buildTiming.020", {state_year: YR})}</div>
         <div class="god">${T.year_stem_god}/${T.year_branch_god}</div><div class="sub">${RS("appjs.buildTiming.021")}</div></div>
       ${L.gz ? `<div class="pillar-chip">${RS("appjs.buildTiming.022", {L_gz: L.gz, L_ages: L.ages, L_stem_god: L.stem_god, L_branch_god: L.branch_god})}</div>` : ""}</div>`,
-    line: `${RS("appjs.buildTiming.023", {L_gz: L.gz ? `${RS("appjs.buildTiming.024", {gDec_gDec: gDec[0] === gDec[1] ? RS("appjs.buildTiming.025") : "mixes", theme_gDec: theme(gDec)})}` : RS("appjs.buildTiming.026"), theme_gYr: theme(gYr)})}`,
+    line: `${RS("appjs.buildTiming.023", {L_gz: L.gz ? `${RS("appjs.buildTiming.024", {gDec_gDec: gDec[0] === gDec[1] ? RS("appjs.buildTiming.025") : WD("mixes"), theme_gDec: theme(gDec)})}` : RS("appjs.buildTiming.026"), theme_gYr: theme(gYr)})}`,
     facts: [L.gz ? [RS("appjs.buildTiming.027"), `${RS("appjs.buildTiming.028", {L_ages: L.ages})}`] : null, [RS("appjs.buildTiming.029"), `${YR}`]].filter(Boolean),
     legend: RS("appjs.buildTiming.030") });
   const RH = ((c.strategy || {}).s5 || {}).rhythm; let t6 = "";
   if (RH && RH.length) {
     const nowBr = (c.daily || {}).now_month_branch;
-    const cells = RH.map((r) => `<div class="rcell ${r.cls}${r.br === nowBr ? " now" : ""}"><small>${r.mon}</small><b style="color:${EL_TXT[r.el]}">${r.br}</b><span class="rel" style="color:${EL_TXT[r.el]}">${r.el}</span><span class="rrate">${r.cls === "good" ? "good" : "pace"}</span>${r.br === nowBr ? `${RS("appjs.buildTiming.031")}` : ""}</div>`).join("");
+    const cells = RH.map((r) => `<div class="rcell ${r.cls}${r.br === nowBr ? " now" : ""}"><small>${r.mon}</small><b style="color:${EL_TXT[r.el]}">${r.br}</b><span class="rel" style="color:${EL_TXT[r.el]}">${r.el}</span><span class="rrate">${r.cls === "good" ? WD("good") : WD("pace")}</span>${r.br === nowBr ? `${RS("appjs.buildTiming.031")}` : ""}</div>`).join("");
     const order = RH.map((r) => r.mon), ranges = (ms) => { const idx = ms.map((m) => order.indexOf(m)).sort((a, b) => a - b), out = []; let i = 0;
       while (i < idx.length) { let j = i; while (j + 1 < idx.length && idx[j + 1] === idx[j] + 1) j++;
         out.push(i === j ? order[idx[i]] : `${order[idx[i]]}–${order[idx[j]]}`); i = j + 1; } return out.join(", "); };
     const good = RH.filter((r) => r.cls === "good"), bad = RH.filter((r) => r.cls !== "good");
-    const gel = [...new Set(good.map((r) => r.el))].map(elw).join(" and ");
+    const gel = andJoin([...new Set(good.map((r) => r.el))].map(elw));
     t6 = rdFig({ tier: "secondary", span: 7, label: RS("appjs.buildTiming.032"), learn: 13, chart: `<div class="rhy keepzh">${cells}</div>`,
       line: "",   // the tiles are the months; the story paragraph above already names the good ones
-      facts: [["good", `${good.length}`], ["pace", `${bad.length}`]],
-      legend: RS("appjs.buildTiming.035") });
+      facts: [[WD("good"), `${good.length}`], [WD("paceFact"), `${bad.length}`]] });   // no key: the rule row says how a month is rated
   }
   const daily = dailyFig(c);
   return { figs: { strip: t1, thisyear: p8, rhythm: t6, daily }, tail: [R.stb(13), R.narr(13), R.narr(6)] };
@@ -2278,7 +2393,9 @@ function buildTiming(c, R) {
 const DIR_WORD_EN = { N: RS("appjs.DIR_WORD_EN.N"), S: RS("appjs.DIR_WORD_EN.S"), E: RS("appjs.DIR_WORD_EN.E"), W: RS("appjs.DIR_WORD_EN.W"), NE: RS("appjs.DIR_WORD_EN.NE"), NW: RS("appjs.DIR_WORD_EN.NW"), SE: RS("appjs.DIR_WORD_EN.SE"), SW: RS("appjs.DIR_WORD_EN.SW") };
 const DIR_ZH = { N: "北", S: "南", E: "东", W: "西", NE: "东北", NW: "西北", SE: "东南", SW: "西南" };
 const ORGAN_ZH = { 木: "肝胆", 火: "心·小肠", 土: "脾胃", 金: "肺·大肠", 水: "肾·膀胱" };
-const zhKey = (pairs) => `<p class="tkey">${RS("appjs.zhKey.001", {pairs_map: pairs.map(([zh, en]) => (IS_ZH && (!en || en === zh || /^[\x20-\x7e]+$/.test(en)) ? `<span class="keepzh">${zh}</span>` : `<span class="keepzh">${zh}</span> ${en}`)).join(" · ")})}</p>`;
+/* the per-figure keys are replaced by the shared key (round 42): on the English page a pair whose term has a glossary row is not listed again */
+const tkCovered = (zh) => TK_ON() && /[㐀-鿿]/.test(zh) && (!!GL.lookup(zh) || GL.isPillar(zh) || !!GL.segment(zh));
+const zhKey = (pairs0) => { const pairs = pairs0.filter(([zh]) => !tkCovered(zh)); return !pairs.length ? "" : `<p class="tkey">${RS("appjs.zhKey.001", {pairs_map: pairs.map(([zh, en]) => (IS_ZH && (!en || en === zh || /^[\x20-\x7e]+$/.test(en)) ? `<span class="keepzh">${zh}</span>` : `<span class="keepzh">${zh}</span> ${en}`)).join(" · ")})}</p>`; };
 const OFFICER_EN = { 建: RS("appjs.OFFICER_EN.建"), 除: RS("appjs.OFFICER_EN.除"), 满: RS("appjs.OFFICER_EN.满"), 滿: RS("appjs.OFFICER_EN.满"), 平: RS("appjs.OFFICER_EN.平"), 定: RS("appjs.OFFICER_EN.定"), 执: RS("appjs.OFFICER_EN.执"), 執: RS("appjs.OFFICER_EN.执"), 破: RS("appjs.OFFICER_EN.破"),
   危: RS("appjs.OFFICER_EN.危"), 成: RS("appjs.OFFICER_EN.成"), 收: RS("appjs.OFFICER_EN.收"), 开: RS("appjs.OFFICER_EN.开"), 開: RS("appjs.OFFICER_EN.开"), 闭: RS("appjs.OFFICER_EN.闭"), 閉: RS("appjs.OFFICER_EN.闭") };
 const TAG_EN = { 合日支: RS("appjs.TAG_EN.合日支"), 冲日支: RS("appjs.TAG_EN.冲日支"), 沖日支: RS("appjs.TAG_EN.冲日支"), 害日支: RS("appjs.TAG_EN.害日支"),
@@ -2288,46 +2405,56 @@ const ACT_EN = { moving: RS("appjs.ACT_EN.moving"), signing: RS("appjs.ACT_EN.si
 function dailyFig(c) {
   const D = c.daily; if (!D || !(D.rows || []).length) return "";
   const dm = c.day_master, acts = D.activities || [];
-  const mark = (f) => f.verdict === "good" ? "◉" : f.verdict === "avoid" ? "⚠" : "·";
-  const rows = D.rows.map((r) => `<tr class="${r.today ? "today" : ""}${r.officer === "破" || r.interactions.some((x) => x.startsWith("沖")) ? " dclash" : ""}">
-      <th>${r.date.slice(5)} <small>${r.weekday}</small>${r.today ? RS("appjs.buildTiming.031") : ""}</th>
-      <td><b class="dgz"><span style="color:${EL_TXT[STEM_EL[r.gz[0]]]}">${r.gz[0]}</span><span style="color:${EL_TXT[BR_EL[r.gz[1]]]}">${r.gz[1]}</span></b> <small class="sub">${r.officer}</small></td>
-      <td class="sub"><span style="color:${EL_TXT[godEl(dm, tgCanon(r.stem_god))]}">${r.stem_god}</span>·<span style="color:${EL_TXT[godEl(dm, tgCanon(r.branch_god))]}">${r.branch_god}</span>${r.interactions.length ? ` <span class="tag${r.interactions.some((x) => x.startsWith("沖") || x.startsWith("害")) ? " warn" : ""}">${r.interactions.join(" ")}</span>` : ""}</td>
-      <td><b style="color:${EL_TXT[r.element]}">${r.element}</b><small class="sub">${r.medicine === "favourable" ? "用" : r.medicine === "against" ? "忌" : ""}</small></td>
-      ${acts.map(([k]) => { const f = r.flags[k]; return `<td class="wf-${f.verdict === "good" ? "window" : f.verdict === "avoid" ? "caution" : "quiet"}" title="${f.why}"><b>${mark(f)}</b>${f.verdict !== "neutral" && f.short ? `<span class="wshort">${f.short}</span>` : ""}</td>`; }).join("")}</tr>`).join("");
-  const th2 = (zh) => `<th scope="col">${zh}</th>`;
   const actZh = acts.map(([k, lab]) => [k, lab.split(" ")[0], lab.split(" ").slice(1).join(" ") || ACT_EN[k] || k]);
-  const table = `<div class="scrollx keepzh"><table class="wtable dtable-daily"><tr>${th2("日期")}${th2("日柱")}${th2("十神")}${th2("五行")}
-    ${actZh.map(([, zh]) => th2(zh)).join("")}</tr>${rows}</table></div>`;
+  const actName = (k) => { const x = actZh.find((a) => a[0] === k); return x ? `<span class="keepzh">${x[1]}</span>${IS_ZH ? "" : " " + x[2]}` : k; };
+  const gzc = (gz) => `<span style="color:${EL_TXT[STEM_EL[gz[0]]]}">${gz[0]}</span><span style="color:${EL_TXT[BR_EL[gz[1]]]}">${gz[1]}</span>`;
+  const N = (r) => { const v = Object.values(r.flags).map((f) => f.verdict); return [v.filter((x) => x === "good").length, v.filter((x) => x === "avoid").length]; };
+  /* the calendar (round 42, item 13): 30 days in a week grid, one mark per day for the balance of its six verdicts; a day opens its own reasons,
+     each reason once with the activities it holds (the old 30 x 6 table repeated one reason in all six cells on 155 of 1,500 days) */
+  const dow = (r) => (new Date(r.date + "T00:00:00Z").getUTCDay() + 6) % 7;   // Monday first
+  const wd = []; D.rows.forEach((r) => { wd[dow(r)] = r.weekday; });
+  const pad = dow(D.rows[0]);
+  const bd = (B) => (D.best && D.best.date === B.date ? "B" : D.worst && D.worst.date === B.date ? "W" : "");
+  const cell = (r, i) => { const [g, a] = N(r), L = bd(r), day = +r.date.slice(8), first = i === 0 || day === 1;
+    return `<button type="button" class="dc${r.today ? " today" : ""}${g > a ? " dg-g" : a > g ? " dg-a" : ""}" data-d="${i}" aria-expanded="false" aria-controls="dcd-${i}"
+      aria-label="${r.date.slice(5)} ${r.weekday}${r.today ? " " + RS("appjs.buildTiming.031").replace(/<[^>]+>/g, "") : ""}, ${g} ${RS("appjs.waveC.good")}, ${a} ${RS("appjs.waveC.avoid")}${L ? ", " + L : ""}">${first ? `<small>${+r.date.slice(5, 7)}</small>` : ""}<b class="dn">${day}</b>
+      <span class="dmk" aria-hidden="true">${g >= a && g ? '<i class="dmg"></i>' : ""}${a >= g && a ? '<i class="dma"></i>' : ""}</span>${L ? `<b class="dbw" aria-hidden="true">${L}</b>` : ""}</button>`; };
+  const group = (r) => { const by = new Map();
+    acts.forEach(([k]) => { const f = r.flags[k]; if (f.verdict === "neutral") return; const key = f.verdict + "|" + f.why; if (!by.has(key)) by.set(key, { v: f.verdict, why: f.why, ks: [] }); by.get(key).ks.push(k); });
+    return [...by.values()].sort((x, y) => (x.v === "good" ? 0 : 1) - (y.v === "good" ? 0 : 1)); };
+  const detail = (r, i) => { const ne = acts.filter(([k]) => r.flags[k].verdict === "neutral").map(([k]) => k), gs = group(r);
+    const line = (g) => `<p class="dd-${g.v === "good" ? "g" : "a"}"><b>${g.v === "good" ? "◉ " + RS("appjs.waveC.good") : "⚠ " + RS("appjs.waveC.avoid")}</b> ${g.ks.length === acts.length ? RS("appjs.waveC.all") : g.ks.map(actName).join(" · ")}${g.why ? `: ${g.why}` : ""}</p>`;
+    return `<div class="dcd" id="dcd-${i}" hidden><p class="dd-h"><b>${r.date.slice(5)}</b> ${r.weekday} <span class="keepzh dgz">${gzc(r.gz)}</span> <span class="keepzh">${r.officer}</span> <span class="keepzh sub">${r.stem_god}·${r.branch_god} ${r.element}${r.medicine === "favourable" ? " 用" : r.medicine === "against" ? " 忌" : ""}${r.interactions.length ? " " + r.interactions.join(" ") : ""}</span></p>
+      ${gs.map(line).join("")}${ne.length && gs.length ? `<p class="dd-n">· ${RS("appjs.waveC.neutral")}: ${ne.map(actName).join(" · ")}</p>` : !gs.length ? `<p class="dd-n">· ${RS("appjs.waveC.neutral")}: ${RS("appjs.waveC.all")}</p>` : ""}</div>`; };
+  const chart = `<div class="dcal"><div class="dc-h" aria-hidden="true">${[0, 1, 2, 3, 4, 5, 6].map((k) => `<span>${wd[k] || ""}</span>`).join("")}</div>
+    <div class="dc-g">${'<span class="dc-pad"></span>'.repeat(pad)}${D.rows.map(cell).join("")}</div>${D.rows.map(detail).join("")}
+    <p class="dc-leg">${RS("appjs.waveC.cal")}</p></div>`;
   const officers = [...new Set(D.rows.map((r) => r.officer))], tags = [...new Set(D.rows.flatMap((r) => r.interactions))];
   const B = D.best, W = D.worst;
-  const line = (B ? `${RS("appjs.dailyFig.002", {B_for: B.for.slice(0, 2).map((k) => ACT_EN[k]).join(" or "), B_date: B.date.slice(5), B_gz: B.gz, B_officer: B.officer})}` : RS("appjs.dailyFig.003"))
-    + (W && W.avoid.length ? ` ${RS("appjs.dailyFig.004", {W_avoid: W.avoid.slice(0, 2).map((k) => ACT_EN[k]).join(" and "), W_date: W.date.slice(5), W_gz: W.gz, W_why: W.why})}` : "");
+  const line = (B ? `${RS("appjs.dailyFig.002", {B_for: orJoin(B.for.slice(0, 2).map((k) => ACT_EN[k])), B_date: B.date.slice(5), B_gz: B.gz, B_officer: B.officer})}` : RS("appjs.dailyFig.003"))
+    + (W && W.avoid.length ? ` ${RS("appjs.dailyFig.004", {W_avoid: andJoin(W.avoid.slice(0, 2).map((k) => ACT_EN[k])), W_date: W.date.slice(5), W_gz: W.gz, W_why: W.why})}` : "");
   const nGood = D.rows.filter((r) => Object.values(r.flags).some((f) => f.verdict === "good")).length;
   const nAvoid = D.rows.filter((r) => Object.values(r.flags).some((f) => f.verdict === "avoid")).length;
-  return rdFig({ tier: "secondary", span: 12, label: RS("appjs.dailyFig.005"), learn: 13, chart: table, line,
-    facts: [["from", D.start], [RS("appjs.dailyFig.006"), `${nGood}`], [RS("appjs.dailyFig.007"), `${nAvoid}`]],
-    legend: `<div class="tkey"><p>${RS("appjs.dailyFig.008", {actZh_map: actZh.map(([, zh, en]) => `<span class="keepzh">${zh}</span> ${en}`).join(" · ")})}</p>
-      <p>${RS("appjs.dailyFig.009", {officers_map: officers.map((o) => `<span class="keepzh">${o}</span> ${OFFICER_EN[o] || ""}`).join(" · ")})}</p>
+  return rdFig({ tier: "secondary", span: 12, label: RS("appjs.dailyFig.005"), learn: 13, chart, line,
+    facts: [[WD("fromD"), D.start], [RS("appjs.dailyFig.006"), `${nGood}`], [RS("appjs.dailyFig.007"), `${nAvoid}`]],
+    legend: `<div class="tkey"><p>${RS("appjs.dailyFig.009", {officers_map: officers.map((o) => `<span class="keepzh">${o}</span> ${OFFICER_EN[o] || ""}`).join(" · ")})}</p>
       ${tags.length ? `<p>${RS("appjs.dailyFig.014", {tags_map: tags.map((x) => `<span class="keepzh">${x}</span> ${TAG_EN[x] || ""}`).join(" · ")})}</p>` : ""}</div>
-      <div>${RS("appjs.dailyFig.010")}</div>
       <div>${RS("appjs.dailyFig.011")}</div>
       <div>${RS("appjs.dailyFig.012", {elc_c: elc(c.pillars.day[1]), elc_c_2: elc(c.pillars.year[1])})}</div>
-      <div>${RS("appjs.dailyFig.013")}</div>
-      <div class="sub">${D.source_ref}</div>` });
+      <div>${RS("appjs.dailyFig.013")}</div>` });
 }
 
 /* --- 方位 Compass ------------------------------------------------------------- */
 function buildCompass(c, R) {
   const dirOf = {}; Object.entries(c.youxing).forEach(([pal, s]) => (dirOf[s] = PALACE_DIR[pal]));
   const c1 = rdFig({ tier: "hero", span: 5, label: RS("appjs.buildCompass.001"), learn: 7,
-    chart: `<div class="cmpx-wrap">${bazhaiCompass(c)}</div>`,
+    chart: `<div class="cmpx-wrap">${bazhaiCompass(c, { af: true, notes: true })}</div>`,
     line: `${RS("appjs.buildCompass.002", {dirOf: dirOf["生氣"], dirOf_2: dirOf["絕命"]})}`,
     facts: [[RS("appjs.LEGENDS.chart.07.term"), `${c.gua} · ${c.group.split(" ")[0]}`], ["生氣", dirOf["生氣"]], ["絕命", dirOf["絕命"]], ["五鬼", dirOf["五鬼"]]],
     legend: `${BAZHAI_ORDER.map((s) => `<div><b>${s} ${BAZHAI_EN[s][0]}</b>: ${IS_MINOR && s === "五鬼" ? RS("appjs.BAZHAI_MINOR.五鬼") : BAZHAI_EN[s][1]}</div>`).join("")}
       <div class="cite">${RS("appjs.buildCompass.004")}</div>${legendList(7)}` });
   const fav = c.yongshen.favourable, unf = c.yongshen.unfavourable, cols = c.yongshen.colours || [];
-  const colEn = cols.map((z) => COLOUR_ZH_EN[z] || z).slice(0, 2).join("/");
+  const colEn = cols.map((z) => COLOUR_ZH_EN[z] || z).slice(0, 2).map((e) => (e in COLOUR_EN ? WD("col." + e) : e)).join("/");
   const chart = `${c.medicine_rank ? `<p class="cite" style="margin:0 0 6px">${RS("appjs.buildCompass.006", {c_medicine_rank: c.medicine_rank.replace(/^(?:Medicine, ranked:|用神排序：)\s*/, "")})}</p>` : ""}
     <p class="cite" style="margin:0 0 8px">${RS("appjs.buildCompass.005", {elbs_fav: elis(fav), elbs_unf: elis(unf), cols_join: cols.join("、")})}</p>
     ${c.xiji ? `<div class="scrollx keepzh"><table class="xiji htable">${c.xiji.map((r) => `<tr><th scope="row">${r.zh.split(" ")[0]}</th>
@@ -2344,7 +2471,7 @@ function buildCompass(c, R) {
   const c34 = rdFig({ tier: "hero", span: 7, extra: "rd-pair2", label: RS("appjs.buildCompass.016"), learn: 5, chart: chart2,
     line: `${RS("appjs.buildCompass.017", {elw_fav: elw(fav[0]), elc_fav: elc(fav[0]), colEn_in: colEn ? `${RS("appjs.buildCompass.018", {colEn: colEn})}` : "", unf_map: unf.map((e) => EL_EN[e]).join("/"), unf_map_2: unf.map(elc).join("")})}`,
     facts: [[RS("appjs.LEGENDS.chart.11.term"), elis(fav)], [RS("appjs.LEGENDS.5.02.term"), elis(unf)], c.tiaohou ? [RS("appjs.LEGENDS.5.04.term"), c.tiaohou.verdict] : null].filter(Boolean),
-    legend: `<div>${RS("appjs.buildCompass.022", {fav_map: fav.map((e) => EL_EN[e]).join(" and "), unf_map: unf.map((e) => EL_EN[e]).join(", ")})}</div>
+    legend: `
       ${c.tiaohou && c.tiaohou.line ? `<div class="cite">${c.tiaohou.line}</div>` : ""}
       ${c.element_relations ? `<div class="cite">${RS("appjs.buildCompass.023", {fav_map: fav.map((el) => { const f = Object.values(c.element_relations.flows).find((x) => x.el === el);
         return `${RS("appjs.buildCompass.024", {elb_el: eli(el), f_f: f ? f.role : "—"})}`; }).join(" · ")})}</div>` : ""}
@@ -2358,20 +2485,12 @@ function buildCompass(c, R) {
       <ul class="tkey-list">${PL.map((r) => `<li><b>${r.en.charAt(0).toUpperCase() + r.en.slice(1)}</b> (<span class="keepzh">${r.zh}</span>), ${DIR_WORD_EN[r.dir] || r.dir}: ${r.rule.replace(/^八宅:\s*/, "")}</li>`).join("")}</ul>`,
     line: `${RS("appjs.buildCompass.029", {bed_dir: bed.dir, bed_star: bed.star, desk_dir: desk.dir, desk_star: desk.star})}`,
     facts: [[RS("appjs.buildCompass.030"), bed.dir], [RS("appjs.buildCompass.031"), desk.dir], ["文昌", (PL.find((r) => r.key === "wenchang") || {}).dir || "—"], [RS("appjs.LEGENDS.13.05.term"), (PL.find((r) => r.key === "taohua") || {}).dir || "—"]],
-    legend: `<div>${RS("appjs.buildCompass.033")}</div>
-      <div class="cite">${RS("appjs.buildCompass.034")}</div>` }) : "";
+    legend: `<div class="cite">${RS("appjs.buildCompass.034")}</div>` }) : "";
+  /* the afflictions table is the wheel with this year's overlay on (round 42, item 17): the same ring as the space figure, the four patterns in a key under it */
   const c5 = AF ? rdFig({ tier: "secondary", span: 5, label: `${RS("appjs.buildCompass.035", {AF_year: AF.year})}`, learn: 7,
-    chart: `<table class="htable aftable keepzh">
-      <tr><th scope="row">太岁</th><td><b class="pdir">${DIR_ZH[AF.taisui.dir] || AF.taisui.dir}</b> ${AF.taisui.palace} · ${AF.taisui.branch}</td></tr>
-      <tr><th scope="row">岁破</th><td><b class="pdir">${DIR_ZH[AF.suipo.dir] || AF.suipo.dir}</b> ${AF.suipo.palace} · ${AF.suipo.branch}</td></tr>
-      <tr><th scope="row">三煞</th><td><b class="pdir">${AF.sansha.dirs.map((d) => DIR_ZH[d] || d).join("·")}</b> ${AF.sansha.palaces.join("·")} · ${AF.sansha.branches}</td></tr>
-      ${AF.suixing ? `<tr><th scope="row">岁刑</th><td><b class="pdir">${DIR_ZH[AF.suixing.dir] || AF.suixing.dir}</b> ${AF.suixing.palace} · ${AF.suixing.branch}</td></tr>` : ""}</table>
-      ${zhKey([["太岁", RS("appjs.buildCompass.036")], ["岁破", RS("appjs.buildCompass.037")], ["三煞", RS("appjs.buildCompass.038")]].concat(AF.suixing ? [["岁刑", RS("appjs.buildCompass.048")]] : []))}
-      ${AF.collisions.length ? `<div class="afhits">${AF.collisions.map((h) => `<div class="tag warn">${RS("appjs.buildCompass.tag", {h_affliction: h.affliction, h_star: h.star, h_dir: IS_ZH ? DIR_ZH[h.dir] || h.dir : h.dir})}</div>`).join("")}</div>` : ""}`,
-    line: AF.collisions.length ? `${AF.collisions[0].note.replace(/^your/, "Your")}${IS_ZH ? "。" : "."}` : `${RS("appjs.buildCompass.039")}`,
-    facts: [[RS("appjs.buildCompass.036"), AF.taisui.dir], [RS("appjs.buildCompass.037"), AF.suipo.dir], [RS("appjs.buildCompass.038"), AF.sansha.dirs.join("/")]],
-    legend: `<div>${RS("appjs.buildCompass.043", {AF_taisui_rule: AF.taisui.rule})}</div><div>${RS("appjs.buildCompass.044", {AF_suipo_rule: AF.suipo.rule})}</div><div>${RS("appjs.buildCompass.045", {AF_sansha_rule: AF.sansha.rule})}</div>${AF.suixing ? `<div>${RS("appjs.buildCompass.047", {AF_suixing_rule: AF.suixing.rule})}</div>` : ""}
-      ${AF.collisions.map((h) => `<div class="cite">${RS("appjs.buildCompass.046", {h_affliction: h.affliction, h_star: h.star, h_dir: h.dir, h_note: h.note.split(" — ")[1] || h.note})}</div>`).join("")}` }) : "";
+    chart: `<div class="cmpx-wrap">${bazhaiCompass(c, { af: true, on: true, rules: true, notes: true })}</div>`,
+    line: AF.collisions.length ? "" : `${RS("appjs.buildCompass.039")}`,   // the collisions are the notes under the wheel
+    facts: [] }) : "";
   return { figs: { grid: c1, medicine: c34, placements: c2, afflictions: c5 }, tail: [R.stb(5), R.narr(5), R.narr(7)] };
 }
 
@@ -2387,7 +2506,8 @@ function tidyEvidence(root) {
       lines.forEach((l) => { const row = l.closest(".rd-line-row"); l.remove();
         if (row) { const lg = row.querySelector(".rd-legend"); if (lg) row.before(lg); row.remove(); } });
     }
-    p.querySelectorAll("details").forEach((d) => {
+    p.querySelectorAll("details").forEach((d) => {   // folds open flat, except the ones that keep the numbers behind a tap (the domains table and its rows)
+      if (d.closest(".keepfold, .wf-row")) return;
       const sum = d.querySelector(":scope > summary"), sec = document.createElement("section");
       const title = sum ? (d.classList.contains("rd-legend") ? RS("appjs.tidyEvidence.002") : sum.textContent.trim()) : "";   // a chart key is "How to read this chart" in either language
       sec.className = "ev-sub"; if (sum) sum.remove();
@@ -2510,6 +2630,80 @@ function wireReading(root) {
     const p = ev.target.closest && ev.target.closest(".ev"); if (p && !p.hidden) close(p); });
 }
 
+/* ===== The shared term key (round 42, item 15) =====
+   Every native-form term the reading shows, with its pinyin and English, generated from web/glossary.js and nothing typed by hand.
+   It runs last, after the figures, the English pass and the colour passes, and reads the page: Chinese runs in the text of the five chapter
+   figures (HTML and SVG text and titles) are Tier 1; the Chinese runs in the evidence panels and the sources are Tier 2, in a nested fold.
+   A run is cut with the same longest-match routine the tip pass uses (GL.segment). A run with no glossary row in Tier 1 is listed as characters and
+   pinyin (what GL.tip returns) and flagged data-gap; the tests fail on any gap that is not on the owner's list. English pages only. */
+const TK_GROUPS = [["stems", "Stems and branches"], ["elements", "Elements"], ["gods", "Ten gods and groups"], ["palaces", "Palaces and directions"],
+  ["bazhai", "Eight House stars"], ["stars", "Symbolic stars"], ["officers", "Day officers"], ["relations", "Relations"], ["other", "Other terms"]];
+const TK_GROUP_OF = { stem: "stems", branch: "stems", "branch/stem": "stems", animal: "stems", element: "elements", colour: "elements", tengod: "gods",
+  trigram: "palaces", direction: "palaces", bazhai: "bazhai", shensha: "stars", officer: "officers", relation: "relations" };
+function termKeyRuns(root) {
+  const t1 = new Map(), t2 = new Map(), gaps = [], unlisted = new Set();
+  const add = (term, tier) => { const m = tier === 1 ? t1 : t2, k = tkId(term); if (!m.has(k)) m.set(k, term); };
+  const take = (run, tier) => run.split(/[，、；：]/).forEach((piece) => { if (!piece) return;
+    const parts = GL.lookup(piece) || GL.isPillar(piece) || GL.isYear(piece) ? [piece] : GL.segment(piece);
+    if (!parts) { if (tier === 1) { gaps.push(piece); add(piece, 1); } else unlisted.add(piece); return; }
+    parts.forEach((p) => add(p, tier)); });
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: (n) => n.parentElement && /[㐀-鿿豈-﫿]/.test(n.nodeValue)
+    && !n.parentElement.closest("script,style,#termkey,.rp-bar,.rp-sources .rp-chead") ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+  let n; while ((n = w.nextNode())) {
+    const tier = n.parentElement.closest("figure.rp-chart") ? 1 : n.parentElement.closest(".rp-chap") ? 2 : 0;
+    if (tier) (n.nodeValue.match(/[㐀-鿿豈-﫿]+(?:[，、；：][㐀-鿿豈-﫿]+)*/g) || []).forEach((run) => take(run, tier)); }
+  for (const k of t2.keys()) if (t1.has(k)) t2.delete(k);   // a term already in the figures' list is not listed twice
+  return { t1, t2, gaps: [...new Set(gaps)], unlisted: [...unlisted] };
+}
+function termKeyEntry(term, dm) {
+  const k = tkId(term), tip = GL.tip(term), i = tip.indexOf(" · "), py = i < 0 ? tip : tip.slice(0, i), en = i < 0 ? "" : tip.slice(i + 3);
+  const h = GL.lookup(term), cat = h ? h[1][3] : "branch/stem";
+  const col = STEM_EL[term] ? EL_TXT[STEM_EL[term]] : BR_EL[term] ? EL_TXT[BR_EL[term]] : EL_TXT[term] ? EL_TXT[term]
+    : term.length === 2 && STEM_EL[term[0]] && BR_EL[term[1]] ? EL_TXT[STEM_EL[term[0]]] : cat === "tengod" && dm && ALLGODS.includes(tgCanon(term)) ? EL_TXT[godEl(dm, tgCanon(term))] : "";
+  return { k, cat: !en && !h ? "other" : cat, html: `<li id="${k}" tabindex="-1"${en ? "" : ' data-gap="1"'}><span class="tk-z keepzh" lang="zh"${col ? ` style="color:${col}"` : ""}>${term}</span><span class="tk-r"><span class="tk-p">${py}</span>${en ? ` <span class="tk-e">${en}</span>` : ""}</span></li>` };
+}
+function termKeyList(map, dm) {
+  const by = {}; [...map.values()].forEach((t) => { const e = termKeyEntry(t, dm), g = TK_GROUP_OF[e.cat] || "other"; (by[g] = by[g] || []).push(e.html); });
+  return TK_GROUPS.filter(([g]) => by[g]).map(([g, name]) => `<section class="tk-g"><h4>${name}</h4><ul class="tk-l">${by[g].join("")}</ul></section>`).join("");
+}
+function buildTermKey(root, dm) {
+  if (!TK_ON() || !root) return null;
+  const host = root.querySelector("#ch-sources"); if (!host) return null;
+  const { t1, t2, gaps, unlisted } = termKeyRuns(root);
+  const el = document.createElement("details"); el.id = "termkey"; el.className = "termkey";
+  el.innerHTML = `<summary>Terms on this page (${t1.size})</summary><div class="tk-body">${termKeyList(t1, dm)}${t2.size ? `<details class="tk-t2"><summary>More terms from the evidence panels (${t2.size})</summary>${termKeyList(t2, dm)}</details>` : ""}<p class="tk-backrow"><button type="button" class="tk-back">Back to the figure</button></p></div>`;
+  const tail = host.querySelector(".rd-tail"); host.insertBefore(el, tail || null);
+  el.dataset.gaps = gaps.join(" "); el.dataset.unlisted = String(unlisted.length);   // the build log: Tier 1 runs with no glossary row, and the panel labels the key leaves out
+  if (gaps.length && window.console && console.info) console.info("termkey: no glossary row for", gaps.join(" "));
+  return el;
+}
+/* the links to the key: caption "Terms", figure labels. Opens the fold, lands on the row, and "Back to the figure" returns focus to where you came from */
+function wireTermKey(root) {
+  const key = () => root.querySelector("#termkey"); let from = null;
+  const calm = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+  /* after the fold has laid out; the chapters between render lazily, so the first scroll can land short: once it settles, a second one corrects it */
+  const go = (el, how) => requestAnimationFrame(() => requestAnimationFrame(() => { el.scrollIntoView({ block: how, behavior: calm ? "auto" : "smooth" });
+    setTimeout(() => { const r = el.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) el.scrollIntoView({ block: how, behavior: "auto" }); }, calm ? 120 : 900); }));
+  const clear = () => root.querySelectorAll("#termkey .tk-hit").forEach((x) => x.classList.remove("tk-hit"));
+  const shut = () => { const k = key(); if (!k) return; k.open = false; clear(); const o = from; from = null; if (o && o.isConnected) { go(o, "center"); o.focus({ preventScroll: true }); } };
+  root.addEventListener("click", (ev) => {
+    const a = ev.target.closest && ev.target.closest(".tk-open,.tklink"), k = key();
+    if (a && k) { ev.preventDefault(); from = a; k.open = true; clear();
+      const row = a.classList.contains("tklink") ? k.querySelector(`[id="${decodeURIComponent(a.getAttribute("href").slice(1))}"]`) : null;
+      if (row) { const t2 = row.closest(".tk-t2"); if (t2) t2.open = true; row.classList.add("tk-hit"); go(row, "center"); row.focus({ preventScroll: true }); }
+      else { go(k, "start"); k.querySelector("summary").focus({ preventScroll: true }); } return; }
+    if (ev.target.closest && ev.target.closest(".tk-back")) shut();
+    const dc = ev.target.closest && ev.target.closest(".dc");
+    if (dc) { const cal = dc.closest(".dcal"), open = dc.getAttribute("aria-expanded") !== "true";
+      cal.querySelectorAll(".dc[aria-expanded=true]").forEach((x) => x.setAttribute("aria-expanded", "false"));
+      cal.querySelectorAll(".dcd").forEach((x) => (x.hidden = true));
+      if (open) { dc.setAttribute("aria-expanded", "true"); const d = cal.querySelector("#" + dc.getAttribute("aria-controls")); if (d) d.hidden = false; } }
+    const sw = ev.target.closest && ev.target.closest(".af-switch");
+    if (sw) { const on = sw.getAttribute("aria-pressed") !== "true"; sw.setAttribute("aria-pressed", String(on)); sw.closest(".af-wrap").classList.toggle("af-on", on); }
+  });
+  root.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && ev.target.closest && ev.target.closest("#termkey") && key().open) shut(); });
+}
+
 /* The geomancer's report (summary, findings, assessment, plan, method note) behind one fold under
    the opening: the plain answers above carry its summary, this keeps every line of it one tap away. */
 function synthNote(sy) {
@@ -2561,6 +2755,8 @@ async function renderPerson(name) {
   glossifyDom($("#tab-person"));
   colorizeTerms($("#tab-person"), c.day_master);
   colorizeColours($("#tab-person"));
+  buildTermKey($("#tab-person"), c.day_master);
+  wireTermKey($("#tab-person"));
 }
 
 /* ---------- House tab ---------- */

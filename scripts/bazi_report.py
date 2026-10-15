@@ -274,7 +274,8 @@ def relationship_risk(chart, pct, w, lang: str = "en"):
     if day_hits:
         scores["communication"] += 2
         ev["communication"].append(T("bazi_report.relationship_risk.05", f"day branch clashed by the {'/'.join(day_hits)} pillar — "
-                                   "friction lives in daily contact", lang, join_day_hits='/'.join(day_hits)))
+                                   "friction lives in daily contact", lang,
+                                   join_day_hits='/'.join({"year": "年", "month": "月", "day": "日", "hour": "时"}.get(h, h) if lang == "zh" else h for h in day_hits)))
     if pct.get("比肩", 0) + pct.get("劫財", 0) >= 25:
         scores["division"] += 2
         ev["division"].append(T("bazi_report.relationship_risk.06", "heavy 比劫 — parity struggles: who leads, who yields", lang))
