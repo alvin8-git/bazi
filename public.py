@@ -1542,10 +1542,9 @@ def kua(dob: str, sex: str):
         raise HTTPException(422, "dob must be a real date, YYYY-MM-DD")
     if not (re.fullmatch(r"\d{4}-\d{2}-\d{2}", dob) and 1900 <= d.year <= 2100):
         raise HTTPException(422, "dob must be YYYY-MM-DD between 1900 and 2100")
-    # same rule as Chart.lichun_year: the year pillar (sxtwl, switches at 立春) names the year
+    # a date of birth with no time is read at day level: the 立春 day belongs to the new year from its first minute (cal.date_pillars, owner 2026-10-16)
     stem_idx = (d.year - 4) % 10
-    ly = d.year if cal.STEMS[stem_idx] == cal.pillars_for(datetime(d.year, d.month, d.day, 12))["year"].stem \
-        else d.year - 1
+    ly = d.year if cal.STEMS[stem_idx] == cal.date_pillars(d)["year"].stem else d.year - 1
     lichun_date, _ = cal._walk_to_jie(date(ly, 1, 31), True)
     gua = ming_gua(ly, sex)
     by_dir = {PALACES[pal]["dir"]: (pal, st) for pal, st in youxing_stars(gua).items()}

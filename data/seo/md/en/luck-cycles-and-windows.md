@@ -15,12 +15,12 @@ A luck cycle is a stem and branch pair that overlays the natal chart for ten yea
 
 The direction is yang men and yin women count forward (陽男陰女順行), yin men and yang women count backward (陰男陽女逆行). A yang-year man or a yin-year woman runs forward. A yin-year man or a yang-year woman runs backward. The start age is luck-cycle start (起運) = days to the solar-term boundary (距節日數) / 3, which means the days from birth to the nearest solar-term boundary (節), divided by three.
 
-The sample is 王大明, a fictional man born 1988-03-15 at 09:30 in Singapore. His pillars are 戊辰 (Earth Dragon) 乙卯 (Wood Rabbit) 己巳 (Earth Snake) 戊辰, and his Day Master is 己 (yin Earth). His year stem 戊 (yang Earth) is yang, so he runs forward from the month pillar 乙卯. The count goes to the solar-term boundary of Clear and Bright (清明), and the start age comes out at 6.7.
+The sample is 王大明, a fictional man born 1988-03-15 at 09:30 in Singapore. His pillars are 戊辰 (Earth Dragon) 乙卯 (Wood Rabbit) 己巳 (Earth Snake) 戊辰, and his Day Master is 己 (yin Earth). His year stem 戊 (yang Earth) is yang, so he runs forward from the month pillar 乙卯. The count goes to the solar-term boundary of Clear and Bright (清明), and the start age comes out at 6.8.
 
 Key facts
 
 - Luck cycles step from the month pillar, forward or backward by the rule yang men and yin women count forward, yin men and yang women count backward.
-- The start age is luck-cycle start = days to the solar-term boundary / 3, and the sample's is 6.7 (counted to the solar-term boundary Clear and Bright).
+- The start age is luck-cycle start = days to the solar-term boundary / 3, and the sample's is 6.8 (counted to the solar-term boundary Clear and Bright).
 - The sample's current decade is 己未 (Earth Goat), ages 37-47, graded growth with a score of +2.
 - The weakest decade ahead is 辛酉 (Metal Rooster), ages 57-67, graded corrective at -3, with a clash on the month branch 卯 (Rabbit, Wood).
 - The 2027 year pillar 丁未 (Fire Goat) starts at Start of Spring on 2027-02-04, with career and health cautions and a study window.
@@ -117,7 +117,7 @@ A luck cycle is a ten-year stem and branch pillar that overlays your natal chart
 
 ### How is the age my luck cycle starts calculated?
 
-The start age is the days from birth to the nearest solar-term boundary, a solar-term boundary, divided by three. The direction is forward for a yang-year man or a yin-year woman, and backward otherwise. The sample's start age is 6.7.
+The start age is the days from birth to the nearest solar-term boundary, a solar-term boundary, divided by three. The direction is forward for a yang-year man or a yin-year woman, and backward otherwise. The sample's start age is 6.8.
 
 ### Does a corrective decade mean a bad life?
 

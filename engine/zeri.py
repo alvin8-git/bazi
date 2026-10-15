@@ -3,8 +3,11 @@
 Layers, each cited:
   ① 十二建除 day officer — officer = offset of day branch from month branch
     (建 on the day whose branch equals the month branch). Simplified 宜忌 map.
-    ponytail: officer repeat on 節-transition days ignored; full 通書 layers
-    (28宿, 神煞) are out of scope — upgrade if verdicts disagree with an almanac.
+    節 day (checked 2026-10-15): the month turns on the DATE of each 節, so the 節 day takes the new month branch and its officer repeats
+    the previous day's (建 建, then 除). That is the almanac's 疊兩值日. Source: 欽定協紀辨方書 (四庫全書本) 卷四 義例二 建除十二神, quoting
+    《歷書》: 「每月交節則疊兩值日，其法從月建上起建，與斗杓所指相應，如正月建寅則寅日起建，順行十二辰」. The rule is day-based; the 節 moment
+    inside the day does not matter (pinned in tests/test_jieqi_followups.py).
+    ponytail: full 通書 layers (28宿, 神煞) are out of scope — upgrade if verdicts disagree with an almanac.
   ② 破日: day branch 沖 month branch (also officer 破) — hard avoid.
   ③ Per-person: day branch 沖 a member's YEAR branch (沖生肖 — that member
     should not lead the event) or 沖 a member's DAY pillar branch (personal
@@ -16,6 +19,7 @@ from datetime import date, timedelta
 
 import sxtwl
 
+from .calendar import day_month_branch
 from .wuxing import BRANCHES, CHONG_MAP, HAI_MAP, HE_MAP, STEMS
 from .i18n import L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
@@ -27,9 +31,9 @@ OFFICER_SCORE = {"建": 0.5, "除": 0.5, "滿": 0.5, "平": -0.5, "定": 1.0, "�
 
 def day_info(d: date) -> dict:
     day = sxtwl.fromSolar(d.year, d.month, d.day)
-    dgz, mgz = day.getDayGZ(), day.getMonthGZ()
-    db, mb = BRANCHES[dgz.dz], BRANCHES[mgz.dz]
-    officer = OFFICERS[(dgz.dz - mgz.dz) % 12]
+    dgz, mdz = day.getDayGZ(), day_month_branch(d)
+    db, mb = BRANCHES[dgz.dz], BRANCHES[mdz]
+    officer = OFFICERS[(dgz.dz - mdz) % 12]
     return {"date": d.isoformat(), "day_gz": STEMS[dgz.tg] + db, "day_branch": db,
             "month_branch": mb, "officer": officer}
 

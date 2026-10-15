@@ -59,7 +59,7 @@ Step 2, the pillars. The engine returns 戊辰 (year), 乙卯 (month), 己巳 (d
 
 Step 3, strength. The month branch 卯 (Rabbit, Wood) is wood, and wood restrains earth, so the Day Master is in the dead (死) phase of seasonal strength (method note: the engine scores the phases numerically). Support totals 6.33 against a drain of 3.67, and the roots (rooting) are 辰, 巳 and 辰. The net score is -0.97, so the chart is weak Day Master (身弱).
 
-Step 4, what follows. A weak Day Master calls for support, so the useful gods are Fire and Earth, and the colour families that carry them are red (紅) purple (紫) yellow (黃) brown (棕). His kua is 震 (east), in the East group (東四命). The luck cycles run forward (forward luck cycles, 順行) from 乙卯 and start at age 6.7, counted to the Clear and Bright (清明) term. Each of these lines is one rule applied once, which is why the reading can cite it.
+Step 4, what follows. A weak Day Master calls for support, so the useful gods are Fire and Earth, and the colour families that carry them are red (紅) purple (紫) yellow (黃) brown (棕). His kua is 震 (east), in the East group (東四命). The luck cycles run forward (forward luck cycles, 順行) from 乙卯 and start at age 6.8, counted to the Clear and Bright (清明) term. Each of these lines is one rule applied once, which is why the reading can cite it.
 
 The five elements in this chart relate through two cycles, and the table below is the lookup the engine uses for both.
 

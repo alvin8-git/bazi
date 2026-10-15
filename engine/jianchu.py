@@ -1,7 +1,8 @@
 """入宅 move-in date selection: 建除十二神 officers + branch-clash filters.
 
 Pure function of (date window, occupant year branches, house sitting bearing).
-Officer = (day branch − month branch) mod 12 on the 建除 cycle; keep 成/定/開.
+Officer = (day branch − month branch) mod 12 on the 建除 cycle; keep 成/定/開. The month turns on the date of the 節, so a 節 day repeats the
+previous day's officer (欽定協紀辨方書 卷四 義例二: 「每月交節則疊兩值日」); see engine/zeri.py.
 Drop days whose branch ① 六沖s any occupant's year branch, ② 沖s the sitting
 branch (沖坐山), or ③ equals that year's 太歲 branch (值太歲). sxtwl supplies
 all calendrical facts — no custom lunar logic.
@@ -11,6 +12,8 @@ from __future__ import annotations
 from datetime import date, timedelta
 
 import sxtwl
+
+from .calendar import date_pillars
 
 GAN = "甲乙丙丁戊己庚辛壬癸"
 ZHI = "子丑寅卯辰巳午未申酉戌亥"
@@ -45,14 +48,14 @@ def movein_dates(start: date, end: date, occupant_branches: list[str],
     d = start
     while d <= end:
         day = sxtwl.fromSolar(d.year, d.month, d.day)
-        dgz, mgz, ygz = day.getDayGZ(), day.getMonthGZ(), day.getYearGZ()
-        officer = OFFICERS[(dgz.dz - mgz.dz) % 12]
+        dgz, dp = day.getDayGZ(), date_pillars(d)
+        officer = OFFICERS[(dgz.dz - ZHI.index(dp["month"].branch)) % 12]
         if officer in GOOD_OFFICERS:
             db = ZHI[dgz.dz]
             reasons = []
             if db in avoid:
                 reasons.append(avoid[db])
-            if db == ZHI[ygz.dz]:
+            if db == dp["year"].branch:
                 reasons.append("值太歲")
             if not reasons:
                 out.append({"date": d.isoformat(),

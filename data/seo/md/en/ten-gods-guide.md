@@ -21,7 +21,7 @@ Key facts
 - For Day Master 己, the stem 甲 (yang Wood) is Direct Officer (正官) and the stem 乙 (yin Wood) is Seven Killings (七殺).
 - The sample chart's distribution is Rob Wealth (劫財) 48.1 %, Seven Killings 29.6 %, Direct Resource (正印) 11.1 %, Indirect Wealth (偏財) 7.4 % and Hurting Officer (傷官) 3.7 %.
 - The sample's current luck pillar is 己未 (Earth Goat) for ages 37-47, with Friend (比肩) on both stem and branch.
-- The luck sequence runs forward from the month pillar 乙卯 (Wood Rabbit) and starts at age 6.7, by the rule yang men and yin women count forward (陽男陰女順行) with luck-cycle start (起運) = distance to the solar-term boundary (節) divided by 3.
+- The luck sequence runs forward from the month pillar 乙卯 (Wood Rabbit) and starts at age 6.8, by the rule yang men and yin women count forward (陽男陰女順行) with luck-cycle start (起運) = distance to the solar-term boundary (節) divided by 3.
 - The 2027 year pillar is 丁未 (Fire Goat) from Start of Spring (立春), 2027-02-04, and 丁 (yin Fire) is Indirect Resource (偏印) for a 己 Day Master.
 
 Wheel of the ten gods in five paired groups, showing peers, output, wealth, authority and resource around the Day Master
@@ -115,7 +115,7 @@ See these rules applied to your own chart: free BaZi reading →
 
 ## How do the gods arrive with time?
 
-The chart is the cast and the calendar is the schedule. Each ten-year luck pillar (luck cycles, 大運) carries a stem god and a branch god for your Day Master. The sample runs forward because the rule is yang man, yin woman forward, and it starts at age 6.7, counted as the distance to the next solar-term boundary divided by 3.
+The chart is the cast and the calendar is the schedule. Each ten-year luck pillar (luck cycles, 大運) carries a stem god and a branch god for your Day Master. The sample runs forward because the rule is yang man, yin woman forward, and it starts at age 6.8, counted as the distance to the next solar-term boundary divided by 3.
 
 Table 3: the sample's luck pillars
 

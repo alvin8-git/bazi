@@ -107,7 +107,7 @@ def pillars_for(dt: datetime, instant: datetime | None = None) -> dict:
     not at the start of its civil day. That moment comes from sxtwl, which gives it in Beijing time (UTC+8), and it is
     compared as an absolute instant: `instant` is the birth's real moment, a timezone-aware datetime (the civil clock time
     with its own UTC offset), converted here to Beijing clock. Without `instant`, `dt` itself is taken as a Beijing-clock
-    (UTC+8) reading, which is Singapore's clock today; the date-only callers (太歲 of a day, the reading year) pass noon.
+    (UTC+8) reading, which is Singapore's clock today; date-only callers do not come here: they use `date_pillars`, where a 節 day belongs to the new term from its first minute.
     So a birth on a 節 day before that 節's moment keeps the previous month (and, on 立春, the previous year), whatever
     the true-solar shift does to `dt`. Day and hour never read `instant`.
     晚子時 (owner 2026-10-10): from 23:00 the 子 hour takes the SAME day's stem (乙 day → 丙子), and the
@@ -116,15 +116,41 @@ def pillars_for(dt: datetime, instant: datetime | None = None) -> dict:
     ponytail: single school implemented; add a policy flag when another school is wanted.
     """
     bj = instant.astimezone(BEIJING).replace(tzinfo=None) if instant is not None else dt
-    bday = sxtwl.fromSolar(bj.year, bj.month, bj.day)
-    moment = _jie_moment(bday)
-    if moment is not None and bj < moment:       # sxtwl's year/month are day-level: step back to the day before the 節
-        prev = bj.date() - timedelta(days=1)
-        bday = sxtwl.fromSolar(prev.year, prev.month, prev.day)
+    moment = _jie_moment(sxtwl.fromSolar(bj.year, bj.month, bj.day))
+    # sxtwl's year/month are day-level: before the 節 moment of a 節 day, step back to the day before it. `_term_day` also keeps the eve of a 節 that
+    # lands just after midnight in the old term (sxtwl turns it a day early there).
+    bday = _term_day(bj.date() - timedelta(days=1) if moment is not None and bj < moment else bj.date())
     day = sxtwl.fromSolar(dt.year, dt.month, dt.day)
     ygz, mgz, dgz = _gz(bday.getYearGZ()), _gz(bday.getMonthGZ()), _gz(day.getDayGZ())
     hgz = _gz(day.getHourGZ(0 if dt.hour == 23 else dt.hour))
     return {"year": ygz, "month": mgz, "day": dgz, "hour": hgz}
+
+
+def _term_day(d: date):
+    """The sxtwl day whose year and month pillars hold for the civil date `d` read at DAY level: a 節 day belongs to the new term from its first
+    minute, so the day before a 節 day belongs to the old one. sxtwl does this except when a 節 lands within minutes after midnight (大雪 1917-12-08
+    00:00:59, 白露 1927-09-09 00:05:24): it then turns the eve already. The eve of any 節 day is therefore read from the day before it."""
+    nxt = d + timedelta(days=1)
+    n = sxtwl.fromSolar(nxt.year, nxt.month, nxt.day)
+    if n.hasJieQi() and n.getJieQi() % 2 == 1:
+        d = d - timedelta(days=1)
+    return sxtwl.fromSolar(d.year, d.month, d.day)
+
+
+def date_pillars(d: date) -> dict:
+    """Year, month and day pillars of a civil DATE, for every date-only caller (擇日 move-in dates, 建除 day officers, the 太歲 of a day, the 命卦 of a
+    date of birth with no time). THE RULE (owner decision 2026-10-16): a 節 day belongs to the new month, and 立春 day to the new year, from the start
+    of that day, whatever hour the 節 falls on. The moment inside the day is for charts that carry a birth instant (`pillars_for` with `instant`).
+    Source for the month: 欽定協紀辨方書 (四庫全書本) 卷四 義例二 建除十二神, quoting 《歷書》: 「每月交節則疊兩值日」, so the 節 day takes the new month's
+    建除 and repeats the officer of the day before; the year follows the same date at 立春 so that no two date tools can disagree about one day.
+    Do not read month or year of a date anywhere else (not `pillars_for` at noon, not sxtwl's getMonthGZ directly)."""
+    t = _term_day(d)
+    return {"year": _gz(t.getYearGZ()), "month": _gz(t.getMonthGZ()), "day": _gz(sxtwl.fromSolar(d.year, d.month, d.day).getDayGZ())}
+
+
+def day_month_branch(d: date) -> int:
+    """Branch index (子 = 0) of the month a civil date belongs to; see `date_pillars` for the rule."""
+    return _term_day(d).getMonthGZ().dz
 
 
 def _walk_to_jie(d: date, forward: bool, limit: int = 40) -> tuple[date, str]:
@@ -139,8 +165,20 @@ def _walk_to_jie(d: date, forward: bool, limit: int = 40) -> tuple[date, str]:
     raise RuntimeError("no 節 found within 40 days — should be impossible")
 
 
-def dayun_start_age(birth: date, forward: bool) -> tuple[float, str]:
-    """起運 age in years: days to the nearest 節 / 3 (1 day = 4 months)."""
-    jie_date, jie_name = _walk_to_jie(birth, forward)
-    days = abs((jie_date - birth).days)
-    return days / 3.0, jie_name
+def dayun_start_age(instant: datetime, forward: bool) -> tuple[float, str]:
+    """起運 age in years, from the birth's absolute instant to the exact moment of a 節.
+
+    Direction (the caller's rule: yang-year male or yin-year female runs forward): forward counts to the NEXT 節, backward to the
+    PREVIOUS one. "Next" is the first 節 moment strictly after the birth; "previous" is the last one at or before it, the same tie rule
+    `pillars_for` uses (a birth on the exact moment already belongs to the new month, so that 節 is behind it).
+    Conversion (the 子平 起運 convention, unchanged): 3 days = 1 year, which is 1 day = 4 months and 1 時辰 (2 hours) = 10 days.
+    The count is continuous, so the exact interval in days is divided by 3; only its two ends were day-level before (2026-10-15).
+    `instant` is a timezone-aware datetime (civil clock with its own UTC offset); the 節 moments are sxtwl's Beijing time (UTC+8)."""
+    bj = instant.astimezone(BEIJING).replace(tzinfo=None)
+    step = 1 if forward else -1
+    for k in range(0, 41):
+        d = bj.date() + timedelta(days=step * k)
+        moment = _jie_moment(sxtwl.fromSolar(d.year, d.month, d.day))
+        if moment is not None and (moment > bj if forward else moment <= bj):
+            return abs((moment - bj).total_seconds()) / 86400.0 / 3.0, JIEQI_NAMES[sxtwl.fromSolar(d.year, d.month, d.day).getJieQi()]
+    raise RuntimeError("no 節 found within 40 days — should be impossible")

@@ -19,7 +19,7 @@ from zoneinfo import ZoneInfo
 SG = ZoneInfo("Asia/Singapore")
 
 from .bazi import ten_god
-from .calendar import pillars_for
+from .calendar import date_pillars
 from .liunian import taisui_tiers
 from .wuxing import CHONG_MAP, HAI_MAP, HE_MAP, HIDDEN_STEMS, STEM_ELEMENT
 from .zeri import day_info, rate_day
@@ -96,7 +96,7 @@ def daily_fortune(c, ys: dict, start: date | None = None, days: int = 30, lang: 
             for k in ("launch", "signing"): _set(flags, k, "good", T("daily.daily_fortune.12", f"{el} day carries your primary 用神", lang, el=el), "用神日")
         if unfav and el == unfav[0]:
             for k in ("signing", "launch"): _set(flags, k, "avoid", T("daily.daily_fortune.13", f"{el} day carries your chief 忌神", lang, el=el), "忌神日")
-        tb = pillars_for(datetime(d.year, d.month, d.day, 12))["year"].branch      # the 太歲 branch on that day (年柱 turns at 立春)
+        tb = date_pillars(d)["year"].branch      # the 太歲 branch on that day (年柱 turns on the date of 立春, the same rule as the 建除 month)
         vet = [t for t in taisui_tiers(natal_yb, tb) if t in TAISUI_VETO_TIERS]
         rows.append({"date": d.isoformat(), "weekday": T(f"daily.WEEKDAY.{d.strftime('%a')}", d.strftime("%a"), lang), "gz": gz, "officer": off,
                      "stem_god": stem_god, "branch_god": branch_god, "element": el, "medicine": med,

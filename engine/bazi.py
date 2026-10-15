@@ -86,6 +86,11 @@ def reading_year(now: datetime | None = None) -> int:
     return now.year if STEMS[(now.year - 4) % 10] == cal.pillars_for(now)["year"].stem else now.year - 1
 
 
+def birth_instant(birth_local: datetime, place: dict | None = None) -> datetime:
+    """The birth's absolute moment: the civil clock reading with the UTC offset of the clock it was read on."""
+    return birth_local.replace(tzinfo=timezone(timedelta(hours=cal.civil_utc_offset(birth_local, place))))
+
+
 def build_chart(person: str, sex: str, birth_local: datetime, policy: str, place: dict | None = None, lang: str = "en") -> Chart:
     """`place` (engine.places.place) sets longitude and time zone; None or Singapore keeps the Singapore path."""
     if policy == TRUE_SOLAR and place and place.get("cc") != "SG":
@@ -105,7 +110,7 @@ def build_chart(person: str, sex: str, birth_local: datetime, policy: str, place
                 f"equation of time {cal.equation_of_time_minutes(birth_local.date()):+.1f} min)", lang, birth_local=birth_local, eff=eff, sg_utc_offset_hours_date=cal.sg_utc_offset_hours(birth_local.date()), SG_LON=cal.SG_LON, equation_of_time_minutes_dat=cal.equation_of_time_minutes(birth_local.date())))
     else:
         eff, note = birth_local, T("bazi.build_chart.05", "civil clock time, no solar correction", lang)
-    instant = birth_local.replace(tzinfo=timezone(timedelta(hours=cal.civil_utc_offset(birth_local, place))))   # the real moment, for the 節 boundary
+    instant = birth_instant(birth_local, place)   # the real moment, for the 節 boundary and the 起運 count
     chart = Chart(person=person, sex=sex, birth_local=birth_local, policy=policy,
                   effective_dt=eff, pillars=cal.pillars_for(eff, instant))
     chart.citations.append({"rule_id": "time-policy", "layer": "bazi",
@@ -245,7 +250,7 @@ def _compute_dayun(chart: Chart, to_age: int = 100, lang: str = "en") -> None:
     anyone past the eighth decade, about 84, with no current one)."""
     year_yang = STEM_YANG[chart.pillars["year"].stem]
     forward = (year_yang and chart.sex == "M") or (not year_yang and chart.sex == "F")
-    start_age, jie = cal.dayun_start_age(chart.effective_dt.date(), forward)
+    start_age, jie = cal.dayun_start_age(birth_instant(chart.birth_local, getattr(chart, "place", None)), forward)
 
     m = chart.pillars["month"]
     stem_i, branch_i = STEMS.index(m.stem), cal.BRANCHES.index(m.branch)

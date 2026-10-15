@@ -19,7 +19,7 @@ Key facts
 - Every output line names the classical rule it applies, with a rule id a practitioner can check.
 - The sample's clock time 09:30 becomes true solar time 08:16, using longitude 103.8517°E and an equation of time of -9.4 minutes.
 - The strength rule has four steps and returns weak Day Master (身弱) with a score of -0.97, from support 6.33 against drain 3.67.
-- The sample's luck cycles run forward from the month pillar 乙卯 (Wood Rabbit) and start at age 6.7.
+- The sample's luck cycles run forward from the month pillar 乙卯 (Wood Rabbit) and start at age 6.8.
 - No generative AI writes any reading, and the engine does not predict events.
 
 Pipeline from birth data through true solar time, four pillars, strength, favourable elements and luck cycles to a reading in which each line cites its rule
@@ -37,7 +37,7 @@ Favourable elements | Support-and-restrain method (扶抑法) then climate-adjus
 
 Ten gods | each stem's relation to the Day Master | Rob Wealth (劫財) 48.1 %, Seven Killings (七殺) 29.6 % | 
 
-Luck cycles | Yang men and yin women count forward (陽男陰女順行), luck-cycle start (起運) = days to the solar-term boundary (距節日數) / 3 | forward from 乙卯, start age 6.7 | 
+Luck cycles | Yang men and yin women count forward (陽男陰女順行), luck-cycle start (起運) = days to the solar-term boundary (距節日數) / 3 | forward from 乙卯, start age 6.8 | 
 
 The useful god (用神) step uses the four classical methods (support-and-restrain method, climate-adjustment method, bridging element (通關), illness and remedy (病藥)) in a defined order. For the sample, the first two produced Fire and Earth as favourable and Wood (木), Water (水) and Metal (金) as unfavourable. A different order would be a different system, which is why the order is written down.
 

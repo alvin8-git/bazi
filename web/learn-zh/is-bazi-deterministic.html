@@ -129,10 +129,10 @@ footer .fnav a{display:inline-flex;align-items:center;min-height:44px;padding:0 
 <p>八字在计算上是确定性的，在解读上是受规则引导的。四柱、强弱分数、喜用五行、十神和大运，全都遵循写明的规则，所以同样的出生资料每次得出同样的结果。</p>
 <h2 id="sec-6e260e2e">八字解读里哪些部分是确定性的？</h2>
 <p>大部分结构是日历上的算术。在写明的惯例下，每一步只有一个正确答案，两个诚实的实现应当精确到每一位一致。表1沿着样例命盘走完每一步。样例是王大明，虚构的男性，1988-03-15 09:30 出生于新加坡。</p>
-<blockquote class="keyfacts"><p><strong>要点</strong></p><ul><li>同样的出生资料或平面图永远得出同样的结果，这是 /method 十条方法声明的第一条。</li><li>每一行输出都注明所用的古典规则，附有行家可核对的规则编号。</li><li>样例的钟表时间09:30变成真太阳时08:16，用的是东经103.8517度和-9.4分钟的时差。</li><li>强弱规则分四步，得出身弱，分数-0.97，帮扶6.33对耗泄3.67。</li><li>样例的大运从月柱乙卯顺行，起运年龄6.7。</li><li>没有任何生成式AI撰写解读，引擎也不预测事件。</li></ul></blockquote>
+<blockquote class="keyfacts"><p><strong>要点</strong></p><ul><li>同样的出生资料或平面图永远得出同样的结果，这是 /method 十条方法声明的第一条。</li><li>每一行输出都注明所用的古典规则，附有行家可核对的规则编号。</li><li>样例的钟表时间09:30变成真太阳时08:16，用的是东经103.8517度和-9.4分钟的时差。</li><li>强弱规则分四步，得出身弱，分数-0.97，帮扶6.33对耗泄3.67。</li><li>样例的大运从月柱乙卯顺行，起运年龄6.8。</li><li>没有任何生成式AI撰写解读，引擎也不预测事件。</li></ul></blockquote>
 <figure><img src="/static/learn/img/deterministic-pipeline.svg" alt="流程图：出生资料经真太阳时、四柱、强弱、喜用五行与大运，得到每一行都引用规则的解读" loading="lazy" width="720" height="438"><figcaption>流程图：出生资料经真太阳时、四柱、强弱、喜用五行与大运，得到每一行都引用规则的解读</figcaption></figure>
 <p><b>表1：样例命盘逐步演示</b></p>
-<div class="tablewrap" tabindex="0" role="region" aria-label="表格"><table><thead><tr><th>步骤</th><th>规则</th><th>样例结果</th></tr></thead><tbody><tr><td>真太阳时</td><td>按经度与时差方程换算钟表时间</td><td>09:30变成08:16</td></tr><tr><td>四柱</td><td>节气、立春年界、六十甲子周期</td><td>戊辰 乙卯 己巳 戊辰</td></tr><tr><td>强弱</td><td>月令、帮扶、耗泄、通根</td><td>身弱，分数-0.97</td></tr><tr><td>喜用五行</td><td>先扶抑法，再调候法</td><td>火和土</td></tr><tr><td>十神</td><td>每个天干与日主的关系</td><td>劫财48.1%，七杀29.6%</td></tr><tr><td>大运</td><td>阳男阴女顺行，起运＝距节日数/3</td><td>从乙卯顺行，起运6.7岁</td></tr></tbody></table></div>
+<div class="tablewrap" tabindex="0" role="region" aria-label="表格"><table><thead><tr><th>步骤</th><th>规则</th><th>样例结果</th></tr></thead><tbody><tr><td>真太阳时</td><td>按经度与时差方程换算钟表时间</td><td>09:30变成08:16</td></tr><tr><td>四柱</td><td>节气、立春年界、六十甲子周期</td><td>戊辰 乙卯 己巳 戊辰</td></tr><tr><td>强弱</td><td>月令、帮扶、耗泄、通根</td><td>身弱，分数-0.97</td></tr><tr><td>喜用五行</td><td>先扶抑法，再调候法</td><td>火和土</td></tr><tr><td>十神</td><td>每个天干与日主的关系</td><td>劫财48.1%，七杀29.6%</td></tr><tr><td>大运</td><td>阳男阴女顺行，起运＝距节日数/3</td><td>从乙卯顺行，起运6.8岁</td></tr></tbody></table></div>
 <p>用神一步按既定顺序使用四种古典方法（扶抑法、调候法、通关、病药）。样例的前两种得出火和土为喜用，木、水、金为忌神。顺序一换就是另一个体系，所以顺序是写明的。</p>
 <p class="cta-inline"><a href="/zh/start">把这些规则用在你自己的命盘上：免费排盘 →</a></p><h2 id="sec-c4806342">强弱规则怎样体现这个思路？</h2>
 <p>强弱规则是个好例子，因为它看起来像判断，其实是固定的四步。对样例日主己（土），引擎这样做。</p>
