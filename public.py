@@ -15,6 +15,7 @@ validation-first architecture from docs/designs/bazifor-me-wedge.md.
 """
 from __future__ import annotations
 
+import functools
 import json
 import re
 import secrets
@@ -485,6 +486,15 @@ def person_chart(token: str, idx: int, year: int | None = None, lang: str = "en"
 
 _STEM_SLUG = dict(zip("甲乙丙丁戊己庚辛壬癸", "jia yi bing ding wu ji geng xin ren gui".split()))
 _SEASON = dict(zip("寅卯辰巳午未申酉戌亥子丑", ["spring"] * 3 + ["summer"] * 3 + ["autumn"] * 3 + ["winter"] * 3))
+
+
+@functools.lru_cache(maxsize=1)
+def _art_focus_table() -> dict:
+    """Where the subject of each Day Master painting sits, [x, y] in the 600 x 400 file: the reading's own CRING_FOCUS table
+    (web/app.js), read from there so the baby page crops a painting around the same point and the two can never drift."""
+    src = (ROOT / "web/app.js").read_text("utf8")
+    block = re.search(r"const CRING_FOCUS = \{(.*?)\};", src, re.S)
+    return {k: [int(x), int(y)] for k, x, y, _ in re.findall(r'"([a-z]+-[a-z]+)":\s*\[(\d+),\s*(\d+),\s*([\d.]+)\]', block.group(1))} if block else {}
 
 
 def _opening_shell(c, hint: str = "computing…") -> tuple[str, str]:
@@ -1443,6 +1453,8 @@ def name_chart(sex: str, dob: str, birth_time: str = "12:00", surname: str = "",
                        for k, zh, en in (("year", "年柱", "Year"), ("month", "月柱", "Month"),
                                          ("day", "日柱", "Day"), ("hour", "时柱", "Hour"))],
            "day_master": c.day_master, "strength": c.strength["verdict"],
+           "art": f"{_STEM_SLUG[c.pillars['day'].stem]}-{_SEASON[c.pillars['month'].branch]}",   # additive: the reading's own painting key (stem x season of the month branch)
+           "art_focus": _art_focus_table().get(f"{_STEM_SLUG[c.pillars['day'].stem]}-{_SEASON[c.pillars['month'].branch]}"),   # additive: the subject's [x, y] in that 600 x 400 painting
            "weights": {el: round(w / total * 100) for el, w in c.element_weights.items()},
            "fav": ys["favourable"], "unfav": ys["unfavourable"]}
     tp = next((x for x in c.citations if x.get("rule_id") == "time-policy"), {})   # names the birth city used
@@ -1463,9 +1475,11 @@ def name_chart(sex: str, dob: str, birth_time: str = "12:00", surname: str = "",
 @router.get("/api/pub/name/chars")
 def name_chars(surname: str, sex: str, dob: str, birth_time: str = "12:00",
                given: str = "__", slot: int = 0, el: str | None = None,
-               strokes: str = "", py: str = "", page: int = 1, trad: str = "", mean: str = "", place: int | None = None):
+               strokes: str = "", py: str = "", page: int = 1, trad: str = "", mean: str = "", place: int | None = None,
+               py_exact: int = 0):
     """Candidate tiles for one empty box. `given` uses '_' for an empty box ('禄_');
-    `el` = comma list, omitted = the 用神 elements, 'all' = no element filter."""
+    `el` = comma list, omitted = the 用神 elements, 'all' = no element filter.
+    `py` is a tone-free prefix match; `py_exact=1` makes it the whole syllable (yi lists yi, not yin or ying)."""
     from engine.naming import slot_candidates
     _, ys = _name_chart(sex, dob, birth_time, place)
     boxes = [None if ch == "_" else ch for ch in given][:2]
@@ -1474,7 +1488,7 @@ def name_chars(surname: str, sex: str, dob: str, birth_time: str = "12:00",
         ks = [int(x) for x in strokes.split(",") if x.strip()]
         return slot_candidates(ys, _tosimp(surname.strip()), boxes, slot, els=els, strokes=ks,
                                py=py[:12], page=max(1, min(page, 200)), trad=_parse_trad(trad),
-                               meaning=mean or None, sex=sex)
+                               meaning=mean or None, sex=sex, py_exact=bool(py_exact))
     except (ValueError, TypeError) as e:
         raise HTTPException(400, str(e))
 

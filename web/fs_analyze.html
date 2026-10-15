@@ -132,6 +132,14 @@ ol.guide li{margin:3px 0}ol.guide em{font-style:normal;color:var(--muted)}
 .tc-box{background:#fff6df;border:1px solid #eedc9a;border-radius:8px;padding:8px 12px;margin:0 0 10px}
 .tc-box .whychip{margin:2px 4px 2px 0}.tc-box div{font-size:13px;margin:3px 0}
 .rect.ns span{background:var(--good)}
+.rect[data-lbl=mk]{overflow:visible}
+.rect>span[data-mk]{font-weight:700}
+.rect>span[data-mk]::after{content:"";position:absolute;left:50%;top:50%;width:calc(44px*var(--k,1));height:calc(44px*var(--k,1));transform:translate(-50%,-50%)}
+.stage-plan .rect>span[data-mk]::after{display:none}
+.lbl-key{margin:6px 0 0;font-size:12.5px;line-height:1.9;color:var(--muted);overflow-wrap:anywhere}
+.lbl-key .kc{display:inline-block;max-width:100%}
+.lbl-key .mk{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-right:5px;border-radius:50%;background:#6b5b95;color:#fff;font-size:11px;vertical-align:middle}
+.lbl-key .mk.ns{background:var(--good)}
 .rect.sel{outline:2px solid var(--gold);cursor:move;overflow:visible}
 .rh{position:absolute;width:10px;height:10px;background:#fff;border:2px solid var(--gold);border-radius:2px;
   z-index:6;touch-action:none;box-sizing:border-box}
@@ -271,6 +279,23 @@ td.b-poor{background:#fdecea;color:#b03a2e}
 .rtable th,.rtable td{border-bottom:1px solid var(--line);padding:6px 6px;vertical-align:top;text-align:left}
 .rtable th{font-size:11px;color:#666;background:#faf7f2}
 .rtable td .sw{width:1em;height:1em}
+/* narrow screens: the nine columns reflow into one stacked block per room; the markup stays a table (explicit roles) so the headers still name each cell */
+.rtable .rt-room{font-size:13px}
+@media (max-width:860px){
+  .rtable,.rtable tbody{display:block}
+  .rtable thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .rtable tr{display:block;margin:0 0 10px;border:1px solid var(--line);border-radius:10px;background:#fff}
+  .rtable td{display:block;position:relative;min-height:0;padding:7px 10px 7px 96px;border-bottom:1px solid var(--line)}
+  .rtable td:last-child{border-bottom:0}
+  .rtable td:empty{display:none}
+  .rtable td::before{content:attr(data-label);position:absolute;left:10px;top:7px;width:80px;font-size:11px;line-height:1.5;font-weight:700;color:#666}
+  .rtable td.rt-room{padding:8px 12px;font-size:14px;background:#faf7f2;border-radius:9px 9px 0 0}
+  .rtable td.rt-room::before{content:none}
+}
+@media (max-width:359px){
+  .rtable td{padding:6px 10px 8px}
+  .rtable td::before{position:static;display:block;width:auto;margin-bottom:2px}
+}
 .sev{display:inline-block;border-radius:6px;padding:1px 7px;font-size:11.5px;font-weight:700;white-space:nowrap}
 .sev0{background:#e9f7ee;color:#1e7d32}.sev1{background:#ffe9d2;color:#a35a00}.sev2,.sev3{background:#fdecea;color:#b03a2e}
 .tgrid{display:grid;grid-template-columns:150px repeat(2,1fr);gap:4px;max-width:560px;font-size:12.5px;margin-top:10px}
@@ -300,7 +325,7 @@ details.full summary::before{content:"▸ "}details.full[open] summary::before{c
   .cp-row{grid-template-columns:1fr}.cp-verdict{text-align:left}
   .cp-bar{grid-template-columns:repeat(3,1fr)}
   .rp-grid{grid-template-columns:1fr}.cols{grid-template-columns:1fr}
-  .tgrid{grid-template-columns:1fr 1fr 1fr}.tgrid{max-width:none}
+  .tgrid{grid-template-columns:minmax(0,1.5fr) repeat(2,minmax(0,1fr));max-width:none}
 }
 @media print{
   header,button,select,details.full,.hint.foot{display:none!important}
@@ -590,6 +615,7 @@ header.fsb .verbadge{top:auto;bottom:8px}
           audit (door facing bed, <span class="zh" lang="zh-Hant" tabindex="0" title="mén chōng chuáng · door facing the bed" data-tip="mén chōng chuáng · door facing the bed">門沖床</span> / commanding position / door facing door, <span class="zh" lang="zh-Hant" tabindex="0" title="mén duì mén · door facing door" data-tip="mén duì mén · door facing door">門對門</span>).</div>
       </div>
     </div>
+    <p id="lbl-key" class="lbl-key" hidden></p>
     <div class="err" id="go-err" style="margin-top:8px"></div>
   </div>
 
@@ -893,10 +919,12 @@ function applyZoom(nz) {
   });
   if (entrance) placeDoor();
   if (lastRes) drawBedOverlays(lastRes);
+  scheduleLabelFit();
 }
 $("#btn-zin").addEventListener("click", () => applyZoom(zoom + 0.5));
 $("#btn-zout").addEventListener("click", () => applyZoom(zoom - 0.5));
 $("#btn-zfit").addEventListener("click", () => applyZoom(1));
+if (window.ResizeObserver) new ResizeObserver(() => scheduleLabelFit()).observe($("#wrap"));
 
 /* ---------------- drawing (pointer events = mouse + touch) ---------------- */
 $("#plan").addEventListener("load", () => {
@@ -1004,12 +1032,142 @@ function rebuildFromSaved(cfg) {
   if (cfg.entrance) { entrance = cfg.entrance; placeDoor(); }
   if (cfg.analysis) renderResults(cfg.analysis);   // now room labels resolve
 }
+/* Room labels (round 47): the full room name is always readable and never sits on a bed overlay. Each label is fitted to its box in on-screen pixels
+   (one line, two lines, vertical text, down to a 10 px floor) and put in the first spot of the box that is clear of the bed overlays (centre, then
+   edges, then corners). A room whose name cannot fit that way shows a numbered circle in a free spot of its own box instead, and a key under the plan
+   lists "1 Bathroom 1 · 2 Bathroom 2". Numbers follow plan order and the stage panel copies the markers of the editable plan. The name itself is never
+   changed; it is also the hover title and the marker's accessible name. */
+const LBL = {min: 10, step: 0.5, mk: 18.2};
+let lblPlanMarkers = null, lblStageRefit = null;
+function lblSpan(rect) { const e = rect.firstElementChild; return e && e.tagName === "SPAN" ? e : null; }
+function lblName(sp) { return sp.dataset.name !== undefined ? sp.dataset.name : sp.textContent; }
+function lblReset(rect) {
+  const sp = lblSpan(rect); if (!sp) return null;
+  const name = lblName(sp);
+  sp.removeAttribute("style"); sp.removeAttribute("role"); sp.removeAttribute("aria-label"); sp.removeAttribute("data-mk");
+  delete sp.dataset.name; sp.textContent = name;
+  rect.removeAttribute("data-lbl"); rect.title = name;
+  return sp;
+}
+function lblStyle(sp, s, fs, mode, maxW) {         // fs and maxW in on-screen px; s = on-screen scale of the plan
+  const k = 1 / s, st = sp.style;
+  st.fontSize = fs * k + "px"; st.borderRadius = 5 * k + "px"; st.overflow = "visible"; st.textOverflow = "clip"; st.lineHeight = "1.25";
+  st.padding = mode === "v" ? `${5 * k}px ${1 * k}px` : `${1 * k}px ${5 * k}px`;
+  st.whiteSpace = mode === "two" ? "normal" : "nowrap"; st.textAlign = "center";
+  st.maxWidth = mode === "two" ? maxW * k + "px" : "none"; st.writingMode = mode === "v" ? "vertical-rl" : "";
+  st.position = ""; st.left = st.top = st.width = st.height = "";
+}
+function lblOverlap(a, b) { const w = Math.min(a.right, b.right) - Math.max(a.left, b.left), h = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top); return w > 0 && h > 0 ? w * h : 0; }
+function lblInner(rect, s) {                        // the box's padding area on screen
+  const b = rect.getBoundingClientRect(), x = b.left + rect.clientLeft * s, y = b.top + rect.clientTop * s;
+  return {left: x, top: y, right: x + rect.clientWidth * s, bottom: y + rect.clientHeight * s};
+}
+function lblSpots(I, pw, ph, m, extra) {                   // top-left corners to try for a pw x ph label, in preference order: centre, edges, corners
+  const cx = (I.left + I.right - pw) / 2, cy = (I.top + I.bottom - ph) / 2, L = I.left + m, R = I.right - m - pw, T = I.top + m, B = I.bottom - m - ph;
+  const spots = [[cx, cy], [cx, T], [cx, B], [L, cy], [R, cy], [L, T], [R, T], [L, B], [R, B]];
+  if (extra) {                                      // then any other place in the box, nearest the centre first (a bed overlay can leave only a gap)
+    const more = [];
+    for (let y = T; y <= B + 0.01; y += 2) for (let x = L; x <= R + 0.01; x += 2) more.push([x, y]);
+    more.sort((a, b) => Math.hypot(a[0] - cx, a[1] - cy) - Math.hypot(b[0] - cx, b[1] - cy));
+    spots.push(...more);
+  }
+  return spots;
+}
+function lblClear(r, obst) { return obst.every(o => lblOverlap(r, {left: o.left - 0.5, top: o.top - 0.5, right: o.right + 0.5, bottom: o.bottom + 0.5}) === 0); }
+function lblPut(sp, s, I, x, y, pw, ph, centre) {  // centre keeps the flex centring; any other spot is absolute so the label cannot re-wrap
+  const k = 1 / s, st = sp.style;
+  if (centre) { st.position = "relative"; return; }
+  st.position = "absolute"; st.left = (x - I.left) * k + "px"; st.top = (y - I.top) * k + "px"; st.width = pw * k + "px"; st.height = ph * k + "px";
+}
+function lblFitInside(rect, sp, s, max, obst) {
+  const I = lblInner(rect, s), W = I.right - I.left - 10, H = I.bottom - I.top - 6;
+  const ok = () => { const b = sp.getBoundingClientRect();
+    return b.width <= W && b.height <= H && sp.scrollWidth <= sp.clientWidth + 1 && sp.scrollHeight <= sp.clientHeight + 1; };
+  for (const mode of /\s/.test(lblName(sp).trim()) ? ["one", "two", "v"] : ["one", "v"])
+    for (let fs = max; fs >= LBL.min - 0.01; fs -= LBL.step) {
+      lblStyle(sp, s, fs, mode, W); if (!ok()) continue;
+      const b = sp.getBoundingClientRect(), pw = b.width, ph = b.height;
+      const spots = lblSpots(I, pw, ph, 1, obst.length > 0);
+      for (let i = 0; i < spots.length; i++) {
+        const [x, y] = spots[i], r = {left: x, top: y, right: x + pw, bottom: y + ph};
+        if (r.left < I.left || r.top < I.top || r.right > I.right || r.bottom > I.bottom || !lblClear(r, obst)) continue;
+        lblPut(sp, s, I, x, y, pw, ph, i === 0); sp.style.position = i === 0 ? "" : "absolute"; rect.dataset.lbl = mode; return true;
+      }
+    }
+  lblStyle(sp, s, max, "one", 0);
+  return false;
+}
+function lblMarker(rect, sp, s, n, obst, others) {
+  const k = 1 / s, st = sp.style, d = LBL.mk, name = lblName(sp);
+  sp.dataset.name = name; sp.dataset.mk = n; sp.textContent = String(n); sp.setAttribute("role", "img"); sp.setAttribute("aria-label", name);
+  Object.assign(st, {width: d * k + "px", height: d * k + "px", padding: "0", borderRadius: "50%", fontSize: 12 * k + "px", lineHeight: "1", display: "flex",
+    alignItems: "center", justifyContent: "center", whiteSpace: "nowrap", overflow: "visible", textOverflow: "clip", maxWidth: "none", writingMode: "", textAlign: "center"});
+  st.setProperty("--k", k);
+  rect.dataset.lbl = "mk";
+  const I = lblInner(rect, s), spots = lblSpots(I, d, d, 0, obst.length > 0);
+  let best = null;
+  spots.forEach(([x, y], i) => {                    // a free spot if there is one, else the spot that covers the least
+    const r = {left: x, top: y, right: x + d, bottom: y + d};
+    const ov = obst.reduce((a, o) => a + lblOverlap(r, {left: o.left - 0.5, top: o.top - 0.5, right: o.right + 0.5, bottom: o.bottom + 0.5}), 0);
+    const cost = (r.left < I.left || r.top < I.top || r.right > I.right || r.bottom > I.bottom ? 1e6 : 0) + (ov > 0 ? 1e4 + ov : 0) + i;
+    if (!best || cost < best.cost) best = {x, y, cost, i};
+  });
+  if (best.cost >= 1e4) {                           // no free spot inside the box: let the circle straddle an edge, its centre still inside the box
+    let alt = null;
+    for (let y = I.top - d * 0.4; y <= I.bottom - d * 0.6; y += 2) for (let x = I.left - d * 0.4; x <= I.right - d * 0.6; x += 2) {
+      const r = {left: x, top: y, right: x + d, bottom: y + d};
+      if (obst.some(o => lblOverlap(r, {left: o.left - 0.5, top: o.top - 0.5, right: o.right + 0.5, bottom: o.bottom + 0.5}) > 0)) continue;
+      const nb = others.reduce((a, o) => a + lblOverlap(r, {left: o.left + 3, top: o.top + 3, right: o.right - 3, bottom: o.bottom - 3}), 0);
+      const out = Math.max(0, I.left - x) + Math.max(0, r.right - I.right) + Math.max(0, I.top - y) + Math.max(0, r.bottom - I.bottom);
+      if (!alt || nb * 1000 + out < alt.cost) alt = {x, y, cost: nb * 1000 + out};
+    }
+    if (alt && alt.cost < 1000) best = {x: alt.x, y: alt.y, i: 1};
+  }
+  lblPut(sp, s, I, best.x, best.y, d, d, best.i === 0); if (best.i === 0) st.position = "relative";
+}
+function lblKey(el, items) {
+  if (!el) return;
+  el.textContent = ""; el.hidden = !items.length;
+  items.forEach((it, i) => {
+    if (i) el.append(" ");
+    const c = document.createElement("span"), b = document.createElement("b");
+    c.className = "kc"; b.className = "mk" + (it.ns ? " ns" : ""); b.textContent = it.n; c.append(b, it.name + (i < items.length - 1 ? " ·" : "")); el.append(c);
+  });
+}
+function fitRoomLabels(root, container, opts) {
+  opts = opts || {};
+  const all = [...root.querySelectorAll(".rect")], rects = all.filter(r => r.offsetWidth && lblSpan(r));
+  const obst = opts.obst ? opts.obst() : [], marked = [];
+  all.forEach(r => lblReset(r));
+  for (const r of rects) {
+    const s = r.getBoundingClientRect().width / (parseFloat(r.style.width) || r.offsetWidth), sp = lblSpan(r), idx = all.indexOf(r);
+    if (!s) continue;
+    const forced = opts.forced && opts.forced.includes(idx);
+    if (forced || !lblFitInside(r, sp, s, r.closest(".stage-plan") ? 12.5 : 12, obst)) marked.push([idx, r, sp, s]);
+  }
+  const items = [];
+  marked.forEach(([idx, r, sp, s], i) => { lblMarker(r, sp, s, i + 1, obst, rects.filter(o => o !== r).map(o => o.getBoundingClientRect())); items.push({n: i + 1, name: lblName(sp), ns: r.classList.contains("ns")}); });
+  lblKey(opts.key, items);
+  return marked.map(m => m[0]);
+}
+function fitPlanLabels() {
+  const w = $("#wrap"); if (!w || !w.offsetWidth) return;
+  const before = JSON.stringify(lblPlanMarkers);
+  lblPlanMarkers = fitRoomLabels($("#rects"), w, {key: $("#lbl-key"), obst: () => [...document.querySelectorAll("#rects .bedov")].map(e => e.getBoundingClientRect())});
+  if (lblStageRefit && before !== JSON.stringify(lblPlanMarkers)) lblStageRefit();
+}
+let lblQueued = false;
+function scheduleLabelFit() {
+  if (lblQueued) return; lblQueued = true;
+  requestAnimationFrame(() => { lblQueued = false; fitPlanLabels(); });
+}
 function decorate(i) {
   const r = rooms[i];
   r.el.classList.toggle("ns", !r.sleeping);
   r.el.classList.toggle("outdoor", isOutdoorType(r.type));
-  r.el.innerHTML = `<span>${r.name || r.type.split(" ")[0]}</span>${isOutdoorType(r.type) ? `<em class="odtag">户外 outdoor</em>` : ""}`;
+  r.el.innerHTML = `<span>${r.name || r.type.replace(/\s+[^\x00-\x7f].*$/, "")}</span>${isOutdoorType(r.type) ? `<em class="odtag">户外 outdoor</em>` : ""}`;
   drawMarks(r);
+  scheduleLabelFit();
   r.el.onclick = () => select(i);
   r.el.onpointerdown = e => {
     if (!r.el.classList.contains("sel") || armed || panMode) return;
@@ -1068,7 +1226,7 @@ function setRoomPx(r, px) {
   Object.assign(r.el.style, {left: px[0] + "px", top: px[1] + "px", width: px[2] + "px", height: px[3] + "px"});
   drawMarks(r);
   if (r.el.classList.contains("sel")) drawHandles(r);
-  sizeReadout();
+  sizeReadout(); scheduleLabelFit();
 }
 function sizeReadout() {
   const r = rooms[selected], el = $("#p-size");
@@ -1477,6 +1635,7 @@ function placementBlock(res) {
 
 function drawBedOverlays(res) {
   document.querySelectorAll(".bedov").forEach(el => el.remove());
+  scheduleLabelFit();                      // labels keep clear of the overlays, so they are placed again whenever the overlays change
   const pl = res.placement;
   if (!pl || !$("#ov-toggle") || !$("#ov-toggle").checked) return;
   const w0 = $("#plan").offsetWidth, h0 = $("#plan").offsetHeight;
@@ -1752,22 +1911,22 @@ function renovationBlock(res) {
     return `${u ? `<span title="${u.why}">✓ ${u.what.split(/[;,]/)[0]}</span>` : ""}${a ? `<br><span class="b-weak" title="${a.why}">✗ ${a.what.split(/[;,]/)[0]}</span>` : ""}` || "—"; };
   const rows = Object.entries(briefs).map(([rid, b]) => {
     const t = b.timing || {}, L_ = b.lighting || {};
-    return `<tr><td><b>${b.label || rid}</b></td><td>${b.palace || "—"}${b.mountain != null ? `<br><small>mountain ${b.mountain} · facing ${b.water}</small>` : ""}</td>
-      <td>${b.palace === "中" ? "—" : SEV(b)}</td>
-      <td>${swRow(b.colours_use || [])}</td><td>${swRow(b.colours_avoid || [])}</td>
-      <td>${mats(b)}</td>
-      <td>${lightSw(L_.fixed_k)}${L_.fixed_k || "—"}<br><small class="hint">${L_.lamps_k || ""}</small></td>
-      <td>${t.structure_ok === false ? `<span class="whychip neg" title="${(t.now || []).join(" ")}">${L("✗ " + (t.next && t.next.length ? "structure: both years" : "structure: until Start of Spring " + wt.next), "动土")}</span>`
+    return `<tr role="row"><td role="cell" class="rt-room"><b>${b.label || rid}</b></td><td role="cell" data-label="Palace · stars">${b.palace || "—"}${b.mountain != null ? `<br><small>mountain ${b.mountain} · facing ${b.water}</small>` : ""}</td>
+      <td role="cell" data-label="2-5 二五">${b.palace === "中" ? "—" : SEV(b)}</td>
+      <td role="cell" data-label="Use 宜">${swRow(b.colours_use || [])}</td><td role="cell" data-label="Avoid 忌">${swRow(b.colours_avoid || [])}</td>
+      <td role="cell" data-label="Materials">${mats(b)}</td>
+      <td role="cell" data-label="Lighting">${lightSw(L_.fixed_k)}${L_.fixed_k || "—"}<br><small class="hint">${L_.lamps_k || ""}</small></td>
+      <td role="cell" data-label="Works ${wt.year} 动工">${t.structure_ok === false ? `<span class="whychip neg" title="${(t.now || []).join(" ")}">${L("✗ " + (t.next && t.next.length ? "structure: both years" : "structure: until Start of Spring " + wt.next), "动土")}</span>`
           : `<span class="whychip pos">${L("✓ structure ok")}</span>`} <span class="whychip pos" title="platform, panel, overlay, cabinet run">${L("✓ finish-fit ok")}</span>
           ${(b.timing_rules || []).filter(r => r.code === "F3").map(r => `<br><span class="whychip neg" title="${r.text}">${L(AFF_EN[r.zh] || r.zh, r.zh)}</span>`).join("")}</td>
-      <td>${b.gate ? `<span class="whychip ${b.gate.valid ? "pos" : "neg"}" title="${b.gate.text}">${L((GATE_EN[b.gate.rank] || b.gate.rank) + (b.gate.guarded ? " · blocked (facing star 5)" : ""))}</span>` : ""}</td></tr>`;
+      <td role="cell" data-label="Gate">${b.gate ? `<span class="whychip ${b.gate.valid ? "pos" : "neg"}" title="${b.gate.text}">${L((GATE_EN[b.gate.rank] || b.gate.rank) + (b.gate.guarded ? " · blocked (facing star 5)" : ""))}</span>` : ""}</td></tr>`;
   }).join("");
   const AF = (h) => L(h, AFF_EN[h] || "");
   const grid = Object.entries(briefs).map(([rid, b]) => { const r = wrow[rid];
     const cell = (hits) => hits && hits.length ? `<div class="bad">${hits.map(AF).join(" ")}</div>` : `<div class="clean">${L("clean")}</div>`;
     return `<div>${b.label || rid}</div>${cell(r && r.now)}${cell(r && r.next)}`; }).join("");
   return `<div class="sec arted">${ART("motif-steps")}<h2>${L("Renovation")} <span class="hint">per room: colours · materials · lighting · works timing · hover any cell for its rule</span></h2>
-    <div style="overflow-x:auto"><table class="rtable"><tr><th>${L("Room")}</th><th>${L("palace · stars")}</th><th>${L("2-5", "二五")}</th><th>${L("USE", "宜")}</th><th>${L("AVOID", "忌")}</th><th>${L("Materials")}</th><th>${L("Lighting")}</th><th>${L("works " + wt.year, "动工")}</th><th>${L("Gate")}</th></tr>${rows}</table></div>
+    <table class="rtable" role="table"><thead role="rowgroup"><tr role="row"><th role="columnheader">${L("Room")}</th><th role="columnheader">${L("palace · stars")}</th><th role="columnheader">${L("2-5", "二五")}</th><th role="columnheader">${L("USE", "宜")}</th><th role="columnheader">${L("AVOID", "忌")}</th><th role="columnheader">${L("Materials")}</th><th role="columnheader">${L("Lighting")}</th><th role="columnheader">${L("works " + wt.year, "动工")}</th><th role="columnheader">${L("Gate")}</th></tr></thead><tbody role="rowgroup">${rows}</tbody></table>
     <div class="tgrid"><div class="th">${L("works")}</div><div class="th">${wt.year}</div><div class="th">${wt.next}</div>${grid}</div>
     <div class="hint" style="margin-top:6px">Grand Duke / Year Breaker / Three Killings / Five Yellow sectors: no breaking ground (动土: hacking, drilling, wet works) while afflicted; finish-fit proceeds. Start of Spring (立春) ≈ 4 Feb.</div>
     <details class="full"><summary>Full detail — room brief cards (colours, objects, bed & desk, lighting & timing), renovation timing table</summary>
@@ -1996,6 +2155,7 @@ function stageBlock(tag, cb) {
   }).join("");
   const art = `<img class="stage-art" src="/static/img/tools/kua-intro-600.jpg" width="600" height="400" alt="" aria-hidden="true" loading="lazy" decoding="async">`;
   return `<div class="sec stage"><div class="stage-left"><div class="stage-plan" style="aspect-ratio:${box[2]}/${box[3]}" data-box="${box.join(",")}" aria-hidden="true" inert></div>
+      <p class="lbl-key stage-key" aria-hidden="true" hidden></p>
       <div class="stage-dial" aria-hidden="true"><i class="sd"><i class="sn"></i></i><b></b></div></div>
     <div class="stage-chart"><h2>${tag}: ${cb.structure}
       ${cb.chart_type ? `<span class="hint">(${cb.chart_type})</span>` : ""}</h2>
@@ -2006,6 +2166,7 @@ function stageBlock(tag, cb) {
 function paintStage() {
   const host = document.querySelector("#results .stage-plan"), src = $("#wrap");
   if (!host || !src) return;
+  lblStageRefit = null; fitPlanLabels();                   // the stage copies the markers of the editable plan, so that is placed first
   const [bx, by, bw] = host.dataset.box.split(",").map(Number);
   const c = src.cloneNode(true);
   c.querySelectorAll(".bedov,.rh,.odtag,#door-pin").forEach(e => e.remove());
@@ -2014,7 +2175,8 @@ function paintStage() {
   c.style.cssText = `position:absolute;left:0;top:0;margin:0;width:${src.offsetWidth}px;height:${src.offsetHeight}px;transform-origin:0 0`;
   const im = c.querySelector("img"); if (im) { im.style.cssText = `display:block;width:${src.offsetWidth}px;height:${src.offsetHeight}px;max-width:none;max-height:none`; im.alt = ""; im.removeAttribute("loading"); }
   host.textContent = ""; host.appendChild(c);
-  const fit = () => { const z = host.clientWidth / bw; host.style.setProperty("--z", z.toFixed(3)); c.style.transform = `scale(${z}) translate(${-bx}px,${-by}px)`; };
+  const fit = () => { const z = host.clientWidth / bw; host.style.setProperty("--z", z.toFixed(3)); c.style.transform = `scale(${z}) translate(${-bx}px,${-by}px)`; fitRoomLabels(c, host, {forced: lblPlanMarkers || [], key: host.parentElement.querySelector(".lbl-key")}); };
+  lblStageRefit = () => { if (host.isConnected) fit(); };
   fit(); if (window.ResizeObserver) new ResizeObserver(fit).observe(host);
   const dial = document.querySelector("#results .stage-dial");
   if (dial) { dial.querySelector(".sn").style.rotate = ($("#needle") || {style: {}}).style.rotate || "0deg"; dial.querySelector("b").textContent = ($("#cp-val") || {}).textContent || ""; }

@@ -159,185 +159,53 @@
   "en": "What you will get: the baby's useful elements, a ranked shortlist, and a name card you can print. The card shown is fictional.",
   "zh": "你将得到什么：宝宝的用神五行、按分数排序的候选名单，以及可打印的名字卡。图中的名字卡为虚构。"
  },
- "baby.041": {
-  "en": "What the name builder returns",
-  "zh": "起名工具会给出什么"
+ "baby.131": {
+  "en": "Questions about the name builder",
+  "zh": "关于起名工具的常见问题"
  },
- "baby.042": {
-  "en": "The five scoring parts, the grades and the sound check.",
-  "zh": "五项评分、等级和读音检查。"
+ "baby.132": {
+  "en": "How names are scored, how Singapore and Malaysia names are handled, and where the method stops.",
+  "zh": "名字如何评分，新加坡和马来西亚的名字如何处理，以及这套方法的边界。"
  },
- "baby.043": {
-  "en": "Every name you build is scored out of 100 in five parts, and each part has a fixed weight:",
-  "zh": "你组合出的每个名字都按 100 分制、分五项评分，每项权重固定："
+ "baby.133": {
+  "en": "How is a name scored?",
+  "zh": "名字是怎么评分的？"
  },
- "baby.044": {
-  "en": "Useful god",
-  "zh": "用神"
+ "baby.136": {
+  "en": "What do the grades mean?",
+  "zh": "等级代表什么？"
  },
- "baby.045": {
-  "en": "37.5 (does each character carry an element your baby's BaZi chart needs:",
-  "zh": "37.5（每个字是否带有宝宝八字所需的五行："
+ "baby.138": {
+  "en": "What does the sound check look at?",
+  "zh": "读音检查看什么？"
  },
- "baby.046": {
-  "en": "Wood",
-  "zh": "木"
+ "baby.140": {
+  "en": "(CC BY-SA 4.0). The check also looks for English words the pinyin spelling reads as, since many Singapore and Malaysia children are addressed in English at school and at work.",
+  "zh": "筛选审核（CC BY-SA 4.0）。检查还会看拼音拼写在英文里读起来像什么词，因为不少新加坡和马来西亚的孩子，在学校和工作中都会被人用英文称呼。"
+ },
+ "baby.141": {
+  "en": "What do I get besides the score?",
+  "zh": "除了分数，还能得到什么？"
+ },
+ "baby.143": {
+  "en": "I only know our surname as Tan, Lim, Lee, Ng or Wong. What do I enter?",
+  "zh": "我只知道姓氏的拼写是 Tan、Lim、Lee、Ng 或 Wong，该填什么？"
+ },
+ "baby.145": {
+  "en": "How are strokes counted, and which time does the chart use?",
+  "zh": "笔画怎么数？命盘用哪个时间？"
+ },
+ "baby.147": {
+  "en": "What does a result look like?",
+  "zh": "结果是什么样子？"
+ },
+ "baby.148": {
+  "en": "How far can I trust the result?",
+  "zh": "这个结果有多可靠？"
  },
  "baby.047": {
   "en": "Fire",
   "zh": "火"
- },
- "baby.048": {
-  "en": "Earth",
-  "zh": "土"
- },
- "baby.049": {
-  "en": "Metal",
-  "zh": "金"
- },
- "baby.050": {
-  "en": "or",
-  "zh": "或"
- },
- "baby.051": {
-  "en": "Water",
-  "zh": "水"
- },
- "baby.052": {
-  "en": "Five Grids (",
-  "zh": "五格"
- },
- "baby.053": {
-  "en": "31.25 (the five stroke-count grids),",
-  "zh": "31.25（由笔画数算出的五个格），"
- },
- "baby.054": {
-  "en": "Three Talents (",
-  "zh": "三才"
- },
- "baby.055": {
-  "en": "18.75 (whether the elements of the heaven, person and earth grids support each other),",
-  "zh": "18.75（天格、人格、地格的五行是否相生），"
- },
- "baby.056": {
-  "en": "character meaning (",
-  "zh": "字义"
- },
- "baby.057": {
-  "en": "out of 10 (what the characters mean, in 16 meaning categories) and",
-  "zh": "满分 10（字的含义，分为 16 个含义类别），以及"
- },
- "baby.058": {
-  "en": "sound (",
-  "zh": "读音"
- },
- "baby.059": {
-  "en": "6.25 (tones, repeated sounds and unlucky homophones),",
-  "zh": "6.25（声调、重复的音和不吉利的谐音），"
- },
- "baby.060": {
-  "en": "gender fit (",
-  "zh": "性别契合"
- },
- "baby.061": {
-  "en": "6.25 (whether the characters suit a boy or a girl). The weights add up to 100. Two more figures sit beside the score:",
-  "zh": "6.25（这些字更适合男孩还是女孩）。各项权重相加为 100。分数旁边另有两个数字："
- },
- "baby.062": {
-  "en": "confidence (",
-  "zh": "可信度"
- },
- "baby.063": {
-  "en": "out of 10 (how far the engine can trust the element data behind each character). Neither adds to the score.",
-  "zh": "满分 10（引擎对每个字的五行资料有多大把握）。两者都不计入总分。"
- },
- "baby.064": {
-  "en": "The total maps to a grade:",
-  "zh": "总分对应的等级："
- },
- "baby.065": {
-  "en": "excellent (",
-  "zh": "上佳"
- },
- "baby.066": {
-  "en": "at 90 and above,",
-  "zh": "90 分及以上，"
- },
- "baby.067": {
-  "en": "good (",
-  "zh": "佳"
- },
- "baby.068": {
-  "en": "at 80 and above,",
-  "zh": "80 分及以上，"
- },
- "baby.069": {
-  "en": "fair (",
-  "zh": "可"
- },
- "baby.070": {
-  "en": "at 65 and above, and",
-  "zh": "65 分及以上，"
- },
- "baby.071": {
-  "en": "needs a second look (",
-  "zh": "待斟酌"
- },
- "baby.072": {
-  "en": "below 65. A strong sound hit caps the grade at needs a second look whatever the total.",
-  "zh": "低于 65 分。读音一旦命中严重问题，无论总分多少，等级最高只到“待斟酌”。"
- },
- "baby.073": {
-  "en": "The sound layer checks two things. It looks for Mandarin sound-alikes, characters that sound like an unlucky or rude word, and it checks the English reading of the pinyin, since many Singapore and Malaysia families raise children who will be addressed in English at school and at work. Beside the score you also get the Five Grids with their auspicious (",
-  "zh": "读音检查分两部分。一是找普通话里的谐音，即听起来像不吉利或粗俗词语的字；二是检查拼音的英文读法，因为不少新加坡和马来西亚的家庭，孩子在学校和工作中都会被人用英文称呼。除了分数，你还会看到五格的"
- },
- "baby.074": {
-  "en": ") or adverse (",
-  "zh": "或"
- },
- "baby.075": {
-  "en": ") verdicts, the element of every character, its Kangxi (",
-  "zh": "判断，每个字的五行，其"
- },
- "baby.076": {
-  "en": ") stroke count, a short reading of what the name suggests, and a shortlist of up to eight names you can compare.",
-  "zh": "笔画数，一段简短的名字寓意解读，以及最多八个名字的候选名单，方便你比较。"
- },
- "baby.077": {
-  "en": "How Singapore and Malaysia names are handled",
-  "zh": "新加坡和马来西亚的名字如何处理"
- },
- "baby.078": {
-  "en": "Romanised surnames, Kangxi strokes and true solar time.",
-  "zh": "罗马字母拼写的姓氏、康熙笔画与真太阳时。"
- },
- "baby.079": {
-  "en": "Families in Singapore and Malaysia usually know their surname by a Hokkien, Teochew or Cantonese romanisation such as Tan, Lim, Lee, Ng or Wong, while the scoring needs the Chinese character. Enter the Chinese surname you choose in the surname box (for example",
-  "zh": "新加坡和马来西亚的家庭，通常只知道姓氏的闽南话、潮州话或粤语拼写，如 Tan、Lim、Lee、Ng、Wong，而评分需要的是汉字。请在姓氏框里输入你选定的汉字姓氏（例如"
- },
- "baby.080": {
-  "en": ") and the builder uses that character for the stroke count and the grids. The romanised spelling on a passport is a spelling of the character, not a different surname, so pick the character your family writes.",
-  "zh": "），起名工具会用这个字计算笔画和五格。护照上的罗马字母拼写只是汉字的一种拼写，并不是另一个姓，所以请选你们家实际书写的那个字。"
- },
- "baby.081": {
-  "en": "The Five Grids use the",
-  "zh": "五格采用"
- },
- "baby.082": {
-  "en": "Kangxi",
-  "zh": "康熙"
- },
- "baby.083": {
-  "en": "stroke count from the Kangxi dictionary, which counts the traditional form of each character. The traditional",
-  "zh": "笔画数，出自《康熙字典》，按每个字的繁体字形计数。繁体的"
- },
- "baby.084": {
-  "en": "has more strokes than the simplified",
-  "zh": "笔画比简体的"
- },
- "baby.085": {
-  "en": ", so the builder counts the traditional form and shows you the strokes it used. The chart is calculated in true solar time for the birth city (Singapore unless you pick another), and a due date gives a provisional chart that you can recalculate after birth. Read",
-  "zh": "多，所以起名工具按繁体字形计数，并把所用的笔画数显示给你。命盘按出生城市的真太阳时计算（不选其他城市就默认新加坡），预产期给出的是暂定命盘，出生后可以重新计算。请阅读"
  },
  "baby.086": {
   "en": "how Chinese baby names are scored",
@@ -346,14 +214,6 @@
  "baby.087": {
   "en": "for the full method.",
   "zh": "，了解完整方法。"
- },
- "baby.088": {
-  "en": "Example output",
-  "zh": "示例结果"
- },
- "baby.089": {
-  "en": "Three fictional names for one fictional chart.",
-  "zh": "同一个虚构命盘的三个虚构名字。"
  },
  "baby.090": {
   "en": "Fictional example, computed by the engine.",
@@ -514,5 +374,169 @@
  "baby.128": {
   "en": "Validation",
   "zh": "验证方法"
+ },
+ "baby.149": {
+  "en": "Every name is scored out of 100 in five parts:",
+  "zh": "每个名字按 100 分制、分五项评分："
+ },
+ "baby.150": {
+  "en": "useful god",
+  "zh": "用神"
+ },
+ "baby.151": {
+  "en": "Five Grids (",
+  "zh": "五格"
+ },
+ "baby.152": {
+  "en": "Three Talents (",
+  "zh": "三才"
+ },
+ "baby.153": {
+  "en": "sound (",
+  "zh": "读音"
+ },
+ "baby.154": {
+  "en": "6.25 and",
+  "zh": "6.25，"
+ },
+ "baby.155": {
+  "en": "gender fit (",
+  "zh": "性别契合"
+ },
+ "baby.156": {
+  "en": "6.25. Useful god asks whether each character carries an element the baby's chart needs:",
+  "zh": "6.25。用神看每个字是否带有宝宝八字所需的五行："
+ },
+ "baby.157": {
+  "en": "Wood",
+  "zh": "木"
+ },
+ "baby.158": {
+  "en": "Earth",
+  "zh": "土"
+ },
+ "baby.159": {
+  "en": "Metal",
+  "zh": "金"
+ },
+ "baby.160": {
+  "en": "or",
+  "zh": "或"
+ },
+ "baby.161": {
+  "en": "Water",
+  "zh": "水"
+ },
+ "baby.162": {
+  "en": ". The Five Grids are five stroke-count grids. Three Talents asks whether the elements of the heaven, person and earth grids support each other. Sound covers tones, repeated sounds and unlucky homophones. Gender fit asks whether the characters suit a boy or a girl.",
+  "zh": "。五格是由笔画数算出的五个格。三才看天格、人格、地格的五行是否相生。读音看声调、重复的音和不吉利的谐音。性别契合看这些字更适合男孩还是女孩。"
+ },
+ "baby.163": {
+  "en": "Two more figures sit beside the score and do not add to it:",
+  "zh": "分数旁边另有两个数，都不计入总分："
+ },
+ "baby.164": {
+  "en": "character meaning (",
+  "zh": "字义"
+ },
+ "baby.165": {
+  "en": ", out of 10, which sorts what the characters mean into 16 categories, and",
+  "zh": "，满分 10，把字的含义分为 16 个含义类别；以及"
+ },
+ "baby.166": {
+  "en": "confidence (",
+  "zh": "可信度"
+ },
+ "baby.167": {
+  "en": ", out of 10, which shows how far the engine can trust the element data behind each character.",
+  "zh": "，满分 10，表示引擎对每个字的五行资料有多大把握。"
+ },
+ "baby.168": {
+  "en": "The total maps to a grade:",
+  "zh": "总分对应的等级："
+ },
+ "baby.169": {
+  "en": "excellent (",
+  "zh": "上佳"
+ },
+ "baby.170": {
+  "en": "at 90 and above,",
+  "zh": "90 分及以上，"
+ },
+ "baby.171": {
+  "en": "good (",
+  "zh": "佳"
+ },
+ "baby.172": {
+  "en": "at 80 and above,",
+  "zh": "80 分及以上，"
+ },
+ "baby.173": {
+  "en": "fair (",
+  "zh": "可"
+ },
+ "baby.174": {
+  "en": "at 65 and above, and",
+  "zh": "65 分及以上，"
+ },
+ "baby.175": {
+  "en": "needs a second look (",
+  "zh": "待斟酌"
+ },
+ "baby.176": {
+  "en": "below 65. A strong sound hit caps the grade at needs a second look, whatever the total.",
+  "zh": "低于 65 分。读音一旦命中严重问题，无论总分多少，等级最高只到“待斟酌”。"
+ },
+ "baby.177": {
+  "en": "Sound is checked by simple house rules: the tone pattern, repeated sounds, and Mandarin sound-alikes (Chinese words the name sounds like), in three strengths (same syllables and tones, same syllables with different tones, merged consonants). Severe words such as \"death\" (",
+  "zh": "读音按简单的内部规则检查：声调搭配、重复的音，以及普通话谐音（名字听起来像哪些中文词），分三档强度（音节与声调都相同、音节相同而声调不同、声母合并后相同）。出现严重的谐音词（例如"
+ },
+ "baby.178": {
+  "en": ") cap the grade whatever the tones. The word list was hand-reviewed from",
+  "zh": "）时，无论声调如何，评级都会设上限。词表由人工从"
+ },
+ "baby.179": {
+  "en": "You get the Five Grids with their auspicious (",
+  "zh": "你会看到五格及其"
+ },
+ "baby.180": {
+  "en": ") or adverse (",
+  "zh": "或"
+ },
+ "baby.181": {
+  "en": ") verdicts, the element of every character, its Kangxi (",
+  "zh": "判断，每个字的五行，其"
+ },
+ "baby.182": {
+  "en": ") stroke count, a short reading of what the name suggests, and a shortlist of up to eight names to compare.",
+  "zh": "笔画数，一段简短的名字寓意解读，以及最多八个名字的候选名单，方便你比较。"
+ },
+ "baby.183": {
+  "en": "Enter the Chinese character, for example",
+  "zh": "请填汉字，例如"
+ },
+ "baby.184": {
+  "en": ". Tan, Lim, Lee, Ng and Wong are Hokkien, Teochew or Cantonese spellings of a character, not different surnames, and the scoring needs the character itself. The builder uses it for the stroke count and the grids, so pick the one your family writes.",
+  "zh": "。Tan、Lim、Lee、Ng 和 Wong 是闽南话、潮州话或粤语对某个汉字的拼写，并不是另一个姓氏，而评分需要的是汉字本身。起名工具用它来计算笔画和五格，所以请填你家实际书写的那个字。"
+ },
+ "baby.185": {
+  "en": "The Five Grids use the Kangxi stroke count from the Kangxi dictionary, which counts the traditional form of each character. The traditional",
+  "zh": "五格采用《康熙字典》的康熙笔画数，按每个字的繁体字形计数。繁体的"
+ },
+ "baby.186": {
+  "en": "has more strokes than the simplified",
+  "zh": "笔画比简体的"
+ },
+ "baby.187": {
+  "en": ", so the builder counts the traditional form and shows you the strokes it used. The chart is calculated in true solar time for the birth city (Singapore unless you pick another). A due date gives a provisional chart that you can recalculate after birth. Read",
+  "zh": "多，所以起名工具按繁体字形计数，并把所用的笔画数显示给你。命盘按出生城市的真太阳时计算（不选其他城市则为新加坡）。预产期排出的是暂定命盘，宝宝出生后可以重新计算。请阅读"
+ },
+ "baby.188": {
+  "en": "This tool is a first screen, not a verdict. It ranks names by the BaZi (",
+  "zh": "本工具只是初步筛选，不是定论。它按"
+ },
+ "baby.189": {
+  "en": ") useful god elements, the Five Grids and Three Talents stroke methods, and a partly curated character list. The Five Grids are a modern school, not a classical rule, and element assignments and stroke counts differ between dictionaries and practitioners. Sound is checked by simple house rules and does not judge dialect readings, the zodiac animal or family naming rules. Meaning is screened only for clearly adverse characters. Treat the ranking as a shortlist for the family (and a practitioner) to review, not a verdict.",
+  "zh": "用神五行、五格与三才的笔画方法，以及一份经过部分人工整理的字表给名字排序。五格是近代流派，并非古典定则，五行归属和笔画数在不同字典和不同师傅之间也有出入。读音只按简单的内部规则检查，不判断方言读法、生肖或家族的起名规矩。字义只筛除明显不利的字。请把排序当作候选名单，交给家人（以及懂行的师傅）自己判断，而不是定论。"
  }
 }

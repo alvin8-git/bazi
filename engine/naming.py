@@ -313,12 +313,13 @@ def _universe() -> tuple:
 def slot_candidates(ys: dict, surname: str, given: list[str | None], slot: int,
                     els: list[str] | None = None, strokes: list[int] | None = None,
                     py: str = "", page: int = 1, per: int = 48,
-                    trad: dict | None = None, meaning: str | None = None, sex: str | None = None) -> dict:
+                    trad: dict | None = None, meaning: str | None = None, sex: str | None = None,
+                    py_exact: bool = False) -> dict:
     """Characters offered for one empty box of the name.
 
     `given` holds the chosen characters (None for an empty box); its length is the name
     length (1 or 2). Filters combine: `els` (default: the 用神 elements), `strokes`
-    (康熙 counts) and `py` (tone-free prefix). Without a pinyin query only element-tagged
+    (康熙 counts) and `py` (tone-free prefix; with `py_exact` the whole syllable, every tone). Without a pinyin query only element-tagged
     characters are listed; with one, untagged characters appear as 未定.
     Returns {total, tiles[], chips[] (top six stroke counts by reachable 吉), fav, slot}."""
     if not 1 <= len(given) <= 2 or not 0 <= slot < len(given):
@@ -342,7 +343,7 @@ def slot_candidates(ys: dict, surname: str, given: list[str | None], slot: int,
         if cat and cat not in (mtags.get(ch) or {}).get("tags", []):
             continue
         el = e.get("el")
-        if q and not pyn.startswith(q):
+        if q and not (pyn == q if py_exact else pyn.startswith(q)):
             continue
         if el:
             if want and el not in want:

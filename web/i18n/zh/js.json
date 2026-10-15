@@ -398,5 +398,29 @@
  "t.072": {
   "en": "Beside the score, not in it",
   "zh": "分数旁边，不计入总分"
+ },
+ "t.073": {
+  "en": "Showing exactly {q}",
+  "zh": "仅显示读音{q}"
+ },
+ "t.074": {
+  "en": "Showing syllables that start with your letters. Pause or press Enter for an exact match.",
+  "zh": "显示以你所输字母开头的读音。停顿片刻或按回车键，可精确匹配。"
+ },
+ "t.075": {
+  "en": "★ favourable elements are pre-selected. Switch any off to widen the list.",
+  "zh": "带 ★ 的有利五行已默认选中。取消任一项，可放宽名单范围。"
+ },
+ "t.076": {
+  "en": "This tool is a first screen, not a verdict.",
+  "zh": "本工具只是初步筛选，不是定论。"
+ },
+ "t.077": {
+  "en": "Treat the ranking as a shortlist for your family, and a practitioner, to review.",
+  "zh": "请把排序当作候选名单，交给家人和懂行的师傅审阅。"
+ },
+ "t.078": {
+  "en": "What it checks and where it stops",
+  "zh": "它检查什么，边界在哪里"
  }
 }
