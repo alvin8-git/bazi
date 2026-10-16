@@ -42,7 +42,7 @@ Score a name for your own baby: free name builder →
 
 ## Why does useful god carry the most weight?
 
-Because it is the part that comes from the child, not from the name. The useful god is the element the child's BaZi chart needs most, chosen by support and restrain (扶抑), climate adjustment (調候), bridging element (通關) and illness and remedy (病藥). See what a useful god is for how it is found. A character carries an element, and the engine gives each character a role score against the child's chart:
+Because it is the part that comes from the child, not from the name. The useful god is the element the child's BaZi chart needs most, chosen by support and restrain (扶抑), then climate adjustment (調候), with illness and remedy (病藥) reported beside them. See what a useful god is for how it is found. A character carries an element, and the engine gives each character a role score against the child's chart:
 
 - Useful god: 1.0
 

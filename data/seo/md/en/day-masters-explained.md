@@ -69,7 +69,7 @@ Strength asks whether the Day Master has enough support, or too much to carry. T
 
 - A numeric score. The engine combines these into one signed score (method note). Negative means weak (weak Day Master), positive means strong (strong Day Master, 身強).
 
-The strength verdict then drives the useful god (用神), the favourable elements. The engine uses four techniques, support and restrain (扶抑), climate adjustment (調候), bridging element (通關) and disease and remedy (病藥), and cites which one fired.
+The strength verdict then drives the useful god (用神), the favourable elements. The engine chooses with two techniques, support and restrain (扶抑) then climate adjustment (調候), reports disease and remedy (病藥) beside them, and cites which one fired. It does not apply bridging element (通關) to a single chart.
 
 See these rules applied to your own chart: free BaZi reading →
 
@@ -123,7 +123,7 @@ The engine works from corrected solar time, not clock time. For the sample, 09:3
 
 - Strength: the seasonal strength and rooting framework, with a numeric score (method note).
 
-- Favourable elements: the four useful god techniques support and restrain, climate adjustment, bridging element and illness and remedy, with 三命通會 as the classical source for stem relationships.
+- Favourable elements: the useful god techniques support and restrain then climate adjustment, with illness and remedy reported beside them (bridging element is not applied to a single chart), and 三命通會 as the classical source for stem relationships.
 
 - Time: the 子平 (classical BaZi school) true-solar-time convention, with the UTC+7:30 and UTC+8 Singapore offsets.
 

@@ -39,7 +39,7 @@ Ten gods | each stem's relation to the Day Master | Rob Wealth (劫財) 48.1 %, 
 
 Luck cycles | Yang men and yin women count forward (陽男陰女順行), luck-cycle start (起運) = days to the solar-term boundary (距節日數) / 3 | forward from 乙卯, start age 6.8 | 
 
-The useful god (用神) step uses the four classical methods (support-and-restrain method, climate-adjustment method, bridging element (通關), illness and remedy (病藥)) in a defined order. For the sample, the first two produced Fire and Earth as favourable and Wood (木), Water (水) and Metal (金) as unfavourable. A different order would be a different system, which is why the order is written down.
+The useful god (用神) step uses two classical methods in a defined order, the support-and-restrain method and then the climate-adjustment method, and reports illness and remedy (病藥) beside them. It does not apply bridging element (通關) to a single chart. For the sample, the two methods produced Fire and Earth as favourable and Wood (木), Water (水) and Metal (金) as unfavourable. A different order would be a different system, which is why the order is written down.
 
 See these rules applied to your own chart: free BaZi reading →
 
@@ -131,7 +131,7 @@ Local time rules are where determinism is tested hardest. The BaZi year turns at
 
 - Strength rule: seasonal strength with rooting (通根), in four steps.
 
-- Favourable elements: the four useful god methods, support-and-restrain method, climate-adjustment method, bridging element and illness and remedy.
+- Favourable elements: the support-and-restrain method then the climate-adjustment method, with illness and remedy reported beside them. Bridging element is not applied to a single chart.
 
 - Luck cycles: yang men and yin women count forward, yin men and yang women count backward (陰男陽女逆行), with luck-cycle start = days to the solar-term boundary / 3.
 

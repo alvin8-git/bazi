@@ -7,27 +7,27 @@ Updated: 2026-10-14
 BaZi Basics
 
 By BaziMaster 2026-09-16 Updated 2026-10-14
-A useful god is the element a BaZi chart needs most, chosen by rule from the balance of the Day Master and the season. Four classical methods find it: support and restrain (扶抑), climate adjustment (調候), bridging element (通關) and illness and remedy (病藥). Once it is known, it turns into practical choices such as colours, directions and room use.
+A useful god is the element a BaZi chart needs most, chosen by rule from the balance of the Day Master and the season. The engine picks it with two classical methods, in order: support and restrain (扶抑), then climate adjustment (調候). It also reports illness and remedy (病藥) beside them. A fourth classical method, bridging element (通關), is not applied to a single chart. Once the useful god is known, it turns into practical choices such as colours, directions and room use.
 
 ## How is the useful god chosen?
 
 After the Four Pillars are cast and the Day Master's strength is assessed, classical BaZi asks the most practical question in the system: which element does this chart need? The usual English, "useful god", is a little grand. "Operative element" is closer to the sense. Colours, directions, timing and even room choices in home feng shui flow from it.
 
-The classical toolkit has four techniques, and the engine cites which one it used:
+The classical toolkit has four techniques. The engine applies two of them to choose the useful god, reports a third beside them, and cites each one by number in its result:
 
 - Support and restrain is the workhorse. A weak Day Master is supported by the element that generates it (resource, 印, the resource) and the element that matches it (peers, 比劫, peers). A strong one is drained or disciplined by output (食傷), wealth (財) or authority (官殺).
 
 - Climate adjustment looks at the season. A chart born in deep winter may need fire regardless of strength, and a blazing summer chart may need water. Season can override arithmetic when the imbalance is extreme. In four cells of the 窮通寶鑑 table the book's first choice is the opposite element (a 丙 Day Master in the 子 or 丑 month, 辛 in 亥, 庚 in 未), and there the engine follows the book.
 
-- Bridging element applies when two camps of elements deadlock. The element that mediates between them unlocks the chart.
+- Illness and medicine applies when one element dominates and distorts the chart. The element that checks it is the cure. The engine reports it beside the choice: it names the one strain the chart carries and the element that cures it, and says whether support and restrain agrees. It never changes the choice, because support and restrain leads.
 
-- Illness and medicine applies when one element dominates and distorts the chart. The element that checks it is the cure.
+- Bridging element applies when two camps of elements deadlock, and the element that mediates between them unlocks the chart. The engine does not apply it to a single chart. It uses it only between two charts, in the pair report, to bridge a six clash (六沖).
 
 These are written rules, and two practitioners applying them honestly reach the same answer. That is why a deterministic engine can compute the useful god and name the technique behind it. The strength framework underneath is how strong each element is in the birth month (旺相休囚死) together with whether the Day Master has roots in the branches (通根).
 
 Key facts
 
-- The useful god is found by 4 techniques: support and restrain, climate adjustment, bridging element and illness and remedy.
+- The engine chooses the useful god with 2 techniques in order, support and restrain then climate adjustment, reports illness and remedy beside them, and does not apply bridging element to a single chart.
 - The five elements each have 2 colour families in the engine: wood green (綠) teal (青), fire red (紅) purple (紫), earth yellow (黃) brown (棕), metal white (白) Metal (金), water black (黑) blue (藍).
 - In the engine's naming score, a name character that matches the useful god earns 1.0, a favourable (喜) element 0.7, a neutral one 0.3 and a unfavourable (忌) element 0.0.
 - The sample chart 戊辰 (Earth Dragon) 乙卯 (Wood Rabbit) 己巳 (Earth Snake) 戊辰 has a weak Day Master 己 (score -0.97), and its useful gods are fire and earth.
@@ -97,7 +97,7 @@ The same labels carry across the site. In the baby name builder, each character 
 
 ### What is a useful god in BaZi?
 
-A useful god is the element a BaZi chart needs most, chosen by rule from the balance of the Day Master and the season. Four classical methods find it: support and restrain, climate adjustment, bridging element and illness and remedy. It then turns into colours, directions and room use.
+A useful god is the element a BaZi chart needs most, chosen by rule from the balance of the Day Master and the season. The engine uses support and restrain, then climate adjustment, and reports illness and remedy beside them. It does not apply bridging element to a single chart. The result then turns into colours, directions and room use.
 
 ### How do I find my lucky colours from BaZi?
 
@@ -117,7 +117,7 @@ Common mistakes include guessing from the Day Master alone, treating the zodiac 
 
 ## Sources and method
 
-- Choosing the useful god: support and restrain, climate adjustment, bridging element and illness and remedy (the four useful-god methods, 用神四法), cited by number in the engine's result.
+- Choosing the useful god: support and restrain, then climate adjustment, with illness and remedy reported beside them (three of the four useful-god methods, 用神四法). The fourth, bridging element, is listed in the engine's result as not used on a single chart. Each is cited by number in the result.
 
 - Weak or strong Day Master: the seasonal strength and rooting framework, scored numerically (method note).
 

@@ -125,7 +125,7 @@ A time of "around 9" can sit in two different two-hour periods. If the hour is u
 
 - Day Master strength: the seasonal strength and rooting framework, with a numeric score (method note).
 
-- Favourable elements: the useful god four methods support and restrain (扶抑), climate adjustment (調候), bridging element (通關) and illness and remedy (病藥), numbered 1 to 4 in the engine's citations (support and restrain is technique 1, climate adjustment technique 2).
+- Favourable elements: the useful god methods support and restrain (扶抑) then climate adjustment (調候), numbered 1 and 2 in the engine's citations, with illness and remedy (病藥) reported beside them. Bridging element (通關) is not applied to a single chart.
 
 - Ten stems, branches and their combinations: 三命通會 (Ming-era BaZi classic), in the chapters the engine cites on stem pairing, clashes and combinations.
 
