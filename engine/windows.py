@@ -16,7 +16,7 @@ Deterministic, no LLM; every flag carries its rule in the note.
 from __future__ import annotations
 
 from .bazi import ten_god
-from .shensha import TRINE_STARS, WENCHANG, XUETANG, ten_god_pct
+from .shensha import TRINE_STARS, WENCHANG, XUETANG, is_gonghe, ten_god_pct
 from .domains import VAULT, health_map
 from .liunian import taisui_finding, year_element_read, year_ganzhi
 from .wuxing import (BRANCH_ELEMENT, CHONG_MAP, HE_MAP, HIDDEN_STEMS, KE,
@@ -105,7 +105,8 @@ def _year_row(chart, ys, hm_excess, hm_weak, y, decade_score, lang: str = "en") 
     # career — month pillar activation vs clash, officer arrival
     if CHONG_MAP.get(br) == month_br:
         career = dim("caution", T("windows._year_row.01", f"年支{br} 沖 month pillar {month_br} — don't force career moves", lang, br=br, month_br=month_br))
-    elif HE_MAP.get(br) == month_br or (br in _TRINE.get(month_br, set()) and br != month_br):
+    # a half trine with no cardinal branch (拱合) is an incomplete link, listed in the natal interactions but never counted, so it is not a 合 year (owner, 2026-10-10; 2026-10-16)
+    elif HE_MAP.get(br) == month_br or (br in _TRINE.get(month_br, set()) and br != month_br and not is_gonghe(br, month_br)):
         he_el = _he_element(br, month_br)
         if he_el in unfav:
             career = dim("caution", T("windows._year_row.02", f"年支{br} 合 month pillar but 合化{he_el} feeds an "
@@ -143,7 +144,7 @@ def _year_row(chart, ys, hm_excess, hm_weak, y, decade_score, lang: str = "en") 
         rel = dim("caution", T("windows._year_row.13", f"年支{br} 沖 spouse palace {day_br} — relationships need extra care", lang, br=br, day_br=day_br))
     elif br == th:
         rel = dim("window", T("windows._year_row.14", f"桃花 year ({br}) — social magnetism and relational openings", lang, br=br))
-    elif HE_MAP.get(br) == day_br or (br in _TRINE.get(day_br, set()) and br != day_br):
+    elif HE_MAP.get(br) == day_br or (br in _TRINE.get(day_br, set()) and br != day_br and not is_gonghe(br, day_br)):      # 拱合: not a 合 year (see career above)
         he_el = _he_element(br, day_br)
         if he_el in unfav:
             rel = dim("caution", T("windows._year_row.15", f"年支{br} 合 spouse palace but 合化{he_el} is unfavourable — "

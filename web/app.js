@@ -670,6 +670,7 @@ const READING_EN = {
   "appjs.interactionsLine.011": "none a clash",
   "appjs.interactionsLine.012": "watch the clash",
   "appjs.interactionsLine.013": "quiet friction, not rupture",
+  "appjs.interactionsLine.014": "Half trine without a cardinal branch (拱合) in {list}: an incomplete link, noted here but not counted.",
   "appjs.ansQ.001": "Why: {name}",
   "appjs.pWhy.001": "Why the chart says this",
   "appjs.pSeal.001": "Your four pillars, year to hour: {PILLAR_KEYS_map}",
@@ -2050,6 +2051,9 @@ function pillarGrid(c, extrasOnly) {   // owner pick 2026-10-10: characters only
 }
 const GLOSS_IX = { 六害: RS("appjs.GLOSS_IX.六害"), 害: RS("appjs.GLOSS_IX.六害"), 冲: RS("appjs.GLOSS_IX.冲"), 六冲: RS("appjs.GLOSS_IX.冲"), 刑: RS("appjs.GLOSS_IX.刑"),
   破: RS("appjs.GLOSS_IX.破"), 六合: RS("appjs.GLOSS_IX.六合"), 三合: RS("appjs.GLOSS_IX.六合"), 半合: RS("appjs.GLOSS_IX.半合") };
+/* a half trine with no cardinal branch (子午卯酉) is 拱合: an incomplete link, listed and drawn but never counted (owner, 2026-10-10; engine.shensha.is_gonghe) */
+const isGonghe = (it) => it.kind === "半合" && !/[子午卯酉]/.test(it.pair);
+const ixKind = (it) => (isGonghe(it) ? "拱合" : it.kind);
 function interactionsSvg(c) {
   const order = ["hour", "day", "month", "year"], zh = { hour: "时", day: "日", month: "月", year: "年" };
   const xs = {}; order.forEach((k, i) => (xs[k] = 80 + i * 160));
@@ -2060,28 +2064,29 @@ function interactionsSvg(c) {
   let s = "", minY = NY - R - 10, maxY = NY + 48;
   its.forEach((it, i) => {
     const [a, b] = it.pillars; const [x1, x2] = [xs[a], xs[b]].sort((p, q) => p - q);
-    const h = 40 + 28 * (x2 - x1) / 160, good = it.kind.includes("合"), col = good ? "#0e7a6a" : "#99460a";
+    const gh = isGonghe(it), h = 40 + 28 * (x2 - x1) / 160, good = !gh && it.kind.includes("合"), col = gh ? "#6b6359" : good ? "#0e7a6a" : "#99460a";
     const below = its.length >= 3 && i % 2 === 1;   // alternate sides once three arcs share the strip
     const y0 = below ? NY + R : NY - R, ctl = below ? y0 + h * 1.6 : y0 - h * 1.6;
-    const text = many ? it.kind : `${it.kind} ${it.pair}`;
+    const text = many ? ixKind(it) : `${ixKind(it)} ${it.pair}`;
     const lx = (x1 + x2) / 2, half = text.length * 11.5;
     let ly = below ? y0 + h * 0.8 + 22 : y0 - h * 0.8 - 8;
     while (boxes.some(([px, py, ph]) => Math.abs(px - lx) < half + ph && Math.abs(py - ly) < 26)) ly += below ? 26 : -26;
     boxes.push([lx, ly, half]); minY = Math.min(minY, ly - 24); maxY = Math.max(maxY, ly + 6);
     s += `<path d="M${x1} ${y0} Q${lx} ${ctl.toFixed(0)} ${x2} ${y0}" fill="none" stroke="${col}"
-      stroke-width="2.5"${good ? "" : ' stroke-dasharray="5 4"'}/>
+      stroke-width="2.5"${gh ? ' stroke-dasharray="2 4"' : good ? "" : ' stroke-dasharray="5 4"'}/>
       <text x="${lx}" y="${ly.toFixed(0)}" text-anchor="middle" font-size="22" font-weight="700" fill="${col}">${text}</text>`;
   });
   order.forEach((k) => { const br = c.pillars[k][1], col = EL_COL[BR_EL[br]], x = xs[k];
     s += `<circle cx="${x}" cy="${NY}" r="${R}" fill="#fff" stroke="${col}" stroke-width="2.5"/>
       <text x="${x}" y="${NY + 9}" text-anchor="middle" font-size="26" font-weight="700" fill="${col}">${br}</text>
       <text x="${x}" y="${NY + 44}" text-anchor="middle" font-size="15" fill="#6b6359">${IS_ZH ? WD("pen." + k) : k}</text>`; });
-  const legend = many ? `<div class="ixlegend">${its.map((it) => `${RS("appjs.interactionsSvg.001", {it_kind: it.kind.includes("合") ? "#0e7a6a" : "#99460a", it_kind_2: it.kind, it_pair: it.pair, it_pillars: it.pillars.map((k) => (IS_ZH ? WD("pen." + k) : k)).join("+")})}`).join("")}</div>` : "";
+  const legend = many ? `<div class="ixlegend">${its.map((it) => `${RS("appjs.interactionsSvg.001", {it_kind: isGonghe(it) ? "#6b6359" : it.kind.includes("合") ? "#0e7a6a" : "#99460a", it_kind_2: ixKind(it), it_pair: it.pair, it_pillars: it.pillars.map((k) => (IS_ZH ? WD("pen." + k) : k)).join("+")})}`).join("")}</div>` : "";
   return `<svg class="ixsvg" viewBox="0 ${minY.toFixed(0)} 640 ${(maxY - minY).toFixed(0)}" role="img" aria-label="${RS("appjs.interactionsSvg.002")}">${s}</svg>${legend}`;
 }
 function interactionsLine(c) {
-  const its = c.interactions || [], n = its.length;
-  if (!n) return RS("appjs.interactionsLine.001");
+  const all = c.interactions || [], gong = all.filter(isGonghe), its = all.filter((it) => !isGonghe(it)), n = its.length;
+  const noted = gong.length ? " " + RS("appjs.interactionsLine.014", {list: listAnd(gong.map((it) => it.pair.split("").map(elc).join("")))}) : "";   // 拱合: listed, never counted
+  if (!n) return RS("appjs.interactionsLine.001") + noted;
   const seen = new Map();
   its.forEach((it) => { const k = it.kind + "|" + it.pair.split("").sort().join(""); seen.set(k, (seen.get(k) || 0) + 1); });
   const tail = [...seen.entries()].map(([k, cnt]) => { const [kind, pair] = k.split("|");
@@ -2090,7 +2095,7 @@ function interactionsLine(c) {
   const clash = its.some((it) => it.kind.includes("冲"));
   const words = ["", RS("appjs.interactionsLine.003"), RS("appjs.interactionsLine.004"), RS("appjs.interactionsLine.005"), RS("appjs.interactionsLine.006"), RS("appjs.interactionsLine.007"), RS("appjs.interactionsLine.008")];
   const list = listAnd(tail);
-  return `${RS("appjs.interactionsLine.009", {words_n: words[n] || n, n_tension: n === 1 ? WD("tension") : WD("tensions"), clash_one: clash ? RS("appjs.interactionsLine.010") : RS("appjs.interactionsLine.011"), list: list, clash_watch: clash ? RS("appjs.interactionsLine.012") : RS("appjs.interactionsLine.013")})}`;
+  return `${RS("appjs.interactionsLine.009", {words_n: words[n] || n, n_tension: n === 1 ? WD("tension") : WD("tensions"), clash_one: clash ? RS("appjs.interactionsLine.010") : RS("appjs.interactionsLine.011"), list: list, clash_watch: clash ? RS("appjs.interactionsLine.012") : RS("appjs.interactionsLine.013")})}${noted}`;
 }
 function eflowsList(c) {
   const er = c.element_relations; if (!er) return "";
@@ -2157,11 +2162,11 @@ function buildPillars(c, R) {
     facts: [[c.strength.verdict.split(" ")[0], `${RS("appjs.buildPillars.006", {c_strength_score: c.strength.score})}`]],   // 格局 is explained in plain words under the structure check
     legend: legendList("chart") });
   const its = c.interactions || [], kinds = {};
-  its.forEach((it) => (kinds[it.kind] = (kinds[it.kind] || 0) + 1));
+  its.forEach((it) => (kinds[ixKind(it)] = (kinds[ixKind(it)] || 0) + 1));
   const p6 = rdFig({ tier: "secondary", span: 5, label: RS("appjs.buildPillars.007"), learn: "chart",
     chart: interactionsSvg(c), line: interactionsLine(c),
     facts: [...Object.entries(kinds).map(([k, n]) => [k, `×${n}`]), ...(its.some((i) => i.kind.includes("冲")) ? [] : [["冲", WD("none")]])],
-    legend: `${RS("appjs.buildPillars.008", {its_length: its.length ? "<hr>" + its.map((i) => `<div><b>${i.pair} ${i.kind}</b> (${i.pillars.map((k) => (IS_ZH ? WD("pen." + k) : k)).join("+")}): ${i.note}</div>`).join("") : ""})}` });
+    legend: `${RS("appjs.buildPillars.008", {its_length: its.length ? "<hr>" + its.map((i) => `<div><b>${i.pair} ${ixKind(i)}</b> (${i.pillars.map((k) => (IS_ZH ? WD("pen." + k) : k)).join("+")}): ${i.note}</div>`).join("") : ""})}` });
   // Four Palaces retired 2026-10-10: the four sides in the opening carry each palace (owner cut)
   // Which Way to Face retired 2026-10-10: it repeated the Compass 3×3 grid (owner cut)
   let p5 = "";
@@ -2968,14 +2973,15 @@ function renderForecastTab() {
         <div class="cite" style="margin:0 0 6px">Each coming year's branch is checked
           against the four natal branches: 沖 clash / 刑 punishment score 2, 害 harm 1
           — total ≥3 reads high volatility, 1–2 moderate, 0 steady. 合/半合 contacts are
-          listed as support. Volatile ≠ bad: it marks years to decide slowly and put
+          listed as support; a half trine without a cardinal branch (拱合) is noted but not counted. Volatile ≠ bad: it marks years to decide slowly and put
           agreements in writing.</div>
         <table><tr><th>Year</th><th>Verdict</th><th>Interactions</th><th>Elements</th><th>Advice</th></tr>
           ${f.outlook.map((o) => `<tr>
             <td><b>${o.year} ${o.gz}</b></td>
             <td class="${o.verdict === "high volatility" ? "bad" : o.verdict === "steady" ? "good" : ""}">${o.verdict}</td>
             <td>${o.events.map((e) => `<span class="tag warn">${e}</span>`).join(" ")}
-                ${o.support.map((s) => `<span class="tag">${s}</span>`).join(" ")}</td>
+                ${o.support.map((s) => `<span class="tag">${s}</span>`).join(" ")}
+                ${(o.noted || []).map((s) => `<span class="tag" style="opacity:.75">${s}</span>`).join(" ")}</td>
             <td>${o.elements.join("<br>")}</td>
             <td class="sub">${o.advice}</td></tr>`).join("")}
         </table></div>`);

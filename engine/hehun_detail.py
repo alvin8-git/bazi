@@ -870,7 +870,9 @@ def sweep_matrix(ca, cb, scored_cells: dict | None = None) -> list[list[dict]]:
             row.append({"pillar_a": pa, "pillar_b": pb, "branch_a": ba, "branch_b": bb,
                         "element_a": BRANCH_ELEMENT.get(ba, ""), "element_b": BRANCH_ELEMENT.get(bb, ""),
                         "relation": r[0] if r else None, "bond": bool(r and r[1] > 0),
-                        "scored": frozen or bool(pts), "points": pts if not frozen else None})
+                        "scored": frozen or bool(pts), "points": pts if not frozen else None,
+                        # 拱合 (a half trine with no cardinal branch): drawn, never counted, so the page must not paint it as a bond; the key exists only on those cells
+                        **({"gonghe": True} if r and r[0] == "半三合" and is_gonghe(ba, bb) else {})})
         out.append(row)
     return out
 

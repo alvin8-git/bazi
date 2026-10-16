@@ -2782,5 +2782,9 @@
 "appjs.buildGods.046b": {
 "en": "{top_en} has the highest standing among the life areas weighed here, which all read alike, with a score of {top_score}; your heaviest signal is {heavyName_toLowerCase}: {heavy}%, {inPal_heavy} {heavy_2}.",
 "zh": "{top_en} 在本解读所衡量的人生领域中位次最高（它们属于同一档），得分 {top_score}；你最重的信号是 {heavyName_toLowerCase}，占 {heavy}%，{inPal_heavy}{heavy_2}。"
+},
+"appjs.interactionsLine.014": {
+"en": "Half trine without a cardinal branch (拱合) in {list}: an incomplete link, noted here but not counted.",
+"zh": "{list} 中的半合不含子午卯酉（拱合）：连结不完整，仅记录，不计入。"
 }
 }

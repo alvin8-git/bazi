@@ -209,16 +209,20 @@ def _mxo_trine():
     return _TRINE
 
 
+_GONGHE_NOTE = "half trine without a cardinal branch (拱合): an incomplete link, noted here but not counted"
+
+
 def multi_year_outlook(chart: Chart, ys: dict, start_year: int, n: int = 5) -> list[dict]:
     """Year-by-year volatility read: the coming years' branches vs the natal
-    branches (沖/刑/自刑 = 2 pts, 害 = 1 pt; 合/半合 listed as support).
+    branches (沖/刑/自刑 = 2 pts, 害 = 1 pt; 合/半合 listed as support). A half trine with no cardinal branch (拱合) is listed under `noted`
+    (only when there is one), never as support: an incomplete link, noted but not counted (owner, 2026-10-10; 2026-10-16).
     Verdict: ≥3 high volatility, 1–2 moderate movement, 0 steady."""
-    from .shensha import _SELF_XING, _TRINE, _XING_PAIRS
+    from .shensha import _SELF_XING, _TRINE, _XING_PAIRS, is_gonghe
     natal = {pos: chart.pillars[pos].branch for pos in ("year", "month", "day", "hour")}
     rows = []
     for y in range(start_year, start_year + n):
         st, yb = year_ganzhi(y)
-        events, support, pts = [], [], 0
+        events, support, noted, pts = [], [], [], 0
         # 大運×流年 echo: the active luck pillar's branch vs the year branch
         age = y - chart.birth_local.year
         luck = next((d for d in chart.dayun if d.covers(age)), None)
@@ -235,7 +239,7 @@ def multi_year_outlook(chart: Chart, ys: dict, start_year: int, n: int = 5) -> l
             elif HE_MAP.get(lb) == yb:
                 support.append(f"大運{lb}-{yb} 合 (luck)")
             elif _mxo_trine().get(lb) is not None and _mxo_trine().get(lb) == _mxo_trine().get(yb):
-                support.append(f"大運{lb}-{yb} 半合 (luck)")
+                (noted if is_gonghe(lb, yb) else support).append(f"大運{lb}-{yb} " + (_GONGHE_NOTE + " (luck)" if is_gonghe(lb, yb) else "半合 (luck)"))
         for pos, nb in natal.items():
             if CHONG_MAP.get(nb) == yb:
                 events.append(f"{nb}-{yb} 沖 ({pos})"); pts += 2
@@ -248,7 +252,7 @@ def multi_year_outlook(chart: Chart, ys: dict, start_year: int, n: int = 5) -> l
             elif HE_MAP.get(nb) == yb:
                 support.append(f"{nb}-{yb} 合 ({pos})")
             elif nb != yb and _TRINE.get(nb) is not None and _TRINE.get(nb) == _TRINE.get(yb):
-                support.append(f"{nb}-{yb} 半合 ({pos})")
+                (noted if is_gonghe(nb, yb) else support).append(f"{nb}-{yb} " + (_GONGHE_NOTE + f" ({pos})" if is_gonghe(nb, yb) else f"半合 ({pos})"))
         verdict = ("high volatility" if pts >= 3 else
                    "moderate movement" if pts >= 1 else "steady")
         els = []
@@ -257,7 +261,7 @@ def multi_year_outlook(chart: Chart, ys: dict, start_year: int, n: int = 5) -> l
             els.append(f"{ELEMENT_EN[e]} {e} {flag}")
         rows.append({"year": y, "gz": st + yb, "verdict": verdict, "points": pts,
                      "events": events, "support": support, "elements": els,
-                     "advice": _OUTLOOK_ADVICE[verdict]})
+                     "advice": _OUTLOOK_ADVICE[verdict], **({"noted": noted} if noted else {})})
     return rows
 
 

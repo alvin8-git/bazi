@@ -520,7 +520,7 @@ def build_report(year: int, period: int, month: int | None = None,
                  + "".join(
             f'<tr><td>{o["year"]} {o["gz"]}</td>'
             f'<td class="{"bad" if o["verdict"] == "high volatility" else "good" if o["verdict"] == "steady" else ""}">{o["verdict"]}</td>'
-            f'<td class="sub">{"; ".join(o["events"] + o["support"]) or "—"}</td></tr>'
+            f'<td class="sub">{"; ".join(o["events"] + o["support"] + o.get("noted", [])) or "—"}</td></tr>'
             for o in multi_year_outlook(charts[m.name], ys_map[m.name], year))
                  + "</table>")
 
