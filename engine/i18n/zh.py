@@ -950,8 +950,6 @@ ZH = {
     "domains.life_domains.44": "印星突出",
     "domains.life_domains.45": "印星具备",
     "domains.life_domains.46": "文昌/学堂，主学业",
-    "domains.life_domains.47": "华盖，主深思",
-    "domains.life_domains.48": "食伤的表达有助学习",
     "domains.life_domains.49": "体质",
     "domains.life_domains.50": "五行平衡得当",
     "domains.health_map.01": "过旺",

@@ -8,14 +8,14 @@ the same call with lang="zh": it changes the words, never the pick.
 
 The order, strongest first:
   1. band word: prominent above balanced above needs support. The word is the one the area already shows (engine/domains.py, from
-     band_word: percentile cuts 75 / 25, learning on the fixed 70 / 45 cut-offs), read, never recomputed, so no band cut moves.
+     band_word: percentile cuts 75 / 25, for all six areas since D2, 2026-10-16), read, never recomputed, so no band cut moves.
   2. percentile inside a band (the standing among charts); with no reference file, the score stands in for it.
   3. the raw score.
   4. a fixed area order (AREA_ORDER), so two areas that tie on all three still come out the same way every time: the earlier
      area in AREA_ORDER ranks higher, which also makes the later one the weakest of an exact tie.
-Why band first: learning's word comes from fixed cut-offs and every other area's from its percentile, so a percentile-only ranking called
-a "prominent" learning score (73, percentile 15) the weakest area. A band is the page's own claim about an area; the ranking may not
-contradict it.
+Why band first: until D2 (2026-10-16) learning's word came from fixed cut-offs and every other area's from its percentile, so a percentile-only ranking
+called a "prominent" learning score (73, percentile 15) the weakest area. Every word now reads the percentile, so a word and a percentile can no longer
+disagree; the ranking still reads the word it is given. A band is the page's own claim about an area; the ranking may not contradict it.
 
 Who is ranked (AREAS_FOR), decided once, the story's age-voice set, for every surface:
   child  learning, health                   no money advice under 18 (owner 2026-10-10), and a child's reading does not weigh love,

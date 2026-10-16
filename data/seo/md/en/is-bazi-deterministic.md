@@ -2,11 +2,11 @@
 
 Canonical: https://bazifor.me/learn/is-bazi-deterministic
 Language: en
-Updated: 2026-10-09
+Updated: 2026-10-16
 
 BaZi Basics
 
-By BaziMaster 2026-09-16 Updated 2026-10-09
+By BaziMaster 2026-09-16 Updated 2026-10-16
 BaZi is deterministic in its calculation and rule-guided in its interpretation. The pillars, strength score, favourable elements, ten gods and luck cycles all follow written rules. The same birth data therefore gives the same result every time.
 
 ## Which parts of a BaZi reading are deterministic?
@@ -63,7 +63,7 @@ What a weak Earth Day Master with heavy authority stars means for a career is in
 
 So the interpretive layer is written by people, in advance, and applied by rule. A sentence in a reading can be traced to a pattern, and the pattern can be argued with. That is a different thing from text produced fresh each time.
 
-Some parts are weaker still, and the engine says so. The life-domain scores, such as learning at 70 and constitution at 26, are labelled a modern synthesis of star shares, symbolic stars and palace checks. They are rule-derived, but they are not classical doctrine (method note).
+Some parts are weaker still, and the engine says so. The life-domain scores, such as learning at 65 and constitution at 67, are labelled a modern synthesis of star shares, symbolic stars and palace checks. They are rule-derived, but they are not classical doctrine (method note).
 
 ## Where do schools disagree?
 

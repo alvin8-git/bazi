@@ -1,0 +1,371 @@
+{
+ "areas": {
+  "attraction": {
+   "29": 9,
+   "34": 52,
+   "35": 18,
+   "39": 24,
+   "40": 197,
+   "44": 103,
+   "45": 81,
+   "49": 78,
+   "50": 681,
+   "54": 181,
+   "55": 466,
+   "59": 119,
+   "60": 1727,
+   "64": 133,
+   "65": 999,
+   "69": 97,
+   "70": 2228,
+   "74": 41,
+   "75": 1045,
+   "79": 46,
+   "80": 440,
+   "85": 1235
+  },
+  "career": {
+   "35": 70,
+   "40": 320,
+   "45": 443,
+   "50": 543,
+   "51": 106,
+   "55": 500,
+   "56": 72,
+   "60": 461,
+   "61": 335,
+   "65": 1179,
+   "66": 180,
+   "70": 1120,
+   "71": 60,
+   "75": 1536,
+   "76": 19,
+   "80": 720,
+   "81": 151,
+   "85": 378,
+   "86": 46,
+   "90": 294,
+   "95": 1467
+  },
+  "health": {
+   "35": 53,
+   "40": 381,
+   "43": 3,
+   "45": 264,
+   "46": 6,
+   "48": 368,
+   "51": 80,
+   "53": 1832,
+   "54": 2,
+   "56": 11,
+   "58": 3499,
+   "59": 113,
+   "61": 87,
+   "64": 1431,
+   "66": 805,
+   "67": 143,
+   "72": 922
+  },
+  "learning": {
+   "38": 21,
+   "41": 41,
+   "43": 19,
+   "44": 118,
+   "47": 206,
+   "49": 88,
+   "50": 323,
+   "53": 58,
+   "54": 28,
+   "56": 62,
+   "58": 24,
+   "59": 235,
+   "60": 240,
+   "62": 341,
+   "64": 57,
+   "65": 652,
+   "69": 47,
+   "70": 843,
+   "74": 84,
+   "75": 1598,
+   "80": 743,
+   "85": 1569,
+   "90": 2603
+  },
+  "stability": {
+   "10": 25,
+   "12": 333,
+   "16": 383,
+   "20": 153,
+   "25": 46,
+   "27": 385,
+   "28": 22,
+   "30": 621,
+   "31": 355,
+   "32": 224,
+   "34": 234,
+   "35": 133,
+   "36": 209,
+   "37": 310,
+   "38": 50,
+   "40": 219,
+   "41": 321,
+   "42": 379,
+   "45": 570,
+   "46": 394,
+   "47": 181,
+   "48": 268,
+   "50": 570,
+   "51": 191,
+   "54": 116,
+   "55": 532,
+   "57": 205,
+   "58": 86,
+   "60": 455,
+   "61": 185,
+   "62": 256,
+   "65": 467,
+   "66": 199,
+   "68": 195,
+   "70": 126,
+   "75": 266,
+   "80": 336
+  },
+  "wealth": {
+   "25": 142,
+   "30": 58,
+   "35": 306,
+   "40": 99,
+   "45": 977,
+   "50": 342,
+   "55": 2612,
+   "60": 835,
+   "65": 1716,
+   "70": 603,
+   "75": 992,
+   "80": 587,
+   "85": 500,
+   "90": 231
+  }
+ },
+ "base_commit": "97c9cf9",
+ "engine_version": "life-areas-v6",
+ "generator": "scripts/build_area_reference.py v5",
+ "note": "Fictional charts only. Relative standing among charts, not strength. Never regenerate silently: a rule change means a new version.",
+ "percentile": "mid-rank: (charts scoring below + half the charts scoring equal) / n, rounded to a whole number 0 to 100",
+ "probe": [
+  {
+   "scores": {
+    "attraction": 60,
+    "career": 50,
+    "health": 66,
+    "learning": 85,
+    "stability": 48,
+    "wealth": 60
+   },
+   "sex": "F",
+   "when": "2000-06-26 23:16"
+  },
+  {
+   "scores": {
+    "attraction": 55,
+    "career": 90,
+    "health": 53,
+    "learning": 75,
+    "stability": 57,
+    "wealth": 65
+   },
+   "sex": "F",
+   "when": "2007-05-25 11:59"
+  },
+  {
+   "scores": {
+    "attraction": 70,
+    "career": 40,
+    "health": 48,
+    "learning": 54,
+    "stability": 41,
+    "wealth": 55
+   },
+   "sex": "M",
+   "when": "1979-04-08 14:24"
+  },
+  {
+   "scores": {
+    "attraction": 54,
+    "career": 70,
+    "health": 48,
+    "learning": 70,
+    "stability": 36,
+    "wealth": 70
+   },
+   "sex": "M",
+   "when": "1993-09-06 08:15"
+  },
+  {
+   "scores": {
+    "attraction": 80,
+    "career": 61,
+    "health": 48,
+    "learning": 56,
+    "stability": 46,
+    "wealth": 55
+   },
+   "sex": "M",
+   "when": "2023-11-16 23:08"
+  },
+  {
+   "scores": {
+    "attraction": 64,
+    "career": 81,
+    "health": 53,
+    "learning": 65,
+    "stability": 50,
+    "wealth": 65
+   },
+   "sex": "M",
+   "when": "2007-06-11 17:49"
+  },
+  {
+   "scores": {
+    "attraction": 85,
+    "career": 66,
+    "health": 53,
+    "learning": 62,
+    "stability": 12,
+    "wealth": 50
+   },
+   "sex": "F",
+   "when": "1941-09-03 13:17"
+  },
+  {
+   "scores": {
+    "attraction": 85,
+    "career": 75,
+    "health": 53,
+    "learning": 90,
+    "stability": 45,
+    "wealth": 65
+   },
+   "sex": "M",
+   "when": "1943-04-12 06:42"
+  },
+  {
+   "scores": {
+    "attraction": 60,
+    "career": 50,
+    "health": 72,
+    "learning": 85,
+    "stability": 60,
+    "wealth": 55
+   },
+   "sex": "F",
+   "when": "1956-11-20 21:38"
+  },
+  {
+   "scores": {
+    "attraction": 85,
+    "career": 85,
+    "health": 64,
+    "learning": 50,
+    "stability": 50,
+    "wealth": 75
+   },
+   "sex": "F",
+   "when": "1984-07-24 22:28"
+  },
+  {
+   "scores": {
+    "attraction": 60,
+    "career": 55,
+    "health": 53,
+    "learning": 85,
+    "stability": 40,
+    "wealth": 80
+   },
+   "sex": "F",
+   "when": "1962-03-28 13:53"
+  },
+  {
+   "scores": {
+    "attraction": 55,
+    "career": 70,
+    "health": 48,
+    "learning": 60,
+    "stability": 55,
+    "wealth": 80
+   },
+   "sex": "F",
+   "when": "1987-07-07 21:29"
+  }
+ ],
+ "quantiles": {
+  "attraction": {
+   "mean": 66.5,
+   "p10": 50,
+   "p25": 60,
+   "p5": 49,
+   "p50": 70,
+   "p75": 75,
+   "p90": 85,
+   "p95": 85
+  },
+  "career": {
+   "mean": 70.7,
+   "p10": 50,
+   "p25": 60,
+   "p5": 45,
+   "p50": 70,
+   "p75": 80,
+   "p90": 95,
+   "p95": 95
+  },
+  "health": {
+   "mean": 58.5,
+   "p10": 48,
+   "p25": 53,
+   "p5": 45,
+   "p50": 58,
+   "p75": 64,
+   "p90": 67,
+   "p95": 72
+  },
+  "learning": {
+   "mean": 75.9,
+   "p10": 59,
+   "p25": 65,
+   "p5": 50,
+   "p50": 75,
+   "p75": 90,
+   "p90": 90,
+   "p95": 90
+  },
+  "stability": {
+   "mean": 45.6,
+   "p10": 27,
+   "p25": 32,
+   "p5": 16,
+   "p50": 46,
+   "p75": 58,
+   "p90": 66,
+   "p95": 75
+  },
+  "wealth": {
+   "mean": 61.3,
+   "p10": 45,
+   "p25": 55,
+   "p5": 35,
+   "p50": 60,
+   "p75": 70,
+   "p90": 80,
+   "p95": 85
+  }
+ },
+ "sample": {
+  "births": "date uniform 1930-01-01 to 2024-12-31, minute of day uniform, sex M or F with equal chance",
+  "chart": "engine.bazi.build_chart with TRUE_SOLAR; scores from engine.domains.life_domains",
+  "n": 10000,
+  "rng": "random.Random",
+  "seed": 20261071
+ },
+ "version": "area_reference_v5"
+}

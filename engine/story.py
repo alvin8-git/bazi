@@ -312,7 +312,7 @@ def _balance(p, v, lang="en"):
 def _drives(p, v, lang="en"):
     kid = v in ("child", "teen")
     # Round 52 (owner 2026-10-16): the strongest and weakest area come from the one shared ranking (engine/area_rank.py): band word first, then the
-    # standing among charts, then the score. The raw scores sit on different scales (learning averages 85, stability 46), so the sentence below still
+    # standing among charts, then the score. The raw scores sit on different scales (learning averages 76, stability 46), so the sentence below still
     # states the raw scores and only picks by band and standing. The same call names the area in the card, the interpretation and the clinical plan.
     rk = rank_areas(p.get("domains") or [], v)
     D = rk["ordered"]

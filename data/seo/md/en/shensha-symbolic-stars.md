@@ -2,11 +2,11 @@
 
 Canonical: https://bazifor.me/learn/shensha-symbolic-stars
 Language: en
-Updated: 2026-10-09
+Updated: 2026-10-16
 
 BaZi Basics
 
-By BaziMaster 2026-09-19 Updated 2026-10-09
+By BaziMaster 2026-09-19 Updated 2026-10-16
 Symbolic stars are fixed lookup tables that attach a named star to a chart when particular stem and branch combinations occur. They are annotation on top of the structural reading. The element balance, ten gods and palaces carry the weight, and the stars add texture.
 
 ## How do the lookup tables attach a star?
@@ -22,7 +22,7 @@ Key facts
 - The sample chart carries three stars: 太極貴人 (year and hour), 華蓋 (year and hour) and 劫煞 (day).
 - The sample has no 天乙貴人, 文昌貴人 (study star), 學堂, 桃花 (romance star), 驛馬 (travel horse), 祿神 (salary star) or 空亡 (void).
 - The sample's void branches are 戌 (Dog, Earth) and 亥 (Pig, Water), taken from the day pillar 己巳, and none of his branches falls there.
-- In the engine's learning score, a 華蓋 adds +10 points of a 70-point result, so a star nudges the score and never decides it.
+- The sample's three stars (太極貴人, 華蓋 and 劫煞) move none of the engine's six life-area scores, and where a star does count, as 文昌 does in learning at +15, it is one chip among several, so a star nudges a score and never decides it.
 
 Lookup diagram showing how a Day Master or branch key is matched against a fixed table to attach a star to one pillar
 Table 1: where each star is looked up
@@ -91,7 +91,7 @@ The engine finds three stars. 太極貴人 sits in the year and hour pillars, wh
 
 The absences matter as much as the hits. No 天乙貴人 is present. 己 needs 子 or 申 and 戊 needs 丑 or 未, but the chart's branches are 辰, 卯, 巳 and 辰. The engine does not invent a helper star to fill the gap. No 空亡 is present either, since 戌 and 亥 are missing from the chart.
 
-The stars also feed the engine's domain scores. The learning structure scores 70 (prominent), built from resource (印) present at +10, 華蓋 at +10 and the rest from the structure. The score is assembled from auditable parts, and the stars are a minority of them. The engine labels these scores a modern synthesis, not a classical rule (method note).
+The stars also feed the engine's domain scores. The learning structure scores 65 (needs support), built from a base of 50, resource (印) present at +10 and authority feeding resource at +5. None of his stars is among the parts. The score is assembled from auditable parts, and where a star counts at all, it is a minority of them. The engine labels these scores a modern synthesis, not a classical rule (method note).
 
 See these rules applied to your own chart: free BaZi reading →
 

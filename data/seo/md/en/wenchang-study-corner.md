@@ -2,11 +2,11 @@
 
 Canonical: https://bazifor.me/learn/wenchang-study-corner
 Language: en
-Updated: 2026-10-09
+Updated: 2026-10-16
 
 Fengshui
 
-By BaziMaster 2026-09-16 Updated 2026-10-09
+By BaziMaster 2026-09-16 Updated 2026-10-16
 文昌 is the scholar star, and classical practice assigns each person a study direction from it. The direction is personal and computable, because it comes from your Day Master. Two children in the same flat can have different study corners.
 
 ## How is your 文昌 position worked out?
@@ -44,7 +44,7 @@ Key facts
 - The 文昌 branch comes from the Day Master stem, and 己 gives 酉, which is the 兌 palace in the west.
 - The 學堂 (Study Hall) branch comes from the Day Master's element, and Earth gives 寅, the 艮 palace in the north-east.
 - The sample's Eight House type is 震命 (East group), with Vitality (生氣) in the south, Heavenly Doctor (天醫) in the north and Longevity (延年) in the south-east.
-- The sample's learning structure scores 70 (prominent), from resource (印) present (+10) and a 華蓋 (canopy, solitude) star (+10).
+- The sample's learning structure scores 65 (needs support), from resource (印) present (+10) and authority feeding resource (+5); his chart carries neither a 文昌 nor a 學堂 star, so the +15 study-star chip does not apply.
 - In 2027 the annual star 4 sits in the south (離), a one-year bonus on top of the permanent 文昌.
 - If no room sits in the 文昌 sector, the engine's advice is to face the 文昌 direction at the desk you have.
 

@@ -255,9 +255,10 @@ def life_domains(chart, ys: dict, lang: str = "en") -> list[dict]:
         (T("domains.life_domains.44", "resource 印 prominent", lang), 20) if res >= .15 else
         (T("domains.life_domains.45", "resource 印 present", lang), 10) if res >= .08 else None,
         (T("domains.life_domains.46", "文昌/學堂 study star", lang), 15) if {"文昌貴人", "學堂"} & stars else None,
-        (T("domains.life_domains.47", "華蓋 depth star", lang), 10) if "華蓋" in stars else None,
-        (T("domains.life_domains.48", "expressive output supports learning", lang), 5)
-        if share(GROUPS["食傷"]) >= .1 else None,
+        # D2 (2026-10-16, owner-approved): the former 華蓋 +10 and "expressive output supports learning" +5 chips are gone. They fired for 67% and 81% of
+        # charts, so for most people they were a fixed +15 that told the reader nothing, and they held learning at its cap of 95 for 36% of charts. The site's
+        # own star table reads 華蓋 as solitary depth, spirituality and the arts, and gives study to 文昌 and 學堂; the output chip had no source. See
+        # /data/alvin/tmp/learning-cap/proposal.md. Every other learning chip is unchanged.
         # L2 (blind review B, classified FIX, the review's "wrong" row): thin 印 is a defect only for a weak Day Master, who needs it;
         # a strong one does not. Capped at -6 and applied as a gradient from 8% share (0) to none (-6), not a cliff at 8%.
         (T("domains.life_domains.55", "thin resource 印 for a weak Day Master", lang), -round(6 * (.08 - res) / .08))
