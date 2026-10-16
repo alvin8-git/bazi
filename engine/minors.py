@@ -39,6 +39,9 @@ def withhold_money(p: dict, c, ys: dict, year: int, lang: str = "en") -> dict:
     p = dict(p)
     p["minor"] = True                                       # the reading script drops the one money clause it holds itself (the 五鬼 line)
     p["domains"] = [d for d in p["domains"] if d["key"] != "wealth"]
+    from .area_rank import ranking_summary
+    from .story import payload_voice
+    p["ranking"] = ranking_summary(p["domains"], payload_voice(p))     # the table order loses wealth; the strongest and weakest are the same two areas
     p["shensha"] = [x for x in p["shensha"] if x["star"] not in MONEY_STARS]
     p["interpretation"] = interpret_person(c, ys, year, lang=lang, minor=True)
     p["synthesis"] = clinical_report(p, lang=lang, minor=True)

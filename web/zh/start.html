@@ -128,7 +128,7 @@ header a#back{background:#fff;color:var(--ink)}
 <link rel="preload" as="image" href="/static/img/tools/start-intro.jpg" media="(min-width: 760px)">
 <style id="zhx">html[lang="zh-CN"] body{font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei","Noto Sans CJK SC","Noto Sans SC","Source Han Sans SC",sans-serif}nav a{white-space:nowrap}.tagline{margin:-6px 0 14px;font-size:17px;letter-spacing:.04em;color:#5f574e}.zhnotice{margin:12px 0;padding:10px 14px;border:1px solid var(--line,#e5ded2);border-radius:8px;background:#fff7e0;color:#5c4d0f;font-size:15px;line-height:1.5}</style>
 </head><body>
-<script>window.I18N = {"place":{"country":"出生国家","city":"出生城市","cityHelp":"请选最近的城市：它的经度和时区决定真太阳时。"},"card":{"helps":"助益","avoid":"宜少用","strongest":"最强","weakest":"最弱","decade":"{0}大运","ages":"{0} 岁","open":"打开解读","edit":"编辑","remove":"删除","hourApprox":"时辰为大致推算","you":"你","pillars":{"year":"年","month":"月","day":"你","hour":"时"},"areas":{"attraction":"爱情与吸引力","stability":"稳定的感情关系","career":"事业","wealth":"财运","learning":"学习","health":"健康"},"pair":"{0}与{1}：{2}，{3}。打开合婚报告","of100":"{0} 分（满分 100）","standing":"相对位次 {0}/100","standingNote":"位次是在众多命盘中的相对位置，不代表强弱。"}}; window.PLACE_TEXT = I18N.place;</script>
+<script>window.I18N = {"place":{"country":"出生国家","city":"出生城市","cityHelp":"请选最近的城市：它的经度和时区决定真太阳时。"},"card":{"helps":"助益","avoid":"宜少用","strongest":"最强","weakest":"最弱","highest":"位次最高","lowest":"位次最低","decade":"{0}大运","ages":"{0} 岁","open":"打开解读","edit":"编辑","remove":"删除","hourApprox":"时辰为大致推算","you":"你","pillars":{"year":"年","month":"月","day":"你","hour":"时"},"areas":{"attraction":"爱情与吸引力","stability":"稳定的感情关系","career":"事业","wealth":"财运","learning":"学习","health":"健康"},"pair":"{0}与{1}：{2}，{3}。打开合婚报告","of100":"{0} 分（满分 100）","standing":"相对位次 {0}/100","standingNote":"位次是在众多命盘中的相对位置，不代表强弱。"}}; window.PLACE_TEXT = I18N.place;</script>
 <span class="verbadge" id="ver"></span>
 <header>
   <a class="bzf-brand bzf-top" href="/zh"><img src="/static/img/brand/icon-64.png" width="28" height="28" alt=""><span>八字为我</span></a>
@@ -387,7 +387,7 @@ function glossCards(root) {
 /* Character card, design B (owner pick 2026-10-10): the stem × season painting at the side, then the
    seal, the opening line, two traits, helping and avoided elements, strongest and weakest life area for the
    age voice, and the current decade. Every label lives in CARD_TEXT for future languages. */
-const CARD_TEXT = { helps: "Helps", avoid: "Go easy on", strongest: "Strongest", weakest: "Weakest",
+const CARD_TEXT = { helps: "Helps", avoid: "Go easy on", strongest: "Strongest", weakest: "Weakest", highest: "Highest standing", lowest: "Lowest standing",   // the last two when every area reads one band (round 52)
   decade: (w) => `${w} decade`, ages: (a) => `ages ${a.replace("–", " to ")}`, open: "Open the reading",
   edit: "Edit", remove: "Remove", hourApprox: "hour approximate", you: "you",
   pillars: { year: "year", month: "month", day: "you", hour: "hour" },
@@ -427,7 +427,7 @@ function personCard(p, i) {
       ${(C.traits || []).length ? `<p class="ctraits">${C.traits.join(" · ")}</p>` : ""}
       <div class="cels"><div><p class="ck">${T.helps}</p><ul>${els(p.favourable, "")}</ul></div>
         <div><p class="ck">${T.avoid}</p><ul>${els(p.unfavourable, "av")}</ul></div></div>
-      <div class="careas">${area(C.strongest, T.strongest)}${area(C.weakest, T.weakest)}</div>
+      <div class="careas">${area(C.strongest, C.same_band ? T.highest : T.strongest)}${area(C.weakest, C.same_band ? T.lowest : T.weakest)}</div>
       ${C.strongest && C.strongest.percentile != null ? `<p class="cnote">${T.standingNote}</p>` : ""}
       ${C.decade ? `<div class="cdec"><img src="/static/img/reading/mk/${C.decade.phase}-96.png" alt="" width="40" height="40" loading="lazy">
         <p><b>${T.decade(C.decade.word)}</b><span>${T.ages(C.decade.ages)}</span></p></div>` : ""}

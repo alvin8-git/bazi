@@ -396,16 +396,22 @@ GOD_GIST = {"比肩": "companionship", "劫財": "competition", "劫财": "compe
             "偏財": "generosity and deals", "偏财": "generosity and deals", "正官": "order and duty", "七殺": "pressure and drive",
             "七杀": "pressure and drive", "正印": "support and care", "偏印": "unusual insight"}
 POLE = {  # personality axis pole → (one-word trait, plain sentence)
-    "reserved": ("reserved", "You keep your thoughts to yourself until they are ready."),
-    "expressive": ("expressive", "You say what you think and show what you make."),
+    "quiet": ("quiet", "You keep your thoughts to yourself until they are ready."),             # 食傷 output, low (round 52: was "reserved")
+    "prolific": ("prolific", "You say what you think and show what you make."),                  # 食傷 output, high (was "expressive")
     "deliberate": ("deliberate", "You take your time before you act."),
     "decisive": ("decisive", "You act fast, and best under pressure."),
     "challenges rules": ("independent-minded", "You question rules and push against them."),
     "works within structure": ("disciplined", "You work well inside rules and rank."),
     "pragmatic": ("practical", "You think in practical terms."),
     "reflective": ("reflective", "You think deeply and enjoy theory."),
-    "contained": ("private", "You keep your feelings close."),
-    "direct & open": ("open", "You show your feelings openly."),
+    "diplomatic": ("diplomatic", "You choose your words with care and rarely put things bluntly."),   # 比劫 frankness, low (was "contained")
+    "direct": ("direct", "You say it plainly, so people know where they stand with you."),             # 比劫 frankness, high (was "direct & open")
+    "settled": ("settled", "You like a steady base and rarely feel the pull to move on."),           # 驛馬 and 六沖, neither (round 52)
+    "on the move": ("on the move", "You are drawn to travel, change and new places."),                # 驛馬 with a 六沖
+    "private": ("private", "You recharge alone and keep a small circle."),                           # 華蓋 without 桃花
+    "sociable": ("sociable", "You draw company easily and like being around people."),                # 桃花 without 華蓋
+    "collaborative": ("collaborative", "You do your best work with others and with support."),      # Day Master score -1 or less
+    "self-directed": ("self-directed", "You set your own course and carry it through."),             # Day Master score +1 or more
 }
 NEG_STARS = {"劫煞", "空亡", "災煞", "亡神", "羊刃", "孤辰", "寡宿"}
 EL_ROOM = {"木": ("east", "plants, timber and green accents"), "火": ("south", "warm light and a red or orange accent"),

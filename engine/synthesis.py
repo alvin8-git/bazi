@@ -12,7 +12,7 @@ import re
 
 from .wuxing import (ELEMENT_EN, ELEMENTS, HIDDEN_STEMS, KE, SHENG,
                      SHENG_REV, STEM_ELEMENT)
-from .area_reference import standing_key
+from .area_rank import rank_areas
 from .i18n import ELEM, L, T, and_l, cap, dot, jn, zs  # noqa: F401
 from .shensha import pos_label
 
@@ -454,10 +454,19 @@ def clinical_report(p: dict, lang: str = "en", minor: bool = False) -> dict:
         plan.append(T("synthesis.clinical_report.63", f"Set bed head and desk to face {best}; keep long sitting out of {worst_l}.", lang, best=best, x=worst_l))
     if win and flags(win, "window"):
         plan.append(T("synthesis.clinical_report.65", f"Act in {win['y']} {win['gz']}", lang, win_y=win['y'], win_gz=win['gz']) + (T("synthesis.clinical_report.66", f"; protect {cau['y']} {cau['gz']} ({dims_l(flags(cau, 'caution'))}).", lang, cau_y=cau['y'], cau_gz=cau['gz'], join_flags_cau=dims_l(flags(cau, 'caution'))) if cau and flags(cau, "caution") else ("。" if zh else ".")))
-    doms = [d for d in (p.get("domains") or []) if not (minor and d.get("key") == "wealth")]
-    if doms:
-        low = min(doms, key=standing_key)   # Layer 2: the lowest standing among charts, not the lowest raw number; the sentence still states the score
-        plan.append(T("synthesis.clinical_report.67", f"Support {low['zh']} {low['en']} ({low['score']}), the domain that stands lowest among charts, with routine rather than effort spikes.", lang, low_zh=low['zh'], low_en=low['en'], low_score=low['score']))
+    # Round 52 (owner 2026-10-16): the lowest area is the shared weakest (engine/area_rank.py), for the reader's age voice, the area the story and the card name.
+    # Before, this line took the lowest percentile alone and removed only wealth for a minor.
+    from .story import payload_voice
+    voice = payload_voice(p)   # the same age and year the story takes its voice from
+    if minor and voice not in ("child", "teen"):
+        voice = "teen"
+    rk = rank_areas(p.get("domains") or [], voice)
+    if rk["strongest"]:
+        low = rk["weakest"] or rk["strongest"]
+        if rk["same_band"]:
+            plan.append(T("synthesis.clinical_report.same_band", f"Support {low['zh']} {low['en']} ({low['score']}), the area with the lowest standing among those weighed here, with routine rather than effort spikes.", lang, low_zh=low['zh'], low_en=low['en'], low_score=low['score']))
+        else:
+            plan.append(T("synthesis.clinical_report.67", f"Support {low['zh']} {low['en']} ({low['score']}), your weakest life area, with routine rather than effort spikes.", lang, low_zh=low['zh'], low_en=low['en'], low_score=low['score']))
     if not (minor and _grp_of(g1) in _MONEY_SHADOW):    # the 比劫 and 財 shadow lines are about money
         plan.append(T("synthesis.clinical_report.68", f"Offset {g1}'s shadow: {L("synthesis._SHADOW", _SHADOW, lang).get(_grp_of(g1), '')}.", lang, g1=g1, _SHADOW_grp_of_g1=L("synthesis._SHADOW", _SHADOW, lang).get(_grp_of(g1), '')))
     # ---- confidence

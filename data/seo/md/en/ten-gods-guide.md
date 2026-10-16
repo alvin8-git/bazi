@@ -99,15 +99,21 @@ The sample person is 王大明, male, born 1988-03-15 at 09:30 in Singapore, wit
 
 By group, peers carry 48.1 %, authority 29.6 %, resource 11.1 %, wealth 7.4 % and output 3.7 %. The engine's personality axes read from these shares:
 
-- Expression: reserved output, because output is 4 % (the engine calls 5 % or less reserved).
+- Creative and verbal output: quiet output, because output is 4 % (the engine calls 5 % or less quiet).
 
 - Action: decisive and acts under pressure, because Seven Killings plus Rob Wealth is 78 %.
 
-- Authority stance: works within structure, with authority at 30 % and Hurting Officer at 4 %.
+- Authority stance: no strong tendency, because authority is 30 % but all of it is Seven Killings and Direct Officer is 0 % (the engine reads working within structure only when Direct Officer is at least as large), with Hurting Officer at 4 %.
 
 - Thinking style: no strong tendency, with resource at 11 % against wealth at 7 %.
 
-- Emotional display: direct and open, with peers at 48 %.
+- Frankness: direct, says it plainly, with peers at 48 %.
+
+- Pace of life (settled or on the move): settled: few pulls to move. Basis: 驛馬 absent, 六沖 0 (on the move: both present; settled: neither).
+
+- Social energy (private or sociable): private: recharges alone. Basis: 桃花 absent, 華蓋 present (sociable: 桃花 without 華蓋; private: 華蓋 without 桃花).
+
+- Self-direction (collaborative or self-directed): no strong tendency. Basis: 日主強弱 score -0.97 (+1 or more self-directed, -1 or less collaborative).
 
 These thresholds are the engine's own (method note). The chart's weak Day Master (身弱, score -0.97) is the context for reading the heavy Rob Wealth and Seven Killings shares.
 

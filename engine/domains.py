@@ -17,9 +17,13 @@ GROUPS = {"財": ("正財", "偏財"), "官殺": ("正官", "七殺"), "印": ("
 VAULT = {WOOD: "未", FIRE: "戌", METAL: "丑", WATER: "辰", EARTH: "戌"}  # 墓庫
 
 
+def _has(flag: bool, lang: str = "en") -> str:
+    return T("domains.personality_axes.34", "present", lang) if flag else T("domains.personality_axes.35", "absent", lang)
+
+
 def personality_axes(chart, lang: str = "en") -> list[dict]:
-    """Five deterministic personality axes from the ten-god distribution
-    (MODERN SYNTHESIS — thresholds are stated in each basis string)."""
+    """Eight deterministic personality axes (MODERN SYNTHESIS, thresholds are stated in each basis string). The first five read the ten-god
+    distribution; the last three (round 52, owner-approved) read the stars, the branch clashes and the Day Master's strength."""
     dist = ten_god_distribution(chart)
     total = sum(dist.values()) or 1
 
@@ -29,52 +33,84 @@ def personality_axes(chart, lang: str = "en") -> list[dict]:
     e, a = s(("食神", "傷官")), s(("七殺", "劫財"))
     guan, shang = s(("正官", "七殺")), dist.get("傷官", 0) / total
     r, w, b = s(("正印", "偏印")), s(("正財", "偏財")), s(("比肩", "劫財"))
+    zheng, qisha = dist.get("正官", 0) / total, dist.get("七殺", 0) / total
+    # axes 6 to 8 (round 52, owner-approved): the rules are the ones measured in /data/alvin/tmp/p52/personality_review.md section 3
+    stars = {x["star"] for x in shensha(chart)}
+    move, clashes = "驛馬" in stars, sum(1 for i in natal_interactions(chart) if i["kind"] == "六沖")
+    pace = "right" if move and clashes else "left" if not move and not clashes else "mid"          # on the move: 驛馬 and a 六沖; settled: neither
+    peach, canopy = "桃花" in stars, "華蓋" in stars
+    social = "right" if peach and not canopy else "left" if canopy and not peach else "mid"        # sociable: 桃花 without 華蓋; private: 華蓋 without 桃花
+    sscore = chart.strength["score"]
+    selfdir = "right" if sscore >= 1 else "left" if sscore <= -1 else "mid"                        # self-directed: Day Master score at least +1; collaborative: at most -1
+    # F3 (round 52, owner-approved): 七殺 counts toward "works within structure" only when 正官 is at least as large (the site's table calls 七殺 raw pressure)
+    structure = guan >= .25 and zheng >= qisha
+    # F1 (round 52, owner-approved): when the direct signal (比劫 ≥25%) and the diplomatic signal (印 ≥25% with 食傷 <10%) both fire, the axis reads mixed
+    mixed5 = b >= .25 and r >= .25 and e < .1
     # zone = which pole the rule landed on; it is decided from the numbers, so the verdict text can be in any language
     zones = ["right" if e >= .2 else "left" if e <= .05 else "mid",
              "right" if a >= .25 else "left" if a <= .08 else "mid",
-             "left" if shang >= .15 and shang > dist.get("正官", 0) / total else "right" if guan >= .25 else "mid",
+             "left" if shang >= .15 and shang > dist.get("正官", 0) / total else "right" if structure else "mid",
              "right" if r >= .25 and r > w else "left" if w >= .25 and w > r else "mid",
-             "right" if b >= .25 else "left" if r >= .25 and e < .1 else "mid"]
+             "mid" if mixed5 else "right" if b >= .25 else "left" if r >= .25 and e < .1 else "mid",
+             pace, social, selfdir]
     axes = [
-        (T("domains.personality_axes.01", "表達 Expression", lang),
-         T("domains.personality_axes.02", "expressive & outspoken", lang) if e >= .2 else
-         T("domains.personality_axes.03", "reserved output", lang) if e <= .05 else T("domains.personality_axes.04", "no strong tendency", lang),
-         T("domains.personality_axes.05", f"食傷 {e:.0%} (≥20% expressive, ≤5% reserved)", lang, e=e)),
+        (T("domains.personality_axes.01", "食傷 Creative and verbal output", lang),
+         T("domains.personality_axes.02", "prolific output", lang) if e >= .2 else
+         T("domains.personality_axes.03", "quiet output", lang) if e <= .05 else T("domains.personality_axes.04", "no strong tendency", lang),
+         T("domains.personality_axes.05", f"食傷 {e:.0%} (≥20% prolific, ≤5% quiet)", lang, e=e)),
         (T("domains.personality_axes.06", "行動 Action", lang),
          T("domains.personality_axes.07", "decisive — acts under pressure", lang) if a >= .25 else
          T("domains.personality_axes.08", "deliberate — needs runway", lang) if a <= .08 else T("domains.personality_axes.09", "no strong tendency", lang),
          T("domains.personality_axes.10", f"七殺+劫財 {a:.0%} (≥25% decisive, ≤8% deliberate)", lang, a=a)),
         (T("domains.personality_axes.11", "權威 Authority stance", lang),
          T("domains.personality_axes.12", "challenges rules", lang) if shang >= .15 and shang > dist.get("正官", 0) / total else
-         T("domains.personality_axes.13", "works within structure", lang) if guan >= .25 else T("domains.personality_axes.14", "no strong tendency", lang),
-         f"官殺 {guan:.0%}, 傷官 {shang:.0%}"),
+         T("domains.personality_axes.13", "works within structure", lang) if structure else T("domains.personality_axes.14", "no strong tendency", lang),
+         f"官殺 {guan:.0%} (正官 {zheng:.0%}, 七殺 {qisha:.0%}), 傷官 {shang:.0%}"),
         (T("domains.personality_axes.15", "思維 Thinking style", lang),
          T("domains.personality_axes.16", "reflective & theoretical", lang) if r >= .25 and r > w else
          T("domains.personality_axes.17", "pragmatic & concrete", lang) if w >= .25 and w > r else T("domains.personality_axes.18", "no strong tendency", lang),
          T("domains.personality_axes.19", f"印 {r:.0%} vs 財 {w:.0%} (≥25% and larger wins)", lang, r=r, w=w)),
-        (T("domains.personality_axes.20", "情感 Emotional display", lang),
-         T("domains.personality_axes.21", "direct & open", lang) if b >= .25 else
-         ("内敛含蓄" if lang == "zh" else "contained") if r >= .25 and e < .1 else T("domains.personality_axes.22", "no strong tendency", lang),
-         T("domains.personality_axes.23", f"比劫 {b:.0%}; 印 {r:.0%} with 食傷 {e:.0%}", lang, b=b, r=r, e=e)),
+        (T("domains.personality_axes.20", "比劫 Frankness", lang),
+         T("domains.personality_axes.29", "mixed: direct and diplomatic signals both present", lang) if mixed5 else
+         T("domains.personality_axes.21", "direct: says it plainly", lang) if b >= .25 else
+         T("domains.personality_axes.28", "diplomatic: picks words with care", lang) if r >= .25 and e < .1 else T("domains.personality_axes.22", "no strong tendency", lang),
+         T("domains.personality_axes.23", f"比劫 {b:.0%} (≥25% direct); 印 {r:.0%} with 食傷 {e:.0%} (印 ≥25% with 食傷 <10% diplomatic)", lang, b=b, r=r, e=e)
+         + (T("domains.personality_axes.27", " Both signals fire, so the verdict is mixed.", lang) if mixed5 else "")),
+        (T("domains.personality_axes.30", "驛馬 Pace of life", lang),
+         T("domains.personality_axes.31", "on the move: drawn to travel and change", lang) if pace == "right" else
+         T("domains.personality_axes.32", "settled: few pulls to move", lang) if pace == "left" else T("domains.personality_axes.04", "no strong tendency", lang),
+         T("domains.personality_axes.33", f"驛馬 {_has(move, lang)}, 六沖 {clashes} (on the move: both present; settled: neither)", lang, mv=_has(move, lang), n=clashes)),
+        (T("domains.personality_axes.36", "桃花 Social energy", lang),
+         T("domains.personality_axes.37", "sociable: draws company easily", lang) if social == "right" else
+         T("domains.personality_axes.38", "private: recharges alone", lang) if social == "left" else T("domains.personality_axes.04", "no strong tendency", lang),
+         T("domains.personality_axes.39", f"桃花 {_has(peach, lang)}, 華蓋 {_has(canopy, lang)} (sociable: 桃花 without 華蓋; private: 華蓋 without 桃花)", lang, t=_has(peach, lang), h=_has(canopy, lang))),
+        (T("domains.personality_axes.40", "日主 Self-direction", lang),
+         T("domains.personality_axes.41", "self-directed: sets its own course", lang) if selfdir == "right" else
+         T("domains.personality_axes.42", "collaborative: works best with support", lang) if selfdir == "left" else T("domains.personality_axes.04", "no strong tendency", lang),
+         T("domains.personality_axes.43", f"日主強弱 score {sscore:+.2f} (+1 or more self-directed, -1 or less collaborative)", lang, sc=sscore)),
     ]
     # Quantitative display layer (2026-09-20): the SAME rules above, with the
     # driving percentages and which pole the verdict landed on. No new logic —
     # several axes are two-metric (the rule compares two shares), so we expose
     # the metrics rather than invent a single fake scalar.
     poles = [
-        (("内敛", "reserved"), ("外放", "expressive")),
+        (("安静", "quiet"), ("多产", "prolific")),            # 食傷 output: how much is said and made (relabelled round 52; was reserved / expressive)
         (("审慎", "deliberate"), ("果断", "decisive")),
         (("挑战权威", "challenges rules"), ("守规矩", "works within structure")),
         (("务实", "pragmatic"), ("思辨", "reflective")),
-        (("内敛含蓄", "contained"), ("直接外显", "direct & open")),
+        (("委婉", "diplomatic"), ("直接", "direct")),
+        (("安稳", "settled"), ("多动", "on the move")),         # pace of life: 驛馬 with a 六沖 against neither
+        (("独处", "private"), ("合群", "sociable")),            # social energy: 華蓋 without 桃花 against 桃花 without 華蓋
+        (("借力", "collaborative"), ("自立", "self-directed")),  # self-direction: Day Master score -1 or less against +1 or more          # 比劫 frankness: how plainly it is put (relabelled round 52; was contained / direct & open)
     ]
-    left_kw = ("reserved", "deliberate", "challenges", "pragmatic", "contained")
+    left_kw = ("quiet", "deliberate", "challenges", "pragmatic", "diplomatic")
     metrics = [
         [("食傷", e)],
         [("七殺+劫財", a)],
         [("官殺", guan), ("傷官", shang)],
         [("印", r), ("財", w)],
         [("比劫", b), ("印", r), ("食傷", e)],
+        [], [], [],        # axes 6 to 8 read stars, clashes and the strength score, not shares: no percentage to draw
     ]
     out = []
     for i, (ax, v, basis) in enumerate(axes):

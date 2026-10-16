@@ -102,6 +102,9 @@ def chart_payload(name: str, c, ys: dict, year: int, lang: str = "en") -> dict:
     p["career_roles"] = career_roles(c, ys, lang=lang)
     p["placements"] = placements(c, lang=lang)
     p["afflictions"] = compass_afflictions(c, year, lang=lang)
+    from .area_rank import ranking_summary
+    from .story import payload_voice
+    p["ranking"] = ranking_summary(p["domains"], payload_voice(p))   # round 52: the reading page's strongest, weakest and table order (keys only; the page never picks by itself)
     p["plain"] = plain_reading(p, lang)              # plain-language layer, read from the assembled payload
     p["story"] = compose_story(p, p["plain"], lang)  # story layer: chapter paragraphs, each sentence tagged with its evidence
     return p

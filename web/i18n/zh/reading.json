@@ -1700,8 +1700,8 @@
 "zh": "人生领域：得分、信号、落位"
 },
 "appjs.buildGods.046": {
-"en": "{top_en} stands highest among charts, with a score of {top_score}; your heaviest signal is {heavyName_toLowerCase}: {heavy}%, {inPal_heavy} {heavy_2}.",
-"zh": "{top_en} 的位次在命盘中最高，得分 {top_score}；你最重的信号是 {heavyName_toLowerCase}，占 {heavy}%，{inPal_heavy}{heavy_2}。"
+"en": "{top_en} is your strongest life area, with a score of {top_score}; your heaviest signal is {heavyName_toLowerCase}: {heavy}%, {inPal_heavy} {heavy_2}.",
+"zh": "{top_en} 是你最强的人生领域，得分 {top_score}；你最重的信号是 {heavyName_toLowerCase}，占 {heavy}%，{inPal_heavy}{heavy_2}。"
 },
 "appjs.buildGods.047": {
 "en": "seated in",
@@ -2480,8 +2480,8 @@
 "zh": "四柱是按出生时间（节气、真太阳时）推算的历法算术。每一柱按所在的宫位来读：年柱看根基，月柱看事业，日柱看自己与伴侣，时柱看子女和晚年。出处：命宫和胎元依《渊海子平》的宫位公式，没有引用具体段落；其余部分，本引擎所引的典籍中没有可读的出处。"
 },
 "appjs.rule.personality": {
-"en": "Five axes, each read off your ten-god shares, with the threshold printed beside it. This is a modern synthesis, not a classical rule. Source: no readable source in a text this engine cites.",
-"zh": "五条性格轴，每条都读自你的十神占比，阈值印在旁边。这是现代的综合做法，不是古籍里的规则。出处：本引擎所引的典籍中，没有可读的出处。"
+"en": "Eight axes. Five are read off your ten-god shares and three off your stars, branch clashes and Day Master strength, each with its threshold printed beside it. This is a modern synthesis, not a classical rule. Source: no readable source in a text this engine cites.",
+"zh": "八条性格轴。五条读自你的十神占比，三条读自神煞、地支相冲和日主强弱，阈值都印在旁边。这是现代的综合做法，不是古籍里的规则。出处：本引擎所引的典籍中，没有可读的出处。"
 },
 "appjs.rule.stars": {
 "en": "Each star is looked up from your stems and branches in this engine's own table; a star adds flavour and never overrides the balance reading. Source: no readable source in a text this engine cites.",
@@ -2778,5 +2778,9 @@
 "reading.012": {
 "en": "Learn",
 "zh": "指南"
+},
+"appjs.buildGods.046b": {
+"en": "{top_en} has the highest standing among the life areas weighed here, which all read alike, with a score of {top_score}; your heaviest signal is {heavyName_toLowerCase}: {heavy}%, {inPal_heavy} {heavy_2}.",
+"zh": "{top_en} 在本解读所衡量的人生领域中位次最高（它们属于同一档），得分 {top_score}；你最重的信号是 {heavyName_toLowerCase}，占 {heavy}%，{inPal_heavy}{heavy_2}。"
 }
 }

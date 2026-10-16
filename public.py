@@ -258,11 +258,10 @@ def _card(m, c, ys, lang: str = "en") -> dict:
     personality traits, strongest and weakest life area for the age voice, and the current decade."""
     from engine.report import chart_payload
     from engine.plain import POLE
-    from engine.story import AREAS_FOR
+    from engine.area_rank import rank_areas
     p = chart_payload(_tosimp(m.name), c, ys, reading_year(), lang)
     pl, v = p["plain"], p["story"]["voice"]
-    from engine.area_reference import standing_key
-    doms = sorted((d for d in p["domains"] if d["key"] in AREAS_FOR[v]), key=standing_key, reverse=True)   # Layer 2: strongest and weakest by standing among charts
+    rk = rank_areas(p["domains"], v)   # round 52: the one shared ranking (band, then standing, then score) that the story, the interpretation and the clinical plan also call
     band = lambda d: " ".join(w for w in d["band"].split() if w.isascii())   # the engine's own word (prominent / balanced / needs support)
     pick = lambda d: ({"key": d["key"], "score": d["score"], "band": band(d), "percentile": d.get("percentile")} if lang != "zh" else
                       {"key": d["key"], "score": d["score"], "band": T(f"card.band.{band(d).replace(' ', '_')}", band(d), lang),
@@ -273,7 +272,7 @@ def _card(m, c, ys, lang: str = "en") -> dict:
               for x in poles if x in POLE][:3]   # axis order, so the first two match the reading
     out = {"head": pl["identity"]["head"], "voice": v,
            "traits": traits,
-           "strongest": pick(doms[0] if doms else None), "weakest": pick(doms[-1] if len(doms) > 1 else None),
+           "strongest": pick(rk["strongest"]), "weakest": pick(rk["weakest"]), "same_band": rk["same_band"],
            "decade": {k: cur[k] for k in ("phase", "word", "ages")} if cur else None}
     if lang == "zh":   # the full opening sentence, since a Chinese head cannot be rebuilt from "You are ..."
         out["line"] = T("card.line.you_are", "", lang, name=_tosimp(m.name), head=pl["identity"]["head"].rstrip("。"))

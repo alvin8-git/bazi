@@ -395,7 +395,7 @@ const READING_EN = {
   "appjs.rule.elements": "Each stem counts 1, each branch's main hidden stem counts 1 and each other hidden stem counts one third, added up per element. The weights are this engine's own choice. Source: no readable source in a text this engine cites.",
   "appjs.rule.interactions": "The four branches are compared in pairs for combination (合), clash (冲), punishment (刑) and harm (害). Source: no readable source in a text this engine cites.",
   "appjs.rule.stars": "Each star is looked up from your stems and branches in this engine's own table; a star adds flavour and never overrides the balance reading. Source: no readable source in a text this engine cites.",
-  "appjs.rule.personality": "Five axes, each read off your ten-god shares, with the threshold printed beside it. This is a modern synthesis, not a classical rule. Source: no readable source in a text this engine cites.",
+  "appjs.rule.personality": "Eight axes. Five are read off your ten-god shares and three off your stars, branch clashes and Day Master strength, each with its threshold printed beside it. This is a modern synthesis, not a classical rule. Source: no readable source in a text this engine cites.",
   "appjs.rule.pillars": "The four pillars are calendar arithmetic from your birth time (solar terms, true solar time). Each pillar is read for its palace: year for roots, month for career, day for self and partner, hour for children and later years. Source: 命宫 and 胎元 follow the palace formulas of 《渊海子平》, with no passage cited; for the rest, no readable source in a text this engine cites.",
   "appjs.rule.gods": "Each stem and hidden stem is named by its relation to your Day Master, and the shares are the weighted counts from the elements panel. The pair-pattern check uses this engine's own thresholds on those shares. Source: no readable source in a text this engine cites.",
   "appjs.rule.label": "Rule applied.",
@@ -496,7 +496,8 @@ const READING_EN = {
   "appjs.buildGods.043": "<b>Columns:</b> <span class=\"keepzh\">领域</span> life area · <span class=\"keepzh\">分</span> score out of 100 (50 is neutral) · <span class=\"keepzh\">十神</span> the roles that govern it, with their share of your chart · <span class=\"keepzh\">得位</span> ✓ when those roles sit in the area's own pillar",
   "appjs.buildGods.044": "<b>{n_split}</b> (<span class=\"keepzh\">{n_split_2}</span>): a signal only, with no score of its own.",
   "appjs.buildGods.045": "Life domains: score, signal, seat",
-  "appjs.buildGods.046": "{top_en} stands highest among charts, with a score of {top_score}; your heaviest signal is {heavyName_toLowerCase}: {heavy}%, {inPal_heavy} {heavy_2}.",
+  "appjs.buildGods.046": "{top_en} is your strongest life area, with a score of {top_score}; your heaviest signal is {heavyName_toLowerCase}: {heavy}%, {inPal_heavy} {heavy_2}.",
+  "appjs.buildGods.046b": "{top_en} has the highest standing among the life areas weighed here, which all read alike, with a score of {top_score}; your heaviest signal is {heavyName_toLowerCase}: {heavy}%, {inPal_heavy} {heavy_2}.",
   "appjs.buildGods.047": "seated in",
   "appjs.buildGods.048": "Each score starts at a neutral 50; every rule listed under the table moved it by the amount shown.",
   "appjs.buildGods.049": "<b>Marriage:</b> {c_spouse_reading_star_li} {c_spouse_reading_palace_}",
@@ -2263,9 +2264,10 @@ function buildGods(c, R) {
         return `<tr><td><b>${STAR_GROUP_ZH[t] || t}</b></td><td>${d}</td><td>${p}</td></tr>`; }).join("")}</table>
       ${zhKey(starRows.map(([t]) => [STAR_GROUP_ZH[t] || t, t.toLowerCase()]))}` });
   const axes = c.personality || [];
-  const pax = `<div class="paxchips">${axes.map((a) => { if (!a.zone) return `<div class="pax"><b>${a.axis}</b> ${a.verdict}<div class="sub">${a.basis}</div></div>`;
+  const axName = (n) => n.replace(/^(食傷|比劫)(?= )/, '<span class="keepzh" lang="zh-Hant" data-notip>$1</span>');   // the glossary would turn 食傷 and 比劫 into "Output" and "Peers" in front of the English name
+  const pax = `<div class="paxchips">${axes.map((a) => { if (!a.zone) return `<div class="pax"><b>${axName(a.axis)}</b> ${a.verdict}<div class="sub">${a.basis}</div></div>`;
     const pos = a.zone === "left" ? 16 : a.zone === "right" ? 84 : 50;
-    return `<div class="pax"><b>${a.axis}</b><div class="paxv ${a.zone}">${a.verdict}</div>
+    return `<div class="pax"><b>${axName(a.axis)}</b><div class="paxv ${a.zone}">${a.verdict}</div>
       <div class="paxstrip"><span class="pz l"></span><span class="pz m"></span><span class="pz r"></span><i style="left:${pos}%"></i></div>
       <div class="paxends">${RS("appjs.buildGods.019", {a_poles_left_zh: a.poles.left.zh, a_poles_left_en: IS_ZH ? "" : a.poles.left.en, a_poles_right_zh: a.poles.right.zh, a_poles_right_en: IS_ZH ? "" : a.poles.right.en})}</div>
       <div class="paxm">${a.metrics.map((m) => `<span>${m.label} <b>${m.pct}%</b></span>`).join("")}</div><div class="sub">${a.basis}</div></div>`; }).join("")}</div>`;
@@ -2274,7 +2276,7 @@ function buildGods(c, R) {
   const g8 = rdFig({ tier: "secondary", span: 6, label: RS("appjs.buildGods.020"), learn: 10, chart: pax,
     line: sharp ? `${RS("appjs.buildGods.021", {sharp_verdict: sharp.verdict.charAt(0).toUpperCase() + sharp.verdict.slice(1), sharp_metrics: sharp.metrics[0].label, sharp_metrics_2: sharp.metrics[0].pct})}`
       : RS("appjs.buildGods.022"),
-    facts: axes.filter((a) => a.zone && a.zone !== "mid").slice(0, 2).map((a) => [a.axis.split(" ")[0], a.verdict.split(" — ")[0]]),
+    facts: axes.filter((a) => a.zone && a.zone !== "mid").slice(0, 2).map((a) => [a.axis.split(" ")[0], a.verdict.split(/ \u2014 |: /)[0]]),
     legend: legendList(10) });
   const ti = c.tengod_insights; let g5 = "";
   if (ti) {
@@ -2310,7 +2312,9 @@ function buildGods(c, R) {
       return `<tr><td><b>${zh}</b></td><td class="ldscore">${sc}</td>
         <td>${s ? `${s[0].replace(/\s*\(.*\)$/, "")}<small class="ldpct">${s[1]}%</small>` : "·"}</td><td class="seat">${s ? (inPal(s[2], s[3]) ? "✓" : "·") : "·"}</td></tr>`; };
     const bandW = (b) => { const e = b.replace(/\s+[㐀-鿿]+$/, ""); return IS_ZH ? WD("band." + e.replace(/ /g, "_")) : e; };   // the band as a word of the page's language
-    const doms = c.domains.slice().sort((a, b) => ((b.percentile ?? b.score) - (a.percentile ?? a.score)) || (b.score - a.score));   // standing, strongest first: the order the chapter and its first line use
+    const rk = c.ranking || {}, byKey = (k) => c.domains.find((d) => d.key === k);   // round 52: the engine ranks (band, then standing, then score); the page only reads the order and the picks
+    const ranked = (rk.order || []).map(byKey).filter(Boolean);
+    const doms = ranked.length === c.domains.length ? ranked : c.domains.slice();   // strongest first: the order the chapter and its first line use
     const tag = (e) => `<span class="wf-tag ${e.delta < 0 ? "m" : "p"}">${e.label} <b>${e.delta > 0 ? "+" : "−"}${Math.abs(e.delta)}</b></span>`;
     /* the waterfall (round 42, item 16): every score starts at the neutral 50; each rule is one segment, width in points, plus to the right and minus to the left, so
        no segment hides another; the tick is 50 and the marker is where the score lands. The row opens to name every rule. */
@@ -2328,13 +2332,13 @@ function buildGods(c, R) {
       <ol class="tkey-list">${doms.map((d) => `<li class="cite"><b>${d.en}</b> (<span class="keepzh">${d.zh}</span>), ${d.score}, ${bandW(d.band)}: ${d.evidence.map((e) => `${e.label} ${e.delta > 0 ? "+" : ""}${e.delta}`).join("; ")}.</li>`).join("")}
         ${extra.map(([n]) => `<li>${RS("appjs.buildGods.044", {n_split: n.split(" ").slice(1).join(" "), n_split_2: n.split(" ")[0]})}</li>`).join("")}</ol>
       <p class="tkey">${RS("appjs.buildGods.043")}</p>`;
-    const top = c.domains.slice().sort((a, b) => ((b.percentile ?? b.score) - (a.percentile ?? a.score)) || (b.score - a.score))[0];   // Layer 2: "highest" is by standing among charts
+    const top = byKey(rk.strongest) || doms[0];   // the engine's strongest area for this reader's age voice (engine/area_rank.py), the same one the story and the card name
     const sigs = [...Object.entries(sig).filter(([k]) => c.domains.some((d) => d.zh === k)).map(([k, v]) => [k, v]), ...extra.map((e) => [e[0], [e[1], e[2], e[3], e[4], e[5]]])];   // an area left out of a minor's reading is not named as the heaviest signal
     const heavy = sigs.sort((a, b) => b[1][1] - a[1][1])[0];
     const heavyName = (c.domains.find((d) => d.zh === heavy[0]) || {}).en || heavy[0].replace(/^\S+\s/, "").replace("&amp;", "&");
     ld = rdFig({ tier: "secondary", span: 12, label: RS("appjs.buildGods.045"), learn: 8,
       chart: `${waterfall}<details class="deep keepfold wf-num"><summary>${RS("appjs.buildGods.045")}</summary><div class="deepbody">${table}</div></details>`,
-      line: `${RS("appjs.buildGods.046", {top_en: top.en, top_score: top.score, heavyName_toLowerCase: heavyName.toLowerCase(), heavy: heavy[1][1], inPal_heavy: inPal(heavy[1][2], heavy[1][3]) ? RS("appjs.buildGods.047") : WD("from"), heavy_2: heavy[1][4]})}`,
+      line: `${RS(rk.same_band ? "appjs.buildGods.046b" : "appjs.buildGods.046", {top_en: top.en, top_score: top.score, heavyName_toLowerCase: heavyName.toLowerCase(), heavy: heavy[1][1], inPal_heavy: inPal(heavy[1][2], heavy[1][3]) ? RS("appjs.buildGods.047") : WD("from"), heavy_2: heavy[1][4]})}`,
 
       legend: `<div>${RS("appjs.waveC.wf")}</div>
         ${c.domains[0] && c.domains[0].percentile != null ? `<div>${RS("appjs.buildGods.060", {v: IS_ZH ? RS("appjs.wordsC.ver", {n: String(c.domains[0].reference_version).replace(/\D+/g, "")}) : c.domains[0].reference_version})}</div>` : ""}

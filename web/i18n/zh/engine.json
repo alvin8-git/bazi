@@ -607,11 +607,27 @@
 "en": "You keep your thoughts to yourself until they are ready.",
 "zh": "你习惯把想法留在心里，想清楚了才说。"
 },
+"plain.POLE.quiet.trait": {
+"en": "quiet",
+"zh": "安静"
+},
+"plain.POLE.quiet.line": {
+"en": "You keep your thoughts to yourself until they are ready.",
+"zh": "你习惯把想法留在心里，想清楚了才说。"
+},
 "plain.POLE.expressive.trait": {
 "en": "expressive",
 "zh": "善于表达"
 },
 "plain.POLE.expressive.line": {
+"en": "You say what you think and show what you make.",
+"zh": "你想到什么就说什么，做出来的东西也愿意拿给人看。"
+},
+"plain.POLE.prolific.trait": {
+"en": "prolific",
+"zh": "多产"
+},
+"plain.POLE.prolific.line": {
 "en": "You say what you think and show what you make.",
 "zh": "你想到什么就说什么，做出来的东西也愿意拿给人看。"
 },
@@ -671,6 +687,14 @@
 "en": "You keep your feelings close.",
 "zh": "你习惯把感受放在心里。"
 },
+"plain.POLE.diplomatic.trait": {
+"en": "diplomatic",
+"zh": "委婉"
+},
+"plain.POLE.diplomatic.line": {
+"en": "You choose your words with care and rarely put things bluntly.",
+"zh": "你措辞有分寸，很少直来直去。"
+},
 "plain.POLE.direct_&_open.trait": {
 "en": "open",
 "zh": "坦率"
@@ -678,6 +702,62 @@
 "plain.POLE.direct_&_open.line": {
 "en": "You show your feelings openly.",
 "zh": "你的感受表露得很坦然。"
+},
+"plain.POLE.direct.trait": {
+"en": "direct",
+"zh": "直率"
+},
+"plain.POLE.direct.line": {
+"en": "You say it plainly, so people know where they stand with you.",
+"zh": "你有话直说，别人总知道你的立场。"
+},
+"plain.POLE.settled.trait": {
+"en": "settled",
+"zh": "安稳"
+},
+"plain.POLE.settled.line": {
+"en": "You like a steady base and rarely feel the pull to move on.",
+"zh": "你喜欢稳定的根基，很少想着挪窝。"
+},
+"plain.POLE.on_the_move.trait": {
+"en": "on the move",
+"zh": "多动"
+},
+"plain.POLE.on_the_move.line": {
+"en": "You are drawn to travel, change and new places.",
+"zh": "你爱出门、爱变化，也容易换环境。"
+},
+"plain.POLE.private.trait": {
+"en": "private",
+"zh": "独处"
+},
+"plain.POLE.private.line": {
+"en": "You recharge alone and keep a small circle.",
+"zh": "你靠独处来充电，圈子小而稳。"
+},
+"plain.POLE.sociable.trait": {
+"en": "sociable",
+"zh": "合群"
+},
+"plain.POLE.sociable.line": {
+"en": "You draw company easily and like being around people.",
+"zh": "你容易聚拢人气，也喜欢热闹。"
+},
+"plain.POLE.collaborative.trait": {
+"en": "collaborative",
+"zh": "借力"
+},
+"plain.POLE.collaborative.line": {
+"en": "You do your best work with others and with support.",
+"zh": "你和别人配合、有支持时发挥最好。"
+},
+"plain.POLE.self-directed.trait": {
+"en": "self-directed",
+"zh": "自立"
+},
+"plain.POLE.self-directed.line": {
+"en": "You set your own course and carry it through.",
+"zh": "你自己定方向，也能自己走到底。"
 },
 "plain.EL_ROOM.木.what": {
 "en": "plants, timber and green accents",
@@ -1898,6 +1978,10 @@
 "story._drives.01": {
 "en": "Compared with other charts, your strongest life area is {nm_top} ({top_score} of 100); your weakest is {nm_low} ({low_score}).",
 "zh": "与其他命盘相比，你最强的人生领域是 {nm_top}（{top_score}/100）；最弱的是 {nm_low}（{low_score}/100）。"
+},
+"story._drives.same_band": {
+"en": "Compared with other charts, the life areas weighed here all read {band}; the highest standing is {nm_top} ({top_score} of 100) and the lowest is {nm_low} ({low_score}).",
+"zh": "与其他命盘相比，本解读所衡量的各个人生领域都属于“{band}”；位次最高的是 {nm_top}（{top_score}/100），最低的是 {nm_low}（{low_score}/100）。"
 },
 "story._drives.02": {
 "en": "Strengths to grow into later point toward",
@@ -3388,24 +3472,24 @@
 "zh": "物流与航运、旅游、贸易、饮料、通信"
 },
 "domains.personality_axes.01": {
-"en": "表達 Expression",
-"zh": "表达"
+"en": "食傷 Creative and verbal output",
+"zh": "创作与言说（食伤）"
 },
 "domains.personality_axes.02": {
-"en": "expressive & outspoken",
-"zh": "外放敢言"
+"en": "prolific output",
+"zh": "多产，说得多也做得多"
 },
 "domains.personality_axes.03": {
-"en": "reserved output",
-"zh": "内敛含蓄"
+"en": "quiet output",
+"zh": "安静，说得少也做得少"
 },
 "domains.personality_axes.04": {
 "en": "no strong tendency",
 "zh": "倾向不明显"
 },
 "domains.personality_axes.05": {
-"en": "食傷 {e:.0%} (≥20% expressive, ≤5% reserved)",
-"zh": "食伤 {e:.0%}（≥20%外放，≤5%内敛）"
+"en": "食傷 {e:.0%} (≥20% prolific, ≤5% quiet)",
+"zh": "食伤 {e:.0%}（≥20%为多产，≤5%为安静）"
 },
 "domains.personality_axes.06": {
 "en": "行動 Action",
@@ -3452,16 +3536,84 @@
 "zh": "印 {r:.0%} 对 财 {w:.0%}（≥25%且较大的一方胜出）"
 },
 "domains.personality_axes.20": {
-"en": "情感 Emotional display",
-"zh": "情感表露"
+"en": "比劫 Frankness",
+"zh": "直率（比劫）"
 },
 "domains.personality_axes.21": {
-"en": "direct & open",
-"zh": "直接坦率"
+"en": "direct: says it plainly",
+"zh": "直接，有话直说"
+},
+"domains.personality_axes.28": {
+"en": "diplomatic: picks words with care",
+"zh": "委婉，措辞有分寸"
+},
+"domains.personality_axes.29": {
+"en": "mixed: direct and diplomatic signals both present",
+"zh": "两种倾向并存，不分高下"
+},
+"domains.personality_axes.30": {
+"en": "驛馬 Pace of life",
+"zh": "生活节奏（驿马、冲）"
+},
+"domains.personality_axes.31": {
+"en": "on the move: drawn to travel and change",
+"zh": "多动：爱出门，爱变化"
+},
+"domains.personality_axes.32": {
+"en": "settled: few pulls to move",
+"zh": "安稳：很少想着挪动"
+},
+"domains.personality_axes.33": {
+"en": "驛馬 {mv}, 六沖 {n} (on the move: both present; settled: neither)",
+"zh": "驿马{mv}，六冲 {n} 处（多动：两者都有；安稳：两者皆无）"
+},
+"domains.personality_axes.34": {
+"en": "present",
+"zh": "有"
+},
+"domains.personality_axes.35": {
+"en": "absent",
+"zh": "无"
+},
+"domains.personality_axes.36": {
+"en": "桃花 Social energy",
+"zh": "社交能量（桃花、华盖）"
+},
+"domains.personality_axes.37": {
+"en": "sociable: draws company easily",
+"zh": "合群：容易聚拢人气"
+},
+"domains.personality_axes.38": {
+"en": "private: recharges alone",
+"zh": "独处：靠独处充电"
+},
+"domains.personality_axes.39": {
+"en": "桃花 {t}, 華蓋 {h} (sociable: 桃花 without 華蓋; private: 華蓋 without 桃花)",
+"zh": "桃花{t}，华盖{h}（合群：有桃花而无华盖；独处：有华盖而无桃花）"
+},
+"domains.personality_axes.40": {
+"en": "日主 Self-direction",
+"zh": "自主方式（日主强弱）"
+},
+"domains.personality_axes.41": {
+"en": "self-directed: sets its own course",
+"zh": "自立：自己定方向"
+},
+"domains.personality_axes.42": {
+"en": "collaborative: works best with support",
+"zh": "借力：有支持时发挥最好"
+},
+"domains.personality_axes.43": {
+"en": "日主強弱 score {sc:+.2f} (+1 or more self-directed, -1 or less collaborative)",
+"zh": "日主强弱分 {sc:+.2f}（+1 及以上为自立，-1 及以下为借力）"
 },
 "domains.personality_axes.23": {
-"en": "比劫 {b:.0%}; 印 {r:.0%} with 食傷 {e:.0%}",
-"zh": "比劫 {b:.0%}；印 {r:.0%}，配食伤 {e:.0%}"
+"en": "比劫 {b:.0%} (≥25% direct); 印 {r:.0%} with 食傷 {e:.0%} (印 ≥25% with 食傷 <10% diplomatic)",
+"zh": "比劫 {b:.0%}（≥25%为直接）；印 {r:.0%}，配食伤 {e:.0%}（印≥25%且食伤<10%为委婉）"
+},
+"domains.personality_axes.27": {
+"en": " Both signals fire, so the verdict is mixed.",
+"zh": "；两个信号同时出现，所以判为并存。"
 },
 "domains.life_domains.01": {
 "en": "capped at 95",
@@ -4232,8 +4384,12 @@
 "zh": "[§6] {year}年（{age}岁）第一步大运还没开始，主要看原局本身。"
 },
 "interpret.interpret_person.13": {
-"en": "[§8] Life-domain signals (rule-derived, 0–100; compared by standing among charts): strongest {best_en} {best_zh} ({best_score} — {best_band}); most in need of support {low_en} {low_zh} ({low_score}). Each score is assembled from auditable parts — star shares, 神煞 and palace checks, listed under the cards below — and reads as a structural tendency, not a prediction.",
+"en": "[§8] Life-domain signals (rule-derived, 0–100; compared by standing among charts): strongest {best_en} {best_zh} ({best_score}, {best_band}); most in need of support {low_en} {low_zh} ({low_score}). Each score is assembled from auditable parts: star shares, 神煞 and palace checks, listed under the cards below. It reads as a structural tendency, not a prediction.",
 "zh": "[§8] 人生领域信号（按规则得出，0～100；按在命盘中的位次比较）：最强的是 {best_zh}（{best_score}，{best_band}）；最需要扶持的是 {low_zh}（{low_score}）。每个分数都由可核查的部分拼成：星的占比、神煞和宫位检查，列在下面的卡片里；它反映的是结构上的倾向，不是预测。"
+},
+"interpret.interpret_person.same_band": {
+"en": "[§8] Life-domain signals (rule-derived, 0–100; compared by standing among charts): the areas weighed here all read {band}; the highest standing is {best_en} {best_zh} ({best_score}) and the lowest is {low_en} {low_zh} ({low_score}). Each score is assembled from auditable parts: star shares, 神煞 and palace checks, listed under the cards below. It reads as a structural tendency, not a prediction.",
+"zh": "[§8] 人生领域信号（按规则得出，0～100；按在命盘中的位次比较）：本解读所衡量的各个领域都属于“{band}”；位次最高的是 {best_zh}（{best_score}），最低的是 {low_zh}（{low_score}）。每个分数都由可核查的部分拼成：星的占比、神煞和宫位检查，列在下面的卡片里；它反映的是结构上的倾向，不是预测。"
 },
 "interpret.interpret_person.14": {
 "en": "[§7] Directions (八宅): {gua}命 · {gua_group_gua} — best directions {good_dirs_gua}. Sleep with the headboard toward, or face while working/studying, one of these where the room allows. The belief: the hours spent aligned to supportive directions (a third of life is spent asleep) let the home reinforce the chart instead of fighting it.",
@@ -5048,8 +5204,12 @@
 "zh": "；{cau_y}年 {cau_gz}（{join_flags_cau}）宜守。"
 },
 "synthesis.clinical_report.67": {
-"en": "Support {low_zh} {low_en} ({low_score}), the domain that stands lowest among charts, with routine rather than effort spikes.",
-"zh": "用规律的日常，而不是用力冲刺，来扶持在命盘中位次最低的领域：{low_zh}（{low_score}分）。"
+"en": "Support {low_zh} {low_en} ({low_score}), your weakest life area, with routine rather than effort spikes.",
+"zh": "用规律的日常，而不是用力冲刺，来扶持你最弱的人生领域：{low_zh}（{low_score}分）。"
+},
+"synthesis.clinical_report.same_band": {
+"en": "Support {low_zh} {low_en} ({low_score}), the area with the lowest standing among those weighed here, with routine rather than effort spikes.",
+"zh": "用规律的日常，而不是用力冲刺，来扶持本解读所衡量的领域中位次最低的一个：{low_zh}（{low_score}分）。"
 },
 "synthesis.clinical_report.68": {
 "en": "Offset {g1}'s shadow: {_SHADOW_grp_of_g1}.",
@@ -6228,8 +6388,8 @@
 "zh": "在体系内做事"
 },
 "domains.personality_axes.26": {
-"en": "direct & open",
-"zh": "直接坦率"
+"en": "direct: says it plainly",
+"zh": "直接，有话直说"
 },
 "interpret._TG_GROUP.劫財": {
 "en": "peer",

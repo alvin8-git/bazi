@@ -197,13 +197,13 @@ AVOID_LEVER = {
 
 # §3e — behavioural strategy by (relation, pillar)
 BEHAVIOUR = {
-    ("六沖", "day"): ("情感 Emotional display · 行动 Action",
+    ("六沖", "day"): ("比劫 Frankness · 行动 Action",
         "把大反应放慢半拍——冲突别变成当场的决定",
         "Slow big reactions down. Don't let a clash turn into a snap decision."),
     ("六沖", "year"): ("权威 Authority stance",
         "家规传统各有默认值——明说家里的规则，别靠假设",
         "Agree house rules out loud rather than assuming you share the same family habits."),
-    ("刑", "day"): ("表达 Expression · 情感 Emotional display",
+    ("刑", "day"): ("食伤 Creative and verbal output · 比劫 Frankness",
         "暗劲在沉默里累积——定期直接沟通，别让摩擦攒着",
         "Tension builds quietly when nobody speaks. Schedule regular, direct check-ins."),
     ("刑", "year"): ("权威 Authority stance",

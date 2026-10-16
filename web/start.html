@@ -390,7 +390,7 @@ function glossCards(root) {
 /* Character card, design B (owner pick 2026-10-10): the stem × season painting at the side, then the
    seal, the opening line, two traits, helping and avoided elements, strongest and weakest life area for the
    age voice, and the current decade. Every label lives in CARD_TEXT for future languages. */
-const CARD_TEXT = { helps: "Helps", avoid: "Go easy on", strongest: "Strongest", weakest: "Weakest",
+const CARD_TEXT = { helps: "Helps", avoid: "Go easy on", strongest: "Strongest", weakest: "Weakest", highest: "Highest standing", lowest: "Lowest standing",   // the last two when every area reads one band (round 52)
   decade: (w) => `${w} decade`, ages: (a) => `ages ${a.replace("–", " to ")}`, open: "Open the reading",
   edit: "Edit", remove: "Remove", hourApprox: "hour approximate", you: "you",
   pillars: { year: "year", month: "month", day: "you", hour: "hour" },
@@ -430,7 +430,7 @@ function personCard(p, i) {
       ${(C.traits || []).length ? `<p class="ctraits">${C.traits.join(" · ")}</p>` : ""}
       <div class="cels"><div><p class="ck">${T.helps}</p><ul>${els(p.favourable, "")}</ul></div>
         <div><p class="ck">${T.avoid}</p><ul>${els(p.unfavourable, "av")}</ul></div></div>
-      <div class="careas">${area(C.strongest, T.strongest)}${area(C.weakest, T.weakest)}</div>
+      <div class="careas">${area(C.strongest, C.same_band ? T.highest : T.strongest)}${area(C.weakest, C.same_band ? T.lowest : T.weakest)}</div>
       ${C.strongest && C.strongest.percentile != null ? `<p class="cnote">${T.standingNote}</p>` : ""}
       ${C.decade ? `<div class="cdec"><img src="/static/img/reading/mk/${C.decade.phase}-96.png" alt="" width="40" height="40" loading="lazy">
         <p><b>${T.decade(C.decade.word)}</b><span>${T.ages(C.decade.ages)}</span></p></div>` : ""}

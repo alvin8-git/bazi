@@ -7,7 +7,7 @@ markers that open the figure, rule or citation in place. Same payload in, same t
 """
 from __future__ import annotations
 
-from .area_reference import standing_key
+from .area_rank import AREAS_FOR, GAP_FOR_PRIORITY, rank_areas   # the one ranking of the life areas (round 52); AREAS_FOR moved there
 from .bazi import reading_year
 from .i18n import T, an, num_word, zh_join
 from .shensha import is_gonghe, star_name_en
@@ -50,9 +50,6 @@ def is_minor(effective_time, year) -> bool:
     return voice_of(_age({"effective_time": effective_time}, year)) in ("child", "teen")
 
 
-AREAS_FOR = {"child": {"learning", "health"}, "teen": {"learning", "health", "career"},
-             "adult": {"attraction", "stability", "career", "wealth", "learning", "health"},
-             "senior": {"stability", "wealth", "learning", "health"}}
 PRIORITY_BY_VOICE = {
     "child": {"health": "So protect sleep, food and play first.", "learning": "So keep learning playful and in short steps."},
     "teen": {"health": "So protect sleep and exercise before anything else.", "career": "So build steady study habits before adding more."},
@@ -128,6 +125,11 @@ def _age(p, year):
 
 def _year_now(p):
     return (p.get("afflictions") or {}).get("year") or (((p.get("windows") or {}).get("years") or [{}])[0].get("y")) or reading_year()
+
+
+def payload_voice(p) -> str:
+    """The age voice (child / teen / adult / senior) of an assembled payload: the one the story, the card, the interpretation and the clinical plan all rank the life areas for."""
+    return voice_of(_age(p, _year_now(p)))
 
 
 def _ages(d):
@@ -269,7 +271,7 @@ def _balance(p, v, lang="en"):
     if role in ROLE:
         p2.append(S(T("story._balance.15", f"For {EN[dm_el]}, {EN[med]} is {ROLE[role]}.", lang, dm_el_en=el(dm_el), med_en=el(med),
                       role_role=T(f"story.ROLE.{role}", ROLE[role], lang)), "flows"))
-        exp = next((a for a in p.get("personality") or [] if a["poles"]["right"]["zh"] == "外放"), None)
+        exp = next((a for a in p.get("personality") or [] if a["poles"]["right"]["en"] == "prolific"), None)   # the 食傷 output axis (pole names are English in both languages)
         if role == "output" and exp and exp.get("zone") == "left":
             p2.append(S(T("story._balance.16", "Your personality reading says you hold your output back, so what you most need is a way "
                           "for your energy to come out.", lang), "personality"))
@@ -309,19 +311,27 @@ def _balance(p, v, lang="en"):
 
 def _drives(p, v, lang="en"):
     kid = v in ("child", "teen")
-    # Layer 2 (owner 2026-10-11): areas are compared by their standing among charts (percentile), because the raw scores sit on
-    # different scales (learning averages 85, stability 46). The sentence below still states the raw scores; it only picks by standing.
-    D = sorted([d for d in p.get("domains") or [] if d["key"] in AREAS_FOR[v]], key=standing_key, reverse=True)
+    # Round 52 (owner 2026-10-16): the strongest and weakest area come from the one shared ranking (engine/area_rank.py): band word first, then the
+    # standing among charts, then the score. The raw scores sit on different scales (learning averages 85, stability 46), so the sentence below still
+    # states the raw scores and only picks by band and standing. The same call names the area in the card, the interpretation and the clinical plan.
+    rk = rank_areas(p.get("domains") or [], v)
+    D = rk["ordered"]
     p1, p2, p3 = [], [], []
     one = None
     jn = (lambda xs: zh_join(xs)) if lang == "zh" else ljoin
     if D:
-        top, low = D[0], D[-1]
+        top, low = rk["strongest"], rk["weakest"] or rk["strongest"]
         nm = lambda d: T(f"story.DOMAIN.{d['key']}", DOMAIN.get(d["key"], d["en"].lower()), lang) if d["key"] in DOMAIN else d["en"].lower()
-        p1.append(S(T("story._drives.01", f"Compared with other charts, your strongest life area is {nm(top)} ({top['score']} of 100); your weakest is {nm(low)} ({low['score']}).", lang,
-                      nm_top=nm(top), top_score=top["score"], nm_low=nm(low), low_score=low["score"]), "domains"))
-        # the old trigger was a raw-score gap of 40, which fired for 95% of readings; the percentile gap of 60 fires about half as often for adults
-        if standing_key(top)[0] - standing_key(low)[0] >= 60 and (low["key"] in PRIORITY or low["key"] in PRIORITY_BY_VOICE.get(v, {})):
+        if rk["same_band"]:   # every area reads one band: no area is "strongest" or "weakest", so the sentence says so (round 52, copy for approval)
+            bw = T(f"card.band.{rk['band'].replace(' ', '_')}", rk["band"], lang)
+            p1.append(S(T("story._drives.same_band", f"Compared with other charts, the life areas weighed here all read {bw}; the highest standing is {nm(top)} ({top['score']} of 100) and the lowest is {nm(low)} ({low['score']}).", lang,
+                          band=bw, nm_top=nm(top), top_score=top["score"], nm_low=nm(low), low_score=low["score"]), "domains"))
+        else:
+            p1.append(S(T("story._drives.01", f"Compared with other charts, your strongest life area is {nm(top)} ({top['score']} of 100); your weakest is {nm(low)} ({low['score']}).", lang,
+                          nm_top=nm(top), top_score=top["score"], nm_low=nm(low), low_score=low["score"]), "domains"))
+        # the old trigger was a raw-score gap of 40, which fired for 95% of readings; the percentile gap of 60 fires about half as often for adults.
+        # Round 52: it never fires when every area reads one band (there is no weakest area to build on), and the area it names is the shared weakest.
+        if rk["gap"] >= GAP_FOR_PRIORITY and not rk["same_band"] and (low["key"] in PRIORITY or low["key"] in PRIORITY_BY_VOICE.get(v, {})):
             k = low["key"]
             en = PRIORITY_BY_VOICE.get(v, {}).get(k) or PRIORITY[k]
             tid = f"story.PRIORITY_BY_VOICE.{v}.{k}" if k in PRIORITY_BY_VOICE.get(v, {}) else f"story.PRIORITY.{k}"

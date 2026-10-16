@@ -27,6 +27,14 @@
   "en": "Weakest",
   "zh": "最弱"
  },
+ "card.highest": {
+  "en": "Highest standing",
+  "zh": "位次最高"
+ },
+ "card.lowest": {
+  "en": "Lowest standing",
+  "zh": "位次最低"
+ },
  "card.decade": {
   "en": "{0} decade",
   "zh": "{0}大运"

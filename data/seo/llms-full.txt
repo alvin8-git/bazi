@@ -24,8 +24,8 @@ Key facts
 
 - A questionnaire takes self-report as input, and the BaZi engine takes birth date, time, place and sex.
 - Self-report questionnaires can give different results on retest (method note), while the same birth data always gives the same chart.
-- The engine's five personality axes are threshold rules on ten-god shares, such as Expression: output (食傷) at or below 5 % reads as reserved.
-- The sample scores output 3.7 % (reserved) and Seven Killings (七殺) plus Rob Wealth (劫財) at 77.8 %, which clears the 25 % bar for decisive.
+- The engine's eight personality axes are threshold rules on ten-god shares, stars and Day Master strength, such as Creative and verbal output: output (食傷) at or below 5 % reads as quiet.
+- The sample scores output 3.7 % (quiet) and Seven Killings (七殺) plus Rob Wealth (劫財) at 77.8 %, which clears the 25 % bar for decisive.
 - The engine does not predict events, and no generative AI writes any reading.
 - Luck cycles add a time axis: the sample's current decade is 己未 (Earth Goat), ages 37-47.
 
@@ -52,21 +52,27 @@ See these rules applied to your own chart: free BaZi reading →
 
 ## How does the engine turn a chart into a personality statement?
 
-It does it by threshold rules on the ten-god percentages, not by free text. The engine reads five axes. Each has a stated basis, so you can see exactly why a verdict appeared. Table 2 shows the sample.
+It does it by threshold rules on the ten-god percentages, not by free text. The engine reads eight axes. Each has a stated basis, so you can see exactly why a verdict appeared. Table 2 shows the sample.
 
-Table 2: the sample's five personality axes
+Table 2: the sample's eight personality axes
 
 Axis | Engine verdict | Stated basis | 
 
-Expression (表達) | reserved output | Output 4 % (at least 20 % expressive, at most 5 % reserved) | 
+Creative and verbal output | quiet output | Output 4 % (at least 20 % prolific, at most 5 % quiet) | 
 
 Action (行動) | decisive, acts under pressure | Seven Killings plus Rob Wealth 78 % (at least 25 % decisive, at most 8 % deliberate) | 
 
-Authority stance authority (權威) | works within structure | Authority (官殺) 30 %, Hurting Officer (傷官) 4 % | 
+Authority stance authority (權威) | no strong tendency | Authority (官殺) 30 % (Direct Officer 0 %, Seven Killings 30 %), Hurting Officer (傷官) 4 % | 
 
 Thinking style thinking (思維) | no strong tendency | Resource (印) 11 % against wealth (財) 7 % (25 % and larger wins) | 
 
-Emotional display feelings (情感) | direct and open | Peers (比劫) 48 %, with resource 11 % and output 4 % | 
+Frankness | direct, says it plainly | Peers (比劫) 48 % (at least 25 % direct), with resource 11 % and output 4 % | 
+
+Pace of life (settled or on the move) | settled: few pulls to move | 驛馬 absent, 六沖 0 (on the move: both present; settled: neither) | 
+
+Social energy (private or sociable) | private: recharges alone | 桃花 absent, 華蓋 present (sociable: 桃花 without 華蓋; private: 華蓋 without 桃花) | 
+
+Self-direction (collaborative or self-directed) | no strong tendency | 日主強弱 score -0.97 (+1 or more self-directed, -1 or less collaborative) | 
 
 The thresholds are the engine's own (method note). They are choices, written down, and open to challenge. That is the closest BaZi gets to a scoring key. The inputs behind them are the sample's ten-god shares: Rob Wealth 48.1 %, Seven Killings 29.6 %, Direct Resource (正印) 11.1 %, Indirect Wealth (偏財) 7.4 % and Hurting Officer 3.7 %. The ten gods guide shows where those shares come from.
 
@@ -100,7 +106,7 @@ Use the questionnaire for what it records: your current self-description. Use th
 
 - Write down the questionnaire result and the date you took it.
 
-- Open your chart and note the five axes and their stated bases.
+- Open your chart and note the eight axes and their stated bases.
 
 - Mark where the two agree and where they differ.
 
@@ -140,7 +146,7 @@ No. The engine says it does not predict events, and no generative AI writes any 
 
 ### Can I use a personality test and a BaZi chart together?
 
-Yes. Write down your questionnaire result and date, then note the chart's five axes and their stated bases. Mark where they agree and differ. A mismatch is a question, not an error.
+Yes. Write down your questionnaire result and date, then note the chart's eight axes and their stated bases. Mark where they agree and differ. A mismatch is a question, not an error.
 
 ## Sources and method
 
@@ -2414,15 +2420,21 @@ The sample person is 王大明, male, born 1988-03-15 at 09:30 in Singapore, wit
 
 By group, peers carry 48.1 %, authority 29.6 %, resource 11.1 %, wealth 7.4 % and output 3.7 %. The engine's personality axes read from these shares:
 
-- Expression: reserved output, because output is 4 % (the engine calls 5 % or less reserved).
+- Creative and verbal output: quiet output, because output is 4 % (the engine calls 5 % or less quiet).
 
 - Action: decisive and acts under pressure, because Seven Killings plus Rob Wealth is 78 %.
 
-- Authority stance: works within structure, with authority at 30 % and Hurting Officer at 4 %.
+- Authority stance: no strong tendency, because authority is 30 % but all of it is Seven Killings and Direct Officer is 0 % (the engine reads working within structure only when Direct Officer is at least as large), with Hurting Officer at 4 %.
 
 - Thinking style: no strong tendency, with resource at 11 % against wealth at 7 %.
 
-- Emotional display: direct and open, with peers at 48 %.
+- Frankness: direct, says it plainly, with peers at 48 %.
+
+- Pace of life (settled or on the move): settled: few pulls to move. Basis: 驛馬 absent, 六沖 0 (on the move: both present; settled: neither).
+
+- Social energy (private or sociable): private: recharges alone. Basis: 桃花 absent, 華蓋 present (sociable: 桃花 without 華蓋; private: 華蓋 without 桃花).
+
+- Self-direction (collaborative or self-directed): no strong tendency. Basis: 日主強弱 score -0.97 (+1 or more self-directed, -1 or less collaborative).
 
 These thresholds are the engine's own (method note). The chart's weak Day Master (身弱, score -0.97) is the context for reading the heavy Rob Wealth and Seven Killings shares.
 

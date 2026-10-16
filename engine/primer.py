@@ -73,7 +73,8 @@ PRIMERS = {
         ["Formation & personality axes", "The formation check tests whether the chart "
          "is an ordinary structure (正格) or a rare follower/dominant special case "
          "(從格/專旺) that would flip the reading — decided by roots and support ratio. "
-         "The personality axes translate the ten-god distribution into five everyday "
+         "The personality axes translate the ten-god distribution, the symbolic stars, "
+         "the branch clashes and the Day Master's strength into eight everyday "
          "tendencies, each with its threshold shown; 'no strong tendency' is a normal "
          "result."],
         ["Life-domain signals", "The career / relationship / wealth / learning scores "

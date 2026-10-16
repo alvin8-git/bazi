@@ -526,16 +526,29 @@ def interpret_person(chart, ys: dict, year: int, lang: str = "en", minor: bool =
                      "started yet — the birth chart itself dominates.", lang, year=year, age=age))
 
     from .domains import life_domains
-    doms = [d for d in life_domains(chart, ys, lang=lang) if not (minor and d['key'] == 'wealth')]
-    from .area_reference import standing_key
-    best = max(doms, key=standing_key)   # Layer 2: strongest and most-in-need are picked by standing among charts; each sentence still states the raw score
-    low = min(doms, key=standing_key)
-    paras.append(
-        T("interpret.interpret_person.13", f"[§8] Life-domain signals (rule-derived, 0–100; compared by standing among charts): strongest {best['en']} "
-        f"{best['zh']} ({best['score']} — {best['band']}); most in need of support "
-        f"{low['en']} {low['zh']} ({low['score']}). Each score is assembled from "
-        "auditable parts — star shares, 神煞 and palace checks, listed under the "
-        "cards below — and reads as a structural tendency, not a prediction.", lang, best_en=best['en'], best_zh=best['zh'], best_score=best['score'], best_band=_band_l(best['band'], lang), low_en=low['en'], low_zh=low['zh'], low_score=low['score']))
+    from .area_rank import rank_areas
+    from .story import _age, voice_of
+    # Round 52 (owner 2026-10-16): the one shared ranking (engine/area_rank.py) names the strongest and the area most in need, for the reader's age voice,
+    # the same two areas the story and the card name. Before, this section ranked by percentile alone and removed only wealth for a minor.
+    voice = voice_of(_age({"effective_time": chart.effective_dt.strftime("%Y-%m-%d %H:%M")}, year))
+    if minor and voice not in ("child", "teen"):
+        voice = "teen"
+    rk = rank_areas(life_domains(chart, ys, lang=lang), voice)
+    best, low = rk["strongest"], rk["weakest"] or rk["strongest"]
+    if rk["same_band"]:   # every area reads one band: no strongest or weakest, so the section says so (copy for approval, round 52)
+        paras.append(
+            T("interpret.interpret_person.same_band", f"[§8] Life-domain signals (rule-derived, 0–100; compared by standing among charts): the areas weighed here all read {_band_l(rk['band'], 'en')}; "
+            f"the highest standing is {best['en']} {best['zh']} ({best['score']}) and the lowest is {low['en']} {low['zh']} ({low['score']}). Each score is assembled from "
+            "auditable parts: star shares, 神煞 and palace checks, listed under the "
+            "cards below. It reads as a structural tendency, not a prediction.", lang, band=_band_l(rk['band'], lang), best_en=best['en'], best_zh=best['zh'], best_score=best['score'],
+            low_en=low['en'], low_zh=low['zh'], low_score=low['score']))
+    else:
+        paras.append(
+            T("interpret.interpret_person.13", f"[§8] Life-domain signals (rule-derived, 0–100; compared by standing among charts): strongest {best['en']} "
+            f"{best['zh']} ({best['score']}, {best['band']}); most in need of support "
+            f"{low['en']} {low['zh']} ({low['score']}). Each score is assembled from "
+            "auditable parts: star shares, 神煞 and palace checks, listed under the "
+            "cards below. It reads as a structural tendency, not a prediction.", lang, best_en=best['en'], best_zh=best['zh'], best_score=best['score'], best_band=_band_l(best['band'], lang), low_en=low['en'], low_zh=low['zh'], low_score=low['score']))
 
     gua = ming_gua(chart.lichun_year, chart.sex)
     paras.append(T("interpret.interpret_person.14", f"[§7] Directions (八宅): {gua}命 · {gua_group(gua, lang=lang)} — best directions "
