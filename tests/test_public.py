@@ -258,15 +258,27 @@ def test_baby_page():
                        data={"sex": "M", "dob": "bad"}).status_code == 400
 
 
-def test_certificate():
-    r = client.get("/api/pub/certificate", params={
-        "surname": "王", "given": "涛冰", "sex": "M",
-        "dob": "2026-03-01", "birth_time": "10:00"})
-    assert r.status_code == 200
-    t = r.text
-    assert "命名證書" in t and "王涛冰" in t
-    assert "三 才 五 格" in t and "八 字 四 柱" in t
-    assert "康熙" in t and "喜用神" in t
+def _paid(monkeypatch, paid=True):
+    """Force the order store's answer for the certificate page (the purchase path itself is tested in
+    tests/test_certificate_purchase.py)."""
+    import public
+    monkeypatch.setattr(public, "_cert_is_paid", lambda key: paid)
+
+
+def test_certificate(monkeypatch):
+    q = {"surname": "王", "given": "涛冰", "sex": "M", "dob": "2026-03-01", "birth_time": "10:00"}
+    # unpaid: the watermarked preview, the front only, with the buy button
+    _paid(monkeypatch, False)
+    t = client.get("/api/pub/certificate", params=q).text
+    assert "命名證書" in t and "王涛冰" in t and "八 字 四 柱" in t and "喜用神" in t
+    assert "Preview" in t and 'class="cert pv"' in t and "S$68" in t and "/api/pub/certificate/checkout" in t
+    assert "三 才 五 格" not in t and "康熙" not in t and "Sources and basis" not in t
+    # paid: the full A4 front and back, no watermark
+    _paid(monkeypatch, True)
+    t = client.get("/api/pub/certificate", params=q).text
+    assert "命名證書" in t and "王涛冰" in t and "三 才 五 格" in t and "八 字 四 柱" in t
+    assert "康熙" in t and "喜用神" in t and "Sources and basis" in t
+    assert 'class="cert pv"' not in t and "/api/pub/certificate/checkout" not in t
     # bad inputs
     assert client.get("/api/pub/certificate", params={
         "surname": "王", "given": "涛冰", "sex": "X",
@@ -375,16 +387,19 @@ def test_name_chart_and_candidates():
     assert client.get(f"/api/pub/name/chart?{NAME_Q}&surname=王王王").status_code == 400
 
 
-def test_name_score_trad_switch_and_certificate():
+def test_name_score_trad_switch_and_certificate(monkeypatch):
     a = client.get(f"/api/pub/name/score?surname=王&given=禄云&{NAME_Q}").json()
     b = client.get(f"/api/pub/name/score?surname=王&given=禄云&trad=云:云&{NAME_Q}").json()
     assert a["trad"] == "王祿雲" and b["trad"] == "王祿云" and a["strokes"] != b["strokes"]
     assert [g["grid"] for g in a["grids"]] == ["天格", "人格", "地格", "外格", "總格"]
     assert client.get(f"/api/pub/name/score?surname=王&given=禄云&trad=云:雨&{NAME_Q}").status_code == 400
-    r = client.get(f"/api/pub/certificate?surname=王&given=优云&{NAME_Q}")
-    assert r.status_code == 200 and "繁體 王優雲" in r.text and "color:#" in r.text
-    r = client.get(f"/api/pub/certificate?surname=王&given=优云&trad=云:云&{NAME_Q}")
-    assert "繁體 王優云" in r.text
+    for paid in (False, True):             # the traditional-form choice reads the same on the preview and on the paid page
+        _paid(monkeypatch, paid)
+        r = client.get(f"/api/pub/certificate?surname=王&given=优云&{NAME_Q}")
+        assert r.status_code == 200 and "繁體 王優雲" in r.text and "color:#" in r.text
+        assert ("康熙" in r.text) is paid and ("三 才 五 格" in r.text) is paid
+        r = client.get(f"/api/pub/certificate?surname=王&given=优云&trad=云:云&{NAME_Q}")
+        assert "繁體 王優云" in r.text
 
 
 def test_name_optimise_endpoint():

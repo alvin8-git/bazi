@@ -25,9 +25,9 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 from types import SimpleNamespace
 
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, File, Form, HTTPException, Request, UploadFile
 from fastapi import Response
-from fastapi.responses import (FileResponse, HTMLResponse, PlainTextResponse,
+from fastapi.responses import (FileResponse, HTMLResponse, JSONResponse, PlainTextResponse,
                                RedirectResponse)
 from pydantic import BaseModel, Field
 
@@ -1638,17 +1638,395 @@ _BRAND_MARK = '<a class="bzf-brand bzf-top" href="/"><img src="/static/img/brand
 _BRAND_PRINT = '<p class="bzf-print" aria-hidden="true"><img src="/static/img/brand/icon-64.png" width="16" height="16" alt=""><span>bazifor.me</span></p>'
 
 
-# ---------------------------------------------------------------- certificate
-@router.get("/api/pub/certificate", response_class=HTMLResponse)
-def certificate(surname: str, given: str, sex: str, dob: str,
-                birth_time: str = "12:00", trad: str = "", place: int | None = None):
-    """命名證書 — certificate-grade printable for one chosen name.
+# ---------------------------------------------------------------- certificate purchase
+# The naming certificate is sold once, at S$68, through Stripe Checkout (docs/designs/bazifor-me-certificate-first.md,
+# engineering review D1 to D6).  A paid order is keyed by a canonical SHA-256 of the certificate's own parameters, so the
+# stateless certificate route keeps its signature.  Two independent confirmations mark an order paid, both idempotent:
+# the success redirect (which asks Stripe) and a signed checkout.session.completed webhook.  Orders live in Redis on
+# Vercel (_redis_cmd) and in an sqlite file locally, never in the ephemeral workspace database.  Stripe is sent the order id,
+# the amount, the currency, the product name and the return URLs, and nothing else: no name, no birth data.
+CERT_PRICE_CENTS = 6800                    # S$68
+CERT_CURRENCY = "sgd"
+CERT_PRODUCT = "naming certificate"
+ORDER_TTL = 30 * 24 * 3600                 # the order record (it holds the parameters for the redirect) lives 30 days
+STRIPE_API = "https://api.stripe.com"
+STRIPE_VERSION = "2026-09-30.endive"       # pinned, so a dashboard API-version change cannot alter the response shape
+STRIPE_TOLERANCE = 300                     # a webhook timestamp may be at most 5 minutes old
+_CERT_FIELDS = ("surname", "given", "sex", "dob", "birth_time", "place", "trad")
+_SESSION_ID = re.compile(r"^cs_[A-Za-z0-9_]{8,200}$")
+_ORDER_ID = re.compile(r"^ord_[A-Za-z0-9_-]{10,40}$")
 
-    Stateless: recomputes the full working from birth data + the name.
-    Two audiences by design: formal presentation for the family elders,
-    cited working for the skeptical parent."""
-    from engine.naming import char_info, five_grids, sancai
-    from engine.shensha import life_palaces as _lp
+
+class StripeNotConfigured(RuntimeError):
+    """STRIPE_SECRET_KEY is not set in the environment."""
+
+
+def _stripe(method: str, path: str, form: dict | None = None, idem: str | None = None,
+            version: str = STRIPE_VERSION) -> dict:
+    """The one place the site talks to Stripe: a stdlib urllib call, the secret key from the environment, no SDK."""
+    import urllib.parse
+    import urllib.request
+    key = os.environ.get("STRIPE_SECRET_KEY")
+    if not key:
+        raise StripeNotConfigured("STRIPE_SECRET_KEY is not set")
+    headers = {"Authorization": f"Bearer {key}", "Stripe-Version": version}
+    data = None
+    if form is not None:
+        data = urllib.parse.urlencode(form).encode()
+        headers["Content-Type"] = "application/x-www-form-urlencoded"
+    if idem:
+        headers["Idempotency-Key"] = idem
+    req = urllib.request.Request(STRIPE_API + path, data=data, method=method, headers=headers)
+    with urllib.request.urlopen(req, timeout=10) as r:
+        return json.loads(r.read())
+
+
+def _orders_db() -> sqlite3.Connection:
+    STORE.mkdir(parents=True, exist_ok=True)
+    con = sqlite3.connect(STORE / "orders.db")
+    con.execute("CREATE TABLE IF NOT EXISTS kv (key TEXT PRIMARY KEY, expires REAL, payload TEXT)")
+    return con
+
+
+def _kv_get(key: str) -> str | None:
+    if _REDIS_URL:
+        return _redis_cmd("GET", key)
+    import contextlib
+    with contextlib.closing(_orders_db()) as con:
+        row = con.execute("SELECT expires, payload FROM kv WHERE key=?", (key,)).fetchone()
+    if not row or (row[0] and row[0] < time.time()):
+        return None
+    return row[1]
+
+
+def _kv_set(key: str, value: str, ttl: int | None = None) -> None:
+    if _REDIS_URL:
+        _redis_cmd(*(("SET", key, value, "EX", str(ttl)) if ttl else ("SET", key, value)))
+        return
+    import contextlib
+    with contextlib.closing(_orders_db()) as con, con:
+        con.execute("INSERT INTO kv(key, expires, payload) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET "
+                    "expires=excluded.expires, payload=excluded.payload",
+                    (key, time.time() + ttl if ttl else None, value))
+
+
+def _cert_params(surname="", given="", sex="", dob="", birth_time="12:00", place=None, trad="") -> dict:
+    """The canonical form of a certificate's parameters: trimmed, NFC, the traditional-form choices sorted and cut
+    down to the characters of the given name (the only ones the choice can change)."""
+    import unicodedata
+
+    def n(s):
+        return unicodedata.normalize("NFC", str(s if s is not None else "").strip())
+    g = n(given)
+    kept = sorted((k, v) for k, v in _parse_trad(n(trad)).items() if k in g)
+    pl = n(place)
+    return {"surname": n(surname), "given": g, "sex": n(sex), "dob": n(dob), "birth_time": n(birth_time) or "12:00",
+            "place": str(int(pl)) if pl.isdigit() else "", "trad": ",".join(f"{k}:{v}" for k, v in kept)}
+
+
+def _cert_key(params: dict) -> str:
+    """SHA-256 of the canonical certificate parameters: the key an order is stored under (never the name itself)."""
+    import hashlib
+    canon = _cert_params(**{k: params.get(k) for k in _CERT_FIELDS if params.get(k) is not None})
+    return hashlib.sha256(json.dumps(canon, sort_keys=True, ensure_ascii=False,
+                                     separators=(",", ":")).encode()).hexdigest()
+
+
+def _cert_url(params: dict) -> str:
+    from urllib.parse import urlencode
+    q = {k: v for k, v in _cert_params(**{k: params.get(k) for k in _CERT_FIELDS if params.get(k) is not None}).items()
+         if v != "" or k in ("surname", "given")}
+    return "/api/pub/certificate?" + urlencode(q)
+
+
+def _cert_is_paid(key: str) -> bool:
+    try:
+        return bool(_kv_get(f"cert:{key}"))
+    except Exception:                        # the store is down: show the preview, never a traceback
+        return False
+
+
+def _order_get(oid) -> dict | None:
+    if not isinstance(oid, str) or not _ORDER_ID.fullmatch(oid):
+        return None
+    raw = _kv_get(f"order:{oid}")
+    return json.loads(raw) if raw else None
+
+
+def _order_save(order: dict) -> None:
+    _kv_set(f"order:{order['id']}", json.dumps(order, ensure_ascii=False), ORDER_TTL)
+
+
+def _mark_paid(order: dict, sid: str) -> bool:
+    """Mark the certificate of this order paid. Idempotent by session id: a second call (the redirect after the webhook,
+    a reload, a Stripe retry) writes nothing new. True when this call was the one that unlocked it."""
+    key = f"cert:{order['hash']}"
+    fresh = _kv_get(key) is None
+    if fresh:                                # no expiry: a paid certificate stays paid
+        _kv_set(key, json.dumps({"order": order["id"], "session": sid, "amount": order["amount"],
+                                 "ts": int(time.time())}))
+    if order.get("status") != "paid" or order.get("session") != sid:
+        order.update(status="paid", session=sid)
+        _order_save(order)
+    return fresh
+
+
+def _session_matches(order: dict, sess: dict) -> bool:
+    """A Checkout session belongs to the order and paid exactly what the order asked."""
+    sid = sess.get("id")
+    return (sess.get("client_reference_id") == order["id"] and order.get("session") in (None, sid)
+            and sess.get("payment_status") in ("paid", "no_payment_required") and sess.get("amount_total") == order["amount"]
+            and str(sess.get("currency", "")).lower() == order["currency"])
+
+
+def _notice_page(heading: str, message: str, extra: str = "", refresh: int = 0) -> str:
+    import html as H
+    meta = f'<meta http-equiv="refresh" content="{refresh}">' if refresh else ""
+    return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Naming certificate</title>{meta}{_BRAND_CSS}<style>body{{font-family:system-ui,sans-serif;background:#f4efe6;color:#2b2620;margin:0;padding:24px 16px}}
+main{{max-width:560px;margin:24px auto;background:#fffdf7;border:1px solid #c8a959;border-radius:10px;padding:24px}}
+h1{{font-size:20px;color:#9e2b25;margin:0 0 10px}}a{{color:#9e2b25}}</style></head><body>
+<main><h1>{H.escape(heading)}</h1><p role="status">{H.escape(message)}</p>{extra}
+<p><a href="/baby">Back to the name builder</a></p></main></body></html>"""
+
+
+def _cert_fail(request: Request, status: int, message: str, heading: str = "Naming certificate"):
+    if "application/json" in request.headers.get("accept", ""):
+        return JSONResponse({"error": message}, status_code=status)
+    return HTMLResponse(_notice_page(heading, message), status_code=status)
+
+
+MSG_NO_KEY = "Online checkout is not switched on yet. Nothing was charged."
+MSG_TIMEOUT = "Could not start checkout, try again. Nothing was charged."
+MSG_CONFIRMING = ("Payment received, confirming. Stripe has not told us yet that the payment went through. "
+                  "This page checks again every few seconds, and reloading it checks again too.")
+MSG_NO_ORDER = ("We could not match this payment to an order. If you were charged, your Stripe receipt is your proof: "
+                "write to us through the contact page and we will send the certificate.")
+
+
+@router.post("/api/pub/certificate/checkout")
+def certificate_checkout(request: Request, surname: str = Form(...), given: str = Form(...), sex: str = Form(...),
+                         dob: str = Form(...), birth_time: str = Form("12:00"), place: str = Form(""),
+                         trad: str = Form("")):
+    """Start Stripe Checkout for one certificate. 303 to Stripe for a plain form post, {"url"} for a fetch()."""
+    try:
+        pl = int(place) if place.strip() else None
+    except ValueError:
+        raise HTTPException(400, "place must be a city id")
+    _cert_core(surname, given, sex, dob, birth_time, trad, pl)          # the same 400s as the certificate page
+    params = _cert_params(surname, given, sex, dob, birth_time, pl, trad)
+    key = _cert_key(params)
+    if _cert_is_paid(key):                                              # already paid: go to the paid page, charge nothing
+        url = _cert_url(params)
+    else:
+        if not os.environ.get("STRIPE_SECRET_KEY"):
+            return _cert_fail(request, 503, MSG_NO_KEY, "Checkout is not available")
+        order = {"id": "ord_" + secrets.token_urlsafe(12), "hash": key, "params": params, "amount": CERT_PRICE_CENTS,
+                 "currency": CERT_CURRENCY, "status": "created", "session": None, "created": int(time.time())}
+        base = (os.environ.get("PUBLIC_BASE_URL") or SITE_URL).rstrip("/")
+        form = {"mode": "payment", "client_reference_id": order["id"],
+                "line_items[0][quantity]": "1",
+                "line_items[0][price_data][currency]": CERT_CURRENCY,
+                "line_items[0][price_data][unit_amount]": str(CERT_PRICE_CENTS),
+                "line_items[0][price_data][product_data][name]": CERT_PRODUCT,
+                "success_url": f"{base}/api/pub/certificate/paid?session_id={{CHECKOUT_SESSION_ID}}",
+                "cancel_url": f"{base}/api/pub/certificate/cancel?order={order['id']}"}
+        try:
+            _order_save(order)
+            sess = _stripe("POST", "/v1/checkout/sessions", form, idem=order["id"], version=STRIPE_VERSION)
+            url, sid = sess["url"], sess["id"]
+            if not (_SESSION_ID.fullmatch(sid) and url.startswith("https://checkout.stripe.com/")):
+                raise ValueError("unexpected Stripe response")
+            order["session"] = sid
+            _order_save(order)
+            _kv_set(f"sess:{sid}", order["id"], ORDER_TTL)
+        except StripeNotConfigured:
+            return _cert_fail(request, 503, MSG_NO_KEY, "Checkout is not available")
+        except Exception:                                               # timeout, Stripe 4xx or 5xx, bad payload, store down
+            return _cert_fail(request, 502, MSG_TIMEOUT, "Checkout did not start")
+    if "application/json" in request.headers.get("accept", ""):
+        return JSONResponse({"url": url})
+    return RedirectResponse(url, status_code=303)
+
+
+@router.get("/api/pub/certificate/cancel")
+def certificate_cancel(order: str = ""):
+    """Stripe's cancel_url: back to the preview of the same certificate, nothing charged."""
+    o = _order_get(order)
+    return RedirectResponse(_cert_url(o["params"]) if o else "/baby", status_code=303)
+
+
+@router.get("/api/pub/certificate/paid")
+def certificate_paid(request: Request, session_id: str = ""):
+    """Stripe's success_url: ask Stripe whether the session was paid, mark the order, land on the certificate."""
+    if not _SESSION_ID.fullmatch(session_id):
+        raise HTTPException(400, "session_id must be a Checkout session id")
+    try:
+        sess = _stripe("GET", f"/v1/checkout/sessions/{session_id}")
+    except StripeNotConfigured:
+        return _cert_fail(request, 503, MSG_NO_KEY, "Checkout is not available")
+    except Exception:
+        sess = None
+    if sess is None:                         # Stripe is unreachable: the webhook may already have marked it
+        try:
+            o = _order_get(_kv_get(f"sess:{session_id}"))
+            if o and _cert_is_paid(o["hash"]):
+                return RedirectResponse(_cert_url(o["params"]), status_code=303)
+        except Exception:
+            pass
+        return HTMLResponse(_notice_page("Payment received, confirming", MSG_CONFIRMING, refresh=8), status_code=202)
+    try:
+        o = _order_get(sess.get("client_reference_id"))
+        if not o or o.get("session") not in (None, sess.get("id")):
+            return HTMLResponse(_notice_page("Order not found", MSG_NO_ORDER), status_code=404)
+        if _session_matches(o, sess):
+            _mark_paid(o, sess["id"])
+        return RedirectResponse(_cert_url(o["params"]), status_code=303)    # unpaid session: the preview, nothing marked
+    except Exception:                        # the store failed after a real payment: confirm again on reload or by webhook
+        return HTMLResponse(_notice_page("Payment received, confirming", MSG_CONFIRMING, refresh=8), status_code=202)
+
+
+def _stripe_sig_ok(raw: bytes, header: str, secret: str, now: float | None = None) -> bool:
+    """Stripe's v1 scheme: HMAC-SHA256 of "<t>.<raw body>" under the endpoint secret, within a 5 minute window."""
+    import hashlib
+    import hmac
+    parts = [p.split("=", 1) for p in (header or "").split(",") if "=" in p]
+    ts = next((v for k, v in parts if k.strip() == "t"), "")
+    sigs = [v.strip() for k, v in parts if k.strip() == "v1"]
+    if not ts.isdigit() or not sigs:
+        return False
+    if abs((time.time() if now is None else now) - int(ts)) > STRIPE_TOLERANCE:
+        return False
+    want = hmac.new(secret.encode(), ts.encode() + b"." + raw, hashlib.sha256).hexdigest()
+    return any(hmac.compare_digest(want, s) for s in sigs)
+
+
+def _stripe_webhook(raw: bytes, header: str) -> tuple[int, dict]:
+    secret = os.environ.get("STRIPE_WEBHOOK_SECRET")
+    if not secret:
+        return 503, {"error": "webhook secret not configured"}
+    if not _stripe_sig_ok(raw, header, secret):
+        return 400, {"error": "bad signature"}
+    try:
+        ev = json.loads(raw)
+    except ValueError:
+        return 400, {"error": "bad payload"}
+    if not isinstance(ev, dict) or ev.get("type") not in ("checkout.session.completed", "checkout.session.async_payment_succeeded"):
+        return 200, {"received": True}
+    obj = (ev.get("data") or {}).get("object") or {}
+    try:
+        o = _order_get(obj.get("client_reference_id"))
+        if o and _session_matches(o, obj):
+            _mark_paid(o, obj["id"])         # the write happens before the 200: a failed write is a 500 and Stripe retries
+    except Exception:
+        return 500, {"error": "could not record the payment, retry"}
+    return 200, {"received": True}
+
+
+@router.post("/api/pub/stripe/webhook")
+async def stripe_webhook(request: Request):
+    from starlette.concurrency import run_in_threadpool
+    raw = await request.body()
+    code, body = await run_in_threadpool(_stripe_webhook, raw, request.headers.get("stripe-signature", ""))
+    return JSONResponse(body, status_code=code)
+
+
+# ---------------------------------------------------------------- certificate
+# Colours: ink #2b2620 on cream, gold-brown #6b5c3c for secondary text (6.4:1 on the cream), red #9e2b25 for headings.
+_WM = ("url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='210'%3E%3Ctext x='150' y='115' "
+       "text-anchor='middle' font-family='Helvetica,Arial,sans-serif' font-size='40' font-weight='700' letter-spacing='7' "
+       "fill='%239e2b25' fill-opacity='.13' transform='rotate(-24 150 105)'%3EPREVIEW%3C/text%3E%3C/svg%3E\")")
+_CERT_CSS = """
+@page{size:A4;margin:14mm}
+*{box-sizing:border-box}
+body{font-family:"Songti SC","Noto Serif SC","SimSun",serif;background:#f4efe6;
+  color:#2b2620;margin:0;display:flex;justify-content:center;padding:24px 8px}
+main{width:min(760px,100%)}
+.cert{background:#fffdf7;width:100%;border:3px double #9e2b25;
+  outline:1px solid #c8a959;outline-offset:-10px;padding:46px 52px;position:relative;margin-bottom:22px}
+.cert.pv::before{content:"";position:absolute;inset:0;background:__WM__;pointer-events:none}
+h1{text-align:center;font-size:30px;letter-spacing:4px;color:#9e2b25;
+  margin:0 0 2px;font-weight:600}h1 small,h2 small{font-size:.55em;letter-spacing:3px;color:#6b5c3c;font-weight:400}
+.sub{text-align:center;color:#6b5c3c;font-size:12px;letter-spacing:3px;margin-bottom:26px}
+.name{text-align:center;font-size:64px;letter-spacing:12px;color:#1c1712;margin:10px 0 0;font-weight:700}
+.pyl{text-align:center;color:#4d463c;font-size:16px;letter-spacing:3px;margin-top:2px}
+.trad{text-align:center;color:#6b5c3c;font-size:15px;letter-spacing:6px}
+.interp{text-align:center;color:#5a4a2a;font-size:17px;margin-top:6px}.interp small{display:block;font-size:12px;color:#6b5c3c;margin-top:2px}
+.line{border:0;border-top:1px solid #c8a959;margin:24px 10%}
+h2{font-size:15px;color:#9e2b25;letter-spacing:4px;margin:20px 0 8px;text-align:center}
+.pils{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.pil{border:1px solid #c8a959;padding:8px 14px;text-align:center;background:#fff}
+.pil b{font-size:22px;display:block}.pil b i{font-style:normal}
+.pil span{font-size:11px;color:#6b5c3c;letter-spacing:2px}
+.meta{text-align:center;font-size:13px;color:#4d463c;margin:10px 0;line-height:1.9}
+.tw{overflow-x:auto}
+table{margin:0 auto;border-collapse:collapse;font-size:13px}
+th{font-size:11px;font-weight:400;color:#6b5c3c;letter-spacing:1px;padding:3px 10px;border:1px solid #e0d3b8;background:#faf5e8}
+td{border:1px solid #e0d3b8;padding:5px 12px;text-align:center}
+.bigch{font-size:26px;font-weight:700}
+.sm{font-size:11px;color:#9e2b25}
+.grs{display:flex;justify-content:center;gap:10px;margin:8px 0;flex-wrap:wrap}
+.gr{border:1px solid #e0d3b8;background:#fff;padding:6px 12px;text-align:center}
+.gr span{display:block;font-size:11px;color:#6b5c3c}
+.gr b{font-size:20px}
+.gr em{display:block;font-style:normal;font-size:11px}
+.ji{color:#1e7d32}.pg{color:#a35a00}
+.sancai{text-align:center;font-size:13.5px;color:#4d463c}
+.foot{margin:22px 110px 0 40px;text-align:center;font-size:11.5px;color:#6b5c3c;line-height:1.8}
+.stamp{position:absolute;right:40px;bottom:46px;width:88px;height:88px;text-align:center;line-height:1.3;
+  border:3px solid #b03a2e;color:#b03a2e;display:flex;align-items:center;
+  justify-content:center;font-size:17px;letter-spacing:2px;
+  transform:rotate(-8deg);opacity:.85;font-weight:700}
+.noprint{text-align:center;margin:14px}
+.noprint button,.buy button{background:#9e2b25;color:#fff;border:0;border-radius:8px;
+  padding:9px 22px;font-size:15px;cursor:pointer;min-height:44px;font-family:inherit}
+.noprint button:disabled,.buy button:disabled{opacity:.6;cursor:wait}
+.verbadge{position:fixed;top:8px;right:12px;font-size:11px;color:#6b5c3c}
+.pvbadge{position:absolute;top:14px;right:18px;margin:0;border:2px solid #9e2b25;color:#9e2b25;font:700 12px/1 system-ui,sans-serif;
+  letter-spacing:3px;padding:5px 9px;text-transform:uppercase;background:#fffdf7}
+.buy{background:#fff;border:1px solid #c8a959;padding:18px 22px;margin:4px 0 22px;text-align:center;font-size:14px;line-height:1.7;
+  font-family:system-ui,sans-serif}
+.buy h2{margin:0 0 6px;letter-spacing:1px;font-size:17px}
+.buy p{margin:6px 0;color:#4d463c}.buy .fine{font-size:12.5px;color:#4d463c}
+#buymsg{min-height:1.5em;color:#9e2b25;font-weight:600}
+.buy a,.paidbar a{color:#9e2b25}
+.paidbar{background:#fff;border:1px solid #c8a959;padding:14px 20px;margin:0 0 18px;font-family:system-ui,sans-serif;font-size:14px;
+  line-height:1.7;text-align:center}
+.paidbar p{margin:4px 0}
+.back h2.bh{font-size:22px;letter-spacing:4px;margin:0 0 2px}
+.back h3{font-size:13px;color:#9e2b25;letter-spacing:3px;margin:18px 0 6px;text-align:center;font-weight:600}
+.back td.l,.back th.l{text-align:left}
+.back .fine{font-size:12px;color:#4d463c;text-align:center;line-height:1.7;margin:6px 0}
+.back ol{margin:6px 0 0 18px;padding:0;font-size:12px;line-height:1.65;color:#4d463c}
+.back ol li{margin:2px 0}
+.back .snd{font-size:13px;text-align:center;color:#4d463c;line-height:1.7}
+.back .ref{margin:16px 0 0;border-top:1px solid #c8a959;padding-top:10px;text-align:center;font-size:12.5px;color:#2b2620;font-weight:600}
+@media (max-width:560px){.cert{padding:30px 18px}.name{font-size:48px;letter-spacing:8px}h1{font-size:23px;letter-spacing:2px}
+  .stamp{position:static;margin:16px auto 0;transform:rotate(-8deg)}.pvbadge{position:static;display:inline-block;margin:0 0 10px}.pvrow{text-align:center}}
+@media print{body{background:#fff;padding:0;display:block}.noprint{display:none}main{width:100%}
+  .cert{border-width:3px;width:100%;margin:0;padding:11mm 12mm;min-height:254mm;break-after:page;page-break-after:always}
+  .cert:last-of-type{break-after:auto;page-break-after:auto}.stamp{bottom:34px}
+  .back{padding:8mm 11mm}.back .sub{margin-bottom:10px}.back h3{margin:11px 0 4px}.back td{padding:3px 10px}.back ol{font-size:10.5px;line-height:1.45}
+  .back .ref{margin-top:8px;padding-top:5px}.back .sancai{font-size:12.5px}.back ol li{margin:0}.back .snd{font-size:12.5px;line-height:1.5}.back td{padding:2px 10px}.back .bzf-print{margin:4px 0 0!important}.back .tw+h3{margin-top:9px}}
+""".replace("__WM__", _WM)
+
+_SOURCES = (
+    "Stroke counts: the Kangxi Dictionary (康熙字典). Where a character has more than one traditional form, the form chosen "
+    "on page 1 sets the count. The table is at bazifor.me/data/kangxi-strokes.",
+    "Element of each character: the radical convention (部首五行), or the curated sound-element reading (声韵) where one is "
+    "recorded. Characters the dictionary schools classify differently are marked, with both readings.",
+    "Five grids (五格): built from the stroke counts as shown in the working above, and read against the 81 numbers "
+    "(八十一數理). The table is at bazifor.me/data/81-numbers.",
+    "Three talents (三才): the generating and overcoming cycle of the five elements (五行生剋), read heaven to person to earth.",
+    "Useful gods (喜用神): the support-and-restrain method (扶抑法) with a seasonal cross-check (調候), from the four pillars on page 1.",
+    "Sound check: tone pattern, Mandarin homophones of unlucky words and English readings of the pinyin spelling.",
+    "The method and the classical editions behind each rule are listed at bazifor.me/method.",
+)
+
+
+def _cert_core(surname: str, given: str, sex: str, dob: str, birth_time: str, trad: str, place: int | None):
+    """The checks every certificate request shares (the page and the checkout): the characters and the chart."""
+    from engine.naming import char_info
     if sex not in ("M", "F"):
         raise HTTPException(400, "sex must be M or F")
     if not (1 <= len(surname) <= 2 and 1 <= len(given) <= 2):
@@ -1663,26 +2041,48 @@ def certificate(surname: str, given: str, sex: str, dob: str,
         if not e:
             raise HTTPException(400, f"character {ch} not in the dataset")
         infos.append((ch, e))
-    m, c = _chart_of({"name": given, "sex": sex, "dob": dob,
-                      "birth_time": birth_time, "place": place})
-    ys = yong_shen(c)
-    lp = _lp(c)
-    s_ks = [e["ks"] for ch, e in infos[:len(surname)]]
-    g_infos = infos[len(surname):]
-    grids = five_grids(s_ks, [e["ks"] for _, e in g_infos])
-    sc = sancai(grids)
-    fav = ys["favourable"]
-    full = surname + given
-    trad = "".join(e.get("trad") or ch for ch, e in infos)
-    from engine.naming import interpret_name
-    _interp = interpret_name(_tosimp(given))
+    m, c = _chart_of({"name": given, "sex": sex, "dob": dob, "birth_time": birth_time, "place": place})
+    return infos, c
+
+
+def _grid_working(s_ks: list[int], g_ks: list[int]) -> dict:
+    """The sum behind each grid, written out as the five_grids convention builds it (the number itself comes from five_grids)."""
+    s, g = s_ks, g_ks
+    t = {"天格": [s[0], 1] if len(s) == 1 else [s[0], s[1]], "人格": [s[-1], g[0]],
+         "地格": [g[0], g[1]] if len(g) > 1 else [g[0], 1], "總格": s + g}
+    t["外格"] = ([g[1], 1] if len(g) > 1 else [2]) if len(s) == 1 else ([s[0], g[1]] if len(g) > 1 else [s[0], 1])
+    return {k: " + ".join(map(str, v)) for k, v in t.items()}
+
+
+@router.get("/api/pub/certificate", response_class=HTMLResponse)
+def certificate(surname: str, given: str, sex: str, dob: str,
+                birth_time: str = "12:00", trad: str = "", place: int | None = None):
+    """命名證書: the free preview, or the paid A4 certificate when an order exists for these exact parameters.
+
+    Stateless: recomputes the full working from birth data + the name.  Unpaid, the page is the front only (name, pinyin,
+    four pillars, elements), watermarked, with the buy button.  Paid, it is the front and the back (the cited working: stroke
+    counts, element sources, five grids with their 81-number verdicts, three talents, the sound check, the sources list),
+    laid out for A4; the browser saves it as a PDF.  Two audiences by design: formal presentation for the family elders,
+    cited working for the skeptical parent."""
+    import html as H
+    from engine.naming import five_grids, interpret_name, sancai, sound_score
+    from engine.shensha import life_palaces as _lp
     from engine.wuxing import BRANCH_ELEMENT, STEM_ELEMENT
     from engine.glossary import Gloss, english as _en_only, lookup as _lk, pinyin as _py
+    infos, c = _cert_core(surname, given, sex, dob, birth_time, trad, place)
+    params = _cert_params(surname, given, sex, dob, birth_time, place, trad)
+    paid = _cert_is_paid(_cert_key(params))
+    ys = yong_shen(c)
+    lp = _lp(c)
+    fav = ys["favourable"]
+    full = surname + given
+    trad_name = "".join(e.get("trad") or ch for ch, e in infos)
+    _interp = interpret_name(_tosimp(given))
     g = Gloss()
     for _t in ("三才", "五格", "八字", "四柱", "命名證書"):      # their Chinese sits in the headings
         g.seen.add(_t)
 
-    _LUCK = {"半吉": "mostly auspicious", "凶/平": "adverse or neutral", "中": "mixed",
+    _LUCK = {"半吉": "mostly auspicious", "凶/平": "adverse or neutral", "中": "neutral",
              "平": "neutral", "大吉": "very auspicious", "大凶": "very adverse"}
 
     def _luck(v):
@@ -1696,75 +2096,24 @@ def certificate(surname: str, given: str, sex: str, dob: str,
         for k, lab in (("year", "Year"), ("month", "Month"),
                        ("day", "Day"), ("hour", "Hour")))
     charrows = "".join(f"""<tr><td class="bigch">{ch}</td>
-        <td>{e.get('py') or ''}</td><td>{e['ks']} strokes · {g.en('康熙')}</td>
-        <td>Element <b style="color:{_EL_HEX.get(e['el'], '#2b2620')}">{g.en(e['el']) if e['el'] else '—'}</b></td>
+        <td>{e.get('py') or ''}</td>
+        <td><b style="color:{_EL_HEX.get(e['el'], '#2b2620')}">{g.en(e['el']) if e['el'] else '—'}</b></td>
         <td class="sm">{'matches the useful god ✓' if e['el'] in fav else 'surname' if ch in surname else ''}</td></tr>"""
-        for i, (ch, e) in enumerate(infos))
-    gridcells = "".join(
-        f'<div class="gr"><span>{g.en(k)}</span><b>{v["num"]}</b>'
-        f'<em class="{"ji" if v["luck"] == "吉" else "pg"}">{_luck(v["luck"])}</em></div>'
-        for k, v in grids.items())
-    contested = [(ch, e) for ch, e in g_infos if e.get("el_contested")]
-    footnote = ("" if not contested else
-                "Note: " + "; ".join(f"the source classifies {ch} as {_en_only(e['el'])}; other schools may read it as "
-                                     f"{_en_only(e.get('el_alt')) if e.get('el_alt') else 'another element'}"
-                                     for ch, e in contested) + ".")
-    from datetime import date
+        for ch, e in infos)
+    pyline = " ".join((e.get("py") or "").title() for _, e in infos)
     today = date.today().strftime("%d %B %Y")
-    html = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>Certificate of Naming · {full}</title>{_BRAND_CSS}<style>
-@page{{size:A4;margin:14mm}}
-body{{font-family:"Songti SC","Noto Serif SC","SimSun",serif;background:#f4efe6;
-  color:#2b2620;margin:0;display:flex;justify-content:center;padding:24px 8px}}
-.cert{{background:#fffdf7;width:min(760px,100%);box-sizing:border-box;border:3px double #9e2b25;
-  outline:1px solid #c8a959;outline-offset:-10px;padding:46px 52px;position:relative}}
-h1{{text-align:center;font-size:30px;letter-spacing:4px;color:#9e2b25;
-  margin:0 0 2px;font-weight:600}}h1 small,h2 small{{font-size:.55em;letter-spacing:3px;color:#8a7a5a;font-weight:400}}
-.sub{{text-align:center;color:#8a7a5a;font-size:12px;letter-spacing:3px;
-  margin-bottom:26px}}
-.name{{text-align:center;font-size:64px;letter-spacing:12px;color:#1c1712;
-  margin:10px 0 0;font-weight:700}}
-.trad{{text-align:center;color:#8a7a5a;font-size:15px;letter-spacing:6px}}
-.interp{{text-align:center;color:#5a4a2a;font-size:17px;margin-top:6px}}.interp small{{display:block;font-size:12px;color:#8a7a5a;margin-top:2px}}
-.line{{border:0;border-top:1px solid #c8a959;margin:24px 10%}}
-h2{{font-size:15px;color:#9e2b25;letter-spacing:4px;margin:20px 0 8px;
-  text-align:center}}
-.pils{{display:flex;justify-content:center;gap:14px}}
-.pil{{border:1px solid #c8a959;padding:8px 14px;text-align:center;background:#fff}}
-.pil b{{font-size:22px;display:block}}.pil b i{{font-style:normal}}
-.pil span{{font-size:10px;color:#8a7a5a;letter-spacing:2px}}
-.meta{{text-align:center;font-size:13px;color:#4d463c;margin:10px 0;line-height:1.9}}
-table{{margin:0 auto;border-collapse:collapse;font-size:13px}}
-td{{border:1px solid #e0d3b8;padding:5px 12px;text-align:center}}
-.bigch{{font-size:26px;font-weight:700}}
-.sm{{font-size:11px;color:#9e2b25}}
-.grs{{display:flex;justify-content:center;gap:10px;margin:8px 0}}
-.gr{{border:1px solid #e0d3b8;background:#fff;padding:6px 12px;text-align:center}}
-.gr span{{display:block;font-size:10px;color:#8a7a5a}}
-.gr b{{font-size:20px}}
-.gr em{{display:block;font-style:normal;font-size:11px}}
-.ji{{color:#1e7d32}}.pg{{color:#a35a00}}
-.sancai{{text-align:center;font-size:13.5px;color:#4d463c}}
-.foot{{margin:26px 84px 0;text-align:center;font-size:11px;color:#8a7a5a;
-  line-height:1.8}}
-.stamp{{position:absolute;right:44px;bottom:60px;width:74px;height:74px;
-  border:3px solid #b03a2e;color:#b03a2e;display:flex;align-items:center;
-  justify-content:center;font-size:20px;letter-spacing:2px;
-  transform:rotate(-8deg);opacity:.85;font-weight:700}}
-.noprint{{text-align:center;margin:14px}}
-.noprint button{{background:#9e2b25;color:#fff;border:0;border-radius:8px;
-  padding:9px 22px;font-size:14px;cursor:pointer}}
-@media print{{body{{background:#fff;padding:0}}.noprint{{display:none}}
-  .cert{{border-width:3px;width:100%}}}}
-</style></head><body><div>
-<span class="noprint" style="position:fixed;top:8px;right:12px;font-size:11px;
-  color:#b9b0a4">v {_VER}</span>
-<div class="noprint" style="text-align:left;margin:0 0 8px">{_BRAND_MARK}</div>
-<div class="cert">
+    trad_line = f'<div class="trad">Traditional form (繁體 {trad_name}, {_py("繁體")})</div>' if trad_name != full else ""
+    sub = ("CERTIFICATE OF NAMING · derived by classical method · every step cited" if paid
+           else "PREVIEW OF THE CERTIFICATE OF NAMING")
+    closing = ("" if not paid else
+               f'<hr class="line"><div class="foot">Issued {today} · bazifor.me · the family chooses the name; the classics '
+               f'supply the reasons</div>{_BRAND_PRINT}<div class="stamp" title="A proper name makes proper speech">Name<br>sealed</div>')
+    front = f"""<div class="cert{'' if paid else ' pv'}">{'' if paid else '<p class="pvbadge">Preview</p>'}
   <h1>Certificate of Naming <small lang="zh-Hant">命名證書 {_py("命名證書")}</small></h1>
-  <div class="sub">CERTIFICATE OF NAMING · derived by classical method · every step cited</div>
+  <div class="sub">{sub}</div>
   <div class="name">{_tosimp(full)}</div>
-  {f'<div class="trad">Traditional form (繁體 {trad}, {_py("繁體")})</div>' if trad != full else ''}
+  <div class="pyl">{pyline}</div>
+  {trad_line}
   <div class="interp">{_interp["en"]}<small lang="zh-Hans">{_interp["zh"]} · {_py(_interp["zh"])}</small></div>
   <div class="meta">{'Boy' if sex == 'M' else 'Girl'} · born {dob} {birth_time}
     (Singapore time, adjusted to true solar time)<br>
@@ -1774,22 +2123,105 @@ td{{border:1px solid #e0d3b8;padding:5px 12px;text-align:center}}
   <h2>Four Pillars <small lang="zh-Hant">八 字 四 柱 · {_py("八字四柱")}</small></h2>
   <div class="pils">{pillars}</div>
   <h2>The characters and their elements</h2>
-  <table>{charrows}</table>
-  <h2>Three Talents &amp; Five Grids <small lang="zh-Hant">三 才 五 格 · {_py("三才五格")}</small></h2>
-  <div class="grs">{gridcells}</div>
-  <div class="sancai">Three Talents: {' · '.join(g.en(x) for x in sc['elements'])} —
-    {sc['explanation_en']} · verdict <b class="{'ji' if sc['verdict'] == '吉' else 'pg'}">{_luck(sc['verdict'])}</b></div>
-  <hr class="line">
-  <div class="foot">
-    Basis: {g.en('扶抑法')} · {_en_only('康熙字典')} stroke counts · {g.en('八十一數理')} · {g.en('五行生剋')}<br>
-    {footnote}{'<br>' if footnote else ''}
-    Issued {today} · bazifor.me · the family chooses the name; the classics supply the reasons
-  </div>
+  <div class="tw"><table><thead><tr><th scope="col">Character</th><th scope="col">Pinyin</th><th scope="col">Element</th><th scope="col">Match</th></tr></thead>
+  <tbody>{charrows}</tbody></table></div>
+  {closing}
+</div>"""
+    if not paid:
+        hid = "".join(f'<input type="hidden" name="{k}" value="{H.escape(str(v), quote=True)}">'
+                      for k, v in params.items())
+        buy = f"""<section class="buy noprint" aria-labelledby="buyh">
+  <h2 id="buyh">Get the print-ready certificate</h2>
+  <p>The full A4 certificate adds a second page with the working: stroke counts from the Kangxi Dictionary, the element of each
+  character with its source, the five grids with their 81-number verdicts, the three talents, the sound check and the
+  sources list. Pay once; save it as a PDF from your browser.</p>
+  <form id="buy" method="post" action="/api/pub/certificate/checkout">{hid}
+    <button type="submit">Buy the certificate for S$68</button></form>
+  <p id="buymsg" role="status" aria-live="polite"></p>
+  <p class="fine">Refund within 14 days on request. Free regeneration after a data correction.
+  Write to us through the <a href="/contact">contact page</a>.</p>
+  <p class="fine">This certificate is for this exact name, birth date and time, and traditional-form choice. Change any of them
+  and it is a different certificate that needs its own purchase. Stripe takes the payment and is sent only an order number,
+  the price and the product name, never the name or the birth details.</p>
+</section>
+<script>
+(function(){{var f=document.getElementById('buy');if(!f||!window.fetch)return;var b=f.querySelector('button'),m=document.getElementById('buymsg');
+window.addEventListener('pageshow',function(){{b.disabled=false;m.textContent=''}});
+f.addEventListener('submit',function(e){{e.preventDefault();b.disabled=true;m.textContent='Opening secure checkout';
+fetch(f.action,{{method:'POST',body:new URLSearchParams(new FormData(f)),headers:{{'Accept':'application/json'}}}})
+.then(function(r){{return r.json().then(function(d){{return [r.ok,d]}})}})
+.then(function(x){{if(x[0]&&x[1].url){{location.href=x[1].url}}else{{throw new Error(x[1].error||'')}}}})
+.catch(function(err){{b.disabled=false;m.textContent=(err&&err.message)||'{MSG_TIMEOUT}'}})}})}})();
+</script>"""
+        body = front + buy
+    else:
+        s_ks = [e["ks"] for _, e in infos[:len(surname)]]
+        g_infos = infos[len(surname):]
+        g_ks = [e["ks"] for _, e in g_infos]
+        grids = five_grids(s_ks, g_ks)
+        sc = sancai(grids)
+        work = _grid_working(s_ks, g_ks)
+        snd = sound_score(_tosimp(surname), given)
+        contested = [(ch, e) for ch, e in g_infos if e.get("el_contested")]
+        footnote = ("" if not contested else
+                    "Note: " + "; ".join(f"the source classifies {ch} as {_en_only(e['el'])}; other schools may read it as "
+                                         f"{_en_only(e.get('el_alt')) if e.get('el_alt') else 'another element'}"
+                                         for ch, e in contested) + ".")
+
+        def el_src(e):
+            s = e.get("el_src") or ""
+            if not e.get("el"):
+                return "surname, not scored for element"
+            if s.startswith("curated:"):
+                return "curated reading (" + H.escape(s.split(":", 1)[1].strip()) + ")"
+            return ("radical convention (" + H.escape(s) + ")") if s else "recorded in the dataset"
+        krows = "".join(f"""<tr><td class="bigch">{ch}</td><td>{e.get('py') or ''}</td>
+          <td>{e['ks']} strokes<br><span class="sm">{e.get('trad') or ch}</span></td>
+          <td><b style="color:{_EL_HEX.get(e['el'], '#2b2620')}">{g.en(e['el']) if e['el'] else '—'}</b></td>
+          <td class="l sm">{el_src(e)}{' · ⚑ disputed between schools' if e.get('el_contested') else ''}</td></tr>"""
+                        for ch, e in infos)
+
+        def reads(n):
+            return "" if n <= 81 else " (reads as " + str(n - 81) + ")"
+        grows = "".join(
+            f'<tr><td class="l">{g.en(k)}</td><td>{work[k]}</td><td><b>{v["num"]}</b>{reads(v["num"])}</td>'
+            f'<td><span class="{"ji" if v["luck"] == "吉" else "pg"}">{_luck(v["luck"])}</span></td></tr>'
+            for k, v in grids.items())
+        pairs = "".join("<br>" + H.escape(d["text_en"]) for d in sc["detail"])
+        tones = " · ".join(str(t) for t in snd["tones"])
+        found = "".join("<li>" + H.escape(f["en"]) + "</li>" for f in snd["findings"])
+        sound = ('<ul style="list-style:none;padding:0;margin:4px 0">' + found + "</ul>" if found else
+                 "No findings: the tone pattern is balanced, no homophone of an unlucky word and no unfortunate English reading was found.")
+        sources = "".join("<li>" + H.escape(s) + "</li>" for s in _SOURCES)
+        back = f"""
+<div class="cert back">
+  <h2 class="bh">The working <small lang="zh-Hant">{_py("命名證書")}</small></h2>
+  <div class="sub">PAGE 2 OF 2 · {_tosimp(full)} · every number below can be checked</div>
+  <h3>Strokes and elements, character by character</h3>
+  <div class="tw"><table><thead><tr><th scope="col">Character</th><th scope="col">Pinyin</th><th scope="col">Strokes ({g.en('康熙')})</th><th scope="col">Element</th><th scope="col" class="l">Source of the element</th></tr></thead>
+  <tbody>{krows}</tbody></table></div>
+  <h3>Five grids and three talents <span lang="zh-Hant">三 才 五 格 · {_py("三才五格")}</span></h3>
+  <div class="tw"><table><thead><tr><th scope="col" class="l">Grid</th><th scope="col">Working</th><th scope="col">Number</th><th scope="col">Verdict ({g.en('八十一數理')})</th></tr></thead>
+  <tbody>{grows}</tbody></table></div>
+  <div class="sancai">{' · '.join(g.en(x) for x in sc['elements'])} (heaven, person, earth)<br>verdict <b class="{'ji' if sc['verdict'] == '吉' else 'pg'}">{_luck(sc['verdict'])}</b>{pairs}</div>
+  <h3>Sound check</h3>
+  <div class="snd">Pinyin {' '.join(snd['pinyin'])} · tones {tones}<br>{sound}</div>
+  {'<p class="fine">' + footnote + '</p>' if footnote else ''}
+  <h3>Sources and basis</h3>
+  <ol>{sources}</ol>
+  <p class="ref">Reference, not advice. This certificate sets out how the name was worked out by classical method. It predicts nothing and gives no medical, financial or life advice; the family chooses the name.</p>
   {_BRAND_PRINT}
-  <div class="stamp" title="A proper name makes proper speech">Name<br>sealed</div>
-</div>
-<div class="noprint"><button onclick="window.print()">🖨 Print / save as PDF</button></div>
-</div></body></html>"""
+</div>"""
+        top = """<div class="paidbar noprint"><p><b>Paid.</b> This certificate is yours. Open this link again at any time to generate it again; nothing more to pay.</p>
+<p>To save it as a PDF: choose Print, set the destination to Save as PDF and the paper size to A4.</p>
+<button type="button" onclick="window.print()">Print or save as PDF</button></div>"""
+        body = top + front + back
+    html = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{'Certificate of Naming' if paid else 'Preview, Certificate of Naming'} · {full}</title>{_BRAND_CSS}<style>{_CERT_CSS}</style></head><body>
+<span class="verbadge noprint">v {_VER}</span>
+<main><div class="noprint" style="text-align:left;margin:0 0 8px">{_BRAND_MARK}</div>
+{body}
+</main></body></html>"""
     return HTMLResponse(html)
 
 

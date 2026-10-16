@@ -392,8 +392,8 @@
   "zh": "重新开始"
  },
  "t.069": {
-  "en": "Naming certificate →",
-  "zh": "起名证书 →"
+  "en": "Preview the naming certificate →",
+  "zh": "预览起名证书 →"
  },
  "t.070": {
   "en": "clear all",
@@ -906,5 +906,9 @@
  "t.197": {
   "en": "Something went wrong. Check the details and try again.",
   "zh": "出了点问题。请检查所填信息后重试。"
+ },
+ "t.198": {
+  "en": "The preview is free. The print-ready certificate with the full working is S$68; refund within 14 days on request.",
+  "zh": "预览免费。附完整推算过程、可直接打印的证书售价 68 新元；14 天内可按要求退款。"
  }
 }
