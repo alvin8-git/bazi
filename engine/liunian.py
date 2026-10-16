@@ -9,6 +9,7 @@ from __future__ import annotations
 from .bazi import Chart
 from .wuxing import (BRANCH_ELEMENT, BRANCHES, CHONG_MAP, ELEMENT_EN, HAI_MAP,
                      HE_MAP, SANHE, STEM_ELEMENT, STEMS)
+from .shensha import is_gonghe
 from .xuankong import _fly, annual_star, star_quality
 from .i18n import ELEM, L, T, and_l, cap, dot, jn, zs  # noqa: F401
 
@@ -61,12 +62,18 @@ def taisui_tiers(b: str, t: str) -> list[str]:
     return out
 
 
+GONGHE_TAISUI = "拱合"      # rule id suffix of a noted-only row; callers that count relations must skip it (see interpret_forecast)
+_GONGHE_NOTE = "half trine without a cardinal branch (拱合): an incomplete link, noted here but not counted"
+
+
 def taisui_interactions(chart: Chart, lichun_year: int, lang: str = "en") -> list[dict]:
     """Person vs 太歲: 值/沖/合/害/刑 on the YEAR branch (classical 犯太歲 basis),
     plus the same checks on the day branch as secondary notes.
     刑太歲: 《淵海子平》〈論征太歲〉 and 《協紀辨方書》卷三 歲刑 table (XING_TARGET). 合太歲 is read as 晦, a dulled and reversing year, not
     as support: 《淵海子平》〈論征太歲〉 "日干支合太歲干支曰晦...遇此者主晦氣，一年反覆、欲速不達" (owner correction, round A).
-    The other rules and their texts are unchanged; the new texts carry ids so the Chinese page has them."""
+    The other rules and their texts are unchanged; the new texts carry ids so the Chinese page has them.
+    A half trine of the person's branch with the year branch that holds no cardinal branch (子午卯酉) is a 拱合: it is no longer a 三合太歲 but a
+    separate row `taisui-拱合` (the approved note, shensha.natal_interactions.08), listed and never counted."""
     ys, yb = year_ganzhi(lichun_year)
     out = []
     for pos, weight in (("year", "primary"), ("day", "secondary")):
@@ -96,7 +103,10 @@ def taisui_interactions(chart: Chart, lichun_year: int, lang: str = "en") -> lis
                                ys=ys, yb=yb, where=where, b=b, wt=wt)))
         for trio, el in SANHE:
             if b in trio and yb in trio and b != yb:
-                rels.append(("三合太歲", f"三合 ({''.join(trio)} → {el}) with the year — allies and momentum", None))
+                if is_gonghe(b, yb):       # a half trine with no cardinal branch (拱合) is an incomplete link: noted, never counted as 三合太歲 (owner, 2026-10-10; 2026-10-16)
+                    rels.append((GONGHE_TAISUI, T("shensha.natal_interactions.08", _GONGHE_NOTE, lang), None))
+                else:
+                    rels.append(("三合太歲", f"三合 ({''.join(trio)} → {el}) with the year — allies and momentum", None))
         for name, why, src in rels:
             out.append({"rule_id": f"taisui-{name}", "layer": "liunian",
                         "source_ref": src or f"太歲 {ys}{yb} vs {pos} branch {b} ({weight})",

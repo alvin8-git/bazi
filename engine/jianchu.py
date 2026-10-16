@@ -14,6 +14,7 @@ from datetime import date, timedelta
 import sxtwl
 
 from .calendar import date_pillars
+from .shensha import is_gonghe
 
 GAN = "甲乙丙丁戊己庚辛壬癸"
 ZHI = "子丑寅卯辰巳午未申酉戌亥"
@@ -94,7 +95,7 @@ def entry_hours(day_branch: str, occupant_branches: list[str],
     SAME filters as the day layer (the old blanket 巳時 advice violated them):
     drop hours that 沖 any occupant year branch, 沖 the day branch (日時相沖),
     or sit 值/沖 on the sitting palace's branches. Rank: 三合 with the day
-    branch, then 六合, then neutral. Daytime hours preferred for a move."""
+    branch, then 六合, then neutral (a 拱合 half trine with the day is neutral and says so). Daytime hours preferred for a move."""
     sit = sitting_branches(facing_deg)
     avoid = {CHONG[b] for b in occupant_branches} | {CHONG[day_branch]}
     avoid |= set(sit) | {CHONG[s] for s in sit}
@@ -102,8 +103,11 @@ def entry_hours(day_branch: str, occupant_branches: list[str],
     for z in ZHI:
         if z in avoid:
             continue
-        if z != day_branch and any({day_branch, z} <= s for s in SANHE):
+        if z != day_branch and any({day_branch, z} <= s for s in SANHE) and not is_gonghe(day_branch, z):
             rank, why = 0, f"三合 with day {day_branch}"
+        elif z != day_branch and any({day_branch, z} <= s for s in SANHE):
+            # a half trine with no cardinal branch (拱合) is an incomplete link: noted, never ranked as 三合 (owner, 2026-10-10; 2026-10-16)
+            rank, why = 2, "half trine without a cardinal branch (拱合): an incomplete link, noted here but not counted"
         elif LIUHE[day_branch] == z:
             rank, why = 1, f"六合 with day {day_branch}"
         else:

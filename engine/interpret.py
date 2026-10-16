@@ -835,7 +835,9 @@ def interpret_forecast(f: dict, ys: dict, year: int) -> dict:
     paras = []
     gz = f["year_ganzhi"]
     se, be = STEM_ELEMENT[gz[0]], BRANCH_ELEMENT[gz[1]]
-    refs = " ".join(t["source_ref"] + t["explanation"] for t in f.get("taisui", []))
+    tai = [t for t in f.get("taisui", []) if t["rule_id"] != "taisui-拱合"]       # a 拱合 row is noted only: it is no 合 year, so it never reaches the mood
+    tai = [t for t in tai if t["rule_id"] != "taisui-none"]   # its text lists "no 值/沖/合…", which the keyword checks below misread as a clash (fixed 2026-10-16)
+    refs = " ".join(t["source_ref"] + t["explanation"] for t in tai)
     if "沖" in refs:
         mood = ("a clash (沖太歲) year: expect movement and disruption — keep big, risky "
                 "commitments conservative and pick dates carefully (Dates tab).")
@@ -845,17 +847,17 @@ def interpret_forecast(f: dict, ys: dict, year: int) -> dict:
     elif "害" in refs:
         mood = ("a 害 (harm) interaction with the 太歲 — minor frictions; double-check "
                 "agreements and dates.")
-    elif any(t["rule_id"] == "taisui-刑太歲" for t in f.get("taisui", [])):
+    elif any(t["rule_id"] == "taisui-刑太歲" for t in tai):
         mood = ("a 刑 (punishment) interaction with the 太歲 — strain that builds slowly; put big "
                 "commitments in writing (《淵海子平》〈論征太歲〉, 《協紀辨方書》卷三 歲刑表).")
-    elif any(t["rule_id"] == "taisui-合太歲" for t in f.get("taisui", [])):
+    elif any(t["rule_id"] == "taisui-合太歲" for t in tai):
         mood = ("a combining (合) year with the 太歲, which 《淵海子平》〈論征太歲〉 reads as 晦: a dulled year of "
                 "reversals, so go slowly rather than expecting a lift.")
     elif "合" in refs:
         mood = ("a combining (合) year with the 太歲 — allies, support and momentum; a "
                 "good year to advance plans.")
     else:
-        mood = "no direct 太歲 interaction — an astrologically neutral year."
+        mood = "no direct 太歲 interaction: an astrologically neutral year."
     paras.append(f"{year} is the {gz} year (annual centre star {f['annual_center']}): {mood}")
 
     fav = sum(el in ys["favourable"] for el in (se, be))
